@@ -55,6 +55,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
+import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1067,14 +1068,27 @@ public class ProjectTemplatesTest {
 			gradleProjectDir,
 			"src/main/java/com/liferay/test/portlet/FooPortlet.java",
 			"public class FooPortlet extends SoyPortlet {");
+		_testContains(
+			gradleProjectDir,
+			"src/main/java/com/liferay/test/portlet/action" +
+				"/FooViewMVCRenderCommand.java",
+			"public class FooViewMVCRenderCommand");
 
 		File mavenProjectDir = _buildTemplateWithMaven(
 			"soy-portlet", "foo", "com.test", "-DclassName=Foo",
 			"-Dpackage=com.liferay.test");
 
+		String gradleBundleFileName = "build/libs/com.liferay.test-1.0.0.jar";
+		String mavenBundleFileName = "target/foo-1.0.0.jar";
+
 		_buildProjects(
-			gradleProjectDir, mavenProjectDir,
-			"build/libs/com.liferay.test-1.0.0.jar", "target/foo-1.0.0.jar");
+			gradleProjectDir, mavenProjectDir, gradleBundleFileName,
+			mavenBundleFileName);
+
+		_testContainsJarEntry(
+			new File(gradleProjectDir, gradleBundleFileName), "package.json");
+		_testContainsJarEntry(
+			new File(mavenProjectDir, mavenBundleFileName), "package.json");
 	}
 
 	@Test
@@ -1366,6 +1380,38 @@ public class ProjectTemplatesTest {
 			workspaceProjectDir, "build/libs/theme-test.war");
 
 		_testWarsDiff(gradleWarFile, workspaceWarFile);
+	}
+
+	@Test
+	public void testBuildTemplateWarHook() throws Exception {
+		File gradleProjectDir = _buildTemplateWithGradle("war-hook", "WarHook");
+
+		_testExists(gradleProjectDir, "src/main/resources/portal.properties");
+		_testExists(
+			gradleProjectDir, "src/main/webapp/WEB-INF/liferay-hook.xml");
+		_testExists(gradleProjectDir, "build.gradle");
+
+		_testContains(
+			gradleProjectDir,
+			"src/main/java/warhook/WarHookLoginPostAction.java",
+			"public class WarHookLoginPostAction extends Action");
+		_testContains(
+			gradleProjectDir, "src/main/java/warhook/WarHookStartupAction.java",
+			"public class WarHookStartupAction extends SimpleAction");
+		_testContains(
+			gradleProjectDir,
+			"src/main/webapp/WEB-INF/liferay-plugin-package.properties",
+			"name=WarHook");
+
+		File mavenProjectDir = _buildTemplateWithMaven(
+			"war-hook", "WarHook", "warhook", "-DclassName=WarHook",
+			"-Dpackage=warhook");
+
+		_testContains(mavenProjectDir, "pom.xml");
+
+		_buildProjects(
+			gradleProjectDir, mavenProjectDir, "build/libs/WarHook.war",
+			"target/WarHook-1.0.0.war");
 	}
 
 	@Test
@@ -2073,6 +2119,14 @@ public class ProjectTemplatesTest {
 		throws IOException {
 
 		return _testContains(dir, fileName, false, strings);
+	}
+
+	private static void _testContainsJarEntry(File file, String name)
+		throws IOException {
+
+		try (JarFile jarFile = new JarFile(file)) {
+			Assert.assertNotNull(jarFile.getJarEntry(name));
+		}
 	}
 
 	private static File _testEquals(
