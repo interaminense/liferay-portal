@@ -165,6 +165,11 @@
 			background-color: #F0F8FE;
 			cursor: pointer;
 		}
+
+		label {
+			float: initial;
+			margin-right: 0;
+		}
 	}
 
 	.form-builder-field-content-target {
@@ -385,17 +390,6 @@
 			margin: 0;
 			top: 18px;
 		}
-	}
-
-	.form-control[readonly],
-	.form-control[disabled],
-	input[type='checkbox'],
-	input[type='radio'] {
-		background-color: transparent;
-		border-color: #869CAD;
-		color: initial;
-		cursor: default;
-		opacity: 1;
 	}
 
 	.layout-builder-move-target-label,
