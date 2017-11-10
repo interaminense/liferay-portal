@@ -13,6 +13,10 @@ AUI.add(
 
 				var fieldClass = AObject.getValue(window, fieldClassName.split('.'));
 
+				if (fieldClass.isMetal) {
+					return fieldClass;
+				}
+
 				return A.Component.create(
 					{
 						ATTRS: {
