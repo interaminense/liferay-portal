@@ -35,12 +35,14 @@ import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.ResourceBlockPermissionPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.impl.ResourceBlockPermissionImpl;
 import com.liferay.portal.model.impl.ResourceBlockPermissionModelImpl;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -312,7 +314,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 		msg.append("resourceBlockId=");
 		msg.append(resourceBlockId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchResourceBlockPermissionException(msg.toString());
 	}
@@ -365,7 +367,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 		msg.append("resourceBlockId=");
 		msg.append(resourceBlockId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchResourceBlockPermissionException(msg.toString());
 	}
@@ -827,7 +829,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 		msg.append("roleId=");
 		msg.append(roleId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchResourceBlockPermissionException(msg.toString());
 	}
@@ -878,7 +880,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 		msg.append("roleId=");
 		msg.append(roleId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchResourceBlockPermissionException(msg.toString());
 	}
@@ -1159,7 +1161,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 			msg.append(", roleId=");
 			msg.append(roleId);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			msg.append("}");
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -1248,12 +1250,6 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 					result = resourceBlockPermission;
 
 					cacheResult(resourceBlockPermission);
-
-					if ((resourceBlockPermission.getResourceBlockId() != resourceBlockId) ||
-							(resourceBlockPermission.getRoleId() != roleId)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_R_R,
-							finderArgs, resourceBlockPermission);
-					}
 				}
 			}
 			catch (Exception e) {
@@ -1558,8 +1554,6 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	protected ResourceBlockPermission removeImpl(
 		ResourceBlockPermission resourceBlockPermission) {
-		resourceBlockPermission = toUnwrappedModel(resourceBlockPermission);
-
 		Session session = null;
 
 		try {
@@ -1591,9 +1585,23 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public ResourceBlockPermission updateImpl(
 		ResourceBlockPermission resourceBlockPermission) {
-		resourceBlockPermission = toUnwrappedModel(resourceBlockPermission);
-
 		boolean isNew = resourceBlockPermission.isNew();
+
+		if (!(resourceBlockPermission instanceof ResourceBlockPermissionModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(resourceBlockPermission.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(resourceBlockPermission);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in resourceBlockPermission proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom ResourceBlockPermission implementation " +
+				resourceBlockPermission.getClass());
+		}
 
 		ResourceBlockPermissionModelImpl resourceBlockPermissionModelImpl = (ResourceBlockPermissionModelImpl)resourceBlockPermission;
 
@@ -1695,27 +1703,6 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 		resourceBlockPermission.resetOriginalValues();
 
 		return resourceBlockPermission;
-	}
-
-	protected ResourceBlockPermission toUnwrappedModel(
-		ResourceBlockPermission resourceBlockPermission) {
-		if (resourceBlockPermission instanceof ResourceBlockPermissionImpl) {
-			return resourceBlockPermission;
-		}
-
-		ResourceBlockPermissionImpl resourceBlockPermissionImpl = new ResourceBlockPermissionImpl();
-
-		resourceBlockPermissionImpl.setNew(resourceBlockPermission.isNew());
-		resourceBlockPermissionImpl.setPrimaryKey(resourceBlockPermission.getPrimaryKey());
-
-		resourceBlockPermissionImpl.setMvccVersion(resourceBlockPermission.getMvccVersion());
-		resourceBlockPermissionImpl.setResourceBlockPermissionId(resourceBlockPermission.getResourceBlockPermissionId());
-		resourceBlockPermissionImpl.setCompanyId(resourceBlockPermission.getCompanyId());
-		resourceBlockPermissionImpl.setResourceBlockId(resourceBlockPermission.getResourceBlockId());
-		resourceBlockPermissionImpl.setRoleId(resourceBlockPermission.getRoleId());
-		resourceBlockPermissionImpl.setActionIds(resourceBlockPermission.getActionIds());
-
-		return resourceBlockPermissionImpl;
 	}
 
 	/**
@@ -1871,12 +1858,12 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 

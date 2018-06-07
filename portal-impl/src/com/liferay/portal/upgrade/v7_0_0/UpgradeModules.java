@@ -81,7 +81,6 @@ public class UpgradeModules extends UpgradeProcess {
 			for (String[] convertedLegacyModule : getConvertedLegacyModules()) {
 				String oldServletContextName = convertedLegacyModule[0];
 				String newServletContextName = convertedLegacyModule[1];
-				String buildNamespace = convertedLegacyModule[2];
 
 				try (PreparedStatement ps = connection.prepareStatement(
 						"select servletContextName, buildNumber from " +
@@ -91,6 +90,8 @@ public class UpgradeModules extends UpgradeProcess {
 
 					try (ResultSet rs = ps.executeQuery()) {
 						if (!rs.next()) {
+							String buildNamespace = convertedLegacyModule[2];
+
 							if (hasServiceComponent(buildNamespace)) {
 								addRelease(newServletContextName);
 							}
@@ -160,7 +161,6 @@ public class UpgradeModules extends UpgradeProcess {
 		"com.liferay.product.navigation.product.menu.web",
 		"com.liferay.quick.note.web", "com.liferay.ratings.page.ratings.web",
 		"com.liferay.rss.web", "com.liferay.server.admin.web",
-		"com.liferay.shopping.service", "com.liferay.shopping.web",
 		"com.liferay.site.browser.web", "com.liferay.site.my.sites.web",
 		"com.liferay.site.navigation.breadcrumb.web",
 		"com.liferay.site.navigation.directory.web",

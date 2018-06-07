@@ -129,11 +129,16 @@
 	</command>
 
 	<command name="AssignImportedUserGroupToSuborganizationSites" priority="5">
-		<property name="liferay.training.dependency.jars" value="src/01-liferay-fundamentals/02-integrating-identity-management/com.liferay.docs.samplecontent-1.0.0.jar" />
-		<property name="portal.acceptance" value="pending" />
+		<property name="liferay.training.dependency.jars" value="src/02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.docs.samplecontent.jar" />
 		<property name="testray.component.names" value="Training" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Mock LDAP Page" />
 		</execute>
 
@@ -264,7 +269,7 @@
 			<var name="category" value="Configuration" />
 		</execute>
 
-		<execute function="AssertElementNotPresent" locator1="ProductMenu#PRODUCT_MENU_PANEL_MENU_ITEM" value1="Site Settings" />
+		<execute function="AssertElementNotPresent" locator1="ProductMenu#PRODUCT_MENU_PANEL_MENU_ITEM" />
 	</command>
 
 	<command name="ImpersonatingAdministratorandOwner" priority="4">
@@ -480,7 +485,6 @@
 	</command>
 
 	<command name="MultipleUsersandOrganizations" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="test.name.skip.portal.instance" value="UsersandorganizationsUsecase#MultipleUsersandOrganizations" />
 		<property name="testray.component.names" value="Training" />
 
@@ -492,10 +496,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 
@@ -821,7 +825,7 @@
 		<for list="Message Boards,User Statistics" param="portletTitleName">
 			<var name="key_portletTitleName" value="${portletTitleName}" />
 
-			<execute function="AssertTextEquals" locator1="Portlet#SPECIFIC_TITLE" value1="${portletTitleName}" />
+			<execute function="AssertTextEquals#assertTextCaseInsensitive" locator1="Portlet#SPECIFIC_TITLE" value1="${portletTitleName}" />
 		</for>
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -882,7 +886,6 @@
 	</command>
 
 	<command name="OrganizationAdministratorActivate" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -1036,7 +1039,7 @@
 	</command>
 
 	<command name="OrganizationDropDownItems" priority="3">
-		<for list="Site Name A,Site Name B,Site Name C,Site Name D,Site Name E,Site Name F,Site Name G,Site Name H" param="siteName" >
+		<for list="Site Name A,Site Name B,Site Name C,Site Name D,Site Name E,Site Name F,Site Name G,Site Name H" param="siteName">
 			<execute macro="ProductMenu#gotoPortlet">
 				<var name="category" value="Sites" />
 				<var name="panel" value="Control Panel" />
@@ -1054,7 +1057,7 @@
 			<var name="portlet" value="Sites" />
 		</execute>
 
-		<for list="Site Name A,Site Name B,Site Name C,Site Name D,Site Name E,Site Name F,Site Name G,Site Name H" param="siteName" >
+		<for list="Site Name A,Site Name B,Site Name C,Site Name D,Site Name E,Site Name F,Site Name G,Site Name H" param="siteName">
 			<var name="key_siteName" value="${siteName}" />
 
 			<execute function="AssertTextEquals#assertPartialText" locator1="Sites#SITE_TABLE_NAME" value1="${siteName}" />
@@ -1261,7 +1264,7 @@
 		</execute>
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Password Syntax Checking" />
+			<var name="panel" value="Password Syntax Checking" />
 		</execute>
 
 		<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLE_SYNTAX_CHECKING" />
@@ -1317,7 +1320,7 @@
 		</execute>
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Password Syntax Checking" />
+			<var name="panel" value="Password Syntax Checking" />
 		</execute>
 
 		<execute function="Type" locator1="TextInput#REGULAR_EXPRESSION" value1="(?=.{6})(?:[a-zA-Z0-9]*)" />
@@ -1378,7 +1381,7 @@
 		</execute>
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Password Syntax Checking" />
+			<var name="panel" value="Password Syntax Checking" />
 		</execute>
 
 		<execute function="Type" locator1="TextInput#MINIMUM_NUMBERS" value1="2" />
@@ -1427,8 +1430,6 @@
 	</command>
 
 	<command name="ViewContentInCustomOrganizationTypeSite" priority="4">
-		<property name="custom.properties" value="organizations.types=organization,location${line.separator}organizations.rootable[location]=true${line.separator}organizations.children.types[organization]=organization,location" />
-
 		<var method="TestPropsUtil#get('portal.url')" name="portalURL" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -1509,6 +1510,35 @@
 			<var name="orgName" value="North America" />
 			<var name="orgType" value="Organization" />
 		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="System Settings" />
+		</execute>
+
+		<execute macro="SystemSettings#gotoConfiguration">
+			<var name="configurationCategory" value="Users" />
+			<var name="configurationName" value="Organization Type" />
+			<var name="configurationScope" value="System Scope" />
+		</execute>
+
+		<execute function="AssertClick" locator1="Button#ADD" value1="ADD" />
+
+		<for list="Name,Children Types" param="settingName">
+			<execute macro="SystemSettings#editTextAreaSetting">
+				<var name="settingName" value="${settingName}" />
+				<var name="settingValue" value="Location" />
+			</execute>
+		</for>
+
+		<for list="countryEnabled,rootable" param="fieldName">
+			<execute macro="FormFields#enableCheckbox">
+				<var name="fieldName" value="${fieldName}" />
+			</execute>
+		</for>
+
+		<execute macro="SystemSettings#saveConfiguration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Users" />

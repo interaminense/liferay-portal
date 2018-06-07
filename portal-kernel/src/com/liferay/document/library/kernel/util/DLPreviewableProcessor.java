@@ -17,6 +17,7 @@ package com.liferay.document.library.kernel.util;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageToolUtil;
@@ -34,7 +35,6 @@ import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
@@ -175,7 +175,7 @@ public abstract class DLPreviewableProcessor implements DLProcessor {
 		if (getFileVersionIds().contains(
 				destinationFileVersion.getFileVersionId())) {
 
-			String processIdentity = Long.toString(
+			String processIdentity = String.valueOf(
 				destinationFileVersion.getFileVersionId());
 
 			destroyProcess(processIdentity);
@@ -513,7 +513,7 @@ public abstract class DLPreviewableProcessor implements DLProcessor {
 			binPathSegment = previewType;
 		}
 		else {
-			binPathSegment = Integer.toString(fileIndex + 1);
+			binPathSegment = String.valueOf(fileIndex + 1);
 		}
 
 		String binPath = getBinPath(
@@ -1033,7 +1033,7 @@ public abstract class DLPreviewableProcessor implements DLProcessor {
 			binPathSegment = previewType;
 		}
 		else {
-			binPathSegment = Integer.toString(fileIndex + 1);
+			binPathSegment = String.valueOf(fileIndex + 1);
 		}
 
 		StringBundler sb = new StringBundler(4);

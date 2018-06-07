@@ -14,12 +14,12 @@
 
 package com.liferay.portal.kernel.process;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.concurrent.BaseFutureListener;
 import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.IOException;
 
@@ -194,9 +194,9 @@ public class ProcessUtil {
 
 					boolean[] markHolder = new boolean[1];
 
-					E stdErr = stdErrReference.get(markHolder);
-
 					if (markHolder[0]) {
+						E stdErr = stdErrReference.get(markHolder);
+
 						defaultNoticeableFuture.set(
 							new ObjectValuePair<>(stdOut, stdErr));
 					}
@@ -225,9 +225,9 @@ public class ProcessUtil {
 
 					boolean[] markHolder = new boolean[1];
 
-					O stdOut = stdOutReference.get(markHolder);
-
 					if (markHolder[0]) {
+						O stdOut = stdOutReference.get(markHolder);
+
 						defaultNoticeableFuture.set(
 							new ObjectValuePair<>(stdOut, stdErr));
 					}

@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -61,8 +62,11 @@ import javax.sql.DataSource;
  * @author Brian Wing Shun Chan
  * @see com.liferay.portlet.asset.service.impl.AssetCategoryPropertyLocalServiceImpl
  * @see com.liferay.asset.kernel.service.AssetCategoryPropertyLocalServiceUtil
+ * @deprecated As of 7.0.0, replaced by {@link
+            com.liferay.asset.category.property.service.impl.AssetCategoryPropertyLocalServiceImpl}
  * @generated
  */
+@Deprecated
 @ProviderType
 public abstract class AssetCategoryPropertyLocalServiceBaseImpl
 	extends BaseLocalServiceImpl implements AssetCategoryPropertyLocalService,
@@ -95,6 +99,7 @@ public abstract class AssetCategoryPropertyLocalServiceBaseImpl
 	 * @return the new asset category property
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public AssetCategoryProperty createAssetCategoryProperty(
 		long categoryPropertyId) {
 		return assetCategoryPropertyPersistence.create(categoryPropertyId);

@@ -18,6 +18,7 @@ import com.liferay.exportimport.kernel.lar.MissingReferences;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -64,7 +65,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.LayoutComparator;
@@ -431,6 +431,20 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	 * Deletes the layout, its child layouts, and its associated resources.
 	 *
 	 * @param  layout the layout
+	 * @return the deleted layout
+	 * @throws PortalException if a portal exception occurred
+	 */
+	@Override
+	public Layout deleteLayout(Layout layout) throws PortalException {
+		layoutLocalService.deleteLayout(layout, true, new ServiceContext());
+
+		return layout;
+	}
+
+	/**
+	 * Deletes the layout, its child layouts, and its associated resources.
+	 *
+	 * @param  layout the layout
 	 * @param  updateLayoutSet whether the layout set's page counter needs to be
 	 *         updated
 	 * @param  serviceContext the service context to be applied
@@ -554,6 +568,22 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			systemEventHierarchyEntry.setExtraDataValue(
 				"privateLayout", String.valueOf(layout.isPrivateLayout()));
 		}
+	}
+
+	/**
+	 * Deletes the layout with the plid, also deleting the layout's child
+	 * layouts, and associated resources.
+	 *
+	 * @param  plid the primary key of the layout
+	 * @throws PortalException if a portal exception occurred
+	 */
+	@Override
+	public Layout deleteLayout(long plid) throws PortalException {
+		Layout layout = layoutPersistence.findByPrimaryKey(plid);
+
+		layoutLocalService.deleteLayout(layout, true, new ServiceContext());
+
+		return layout;
 	}
 
 	/**
@@ -1253,6 +1283,26 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	}
 
 	/**
+	 * Returns a range of all the layouts belonging to the group.
+	 *
+	 * @param  groupId the primary key of the group
+	 * @param  privateLayout whether the layout is private to the group
+	 * @param  start the lower bound of the range of layouts
+	 * @param  end the upper bound of the range of layouts (not inclusive)
+	 * @param  obc the comparator to order the layouts
+	 * @return the matching layouts, or <code>null</code> if no matches were
+	 *         found
+	 */
+	@Override
+	public List<Layout> getLayouts(
+		long groupId, boolean privateLayout, int start, int end,
+		OrderByComparator<Layout> obc) {
+
+		return layoutPersistence.findByG_P(
+			groupId, privateLayout, start, end, obc);
+	}
+
+	/**
 	 * Returns all the layouts belonging to the group that are children of the
 	 * parent layout.
 	 *
@@ -1267,7 +1317,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		long groupId, boolean privateLayout, long parentLayoutId) {
 
 		return getLayouts(
-			groupId, privateLayout, parentLayoutId, QueryUtil.ALL_POS,
+			groupId, privateLayout, parentLayoutId, false, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
 
@@ -1299,7 +1349,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		boolean incomplete, int start, int end) {
 
 		return getLayouts(
-			groupId, privateLayout, parentLayoutId, start, end, null);
+			groupId, privateLayout, parentLayoutId, incomplete, start, end,
+			null);
 	}
 
 	/**
@@ -1326,8 +1377,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	 */
 	@Override
 	public List<Layout> getLayouts(
-		long groupId, boolean privateLayout, long parentLayoutId, int start,
-		int end, OrderByComparator<Layout> obc) {
+		long groupId, boolean privateLayout, long parentLayoutId,
+		boolean incomplete, int start, int end, OrderByComparator<Layout> obc) {
 
 		if (MergeLayoutPrototypesThreadLocal.isInProgress()) {
 			return layoutPersistence.findByG_P_P(
@@ -1581,8 +1632,10 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	/**
 	 * Returns all the layouts whose friendly URLs are <code>null</code>
 	 *
-	 * @return all the layouts whose friendly URLs are <code>null</code>
+	 * @return     all the layouts whose friendly URLs are <code>null</code>
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 */
+	@Deprecated
 	@Override
 	public List<Layout> getNullFriendlyURLLayouts() {
 		return layoutFinder.findByNullFriendlyURL();
@@ -1683,7 +1736,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			Layout layout = layoutPersistence.findByPrimaryKey(
 				group.getClassPK());
 
-			if (layout.getPrivateLayout() == privateLayout) {
+			if (layout.isPrivateLayout() == privateLayout) {
 				layouts.add(layout);
 			}
 		}

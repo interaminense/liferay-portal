@@ -70,7 +70,9 @@
 	</command>
 
 	<command name="AddShortcutToSiteDocument" priority="5">
-		<property name="portal.acceptance" value="true" />
+		<description message="This is a use case for LPS-82073." />
+
+		<property name="portal.acceptance" value="false" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="Navigator#openURL" />
@@ -96,6 +98,12 @@
 			<var name="dmDocumentDescription" value="DM Document Description" />
 			<var name="dmDocumentFile" value="Document_1.txt" />
 			<var name="dmDocumentTitle" value="DM Document Title" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Documents and Media" />
 		</execute>
 
 		<execute macro="DMNavigator#gotoDocumentCP">
@@ -133,7 +141,7 @@
 	</command>
 
 	<command name="EditDocument" priority="5">
-		<property name="portal.acceptance" value="true" />
+		<property name="portal.acceptance" value="quarantine" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -179,7 +187,7 @@
 	</command>
 
 	<command name="EditFolder" priority="5">
-		<property name="portal.acceptance" value="true" />
+		<property name="portal.acceptance" value="false" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="Navigator#openURL" />
@@ -214,8 +222,9 @@
 			<var name="dmFolderNameEdit" value="DM Folder Name Name" />
 		</execute>
 
-		<execute macro="DMFolder#viewEditCP">
-			<var name="dmFolderNameEdit" value="DM Folder Name Name" />
+		<execute macro="DMFolder#viewCP">
+			<var name="dmFolderName" value="DM Folder Name Name" />
+			<var name="specificNameFolder" value="true" />
 		</execute>
 	</command>
 
@@ -486,8 +495,8 @@
 			<var name="portlet" value="Documents and Media" />
 		</execute>
 
-		<execute macro="DMDocument#searchCP">
-			<var name="dmDocumentKeyword" value="DM Document Title" />
+		<execute macro="Search#searchCP">
+			<var name="searchTerm" value="DM Document Title" />
 		</execute>
 
 		<execute macro="DMDocument#viewSearchResultsCP">
@@ -496,7 +505,7 @@
 	</command>
 
 	<command name="ViewImageEditorControls" priority="5">
-		<property name="portal.acceptance" value="quarantine" />
+		<property name="portal.acceptance" value="false" />
 
 		<execute macro="Navigator#openURL" />
 

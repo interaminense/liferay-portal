@@ -15,7 +15,7 @@
 package com.liferay.portlet.sites.util;
 
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationConstants;
-import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactory;
+import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactoryUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.UserIdStrategy;
@@ -24,6 +24,7 @@ import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalSer
 import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
 import com.liferay.exportimport.kernel.service.ExportImportServiceUtil;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.events.EventsProcessorUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
@@ -97,7 +98,6 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -281,7 +281,7 @@ public class SitesImpl implements Sites {
 				targetLayout.getNameMap(), targetLayout.getTitleMap(),
 				targetLayout.getDescriptionMap(), targetLayout.getKeywordsMap(),
 				targetLayout.getRobotsMap(), layoutPrototypeLayout.getType(),
-				targetLayout.getHidden(), targetLayout.getFriendlyURLMap(),
+				targetLayout.isHidden(), targetLayout.getFriendlyURLMap(),
 				layoutPrototypeLayout.isIconImage(), iconBytes, serviceContext);
 		}
 		finally {
@@ -307,9 +307,10 @@ public class SitesImpl implements Sites {
 		UnicodeProperties typeSettingsProperties =
 			targetLayout.getTypeSettingsProperties();
 
+		Date modifiedDate = targetLayout.getModifiedDate();
+
 		typeSettingsProperties.setProperty(
-			LAST_MERGE_TIME,
-			String.valueOf(targetLayout.getModifiedDate().getTime()));
+			LAST_MERGE_TIME, String.valueOf(modifiedDate.getTime()));
 
 		LayoutLocalServiceUtil.updateLayout(targetLayout);
 
@@ -337,7 +338,7 @@ public class SitesImpl implements Sites {
 			new String[] {Boolean.FALSE.toString()});
 
 		Map<String, Serializable> exportLayoutSettingsMap =
-			ExportImportConfigurationSettingsMapFactory.
+			ExportImportConfigurationSettingsMapFactoryUtil.
 				buildExportLayoutSettingsMap(
 					user, sourceLayout.getGroupId(),
 					sourceLayout.isPrivateLayout(),
@@ -355,7 +356,7 @@ public class SitesImpl implements Sites {
 
 		try {
 			Map<String, Serializable> importLayoutSettingsMap =
-				ExportImportConfigurationSettingsMapFactory.
+				ExportImportConfigurationSettingsMapFactoryUtil.
 					buildImportLayoutSettingsMap(
 						userId, targetLayout.getGroupId(),
 						targetLayout.isPrivateLayout(), null, parameterMap,
@@ -646,8 +647,12 @@ public class SitesImpl implements Sites {
 		Map<String, String[]> parameterMap = getLayoutSetPrototypeParameters(
 			serviceContext);
 
+		parameterMap.put(
+			PortletDataHandlerKeys.PERFORM_DIRECT_BINARY_IMPORT,
+			new String[] {Boolean.FALSE.toString()});
+
 		Map<String, Serializable> exportLayoutSettingsMap =
-			ExportImportConfigurationSettingsMapFactory.
+			ExportImportConfigurationSettingsMapFactoryUtil.
 				buildExportLayoutSettingsMap(
 					user, layoutSet.getGroupId(), layoutSet.isPrivateLayout(),
 					ExportImportHelperUtil.getLayoutIds(
@@ -889,6 +894,10 @@ public class SitesImpl implements Sites {
 		Map<String, String[]> parameterMap = getLayoutSetPrototypeParameters(
 			serviceContext);
 
+		parameterMap.put(
+			PortletDataHandlerKeys.PERFORM_DIRECT_BINARY_IMPORT,
+			new String[] {Boolean.FALSE.toString()});
+
 		setLayoutSetPrototypeLinkEnabledParameter(
 			parameterMap, layoutSet, serviceContext);
 
@@ -910,7 +919,7 @@ public class SitesImpl implements Sites {
 		}
 
 		Map<String, Serializable> importLayoutSettingsMap =
-			ExportImportConfigurationSettingsMapFactory.
+			ExportImportConfigurationSettingsMapFactoryUtil.
 				buildImportLayoutSettingsMap(
 					user.getUserId(), layoutSet.getGroupId(),
 					layoutSet.isPrivateLayout(), null, parameterMap,
@@ -1458,7 +1467,7 @@ public class SitesImpl implements Sites {
 
 		LayoutServiceUtil.updateLayout(
 			layoutPrototypeLayout.getGroupId(),
-			layoutPrototypeLayout.getPrivateLayout(),
+			layoutPrototypeLayout.isPrivateLayout(),
 			layoutPrototypeLayout.getLayoutId(),
 			layoutPrototypeLayout.getTypeSettings());
 	}
@@ -1491,7 +1500,7 @@ public class SitesImpl implements Sites {
 
 		LayoutSetServiceUtil.updateSettings(
 			layoutSetPrototypeLayoutSet.getGroupId(),
-			layoutSetPrototypeLayoutSet.getPrivateLayout(),
+			layoutSetPrototypeLayoutSet.isPrivateLayout(),
 			layoutSetPrototypeLayoutSet.getSettings());
 	}
 
@@ -1903,7 +1912,7 @@ public class SitesImpl implements Sites {
 					layoutSetPrototype.getGroupId(), true);
 
 			Map<String, Serializable> exportLayoutSettingsMap =
-				ExportImportConfigurationSettingsMapFactory.
+				ExportImportConfigurationSettingsMapFactoryUtil.
 					buildExportLayoutSettingsMap(
 						user, layoutSetPrototype.getGroupId(), true,
 						ExportImportHelperUtil.getLayoutIds(
@@ -1924,7 +1933,7 @@ public class SitesImpl implements Sites {
 		}
 
 		Map<String, Serializable> importLayoutSettingsMap =
-			ExportImportConfigurationSettingsMapFactory.
+			ExportImportConfigurationSettingsMapFactoryUtil.
 				buildImportLayoutSettingsMap(
 					user.getUserId(), groupId, privateLayout, null,
 					parameterMap, user.getLocale(), user.getTimeZone());

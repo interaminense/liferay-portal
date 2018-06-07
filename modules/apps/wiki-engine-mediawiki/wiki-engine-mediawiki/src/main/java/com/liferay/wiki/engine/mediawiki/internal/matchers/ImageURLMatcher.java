@@ -14,9 +14,9 @@
 
 package com.liferay.wiki.engine.mediawiki.internal.matchers;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.CallbackMatcher;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 
@@ -35,7 +35,7 @@ public class ImageURLMatcher extends CallbackMatcher {
 	}
 
 	public String replaceMatches(CharSequence charSequence) {
-		return replaceMatches(charSequence, _callBack);
+		return replaceMatches(charSequence, _callback);
 	}
 
 	private static final String _REGEX =
@@ -43,7 +43,7 @@ public class ImageURLMatcher extends CallbackMatcher {
 
 	private final String _attachmentURLPrefix;
 
-	private final Callback _callBack = new Callback() {
+	private final Callback _callback = new Callback() {
 
 		@Override
 		public String foundMatch(MatchResult matchResult) {

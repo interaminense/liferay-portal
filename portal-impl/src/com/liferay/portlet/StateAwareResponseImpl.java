@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletQNameUtil;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.portlet.Event;
+import javax.portlet.MutableRenderParameters;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletModeException;
 import javax.portlet.StateAwareResponse;
@@ -53,7 +55,9 @@ public abstract class StateAwareResponseImpl
 		Portlet portlet = getPortlet();
 
 		if (portlet != null) {
-			return portlet.getPortletApp().getDefaultNamespace();
+			PortletApp portletApp = portlet.getPortletApp();
+
+			return portletApp.getDefaultNamespace();
 		}
 		else {
 			return XMLConstants.NULL_NS_URI;
@@ -80,6 +84,11 @@ public abstract class StateAwareResponseImpl
 	@Override
 	public Map<String, String[]> getRenderParameterMap() {
 		return _params;
+	}
+
+	@Override
+	public MutableRenderParameters getRenderParameters() {
+		throw new UnsupportedOperationException();
 	}
 
 	public User getUser() {
@@ -195,8 +204,8 @@ public abstract class StateAwareResponseImpl
 			throw new IllegalArgumentException();
 		}
 
-		for (int i = 0; i < values.length; i++) {
-			if (values[i] == null) {
+		for (String value : values) {
+			if (value == null) {
 				throw new IllegalArgumentException();
 			}
 		}
@@ -222,12 +231,14 @@ public abstract class StateAwareResponseImpl
 
 			for (Map.Entry<String, String[]> entry : params.entrySet()) {
 				String key = entry.getKey();
-				String[] value = entry.getValue();
 
 				if (key == null) {
 					throw new IllegalArgumentException();
 				}
-				else if (value == null) {
+
+				String[] value = entry.getValue();
+
+				if (value == null) {
 					throw new IllegalArgumentException();
 				}
 
@@ -274,20 +285,6 @@ public abstract class StateAwareResponseImpl
 		_calledSetRenderParameter = true;
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #init(PortletRequestImpl,
-	 *             HttpServletResponse, User, Layout)}
-	 */
-	@Deprecated
-	protected void init(
-			PortletRequestImpl portletRequestImpl, HttpServletResponse response,
-			String portletName, User user, Layout layout,
-			WindowState windowState, PortletMode portletMode)
-		throws PortletModeException, WindowStateException {
-
-		init(portletRequestImpl, response, user, layout, true);
-	}
-
 	protected void init(
 			PortletRequestImpl portletRequestImpl, HttpServletResponse response,
 			User user, Layout layout, boolean setWindowStateAndPortletMode)
@@ -313,12 +310,34 @@ public abstract class StateAwareResponseImpl
 	}
 
 	protected void reset() {
-		_calledSetRenderParameter = false;
 		_events.clear();
 		_params.clear();
-		_portletMode = null;
+
+		try {
+			setPortletMode(PortletMode.VIEW);
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to reset portlet mode to VIEW", e);
+			}
+		}
+
+		_portletMode = PortletMode.UNDEFINED;
+
 		_redirectLocation = null;
-		_windowState = null;
+
+		try {
+			setWindowState(WindowState.NORMAL);
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to reset window state to NORMAL", e);
+			}
+		}
+
+		_windowState = WindowState.UNDEFINED;
+
+		_calledSetRenderParameter = false;
 	}
 
 	protected boolean setPublicRenderParameter(String name, String[] values) {
@@ -353,10 +372,10 @@ public abstract class StateAwareResponseImpl
 	private final List<Event> _events = new ArrayList<>();
 	private Layout _layout;
 	private Map<String, String[]> _params = new LinkedHashMap<>();
-	private PortletMode _portletMode;
+	private PortletMode _portletMode = PortletMode.UNDEFINED;
 	private Map<String, String[]> _publicRenderParameters;
 	private String _redirectLocation;
 	private User _user;
-	private WindowState _windowState;
+	private WindowState _windowState = WindowState.UNDEFINED;
 
 }

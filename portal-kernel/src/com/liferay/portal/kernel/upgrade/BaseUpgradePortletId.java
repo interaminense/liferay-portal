@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
@@ -86,9 +85,7 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 
 			String typeSettingId = entry.getKey();
 
-			if (!LayoutTypePortletConstants.isLayoutTemplateColumnName(
-					typeSettingId)) {
-
+			if (!LayoutTypePortletConstants.hasPortletIds(typeSettingId)) {
 				continue;
 			}
 
@@ -121,8 +118,7 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 
 			String portletIdsString = StringUtil.merge(portletIds);
 
-			typeSettingsProperties.setProperty(
-				typeSettingId, portletIdsString.concat(StringPool.COMMA));
+			typeSettingsProperties.setProperty(typeSettingId, portletIdsString);
 		}
 
 		return typeSettingsProperties.toString();
@@ -479,7 +475,6 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 			ResultSet rs = ps1.executeQuery()) {
 
 			while (rs.next()) {
-				long companyId = rs.getLong("companyId");
 				String oldPrimKey = rs.getString("primKey");
 
 				int pos = oldPrimKey.indexOf(PortletConstants.LAYOUT_SEPARATOR);
@@ -503,7 +498,10 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 
 					ps2.setString(1, newPrimKey);
 
+					long companyId = rs.getLong("companyId");
+
 					ps2.setLong(2, companyId);
+
 					ps2.setString(3, oldPrimKey);
 
 					ps2.addBatch();

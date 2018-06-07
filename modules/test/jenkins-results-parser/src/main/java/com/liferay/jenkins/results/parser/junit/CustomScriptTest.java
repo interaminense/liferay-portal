@@ -24,23 +24,23 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- *	@author Yi-Chen Tsai
+ * @author Yi-Chen Tsai
  */
 @RunWith(Parameterized.class)
 public class CustomScriptTest {
 
 	@Parameters(name = "{0}")
-	public static Collection<Object[]> getTestNames() throws Exception {
+	public static Collection<Object[]> getTestNames() {
 		return Arrays.asList(new Object[][] {
 			new Object[] {System.getProperty("testName")}
 		});
 	}
 
-	public CustomScriptTest(String testName) throws Exception {
+	public CustomScriptTest(String testName) {
 	}
 
 	@Test
-	public void test() throws Exception {
+	public void test() {
 		String expectedResult = System.getProperty("expected");
 		String actualResult = System.getProperty("actual");
 

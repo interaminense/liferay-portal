@@ -155,14 +155,13 @@ public class TunnelAuthenticationManagerImpl
 
 		httpAuthorizationHeader.setAuthParameter(
 			HttpAuthorizationHeader.AUTH_PARAMETER_NAME_USERNAME, login);
+
 		httpURLConnection.setRequestProperty(
 			HttpHeaders.AUTHORIZATION, httpAuthorizationHeader.toString());
 	}
 
 	protected Key getSharedSecretKey() throws AuthException {
 		String sharedSecret = PropsValues.TUNNELING_SERVLET_SHARED_SECRET;
-		boolean sharedSecretHex =
-			PropsValues.TUNNELING_SERVLET_SHARED_SECRET_HEX;
 
 		if (Validator.isNull(sharedSecret)) {
 			String message =
@@ -181,7 +180,7 @@ public class TunnelAuthenticationManagerImpl
 
 		byte[] key = null;
 
-		if (sharedSecretHex) {
+		if (PropsValues.TUNNELING_SERVLET_SHARED_SECRET_HEX) {
 			try {
 				key = Hex.decodeHex(sharedSecret.toCharArray());
 			}

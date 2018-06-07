@@ -17,6 +17,7 @@ package com.liferay.portal.service.impl;
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -38,12 +39,12 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.settings.PortletInstanceSettingsLocator;
 import com.liferay.portal.kernel.settings.PortletPreferencesSettings;
 import com.liferay.portal.kernel.settings.Settings;
+import com.liferay.portal.kernel.settings.SettingsLocatorHelperUtil;
 import com.liferay.portal.kernel.spring.aop.Property;
 import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -51,6 +52,7 @@ import com.liferay.portal.service.base.PortletPreferencesLocalServiceBaseImpl;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -223,28 +225,47 @@ public class PortletPreferencesLocalServiceImpl
 
 		String defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;
 
+		String portletName = PortletIdCodec.decodePortletName(portletId);
+
 		Portlet portlet = portletLocalService.fetchPortletById(
-			companyId, PortletIdCodec.decodePortletName(portletId));
+			companyId, portletName);
 
 		if (portlet != null) {
 			defaultPreferences = portlet.getDefaultPreferences();
 		}
 
+		String configurationPid =
+			portletInstanceSettingsLocator.getConfigurationPid();
+
+		Settings companyConfigurationBeanSettings =
+			SettingsLocatorHelperUtil.getCompanyConfigurationBeanSettings(
+				companyId, configurationPid, portalPreferencesSettings);
+
 		Settings companyPortletPreferencesSettings =
 			new PortletPreferencesSettings(
 				_getStrictPreferences(
 					companyId, companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY,
-					PortletKeys.PREFS_PLID_SHARED, portletId,
+					PortletKeys.PREFS_PLID_SHARED, portletName,
 					defaultPreferences),
-				portalPreferencesSettings);
+				companyConfigurationBeanSettings);
+
+		Settings groupConfigurationBeanSettings =
+			SettingsLocatorHelperUtil.getGroupConfigurationBeanSettings(
+				groupId, configurationPid, companyPortletPreferencesSettings);
 
 		Settings groupPortletPreferencesSettings =
 			new PortletPreferencesSettings(
 				_getStrictPreferences(
 					companyId, groupId, PortletKeys.PREFS_OWNER_TYPE_GROUP,
-					PortletKeys.PREFS_PLID_SHARED, portletId,
+					PortletKeys.PREFS_PLID_SHARED, portletName,
 					defaultPreferences),
-				companyPortletPreferencesSettings);
+				groupConfigurationBeanSettings);
+
+		Settings portletInstanceConfigurationBeanSettings =
+			SettingsLocatorHelperUtil.
+				getPortletInstanceConfigurationBeanSettings(
+					portletId, configurationPid,
+					groupPortletPreferencesSettings);
 
 		long ownerId = portletInstanceSettingsLocator.getOwnerId();
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
@@ -263,7 +284,7 @@ public class PortletPreferencesLocalServiceImpl
 			_getStrictPreferences(
 				companyId, ownerId, ownerType, plid, portletId,
 				defaultPreferences),
-			groupPortletPreferencesSettings);
+			portletInstanceConfigurationBeanSettings);
 	}
 
 	@Override
@@ -452,14 +473,22 @@ public class PortletPreferencesLocalServiceImpl
 		Map<String, javax.portlet.PortletPreferences> portletPreferencesMap =
 			new HashMap<>();
 
-		List<PortletPreferences> portletPreferencesList =
+		List<PortletPreferences> portletPreferencesList = new ArrayList<>();
+
+		portletPreferencesList.addAll(
+			portletPreferencesPersistence.findByO_O_P(
+				layout.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+				PortletKeys.PREFS_PLID_SHARED));
+
+		portletPreferencesList.addAll(
 			portletPreferencesPersistence.findByO_O_P(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
-				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid);
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid));
 
 		for (Portlet portlet : portlets) {
 			long ownerId = PortletKeys.PREFS_OWNER_ID_DEFAULT;
 			int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
+			long preferencesPlid = plid;
 			String portletId = portlet.getPortletId();
 
 			String preferences = portlet.getDefaultPreferences();
@@ -468,12 +497,12 @@ public class PortletPreferencesLocalServiceImpl
 				ownerId = PortletIdCodec.decodeUserId(portletId);
 				ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 
-				PortletPreferences portletsPreferences =
+				PortletPreferences portletPreferences =
 					portletPreferencesPersistence.fetchByO_O_P_P(
 						ownerId, ownerType, plid, portletId);
 
-				if (portletsPreferences != null) {
-					preferences = portletsPreferences.getPreferences();
+				if (portletPreferences != null) {
+					preferences = portletPreferences.getPreferences();
 				}
 			}
 			else {
@@ -481,6 +510,8 @@ public class PortletPreferencesLocalServiceImpl
 						portletPreferencesList) {
 
 					if (portletId.equals(portletPreferences.getPortletId())) {
+						ownerId = portletPreferences.getOwnerId();
+						preferencesPlid = portletPreferences.getPlid();
 						preferences = portletPreferences.getPreferences();
 
 						break;
@@ -491,8 +522,8 @@ public class PortletPreferencesLocalServiceImpl
 			portletPreferencesMap.put(
 				portletId,
 				PortletPreferencesFactoryUtil.strictFromXML(
-					layout.getCompanyId(), ownerId, ownerType, plid, portletId,
-					preferences));
+					layout.getCompanyId(), ownerId, ownerType, preferencesPlid,
+					portletId, preferences));
 		}
 
 		return portletPreferencesMap;

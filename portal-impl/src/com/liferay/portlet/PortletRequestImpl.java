@@ -14,6 +14,9 @@
 
 package com.liferay.portlet;
 
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.ccpp.PortalProfileFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -41,7 +44,6 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -59,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -78,6 +81,7 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
+import javax.portlet.RenderParameters;
 import javax.portlet.WindowState;
 import javax.portlet.filter.PortletRequestWrapper;
 
@@ -90,7 +94,9 @@ import javax.servlet.http.HttpSession;
  * @author Brian Myunghun Kim
  * @author Sergey Ponomarev
  * @author Raymond Augé
+ * @author Neil Griffin
  */
+@ProviderType
 public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
 	public static PortletRequestImpl getPortletRequestImpl(
@@ -171,16 +177,16 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
 	@Override
 	public Enumeration<String> getAttributeNames() {
-		List<String> names = new ArrayList<>();
+		Set<String> names = new HashSet<>();
 
 		Enumeration<String> enu = _request.getAttributeNames();
 
-		while (enu.hasMoreElements()) {
-			String name = enu.nextElement();
+		_copyAttributeNames(names, enu);
 
-			if (!name.equals(JavaConstants.JAVAX_SERVLET_INCLUDE_PATH_INFO)) {
-				names.add(name);
-			}
+		if (_portletRequestDispatcherRequest != null) {
+			enu = _portletRequestDispatcherRequest.getAttributeNames();
+
+			_copyAttributeNames(names, enu);
 		}
 
 		return Collections.enumeration(names);
@@ -323,6 +329,10 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 		return _portletName;
 	}
 
+	public HttpServletRequest getPortletRequestDispatcherRequest() {
+		return _portletRequestDispatcherRequest;
+	}
+
 	@Override
 	public PortletSession getPortletSession() {
 		return _session;
@@ -330,28 +340,7 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
 	@Override
 	public PortletSession getPortletSession(boolean create) {
-		/*HttpSession httpSes = _req.getSession(create);
-
-		if (httpSes == null) {
-			return null;
-		}
-		else {
-			if (create) {
-				_session = new PortletSessionImpl(
-					_req.getSession(), _portletContext, _portletName, _plid);
-			}
-
-			return _ses;
-		}*/
-
-		/*if ((_session == null) && create) {
-			_req.getSession(create);
-
-			_session = new PortletSessionImpl(
-				_req.getSession(), _portletContext, _portletName, _plid);
-		}*/
-
-		if (!create && _invalidSession) {
+		if (!create && !isRequestedSessionIdValid()) {
 			return null;
 		}
 
@@ -362,7 +351,8 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 	public PortletPreferences getPreferences() {
 		String lifecycle = getLifecycle();
 
-		if (lifecycle.equals(PortletRequest.RENDER_PHASE) &&
+		if ((lifecycle.equals(PortletRequest.HEADER_PHASE) ||
+			 lifecycle.equals(PortletRequest.RENDER_PHASE)) &&
 			PropsValues.PORTLET_PREFERENCES_STRICT_STORE) {
 
 			return DoPrivilegedUtil.wrap(
@@ -515,6 +505,11 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 	}
 
 	@Override
+	public RenderParameters getRenderParameters() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public String getRequestedSessionId() {
 		if (_session != null) {
 			return _session.getId();
@@ -557,6 +552,11 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 	@Override
 	public int getServerPort() {
 		return _request.getServerPort();
+	}
+
+	@Override
+	public String getUserAgent() {
+		throw new UnsupportedOperationException();
 	}
 
 	public LinkedHashMap<String, String> getUserInfo() {
@@ -623,6 +623,10 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
 	@Override
 	public boolean isRequestedSessionIdValid() {
+		if (_session.isInvalidated() || _invalidSession) {
+			return false;
+		}
+
 		return _request.isRequestedSessionIdValid();
 	}
 
@@ -644,7 +648,9 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 		try {
 			long companyId = PortalUtil.getCompanyId(_request);
 
-			String roleLink = _portlet.getRoleMappers().get(role);
+			Map<String, String> roleMappersMap = _portlet.getRoleMappers();
+
+			String roleLink = roleMappersMap.get(role);
 
 			if (Validator.isNotNull(roleLink)) {
 				return RoleLocalServiceUtil.hasUserRole(
@@ -861,7 +867,8 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 				}
 			}
 
-			if (getLifecycle().equals(PortletRequest.RENDER_PHASE) &&
+			if ((getLifecycle().equals(PortletRequest.HEADER_PHASE) ||
+				 getLifecycle().equals(PortletRequest.RENDER_PHASE)) &&
 				!LiferayWindowState.isExclusive(request) &&
 				!LiferayWindowState.isPopUp(request)) {
 
@@ -897,7 +904,8 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 		}
 
 		_mergePublicRenderParameters(
-			dynamicRequest, publicRenderParametersMap, preferences);
+			dynamicRequest, publicRenderParametersMap, preferences,
+			getLifecycle());
 
 		_processCheckbox(dynamicRequest);
 
@@ -951,20 +959,6 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 		_plid = plid;
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             #_mergePublicRenderParameters(DynamicServletRequest, Map,
-	 *             PortletPreferences)}
-	 */
-	@Deprecated
-	protected void mergePublicRenderParameters(
-		DynamicServletRequest dynamicRequest, PortletPreferences preferences,
-		long plid) {
-
-		_mergePublicRenderParameters(
-			dynamicRequest, Collections.emptyMap(), preferences);
-	}
-
 	protected String removePortletNamespace(
 		String portletNamespace, String name) {
 
@@ -975,10 +969,22 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 		return name;
 	}
 
+	private void _copyAttributeNames(
+		Set<String> names, Enumeration<String> enumeration) {
+
+		while (enumeration.hasMoreElements()) {
+			String name = enumeration.nextElement();
+
+			if (!name.equals(JavaConstants.JAVAX_SERVLET_INCLUDE_PATH_INFO)) {
+				names.add(name);
+			}
+		}
+	}
+
 	private void _mergePublicRenderParameters(
 		DynamicServletRequest dynamicRequest,
 		Map<String, String[]> publicRenderParametersMap,
-		PortletPreferences preferences) {
+		PortletPreferences preferences, String lifecycle) {
 
 		Set<PublicRenderParameter> publicRenderParameters =
 			_portlet.getPublicRenderParameters();
@@ -1007,7 +1013,17 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
 				String name = publicRenderParameter.getIdentifier();
 
-				if (dynamicRequest.getParameter(name) == null) {
+				String[] requestValues = dynamicRequest.getParameterValues(
+					name);
+
+				if ((requestValues != null) &&
+					(lifecycle.equals(PortletRequest.ACTION_PHASE) ||
+					 lifecycle.equals(PortletRequest.RESOURCE_PHASE))) {
+
+					dynamicRequest.setParameterValues(
+						name, ArrayUtil.append(requestValues, values));
+				}
+				else {
 					dynamicRequest.setParameterValues(name, values);
 				}
 			}

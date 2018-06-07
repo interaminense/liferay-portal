@@ -16,6 +16,8 @@ package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.memory.FinalizeAction;
 import com.liferay.petra.memory.FinalizeManager;
+import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.registry.Registry;
@@ -27,6 +29,7 @@ import com.liferay.registry.ServiceTrackerFieldUpdaterCustomizer;
 import java.lang.ref.Reference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -233,7 +236,12 @@ public class ServiceProxyFactory {
 					if (!ProxyUtil.isProxyClass(service.getClass()) ||
 						(ProxyUtil.getInvocationHandler(service) != this)) {
 
-						return method.invoke(service, arguments);
+						try {
+							return method.invoke(service, arguments);
+						}
+						catch (InvocationTargetException ite) {
+							throw ite.getCause();
+						}
 					}
 
 					if (!_realServiceSet.await(

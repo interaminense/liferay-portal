@@ -32,13 +32,12 @@
 					<var name="siteScopeName" value="${globalSiteName}" />
 				</execute>
 
-				<execute macro="Page#tearDownPG" />
+				<execute macro="Page#tearDownCP" />
 			</else>
 		</if>
 	</tear-down>
 
 	<command name="AddAndViewStructureAndTemplateWithPermissions" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Permissions,Roles,Training,Web Content Administration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -51,11 +50,13 @@
 			<var name="siteName" value="Site Name" />
 		</execute>
 
-		<execute macro="SitePageNavigator#gotoPages">
-			<var name="page" value="Public Pages" />
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Home" />
 		</execute>
 
@@ -139,7 +140,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -172,7 +175,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template Description" />
@@ -186,7 +191,7 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute function="Click" locator1="Icon#ROW_VERTICAL_ELLIPSIS">
 			<var name="key_rowEntry" value="WC Template Name" />
@@ -282,7 +287,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#viewCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -319,7 +326,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute function="AssertTextNotPresent" value1="WC Structure Name" />
 
@@ -329,7 +338,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute function="AssertTextNotPresent" value1="WC Template Name" />
 
@@ -440,7 +451,8 @@
 
 	<command name="AddAudioViaWebContent" priority="5">
 		<property name="custom.properties" value="editor.wysiwyg.portal-impl.portlet.ddm.text_html.ftl=ckeditor" />
-		<property name="portal.acceptance" value="pending" />
+		<property name="dummy.socket.proxy.disabled" value="true" />
+		<property name="portal.acceptance" value="false" />
 		<property name="test.name.skip.portal.instance" value="WebcontentUsecase#AddAudioViaWebContent" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
@@ -493,11 +505,18 @@
 
 		<execute macro="WebContent#uploadAudio">
 			<var name="dmDocumentURL" value="${dmDocumentURL}" />
+			<var name="navTab" value="URL" />
 		</execute>
 
 		<execute macro="PortletEntry#publish" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -525,7 +544,6 @@
 	</command>
 
 	<command name="AddCreatedStructureForImportedTemplate" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -534,7 +552,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureName" value="Content List" />
@@ -570,7 +590,9 @@
 			<var name="uploadFrom" value="dependencies" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<for list="Carousel Display,Thumbnail Display,Content List Display" param="templateName">
 			<execute macro="WebContentNavigator#gotoViewTemplate">
@@ -581,7 +603,7 @@
 				<var name="structureName" value="Content List" />
 			</execute>
 
-			<execute macro="WebContentTemplates#save" />
+			<execute macro="DDLDataDefinition#save" />
 		</for>
 
 		<for list="Carousel Display,Thumbnail Display,Content List Display" param="templateName">
@@ -614,15 +636,13 @@
 			<var name="siteName" value="Test Site Name" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoSite">
-			<var name="site" value="Test Site Name" />
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
-		<execute macro="SitePageNavigator#gotoPages">
-			<var name="page" value="Public Pages" />
-		</execute>
-
-		<execute macro="Page#add">
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -636,7 +656,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -663,7 +685,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template Description" />
@@ -675,7 +699,7 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
-		<var name="templateScript"><![CDATA[<@liferay_portlet["runtime"] portletName="com_liferay_currency_converter_web_portlet_CurrencyConverterPortlet" />]]></var>
+		<var name="templateScript"><![CDATA[<@liferay_portlet["runtime"] portletName="com_liferay_hello_world_web_portlet_HelloWorldPortlet" />]]></var>
 
 		<execute function="Type#typeAceEditor" locator1="DDMEditTemplate#SCRIPT_CONTENT_FIELD_TEXT_AREA" value1="${templateScript}" />
 
@@ -700,7 +724,10 @@
 			<var name="webContentTitle" value="WC Title" />
 		</execute>
 
-		<execute function="AssertElementPresent" locator1="Button#CONVERT" />
+		<execute macro="Portlet#viewBody">
+			<var name="portletBody" value="Welcome to Liferay" />
+			<var name="portletName" value="Hello World" />
+		</execute>
 	</command>
 
 	<command name="AddEmbeddedPortletVelocityTemplate" priority="3">
@@ -717,15 +744,13 @@
 			<var name="siteName" value="Test Site Name" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoSite">
-			<var name="site" value="Test Site Name" />
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
-		<execute macro="SitePageNavigator#gotoPages">
-			<var name="page" value="Public Pages" />
-		</execute>
-
-		<execute macro="Page#add">
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -739,7 +764,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -766,7 +793,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template Description" />
@@ -777,7 +806,7 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
-		<var name="templateScript"><![CDATA[$theme.runtime("com_liferay_currency_converter_web_portlet_CurrencyConverterPortlet")]]></var>
+		<var name="templateScript"><![CDATA[$theme.runtime("com_liferay_hello_world_web_portlet_HelloWorldPortlet")]]></var>
 
 		<execute function="Type#typeAceEditor" locator1="DDMEditTemplate#SCRIPT_CONTENT_FIELD_TEXT_AREA" value1="${templateScript}" />
 
@@ -802,11 +831,13 @@
 			<var name="webContentTitle" value="WC Title" />
 		</execute>
 
-		<execute function="AssertElementPresent" locator1="Button#CONVERT" />
+		<execute macro="Portlet#viewBody">
+			<var name="portletBody" value="Welcome to Liferay" />
+			<var name="portletName" value="Hello World" />
+		</execute>
 	</command>
 
 	<command name="AddExistingPageAsDisplayPageInSiteCP" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -820,14 +851,13 @@
 		</execute>
 
 		<execute macro="ProductMenu#gotoPortlet">
-			<var name="category" value="Sites" />
-			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Sites" />
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Site Page Name" />
-			<var name="siteName" value="Blank Site Name" />
 		</execute>
 
 		<execute macro="Navigator#openSiteURL">
@@ -899,10 +929,15 @@
 	</command>
 
 	<command name="AddImageToWebContentViaItemSelector" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Web Content Image Page" />
 		</execute>
 
@@ -956,10 +991,20 @@
 	</command>
 
 	<command name="AddLocalizedWebContentViaSourceEditor" priority="5">
-		<property name="portal.acceptance" value="pending" />
+		<property name="test.name.skip.portal.instance" value="WebcontentUsecase#AddLocalizedWebContentViaSourceEditor" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
+			<var name="pageName" value="Test Page Name" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Test Page Name" />
 		</execute>
 
@@ -995,10 +1040,13 @@
 			<var name="webContentContent" value="Space Program Academy of Continuing Education Dare to Dream out of this world" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoEditPGViaWCD" />
+		<execute macro="WebContentNavigator#gotoEditPGViaWCD">
+			<var name="menuItem" value="Edit Web Content" />
+			<var name="webContentTitle" value="Basic S.P.A.C.E. Banner" />
+		</execute>
 
-		<execute macro="WebContent#addLocale">
-			<var name="language" value="Japanese (Japan)" />
+		<execute macro="PortletEntry#changeLocale">
+			<var name="fieldName" value="Title" />
 			<var name="locale" value="ja-JP" />
 		</execute>
 
@@ -1006,8 +1054,8 @@
 			<var name="webContentTitle" value="Basic S.P.A.C.E. Banner (Japanese Translation)" />
 		</execute>
 
-		<execute macro="WebContent#addAbstractSummary">
-			<var name="localizedAbstractSummary" value="A Japanese translation of the basic front page banner" />
+		<execute macro="AlloyEditor#addDescription">
+			<var name="description" value="A Japanese translation of the basic front page banner" />
 		</execute>
 
 		<execute macro="AlloyEditor#addSourceContent">
@@ -1033,7 +1081,7 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="Japanese (Japan)" />
+			<var name="locale" value="ja-jp" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -1041,7 +1089,7 @@
 		</execute>
 
 		<execute macro="WebContent#viewPGViaWCD">
-			<var name="webContentContent" value="Space Program Academy of Continuing Education Dare to Dream out of this world Space Program 大学生涯教育 地球から、宇宙の果てへ" />
+			<var name="webContentContent" value="Space Program 大学生涯教育 地球から、宇宙の果てへ" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -1049,7 +1097,7 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="English (United States)" />
+			<var name="locale" value="en-us" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -1060,11 +1108,12 @@
 			<var name="webContentContent" value="Space Program Academy of Continuing Education Dare to Dream out of this world" />
 		</execute>
 
-		<execute function="AssertTextNotPresent" locator1="WCD#WEB_CONTENT_CONTENT" value1="Space Program Academy of Continuing Education Dare to Dream out of this world Space Program 大学生涯教育 地球から、宇宙の果てへ" />
+		<execute function="AssertTextNotPresent" locator1="WCD#WEB_CONTENT_CONTENT" value1="Space Program 大学生涯教育 地球から、宇宙の果てへ" />
 	</command>
 
 	<command name="AddVideoViaWebContent" priority="4">
 		<property name="custom.properties" value="editor.wysiwyg.portal-impl.portlet.ddm.text_html.ftl=ckeditor" />
+		<property name="dummy.socket.proxy.disabled" value="true" />
 		<property name="test.name.skip.portal.instance" value="WebcontentUsecase#AddVideoViaWebContent" />
 		<property name="testray.component.names" value="Web Content Administration" />
 
@@ -1115,11 +1164,18 @@
 
 		<execute macro="WebContent#uploadVideo">
 			<var name="dmDocumentURL" value="${dmDocumentURL}" />
+			<var name="navTab" value="URL" />
 		</execute>
 
 		<execute macro="PortletEntry#publish" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -1147,7 +1203,6 @@
 	</command>
 
 	<command name="AddWebContentFromImportedStructureAndTemplate" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -1171,7 +1226,9 @@
 			<var name="uploadFrom" value="dependencies" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<for list="3 Columns with Images,Footer Content,1 Column Banner" param="structureName">
 			<execute macro="WebContentStructures#viewCP">
@@ -1249,16 +1306,14 @@
 			<var name="portlet" value="System Settings" />
 		</execute>
 
-		<execute macro="Search#searchPG">
-			<var name="searchTerm" value="Web Content" />
-		</execute>
-
-		<execute macro="SystemSettings#editConfiguration">
+		<execute macro="SystemSettings#gotoConfiguration">
+			<var name="configurationCategory" value="Web Content" />
 			<var name="configurationName" value="Web Content" />
+			<var name="configurationScope" value="Virtual Instance Scope" />
 		</execute>
 
-		<execute macro="SystemSettings#enableSetting">
-			<var name="checkboxSetting" value="WEB_CONTENT_ARTICLE_VIEW_PERMISSIONS_CHECK_ENABLED" />
+		<execute macro="FormFields#enableCheckbox">
+			<var name="fieldName" value="articleViewPermissionsCheckEnabled" />
 		</execute>
 
 		<execute macro="SystemSettings#saveConfiguration" />
@@ -1286,14 +1341,20 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
-		<execute macro="Role#removePermissionPG" >
+		<execute macro="Role#removePermissionPG">
 			<var name="permissionDefinitionKey" value="CONFIGURATION_PERMISSIONS_VIEW_CHECKBOX" />
 			<var name="roleTitle" value="Guest" />
 		</execute>
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="WCD Page" />
 		</execute>
 
@@ -1349,7 +1410,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="Global WC Structure Description" />
@@ -1374,7 +1437,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="Local WC Template Description" />
@@ -1388,11 +1453,17 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -1431,7 +1502,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="Structure Description" />
@@ -1461,7 +1534,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="addRoleViewPermissions" value="Power User" />
@@ -1473,7 +1548,7 @@
 			<var name="structureName" value="Global Structure" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="WebContentTemplates#addRoleViewPermissions">
 			<var name="roles" value="Power User" />
@@ -1492,7 +1567,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#editSubstructureDefaultValuesCP">
 			<var name="editSubstructureFieldNames" value="Text" />
@@ -1579,10 +1656,8 @@
 		</execute>
 	</command>
 
-	<command name="DeleteTemplateAndStructureWithReferencedWebContent" priority="4">
-		<property name="testray.component.names" value="Web Content Administration" />
-
-		<execute macro="Navigator#openURL" />
+	<command name="AddWebContentWithPortletURL" priority="5">
+		<description message="This is a use case for LPS-70386." />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
@@ -1590,7 +1665,55 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="WebContentNavigator#gotoAddCP" />
+
+		<execute macro="WebContent#addCP">
+			<var name="webContentTitle" value="Web Content Title" />
+		</execute>
+
+		<execute macro="AlloyEditor#addSourceContent">
+			<var name="content"><![CDATA[<p><span><a href="http://localhost:8080/web/guest/home/-/testportlet">text</a></span></p>]]></var>
+		</execute>
+
+		<execute macro="PortletEntry#publish" />
+
+		<execute macro="WebContent#viewTitle">
+			<var name="webContentTitle" value="Web Content Title" />
+		</execute>
+
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="Portlet#addPG">
+			<var name="portletName" value="Web Content Display" />
+		</execute>
+
+		<execute macro="WebContentDisplayPortlet#selectWebContent">
+			<var name="webContentTitle" value="Web Content Title" />
+		</execute>
+
+		<execute macro="Navigator#openURL" />
+
+		<execute function="Click" locator1="WCD#WEB_CONTENT_TEXT_LINK_URL">
+			<var name="key_contentText" value="text" />
+		</execute>
+
+		<execute macro="Portlet#viewTitle">
+			<var name="portletName" value="testportlet" />
+		</execute>
+	</command>
+
+	<command name="DeleteTemplateAndStructureWithReferencedWebContent" priority="4">
+		<property name="testray.component.names" value="Web Content Administration" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Web Content" />
+		</execute>
+
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -1607,15 +1730,15 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
-		<execute macro="Navigator#openURL" />
-
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
 			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template Description" />
@@ -1627,7 +1750,7 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -1707,7 +1830,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="Global WC Structure Description" />
@@ -1734,7 +1859,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="Global WC Template Description" />
@@ -1748,11 +1875,17 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -1796,10 +1929,7 @@
 	</command>
 
 	<command name="EditContentWithTitleAndAllFieldsNull" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
-
-		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
@@ -1807,7 +1937,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -1826,15 +1958,15 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
-		<execute macro="Navigator#openURL" />
-
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
 			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template Description" />
@@ -1848,7 +1980,7 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -1905,7 +2037,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="Global WC Structure Description" />
@@ -1932,7 +2066,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="Global WC Template Description" />
@@ -1946,11 +2082,17 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -2008,15 +2150,15 @@
 	<command name="EditWebContentTemplate" priority="4">
 		<property name="testray.component.names" value="Web Content Administration" />
 
-		<execute macro="Navigator#openURL" />
-
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
 			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -2033,15 +2175,15 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
-		<execute macro="Navigator#openURL" />
-
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
 			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template1 Description" />
@@ -2054,7 +2196,7 @@
 			<var name="templateFieldNames" value="Text" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -2064,7 +2206,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template2 Description" />
@@ -2076,7 +2220,7 @@
 			<var name="templateFieldNames" value="Text" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -2194,7 +2338,6 @@
 	</command>
 
 	<command name="ImportAndUseGlobalStructureAndTemplate" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -2260,7 +2403,6 @@
 	</command>
 
 	<command name="MoveImportedWebContentArticlesToFolders" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -2273,7 +2415,13 @@
 			<var name="siteName" value="S.P.A.C.E." />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Test Page Name" />
 		</execute>
 
@@ -2420,7 +2568,6 @@
 	</command>
 
 	<command name="MoveWebContentToFolder" priority="5">
-		<property name="portal.acceptance" value="true" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="Navigator#openURL" />
@@ -2502,14 +2649,13 @@
 		</execute>
 
 		<execute macro="ProductMenu#gotoPortlet">
-			<var name="category" value="Sites" />
-			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Sites" />
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Staging Test Page" />
-			<var name="siteName" value="Site Name" />
 		</execute>
 
 		<execute macro="Navigator#gotoSitePage">
@@ -2620,8 +2766,103 @@
 		</execute>
 	</command>
 
+	<command name="UndeployWebContentDisplayModuleViaGogoShell" priority="5">
+		<description message="This is a use case for LPS-71941." />
+
+		<property name="test.name.skip.portal.instance" value="WebcontentUsecase#UndeployWebContentDisplayModuleViaGogoShell" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
+			<var name="pageName" value="Web Content Display Page" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
+			<var name="pageName" value="Web Content Display Page" />
+		</execute>
+
+		<execute macro="Portlet#addPG">
+			<var name="portletName" value="Web Content Display" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Gogo Shell" />
+		</execute>
+
+		<execute macro="GogoShell#getModuleID">
+			<return from="moduleID" name="moduleID" />
+			<var name="moduleName" value="com.liferay.journal.content.web" />
+		</execute>
+
+		<execute macro="GogoShell#stopModule">
+			<var name="moduleID" value="${moduleID}" />
+		</execute>
+
+		<execute macro="GogoShell#viewModuleStatus">
+			<var name="moduleName" value="com.liferay.journal.content.web" />
+			<var name="moduleStatus" value="Resolved" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
+			<var name="pageName" value="Web Content Display Page" />
+		</execute>
+
+		<execute macro="Portlet#viewUndeployMessage" />
+
+		<execute macro="Portlet#deletePG">
+			<var name="portletName" value="com_liferay_journal_content_web_portlet_JournalContentPortlet" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="Gogo Shell" />
+		</execute>
+
+		<execute macro="GogoShell#startModule">
+			<var name="moduleID" value="${moduleID}" />
+		</execute>
+
+		<execute macro="GogoShell#viewModuleStatus">
+			<var name="moduleName" value="com.liferay.journal.content.web" />
+			<var name="moduleStatus" value="Active" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
+			<var name="pageName" value="Web Content Display Page" />
+		</execute>
+
+		<execute macro="Portlet#addPG">
+			<var name="portletName" value="Web Content Display" />
+		</execute>
+	</command>
+
 	<command name="UseStructureAndTemplateFromParentSiteHierarchy" priority="4">
 		<property name="testray.component.names" value="Web Content Administration" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
+			<var name="portlet" value="System Settings" />
+		</execute>
+
+		<execute macro="SystemSettings#gotoConfiguration">
+			<var name="configurationCategory" value="Web Content" />
+			<var name="configurationName" value="Web Content Administration" />
+			<var name="configurationScope" value="System Scope" />
+		</execute>
+
+		<execute macro="FormFields#enableCheckbox">
+			<var name="fieldName" value="showAncestorScopesByDefault" />
+		</execute>
+
+		<execute macro="SystemSettings#saveConfiguration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Sites" />
@@ -2654,7 +2895,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -2678,7 +2921,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template Description" />
@@ -2692,7 +2937,7 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="WebContentTemplates#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Child SiteName" />
@@ -2704,7 +2949,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#viewCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -2717,7 +2964,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#viewTableEntryCP">
 			<var name="templateDescription" value="WC Template Description" />
@@ -2736,18 +2985,13 @@
 
 		<execute function="Click" locator1="TextInput#TITLE" />
 
-		<execute macro="AlloyEditor#addTitle">
+		<execute macro="PortletEntry#inputTitle">
 			<var name="title" value="WC WebContent Title" />
 		</execute>
 
 		<execute macro="AlloyEditor#typeEditor">
 			<var name="content" value="WC WebContent Content" />
 			<var name="editor" value="HTML" />
-		</execute>
-
-		<execute macro="WebContent#addCP">
-			<var name="webContentContent" value="WC WebContent Content" />
-			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
 		<execute macro="PortletEntry#publish" />
@@ -2770,7 +3014,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -2806,7 +3052,7 @@
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoPortlet">
-			<var name="category" value="Content" />
+			<var name="category" value="Categorization" />
 			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Categories" />
 		</execute>
@@ -2818,7 +3064,7 @@
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoPortlet">
-			<var name="category" value="Content" />
+			<var name="category" value="Categorization" />
 			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Categories" />
 		</execute>
@@ -2832,7 +3078,7 @@
 			<execute macro="Navigator#openURL" />
 
 			<execute macro="ProductMenu#gotoPortlet">
-				<var name="category" value="Content" />
+				<var name="category" value="Categorization" />
 				<var name="panel" value="Site Administration" />
 				<var name="portlet" value="Categories" />
 			</execute>
@@ -2888,7 +3134,7 @@
 			<execute macro="Navigator#openURL" />
 
 			<execute macro="ProductMenu#gotoPortlet">
-				<var name="category" value="Content" />
+				<var name="category" value="Categorization" />
 				<var name="panel" value="Site Administration" />
 				<var name="portlet" value="Categories" />
 			</execute>
@@ -2931,7 +3177,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -2960,7 +3208,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template Description" />
@@ -2975,7 +3225,7 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="PortletEntry#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
@@ -3012,7 +3262,7 @@
 		<execute macro="ItemSelector#gotoItemSelectorViaSelectButton" />
 
 		<execute macro="ItemSelector#uploadFile">
-			<var name="navTab" value="Documents and Media" />
+			<var name="navTab" value="Web Content Images" />
 			<var name="uploadFileName" value="Document_3.png" />
 		</execute>
 
@@ -3021,8 +3271,8 @@
 			<var name="fieldValue" value="English (United States) Image Description" />
 		</execute>
 
-		<execute macro="WebContent#addLocale">
-			<var name="language" value="Spanish (Spain)" />
+		<execute macro="PortletEntry#changeLocale">
+			<var name="fieldName" value="Title" />
 			<var name="locale" value="es-ES" />
 		</execute>
 
@@ -3036,7 +3286,8 @@
 			<var name="fieldValue" value="Spanish (Spain) Image Description" />
 		</execute>
 
-		<execute macro="WebContent#selectLocale">
+		<execute macro="PortletEntry#changeLocale">
+			<var name="fieldName" value="Title" />
 			<var name="locale" value="en-US" />
 		</execute>
 
@@ -3050,7 +3301,8 @@
 			<var name="fieldValue" value="English (United States) Image Description" />
 		</execute>
 
-		<execute macro="WebContent#selectLocale">
+		<execute macro="PortletEntry#changeLocale">
+			<var name="fieldName" value="Title" />
 			<var name="locale" value="es-ES" />
 		</execute>
 
@@ -3076,7 +3328,9 @@
 			<var name="webContentTitle" value="English (United States) Title" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoViewSource" />
+		<execute macro="LexiconEntry#gotoHeaderMenuItem">
+			<var name="menuItem" value="View Source" />
+		</execute>
 
 		<execute function="AssertElementNotPresent" locator1="WC#SOURCE_GARBAGE_DATA" />
 	</command>
@@ -3183,7 +3437,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addNullCP" />
 	</command>
@@ -3192,7 +3448,13 @@
 		<property name="test.name.skip.portal.instance" value="WebcontentUsecase#WebContentAdministrationLocalization" />
 		<property name="testray.component.names" value="Localization,Web Content Administration" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -3220,7 +3482,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="LexiconEntry#gotoAdd" />
 
@@ -3229,18 +3493,18 @@
 		</execute>
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Details" />
+			<var name="panel" value="Details" />
 		</execute>
 
-		<execute macro="WebContentStructures#addDescription">
-			<var name="structureDescription" value="WC Structure Description" />
+		<execute macro="PortletEntry#inputDescriptionTextInput">
+			<var name="description" value="WC Structure Description" />
 		</execute>
 
 		<execute macro="WebContentStructures#addLocalization">
+			<var name="locale" value="fr_FR" />
+			<var name="locale2" value="zh_CN" />
 			<var name="localization1Name" value="nom de la structure de wc" />
-			<var name="localization1NameKey" value="fr_FR" />
 			<var name="localization2Name" value="wc 结构名称" />
-			<var name="localization2NameKey" value="zh_CN" />
 		</execute>
 
 		<execute macro="DynamicDataMapping#addField">
@@ -3253,15 +3517,15 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
-		<execute macro="Navigator#openURL" />
-
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
 			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageTemplates" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Templates" />
+		</execute>
 
 		<execute macro="WebContentTemplates#addCP">
 			<var name="templateDescription" value="WC Template Description" />
@@ -3269,13 +3533,13 @@
 			<var name="templateName" value="WC Template Name" />
 		</execute>
 
-		<execute macro="PortletEntry#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="WebContentTemplates#localizeTemplateName">
+			<var name="locale" value="fr_FR" />
+			<var name="locale2" value="zh_CN" />
 			<var name="localization1Name" value="nom de la template de wc" />
-			<var name="localization1NameKey" value="fr_FR" />
 			<var name="localization2Name" value="wc 模板名称" />
-			<var name="localization2NameKey" value="zh_CN" />
 			<var name="templateName" value="WC Template Name" />
 		</execute>
 
@@ -3285,7 +3549,7 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="PortletEntry#save" />
+		<execute macro="DDLDataDefinition#save" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -3316,8 +3580,8 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
-		<execute macro="WebContent#addLocale">
-			<var name="language" value="French (France)" />
+		<execute macro="PortletEntry#changeLocale">
+			<var name="fieldName" value="Title" />
 			<var name="locale" value="fr-FR" />
 		</execute>
 
@@ -3349,21 +3613,20 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="French (France)" />
+			<var name="locale" value="fr-fr" />
 		</execute>
 
 		<execute macro="WebContent#viewPGViaWCD">
 			<var name="webContentContent" value="WC contenu WebContent" />
 		</execute>
 
-		<execute macro="Portlet#gotoPortletOptions">
-			<var name="portletName" value="Affichage de contenus web" />
-			<var name="portletOption" value="Modifier le contenu de Web" />
+		<execute macro="WebContentNavigator#gotoEditPGViaWCD">
+			<var name="menuItem" value="Modifier le contenu de Web" />
+			<var name="webContentTitle" value="WC WebContent Titre" />
 		</execute>
 
-		<execute macro="IFrame#selectEditAssetFrame" />
-
-		<execute macro="WebContent#selectLocale">
+		<execute macro="PortletEntry#changeLocale">
+			<var name="fieldName" value="Title" />
 			<var name="locale" value="fr-FR" />
 		</execute>
 
@@ -3373,7 +3636,7 @@
 		</execute>
 
 		<execute macro="WebContent#viewStructureAndTemplateLocalization">
-			<var name="panelHeading" value="Structure et gabarit" />
+			<var name="panel" value="Structure et gabarit" />
 			<var name="structureLocalizationName" value="nom de la structure de wc" />
 			<var name="templateLocalizationName" value="nom de la template de wc" />
 		</execute>
@@ -3383,7 +3646,7 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="Chinese (China)" />
+			<var name="locale" value="zh-cn" />
 		</execute>
 
 		<execute macro="WebContent#viewPGViaWCD">
@@ -3398,7 +3661,7 @@
 		<execute macro="IFrame#selectEditAssetFrame" />
 
 		<execute macro="WebContent#viewStructureAndTemplateLocalization">
-			<var name="panelHeading" value="结构和模板" />
+			<var name="panel" value="结构和模板" />
 			<var name="structureLocalizationName" value="wc 结构名称" />
 			<var name="templateLocalizationName" value="wc 模板名称" />
 		</execute>
@@ -3408,7 +3671,7 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="English (United States)" />
+			<var name="locale" value="en-us" />
 		</execute>
 	</command>
 
@@ -3547,7 +3810,17 @@
 			<var name="siteName" value="${siteName}" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
+			<var name="pageName" value="Web Content Display Page" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -3583,7 +3856,9 @@
 			<var name="portlet" value="Web Content" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoManageStructures" />
+		<execute macro="Navigator#gotoNavItem">
+			<var name="navItem" value="Structures" />
+		</execute>
 
 		<execute macro="WebContentStructures#addCP">
 			<var name="structureDescription" value="WC Structure Description" />
@@ -3600,7 +3875,17 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
+			<var name="pageName" value="Web Content Display Page" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 

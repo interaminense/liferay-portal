@@ -1,0 +1,8 @@
+{
+	"exclude": {
+		"*": [
+			"test?(s)/**/*"
+		]
+	},
+	"output": "classes/META-INF/resources"
+}

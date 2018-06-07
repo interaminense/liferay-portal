@@ -45,7 +45,7 @@
 			<else>
 				<execute macro="Site#tearDownCP" />
 
-				<execute macro="Page#tearDownPG" />
+				<execute macro="Page#tearDownCP" />
 
 				<execute macro="User#tearDownCP" />
 			</else>
@@ -67,7 +67,13 @@
 			<var name="siteName" value="Site Name" />
 		</execute>
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Site Page 1" />
 		</execute>
 
@@ -86,7 +92,7 @@
 			<var name="portlet" value="Site Memberships" />
 		</execute>
 
-		<execute function="AssertElementNotPresent" locator1="Card#SPECIFIC_TEXT" value1="usersn" />
+		<execute function="AssertElementNotPresent" locator1="Card#SPECIFIC_TEXT" />
 
 		<execute macro="Navigator#gotoSitePage">
 			<var name="pageName" value="Site Page 1" />
@@ -118,7 +124,7 @@
 			<var name="requestsTitle" value="Test Test invited you to join Site Name." />
 		</execute>
 
-		<execute macro="Notifications#acceptRequest" >
+		<execute macro="Notifications#acceptRequest">
 			<var name="requestsTitle" value="Test Test invited you to join Site Name." />
 		</execute>
 

@@ -20,8 +20,26 @@
 
 		<execute function="AssertClick" locator1="Button#SUBMIT" value1="Save" />
 
-		<execute function="AssertElementPresent" locator1="Button#DOWNLOAD_CERTIFICATE" value1="Download Certificate" />
-		<execute function="AssertElementPresent" locator1="Button#REPLACE_CERTIFICATE" value1="Replace Certificate" />
+		<execute function="AssertElementPresent" locator1="Button#DOWNLOAD_CERTIFICATE" />
+		<execute function="AssertElementPresent" locator1="Button#REPLACE_CERTIFICATE" />
+	</command>
+
+	<command name="configureIdentityProvider">
+		<if>
+			<isset var="idpSessionIdleTimeout" />
+			<then>
+				<execute function="Type" locator1="CPSAMLAdmin#IDENTITY_PROVIDER_SESSION_IDLE_TIMEOUT" value1="${idpSessionIdleTimeout}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="idpSessionMaximumAge" />
+			<then>
+				<execute function="Type" locator1="CPSAMLAdmin#IDENTITY_PROVIDER_SESSION_MAXIMUM_AGE" value1="${idpSessionMaximumAge}" />
+			</then>
+		</if>
+
+		<execute function="AssertClick" locator1="Button#SUBMIT" value1="Save" />
 	</command>
 
 	<command name="enable">

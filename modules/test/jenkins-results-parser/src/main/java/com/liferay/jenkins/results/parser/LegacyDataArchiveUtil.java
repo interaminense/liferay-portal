@@ -20,16 +20,9 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
 
 /**
  * @author Michael Hashimoto
@@ -37,94 +30,102 @@ import org.dom4j.Element;
 public class LegacyDataArchiveUtil {
 
 	public LegacyDataArchiveUtil(
-		File generatedLegacyDataArchiveDirectory,
-		GitWorkingDirectory legacyDataGitWorkingDirectory) {
+		File generatedArchiveDirectory,
+		GitWorkingDirectory legacyGitWorkingDirectory) {
 
-		_generatedLegacyDataArchiveDirectory =
-			generatedLegacyDataArchiveDirectory;
-		_legacyDataGitWorkingDirectory = legacyDataGitWorkingDirectory;
+		_generatedArchiveDirectory = generatedArchiveDirectory;
+		_legacyGitWorkingDirectory = legacyGitWorkingDirectory;
 
-		GitWorkingDirectory.Branch upstreamBranch =
-			_legacyDataGitWorkingDirectory.getBranch(
-				_legacyDataGitWorkingDirectory.getUpstreamBranchName(), null);
+		GitWorkingDirectory.Branch localUpstreamBranch =
+			_legacyGitWorkingDirectory.getBranch(
+				_legacyGitWorkingDirectory.getUpstreamBranchName(), null);
 
-		_legacyDataGitWorkingDirectory.checkoutBranch(upstreamBranch);
+		_legacyGitWorkingDirectory.checkoutBranch(localUpstreamBranch);
 
-		_legacyDataGitWorkingDirectory.reset("--hard");
+		_legacyGitWorkingDirectory.reset("--hard");
 
-		_legacyDataGitWorkingDirectory.clean();
+		_legacyGitWorkingDirectory.clean();
 
-		_legacyDataArchives = _getLegacyDataArchives(_getBuildProperties());
-		_latestLegacyDataArchiveCommits = _getLatestLegacyDataArchiveCommits();
-		_latestManualCommit = _getLatestManualCommit();
+		_buildProperties = _getBuildProperties();
 
-		_legacyDataArchiveGroupMap = _getLegacyDataArchiveGroupMap(
-			_legacyDataArchives);
+		_portalVersions = _getPortalVersions();
+
+		_legacyDataArchivePortalVersions =
+			_getLegacyDataArchivePortalVersions();
 	}
 
-	public GitWorkingDirectory.Branch createTemporaryBranch()
+	public GitWorkingDirectory.Branch createDataArchiveBranch()
 		throws IOException {
 
-		GitWorkingDirectory.Branch upstreamBranch =
-			_legacyDataGitWorkingDirectory.getBranch(
-				_legacyDataGitWorkingDirectory.getUpstreamBranchName(), null);
+		String dataArchiveBranchName = JenkinsResultsParserUtil.combine(
+			"data-archive-", String.valueOf(System.currentTimeMillis()));
 
-		String temporaryBranchName =
-			upstreamBranch.getName() + "-temp-" + System.currentTimeMillis();
+		_localDataArchiveBranch = _legacyGitWorkingDirectory.getBranch(
+			dataArchiveBranchName, null);
 
-		GitWorkingDirectory.Branch temporaryBranch =
-			_legacyDataGitWorkingDirectory.getBranch(temporaryBranchName, null);
-
-		if (temporaryBranch != null) {
-			_legacyDataGitWorkingDirectory.deleteBranch(
-				_legacyDataGitWorkingDirectory.getBranch(
-					temporaryBranchName, null));
+		if (_localDataArchiveBranch != null) {
+			_legacyGitWorkingDirectory.deleteBranch(
+				_legacyGitWorkingDirectory.getBranch(
+					dataArchiveBranchName, null));
 		}
 
-		temporaryBranch = _legacyDataGitWorkingDirectory.createLocalBranch(
-			temporaryBranchName);
+		_localDataArchiveBranch = _legacyGitWorkingDirectory.createLocalBranch(
+			dataArchiveBranchName);
 
-		_legacyDataGitWorkingDirectory.checkoutBranch(temporaryBranch);
+		_legacyGitWorkingDirectory.checkoutBranch(_localDataArchiveBranch);
 
-		List<LegacyDataArchiveGroup> legacyDataArchiveGroupList =
-			new ArrayList<>(_legacyDataArchiveGroupMap.values());
+		for (LegacyDataArchivePortalVersion legacyDataArchivePortalVersion :
+				_legacyDataArchivePortalVersions) {
 
-		for (LegacyDataArchiveGroup legacyDataArchiveGroup :
-				legacyDataArchiveGroupList) {
+			List<LegacyDataArchiveGroup> legacyDataArchiveGroups =
+				legacyDataArchivePortalVersion.getLegacyDataArchiveGroups();
 
-			if (!legacyDataArchiveGroup.isUpdated()) {
+			for (LegacyDataArchiveGroup legacyDataArchiveGroup :
+					legacyDataArchiveGroups) {
+
 				legacyDataArchiveGroup.commitLegacyDataArchives();
 			}
 		}
 
-		return temporaryBranch;
+		GitWorkingDirectory.Remote upstreamRemote =
+			_legacyGitWorkingDirectory.getRemote("upstream");
+
+		if (!_legacyGitWorkingDirectory.pushToRemote(
+				true, _localDataArchiveBranch, dataArchiveBranchName,
+				upstreamRemote)) {
+
+			throw new RuntimeException(
+				"Unable to push data archive branch to upstream");
+		}
+
+		return _localDataArchiveBranch;
 	}
 
-	public File getGeneratedLegacyDataArchiveDirectory() {
-		return _generatedLegacyDataArchiveDirectory;
+	public Properties getBuildProperties() {
+		return _buildProperties;
 	}
 
-	public List<LegacyDataArchiveCommit> getLatestLegacyDataArchiveCommits() {
-		return _latestLegacyDataArchiveCommits;
+	public GitWorkingDirectory.Branch getDataArchiveBranch() {
+		return _localDataArchiveBranch;
 	}
 
-	public ManualCommit getLatestManualCommit() {
-		return _latestManualCommit;
+	public File getGeneratedArchiveDirectory() {
+		return _generatedArchiveDirectory;
 	}
 
-	public GitWorkingDirectory getLegacyDataGitWorkingDirectory() {
-		return _legacyDataGitWorkingDirectory;
+	public GitWorkingDirectory getLegacyGitWorkingDirectory() {
+		return _legacyGitWorkingDirectory;
 	}
 
-	public File getLegacyDataWorkingDirectory() {
-		return _legacyDataGitWorkingDirectory.getWorkingDirectory();
+	public List<String> getPortalVersions() {
+		return _portalVersions;
 	}
 
 	private Properties _getBuildProperties() {
 		Properties buildProperties = new Properties();
 
 		File legacyDataWorkingDirectory =
-			_legacyDataGitWorkingDirectory.getWorkingDirectory();
+			_legacyGitWorkingDirectory.getWorkingDirectory();
 
 		File buildPropertiesFile = new File(
 			legacyDataWorkingDirectory, "build.properties");
@@ -144,209 +145,38 @@ public class LegacyDataArchiveUtil {
 		return buildProperties;
 	}
 
-	private Set<String> _getDatabaseNames(
-		Properties buildProperties, String portalVersion) {
+	private List<LegacyDataArchivePortalVersion>
+		_getLegacyDataArchivePortalVersions() {
 
-		String legacyDataArchiveDatabaseNames = buildProperties.getProperty(
-			"legacy.data.archive.database.names");
-
-		String databaseNamesPortalVersionKey = JenkinsResultsParserUtil.combine(
-			"legacy.data.archive.database.names[", portalVersion, "]");
-
-		if (buildProperties.containsKey(databaseNamesPortalVersionKey)) {
-			legacyDataArchiveDatabaseNames = buildProperties.getProperty(
-				databaseNamesPortalVersionKey);
-		}
-
-		return new HashSet<>(
-			Arrays.asList(legacyDataArchiveDatabaseNames.split(",")));
-	}
-
-	private List<LegacyDataArchiveCommit> _getLatestLegacyDataArchiveCommits() {
-		List<LegacyDataArchiveCommit> latestLegacyDataArchiveCommits =
+		List<LegacyDataArchivePortalVersion> legacyDataArchivePortalVersions =
 			new ArrayList<>();
 
-		String gitLog = _legacyDataGitWorkingDirectory.log(50);
-
-		String[] gitLogEntities = gitLog.split("\n");
-
-		for (String gitLogEntity : gitLogEntities) {
-			Commit commit = CommitFactory.newCommit(gitLogEntity);
-
-			if (commit instanceof LegacyDataArchiveCommit) {
-				latestLegacyDataArchiveCommits.add(
-					(LegacyDataArchiveCommit)commit);
-
-				continue;
-			}
-
-			break;
+		for (String portalVersion : _portalVersions) {
+			legacyDataArchivePortalVersions.add(
+				new LegacyDataArchivePortalVersion(this, portalVersion));
 		}
 
-		return latestLegacyDataArchiveCommits;
+		return legacyDataArchivePortalVersions;
 	}
 
-	private ManualCommit _getLatestManualCommit() {
-		String gitLog = _legacyDataGitWorkingDirectory.log(50);
+	private List<String> _getPortalVersions() {
+		String legacyDataArchivePortalVersionsString =
+			_buildProperties.getProperty("legacy.data.archive.portal.versions");
 
-		String[] gitLogEntities = gitLog.split("\n");
+		List<String> portalVersions = Arrays.asList(
+			legacyDataArchivePortalVersionsString.split(","));
 
-		for (String gitLogEntity : gitLogEntities) {
-			Commit commit = CommitFactory.newCommit(gitLogEntity);
+		Collections.sort(portalVersions);
 
-			if (!(commit instanceof ManualCommit)) {
-				continue;
-			}
-
-			return (ManualCommit)commit;
-		}
-
-		return null;
+		return portalVersions;
 	}
 
-	private Map<String, LegacyDataArchiveGroup> _getLegacyDataArchiveGroupMap(
-		List<LegacyDataArchive> legacyDataArchives) {
-
-		Map<String, LegacyDataArchiveGroup> legacyDataArchiveGroupMap =
-			new HashMap<>();
-
-		for (LegacyDataArchive legacyDataArchive : legacyDataArchives) {
-			String legacyDataArchiveType =
-				legacyDataArchive.getLegacyDataArchiveType();
-
-			LegacyDataArchiveGroup legacyDataArchiveGroup =
-				legacyDataArchiveGroupMap.get(legacyDataArchiveType);
-
-			if (legacyDataArchiveGroup == null) {
-				legacyDataArchiveGroup = new LegacyDataArchiveGroup(
-					this, legacyDataArchiveType);
-			}
-
-			legacyDataArchiveGroup.addLegacyDataArchive(legacyDataArchive);
-
-			legacyDataArchiveGroupMap.put(
-				legacyDataArchiveType, legacyDataArchiveGroup);
-		}
-
-		return legacyDataArchiveGroupMap;
-	}
-
-	private List<LegacyDataArchive> _getLegacyDataArchives(
-		Properties buildProperties) {
-
-		List<LegacyDataArchive> legacyDataArchives = new ArrayList<>();
-
-		File legacyDataWorkingDirectory =
-			_legacyDataGitWorkingDirectory.getWorkingDirectory();
-
-		Set<String> portalVersions = _getPortalVersions(buildProperties);
-
-		for (String portalVersion : portalVersions) {
-			Set<String> legacyDataArchiveTypes;
-
-			try {
-				legacyDataArchiveTypes = _getLegacyDataArchiveTypes(
-					legacyDataWorkingDirectory, portalVersion);
-			}
-			catch (DocumentException | IOException e) {
-				throw new RuntimeException(
-					JenkinsResultsParserUtil.combine(
-						"Unable to get data archive names in ",
-						legacyDataWorkingDirectory.toString(),
-						" for portal version ", portalVersion),
-					e);
-			}
-
-			for (String legacyDataArchiveType : legacyDataArchiveTypes) {
-				Set<String> databaseNames = _getDatabaseNames(
-					buildProperties, portalVersion);
-
-				for (String databaseName : databaseNames) {
-					LegacyDataArchive legacyDataArchive = new LegacyDataArchive(
-						this, legacyDataArchiveType, databaseName,
-						portalVersion);
-
-					legacyDataArchives.add(legacyDataArchive);
-				}
-			}
-		}
-
-		return legacyDataArchives;
-	}
-
-	private Set<String> _getLegacyDataArchiveTypes(
-			File legacyDataWorkingDirectory, String portalVersion)
-		throws DocumentException, IOException {
-
-		Set<String> legacyDataArchiveTypes = new HashSet<>();
-
-		List<File> testcaseFiles = JenkinsResultsParserUtil.findFiles(
-			new File(legacyDataWorkingDirectory, portalVersion),
-			".*\\.testcase");
-
-		for (File testcaseFile : testcaseFiles) {
-			Document document = Dom4JUtil.parse(
-				JenkinsResultsParserUtil.read(testcaseFile));
-
-			Element rootElement = document.getRootElement();
-
-			legacyDataArchiveTypes.addAll(
-				_getPoshiPropertyValues(rootElement, "data.archive.type"));
-		}
-
-		return legacyDataArchiveTypes;
-	}
-
-	private Set<String> _getPortalVersions(Properties buildProperties) {
-		String legacyDataArchivePortalVersions = buildProperties.getProperty(
-			"legacy.data.archive.portal.versions");
-
-		return new HashSet<>(
-			Arrays.asList(legacyDataArchivePortalVersions.split(",")));
-	}
-
-	private Set<String> _getPoshiPropertyValues(
-		Element element, String targetPoshiPropertyName) {
-
-		Set<String> poshiPropertyValues = new HashSet<>();
-
-		List<Element> childElements = new ArrayList<>();
-
-		for (Object elementObject : element.elements()) {
-			if (elementObject instanceof Element) {
-				childElements.add((Element)elementObject);
-			}
-		}
-
-		if (childElements.isEmpty()) {
-			return poshiPropertyValues;
-		}
-
-		for (Element childElement : childElements) {
-			String childElementName = childElement.getName();
-
-			if (childElementName.equals("property")) {
-				String poshiPropertyName = childElement.attributeValue("name");
-
-				if (poshiPropertyName.equals(targetPoshiPropertyName)) {
-					poshiPropertyValues.add(
-						childElement.attributeValue("value"));
-				}
-			}
-
-			poshiPropertyValues.addAll(
-				_getPoshiPropertyValues(childElement, targetPoshiPropertyName));
-		}
-
-		return poshiPropertyValues;
-	}
-
-	private final File _generatedLegacyDataArchiveDirectory;
-	private final List<LegacyDataArchiveCommit> _latestLegacyDataArchiveCommits;
-	private final ManualCommit _latestManualCommit;
-	private final Map<String, LegacyDataArchiveGroup>
-		_legacyDataArchiveGroupMap;
-	private final List<LegacyDataArchive> _legacyDataArchives;
-	private final GitWorkingDirectory _legacyDataGitWorkingDirectory;
+	private final Properties _buildProperties;
+	private final File _generatedArchiveDirectory;
+	private final List<LegacyDataArchivePortalVersion>
+		_legacyDataArchivePortalVersions;
+	private final GitWorkingDirectory _legacyGitWorkingDirectory;
+	private GitWorkingDirectory.Branch _localDataArchiveBranch;
+	private final List<String> _portalVersions;
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.verify;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -23,7 +24,6 @@ import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.verify.model.VerifiableAuditedModel;
 
 import java.sql.Connection;
@@ -231,16 +231,20 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 			long userId = (Long)auditedModelArray[1];
 			String userName = (String)auditedModelArray[2];
-			Timestamp createDate = (Timestamp)auditedModelArray[3];
-			Timestamp modifiedDate = (Timestamp)auditedModelArray[4];
 
 			ps.setLong(1, companyId);
 			ps.setLong(2, userId);
 			ps.setString(3, userName);
 
 			if (updateDates) {
+				Timestamp createDate = (Timestamp)auditedModelArray[3];
+
 				ps.setTimestamp(4, createDate);
+
+				Timestamp modifiedDate = (Timestamp)auditedModelArray[4];
+
 				ps.setTimestamp(5, modifiedDate);
+
 				ps.setLong(6, primKey);
 			}
 			else {
@@ -282,7 +286,7 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 			long previousCompanyId = 0;
 
-			try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			try (Connection con = DataAccess.getConnection();
 				PreparedStatement ps1 = con.prepareStatement(sb.toString());
 				ResultSet rs = ps1.executeQuery();
 				PreparedStatement ps2 =
@@ -294,11 +298,9 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 				while (rs.next()) {
 					long companyId = rs.getLong("companyId");
-					long primKey = rs.getLong(
-						verifiableAuditedModel.getPrimaryKeyColumnName());
-					long previousUserId = rs.getLong("userId");
 
 					if (verifiableAuditedModel.getJoinByTableName() != null) {
+						long previousUserId = rs.getLong("userId");
 						long relatedPrimKey = rs.getLong(
 							verifiableAuditedModel.getJoinByTableName());
 
@@ -318,6 +320,9 @@ public class VerifyAuditedModel extends VerifyProcess {
 					if (auditedModelArray == null) {
 						continue;
 					}
+
+					long primKey = rs.getLong(
+						verifiableAuditedModel.getPrimaryKeyColumnName());
 
 					verifyAuditedModel(
 						con, ps2, verifiableAuditedModel.getTableName(),

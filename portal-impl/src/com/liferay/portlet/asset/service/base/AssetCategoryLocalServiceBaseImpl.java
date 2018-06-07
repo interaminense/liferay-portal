@@ -20,8 +20,6 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.persistence.AssetCategoryFinder;
 import com.liferay.asset.kernel.service.persistence.AssetCategoryPersistence;
-import com.liferay.asset.kernel.service.persistence.AssetCategoryPropertyFinder;
-import com.liferay.asset.kernel.service.persistence.AssetCategoryPropertyPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetEntryFinder;
 import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetTagFinder;
@@ -58,6 +56,7 @@ import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -110,6 +109,7 @@ public abstract class AssetCategoryLocalServiceBaseImpl
 	 * @return the new asset category
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public AssetCategory createAssetCategory(long categoryId) {
 		return assetCategoryPersistence.create(categoryId);
 	}
@@ -239,6 +239,19 @@ public abstract class AssetCategoryLocalServiceBaseImpl
 	public AssetCategory fetchAssetCategoryByUuidAndGroupId(String uuid,
 		long groupId) {
 		return assetCategoryPersistence.fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns the asset category with the matching external reference code and company.
+	 *
+	 * @param companyId the primary key of the company
+	 * @param externalReferenceCode the asset category's external reference code
+	 * @return the matching asset category, or <code>null</code> if a matching asset category could not be found
+	 */
+	@Override
+	public AssetCategory fetchAssetCategoryByReferenceCode(long companyId,
+		String externalReferenceCode) {
+		return assetCategoryPersistence.fetchByC_ERC(companyId, null);
 	}
 
 	/**
@@ -758,63 +771,6 @@ public abstract class AssetCategoryLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the asset category property local service.
-	 *
-	 * @return the asset category property local service
-	 */
-	public com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService getAssetCategoryPropertyLocalService() {
-		return assetCategoryPropertyLocalService;
-	}
-
-	/**
-	 * Sets the asset category property local service.
-	 *
-	 * @param assetCategoryPropertyLocalService the asset category property local service
-	 */
-	public void setAssetCategoryPropertyLocalService(
-		com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService assetCategoryPropertyLocalService) {
-		this.assetCategoryPropertyLocalService = assetCategoryPropertyLocalService;
-	}
-
-	/**
-	 * Returns the asset category property persistence.
-	 *
-	 * @return the asset category property persistence
-	 */
-	public AssetCategoryPropertyPersistence getAssetCategoryPropertyPersistence() {
-		return assetCategoryPropertyPersistence;
-	}
-
-	/**
-	 * Sets the asset category property persistence.
-	 *
-	 * @param assetCategoryPropertyPersistence the asset category property persistence
-	 */
-	public void setAssetCategoryPropertyPersistence(
-		AssetCategoryPropertyPersistence assetCategoryPropertyPersistence) {
-		this.assetCategoryPropertyPersistence = assetCategoryPropertyPersistence;
-	}
-
-	/**
-	 * Returns the asset category property finder.
-	 *
-	 * @return the asset category property finder
-	 */
-	public AssetCategoryPropertyFinder getAssetCategoryPropertyFinder() {
-		return assetCategoryPropertyFinder;
-	}
-
-	/**
-	 * Sets the asset category property finder.
-	 *
-	 * @param assetCategoryPropertyFinder the asset category property finder
-	 */
-	public void setAssetCategoryPropertyFinder(
-		AssetCategoryPropertyFinder assetCategoryPropertyFinder) {
-		this.assetCategoryPropertyFinder = assetCategoryPropertyFinder;
-	}
-
-	/**
 	 * Returns the asset entry local service.
 	 *
 	 * @return the asset entry local service
@@ -1054,12 +1010,6 @@ public abstract class AssetCategoryLocalServiceBaseImpl
 	protected UserPersistence userPersistence;
 	@BeanReference(type = UserFinder.class)
 	protected UserFinder userFinder;
-	@BeanReference(type = com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService.class)
-	protected com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService assetCategoryPropertyLocalService;
-	@BeanReference(type = AssetCategoryPropertyPersistence.class)
-	protected AssetCategoryPropertyPersistence assetCategoryPropertyPersistence;
-	@BeanReference(type = AssetCategoryPropertyFinder.class)
-	protected AssetCategoryPropertyFinder assetCategoryPropertyFinder;
 	@BeanReference(type = com.liferay.asset.kernel.service.AssetEntryLocalService.class)
 	protected com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService;
 	@BeanReference(type = AssetEntryPersistence.class)

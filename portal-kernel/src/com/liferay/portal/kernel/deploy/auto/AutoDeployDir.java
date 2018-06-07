@@ -135,6 +135,7 @@ public class AutoDeployDir {
 		_deployDir = deployDir;
 		_destDir = destDir;
 		_interval = interval;
+
 		_autoDeployListeners = new CopyOnWriteArrayList<>(autoDeployListeners);
 		_blacklistFileTimestamps = new HashMap<>();
 	}
@@ -337,7 +338,7 @@ public class AutoDeployDir {
 	private static final ServiceTracker<AutoDeployListener, AutoDeployListener>
 		_serviceTracker;
 	private static final Pattern _versionPattern = Pattern.compile(
-		"-[\\d]+((\\.[\\d]+)+(-SNAPSHOT)?)\\.war$");
+		"-[\\d]+((\\.[\\d]+)+(-.+)*)\\.war$");
 
 	static {
 		Registry registry = RegistryUtil.getRegistry();

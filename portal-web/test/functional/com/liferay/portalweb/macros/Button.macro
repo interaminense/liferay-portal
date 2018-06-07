@@ -1,4 +1,14 @@
 <definition>
+	<command name="click">
+		<execute function="Click" locator1="Button#ANY">
+			<var name="key_text" value="${button}" />
+		</execute>
+	</command>
+
+	<command name="clickAdd">
+		<execute function="AssertClick" locator1="Button#ADD" value1="Add" />
+	</command>
+
 	<command name="clickAddRow">
 		<execute function="Click" locator1="Button#ADD_ROW" />
 	</command>
@@ -19,10 +29,28 @@
 		<execute function="AssertClick" locator1="Button#DONE" value1="Done" />
 	</command>
 
-	<command name="clickPublish">
-		<execute function="ScrollWebElementIntoView" locator1="Button#PUBLISH" />
+	<command name="clickInstall">
+		<execute function="AssertClick" locator1="Button#SUBMIT" value1="Install" />
+	</command>
 
-		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
+	<command name="clickNext">
+		<execute function="AssertClick" locator1="Button#NEXT" value1="Next" />
+	</command>
+
+	<command name="clickNoError">
+		<execute function="ClickNoError" locator1="Button#ANY">
+			<var name="key_text" value="${button}" />
+		</execute>
+	</command>
+
+	<command name="clickPublish">
+		<execute function="ScrollWebElementIntoView" locator1="Button#ANY">
+			<var name="key_text" value="Publish" />
+		</execute>
+
+		<execute macro="Button#click">
+			<var name="button" value="Publish" />
+		</execute>
 	</command>
 
 	<command name="clickRemove">
@@ -41,7 +69,23 @@
 		<execute function="AssertClick" locator1="Button#SUBMIT_FOR_PUBLICATION" value1="Submit for Publication" />
 	</command>
 
+	<command name="clickSubmitLocalized">
+		<execute function="AssertClick" locator1="Button#SUBMIT" value1="${buttonName}" />
+	</command>
+
 	<command name="clickUpdate">
 		<execute function="AssertClick" locator1="Button#UPDATE" value1="Update" />
+	</command>
+
+	<command name="viewNotPresent">
+		<execute function="AssertElementNotPresent" locator1="Button#ANY">
+			<var name="key_text" value="${button}" />
+		</execute>
+	</command>
+
+	<command name="viewPresent">
+		<execute function="AssertElementPresent" locator1="Button#ANY">
+			<var name="key_text" value="${button}" />
+		</execute>
 	</command>
 </definition>

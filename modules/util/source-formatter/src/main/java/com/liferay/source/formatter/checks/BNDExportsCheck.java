@@ -14,14 +14,20 @@
 
 package com.liferay.source.formatter.checks;
 
-import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.source.formatter.checks.util.BNDSourceUtil;
+import com.liferay.source.formatter.util.FileUtil;
+
+import java.io.File;
+import java.io.FileFilter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,26 +42,36 @@ public class BNDExportsCheck extends BaseFileCheck {
 		return true;
 	}
 
-	public void setAllowedExportPackageDirName(
-		String allowedExportPackageDirName) {
+	public void setAllowedExportPackageDirNames(
+		String allowedExportPackageDirNames) {
 
-		_allowedExportPackageDirNames.add(allowedExportPackageDirName);
+		Collections.addAll(
+			_allowedExportPackageDirNames,
+			StringUtil.split(allowedExportPackageDirNames));
 	}
 
 	@Override
 	protected String doProcess(
-		String fileName, String absolutePath, String content) {
+			String fileName, String absolutePath, String content)
+		throws Exception {
 
-		if (fileName.endsWith("/bnd.bnd") &&
-			!absolutePath.contains("/testIntegration/") &&
-			!absolutePath.contains("/third-party/")) {
+		if (!fileName.endsWith("/bnd.bnd") ||
+			absolutePath.contains("/third-party/")) {
 
+			return content;
+		}
+
+		if (!absolutePath.contains("/testIntegration/")) {
 			_checkExports(
 				fileName, content, _exportContentsPattern, "-exportcontents");
 			_checkExports(fileName, content, _exportsPattern, "Export-Package");
 		}
 
-		_checkExportPackage(fileName, absolutePath, content);
+		if (absolutePath.contains("/modules/apps/")) {
+			_checkExportPackage(fileName, absolutePath, content);
+		}
+
+		_checkExportPackageinfo(fileName, content);
 
 		return content;
 	}
@@ -71,13 +87,101 @@ public class BNDExportsCheck extends BaseFileCheck {
 			}
 		}
 
-		if (absolutePath.contains("-service/") &&
-			content.contains("Export-Package")) {
+		if (fileName.endsWith("/test-bnd.bnd") ||
+			absolutePath.contains("-api/") || absolutePath.contains("-spi/") ||
+			absolutePath.contains("-taglib/") ||
+			absolutePath.contains("-test-util/") ||
+			!content.contains("Export-Package")) {
 
-			addMessage(
-				fileName,
-				"Service modules should not be exporting any packages, see " +
-					"LPS-75294");
+			return;
+		}
+
+		int x = absolutePath.lastIndexOf(StringPool.SLASH);
+
+		int y = absolutePath.lastIndexOf(StringPool.SLASH, x - 1);
+
+		addMessage(
+			fileName,
+			"Exporting packages not allowed in module '" +
+				absolutePath.substring(y + 1, x) + "'",
+			"bnd_exports.markdown");
+	}
+
+	private void _checkExportPackageinfo(String fileName, String content)
+		throws Exception {
+
+		Matcher matcher = _exportsPattern.matcher(content);
+
+		if (!matcher.find()) {
+			return;
+		}
+
+		List<String> exportPackages = new ArrayList<>();
+
+		for (String line : StringUtil.splitLines(matcher.group(3))) {
+			line = StringUtil.trim(line);
+
+			if (Validator.isNull(line) || line.equals("\\")) {
+				continue;
+			}
+
+			line = StringUtil.removeSubstring(line, ",\\");
+
+			if (line.indexOf(StringPool.SEMICOLON) != -1) {
+				line = line.substring(0, line.indexOf(StringPool.SEMICOLON));
+			}
+
+			exportPackages.add(line.replace(CharPool.PERIOD, CharPool.SLASH));
+		}
+
+		int i = fileName.lastIndexOf("/");
+
+		for (String exportPackage : exportPackages) {
+			String resourcesPathname = StringBundler.concat(
+				fileName.substring(0, i), "/src/main/resources/",
+				exportPackage);
+
+			File resourcesDir = new File(resourcesPathname);
+
+			File[] resourcesFiles = resourcesDir.listFiles(
+				new FileFilter() {
+
+					@Override
+					public boolean accept(File pathname) {
+						return pathname.isFile();
+					}
+
+				});
+
+			String srcPathname = StringBundler.concat(
+				fileName.substring(0, i), "/src/main/java/", exportPackage);
+
+			File srcDir = new File(srcPathname);
+
+			File[] srcFiles = srcDir.listFiles(
+				new FileFilter() {
+
+					@Override
+					public boolean accept(File pathname) {
+						return pathname.isFile();
+					}
+
+				});
+
+			String packageinfoPathname = StringBundler.concat(
+				fileName.substring(0, i), "/src/main/resources/", exportPackage,
+				"/packageinfo");
+
+			File packageinfoFile = new File(packageinfoPathname);
+
+			if ((ArrayUtil.isNotEmpty(resourcesFiles) ||
+				 ArrayUtil.isNotEmpty(srcFiles)) &&
+				!packageinfoFile.exists()) {
+
+				addMessage(fileName, "Added packageinfo for " + exportPackage);
+
+				FileUtil.write(packageinfoFile, "version 1.0.0");
+			}
 		}
 	}
 
@@ -128,7 +232,7 @@ public class BNDExportsCheck extends BaseFileCheck {
 
 			addMessage(
 				fileName, sb.toString(),
-				getLineCount(content, matcher.start(2)) + i);
+				getLineNumber(content, matcher.start(2)) + i);
 		}
 	}
 

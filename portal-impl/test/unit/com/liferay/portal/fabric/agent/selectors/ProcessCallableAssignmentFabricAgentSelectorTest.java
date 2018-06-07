@@ -14,9 +14,9 @@
 
 package com.liferay.portal.fabric.agent.selectors;
 
+import com.liferay.portal.fabric.ExceptionProcessCallable;
+import com.liferay.portal.fabric.ReturnProcessCallable;
 import com.liferay.portal.fabric.agent.FabricAgent;
-import com.liferay.portal.kernel.process.local.ExceptionProcessCallable;
-import com.liferay.portal.kernel.process.local.ReturnProcessCallable;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class ProcessCallableAssignmentFabricAgentSelectorTest
 			new ArrayList<>(Arrays.asList(fabricAgent1)),
 			new ExceptionProcessCallable(null));
 
-		Assert.assertTrue(fabricAgents.isEmpty());
+		Assert.assertTrue(fabricAgents.toString(), fabricAgents.isEmpty());
 	}
 
 }

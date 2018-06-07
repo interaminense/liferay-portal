@@ -14,8 +14,9 @@
 
 package com.liferay.jenkins.results.parser;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.json.JSONObject;
 
@@ -23,11 +24,6 @@ import org.json.JSONObject;
  * @author Michael Hashimoto
  */
 public class BaseCommit implements Commit {
-
-	public BaseCommit(String message, String sha) {
-		_message = message;
-		_sha = sha;
-	}
 
 	@Override
 	public boolean equals(Object object) {
@@ -38,16 +34,31 @@ public class BaseCommit implements Commit {
 		return false;
 	}
 
+	@Override
 	public String getAbbreviatedSHA() {
 		return _sha.substring(0, 7);
 	}
 
+	@Override
+	public String getGitHubCommitURL() {
+		return JenkinsResultsParserUtil.combine(
+			"https://github.com/", _gitHubUserName, "/", _repositoryName,
+			"/commit/", getSHA());
+	}
+
+	@Override
 	public String getMessage() {
 		return _message;
 	}
 
+	@Override
 	public String getSHA() {
 		return _sha;
+	}
+
+	@Override
+	public Type getType() {
+		return _type;
 	}
 
 	@Override
@@ -59,6 +70,55 @@ public class BaseCommit implements Commit {
 		return json.hashCode();
 	}
 
+	@Override
+	public void setStatus(
+		Commit.Status status, String context, String description,
+		String targetURL) {
+
+		JSONObject jsonObject = new JSONObject();
+
+		jsonObject.put("state", StringUtils.lowerCase(status.toString()));
+
+		if (context != null) {
+			jsonObject.put("context", context);
+		}
+
+		if (description != null) {
+			jsonObject.put("description", description);
+		}
+
+		if ((targetURL != null) && targetURL.matches("https?\\:\\/\\/.*")) {
+			jsonObject.put("target_url", targetURL);
+		}
+
+		try {
+			JenkinsResultsParserUtil.toJSONObject(
+				getGitHubStatusURL(), jsonObject.toString());
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException(ioe);
+		}
+	}
+
+	protected BaseCommit(
+		String gitHubUserName, String message, String repositoryName,
+		String sha, Type type) {
+
+		_gitHubUserName = gitHubUserName;
+		_message = message;
+		_repositoryName = repositoryName;
+		_sha = sha;
+		_type = type;
+	}
+
+	protected String getGitHubStatusURL() {
+		return JenkinsResultsParserUtil.combine(
+			"https://api.github.com/repos/", _gitHubUserName, "/",
+			_repositoryName, "/statuses/", getSHA());
+	}
+
+	protected GitWorkingDirectory gitWorkingDirectory;
+
 	private JSONObject _toJSONObject() {
 		JSONObject jsonObject = new JSONObject();
 
@@ -68,9 +128,10 @@ public class BaseCommit implements Commit {
 		return jsonObject;
 	}
 
-	private static final Map<String, Integer> _map = new HashMap<>();
-
+	private final String _gitHubUserName;
 	private final String _message;
+	private final String _repositoryName;
 	private final String _sha;
+	private final Type _type;
 
 }

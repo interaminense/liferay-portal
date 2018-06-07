@@ -25,6 +25,7 @@ import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -36,17 +37,14 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.Sync;
-import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.registry.Registry;
@@ -82,15 +80,12 @@ import org.osgi.util.promise.Promise;
  * @author Adolfo Pérez
  */
 @RunWith(Arquillian.class)
-@Sync
 public class AMThumbnailsOSGiCommandsTest {
 
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(),
-			SynchronousDestinationTestRule.INSTANCE);
+		new LiferayIntegrationTestRule();
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -242,10 +237,6 @@ public class AMThumbnailsOSGiCommandsTest {
 
 		Object service = registry.getService(_CLASS_NAME_PROCESSOR);
 
-		if (service == null) {
-			return;
-		}
-
 		Bundle bundle = FrameworkUtil.getBundle(service.getClass());
 
 		ComponentDescriptionDTO componentDescriptionDTO =
@@ -335,15 +326,16 @@ public class AMThumbnailsOSGiCommandsTest {
 		return DLAppLocalServiceUtil.addFileEntry(
 			_user.getUserId(), _group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			StringUtil.randomString() + ".pdf", ContentTypes.APPLICATION_PDF,
-			_getFileContents("sample.pdf"), _serviceContext);
+			RandomTestUtil.randomString() + ".pdf",
+			ContentTypes.APPLICATION_PDF, _getFileContents("sample.pdf"),
+			_serviceContext);
 	}
 
 	private FileEntry _addPNGFileEntry() throws Exception {
 		_pngFileEntry = DLAppLocalServiceUtil.addFileEntry(
 			_user.getUserId(), _group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			StringUtil.randomString() + ".png", ContentTypes.IMAGE_PNG,
+			RandomTestUtil.randomString() + ".png", ContentTypes.IMAGE_PNG,
 			_getFileContents("sample.png"), _serviceContext);
 
 		return _pngFileEntry;
@@ -364,10 +356,7 @@ public class AMThumbnailsOSGiCommandsTest {
 	}
 
 	private byte[] _getFileContents(String fileName) throws Exception {
-		return FileUtil.getBytes(
-			AMThumbnailsOSGiCommandsTest.class,
-			"/com/liferay/adaptive/media/document/library/thumbnails/internal" +
-				"/osgi/commands/test/dependencies/" + fileName);
+		return FileUtil.getBytes(AMThumbnailsOSGiCommandsTest.class, fileName);
 	}
 
 	private int _getThumbnailCount() throws Exception {

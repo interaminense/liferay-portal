@@ -14,32 +14,74 @@
 
 package com.liferay.jenkins.results.parser;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.IOException;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto
  */
 public class CommitFactory {
 
-	public static Commit newCommit(String gitLogEntity) {
-		Matcher matcher = _pattern.matcher(gitLogEntity);
+	public static Commit newCommit(
+		String gitHubUserName, String repositoryName, String sha) {
 
-		if (!matcher.matches()) {
-			throw new RuntimeException("Unable to find Git SHA");
+		String commitURL = _getCommitURL(gitHubUserName, repositoryName, sha);
+
+		if (_commits.containsKey(commitURL)) {
+			return _commits.get(commitURL);
 		}
 
-		String message = matcher.group("message");
-		String sha = matcher.group("sha");
+		try {
+			JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
+				commitURL);
 
-		if (message.startsWith("archive:ignore")) {
-			return new LegacyDataArchiveCommit(message, sha);
+			JSONObject commitJSONObject = jsonObject.getJSONObject("commit");
+
+			String message = commitJSONObject.getString("message");
+
+			return newCommit(gitHubUserName, message, repositoryName, sha);
 		}
-
-		return new ManualCommit(message, sha);
+		catch (IOException ioe) {
+			throw new RuntimeException("Unable to get commit details", ioe);
+		}
 	}
 
-	private static final Pattern _pattern = Pattern.compile(
-		"(?<sha>[0-9a-f]{40}) (?<message>.*)");
+	public static Commit newCommit(
+		String gitHubUserName, String message, String repositoryName,
+		String sha) {
+
+		String commitURL = _getCommitURL(gitHubUserName, repositoryName, sha);
+
+		if (_commits.containsKey(commitURL)) {
+			return _commits.get(commitURL);
+		}
+
+		Commit.Type type = Commit.Type.MANUAL;
+
+		if (message.startsWith("archive:ignore")) {
+			type = Commit.Type.LEGACY_ARCHIVE;
+		}
+
+		Commit commit = new BaseCommit(
+			gitHubUserName, message, repositoryName, sha, type);
+
+		_commits.put(commitURL, commit);
+
+		return commit;
+	}
+
+	private static String _getCommitURL(
+		String gitHubUserName, String repositoryName, String sha) {
+
+		return JenkinsResultsParserUtil.combine(
+			"https://api.github.com/repos/", gitHubUserName, "/",
+			repositoryName, "/commits/", sha);
+	}
+
+	private static final Map<String, Commit> _commits = new HashMap<>();
 
 }

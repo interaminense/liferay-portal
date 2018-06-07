@@ -22,7 +22,7 @@ import com.liferay.adaptive.media.image.configuration.AMImageConfigurationEntry;
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationHelper;
 import com.liferay.adaptive.media.image.finder.AMImageQueryBuilder;
 import com.liferay.adaptive.media.image.internal.configuration.AMImageConfigurationEntryImpl;
-import com.liferay.adaptive.media.image.internal.util.ImageProcessor;
+import com.liferay.adaptive.media.image.mime.type.AMImageMimeTypeProvider;
 import com.liferay.adaptive.media.image.model.AMImageEntry;
 import com.liferay.adaptive.media.image.processor.AMImageAttribute;
 import com.liferay.adaptive.media.image.processor.AMImageProcessor;
@@ -31,8 +31,8 @@ import com.liferay.adaptive.media.image.url.AMImageURLFactory;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.InputStream;
 
@@ -62,15 +62,15 @@ public class AMImageFinderImplTest {
 			_amImageConfigurationHelper);
 		_amImageFinderImpl.setAMImageEntryLocalService(
 			_amImageEntryLocalService);
+		_amImageFinderImpl.setAMImageMimeTypeProvider(_amImageMimeTypeProvider);
 		_amImageFinderImpl.setAMImageURLFactory(_amImageURLFactory);
-		_amImageFinderImpl.setImageProcessor(_imageProcessor);
 	}
 
 	@Test(expected = PortalException.class)
 	public void testFileEntryGetFileVersionFails() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				new HashMap<>());
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -91,7 +91,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -109,7 +109,7 @@ public class AMImageFinderImplTest {
 	public void testFileEntryGetMediaWithNoAttributes() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				new HashMap<>());
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -132,7 +132,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -152,7 +152,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -170,7 +170,7 @@ public class AMImageFinderImplTest {
 	public void testGetMediaAttributes() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "200"));
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -187,7 +187,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -207,7 +207,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -242,15 +242,15 @@ public class AMImageFinderImplTest {
 	public void testGetMediaAttributesOrderByAsc() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry1 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "200"));
 		AMImageConfigurationEntry amImageConfigurationEntry2 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "800"));
 		AMImageConfigurationEntry amImageConfigurationEntry3 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "400"));
 
 		List<AMImageConfigurationEntry> amImageConfigurationEntries =
@@ -272,7 +272,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -312,7 +312,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -361,15 +361,15 @@ public class AMImageFinderImplTest {
 	public void testGetMediaAttributesOrderByDesc() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry1 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "200"));
 		AMImageConfigurationEntry amImageConfigurationEntry2 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "800"));
 		AMImageConfigurationEntry amImageConfigurationEntry3 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "400"));
 
 		List<AMImageConfigurationEntry> amImageConfigurationEntries =
@@ -391,7 +391,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -431,7 +431,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -478,9 +478,10 @@ public class AMImageFinderImplTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetMediaAttributesWithNonBuilderQuery() throws Exception {
-		_amImageFinderImpl.getAdaptiveMediaStream(amImageQueryBuilder ->
-			new AMQuery<FileVersion, AMImageProcessor>() {
-			});
+		_amImageFinderImpl.getAdaptiveMediaStream(
+			amImageQueryBuilder ->
+				new AMQuery<FileVersion, AMImageProcessor>() {
+				});
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -498,7 +499,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -513,7 +514,7 @@ public class AMImageFinderImplTest {
 	public void testGetMediaInputStream() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				Collections.emptyMap());
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -530,7 +531,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -550,7 +551,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -586,7 +587,7 @@ public class AMImageFinderImplTest {
 	public void testGetMediaMissingAttribute() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100"));
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -603,7 +604,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -623,7 +624,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -658,12 +659,12 @@ public class AMImageFinderImplTest {
 	public void testGetMediaQueryWith100Height() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry1 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "200"));
 
 		AMImageConfigurationEntry amImageConfigurationEntry2 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "200", "max-width", "200"));
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -681,7 +682,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -711,7 +712,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -750,12 +751,12 @@ public class AMImageFinderImplTest {
 	public void testGetMediaQueryWith200Height() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry1 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "200"));
 
 		AMImageConfigurationEntry amImageConfigurationEntry2 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "200", "max-width", "200"));
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -773,7 +774,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -803,7 +804,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -842,12 +843,12 @@ public class AMImageFinderImplTest {
 	public void testGetMediaQueryWith200HeightAspectRatio() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry1 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "200"));
 
 		AMImageConfigurationEntry amImageConfigurationEntry2 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "200", "max-width", "100"));
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -865,7 +866,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -895,7 +896,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -934,12 +935,12 @@ public class AMImageFinderImplTest {
 	public void testGetMediaQueryWithConfigurationAttribute() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry1 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), "small",
+				RandomTestUtil.randomString(), "small",
 				MapUtil.fromArray("max-height", "100", "max-width", "200"));
 
 		AMImageConfigurationEntry amImageConfigurationEntry2 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), "medium",
+				RandomTestUtil.randomString(), "medium",
 				MapUtil.fromArray("max-height", "200", "max-width", "200"));
 
 		AMImageQueryBuilder.ConfigurationStatus anyConfigurationStatus =
@@ -957,7 +958,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -987,7 +988,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -1022,12 +1023,13 @@ public class AMImageFinderImplTest {
 
 		AMImageConfigurationEntry amImageConfigurationEntry1 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), "small",
+				RandomTestUtil.randomString(), "small",
 				MapUtil.fromArray("max-height", "100", "max-width", "200"));
 
 		AMImageConfigurationEntry amImageConfigurationEntry2 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(), "medium",
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				"medium",
 				MapUtil.fromArray("max-height", "200", "max-width", "200"),
 				false);
 
@@ -1059,7 +1061,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -1089,7 +1091,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -1161,13 +1163,13 @@ public class AMImageFinderImplTest {
 
 		AMImageConfigurationEntry amImageConfigurationEntry1 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), "1",
+				RandomTestUtil.randomString(), "1",
 				MapUtil.fromArray("max-height", "100"));
 
 		AMImageConfigurationEntry amImageConfigurationEntry2 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(), "2",
-				MapUtil.fromArray("max-height", "200"), false);
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				"2", MapUtil.fromArray("max-height", "200"), false);
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
 			AMImageQueryBuilder.ConfigurationStatus.ENABLED;
@@ -1206,7 +1208,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -1236,7 +1238,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -1315,12 +1317,12 @@ public class AMImageFinderImplTest {
 	public void testGetMediaQueryWithNoMatchingAttributes() throws Exception {
 		AMImageConfigurationEntry amImageConfigurationEntry1 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100"));
 
 		AMImageConfigurationEntry amImageConfigurationEntry2 =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "200"));
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -1338,7 +1340,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -1368,7 +1370,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -1406,7 +1408,7 @@ public class AMImageFinderImplTest {
 	@Test
 	public void testGetMediaWhenNotSupported() throws Exception {
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			false
 		);
@@ -1434,7 +1436,7 @@ public class AMImageFinderImplTest {
 
 		AMImageConfigurationEntry amImageConfigurationEntry =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				MapUtil.fromArray("max-height", "100", "max-width", "200"));
 
 		AMImageQueryBuilder.ConfigurationStatus enabledConfigurationStatus =
@@ -1451,7 +1453,7 @@ public class AMImageFinderImplTest {
 		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -1471,7 +1473,7 @@ public class AMImageFinderImplTest {
 		);
 
 		Mockito.when(
-			_imageProcessor.isMimeTypeSupported(Mockito.anyString())
+			_amImageMimeTypeProvider.isMimeTypeSupported(Mockito.anyString())
 		).thenReturn(
 			true
 		);
@@ -1527,11 +1529,11 @@ public class AMImageFinderImplTest {
 		Mockito.mock(AMImageEntryLocalService.class);
 	private final AMImageFinderImpl _amImageFinderImpl =
 		new AMImageFinderImpl();
+	private final AMImageMimeTypeProvider _amImageMimeTypeProvider =
+		Mockito.mock(AMImageMimeTypeProvider.class);
 	private final AMImageURLFactory _amImageURLFactory = Mockito.mock(
 		AMImageURLFactory.class);
 	private final FileEntry _fileEntry = Mockito.mock(FileEntry.class);
 	private final FileVersion _fileVersion = Mockito.mock(FileVersion.class);
-	private final ImageProcessor _imageProcessor = Mockito.mock(
-		ImageProcessor.class);
 
 }

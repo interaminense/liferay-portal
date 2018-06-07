@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -63,14 +65,6 @@ public class ThemeHelper {
 				servletContext.getServletContextName());
 		}
 
-		int start = 0;
-
-		if (path.startsWith(StringPool.SLASH)) {
-			start = 1;
-		}
-
-		int end = path.lastIndexOf(CharPool.PERIOD);
-
 		String extension = theme.getTemplateExtension();
 
 		if (extension.equals(TEMPLATE_EXTENSION_FTL)) {
@@ -85,7 +79,17 @@ public class ThemeHelper {
 			}
 
 			sb.append(StringPool.SLASH);
+
+			int start = 0;
+
+			if (path.startsWith(StringPool.SLASH)) {
+				start = 1;
+			}
+
+			int end = path.lastIndexOf(CharPool.PERIOD);
+
 			sb.append(path.substring(start, end));
+
 			sb.append(StringPool.PERIOD);
 
 			if (Validator.isNotNull(portletId)) {

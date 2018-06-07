@@ -139,7 +139,7 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 
 	@Override
 	public Enumeration<String> getAttributeNames() {
-		return _request.getAttributeNames();
+		return _portletRequest.getAttributeNames();
 	}
 
 	@Override
@@ -285,7 +285,9 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 			return clientDataRequest.getMethod();
 		}
 
-		if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+		if (_lifecycle.equals(PortletRequest.HEADER_PHASE) ||
+			_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+
 			return HttpMethods.GET;
 		}
 
@@ -385,7 +387,15 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 
 	@Override
 	public RequestDispatcher getRequestDispatcher(String path) {
-		return _request.getRequestDispatcher(path);
+		RequestDispatcher requestDispatcher = _request.getRequestDispatcher(
+			path);
+
+		if (requestDispatcher != null) {
+			requestDispatcher = new PortletRequestDispatcherImpl(
+				requestDispatcher, path);
+		}
+
+		return requestDispatcher;
 	}
 
 	@Override

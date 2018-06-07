@@ -59,6 +59,8 @@ public class NodePlugin implements Plugin<Project> {
 
 	public static final String NPM_INSTALL_TASK_NAME = "npmInstall";
 
+	public static final String NPM_PACKAGE_LOCK_TASK_NAME = "npmPackageLock";
+
 	public static final String NPM_RUN_BUILD_TASK_NAME = "npmRunBuild";
 
 	public static final String NPM_SHRINKWRAP_TASK_NAME = "npmShrinkwrap";
@@ -87,6 +89,7 @@ public class NodePlugin implements Plugin<Project> {
 				packageJsonFile);
 		}
 
+		_addTaskNpmPackageLock(project, cleanNpmTask, npmInstallTask);
 		_addTaskNpmShrinkwrap(project, cleanNpmTask, npmInstallTask);
 		_addTasksNpmRun(npmInstallTask, packageJsonMap);
 
@@ -146,16 +149,6 @@ public class NodePlugin implements Plugin<Project> {
 
 			});
 
-		downloadNodeTask.setNodeExeUrl(
-			new Callable<String>() {
-
-				@Override
-				public String call() throws Exception {
-					return nodeExtension.getNodeExeUrl();
-				}
-
-			});
-
 		downloadNodeTask.setNodeUrl(
 			new Callable<String>() {
 
@@ -204,6 +197,18 @@ public class NodePlugin implements Plugin<Project> {
 		npmInstallTask.setNpmInstallRetries(2);
 
 		return npmInstallTask;
+	}
+
+	private Task _addTaskNpmPackageLock(
+		Project project, Delete cleanNpmTask, NpmInstallTask npmInstallTask) {
+
+		Task task = project.task(NPM_PACKAGE_LOCK_TASK_NAME);
+
+		task.dependsOn(cleanNpmTask, npmInstallTask);
+		task.setDescription(
+			"Deletes NPM files and installs Node packages from package.json.");
+
+		return task;
 	}
 
 	private ExecuteNpmTask _addTaskNpmRun(
@@ -310,12 +315,10 @@ public class NodePlugin implements Plugin<Project> {
 			DownloadNodeTask.class);
 
 		File nodeDir = downloadNodeTask.getNodeDir();
-		String nodeExeUrl = downloadNodeTask.getNodeExeUrl();
 		String nodeUrl = downloadNodeTask.getNodeUrl();
 
 		for (DownloadNodeTask curRootDownloadNodeTask : rootDownloadNodeTasks) {
 			if (nodeDir.equals(curRootDownloadNodeTask.getNodeDir()) &&
-				nodeExeUrl.equals(curRootDownloadNodeTask.getNodeExeUrl()) &&
 				nodeUrl.equals(curRootDownloadNodeTask.getNodeUrl())) {
 
 				rootDownloadNodeTask = curRootDownloadNodeTask;

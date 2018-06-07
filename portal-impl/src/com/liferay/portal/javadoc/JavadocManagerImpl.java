@@ -14,6 +14,7 @@
 
 package com.liferay.portal.javadoc;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.javadoc.BaseJavadoc;
 import com.liferay.portal.kernel.javadoc.EmptyJavadocMethod;
 import com.liferay.portal.kernel.javadoc.JavadocClass;
@@ -24,7 +25,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
@@ -216,9 +216,9 @@ public class JavadocManagerImpl implements JavadocManager {
 						javadocMethod.getMethod(), javadocMethod);
 				}
 				catch (Exception e) {
-					String methodName = methodElement.elementText("name");
-
 					if (_log.isWarnEnabled()) {
+						String methodName = methodElement.elementText("name");
+
 						_log.warn(
 							StringBundler.concat(
 								"Unable to load method ", methodName,

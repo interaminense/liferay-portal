@@ -16,6 +16,7 @@ package com.liferay.portal.deploy.hot;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.deploy.hot.BaseHotDeployListener;
 import com.liferay.portal.kernel.deploy.hot.HotDeployEvent;
 import com.liferay.portal.kernel.deploy.hot.HotDeployException;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.tools.WebXMLBuilder;
 import com.liferay.portal.util.ExtRegistry;
@@ -271,12 +271,10 @@ public class ExtHotDeployListener extends BaseHotDeployListener {
 
 		File tempDir = tempDirPath.toFile();
 
-		WebXMLBuilder.main(
-			new String[] {
-				portalWebDir + "WEB-INF/web.xml",
-				pluginWebDir + "WEB-INF/ext-web/docroot/WEB-INF/web.xml",
-				tempDir.getAbsolutePath() + "/web.xml"
-			});
+		WebXMLBuilder.mergeWebXML(
+			portalWebDir + "WEB-INF/web.xml",
+			pluginWebDir + "WEB-INF/ext-web/docroot/WEB-INF/web.xml",
+			tempDir.getAbsolutePath() + "/web.xml");
 
 		File portalWebXml = new File(portalWebDir + "WEB-INF/web.xml");
 		File tmpWebXml = new File(tempDir + "/web.xml");

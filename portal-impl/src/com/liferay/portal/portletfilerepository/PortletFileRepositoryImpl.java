@@ -19,6 +19,7 @@ import com.liferay.document.library.kernel.exception.NoSuchFolderException;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLTrashLocalServiceUtil;
 import com.liferay.document.library.kernel.util.DLAppHelperThreadLocal;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -50,7 +51,6 @@ import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -78,9 +78,8 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 			List<ObjectValuePair<String, InputStream>> inputStreamOVPs)
 		throws PortalException {
 
-		for (int i = 0; i < inputStreamOVPs.size(); i++) {
-			ObjectValuePair<String, InputStream> inputStreamOVP =
-				inputStreamOVPs.get(i);
+		for (ObjectValuePair<String, InputStream> inputStreamOVP :
+				inputStreamOVPs) {
 
 			InputStream inputStream = inputStreamOVP.getValue();
 			String fileName = inputStreamOVP.getKey();
@@ -138,8 +137,11 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 		Repository repository = addPortletRepository(
 			groupId, portletId, serviceContext);
 
-		serviceContext.setAttribute("className", className);
-		serviceContext.setAttribute("classPK", String.valueOf(classPK));
+		if (Validator.isNotNull(className) && (classPK > 0)) {
+			serviceContext.setAttribute("className", className);
+			serviceContext.setAttribute("classPK", String.valueOf(classPK));
+		}
+
 		serviceContext.setIndexingEnabled(indexingEnabled);
 
 		if (Validator.isNull(mimeType) ||

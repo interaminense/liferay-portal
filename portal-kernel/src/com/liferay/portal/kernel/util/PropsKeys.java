@@ -53,6 +53,8 @@ public interface PropsKeys {
 
 	public static final String ADMIN_EMAIL_VERIFICATION_SUBJECT = "admin.email.verification.subject";
 
+	public static final String ADMIN_LIFERAY_ANALYTICS_KEY = "admin.liferay.analytics.key";
+
 	public static final String ADMIN_MAIL_HOST_NAMES = "admin.mail.host.names";
 
 	public static final String ADMIN_OBFUSCATED_PROPERTIES = "admin.obfuscated.properties";
@@ -542,6 +544,8 @@ public interface PropsKeys {
 	public static final String CUSTOM_SQL_FUNCTION_ISNOTNULL = "custom.sql.function.isnotnull";
 
 	public static final String CUSTOM_SQL_FUNCTION_ISNULL = "custom.sql.function.isnull";
+
+	public static final String DATABASE_IN_MAX_PARAMETERS = "database.in.max.parameters";
 
 	public static final String DATABASE_INDEXES_UPDATE_ON_STARTUP = "database.indexes.update.on.startup";
 
@@ -1518,6 +1522,10 @@ public interface PropsKeys {
 
 	public static final String MINIFIER_INLINE_CONTENT_CACHE_SKIP_JAVASCRIPT = "minifier.inline.content.cache.skip.javascript";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String MINIFIER_JAVASCRIPT_IMPL = "minifier.javascript.impl";
 
 	public static final String MOBILE_DEVICE_RULES_PUBLISH_TO_LIVE_BY_DEFAULT = "mobile.device.rules.publish.to.live.by.default";
@@ -1686,10 +1694,22 @@ public interface PropsKeys {
 
 	public static final String ORGANIZATIONS_ASSIGNMENT_STRICT = "organizations.assignment.strict";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String ORGANIZATIONS_CHILDREN_TYPES = "organizations.children.types";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String ORGANIZATIONS_COUNTRY_ENABLED = "organizations.country.enabled";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String ORGANIZATIONS_COUNTRY_REQUIRED = "organizations.country.required";
 
 	public static final String ORGANIZATIONS_FORM_ADD_IDENTIFICATION = "organizations.form.add.identification";
@@ -1706,10 +1726,18 @@ public interface PropsKeys {
 
 	public static final String ORGANIZATIONS_MEMBERSHIP_STRICT = "organizations.membership.strict";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String ORGANIZATIONS_ROOTABLE = "organizations.rootable";
 
 	public static final String ORGANIZATIONS_SEARCH_WITH_INDEX = "organizations.search.with.index";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String ORGANIZATIONS_TYPES = "organizations.types";
 
 	public static final String PASSWORDS_DEFAULT_POLICY_ALLOW_DICTIONARY_WORDS = "passwords.default.policy.allow.dictionary.words";
@@ -2162,76 +2190,6 @@ public interface PropsKeys {
 
 	public static final String SHAREPOINT_STORAGE_TOKENS = "sharepoint.storage.tokens";
 
-	public static final String SHOPPING_CART_MIN_QTY_MULTIPLE = "shopping.cart.min.qty.multiple";
-
-	public static final String SHOPPING_CATEGORY_FORWARD_TO_CART = "shopping.category.forward.to.cart";
-
-	public static final String SHOPPING_CATEGORY_SHOW_SPECIAL_ITEMS = "shopping.category.show.special.items";
-
-	public static final String SHOPPING_CREDIT_CARD_TYPES = "shopping.credit.card.types";
-
-	public static final String SHOPPING_CURRENCY_ID = "shopping.currency.id";
-
-	public static final String SHOPPING_EMAIL_FROM_ADDRESS = "shopping.email.from.address";
-
-	public static final String SHOPPING_EMAIL_FROM_NAME = "shopping.email.from.name";
-
-	public static final String SHOPPING_EMAIL_ORDER_CONFIRMATION_BODY = "shopping.email.order.confirmation.body";
-
-	public static final String SHOPPING_EMAIL_ORDER_CONFIRMATION_ENABLED = "shopping.email.order.confirmation.enabled";
-
-	public static final String SHOPPING_EMAIL_ORDER_CONFIRMATION_SUBJECT = "shopping.email.order.confirmation.subject";
-
-	public static final String SHOPPING_EMAIL_ORDER_SHIPPING_BODY = "shopping.email.order.shipping.body";
-
-	public static final String SHOPPING_EMAIL_ORDER_SHIPPING_ENABLED = "shopping.email.order.shipping.enabled";
-
-	public static final String SHOPPING_EMAIL_ORDER_SHIPPING_SUBJECT = "shopping.email.order.shipping.subject";
-
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
-	public static final String SHOPPING_IMAGE_EXTENSIONS = "shopping.image.extensions";
-
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
-	public static final String SHOPPING_IMAGE_LARGE_MAX_SIZE = "shopping.image.large.max.size";
-
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
-	public static final String SHOPPING_IMAGE_MEDIUM_MAX_SIZE = "shopping.image.medium.max.size";
-
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
-	public static final String SHOPPING_IMAGE_SMALL_MAX_SIZE = "shopping.image.small.max.size";
-
-	public static final String SHOPPING_INSURANCE = "shopping.insurance";
-
-	public static final String SHOPPING_INSURANCE_FORMULA = "shopping.insurance.formula";
-
-	public static final String SHOPPING_ITEM_SHOW_AVAILABILITY = "shopping.item.show.availability";
-
-	public static final String SHOPPING_MIN_ORDER = "shopping.min.order";
-
-	public static final String SHOPPING_ORDER_COMMENTS_ENABLED = "shopping.order.comments.enabled";
-
-	public static final String SHOPPING_PAYPAL_EMAIL_ADDRESS = "shopping.paypal.email.address";
-
-	public static final String SHOPPING_SHIPPING = "shopping.shipping";
-
-	public static final String SHOPPING_SHIPPING_FORMULA = "shopping.shipping.formula";
-
-	public static final String SHOPPING_TAX_RATE = "shopping.tax.rate";
-
-	public static final String SHOPPING_TAX_STATE = "shopping.tax.state";
-
 	public static final String SHUTDOWN_PROGRAMMATICALLY_EXIT = "shutdown.programmatically.exit";
 
 	public static final String SITEMAP_DISPLAY_TEMPLATES_CONFIG = "sitemap.display.templates.config";
@@ -2298,14 +2256,34 @@ public interface PropsKeys {
 
 	public static final String SOCIAL_ACTIVITY_SETS_SELECTOR = "social.activity.sets.selector";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String SOCIAL_BOOKMARK_DISPLAY_STYLES = "social.bookmark.display.styles";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String SOCIAL_BOOKMARK_ICON = "social.bookmark.icon";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String SOCIAL_BOOKMARK_JSP = "social.bookmark.jsp";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String SOCIAL_BOOKMARK_POST_URL = "social.bookmark.post.url";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String SOCIAL_BOOKMARK_TYPES = "social.bookmark.types";
 
 	public static final String SOURCE_FORGE_MIRRORS = "source.forge.mirrors";
@@ -2459,6 +2437,10 @@ public interface PropsKeys {
 
 	public static final String UPGRADE_DATABASE_TRANSACTIONS_DISABLED = "upgrade.database.transactions.disabled";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String UPGRADE_PROCESSES = "upgrade.processes";
 
 	/**
@@ -2589,6 +2571,8 @@ public interface PropsKeys {
 
 	public static final String VALUE_OBJECT_FINDER_CACHE_ENABLED = "value.object.finder.cache.enabled";
 
+	public static final String VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD = "value.object.finder.cache.list.threshold";
+
 	public static final String VALUE_OBJECT_FINDER_THREAD_LOCAL_CACHE_MAX_SIZE = "value.object.finder.thread.local.cache.max.size";
 
 	public static final String VALUE_OBJECT_LISTENER = "value.object.listener.";
@@ -2683,14 +2667,36 @@ public interface PropsKeys {
 
 	public static final String YUI_COMPRESSOR_CSS_LINE_BREAK = "yui.compressor.css.line.break";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_DISABLE_OPTIMIZATIONS = "yui.compressor.js.disable.optimizations";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_LINE_BREAK = "yui.compressor.js.line.break";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_MUNGE = "yui.compressor.js.munge";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS = "yui.compressor.js.preserve.all.semicolons";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_VERBOSE = "yui.compressor.js.verbose";
+
+	public static final String ZIP_FILE_NAME_ENCODING = "zip.file.name.encoding";
 
 }

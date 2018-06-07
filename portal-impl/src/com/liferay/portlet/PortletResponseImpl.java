@@ -14,53 +14,48 @@
 
 package com.liferay.portlet;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
-import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
+import com.liferay.portal.kernel.servlet.TransferHeadersHelperUtil;
 import com.liferay.portal.kernel.servlet.URLEncoder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
-import com.liferay.portal.struts.StrutsActionPortletURL;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.internal.LiferayPortletResponseUtil;
+import com.liferay.portlet.internal.LiferayPortletURLPrivilegedAction;
 
 import java.io.Writer;
 
 import java.lang.reflect.Constructor;
 
-import java.security.PrivilegedAction;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.portlet.ActionURL;
 import javax.portlet.MimeResponse;
-import javax.portlet.PortletModeException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
+import javax.portlet.RenderURL;
 import javax.portlet.ResourceURL;
-import javax.portlet.WindowStateException;
 import javax.portlet.filter.PortletResponseWrapper;
 
 import javax.servlet.http.Cookie;
@@ -82,7 +77,9 @@ import org.w3c.dom.Element;
 
 /**
  * @author Brian Wing Shun Chan
+ * @author Neil Griffin
  */
+@ProviderType
 public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	public static PortletResponseImpl getPortletResponseImpl(
@@ -186,6 +183,16 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		if (StringUtil.equalsIgnoreCase(
 				key, MimeResponse.MARKUP_HEAD_ELEMENT)) {
 
+			if (StringUtil.equalsIgnoreCase(element.getNodeName(), "script") &&
+				!element.hasChildNodes()) {
+
+				// LPS-77798
+
+				element = (Element)element.cloneNode(true);
+
+				element.appendChild(_document.createTextNode(StringPool.SPACE));
+			}
+
 			List<Element> values = _markupHeadElements.get(key);
 
 			if (values != null) {
@@ -218,14 +225,27 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	@Override
-	public PortletURL createActionURL() {
-		return createActionURL(portletName);
+	public <T extends PortletURL & ActionURL> T createActionURL() {
+		return (T)createActionURL(portletName);
+	}
+
+	@Override
+	public ActionURL createActionURL(MimeResponse.Copy copy) {
+		return (ActionURL)createActionURL(portletName, copy);
 	}
 
 	@Override
 	public LiferayPortletURL createActionURL(String portletName) {
 		return createLiferayPortletURL(
 			portletName, PortletRequest.ACTION_PHASE);
+	}
+
+	@Override
+	public LiferayPortletURL createActionURL(
+		String portletName, MimeResponse.Copy copy) {
+
+		return createLiferayPortletURL(
+			portletName, PortletRequest.ACTION_PHASE, copy);
 	}
 
 	@Override
@@ -261,9 +281,41 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		long plid, String portletName, String lifecycle,
 		boolean includeLinkToLayoutUuid) {
 
+		return createLiferayPortletURL(
+			plid, portletName, lifecycle, null, includeLinkToLayoutUuid);
+	}
+
+	@Override
+	public LiferayPortletURL createLiferayPortletURL(
+		long plid, String portletName, String lifecycle,
+		MimeResponse.Copy copy) {
+
+		return createLiferayPortletURL(
+			plid, portletName, lifecycle, copy, true);
+	}
+
+	@Override
+	public LiferayPortletURL createLiferayPortletURL(
+		long plid, String portletName, String lifecycle, MimeResponse.Copy copy,
+		boolean includeLinkToLayoutUuid) {
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)portletRequestImpl.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		Layout layout = LiferayPortletResponseUtil.getLayout(
+			portletRequestImpl, themeDisplay);
+
+		if (_portletSetup == null) {
+			_portletSetup = LiferayPortletResponseUtil.getPortletSetup(
+				themeDisplay, layout, portletName);
+		}
+
 		return DoPrivilegedUtil.wrap(
 			new LiferayPortletURLPrivilegedAction(
-				plid, portletName, lifecycle, includeLinkToLayoutUuid));
+				plid, portletName, lifecycle, copy, includeLinkToLayoutUuid,
+				layout, getPortlet(), _portletSetup, portletRequestImpl, this,
+				_plid, _constructors));
 	}
 
 	@Override
@@ -279,14 +331,34 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	@Override
-	public PortletURL createRenderURL() {
-		return createRenderURL(portletName);
+	public LiferayPortletURL createLiferayPortletURL(
+		String portletName, String lifecycle, MimeResponse.Copy copy) {
+
+		return createLiferayPortletURL(_plid, portletName, lifecycle, copy);
+	}
+
+	@Override
+	public <T extends PortletURL & RenderURL> T createRenderURL() {
+		return (T)createRenderURL(portletName);
+	}
+
+	@Override
+	public RenderURL createRenderURL(MimeResponse.Copy copy) {
+		return (RenderURL)createRenderURL(portletName, copy);
 	}
 
 	@Override
 	public LiferayPortletURL createRenderURL(String portletName) {
 		return createLiferayPortletURL(
 			portletName, PortletRequest.RENDER_PHASE);
+	}
+
+	@Override
+	public LiferayPortletURL createRenderURL(
+		String portletName, MimeResponse.Copy copy) {
+
+		return createLiferayPortletURL(
+			portletName, PortletRequest.RENDER_PHASE, copy);
 	}
 
 	@Override
@@ -297,7 +369,8 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	@Override
 	public LiferayPortletURL createResourceURL(String portletName) {
 		return createLiferayPortletURL(
-			portletName, PortletRequest.RESOURCE_PHASE);
+			_plid, portletName, PortletRequest.RESOURCE_PHASE,
+			MimeResponse.Copy.ALL, true);
 	}
 
 	@Override
@@ -337,10 +410,6 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public String getNamespace() {
-		if (_wsrp) {
-			return "wsrp_rewrite_";
-		}
-
 		if (_namespace == null) {
 			_namespace = PortalUtil.getPortletNamespace(portletName);
 		}
@@ -383,6 +452,21 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		return properties;
+	}
+
+	@Override
+	public String getProperty(String key) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Collection<String> getPropertyNames() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Collection<String> getPropertyValues(String key) {
+		throw new UnsupportedOperationException();
 	}
 
 	public URLEncoder getUrlEncoder() {
@@ -458,54 +542,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	public void transferHeaders(HttpServletResponse response) {
-		for (Map.Entry<String, Object> entry : _headers.entrySet()) {
-			String name = entry.getKey();
-			Object values = entry.getValue();
-
-			if (values instanceof Integer[]) {
-				Integer[] intValues = (Integer[])values;
-
-				for (int value : intValues) {
-					if (response.containsHeader(name)) {
-						response.addIntHeader(name, value);
-					}
-					else {
-						response.setIntHeader(name, value);
-					}
-				}
-			}
-			else if (values instanceof Long[]) {
-				Long[] dateValues = (Long[])values;
-
-				for (long value : dateValues) {
-					if (response.containsHeader(name)) {
-						response.addDateHeader(name, value);
-					}
-					else {
-						response.setDateHeader(name, value);
-					}
-				}
-			}
-			else if (values instanceof String[]) {
-				String[] stringValues = (String[])values;
-
-				for (String value : stringValues) {
-					if (response.containsHeader(name)) {
-						response.addHeader(name, value);
-					}
-					else {
-						response.setHeader(name, value);
-					}
-				}
-			}
-			else if (values instanceof Cookie[]) {
-				Cookie[] cookies = (Cookie[])values;
-
-				for (Cookie cookie : cookies) {
-					response.addCookie(cookie);
-				}
-			}
-		}
+		TransferHeadersHelperUtil.transferHeaders(_headers, response);
 	}
 
 	@Override
@@ -554,160 +591,6 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 	}
 
-	protected LiferayPortletURL doCreateLiferayPortletURL(
-		long plid, String portletName, String lifecycle,
-		boolean includeLinkToLayoutUuid) {
-
-		try {
-			Layout layout = (Layout)portletRequestImpl.getAttribute(
-				WebKeys.LAYOUT);
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequestImpl.getAttribute(
-					WebKeys.THEME_DISPLAY);
-
-			if ((layout == null) && (themeDisplay != null)) {
-				layout = themeDisplay.getLayout();
-			}
-
-			if (_portletSetup == null) {
-				if (themeDisplay == null) {
-					_portletSetup =
-						PortletPreferencesFactoryUtil.
-							getStrictLayoutPortletSetup(
-								layout, this.portletName);
-				}
-				else {
-					_portletSetup = themeDisplay.getStrictLayoutPortletSetup(
-						layout, this.portletName);
-				}
-			}
-
-			String linkToLayoutUuid = GetterUtil.getString(
-				_portletSetup.getValue("portletSetupLinkToLayoutUuid", null));
-
-			if (PropsValues.PORTLET_CROSS_LAYOUT_INVOCATION_MODE.equals(
-					"render") &&
-				!PortletRequest.RENDER_PHASE.equals(lifecycle)) {
-
-				includeLinkToLayoutUuid = false;
-			}
-
-			if (Validator.isNotNull(linkToLayoutUuid) &&
-				includeLinkToLayoutUuid) {
-
-				try {
-					Layout linkedLayout =
-						LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(
-							linkToLayoutUuid, layout.getGroupId(),
-							layout.isPrivateLayout());
-
-					plid = linkedLayout.getPlid();
-				}
-				catch (PortalException pe) {
-
-					// LPS-52675
-
-					if (_log.isDebugEnabled()) {
-						_log.debug(pe, pe);
-					}
-				}
-			}
-		}
-		catch (SystemException se) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(se);
-			}
-		}
-
-		if (plid == LayoutConstants.DEFAULT_PLID) {
-			plid = _plid;
-		}
-
-		LiferayPortletURL portletURL = null;
-
-		Portlet portlet = getPortlet();
-
-		String portletURLClass = portlet.getPortletURLClass();
-
-		if (portlet.getPortletId().equals(portletName) &&
-			Validator.isNotNull(portletURLClass)) {
-
-			if (portletURLClass.equals(
-					StrutsActionPortletURL.class.getName())) {
-
-				portletURL = new StrutsActionPortletURL(this, plid, lifecycle);
-			}
-			else {
-				try {
-					Constructor<? extends PortletURLImpl> constructor =
-						_constructors.get(portletURLClass);
-
-					if (constructor == null) {
-						Class<?> portletURLClassObj = Class.forName(
-							portletURLClass);
-
-						constructor =
-							(Constructor<? extends PortletURLImpl>)
-								portletURLClassObj.getConstructor(
-									new Class<?>[] {
-										PortletResponseImpl.class, long.class,
-										String.class
-									});
-
-						_constructors.put(portletURLClass, constructor);
-					}
-
-					portletURL = constructor.newInstance(
-						new Object[] {this, plid, lifecycle});
-				}
-				catch (Exception e) {
-					_log.error("Unable to create portlet URL", e);
-				}
-			}
-		}
-
-		if (portletURL == null) {
-			if (portletName.equals(portlet.getPortletId())) {
-				portletURL = PortletURLFactoryUtil.create(
-					portletRequestImpl, portlet, plid, lifecycle);
-			}
-			else {
-				portletURL = PortletURLFactoryUtil.create(
-					portletRequestImpl, portletName, plid, lifecycle);
-			}
-		}
-
-		try {
-			if (portlet.hasWindowState(
-					portletRequestImpl.getResponseContentType(),
-					portletRequestImpl.getWindowState())) {
-
-				portletURL.setWindowState(portletRequestImpl.getWindowState());
-			}
-		}
-		catch (WindowStateException wse) {
-			_log.error(wse.getMessage());
-		}
-
-		try {
-			if (portlet.hasPortletMode(
-					portletRequestImpl.getResponseContentType(),
-					portletRequestImpl.getPortletMode())) {
-
-				portletURL.setPortletMode(portletRequestImpl.getPortletMode());
-			}
-		}
-		catch (PortletModeException pme) {
-			_log.error(pme.getMessage());
-		}
-
-		if (lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			portletURL.setCopyCurrentRenderParameters(true);
-		}
-
-		return portletURL;
-	}
-
 	protected void init(
 		PortletRequestImpl portletRequestImpl, HttpServletResponse response) {
 
@@ -720,22 +603,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 		_companyId = _portlet.getCompanyId();
 
-		_wsrp = ParamUtil.getBoolean(
-			portletRequestImpl.getHttpServletRequest(), "wsrp");
-
 		setPlid(portletRequestImpl.getPlid());
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #init(PortletRequestImpl,
-	 *             HttpServletResponse)}
-	 */
-	@Deprecated
-	protected void init(
-		PortletRequestImpl portletRequestImpl, HttpServletResponse response,
-		String portletName, long companyId, long plid) {
-
-		init(portletRequestImpl, response);
 	}
 
 	protected String portletName;
@@ -757,32 +625,5 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	private Portlet _portlet;
 	private PortletPreferences _portletSetup;
 	private URLEncoder _urlEncoder;
-	private boolean _wsrp;
-
-	private class LiferayPortletURLPrivilegedAction
-		implements PrivilegedAction<LiferayPortletURL> {
-
-		public LiferayPortletURLPrivilegedAction(
-			long plid, String portletName, String lifecycle,
-			boolean includeLinkToLayoutUuid) {
-
-			_plid = plid;
-			_portletName = portletName;
-			_lifecycle = lifecycle;
-			_includeLinkToLayoutUuid = includeLinkToLayoutUuid;
-		}
-
-		@Override
-		public LiferayPortletURL run() {
-			return doCreateLiferayPortletURL(
-				_plid, _portletName, _lifecycle, _includeLinkToLayoutUuid);
-		}
-
-		private final boolean _includeLinkToLayoutUuid;
-		private final String _lifecycle;
-		private long _plid;
-		private final String _portletName;
-
-	}
 
 }

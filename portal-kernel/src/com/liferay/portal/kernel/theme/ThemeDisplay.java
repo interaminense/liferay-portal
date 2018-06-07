@@ -19,6 +19,8 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.admin.kernel.util.PortalMyAccountApplicationType;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.mobile.device.rules.kernel.MDRRuleGroupInstance;
+import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -57,8 +59,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.ReflectionUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.TimeZoneThreadLocal;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -1148,6 +1148,18 @@ public class ThemeDisplay
 		return _freeformLayout;
 	}
 
+	public boolean isHubAction() {
+		return _hubAction;
+	}
+
+	public boolean isHubPartialAction() {
+		return _hubPartialAction;
+	}
+
+	public boolean isHubResource() {
+		return _hubResource;
+	}
+
 	public boolean isI18n() {
 		return _i18n;
 	}
@@ -1403,6 +1415,18 @@ public class ThemeDisplay
 
 	public void setFreeformLayout(boolean freeformLayout) {
 		_freeformLayout = freeformLayout;
+	}
+
+	public void setHubAction(boolean hubAction) {
+		_hubAction = hubAction;
+	}
+
+	public void setHubPartialAction(boolean hubPartialAction) {
+		_hubPartialAction = hubPartialAction;
+	}
+
+	public void setHubResource(boolean resource) {
+		_hubResource = resource;
 	}
 
 	public void setI18nLanguageId(String i18nLanguageId) {
@@ -2019,6 +2043,9 @@ public class ThemeDisplay
 	private String _facebookCanvasPageURL;
 
 	private boolean _freeformLayout;
+	private boolean _hubAction;
+	private boolean _hubPartialAction;
+	private boolean _hubResource;
 	private boolean _i18n;
 	private String _i18nLanguageId;
 	private String _i18nPath;

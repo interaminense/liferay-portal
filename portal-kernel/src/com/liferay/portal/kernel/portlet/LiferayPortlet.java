@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.portlet;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -150,7 +150,12 @@ public class LiferayPortlet extends GenericPortlet {
 			return;
 		}
 
-		super.serveResource(resourceRequest, resourceResponse);
+		boolean autoForward = GetterUtil.getBoolean(
+			getInitParameter("javax.portlet.automaticResourceDispatching"));
+
+		if (autoForward) {
+			super.serveResource(resourceRequest, resourceResponse);
+		}
 	}
 
 	protected void addSuccessMessage(

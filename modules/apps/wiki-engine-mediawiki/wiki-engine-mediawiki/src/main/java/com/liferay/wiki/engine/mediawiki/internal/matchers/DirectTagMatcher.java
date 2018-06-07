@@ -14,10 +14,10 @@
 
 package com.liferay.wiki.engine.mediawiki.internal.matchers;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.CallbackMatcher;
-import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.wiki.model.WikiPage;
 
@@ -35,12 +35,12 @@ public class DirectTagMatcher extends CallbackMatcher {
 	}
 
 	public String replaceMatches(CharSequence charSequence) {
-		return replaceMatches(charSequence, _callBack);
+		return replaceMatches(charSequence, _callback);
 	}
 
 	private static final String _REGEX = "\\[\\[([^\\]]+)\\]\\]";
 
-	private final Callback _callBack = new Callback() {
+	private final Callback _callback = new Callback() {
 
 		@Override
 		public String foundMatch(MatchResult matchResult) {

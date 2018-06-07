@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service.persistence.impl;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.RoleFinder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.impl.RoleImpl;
@@ -212,7 +212,9 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 				qPos.add(userId);
 			}
 
-			return q.list().size();
+			List<Role> roles = q.list();
+
+			return roles.size();
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
@@ -836,15 +838,15 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 			String sql = CustomSQLUtil.get(COUNT_BY_GROUP_ROLE_AND_TEAM_ROLE);
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Role_.name)", StringPool.LIKE, false,
+				sql, "LOWER(Role_.name)", StringPool.LIKE, false,
 				keywordsArray);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Role_.description)", StringPool.LIKE, true,
+				sql, "LOWER(Role_.description)", StringPool.LIKE, true,
 				keywordsArray);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Team.name)", StringPool.LIKE, false, keywordsArray);
+				sql, "LOWER(Team.name)", StringPool.LIKE, false, keywordsArray);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Team.description)", StringPool.LIKE, true,
+				sql, "LOWER(Team.description)", StringPool.LIKE, true,
 				keywordsArray);
 			sql = StringUtil.replace(
 				sql, "[$EXCLUDED_NAMES$]", getExcludedNames(excludedNames));
@@ -918,9 +920,9 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 			String sql = CustomSQLUtil.get(COUNT_BY_C_N_D_T);
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Role_.name)", StringPool.LIKE, false, names);
+				sql, "LOWER(Role_.name)", StringPool.LIKE, false, names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Role_.description)", StringPool.LIKE, true,
+				sql, "LOWER(Role_.description)", StringPool.LIKE, true,
 				descriptions);
 			sql = StringUtil.replace(sql, "[$TYPE$]", getTypes(types.length));
 			sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
@@ -993,15 +995,15 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 			String sql = CustomSQLUtil.get(FIND_BY_GROUP_ROLE_AND_TEAM_ROLE);
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Role_.name)", StringPool.LIKE, false,
+				sql, "LOWER(Role_.name)", StringPool.LIKE, false,
 				keywordsArray);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Role_.description)", StringPool.LIKE, true,
+				sql, "LOWER(Role_.description)", StringPool.LIKE, true,
 				keywordsArray);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Team.name)", StringPool.LIKE, false, keywordsArray);
+				sql, "LOWER(Team.name)", StringPool.LIKE, false, keywordsArray);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Team.description)", StringPool.LIKE, true,
+				sql, "LOWER(Team.description)", StringPool.LIKE, true,
 				keywordsArray);
 			sql = StringUtil.replace(
 				sql, "[$EXCLUDED_NAMES$]", getExcludedNames(excludedNames));
@@ -1065,9 +1067,9 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 			String sql = CustomSQLUtil.get(FIND_BY_C_N_D_T);
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Role_.name)", StringPool.LIKE, false, names);
+				sql, "LOWER(Role_.name)", StringPool.LIKE, false, names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Role_.description)", StringPool.LIKE, true,
+				sql, "LOWER(Role_.description)", StringPool.LIKE, true,
 				descriptions);
 			sql = StringUtil.replace(sql, "[$TYPE$]", getTypes(types.length));
 			sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
@@ -1252,7 +1254,7 @@ public class RoleFinderImpl extends RoleFinderBaseImpl implements RoleFinder {
 			int pos = join.indexOf("WHERE");
 
 			if (pos != -1) {
-				join = join.substring(pos + 5, join.length()).concat(" AND ");
+				join = join.substring(pos + 5).concat(" AND ");
 			}
 			else {
 				join = StringPool.BLANK;

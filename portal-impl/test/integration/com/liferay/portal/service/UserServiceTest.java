@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserScreenNameException;
@@ -21,23 +22,27 @@ import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupRole;
+import com.liferay.portal.kernel.security.auth.DefaultScreenNameValidator;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.auth.ScreenNameValidator;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.PasswordPolicyLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserServiceUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
-import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -48,14 +53,15 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.security.auth.ScreenNameValidatorFactory;
 import com.liferay.portal.test.mail.MailServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portlet.passwordpoliciesadmin.util.test.PasswordPolicyTestUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -75,9 +81,84 @@ import org.junit.runner.RunWith;
 /**
  * @author Brian Wing Shun Chan
  * @author José Manuel Navarro
+ * @author Drew Brokke
  */
 @RunWith(Enclosed.class)
 public class UserServiceTest {
+
+	public static class WhenAddingOrRemovingPasswordPolicyUsers {
+
+		@ClassRule
+		@Rule
+		public static final AggregateTestRule aggregateTestRule =
+			new LiferayIntegrationTestRule();
+
+		@Before
+		public void setUp() throws Exception {
+			ServiceContext serviceContext = new ServiceContext();
+
+			serviceContext.setUserId(TestPropsValues.getUserId());
+
+			_defaultPasswordPolicy = PasswordPolicyTestUtil.addPasswordPolicy(
+				serviceContext, true);
+
+			_defaultPasswordPolicy.setChangeable(true);
+			_defaultPasswordPolicy.setChangeRequired(true);
+
+			_defaultPasswordPolicy =
+				PasswordPolicyLocalServiceUtil.updatePasswordPolicy(
+					_defaultPasswordPolicy);
+
+			_testPasswordPolicy = PasswordPolicyTestUtil.addPasswordPolicy(
+				serviceContext);
+
+			_testPasswordPolicy.setChangeable(false);
+			_testPasswordPolicy.setChangeRequired(false);
+
+			_testPasswordPolicy =
+				PasswordPolicyLocalServiceUtil.updatePasswordPolicy(
+					_testPasswordPolicy);
+		}
+
+		@Test
+		public void shouldRemovePasswordResetIfPolicyDoesNotAllowChanging()
+			throws Exception {
+
+			_user = UserTestUtil.addUser();
+
+			Assert.assertEquals(
+				_defaultPasswordPolicy, _user.getPasswordPolicy());
+
+			Assert.assertTrue(_user.isPasswordReset());
+
+			long[] users = {_user.getUserId()};
+
+			UserLocalServiceUtil.addPasswordPolicyUsers(
+				_testPasswordPolicy.getPasswordPolicyId(), users);
+
+			_user = UserLocalServiceUtil.getUser(_user.getUserId());
+
+			Assert.assertFalse(_user.isPasswordReset());
+		}
+
+		@After
+		public void tearDown() throws Exception {
+			_defaultPasswordPolicy.setDefaultPolicy(false);
+
+			PasswordPolicyLocalServiceUtil.updatePasswordPolicy(
+				_defaultPasswordPolicy);
+		}
+
+		@DeleteAfterTestRun
+		private PasswordPolicy _defaultPasswordPolicy;
+
+		@DeleteAfterTestRun
+		private PasswordPolicy _testPasswordPolicy;
+
+		@DeleteAfterTestRun
+		private User _user;
+
+	}
 
 	public static class WhenAddingUserWithDefaultSitesEnabled {
 
@@ -212,6 +293,88 @@ public class UserServiceTest {
 
 		@DeleteAfterTestRun
 		private User _user;
+
+	}
+
+	public static class WhenAddingUserWithSpecialCharactersScreenName {
+
+		@ClassRule
+		@Rule
+		public static final AggregateTestRule aggregateTestRule =
+			new LiferayIntegrationTestRule();
+
+		@Before
+		public void setUp() throws Exception {
+			_screenNameValidator = ScreenNameValidatorFactory.getInstance();
+
+			if (_screenNameValidator instanceof DefaultScreenNameValidator) {
+				_originalSpecialCharacters = ReflectionTestUtil.getFieldValue(
+					_screenNameValidator, _FIELD_KEY);
+
+				ReflectionTestUtil.setFieldValue(
+					_screenNameValidator, _FIELD_KEY, _SPECIAL_CHARACTERS);
+			}
+		}
+
+		@Test
+		public void shouldNormalizeTheFriendlyURL() throws Exception {
+			User user1 = UserTestUtil.addUser("contains-hyphens");
+
+			_users.add(user1);
+
+			Assert.assertEquals("/contains-hyphens", _getFriendlyURL(user1));
+
+			User user2 = UserTestUtil.addUser("contains.periods");
+
+			_users.add(user2);
+
+			Assert.assertEquals("/contains.periods", _getFriendlyURL(user2));
+
+			User user3 = UserTestUtil.addUser("contains_underscores");
+
+			_users.add(user3);
+
+			Assert.assertEquals(
+				"/contains_underscores", _getFriendlyURL(user3));
+
+			User user4 = UserTestUtil.addUser("contains'apostrophes");
+
+			_users.add(user4);
+
+			Assert.assertEquals(
+				"/contains-apostrophes", _getFriendlyURL(user4));
+
+			User user5 = UserTestUtil.addUser("contains#pounds");
+
+			_users.add(user5);
+
+			Assert.assertEquals("/contains-pounds", _getFriendlyURL(user5));
+		}
+
+		@After
+		public void tearDown() throws Exception {
+			if (_screenNameValidator instanceof DefaultScreenNameValidator) {
+				ReflectionTestUtil.setFieldValue(
+					_screenNameValidator, _FIELD_KEY,
+					_originalSpecialCharacters);
+			}
+		}
+
+		private String _getFriendlyURL(User user) {
+			Group group = user.getGroup();
+
+			return group.getFriendlyURL();
+		}
+
+		private static final String _FIELD_KEY = "_specialChars";
+
+		private static final String _SPECIAL_CHARACTERS = "-._\\'#";
+
+		private String _originalSpecialCharacters;
+		private ScreenNameValidator _screenNameValidator;
+
+		@DeleteAfterTestRun
+		private final List<User> _users = new ArrayList();
 
 	}
 
@@ -782,7 +945,6 @@ public class UserServiceTest {
 
 	}
 
-	@Sync
 	public static class WhenPortalSendsPasswordEmail {
 
 		@ClassRule

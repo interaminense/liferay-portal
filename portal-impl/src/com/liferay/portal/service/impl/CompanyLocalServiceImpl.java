@@ -16,6 +16,7 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.encryptor.EncryptorException;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -78,7 +79,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -801,8 +801,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		SearchContext searchContext = createSearchContext(
 			companyId, userId, portletId, groupId, keywords, start, end);
 
-		addScopeFacet(searchContext);
-
 		try {
 			return facetedSearcher.search(searchContext);
 		}
@@ -1181,12 +1179,13 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			List<String> resetKeys = new ArrayList<>();
 
 			for (Map.Entry<String, String> entry : properties.entrySet()) {
-				String key = entry.getKey();
 				String value = entry.getValue();
 
 				if (value.equals(Portal.TEMP_OBFUSCATION_VALUE)) {
 					continue;
 				}
+
+				String key = entry.getKey();
 
 				String propsUtilValue = PropsUtil.get(key);
 
@@ -1279,6 +1278,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	protected void addAssetEntriesFacet(SearchContext searchContext) {
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	protected void addScopeFacet(SearchContext searchContext) {
 		Facet scopeFacet = new ScopeFacet(searchContext);
 

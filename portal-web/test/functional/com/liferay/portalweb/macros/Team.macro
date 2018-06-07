@@ -28,8 +28,8 @@
 			<var name="searchTerm" value="${teamName}" />
 		</execute>
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="List" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="SiteTeams#TEAM_TABLE_NAME" value1="${teamName}" />
@@ -54,8 +54,8 @@
 				<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No users were found." />
 			</then>
 			<else>
-				<execute macro="Portlet#changeDisplayStyle">
-					<var name="displayStyle" value="Icon" />
+				<execute macro="LexiconEntry#changeDisplayStyle">
+					<var name="displayStyle" value="cards" />
 				</execute>
 
 				<var name="key_cardText" value="${userScreenName}" />
@@ -86,8 +86,8 @@
 			<var name="searchTerm" value="${teamName}" />
 		</execute>
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="List" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="SiteTeams#TEAM_TABLE_NAME" value1="${teamName}" />
@@ -114,8 +114,8 @@
 				<execute function="AssertTextNotPresent" locator1="SiteTeamsAssignMembers#USER_GROUPS_TABLE_NAME" value1="${userGroupName}" />
 			</then>
 			<else>
-				<execute macro="Portlet#changeDisplayStyle">
-					<var name="displayStyle" value="Icon" />
+				<execute macro="LexiconEntry#changeDisplayStyle">
+					<var name="displayStyle" value="cards" />
 				</execute>
 
 				<execute function="AssertTextEquals" locator1="Card#SPECIFIC_LARGE_TEXT" value1="${userGroupName}" />
@@ -136,9 +136,7 @@
 	<command name="definePermissionPG">
 		<execute function="Check" locator1="//tr[contains(.,'${teamName}')]/td/input[contains(@id,'${permissionDefinitionKey}')]" />
 
-		<execute macro="Button#clickSave" />
-
-		<execute macro="Alert#viewSuccessMessage" />
+		<execute macro="PortletEntry#save" />
 
 		<execute function="AssertChecked" locator1="//tr[contains(.,'${teamName}')]/td/input[contains(@id,'${permissionDefinitionKey}')]" />
 	</command>
@@ -146,8 +144,8 @@
 	<command name="deleteCP">
 		<var name="key_teamName" value="${teamName}" />
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="List" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="SiteTeams#TEAM_TABLE_NAME" value1="${teamName}" />
@@ -162,8 +160,8 @@
 	</command>
 
 	<command name="editCP">
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="List" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<execute macro="LexiconEntry#gotoEntryMenuItem">
@@ -215,9 +213,7 @@
 	<command name="removePermissionPG">
 		<execute function="Uncheck" locator1="//tr[contains(.,'${teamName}')]/td/input[contains(@id,'${permissionDefinitionKey}')]" />
 
-		<execute macro="Button#clickSave" />
-
-		<execute macro="Alert#viewSuccessMessage" />
+		<execute macro="PortletEntry#save" />
 
 		<execute function="AssertNotChecked" locator1="//tr[contains(.,'${teamName}')]/td/input[contains(@id,'${permissionDefinitionKey}')]" />
 	</command>
@@ -263,7 +259,7 @@
 		<if>
 			<condition function="IsElementNotPresent" locator1="Message#EMPTY_INFO" />
 			<then>
-				<execute function="Check#checkAll" locator1="Checkbox#SELECT_ALL" />
+				<execute macro="PortletEntry#selectAll" />
 				<execute function="ClickNoError" locator1="Icon#DELETE" />
 				<execute function="Confirm" value1="Are you sure you want to delete this? It will be deleted immediately." />
 
@@ -275,8 +271,8 @@
 	<command name="viewCP">
 		<var name="key_teamName" value="${teamName}" />
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="List" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="SiteTeams#TEAM_TABLE_NAME" value1="${teamName}" />
@@ -287,7 +283,10 @@
 	<command name="viewDefaultCP">
 		<var name="key_teamName" value="${teamName}" />
 
-		<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="There are no site teams. You can add a site team by clicking the plus button on the bottom right corner." />
+		<execute macro="PortletEntry#viewEmptyMessage">
+			<var name="entity" value="Site Teams" />
+		</execute>
+
 		<execute function="AssertTextNotPresent" locator1="SiteTeams#TEAM_TABLE_NAME" value1="${teamName}" />
 	</command>
 
@@ -328,7 +327,9 @@
 				<var name="navItem" value="${navItem}" />
 			</execute>
 
-			<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="There are no members. You can add a member by clicking the plus button on the bottom right corner." />
+			<var method="StringUtil#lowerCase('${navItem}')" name="lowercaseNavItem" />
+
+			<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No ${lowercaseNavItem} were found." />
 		</for>
 	</command>
 </definition>

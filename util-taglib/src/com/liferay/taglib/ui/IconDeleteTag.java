@@ -14,13 +14,12 @@
 
 package com.liferay.taglib.ui;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.UnicodeLanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.FileAvailabilityUtil;
 import com.liferay.taglib.util.TagResourceBundleUtil;
@@ -76,7 +75,7 @@ public class IconDeleteTag extends IconTag {
 
 		if (Validator.isNull(getMessage())) {
 			if (_trash) {
-				setMessage("move-to-the-recycle-bin");
+				setMessage("move-to-recycle-bin");
 			}
 			else {
 				setMessage("delete");
@@ -98,13 +97,6 @@ public class IconDeleteTag extends IconTag {
 
 			url = "submitForm(document.hrefFm, '".concat(
 				HtmlUtil.escapeJS(url)).concat("');");
-		}
-
-		if (url.startsWith("wsrp_rewrite?")) {
-			url = StringUtil.replace(
-				url, "/wsrp_rewrite",
-				"&wsrp-extensions=encodeURL/wsrp_rewrite");
-			url = "submitForm(document.hrefFm, '".concat(url).concat("');");
 		}
 
 		if (!_trash) {

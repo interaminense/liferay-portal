@@ -40,20 +40,20 @@ public class LiferayStrutsPortletURLImpl extends PortletURLImplWrapper {
 		// Add parameters from the query string because bridges passes these
 		// through instead of setting them on the portlet URL
 
-		String decodedValue = HttpUtil.decodeURL(value);
-
 		try {
 			if (name.equals(StrutsPortletURL.PAGE)) {
+				String decodedValue = HttpUtil.decodeURL(value);
+
 				String[] urlComponents = decodedValue.split("\\?", 2);
 
 				if (urlComponents.length != 2) {
 					return;
 				}
 
-				String[] nameValue = urlComponents[1].split("\\&");
+				String[] nameValueArray = urlComponents[1].split("\\&");
 
-				for (int i = 0; i < nameValue.length; i++) {
-					String[] nameValuePair = nameValue[i].split("\\=", 2);
+				for (String nameValue : nameValueArray) {
+					String[] nameValuePair = nameValue.split("\\=", 2);
 
 					if (nameValuePair.length == 2) {
 						super.setParameter(nameValuePair[0], nameValuePair[1]);

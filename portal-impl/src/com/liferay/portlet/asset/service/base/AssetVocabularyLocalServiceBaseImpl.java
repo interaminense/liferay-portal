@@ -54,6 +54,7 @@ import com.liferay.portal.kernel.service.persistence.GroupFinder;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -106,6 +107,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	 * @return the new asset vocabulary
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public AssetVocabulary createAssetVocabulary(long vocabularyId) {
 		return assetVocabularyPersistence.create(vocabularyId);
 	}
@@ -236,6 +238,19 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	public AssetVocabulary fetchAssetVocabularyByUuidAndGroupId(String uuid,
 		long groupId) {
 		return assetVocabularyPersistence.fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns the asset vocabulary with the matching external reference code and company.
+	 *
+	 * @param companyId the primary key of the company
+	 * @param externalReferenceCode the asset vocabulary's external reference code
+	 * @return the matching asset vocabulary, or <code>null</code> if a matching asset vocabulary could not be found
+	 */
+	@Override
+	public AssetVocabulary fetchAssetVocabularyByReferenceCode(long companyId,
+		String externalReferenceCode) {
+		return assetVocabularyPersistence.fetchByC_ERC(companyId, null);
 	}
 
 	/**

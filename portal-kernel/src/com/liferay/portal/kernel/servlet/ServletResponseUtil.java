@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.servlet;
 
 import com.liferay.petra.nio.CharsetEncoderUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -27,7 +28,6 @@ import com.liferay.portal.kernel.util.RandomAccessInputStream;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
@@ -100,8 +100,7 @@ public class ServletResponseUtil {
 			int index = rangeField.indexOf(StringPool.DASH);
 
 			long start = GetterUtil.getLong(rangeField.substring(0, index), -1);
-			long end = GetterUtil.getLong(
-				rangeField.substring(index + 1, rangeField.length()), -1);
+			long end = GetterUtil.getLong(rangeField.substring(index + 1), -1);
 
 			if (start == -1) {
 				start = length - end;
@@ -414,12 +413,12 @@ public class ServletResponseUtil {
 						ByteBuffer.wrap(bytes, offset, contentLength));
 				}
 				else {
-					ServletOutputStream servletOutputStream =
-						response.getOutputStream();
-
 					if ((contentLength == 0) && ServerDetector.isJetty()) {
 					}
 					else {
+						ServletOutputStream servletOutputStream =
+							response.getOutputStream();
+
 						servletOutputStream.write(bytes, offset, contentLength);
 					}
 				}

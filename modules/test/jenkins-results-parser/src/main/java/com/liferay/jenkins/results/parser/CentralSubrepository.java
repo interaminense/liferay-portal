@@ -45,7 +45,17 @@ public class CentralSubrepository {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("/opt/dev/projects/github/");
+		Properties buildProperties = null;
+
+		try {
+			buildProperties = JenkinsResultsParserUtil.getBuildProperties();
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException("Unable to get build properties", ioe);
+		}
+
+		sb.append(buildProperties.getProperty("base.repository.dir"));
+		sb.append("/");
 		sb.append(_subrepositoryName);
 
 		if (!_subrepositoryName.endsWith("-private")) {
@@ -76,12 +86,12 @@ public class CentralSubrepository {
 				gitWorkingDirectory.getRemote("upstream");
 
 			localUpstreamBranch = gitWorkingDirectory.getBranch(
-				_subrepositoryUpstreamBranchName, null);
+				_subrepositoryUpstreamBranchName, null, true);
 
 			gitWorkingDirectory.fetch(
 				localUpstreamBranch,
 				gitWorkingDirectory.getBranch(
-					_subrepositoryUpstreamBranchName, upstreamRemote));
+					_subrepositoryUpstreamBranchName, upstreamRemote, true));
 		}
 		finally {
 			if ((localUpstreamBranch != null) && (tempBranch != null) &&
@@ -121,7 +131,7 @@ public class CentralSubrepository {
 		return _subrepositoryUpstreamCommit;
 	}
 
-	public boolean isAutoPullEnabled() throws IOException {
+	public boolean isAutoPullEnabled() {
 		String mode = _gitrepoProperties.getProperty("mode", "push");
 
 		if (!mode.equals("pull")) {

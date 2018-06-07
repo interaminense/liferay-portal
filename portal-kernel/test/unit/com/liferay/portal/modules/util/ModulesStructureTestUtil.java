@@ -16,12 +16,12 @@ package com.liferay.portal.modules.util;
 
 import aQute.bnd.osgi.Constants;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
@@ -47,7 +47,9 @@ import org.junit.Assert;
  */
 public class ModulesStructureTestUtil {
 
-	public static boolean contains(Path path, String s) throws IOException {
+	public static boolean contains(Path path, String... strings)
+		throws IOException {
+
 		try (FileReader fileReader = new FileReader(path.toFile());
 			UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(fileReader)) {
@@ -55,13 +57,24 @@ public class ModulesStructureTestUtil {
 			String line = null;
 
 			while ((line = unsyncBufferedReader.readLine()) != null) {
-				if (line.contains(s)) {
-					return true;
+				for (String s : strings) {
+					if (line.contains(s)) {
+						return true;
+					}
 				}
 			}
 		}
 
 		return false;
+	}
+
+	public static String getAbsolutePath(Path path) {
+		Path absolutePath = path.toAbsolutePath();
+
+		absolutePath = absolutePath.normalize();
+
+		return StringUtil.replace(
+			absolutePath.toString(), File.separatorChar, CharPool.SLASH);
 	}
 
 	public static List<GradleDependency> getGradleDependencies(
@@ -104,7 +117,7 @@ public class ModulesStructureTestUtil {
 			try {
 				GradleDependency gradleDependency = new GradleDependency(
 					dependency, configuration, moduleGroup, moduleName,
-					moduleVersion);
+					moduleVersion, false);
 
 				gradleDependencies.add(gradleDependency);
 			}
@@ -132,7 +145,6 @@ public class ModulesStructureTestUtil {
 		while (matcher.find()) {
 			String dependency = matcher.group();
 
-			String configuration = matcher.group(1);
 			String projectPath = matcher.group(2);
 
 			String projectDirName = StringUtil.replace(
@@ -174,9 +186,11 @@ public class ModulesStructureTestUtil {
 			String moduleVersion = bndProperties.getProperty(
 				Constants.BUNDLE_VERSION);
 
+			String configuration = matcher.group(1);
+
 			GradleDependency gradleDependency = new GradleDependency(
 				dependency, configuration, moduleGroup, moduleName,
-				moduleVersion);
+				moduleVersion, true);
 
 			gradleDependencies.add(gradleDependency);
 		}

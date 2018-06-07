@@ -15,6 +15,7 @@
 package com.liferay.adaptive.media.image.internal.exportimport.content.processor;
 
 import com.liferay.adaptive.media.image.html.AMImageHTMLTagFactory;
+import com.liferay.adaptive.media.image.html.constants.AMImageHTMLConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
@@ -37,16 +38,15 @@ import org.osgi.service.component.annotations.Reference;
  * @author Adolfo Pérez
  * @author Alejandro Tardín
  */
-@Component(property = {"adaptive.media.format=html"})
+@Component(property = "adaptive.media.format=html")
 public class AMImageHTMLExportImportContentProcessor
 	implements ExportImportContentProcessor<String> {
 
 	@Override
 	public String replaceExportContentReferences(
-			PortletDataContext portletDataContext, StagedModel stagedModel,
-			String content, boolean exportReferencedContent,
-			boolean escapeContent)
-		throws Exception {
+		PortletDataContext portletDataContext, StagedModel stagedModel,
+		String content, boolean exportReferencedContent,
+		boolean escapeContent) {
 
 		AMReferenceExporter amReferenceExporter = new AMReferenceExporter(
 			portletDataContext, stagedModel, exportReferencedContent);
@@ -72,9 +72,13 @@ public class AMImageHTMLExportImportContentProcessor
 		throws PortalException {
 
 		Document document = _parseDocument(content);
+		String elementSelector =
+			"[" + AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID + "]";
 
-		for (Element element : document.select("[data-fileEntryId]")) {
-			long fileEntryId = Long.valueOf(element.attr("data-fileEntryId"));
+		for (Element element : document.select(elementSelector)) {
+			long fileEntryId = Long.valueOf(
+				element.attr(
+					AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID));
 
 			_dlAppLocalService.getFileEntry(fileEntryId);
 		}
@@ -113,12 +117,12 @@ public class AMImageHTMLExportImportContentProcessor
 	}
 
 	private Document _parseDocument(String html) {
+		Document document = Jsoup.parseBodyFragment(html);
+
 		Document.OutputSettings outputSettings = new Document.OutputSettings();
 
 		outputSettings.prettyPrint(false);
 		outputSettings.syntax(Document.OutputSettings.Syntax.xml);
-
-		Document document = Jsoup.parseBodyFragment(html);
 
 		document.outputSettings(outputSettings);
 
@@ -157,13 +161,20 @@ public class AMImageHTMLExportImportContentProcessor
 				continue;
 			}
 
-			element.attr("data-fileEntryId", String.valueOf(fileEntryId));
+			element.attr(
+				AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID,
+				String.valueOf(fileEntryId));
 			element.removeAttr(_ATTRIBUTE_NAME_EXPORT_IMPORT_PATH);
 
 			if ("picture".equals(element.tagName())) {
 				Elements imgElements = element.getElementsByTag("img");
 
 				Element imgElement = imgElements.first();
+
+				imgElement.removeAttr(_ATTRIBUTE_NAME_EXPORT_IMPORT_PATH);
+				imgElement.attr(
+					AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID,
+					String.valueOf(fileEntryId));
 
 				Element picture = _parseNode(
 					_amImageHTMLTagFactory.create(
@@ -179,22 +190,37 @@ public class AMImageHTMLExportImportContentProcessor
 	}
 
 	private String _replace(
-			String content, AMReferenceExporter amReferenceExporter)
-		throws PortalException {
+		String content, AMReferenceExporter amReferenceExporter) {
 
 		Document document = _parseDocument(content);
+		String elementSelector =
+			"[" + AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID + "]";
 
-		for (Element element : document.select("[data-fileEntryId]")) {
-			long fileEntryId = Long.valueOf(element.attr("data-fileEntryId"));
+		for (Element element : document.select(elementSelector)) {
+			long fileEntryId = Long.valueOf(
+				element.attr(
+					AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID));
 
-			FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
+			try {
+				FileEntry fileEntry = _dlAppLocalService.getFileEntry(
+					fileEntryId);
 
-			amReferenceExporter.exportReference(fileEntry);
+				amReferenceExporter.exportReference(fileEntry);
 
-			element.removeAttr("data-fileEntryId");
-			element.attr(
-				_ATTRIBUTE_NAME_EXPORT_IMPORT_PATH,
-				ExportImportPathUtil.getModelPath(fileEntry));
+				element.removeAttr(
+					AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID);
+				element.attr(
+					_ATTRIBUTE_NAME_EXPORT_IMPORT_PATH,
+					ExportImportPathUtil.getModelPath(fileEntry));
+			}
+			catch (PortalException pe) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(pe, pe);
+				}
+				else if (_log.isWarnEnabled()) {
+					_log.warn(pe.getMessage());
+				}
+			}
 		}
 
 		Element bodyElement = document.body();

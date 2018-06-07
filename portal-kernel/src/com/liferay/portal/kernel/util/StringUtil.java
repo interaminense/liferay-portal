@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.highlight.HighlightUtil;
 import com.liferay.portal.kernel.security.RandomUtil;
 
@@ -967,10 +970,10 @@ public class StringUtil {
 		}
 
 		for (int i = fromIndex; i <= toIndex; i++) {
-			char c = s.charAt(i);
+			char c1 = s.charAt(i);
 
-			for (int j = 0; j < chars.length; j++) {
-				if (c == chars[j]) {
+			for (char c2 : chars) {
+				if (c1 == c2) {
 					return i;
 				}
 			}
@@ -1137,13 +1140,13 @@ public class StringUtil {
 		}
 
 		for (int i = fromIndex; i <= toIndex; i++) {
-			for (int j = 0; j < texts.length; j++) {
-				if (texts[j] == null) {
+			for (String text : texts) {
+				if (text == null) {
 					continue;
 				}
 
-				if (((i + texts[j].length()) <= (toIndex + 1)) &&
-					s.startsWith(texts[j], i)) {
+				if (((i + text.length()) <= (toIndex + 1)) &&
+					s.startsWith(text, i)) {
 
 					return i;
 				}
@@ -1400,10 +1403,10 @@ public class StringUtil {
 		}
 
 		for (int i = toIndex; i >= fromIndex; i--) {
-			char c = s.charAt(i);
+			char c1 = s.charAt(i);
 
-			for (int j = 0; j < chars.length; j++) {
-				if (c == chars[j]) {
+			for (char c2 : chars) {
+				if (c1 == c2) {
 					return i;
 				}
 			}
@@ -1569,13 +1572,13 @@ public class StringUtil {
 		}
 
 		for (int i = toIndex; i >= fromIndex; i--) {
-			for (int j = 0; j < texts.length; j++) {
-				if (texts[j] == null) {
+			for (String text : texts) {
+				if (text == null) {
 					continue;
 				}
 
-				if (((i + texts[j].length()) <= (toIndex + 1)) &&
-					s.startsWith(texts[j], i)) {
+				if (((i + text.length()) <= (toIndex + 1)) &&
+					s.startsWith(text, i)) {
 
 					return i;
 				}
@@ -2049,7 +2052,9 @@ public class StringUtil {
 				sb.append(delimiter);
 			}
 
-			sb.append(String.valueOf(array[i]).trim());
+			String value = String.valueOf(array[i]);
+
+			sb.append(value.trim());
 		}
 
 		return sb.toString();
@@ -2285,7 +2290,9 @@ public class StringUtil {
 				}
 			}
 
-			return sb.toString().trim();
+			String s = sb.toString();
+
+			return s.trim();
 		}
 
 		try (InputStream is = classLoader.getResourceAsStream(name)) {
@@ -2376,15 +2383,15 @@ public class StringUtil {
 
 		iterate:
 		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
+			char c1 = s.charAt(i);
 
-			for (int j = 0; j < oldSubs.length; j++) {
-				if (c == oldSubs[j]) {
+			for (char c2 : oldSubs) {
+				if (c1 == c2) {
 					continue iterate;
 				}
 			}
 
-			sb.append(c);
+			sb.append(c1);
 		}
 
 		if (s.length() == sb.length()) {
@@ -3282,13 +3289,13 @@ public class StringUtil {
 
 				String oldValue = s.substring(x + begin.length(), y);
 
-				StringBundler newValue = values.get(oldValue);
+				StringBundler newValueSB = values.get(oldValue);
 
-				if (newValue == null) {
+				if (newValueSB == null) {
 					sb.append(oldValue);
 				}
 				else {
-					sb.append(newValue);
+					sb.append(newValueSB);
 				}
 
 				pos = y + end.length();
@@ -3584,13 +3591,13 @@ public class StringUtil {
 	 */
 	public static String[] split(String s, char delimiter) {
 		if (Validator.isNull(s)) {
-			return _emptyStringArray;
+			return _EMPTY_STRING_ARRAY;
 		}
 
 		s = s.trim();
 
 		if (s.length() == 0) {
-			return _emptyStringArray;
+			return _EMPTY_STRING_ARRAY;
 		}
 
 		List<String> nodeValues = new ArrayList<>();
@@ -3702,13 +3709,13 @@ public class StringUtil {
 		if (Validator.isNull(s) || (delimiter == null) ||
 			delimiter.equals(StringPool.BLANK)) {
 
-			return _emptyStringArray;
+			return _EMPTY_STRING_ARRAY;
 		}
 
 		s = s.trim();
 
 		if (s.equals(delimiter)) {
-			return _emptyStringArray;
+			return _EMPTY_STRING_ARRAY;
 		}
 
 		if (delimiter.length() == 1) {
@@ -3757,7 +3764,9 @@ public class StringUtil {
 			boolean value = x;
 
 			try {
-				value = Boolean.valueOf(array[i]).booleanValue();
+				Boolean booleanValue = Boolean.valueOf(array[i]);
+
+				value = booleanValue.booleanValue();
 			}
 			catch (Exception e) {
 			}
@@ -3951,7 +3960,7 @@ public class StringUtil {
 	 */
 	public static String[] splitLines(String s) {
 		if (Validator.isNull(s)) {
-			return _emptyStringArray;
+			return _EMPTY_STRING_ARRAY;
 		}
 
 		s = s.trim();
@@ -4233,7 +4242,7 @@ public class StringUtil {
 			return s;
 		}
 
-		return s.substring(0, x - 1).concat(s.substring(y + 1, s.length()));
+		return s.substring(0, x - 1).concat(s.substring(y + 1));
 	}
 
 	/**
@@ -4841,7 +4850,7 @@ public class StringUtil {
 	 *         empty
 	 */
 	public static String unquote(String s) {
-		if (Validator.isNull(s)) {
+		if (Validator.isNull(s) || (s.length() == 1)) {
 			return s;
 		}
 
@@ -5272,6 +5281,8 @@ public class StringUtil {
 		}
 	}
 
+	private static final String[] _EMPTY_STRING_ARRAY = new String[0];
+
 	private static final char[] _RANDOM_STRING_CHAR_TABLE = {
 		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
 		'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
@@ -5279,7 +5290,5 @@ public class StringUtil {
 		'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
 		'u', 'v', 'w', 'x', 'y', 'z'
 	};
-
-	private static final String[] _emptyStringArray = new String[0];
 
 }
