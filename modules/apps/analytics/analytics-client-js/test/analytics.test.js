@@ -4,7 +4,9 @@ import {assert, expect} from 'chai';
 let Analytics;
 let EVENT_ID = 0;
 
+const ANALYTICS_EVENTS_ENDPOINT = 'ANALYTICS_EVENTS_ENDPOINT';
 const ANALYTICS_IDENTITY = {email: 'foo@bar.com'};
+const ANALYTICS_IDENTITY_ENDPOINT = 'ANALYTICS_IDENTITY_ENDPOINT';
 const ANALYTICS_KEY = 'ANALYTICS_KEY';
 const FLUSH_INTERVAL = 100;
 const LOCAL_USER_ID = 'LOCAL_USER_ID';
@@ -70,6 +72,33 @@ describe('Analytics Client', () => {
 
 		Analytics = Analytics.create(config);
 		Analytics.config.should.deep.equal(config);
+	});
+
+	it('should return an object config with analyticsKey, dataSourceId and endpoints' , () => {
+		fetchMock.mock(/identity/ig, () => Promise.resolve(200));
+
+		Analytics.reset();
+		Analytics.dispose();
+
+		Analytics = AnalyticsClient.create(
+			{
+				analyticsKey: ANALYTICS_KEY,
+				datSourceId: '1234',
+				endpoints: {
+					events: ANALYTICS_EVENTS_ENDPOINT,
+					identity: ANALYTICS_IDENTITY_ENDPOINT,
+				},
+			}
+		);
+
+		expect(Analytics.config).to.deep.equal({
+			analyticsKey: 'ANALYTICS_KEY',
+			datSourceId: '1234',
+			endpoints: {
+				events: 'ANALYTICS_EVENTS_ENDPOINT',
+				identity: 'ANALYTICS_IDENTITY_ENDPOINT',
+			},
+		});
 	});
 
 	describe('.flush', () => {
