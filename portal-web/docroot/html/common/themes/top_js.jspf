@@ -14,8 +14,10 @@
  */
 --%>
 
+<%@ page import="java.util.HashSet" %>
+
 <script data-senna-track="temporary" type="text/javascript">
-	// <![CDATA[
+// <![CDATA[
 		var Liferay = Liferay || {};
 
 		Liferay.Browser = {
@@ -437,9 +439,25 @@ UnicodeProperties groupTypeSettings = group.getTypeSettingsProperties();
 if (Validator.isNull(liferayAnalyticsKey)) {
 	liferayAnalyticsKey = groupTypeSettings.getProperty(GroupConstants.TYPE_SETTINGS_KEY_LIFERAY_ANALYTICS_KEY);
 }
+
+String liferayAnalyticsSettings = PrefsPropsUtil.getString(company.getCompanyId(), "liferayAnalyticsSettings");
+
+JSONObject liferayAnalyticsSettingsJSONObject = null;
+
+Set<Long> liferayAnalyticsUntrackedGroupIds = new HashSet<>();
+
+if (Validator.isNotNull(liferayAnalyticsSettings)) {
+	liferayAnalyticsSettingsJSONObject = JSONFactoryUtil.createJSONObject(new String(Base64.decode(liferayAnalyticsSettings)));
+
+	JSONArray untrackedGroupIdsJSONArray = liferayAnalyticsSettingsJSONObject.getJSONArray("untrackedGroupIds");
+
+	for (int i = 0; i < untrackedGroupIdsJSONArray.length(); i++) {
+		liferayAnalyticsUntrackedGroupIds.add(untrackedGroupIdsJSONArray.getLong(i));
+	}
+}
 %>
 
-<c:if test="<%= Validator.isNotNull(liferayAnalyticsKey) %>">
+<c:if test="<%= Validator.isNotNull(liferayAnalyticsKey) || !liferayAnalyticsUntrackedGroupIds.contains(group.getGroupId()) %>">
 	<script data-senna-track="permanent" id="liferayAnalyticsScript" type="text/javascript">
 		(function(u, c, a, m, o, l) {
 			o = 'script';
