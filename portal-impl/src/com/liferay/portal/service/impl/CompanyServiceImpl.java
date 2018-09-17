@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -632,7 +633,7 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 
 		jsonObject.put("untrackedGroupIds", untrackedGroupIdsJSONArray);
 
-		return DigesterUtil.digestBase64(jsonObject.toString());
+		return Base64.encode(jsonObject.toString().getBytes());
 	}
 
 }
