@@ -476,7 +476,7 @@ if (Validator.isNotNull(liferayAnalyticsSettings)) {
 		})('https://analytics-js-cdn.liferay.com', function() {
 			var config = {
 				analyticsKey: '<%= HtmlUtil.escapeJS(liferayAnalyticsKey) %>',
-				wedeployKey: '<%= HtmlUtil.escapeJS(liferayWeDeployKey) %>'
+				weDeployKey: '<%= HtmlUtil.escapeJS(liferayWeDeployKey) %>'
 			};
 
 			Analytics.create(config);
