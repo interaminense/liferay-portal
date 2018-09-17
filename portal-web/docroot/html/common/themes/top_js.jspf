@@ -447,6 +447,7 @@ JSONObject liferayAnalyticsSettingsJSONObject = null;
 
 Set<Long> liferayAnalyticsUntrackedGroupIds = new HashSet<>();
 
+String liferayDataSourceId = null;
 String liferayWeDeployKey = "asahlfr.lfr.io";
 
 if (Validator.isNotNull(liferayAnalyticsSettings)) {
@@ -458,6 +459,7 @@ if (Validator.isNotNull(liferayAnalyticsSettings)) {
 		liferayAnalyticsUntrackedGroupIds.add(untrackedGroupIdsJSONArray.getLong(i));
 	}
 
+	liferayDataSourceId = liferayAnalyticsSettingsJSONObject.getString("dataSourceId");
 	liferayWeDeployKey = liferayAnalyticsSettingsJSONObject.getString("weDeployKey", liferayWeDeployKey);
 }
 %>
@@ -476,6 +478,7 @@ if (Validator.isNotNull(liferayAnalyticsSettings)) {
 		})('https://analytics-js-cdn.liferay.com', function() {
 			var config = {
 				analyticsKey: '<%= HtmlUtil.escapeJS(liferayAnalyticsKey) %>',
+				dataSourceId: '<%= HtmlUtil.escapeJS(liferayDataSourceId) %>',
 				weDeployKey: '<%= HtmlUtil.escapeJS(liferayWeDeployKey) %>'
 			};
 
