@@ -14,8 +14,6 @@ import uuidv1 from 'uuid/v1';
 const ENV = window || global;
 const FLUSH_INTERVAL = 2000;
 const REQUEST_TIMEOUT = 5000;
-const LCS_IDENTITY_ENDPOINT =
-	'https://analytics-gw.liferay.com/api/identitycontextgateway/send-identity-context';
 
 // Local Storage keys
 const STORAGE_KEY_EVENTS = 'lcs_client_batch';
@@ -44,12 +42,10 @@ class Analytics {
 			instance = this;
 		}
 
-		const {analyticsKey, endpoints, flushInterval, uri} = config;
-		const {identity: identityEndpoint, events: eventsEndpoint} =
-			endpoints || {};
+		const {analyticsKey, flushInterval, uri, weDeployKey} = config;
 
 		const lcsClient = new LCSClient(uri);
-		const asahClient = new AsahClient(eventsEndpoint);
+		const asahClient = new AsahClient();
 
 		instance.client = lcsClient;
 
@@ -60,10 +56,8 @@ class Analytics {
 
 		instance.config = config;
 
-		instance.identityEndpoint =
-			identityEndpoint ||
-			`https://osbasahfarobackend-asahlfr.lfr.io/${analyticsKey}/identity/`;
-		instance.lcsIdentityEndpoint = LCS_IDENTITY_ENDPOINT;
+		instance.asahIdentityEndpoint = `https://osbasahfarobackend-${weDeployKey}/${analyticsKey}/identity/`;
+		instance.lcsIdentityEndpoint = 'https://analytics-gw.liferay.com/api/identitycontextgateway/send-identity-context';
 
 		instance.events = storage.get(STORAGE_KEY_EVENTS) || [];
 		instance.contexts = storage.get(STORAGE_KEY_CONTEXTS) || [];
@@ -201,11 +195,13 @@ class Analytics {
 	 * @return {Promise} A promise returned by the fetch request.
 	 */
 	_sendIdentity(identity, userId) {
+		const {analyticsKey, weDeployKey} = this.config;
 		const bodyData = {
 			...fingerprint(),
-			analyticsKey: this.config.analyticsKey,
+			analyticsKey,
 			identity,
 			userId,
+			weDeployKey,
 		};
 
 		const storedIdentityHash = storage.get(STORAGE_KEY_IDENTITY_HASH);
@@ -228,7 +224,7 @@ class Analytics {
 				mode: 'cors',
 			};
 
-			fetch(this.identityEndpoint, request);
+			fetch(this.asahIdentityEndpoint, request);
 
 			return fetch(this.lcsIdentityEndpoint, request).then(
 				() => newIdentityHash
@@ -395,6 +391,7 @@ class Analytics {
 	 *	   uri: 'https://analytics-gw.liferay.com/api/analyticsgateway/send-analytics-events'
 	 *	   userId: 'id-s7uatimmxgo',
 	 *     analyticsKey: 'MyAnalyticsKey',
+	 *     weDeployKey: 'MyWeDeployKey',
 	 *   }
 	 * );
 	 */
