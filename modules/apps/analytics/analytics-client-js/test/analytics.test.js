@@ -4,12 +4,11 @@ import {expect} from 'chai';
 let Analytics;
 let EVENT_ID = 0;
 
-const ANALYTICS_EVENTS_ENDPOINT = 'ANALYTICS_EVENTS_ENDPOINT';
 const ANALYTICS_IDENTITY = {email: 'foo@bar.com'};
-const ANALYTICS_IDENTITY_ENDPOINT = 'ANALYTICS_IDENTITY_ENDPOINT';
-const ANALYTICS_KEY = 'ANALYTICS_KEY';
+const ANALYTICS_KEY = 'MyAnalyticsKey';
 const FLUSH_INTERVAL = 100;
 const MOCKED_REQUEST_DURATION = 5000;
+const WEDEPLOY_KEY = 'asahlfr.lfr.io';
 
 // Local Storage keys
 const STORAGE_KEY_EVENTS = 'lcs_client_batch';
@@ -82,20 +81,14 @@ describe('Analytics Client', () => {
 			{
 				analyticsKey: ANALYTICS_KEY,
 				datSourceId: '1234',
-				endpoints: {
-					events: ANALYTICS_EVENTS_ENDPOINT,
-					identity: ANALYTICS_IDENTITY_ENDPOINT,
-				},
+				weDeployKey: WEDEPLOY_KEY,
 			}
 		);
 
 		expect(Analytics.config).to.deep.equal({
-			analyticsKey: 'ANALYTICS_KEY',
+			analyticsKey: 'MyAnalyticsKey',
 			datSourceId: '1234',
-			endpoints: {
-				events: 'ANALYTICS_EVENTS_ENDPOINT',
-				identity: 'ANALYTICS_IDENTITY_ENDPOINT',
-			},
+			weDeployKey: 'asahlfr.lfr.io',
 		});
 	});
 
@@ -162,6 +155,8 @@ describe('Analytics Client', () => {
 			Analytics = AnalyticsClient.create(
 				{
 					analyticsKey: ANALYTICS_KEY,
+					dataSourceId: '1234',
+					weDeployKey: WEDEPLOY_KEY,
 				}
 			);
 
@@ -188,6 +183,8 @@ describe('Analytics Client', () => {
 			Analytics = AnalyticsClient.create(
 				{
 					analyticsKey: ANALYTICS_KEY,
+					dataSourceId: '1234',
+					weDeployKey: WEDEPLOY_KEY,
 				}
 			);
 
@@ -218,6 +215,8 @@ describe('Analytics Client', () => {
 			Analytics = AnalyticsClient.create(
 				{
 					analyticsKey: ANALYTICS_KEY,
+					dataSourceId: '1234',
+					weDeployKey: WEDEPLOY_KEY,
 				}
 			);
 
@@ -245,7 +244,10 @@ describe('Analytics Client', () => {
 
 			Analytics = AnalyticsClient.create(
 				{
+					analyticsKey: ANALYTICS_KEY,
+					dataSourceId: '1234',
 					flushInterval: FLUSH_INTERVAL * 10,
+					weDeployKey: WEDEPLOY_KEY,
 				}
 			);
 
