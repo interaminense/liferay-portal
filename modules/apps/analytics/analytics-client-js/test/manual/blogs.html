@@ -48,10 +48,8 @@
 			m.parentNode.insertBefore(a,m)})('../../build/analytics-all-min.js', function(){
 				Analytics.create({
 					analyticsKey: 'MyAnalyticsKey',
-					endpoints: {
-						events: 'https://osbasahcerebropublisher-asahlfr.lfr.io/',
-						identity: 'https://osbasahfarobackend-asahlfr.lfr.io/MyAnalyticsKey/identity/',
-					}
+					dataSourceId: '1234',
+					weDeployKey:'MyWeDeployKey'
 				});
 				Analytics.setIdentity({ email: 'foo@bar.com', name: 'Foo' });
 				document.body.addEventListener('click', function(evt) {

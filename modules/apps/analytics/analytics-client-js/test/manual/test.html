@@ -68,10 +68,7 @@
 				Analytics.create({
 					analyticsKey: 'MyAnalyticsKey',
 					dataSourceId: '1234',
-					endpoints: {
-						events: 'https://osbasahcerebropublisher-asahlfr.lfr.io/',
-						identity: 'https://osbasahfarobackend-asahlfr.lfr.io/MyAnalyticsKey/identity/',
-					}
+					weDeployKey:'MyWeDeployKey'
 				});
 				Analytics.setIdentity({ email: 'foo@bar.com', name: 'Foo' });
 				Analytics.send('view', 'Layout', { message: 'This is a test'});
