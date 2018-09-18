@@ -57,7 +57,8 @@ class Analytics {
 		instance.config = config;
 
 		instance.asahIdentityEndpoint = `https://osbasahfarobackend-${weDeployKey}/${analyticsKey}/identity/`;
-		instance.lcsIdentityEndpoint = 'https://analytics-gw.liferay.com/api/identitycontextgateway/send-identity-context';
+		instance.lcsIdentityEndpoint =
+			'https://analytics-gw.liferay.com/api/identitycontextgateway/send-identity-context';
 
 		instance.events = storage.get(STORAGE_KEY_EVENTS) || [];
 		instance.contexts = storage.get(STORAGE_KEY_CONTEXTS) || [];
