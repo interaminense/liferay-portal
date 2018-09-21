@@ -107,11 +107,11 @@ import org.osgi.service.component.annotations.Reference;
  *
  * @author Javier Gamarra
  */
-@Component(immediate = true)
+@Component(immediate = true, service = NestedCollectionResource.class)
 public class StructuredContentNestedCollectionResource
 	implements NestedCollectionResource
 		<JournalArticleWrapper, Long, StructuredContentIdentifier, Long,
-		ContentSpaceIdentifier> {
+		 ContentSpaceIdentifier> {
 
 	@Override
 	public NestedCollectionRoutes<JournalArticleWrapper, Long, Long>
@@ -154,7 +154,7 @@ public class StructuredContentNestedCollectionResource
 		return builder.types(
 			"StructuredContent"
 		).identifier(
-			JournalArticle::getId
+			JournalArticle::getResourcePrimKey
 		).addBidirectionalModel(
 			"contentSpace", "structuredContents", ContentSpaceIdentifier.class,
 			JournalArticle::getGroupId
@@ -352,7 +352,7 @@ public class StructuredContentNestedCollectionResource
 	private void _deleteJournalArticle(long journalArticleId)
 		throws PortalException {
 
-		JournalArticle journalArticle = _journalArticleService.getArticle(
+		JournalArticle journalArticle = _journalArticleService.getLatestArticle(
 			journalArticleId);
 
 		_journalArticleService.deleteArticle(
@@ -489,7 +489,7 @@ public class StructuredContentNestedCollectionResource
 			long journalArticleId, ThemeDisplay themeDisplay)
 		throws PortalException {
 
-		JournalArticle journalArticle = _journalArticleService.getArticle(
+		JournalArticle journalArticle = _journalArticleService.getLatestArticle(
 			journalArticleId);
 
 		return new JournalArticleWrapper(journalArticle, themeDisplay);
@@ -576,7 +576,7 @@ public class StructuredContentNestedCollectionResource
 			() -> _journalContent.getDisplay(
 				journalArticleWrapper.getGroupId(),
 				journalArticleWrapper.getArticleId(),
-				ddmTemplate.getTemplateKey(), null, locale.getLanguage(),
+				ddmTemplate.getTemplateKey(), null, locale.toString(),
 				journalArticleWrapper.getThemeDisplay())
 		).map(
 			JournalArticleDisplay::getContent
@@ -632,7 +632,7 @@ public class StructuredContentNestedCollectionResource
 		).map(
 			this::_getJournalArticle
 		).map(
-			JournalArticle::getId
+			JournalArticle::getResourcePrimKey
 		).orElse(
 			null
 		);
@@ -644,7 +644,7 @@ public class StructuredContentNestedCollectionResource
 			ThemeDisplay themeDisplay)
 		throws PortalException {
 
-		JournalArticle journalArticle = _journalArticleService.getArticle(
+		JournalArticle journalArticle = _journalArticleService.getLatestArticle(
 			journalArticleId);
 
 		ServiceContext serviceContext = new ServiceContext();
