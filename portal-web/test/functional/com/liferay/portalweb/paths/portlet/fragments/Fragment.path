@@ -28,6 +28,11 @@
 	<td>//iframe[@class='fragment-preview__content']</td>
 	<td></td>
 </tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
 <!--FRAGMENT_SIDEBAR-->
 <tr>
 	<td>FRAGMENT_SIDEBAR_COLLECTION_PANEL</td>
@@ -59,6 +64,11 @@
 	<td>//ul[contains(@class,'nav')]//li[contains(@class,'nav-item')]//a[contains(.,'${key_tabName}')][contains(@class,'active')]</td>
 	<td></td>
 </tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
 <!--PAGE_TEMPLATE-->
 <tr>
 	<td>PAGE_TEMPLATE_AUTOSAVE_MESSAGE</td>
@@ -71,12 +81,12 @@
 	<td></td>
 </tr>
 <tr>
-	<td>PAGE_TEMPLATE_FRAGMENT_EDITABLE_TEXT</td>
+	<td>PAGE_TEMPLATE_FRAGMENT_EDITABLE_FIELD</td>
 	<td>//div[contains(@class,'fragment-entry-link')]/div[contains(.,'${key_fragmentName}')]//lfr-editable[contains(@id,'${key_id}')]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>PAGE_TEMPLATE_FRAGMENT_EDITABLE_TEXT_CK_EDITOR</td>
+	<td>PAGE_TEMPLATE_FRAGMENT_EDITABLE_FIELD_CK_EDITOR</td>
 	<td>//div[contains(@class,'fragment-entry-link')]/div[contains(.,'${key_fragmentName}')]//lfr-editable[contains(@id,'${key_id}')]//div[contains(@class,'cke_editable_inline')]</td>
 	<td></td>
 </tr>
@@ -124,16 +134,21 @@
 	<td>LIST_GROUP_ITEM</td>
 	<td>//div[contains(@class,'list-group')]//a[contains(.,'${key_itemName}')]</td>
 	<td></td>
-</tr><tr>
+</tr>
+<tr>
 	<td></td>
 	<td></td>
 	<td></td>
 </tr>
-
 <!--CONTENT PAGES-->
 <tr>
+	<td>CONTENT_PAGE_FRAGMENT_SIDEBAR</td>
+	<td>//div[contains(@class,'open-admin-panel') and not(contains(@class,'transition'))]//div[contains(@id,'ContentPageEditorPortlet_sidebar')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CONTENT_PAGE_FRAGMENT</td>
-	<td>//div[contains(@id,'fragment')][${key_position}]/div[@class='fragment-${key_fragmentClass}' and contains(.,'${key_content}')]</td>
+	<td>//div[contains(@id,'fragment')][${key_position}]/*[contains(@class,'fragment-${key_fragmentClass}') and contains(.,'${key_content}')]</td>
 	<td></td>
 </tr>
 <tr>

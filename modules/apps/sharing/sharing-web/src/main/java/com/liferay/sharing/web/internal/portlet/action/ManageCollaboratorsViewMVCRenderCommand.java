@@ -96,7 +96,7 @@ public class ManageCollaboratorsViewMVCRenderCommand
 				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
 			int countSharingEntryToUserIds =
-				_sharingEntryLocalService.countFromUserSharingEntries(
+				_sharingEntryLocalService.getFromUserSharingEntriesCount(
 					themeDisplay.getUserId(), classNameId, classPK);
 
 			if (countSharingEntryToUserIds == 0) {
@@ -192,7 +192,7 @@ public class ManageCollaboratorsViewMVCRenderCommand
 				JSONFactoryUtil.createJSONObject();
 
 			sharingEntryPermissionDisplaySelectOptionJSONObject.put(
-				"label", sharingEntryPermissionDisplay.getTitle());
+				"label", sharingEntryPermissionDisplay.getPhrase());
 
 			String currentSharingEntryPermissionDisplayActionKeyActionId =
 				sharingEntryPermissionDisplay.

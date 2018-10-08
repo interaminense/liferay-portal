@@ -26,11 +26,16 @@ List<AssetRendererFactory<?>> classTypesAssetRendererFactories = new ArrayList()
 	action="<%= editAssetListEntrySettingsURL %>"
 	method="post"
 	name="fm"
+	onSubmit="event.preventDefault();"
 >
 	<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 	<aui:input name="assetListEntryId" type="hidden" value="<%= assetListDisplayContext.getAssetListEntryId() %>" />
 
 	<liferay-frontend:edit-form-body>
+		<h1 class="sheet-title">
+			<liferay-ui:message key="source" />
+		</h1>
+
 		<liferay-frontend:fieldset-group>
 			<liferay-frontend:fieldset
 				cssClass="source-container"
@@ -244,13 +249,13 @@ List<AssetRendererFactory<?>> classTypesAssetRendererFactories = new ArrayList()
 	</liferay-frontend:edit-form-body>
 
 	<liferay-frontend:edit-form-footer>
-		<aui:button type="submit" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "saveSelectBoxes();" %>' type="submit" />
 
 		<aui:button href="<%= editAssetListDisplayContext.getRedirectURL() %>" type="cancel" />
 	</liferay-frontend:edit-form-footer>
 </liferay-frontend:edit-form>
 
-<aui:script sandbox="<%= true %>">
+<aui:script>
 	var Util = Liferay.Util;
 
 	var assetMultipleSelector = $('#<portlet:namespace />currentClassNameIds');
@@ -423,4 +428,23 @@ List<AssetRendererFactory<?>> classTypesAssetRendererFactories = new ArrayList()
 	}
 
 	Liferay.Util.toggleSelectBox('<portlet:namespace />anyAssetType', 'false', '<portlet:namespace />classNamesBoxes');
+
+	function <portlet:namespace />saveSelectBoxes() {
+		var form = $(document.<portlet:namespace />fm);
+
+		form.fm('classNameIds').val(Util.listSelect(form.fm('currentClassNameIds')));
+
+		<%
+		for (AssetRendererFactory<?> curRendererFactory : classTypesAssetRendererFactories) {
+			String className = editAssetListDisplayContext.getClassName(curRendererFactory);
+		%>
+
+			form.fm('classTypeIds<%= className %>').val(Util.listSelect(form.fm('<%= className %>currentClassTypeIds')));
+
+		<%
+		}
+		%>
+
+		submitForm(form);
+	}
 </aui:script>

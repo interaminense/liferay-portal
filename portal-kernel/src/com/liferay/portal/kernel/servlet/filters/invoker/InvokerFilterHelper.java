@@ -459,14 +459,10 @@ public class InvokerFilterHelper {
 				serviceReference.getProperty("after-filter"));
 			String beforeFilter = GetterUtil.getString(
 				serviceReference.getProperty("before-filter"));
-			List<String> dispatchers = StringPlus.asList(
-				serviceReference.getProperty("dispatcher"));
 			String servletContextName = GetterUtil.getString(
 				serviceReference.getProperty("servlet-context-name"));
 			String servletFilterName = GetterUtil.getString(
 				serviceReference.getProperty("servlet-filter-name"));
-			List<String> urlPatterns = StringPlus.asList(
-				serviceReference.getProperty("url-pattern"));
 
 			String positionFilterName = beforeFilter;
 			boolean after = false;
@@ -512,8 +508,9 @@ public class InvokerFilterHelper {
 			updateFilterMappings(servletFilterName, filter);
 
 			FilterMapping filterMapping = new FilterMapping(
-				servletFilterName, filter, filterConfig, urlPatterns,
-				dispatchers);
+				servletFilterName, filter, filterConfig,
+				StringPlus.asList(serviceReference.getProperty("url-pattern")),
+				StringPlus.asList(serviceReference.getProperty("dispatcher")));
 
 			registerFilterMapping(filterMapping, positionFilterName, after);
 

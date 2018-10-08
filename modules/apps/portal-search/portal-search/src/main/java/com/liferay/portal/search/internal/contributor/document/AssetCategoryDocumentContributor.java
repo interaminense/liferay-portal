@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.search.DocumentContributor;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -64,13 +63,12 @@ public class AssetCategoryDocumentContributor implements DocumentContributor {
 
 		Map<Locale, List<String>> assetCategoryTitles = new HashMap<>();
 
-		Locale defaultLocale = LocaleUtil.getDefault();
-
 		for (AssetCategory assetCategory : assetCategories) {
 			Map<Locale, String> titleMap = assetCategory.getTitleMap();
 
 			for (Map.Entry<Locale, String> entry : titleMap.entrySet()) {
 				Locale locale = entry.getKey();
+
 				String title = entry.getValue();
 
 				if (Validator.isNull(title)) {
@@ -88,13 +86,10 @@ public class AssetCategoryDocumentContributor implements DocumentContributor {
 				assetCategoryTitles.entrySet()) {
 
 			Locale locale = entry.getKey();
+
 			List<String> titles = entry.getValue();
 
 			String[] titlesArray = titles.toArray(new String[titles.size()]);
-
-			if (locale.equals(defaultLocale)) {
-				document.addText(field, titlesArray);
-			}
 
 			document.addText(
 				field.concat(StringPool.UNDERLINE).concat(locale.toString()),

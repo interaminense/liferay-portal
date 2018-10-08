@@ -10,6 +10,8 @@
 
 @import "./fragments_editor/SelectMappingDialog";
 
+@import "./fragments_editor/SidebarFragmentsSection";
+
 @import "./miller_columns/Layout";
 
 @import "./miller_columns/LayoutColumn";
@@ -31,6 +33,10 @@
 				background-color: #E5F5FC;
 			}
 		}
+	}
+
+	.dialog-footer {
+		position: absolute;
 	}
 
 	.layout-type-img {

@@ -17,8 +17,10 @@ package com.liferay.portal.search.facet.faceted.searcher.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFolder;
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.document.library.kernel.service.DLFolderLocalService;
+import com.liferay.document.library.test.util.search.DLFolderSearchFixture;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
@@ -37,7 +39,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.search.facet.Facet;
 import com.liferay.portal.search.facet.custom.CustomFacetFactory;
 import com.liferay.portal.search.facet.folder.FolderFacetFactory;
-import com.liferay.portal.search.test.documentlibrary.util.DLFolderSearchFixture;
 import com.liferay.portal.search.test.util.DocumentsAssert;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -108,7 +109,7 @@ public class FolderFacetTest extends BaseFacetedSearcherTestCase {
 			DLFolder.class.getName(), DLFileEntry.class.getName(),
 			User.class.getName());
 
-		assertEntryClassNames(entryClassNames, hits, keyword, facet);
+		assertEntryClassNames(entryClassNames, hits, facet, searchContext);
 
 		List<String> dlFolderIds = Arrays.asList(
 			ArrayUtil.append(getFolderIds(_dlFolders), "0"));
@@ -136,7 +137,8 @@ public class FolderFacetTest extends BaseFacetedSearcherTestCase {
 		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 
 		assertEntryClassNames(
-			Arrays.asList(DLFileEntry.class.getName()), hits, keyword, facet);
+			Arrays.asList(DLFileEntry.class.getName()), hits, facet,
+			searchContext);
 
 		List<String> dlFolderIds = Arrays.asList(
 			ArrayUtil.append(getFolderIds(_dlFolders), "0"));
@@ -168,7 +170,7 @@ public class FolderFacetTest extends BaseFacetedSearcherTestCase {
 		assertEntryClassNames(
 			Arrays.asList(
 				DLFolder.class.getName(), DLFileEntry.class.getName()),
-			hits, keyword, facet);
+			hits, facet, searchContext);
 
 		List<String> dlFolderIds = Arrays.asList(
 			ArrayUtil.append(getFolderIds(_dlFolders), StringPool.BLANK));
@@ -178,10 +180,12 @@ public class FolderFacetTest extends BaseFacetedSearcherTestCase {
 	}
 
 	protected void assertEntryClassNames(
-		List<String> entryClassNames, Hits hits, String keyword, Facet facet) {
+		List<String> entryClassNames, Hits hits, Facet facet,
+		SearchContext searchContext) {
 
 		DocumentsAssert.assertValuesIgnoreRelevance(
-			keyword, hits.getDocs(), Field.ENTRY_CLASS_NAME, entryClassNames);
+			(String)searchContext.getAttribute("queryString"), hits.getDocs(),
+			Field.ENTRY_CLASS_NAME, entryClassNames);
 	}
 
 	protected String[] getFolderIds(Collection<DLFolder> dlFolders) {
@@ -222,7 +226,7 @@ public class FolderFacetTest extends BaseFacetedSearcherTestCase {
 
 	protected void setUpDLFolderSearchFixture() {
 		dlFolderSearchFixture = new DLFolderSearchFixture(
-			dlFolderLocalService, dlFileEntryLocalService);
+			dlAppLocalService, dlFileEntryLocalService, dlFolderLocalService);
 
 		dlFolderSearchFixture.setUp();
 
@@ -237,6 +241,9 @@ public class FolderFacetTest extends BaseFacetedSearcherTestCase {
 
 	@Inject
 	protected CustomFacetFactory customFacetFactory;
+
+	@Inject
+	protected DLAppLocalService dlAppLocalService;
 
 	@Inject
 	protected DLFileEntryLocalService dlFileEntryLocalService;

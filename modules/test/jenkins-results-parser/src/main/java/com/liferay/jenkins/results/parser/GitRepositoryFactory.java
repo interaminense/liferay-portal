@@ -14,6 +14,8 @@
 
 package com.liferay.jenkins.results.parser;
 
+import org.json.JSONObject;
+
 /**
  * @author Peter Yoo
  */
@@ -23,16 +25,18 @@ public class GitRepositoryFactory {
 		String repositoryType, WorkspaceGitRepository workspaceGitRepository,
 		PullRequest pullRequest, String upstreamBranchName) {
 
-		if (repositoryType.equals("portal.companion")) {
+		if (repositoryType.equals(CompanionPortalWorkspaceGitRepository.TYPE)) {
 			return new CompanionPortalWorkspaceGitRepository(
 				pullRequest, upstreamBranchName, workspaceGitRepository);
 		}
-		else if (repositoryType.equals("portal.other")) {
-			return new DefaultPortalWorkspaceGitRepository(
+
+		if (repositoryType.equals(OtherPortalWorkspaceGitRepository.TYPE)) {
+			return new OtherPortalWorkspaceGitRepository(
 				pullRequest, upstreamBranchName);
 		}
-		else if (repositoryType.equals("plugins.portal")) {
-			return new PluginsWorkspaceGitRepository(
+
+		if (repositoryType.equals(PortalPluginsWorkspaceGitRepository.TYPE)) {
+			return new PortalPluginsWorkspaceGitRepository(
 				pullRequest, upstreamBranchName);
 		}
 
@@ -44,16 +48,18 @@ public class GitRepositoryFactory {
 		String repositoryType, WorkspaceGitRepository workspaceGitRepository,
 		RemoteGitRef remoteGitRef, String upstreamBranchName) {
 
-		if (repositoryType.equals("portal.companion")) {
+		if (repositoryType.equals(CompanionPortalWorkspaceGitRepository.TYPE)) {
 			return new CompanionPortalWorkspaceGitRepository(
 				remoteGitRef, upstreamBranchName, workspaceGitRepository);
 		}
-		else if (repositoryType.equals("portal.other")) {
-			return new DefaultPortalWorkspaceGitRepository(
+
+		if (repositoryType.equals(OtherPortalWorkspaceGitRepository.TYPE)) {
+			return new OtherPortalWorkspaceGitRepository(
 				remoteGitRef, upstreamBranchName);
 		}
-		else if (repositoryType.equals("portal.plugins")) {
-			return new PluginsWorkspaceGitRepository(
+
+		if (repositoryType.equals(PortalPluginsWorkspaceGitRepository.TYPE)) {
+			return new PortalPluginsWorkspaceGitRepository(
 				remoteGitRef, upstreamBranchName);
 		}
 
@@ -92,36 +98,88 @@ public class GitRepositoryFactory {
 	}
 
 	public static WorkspaceGitRepository getWorkspaceGitRepository(
+		JSONObject jsonObject) {
+
+		String jsonObjectType = _getType(jsonObject);
+
+		if (jsonObjectType.equals(CompanionPortalWorkspaceGitRepository.TYPE)) {
+			return new CompanionPortalWorkspaceGitRepository(jsonObject);
+		}
+
+		if (jsonObjectType.equals(PrimaryPortalWorkspaceGitRepository.TYPE)) {
+			return new PrimaryPortalWorkspaceGitRepository(jsonObject);
+		}
+
+		if (jsonObjectType.equals(JenkinsWorkspaceGitRepository.TYPE)) {
+			return new JenkinsWorkspaceGitRepository(jsonObject);
+		}
+
+		if (jsonObjectType.equals(OtherPortalWorkspaceGitRepository.TYPE)) {
+			return new OtherPortalWorkspaceGitRepository(jsonObject);
+		}
+
+		if (jsonObjectType.equals(PluginsWorkspaceGitRepository.TYPE)) {
+			return new PluginsWorkspaceGitRepository(jsonObject);
+		}
+
+		if (jsonObjectType.equals(PortalPluginsWorkspaceGitRepository.TYPE)) {
+			return new PortalPluginsWorkspaceGitRepository(jsonObject);
+		}
+
+		throw new RuntimeException("Invalid JSONObject " + jsonObject);
+	}
+
+	public static WorkspaceGitRepository getWorkspaceGitRepository(
 		String gitHubURL, PullRequest pullRequest, String upstreamBranchName) {
+
+		if (gitHubURL.contains("/liferay-jenkins-ee")) {
+			return new JenkinsWorkspaceGitRepository(
+				pullRequest, upstreamBranchName);
+		}
 
 		if (gitHubURL.contains("/liferay-plugins")) {
 			return new PluginsWorkspaceGitRepository(
 				pullRequest, upstreamBranchName);
 		}
-		else if (gitHubURL.contains("/liferay-portal")) {
-			return new DefaultPortalWorkspaceGitRepository(
+
+		if (gitHubURL.contains("/liferay-portal")) {
+			return new PrimaryPortalWorkspaceGitRepository(
 				pullRequest, upstreamBranchName);
 		}
 
-		return new DefaultWorkspaceGitRepository(
-			pullRequest, upstreamBranchName);
+		throw new RuntimeException("Unsupported workspace Git repository");
 	}
 
 	public static WorkspaceGitRepository getWorkspaceGitRepository(
 		String gitHubURL, RemoteGitRef remoteGitRef,
 		String upstreamBranchName) {
 
+		if (gitHubURL.contains("/liferay-jenkins-ee")) {
+			return new JenkinsWorkspaceGitRepository(
+				remoteGitRef, upstreamBranchName);
+		}
+
 		if (gitHubURL.contains("/liferay-plugins")) {
 			return new PluginsWorkspaceGitRepository(
 				remoteGitRef, upstreamBranchName);
 		}
-		else if (gitHubURL.contains("/liferay-portal")) {
-			return new DefaultPortalWorkspaceGitRepository(
+
+		if (gitHubURL.contains("/liferay-portal")) {
+			return new PrimaryPortalWorkspaceGitRepository(
 				remoteGitRef, upstreamBranchName);
 		}
 
-		return new DefaultWorkspaceGitRepository(
-			remoteGitRef, upstreamBranchName);
+		throw new RuntimeException("Unsupported workspace Git repository");
+	}
+
+	private static String _getType(JSONObject jsonObject) {
+		String type = jsonObject.optString("type");
+
+		if (type == null) {
+			return "";
+		}
+
+		return type;
 	}
 
 }

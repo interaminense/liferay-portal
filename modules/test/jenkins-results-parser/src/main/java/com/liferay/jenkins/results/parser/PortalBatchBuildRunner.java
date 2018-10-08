@@ -14,16 +14,59 @@
 
 package com.liferay.jenkins.results.parser;
 
+import java.io.File;
+import java.io.IOException;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Michael Hashimoto
  */
 public class PortalBatchBuildRunner
 	extends BatchBuildRunner<PortalBatchBuildData> {
 
+	@Override
+	public void run() {
+		setUpWorkspace();
+
+		runTestBatch();
+
+		copyTestResults();
+	}
+
 	protected PortalBatchBuildRunner(
 		PortalBatchBuildData portalBatchBuildData) {
 
 		super(portalBatchBuildData);
+	}
+
+	protected void copyTestResults() {
+		AntUtil.callTarget(
+			_getPrimaryPortalDirectory(), "build-test.xml",
+			"merge-test-results");
+
+		BuildData buildData = getBuildData();
+
+		File source = new File(
+			_getPrimaryPortalDirectory(), "test-results/TESTS-TestSuites.xml");
+		File target = new File(
+			buildData.getWorkspaceDir(), "test-results/TESTS-TestSuites.xml");
+
+		if (!source.exists()) {
+			return;
+		}
+
+		try {
+			JenkinsResultsParserUtil.copy(source, target);
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException(
+				JenkinsResultsParserUtil.combine(
+					"Unable to copy test results file from ", source.getPath(),
+					" to ", target.getPath()),
+				ioe);
+		}
 	}
 
 	@Override
@@ -37,6 +80,27 @@ public class PortalBatchBuildRunner
 		if (!(workspace instanceof BatchPortalWorkspace)) {
 			throw new RuntimeException("Invalid workspace");
 		}
+
+		_batchPortalWorkspace = (BatchPortalWorkspace)workspace;
 	}
+
+	protected void runTestBatch() {
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("axis.variable", "PortalSmoke#Smoke");
+
+		AntUtil.callTarget(
+			_getPrimaryPortalDirectory(), "build-test-batch.xml",
+			getBatchName(), parameters);
+	}
+
+	private File _getPrimaryPortalDirectory() {
+		WorkspaceGitRepository workspaceGitRepository =
+			_batchPortalWorkspace.getPrimaryPortalWorkspaceGitRepository();
+
+		return workspaceGitRepository.getDirectory();
+	}
+
+	private BatchPortalWorkspace _batchPortalWorkspace;
 
 }

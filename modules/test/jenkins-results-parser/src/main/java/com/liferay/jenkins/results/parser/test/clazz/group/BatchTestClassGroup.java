@@ -23,11 +23,10 @@ import com.liferay.jenkins.results.parser.TestSuiteJob;
 
 import java.io.File;
 
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.PathMatcher;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +34,8 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Michael Hashimoto
@@ -231,23 +232,13 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 	protected List<PathMatcher> getPathMatchers(
 		String relativeGlobs, File workingDirectory) {
 
-		List<PathMatcher> pathMatchers = new ArrayList<>();
-
 		if ((relativeGlobs == null) || relativeGlobs.isEmpty()) {
-			return pathMatchers;
+			return Collections.emptyList();
 		}
 
-		for (String relativeGlob : relativeGlobs.split(",")) {
-			FileSystem fileSystem = FileSystems.getDefault();
-
-			pathMatchers.add(
-				fileSystem.getPathMatcher(
-					JenkinsResultsParserUtil.combine(
-						"glob:", workingDirectory.getAbsolutePath(), "/",
-						relativeGlob)));
-		}
-
-		return pathMatchers;
+		return JenkinsResultsParserUtil.toPathMatchers(
+			workingDirectory.getAbsolutePath() + File.separator,
+			relativeGlobs.split(","));
 	}
 
 	protected void setAxisTestClassGroups() {
@@ -289,6 +280,67 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 	protected boolean testReleaseBundle;
 	protected boolean testRelevantChanges;
 	protected final String testSuiteName;
+
+	protected static final class CSVReport {
+
+		public CSVReport(Row headerRow) {
+			if (headerRow == null) {
+				throw new IllegalArgumentException("headerRow is null");
+			}
+
+			_csvReportRows.add(headerRow);
+		}
+
+		public void addRow(Row csvReportRow) {
+			Row headerRow = _csvReportRows.get(0);
+
+			if (csvReportRow.size() != headerRow.size()) {
+				throw new IllegalArgumentException(
+					"Row length does not match headers length");
+			}
+
+			_csvReportRows.add(csvReportRow);
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = null;
+
+			for (Row csvReportRow : _csvReportRows) {
+				if (sb == null) {
+					sb = new StringBuilder();
+				}
+				else {
+					sb.append("\n");
+				}
+
+				sb.append(csvReportRow.toString());
+			}
+
+			return sb.toString();
+		}
+
+		protected static final class Row extends ArrayList<String> {
+
+			public Row() {
+			}
+
+			public Row(String... strings) {
+				for (String string : strings) {
+					add(string);
+				}
+			}
+
+			@Override
+			public String toString() {
+				return StringUtils.join(iterator(), ",");
+			}
+
+		}
+
+		private List<Row> _csvReportRows = new ArrayList<>();
+
+	}
 
 	private void _setTestReleaseBundle() {
 		String propertyValue = getFirstPropertyValue("test.release.bundle");

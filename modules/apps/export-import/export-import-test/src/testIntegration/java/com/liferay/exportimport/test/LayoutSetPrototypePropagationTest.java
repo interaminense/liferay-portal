@@ -74,7 +74,6 @@ import javax.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,7 +106,6 @@ public class LayoutSetPrototypePropagationTest
 		Assert.assertEquals(_initialPrototypeLayoutCount, _initialLayoutCount);
 	}
 
-	@Ignore
 	@Test
 	public void testIsLayoutDeleteable() throws Exception {
 		Assert.assertFalse(SitesUtil.isLayoutDeleteable(layout));
@@ -117,7 +115,6 @@ public class LayoutSetPrototypePropagationTest
 		Assert.assertTrue(SitesUtil.isLayoutDeleteable(layout));
 	}
 
-	@Ignore
 	@Test
 	public void testIsLayoutSortable() throws Exception {
 		Assert.assertFalse(SitesUtil.isLayoutSortable(layout));
@@ -127,13 +124,11 @@ public class LayoutSetPrototypePropagationTest
 		Assert.assertTrue(SitesUtil.isLayoutSortable(layout));
 	}
 
-	@Ignore
 	@Test
 	public void testIsLayoutUpdateable() throws Exception {
 		doTestIsLayoutUpdateable();
 	}
 
-	@Ignore
 	@Test
 	public void testLayoutPermissionPropagationWithLinkEnabled()
 		throws Exception {
@@ -234,7 +229,6 @@ public class LayoutSetPrototypePropagationTest
 		doTestLayoutPropagation(false);
 	}
 
-	@Ignore
 	@Test
 	public void testLayoutPropagationWithLinkEnabled() throws Exception {
 		doTestLayoutPropagation(true);
@@ -257,7 +251,6 @@ public class LayoutSetPrototypePropagationTest
 		doTestPortletPreferencesPropagation(false, true);
 	}
 
-	@Ignore
 	@Test
 	public void testPortletPreferencesPropagationWithGlobalScopeLinkEnabled()
 		throws Exception {

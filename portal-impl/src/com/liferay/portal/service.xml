@@ -476,6 +476,11 @@
 			<finder-column comparator="LIKE" name="treePath" />
 			<finder-column name="site" />
 		</finder>
+		<finder name="C_S_A" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="site" />
+			<finder-column name="active" />
+		</finder>
 		<finder db-index="false" name="G_C_C_P" return-type="Collection">
 			<finder-column comparator="&gt;" name="groupId" />
 			<finder-column name="companyId" />
@@ -497,7 +502,7 @@
 		<finder name="C_P_LikeN_S" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="parentGroupId" />
-			<finder-column comparator="LIKE" name="name" />
+			<finder-column case-sensitive="false" comparator="LIKE" name="name" />
 			<finder-column name="site" />
 		</finder>
 		<finder name="C_P_S_I" return-type="Collection">
@@ -1305,7 +1310,7 @@
 		<finder name="C_P_LikeN" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="parentOrganizationId" />
-			<finder-column comparator="LIKE" name="name" />
+			<finder-column case-sensitive="false" comparator="LIKE" name="name" />
 		</finder>
 
 		<!-- References -->
@@ -2845,7 +2850,7 @@
 		</finder>
 		<finder name="C_LikeN" return-type="Collection">
 			<finder-column name="companyId" />
-			<finder-column comparator="LIKE" name="name" />
+			<finder-column case-sensitive="false" comparator="LIKE" name="name" />
 		</finder>
 		<finder db-index="false" name="U_C_P" return-type="Collection">
 			<finder-column comparator="&gt;" name="userGroupId" />

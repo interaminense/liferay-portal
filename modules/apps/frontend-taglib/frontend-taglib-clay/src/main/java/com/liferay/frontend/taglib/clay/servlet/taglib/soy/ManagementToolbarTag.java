@@ -21,6 +21,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.Managemen
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.base.BaseClayTag;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
@@ -170,6 +171,10 @@ public class ManagementToolbarTag extends BaseClayTag {
 		putValue("filterItems", filterDropdownItems);
 	}
 
+	public void setFilterLabelItems(List<LabelItem> filterLabelItems) {
+		putValue("filterLabels", filterLabelItems);
+	}
+
 	public void setInfoPanelId(String infoPanelId) {
 		putValue("infoPanelId", infoPanelId);
 	}
@@ -287,6 +292,11 @@ public class ManagementToolbarTag extends BaseClayTag {
 				managementToolbarDisplayContext.getFilterDropdownItems());
 		}
 
+		if (context.get("filterLabels") == null) {
+			setFilterLabelItems(
+				managementToolbarDisplayContext.getFilterLabelItems());
+		}
+
 		if (context.get("infoPanelId") == null) {
 			setInfoPanelId(managementToolbarDisplayContext.getInfoPanelId());
 		}
@@ -391,6 +401,7 @@ public class ManagementToolbarTag extends BaseClayTag {
 			}
 
 			String parameterName = parameterParts[0];
+
 			String parameterValue = StringPool.BLANK;
 
 			if (parameterParts.length > 1) {

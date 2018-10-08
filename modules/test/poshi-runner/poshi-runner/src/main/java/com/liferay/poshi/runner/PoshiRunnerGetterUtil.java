@@ -524,7 +524,8 @@ public class PoshiRunnerGetterUtil {
 			simpleClassName + " is not a valid simple class name");
 	}
 
-	public static Object getVarMethodValue(String expression, String namespace)
+	public static Object getVarMethodValue(
+			String expression, String defaultNamespace)
 		throws Exception {
 
 		List<String> args = new ArrayList<>();
@@ -547,9 +548,20 @@ public class PoshiRunnerGetterUtil {
 					parameterValue = parameterValue.substring(
 						1, parameterValue.length() - 1);
 				}
-				else if (parameterValue.contains("#")) {
-					parameterValue = PoshiRunnerContext.getPathLocator(
-						parameterValue, namespace);
+
+				Matcher matcher = _locatorKeyPattern.matcher(parameterValue);
+
+				if (matcher.matches()) {
+					String namespace = matcher.group("namespace");
+
+					if (namespace == null) {
+						parameterValue = PoshiRunnerContext.getPathLocator(
+							parameterValue, defaultNamespace);
+					}
+					else {
+						parameterValue = PoshiRunnerContext.getPathLocator(
+							parameterValue, namespace);
+					}
 				}
 
 				if (parameterValue.contains("\'")) {
@@ -582,6 +594,8 @@ public class PoshiRunnerGetterUtil {
 		return false;
 	}
 
+	private static final Pattern _locatorKeyPattern = Pattern.compile(
+		"(?<namespace>[\\w]+\\.)?[\\w]+#[A-Z0-9_]+");
 	private static final Pattern _namespacedClassCommandNamePattern =
 		Pattern.compile(
 			"((?<namespace>\\w+)\\.)?(?<className>\\w+)(\\#(?<commandName>" +
