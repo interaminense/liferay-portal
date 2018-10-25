@@ -167,15 +167,40 @@ AUI.add(
 
 				instance.fire('blur', instance._getEventPayload(event));
 
-				instance._fireBlurEvent();
+				// var root = instance.getRoot();
+
+				// if (root && root.activeField) {
+				// 	var activeFieldContainer = root.activeField.get('container');
+
+				// 	// if (!activeFieldContainer.contains(document.activeElement)) {
+				// 	if (!activeFieldContainer.contains(document.activeElement)) {
+						
+
+				// 		console.log('blur');
+				// 	}
+				// }
 			},
 
 			_onInputFocus: function(event) {
 				var instance = this;
 
 				instance.fire('focus', instance._getEventPayload(event));
+				
+				var root = instance.getRoot();
 
-				instance._fireFocusEvent();
+				if (root) {
+					if (root.activeField != instance) {
+						instance._fireFocusEvent();
+						console.log('focus', event);
+					}
+
+					if (root.activeField && root.activeField != instance) {
+						root.activeField._fireBlurEvent();
+						console.log('blur', event);
+					}
+
+					root.activeField = instance;
+				}
 			},
 
 			_onValueChange: function(event) {
