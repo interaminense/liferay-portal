@@ -83,6 +83,7 @@ AUI.add(
 				}
 
 				instance._bindDefaultEvents();
+				instance._setFormGroupEvents();
 			},
 
 			_bindDefaultEvents: function() {
@@ -166,41 +167,12 @@ AUI.add(
 				var instance = this;
 
 				instance.fire('blur', instance._getEventPayload(event));
-
-				// var root = instance.getRoot();
-
-				// if (root && root.activeField) {
-				// 	var activeFieldContainer = root.activeField.get('container');
-
-				// 	// if (!activeFieldContainer.contains(document.activeElement)) {
-				// 	if (!activeFieldContainer.contains(document.activeElement)) {
-						
-
-				// 		console.log('blur');
-				// 	}
-				// }
 			},
 
 			_onInputFocus: function(event) {
 				var instance = this;
 
 				instance.fire('focus', instance._getEventPayload(event));
-				
-				var root = instance.getRoot();
-
-				if (root) {
-					if (root.activeField != instance) {
-						instance._fireFocusEvent();
-						console.log('focus', event);
-					}
-
-					if (root.activeField && root.activeField != instance) {
-						root.activeField._fireBlurEvent();
-						console.log('blur', event);
-					}
-
-					root.activeField = instance;
-				}
 			},
 
 			_onValueChange: function(event) {
@@ -211,6 +183,48 @@ AUI.add(
 				instance.set('value', value);
 
 				instance._fireStartedFillingEvent();
+			},
+
+			_setFormGroupEvents() {
+				var instance = this;
+				var container = instance.get('container');
+				var formGroup = container.one('.form-group');
+				var formGroupNode = formGroup._node;
+
+				if(!formGroupNode.hasAttribute("data-ready")){
+
+					formGroupNode.setAttribute('tabindex', -1);
+					formGroupNode.setAttribute('data-focusout', true);
+					formGroupNode.setAttribute("data-ready", true);
+
+					formGroupNode.addEventListener('focusin', function(event) {
+						var element = this;
+
+						if (!event.relatedTarget) {
+							element.removeAttribute("data-focusout");
+
+							instance._fireFocusEvent();
+						} else if (event.relatedTarget && element.hasAttribute("data-focusout")) {
+							element.removeAttribute("data-focusout");
+
+							instance._fireFocusEvent();
+						}
+					}.bind(formGroupNode));
+
+					formGroupNode.addEventListener('focusout', function(event) {
+						var element = this;
+
+						if (!event.relatedTarget) {
+							element.setAttribute("data-focusout", true);
+
+							instance._fireBlurEvent();
+						} else if (event.relatedTarget && element && !element.contains(event.relatedTarget)) {
+							element.setAttribute("data-focusout", true);
+
+							instance._fireBlurEvent();
+						}
+					}.bind(formGroupNode));
+				}
 			}
 		};
 
