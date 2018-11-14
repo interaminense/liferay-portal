@@ -23,8 +23,8 @@ function getDocumentHeight() {
 function getDimensions(element) {
 	if (element) {
 		const boundingClientRect = element.getBoundingClientRect();
-		const {height, top} = boundingClientRect;
-		return {height, top};
+		const {bottom, height, top} = boundingClientRect;
+		return {bottom, height, top};
 	}
 	const height = getDocumentHeight();
 	const top = getCurrentScrollPosition();
@@ -42,6 +42,21 @@ class ScrollTracker {
 		this.stepsReached = null;
 	}
 
+	getDepthValue(element) {
+		const {bottom, top, height} = getDimensions(element);
+		const visibleArea = window.innerHeight;
+
+		if (!element) {
+			return (top + visibleArea) / height;
+		}
+
+		if (top <= 0 && bottom >= 0) {
+			return visibleArea / (height + top);
+		}
+
+		return (visibleArea - top) / height;
+	}
+
 	/**
 	 * Calculates the depth of the element on the page. If the
 	 * element is not passed as a parameter the calculation must be
@@ -50,21 +65,7 @@ class ScrollTracker {
 	 * @return {number} depth percentage from 0 to 100
 	 */
 	getDepth(element) {
-		const {top, height} = getDimensions(element);
-		const visibleArea = window.innerHeight;
-
-		let value = 0;
-
-		if (element) {
-			if (top > 0) {
-				value = (visibleArea - top) / height;
-			} else {
-				value = visibleArea / (height + top);
-			}
-		} else {
-			value = (top + visibleArea) / height;
-		}
-
+		const value = this.getDepthValue(element);
 		const depth = Math.round(value * 100);
 
 		if (depth <= 0) {
