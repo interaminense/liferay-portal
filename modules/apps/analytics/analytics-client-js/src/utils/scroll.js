@@ -43,18 +43,17 @@ class ScrollTracker {
 	}
 
 	getDepthValue(element) {
-		const {bottom, top, height} = getDimensions(element);
+		const {bottom, height, top} = getDimensions(element);
 		const visibleArea = window.innerHeight;
-
-		if (!element) {
-			return (top + visibleArea) / height;
-		}
+		let depthValue = (visibleArea - top) / height;
 
 		if (top <= 0 && bottom >= 0) {
-			return visibleArea / (height + top);
+			depthValue = visibleArea / (height + top);
+		} else if (!element) {
+			depthValue = (top + visibleArea) / height;
 		}
 
-		return (visibleArea - top) / height;
+		return depthValue;
 	}
 
 	/**
@@ -68,13 +67,7 @@ class ScrollTracker {
 		const value = this.getDepthValue(element);
 		const depth = Math.round(value * 100);
 
-		if (depth <= 0) {
-			return 0;
-		} else if (depth >= 100) {
-			return 100;
-		}
-
-		return depth;
+		return Math.min(Math.max(depth, 0), 100);
 	}
 
 	/**
