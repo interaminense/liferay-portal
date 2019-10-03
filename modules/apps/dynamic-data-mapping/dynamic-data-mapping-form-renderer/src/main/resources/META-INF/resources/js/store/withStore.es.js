@@ -52,6 +52,7 @@ const _handleFieldEdited = function(properties) {
 const _handleFieldBlurred = function(properties) {
 	const {fieldInstance} = properties;
 	const {pages} = this;
+	const now = new Date();
 
 	handleFieldBlurred(pages, properties).then(blurredFieldPages => {
 		if (fieldInstance.isDisposed()) {
@@ -62,15 +63,30 @@ const _handleFieldBlurred = function(properties) {
 			pages: blurredFieldPages
 		});
 	});
+
+	Liferay.fire('ddmFieldBlur', {
+		fieldName: fieldInstance.fieldName,
+		focusDuration: now - (this.fieldFocusDate || now),
+		formId: this.getFormId(),
+		page: this.activePage
+	});
 };
 
 const _handleFieldFocused = function(properties) {
 	const {pages} = this;
 
+	this.fieldFocusDate = new Date();
+
 	handleFieldFocused(pages, properties).then(focusedFieldPages => {
 		this.setState({
 			pages: focusedFieldPages
 		});
+	});
+
+	Liferay.fire('ddmFieldFocus', {
+		fieldName: properties.fieldInstance.fieldName,
+		formId: this.getFormId(),
+		page: this.activePage
 	});
 };
 
@@ -112,6 +128,12 @@ export default Component => {
 			}
 
 			Liferay.on('submitForm', this._handleLiferayFormSubmitted, this);
+
+			Liferay.fire('ddmFormPageShow', {
+				formId: this.getFormId(),
+				page: this.activePage,
+				title: this.pages[this.activePage].title
+			});
 		}
 
 		dispatch(event, payload) {
@@ -147,8 +169,21 @@ export default Component => {
 			};
 		}
 
+		getFormId() {
+			const form = this.getFormNode();
+
+			return form && form.dataset.ddmforminstanceid;
+		}
+
 		getFormNode() {
 			return dom.closest(this.element, 'form');
+		}
+
+		getFormTitle() {
+			const form = this.getFormNode();
+			const formName = form && form.querySelector('.ddm-form-name');
+
+			return formName && formName.textContent;
 		}
 
 		toJSON() {
@@ -190,6 +225,10 @@ export default Component => {
 			handleFormSubmitted(this.getEvaluatorContext()).then(validForm => {
 				if (validForm) {
 					Liferay.Util.submitForm(event.target);
+
+					Liferay.fire('ddmFormSubmit', {
+						formId: this.getFormId()
+					});
 				} else {
 					this.dispatch('pageValidationFailed', this.activePage);
 				}
@@ -234,6 +273,7 @@ export default Component => {
 			handlePaginationNextClicked(
 				{
 					activePage,
+					formId: this.getFormId(),
 					...this.getEvaluatorContext()
 				},
 				this.dispatch.bind(this)
@@ -246,6 +286,7 @@ export default Component => {
 			handlePaginationPreviousClicked(
 				{
 					activePage,
+					formId: this.getFormId(),
 					...this.getEvaluatorContext()
 				},
 				this.dispatch.bind(this)
