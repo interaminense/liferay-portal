@@ -7,21 +7,23 @@
 	{@param total: number}
 	{@param? placeholder: string}
 
-	<input
-		class="form-builder-page-header-title form-control p-0"
-		maxlength="120"
-		placeholder="{$placeholder ?: ''}"
-		value="{$title}"
-	/>
+	<div class="pl-3 pr-3">
+		<input
+			class="form-builder-page-header-title form-control p-0"
+			maxlength="120"
+			placeholder="{$placeholder ?: ''}"
+			value="{$title}"
+		/>
 
-	{let $descriptionPlaceholder kind="text"}
-		{msg desc=""}add-a-short-description-for-this-page{/msg}
-	{/let}
+		{let $descriptionPlaceholder kind="text"}
+			{msg desc=""}add-a-short-description-for-this-page{/msg}
+		{/let}
 
-	<input
-		class="form-builder-page-header-description form-control p-0"
-		maxlength="120"
-		placeholder="{$descriptionPlaceholder}"
-		value="{$description}"
-	/>
+		<input
+			class="form-builder-page-header-description form-control p-0"
+			maxlength="120"
+			placeholder="{$descriptionPlaceholder}"
+			value="{$description}"
+		/>
+	</div>
 {/deltemplate}
