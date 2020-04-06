@@ -20,6 +20,7 @@ import {
 	ADD_DATA_LAYOUT_RULE,
 	DELETE_DATA_DEFINITION_FIELD,
 	DELETE_DATA_LAYOUT_FIELD,
+	DELETE_DATA_LAYOUT_RULE,
 	EDIT_CUSTOM_OBJECT_FIELD,
 	SWITCH_SIDEBAR_PANEL,
 	UPDATE_CONFIG,
@@ -234,6 +235,8 @@ const createReducer = dataLayoutBuilder => {
 					delete dataRule['logical-operator'];
 				}
 
+				dataRule.id = new Date().getTime();
+
 				return {
 					...state,
 					dataLayout: {
@@ -261,6 +264,21 @@ const createReducer = dataLayoutBuilder => {
 				return {
 					...state,
 					dataLayout: deleteDataLayoutField(dataLayout, fieldName),
+				};
+			}
+			case DELETE_DATA_LAYOUT_RULE: {
+				const {ruleId} = action.payload;
+
+				const {
+					dataLayout: {dataRules},
+				} = state;
+
+				return {
+					...state,
+					dataLayout: {
+						...state.dataLayout,
+						dataRules: dataRules.filter(rule => rule.id !== ruleId),
+					},
 				};
 			}
 			case EDIT_CUSTOM_OBJECT_FIELD: {
