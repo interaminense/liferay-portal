@@ -27,6 +27,7 @@ import {
 	UPDATE_DATA_DEFINITION,
 	UPDATE_DATA_LAYOUT,
 	UPDATE_DATA_LAYOUT_NAME,
+	UPDATE_DATA_LAYOUT_RULE,
 	UPDATE_EDITING_LANGUAGE_ID,
 	UPDATE_FIELDSETS,
 	UPDATE_FIELD_TYPES,
@@ -277,7 +278,9 @@ const createReducer = dataLayoutBuilder => {
 					...state,
 					dataLayout: {
 						...state.dataLayout,
-						dataRules: dataRules.filter(rule => rule.ruleId !== ruleId),
+						dataRules: dataRules.filter(
+							rule => rule.ruleId !== ruleId
+						),
 					},
 				};
 			}
@@ -355,6 +358,36 @@ const createReducer = dataLayoutBuilder => {
 					dataLayout: {
 						...state.dataLayout,
 						name,
+					},
+				};
+			}
+			case UPDATE_DATA_LAYOUT_RULE: {
+				const {dataRule} = action.payload;
+				const {
+					dataLayout: {dataRules},
+				} = state;
+
+				if (
+					Object.prototype.hasOwnProperty.call(
+						dataRule,
+						'logical-operator'
+					)
+				) {
+					dataRule['logicalOperator'] = dataRule['logical-operator'];
+					delete dataRule['logical-operator'];
+				}
+
+				return {
+					...state,
+					dataLayout: {
+						...state.dataLayout,
+						dataRules: dataRules.map(rule => {
+							if (rule.ruleId === dataRule.ruleEditedIndex) {
+								return dataRule;
+							}
+
+							return rule;
+						}),
 					},
 				};
 			}

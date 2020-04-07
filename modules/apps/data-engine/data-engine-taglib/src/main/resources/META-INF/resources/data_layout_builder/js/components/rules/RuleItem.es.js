@@ -12,6 +12,7 @@
  * details.
  */
 
+import ClayButton from '@clayui/button';
 import ClayLabel from '@clayui/label';
 import classNames from 'classnames';
 import React, {useContext} from 'react';
@@ -68,13 +69,12 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 	];
 
 	return (
-		<CollapsablePanel
-			actions={dropDownActions}
-			title={name}
-		>
-			<span>
+		<CollapsablePanel actions={dropDownActions} title={name}>
+			<ClayButton
+				displayType="unstyled"
+				onClick={() => toggleRulesEditorVisibility(rule)}
+			>
 				<Text capitalize>{Liferay.Language.get('if')}</Text>
-
 				{conditions.map(({operands, operator}, index) => {
 					const [first, last] = operands;
 
@@ -119,7 +119,7 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 						)}
 					</>
 				))}
-			</span>
+			</ClayButton>
 		</CollapsablePanel>
 	);
 }

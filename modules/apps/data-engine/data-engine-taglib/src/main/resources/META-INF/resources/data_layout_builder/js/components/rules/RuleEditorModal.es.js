@@ -32,7 +32,7 @@ class RuleEditorWrapper extends RuleEditor {
 	}
 }
 
-const RuleEditorModalContent = ({onClose}) => {
+const RuleEditorModalContent = ({onClose, rule}) => {
 	const ruleEditorRef = useRef();
 	const [ruleEditor, setRuleEditor] = useState(null);
 
@@ -64,18 +64,23 @@ const RuleEditorModalContent = ({onClose}) => {
 				actions: [],
 				conditions: [],
 				events: {
-					ruleAdded: rule => {
-						dataLayoutBuilder.dispatch('ruleAdded', rule);
+					ruleAdded: newRule => {
+						dataLayoutBuilder.dispatch('ruleAdded', newRule);
 						onClose();
 					},
 					ruleCancelled: () => {},
 					ruleDeleted: () => {},
-					ruleEdited: () => {},
+					ruleEdited: editedRule => {
+						dataLayoutBuilder.dispatch('ruleEdited', editedRule);
+						onClose();
+					},
 				},
 				key: 'create',
 				pages,
 				ref: 'RuleEditor',
 				roles,
+				rule,
+				...(rule && {ruleEditedIndex: rule.ruleId}),
 				spritemap,
 			},
 			ruleEditorRef.current
@@ -88,6 +93,7 @@ const RuleEditorModalContent = ({onClose}) => {
 		pages,
 		ruleEditor,
 		ruleEditorRef,
+		rule,
 		ruleSettings,
 		spritemap,
 		state,
@@ -119,7 +125,9 @@ const RuleEditorModalContent = ({onClose}) => {
 	return (
 		<>
 			<ClayModal.Header>
-				{Liferay.Language.get('add-rule')}
+				{rule
+					? Liferay.Language.get('edit-rule')
+					: Liferay.Language.get('add-rule')}
 			</ClayModal.Header>
 			<ClayModal.Header withTitle={false}>
 				<ClayInput.Group className="pl-4 pr-4">
@@ -143,9 +151,11 @@ const RuleEditorModalContent = ({onClose}) => {
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
 						<ClayButton
-							onClick={() => {
-								ruleEditor._handleRuleAdded();
-							}}
+							onClick={() =>
+								rule
+									? ruleEditor._handleRuleEdited()
+									: ruleEditor._handleRuleAdded()
+							}
 						>
 							{Liferay.Language.get('save')}
 						</ClayButton>
@@ -156,7 +166,7 @@ const RuleEditorModalContent = ({onClose}) => {
 	);
 };
 
-const RuleEditorModal = ({isVisible, onClose}) => {
+const RuleEditorModal = ({editRule, isVisible, onClose}) => {
 	const {observer} = useModal({
 		onClose,
 	});
@@ -171,7 +181,7 @@ const RuleEditorModal = ({isVisible, onClose}) => {
 			observer={observer}
 			size="full-screen"
 		>
-			<RuleEditorModalContent onClose={onClose} />
+			<RuleEditorModalContent onClose={onClose} rule={editRule} />
 		</ClayModal>
 	);
 };

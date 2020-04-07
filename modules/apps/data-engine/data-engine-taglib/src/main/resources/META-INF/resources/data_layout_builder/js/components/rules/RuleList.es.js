@@ -23,6 +23,7 @@ import RuleItem from './RuleItem.es';
 
 export default () => {
 	const [isRulesEditorVisible, setRulesEditorVisible] = useState(false);
+	const [editRule, setEditRule] = useState();
 	const [searchText, setSearchText] = useState('');
 
 	const [
@@ -38,7 +39,12 @@ export default () => {
 		}))
 		.filter(({name}) => new RegExp(searchText, 'ig').test(name));
 
-	const toggleRulesEditorVisibility = () => {
+	const toggleRulesEditorVisibility = rule => {
+		if (rule) {
+			rule['logical-operator'] = rule['logicalOperator'];
+			delete rule.logicalOperator;
+		}
+		setEditRule(rule);
 		setRulesEditorVisible(!isRulesEditorVisible);
 	};
 
@@ -92,6 +98,7 @@ export default () => {
 			)}
 
 			<RuleEditorModal
+				editRule={editRule}
 				isVisible={isRulesEditorVisible}
 				onClose={() => toggleRulesEditorVisibility()}
 			/>
