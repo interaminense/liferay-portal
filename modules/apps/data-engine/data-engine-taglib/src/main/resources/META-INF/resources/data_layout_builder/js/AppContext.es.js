@@ -235,7 +235,7 @@ const createReducer = dataLayoutBuilder => {
 					delete dataRule['logical-operator'];
 				}
 
-				dataRule.id = new Date().getTime();
+				dataRule.ruleId = dataRules.length + 1;
 
 				return {
 					...state,
@@ -277,7 +277,7 @@ const createReducer = dataLayoutBuilder => {
 					...state,
 					dataLayout: {
 						...state.dataLayout,
-						dataRules: dataRules.filter(rule => rule.id !== ruleId),
+						dataRules: dataRules.filter(rule => rule.ruleId !== ruleId),
 					},
 				};
 			}

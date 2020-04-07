@@ -58,9 +58,7 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 
 				if (confirmed) {
 					dispatch({
-						payload: {
-							ruleId: rule.id,
-						},
+						payload: rule,
 						type: DELETE_DATA_LAYOUT_RULE,
 					});
 				}
