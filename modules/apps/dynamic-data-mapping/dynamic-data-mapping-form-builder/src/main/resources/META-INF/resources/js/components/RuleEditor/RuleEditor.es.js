@@ -950,17 +950,26 @@ class RuleEditor extends Component {
 		});
 	}
 
-	_handleRuleAdded() {
+
+	_handleRuleOnSave(event) {
 		const actions = this._removeActionInternalProperties();
 		const conditions = this._removeConditionInternalProperties();
 		const {ruleEditedIndex} = this;
 
-		this.emit('ruleAdded', {
+		this.emit(event, {
 			actions,
 			conditions,
 			['logical-operator']: this.logicalOperator,
 			ruleEditedIndex,
 		});
+	}
+
+	_handleRuleAdded() {
+		this._handleRuleOnSave('ruleAdded')
+	}
+
+	_handleRuleEdited() {
+		this._handleRuleOnSave('ruleEdited');
 	}
 
 	_handleRuleCancelled() {
