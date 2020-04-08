@@ -950,7 +950,6 @@ class RuleEditor extends Component {
 		});
 	}
 
-
 	_handleRuleOnSave(event) {
 		const actions = this._removeActionInternalProperties();
 		const conditions = this._removeConditionInternalProperties();
@@ -965,7 +964,7 @@ class RuleEditor extends Component {
 	}
 
 	_handleRuleAdded() {
-		this._handleRuleOnSave('ruleAdded')
+		this._handleRuleOnSave('ruleAdded');
 	}
 
 	_handleRuleEdited() {

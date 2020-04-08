@@ -369,7 +369,7 @@ const createReducer = dataLayoutBuilder => {
 							if (rule.ruleId === dataRule.ruleEditedIndex) {
 								return {
 									...dataRule,
-									ruleId: dataRule.ruleEditedIndex
+									ruleId: dataRule.ruleEditedIndex,
 								};
 							}
 
