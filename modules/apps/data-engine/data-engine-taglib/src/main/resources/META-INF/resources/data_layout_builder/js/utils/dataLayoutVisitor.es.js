@@ -99,3 +99,15 @@ export function getIndexesFromFieldName({dataLayoutPages}, fieldName) {
 
 	return indexes;
 }
+
+export const normalizeLogicalOperator = dataRule => {
+	if (
+		Object.prototype.hasOwnProperty.call(
+			dataRule,
+			'logical-operator'
+		)
+	) {
+		dataRule['logicalOperator'] = dataRule['logical-operator'];
+		delete dataRule['logical-operator'];
+	}
+}
