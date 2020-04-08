@@ -226,17 +226,9 @@ const createReducer = dataLayoutBuilder => {
 					dataLayout: {dataRules},
 				} = state;
 
-				if (
-					Object.prototype.hasOwnProperty.call(
-						dataRule,
-						'logical-operator'
-					)
-				) {
-					dataRule['logicalOperator'] = dataRule['logical-operator'];
-					delete dataRule['logical-operator'];
-				}
+				DataLayoutVisitor.normalizeLogicalOperator(dataRule);
 
-				dataRule.ruleId = dataRules.length + 1;
+				dataRule.ruleId = dataRules.length;
 
 				return {
 					...state,
@@ -367,15 +359,7 @@ const createReducer = dataLayoutBuilder => {
 					dataLayout: {dataRules},
 				} = state;
 
-				if (
-					Object.prototype.hasOwnProperty.call(
-						dataRule,
-						'logical-operator'
-					)
-				) {
-					dataRule['logicalOperator'] = dataRule['logical-operator'];
-					delete dataRule['logical-operator'];
-				}
+				DataLayoutVisitor.normalizeLogicalOperator(dataRule);
 
 				return {
 					...state,
@@ -383,7 +367,10 @@ const createReducer = dataLayoutBuilder => {
 						...state.dataLayout,
 						dataRules: dataRules.map(rule => {
 							if (rule.ruleId === dataRule.ruleEditedIndex) {
-								return dataRule;
+								return {
+									...dataRule,
+									ruleId: dataRule.ruleEditedIndex
+								};
 							}
 
 							return rule;
