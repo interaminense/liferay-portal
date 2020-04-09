@@ -64,14 +64,14 @@ const RuleEditorModalContent = ({onClose, rule}) => {
 				actions: [],
 				conditions: [],
 				events: {
-					ruleAdded: newRule => {
-						dataLayoutBuilder.dispatch('ruleAdded', newRule);
+					ruleAdded: rule => {
+						dataLayoutBuilder.dispatch('ruleAdded', rule);
 						onClose();
 					},
 					ruleCancelled: () => {},
 					ruleDeleted: () => {},
-					ruleEdited: editedRule => {
-						dataLayoutBuilder.dispatch('ruleEdited', editedRule);
+					ruleEdited: rule => {
+						dataLayoutBuilder.dispatch('ruleEdited', rule);
 						onClose();
 					},
 				},
@@ -80,7 +80,6 @@ const RuleEditorModalContent = ({onClose, rule}) => {
 				ref: 'RuleEditor',
 				roles,
 				rule,
-				...(rule && {ruleEditedIndex: rule.ruleId}),
 				spritemap,
 			},
 			ruleEditorRef.current

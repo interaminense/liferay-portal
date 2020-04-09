@@ -105,4 +105,13 @@ export function normalizeLogicalOperator(dataRule) {
 		dataRule['logicalOperator'] = dataRule['logical-operator'];
 		delete dataRule['logical-operator'];
 	}
+
+	if (!Object.prototype.hasOwnProperty.call(dataRule, 'ruleEditedIndex')) {
+		dataRule = {
+			...dataRule,
+			ruleEditedIndex: Math.floor(Math.random() * 100000),
+		};
+	}
+
+	return dataRule;
 }

@@ -221,14 +221,12 @@ const createReducer = dataLayoutBuilder => {
 				};
 			}
 			case ADD_DATA_LAYOUT_RULE: {
-				const {dataRule} = action.payload;
+				let {dataRule} = action.payload;
 				const {
 					dataLayout: {dataRules},
 				} = state;
 
-				DataLayoutVisitor.normalizeLogicalOperator(dataRule);
-
-				dataRule.ruleId = dataRules.length;
+				dataRule = DataLayoutVisitor.normalizeLogicalOperator(dataRule);
 
 				return {
 					...state,
@@ -260,7 +258,7 @@ const createReducer = dataLayoutBuilder => {
 				};
 			}
 			case DELETE_DATA_LAYOUT_RULE: {
-				const {ruleId} = action.payload;
+				const {ruleEditedIndex} = action.payload;
 
 				const {
 					dataLayout: {dataRules},
@@ -271,7 +269,7 @@ const createReducer = dataLayoutBuilder => {
 					dataLayout: {
 						...state.dataLayout,
 						dataRules: dataRules.filter(
-							rule => rule.ruleId !== ruleId
+							rule => rule.ruleEditedIndex !== ruleEditedIndex
 						),
 					},
 				};
@@ -354,23 +352,23 @@ const createReducer = dataLayoutBuilder => {
 				};
 			}
 			case UPDATE_DATA_LAYOUT_RULE: {
-				const {dataRule} = action.payload;
+				let {dataRule} = action.payload;
 				const {
 					dataLayout: {dataRules},
 				} = state;
 
-				DataLayoutVisitor.normalizeLogicalOperator(dataRule);
+				dataRule = DataLayoutVisitor.normalizeLogicalOperator(dataRule);
 
 				return {
 					...state,
 					dataLayout: {
 						...state.dataLayout,
 						dataRules: dataRules.map(rule => {
-							if (rule.ruleId === dataRule.ruleEditedIndex) {
-								return {
-									...dataRule,
-									ruleId: dataRule.ruleEditedIndex,
-								};
+							if (
+								rule.ruleEditedIndex ===
+								dataRule.ruleEditedIndex
+							) {
+								return dataRule;
 							}
 
 							return rule;
