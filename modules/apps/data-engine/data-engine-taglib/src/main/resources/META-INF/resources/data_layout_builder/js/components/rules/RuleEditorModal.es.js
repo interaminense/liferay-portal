@@ -166,7 +166,7 @@ const RuleEditorModalContent = ({onClose, rule}) => {
 	);
 };
 
-const RuleEditorModal = ({editRule, isVisible, onClose}) => {
+const RuleEditorModal = ({isVisible, onClose, rule}) => {
 	const {observer} = useModal({
 		onClose,
 	});
@@ -181,7 +181,7 @@ const RuleEditorModal = ({editRule, isVisible, onClose}) => {
 			observer={observer}
 			size="full-screen"
 		>
-			<RuleEditorModalContent onClose={onClose} rule={editRule} />
+			<RuleEditorModalContent onClose={onClose} rule={rule} />
 		</ClayModal>
 	);
 };

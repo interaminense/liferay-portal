@@ -22,8 +22,11 @@ import RuleEditorModal from './RuleEditorModal.es';
 import RuleItem from './RuleItem.es';
 
 export default () => {
-	const [isRulesEditorVisible, setRulesEditorVisible] = useState(false);
-	const [editRule, setEditRule] = useState();
+	const [rulesEditorState, setRulesEditorState] = useState({
+		isVisible: false,
+		rule: null,
+	});
+
 	const [searchText, setSearchText] = useState('');
 
 	const [
@@ -44,8 +47,11 @@ export default () => {
 			rule['logical-operator'] = rule['logicalOperator'];
 			delete rule.logicalOperator;
 		}
-		setEditRule(rule);
-		setRulesEditorVisible(!isRulesEditorVisible);
+
+		setRulesEditorState(prevState => ({
+			isVisible: !prevState.isVisible,
+			rule,
+		}));
 	};
 
 	return (
@@ -98,9 +104,9 @@ export default () => {
 			)}
 
 			<RuleEditorModal
-				editRule={editRule}
-				isVisible={isRulesEditorVisible}
+				isVisible={rulesEditorState.isVisible}
 				onClose={() => toggleRulesEditorVisibility()}
+				rule={rulesEditorState.rule}
 			/>
 		</>
 	);
