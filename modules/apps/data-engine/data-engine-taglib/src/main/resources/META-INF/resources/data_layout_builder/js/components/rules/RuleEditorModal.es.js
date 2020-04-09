@@ -152,8 +152,8 @@ const RuleEditorModalContent = ({onClose, rule}) => {
 						<ClayButton
 							onClick={() =>
 								rule
-									? ruleEditor._handleRuleEdited()
-									: ruleEditor._handleRuleAdded()
+									? ruleEditor.handleRuleEdited()
+									: ruleEditor.handleRuleAdded()
 							}
 						>
 							{Liferay.Language.get('save')}

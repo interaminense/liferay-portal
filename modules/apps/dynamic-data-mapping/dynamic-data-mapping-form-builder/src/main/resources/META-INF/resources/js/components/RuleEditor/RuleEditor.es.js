@@ -212,6 +212,14 @@ class RuleEditor extends Component {
 		return list;
 	}
 
+	handleRuleAdded() {
+		this._handleRuleSaved('ruleAdded');
+	}
+
+	handleRuleEdited() {
+		this._handleRuleSaved('ruleEdited');
+	}
+
 	isValueOperand({type}) {
 		return type !== 'field' && type !== 'user';
 	}
@@ -950,7 +958,7 @@ class RuleEditor extends Component {
 		});
 	}
 
-	_handleRuleOnSave(event) {
+	_handleRuleSaved(event) {
 		const actions = this._removeActionInternalProperties();
 		const conditions = this._removeConditionInternalProperties();
 		const {ruleEditedIndex} = this;
@@ -961,14 +969,6 @@ class RuleEditor extends Component {
 			['logical-operator']: this.logicalOperator,
 			ruleEditedIndex,
 		});
-	}
-
-	_handleRuleAdded() {
-		this._handleRuleOnSave('ruleAdded');
-	}
-
-	_handleRuleEdited() {
-		this._handleRuleOnSave('ruleEdited');
 	}
 
 	_handleRuleCancelled() {
