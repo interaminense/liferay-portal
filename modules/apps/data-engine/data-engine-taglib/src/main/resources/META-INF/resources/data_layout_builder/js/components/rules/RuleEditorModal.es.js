@@ -19,6 +19,7 @@ import {RuleEditor} from 'dynamic-data-mapping-form-builder';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 
 import AppContext from '../../AppContext.es';
+import {UPDATE_RULE_NAME} from '../../actions.es';
 import DataLayoutBuilderContext from '../../data-layout-builder/DataLayoutBuilderContext.es';
 import {getItem} from '../../utils/client.es';
 
@@ -35,12 +36,16 @@ class RuleEditorWrapper extends RuleEditor {
 const RuleEditorModalContent = ({onClose, rule}) => {
 	const ruleEditorRef = useRef();
 	const [ruleEditor, setRuleEditor] = useState(null);
+	const [ruleName, setRuleName] = useState(
+		rule && rule.name ? rule.name.en_US : ''
+	);
 
 	const [
 		{
 			config: {ruleSettings},
 			spritemap,
 		},
+		dispatch,
 	] = useContext(AppContext);
 
 	const [dataLayoutBuilder] = useContext(DataLayoutBuilderContext);
@@ -50,6 +55,14 @@ const RuleEditorModalContent = ({onClose, rule}) => {
 		isLoading: true,
 		roles: [],
 	});
+
+	const onChangeRuleName = ({target: {value}}) => {
+		setRuleName(value);
+		dispatch({
+			payload: value,
+			type: UPDATE_RULE_NAME,
+		});
+	};
 
 	useEffect(() => {
 		const {isLoading, roles} = state;
@@ -134,8 +147,10 @@ const RuleEditorModalContent = ({onClose, rule}) => {
 						<ClayInput
 							aria-label={Liferay.Language.get('untitled-rule')}
 							className="form-control-inline"
+							onChange={onChangeRuleName}
 							placeholder={Liferay.Language.get('untitled-rule')}
 							type="text"
+							value={ruleName}
 						/>
 					</ClayInput.GroupItem>
 				</ClayInput.Group>
