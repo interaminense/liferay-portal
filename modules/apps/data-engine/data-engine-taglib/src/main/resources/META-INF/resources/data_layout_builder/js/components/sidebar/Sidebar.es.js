@@ -22,7 +22,7 @@ const Sidebar = React.forwardRef(
 	({children, className, onSearch = null}, ref) => {
 		return (
 			<div
-				className={classNames(className, 'data-layout-builder-sidebar')}
+				className={classNames(className, 'data-layout-builder-sidebar mr-4')}
 				ref={ref}
 			>
 				<div className="sidebar">
