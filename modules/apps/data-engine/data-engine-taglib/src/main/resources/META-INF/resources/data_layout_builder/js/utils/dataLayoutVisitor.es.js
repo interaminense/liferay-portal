@@ -106,11 +106,8 @@ export function normalizeRule(dataRule, ruleName) {
 		delete dataRule['logical-operator'];
 	}
 
-	if (!Object.prototype.hasOwnProperty.call(dataRule, 'ruleEditedIndex')) {
-		dataRule = {
-			...dataRule,
-			ruleEditedIndex: Math.floor(Math.random() * 100000),
-		};
+	if (!dataRule.ruleEditedIndex) {
+		dataRule.ruleEditedIndex = new Date().getTime();
 	}
 
 	dataRule = {
