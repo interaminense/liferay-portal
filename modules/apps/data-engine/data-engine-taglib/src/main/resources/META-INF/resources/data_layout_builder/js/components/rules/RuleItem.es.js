@@ -43,7 +43,12 @@ const OPERATOR_LABELS = {
 };
 
 export default function RuleItem({rule, toggleRulesEditorVisibility}) {
-	const {actions, conditions, logicalOperator, name} = rule;
+	const {
+		actions,
+		conditions,
+		logicalOperator,
+		name: {en_US: name},
+	} = rule;
 	const [, dispatch] = useContext(AppContext);
 
 	const dropDownActions = [

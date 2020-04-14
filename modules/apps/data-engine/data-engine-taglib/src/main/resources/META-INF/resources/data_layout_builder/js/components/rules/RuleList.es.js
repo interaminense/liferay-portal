@@ -35,12 +35,9 @@ export default () => {
 		},
 	] = useContext(AppContext);
 
-	const filtereDataRules = dataRules
-		.map((rule, index) => ({
-			...rule,
-			name: `Rule ${index}`,
-		}))
-		.filter(({name}) => new RegExp(searchText, 'ig').test(name));
+	const filtereDataRules = dataRules.filter(({name}) =>
+		new RegExp(searchText, 'ig').test(name)
+	);
 
 	const toggleRulesEditorVisibility = rule => {
 		if (rule) {
