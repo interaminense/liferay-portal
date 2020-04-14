@@ -237,6 +237,7 @@ const createReducer = dataLayoutBuilder => {
 						...state.dataLayout,
 						dataRules: dataRules.concat(dataRule),
 					},
+					ruleName: '',
 				};
 			}
 			case DELETE_DATA_DEFINITION_FIELD: {
@@ -378,6 +379,7 @@ const createReducer = dataLayoutBuilder => {
 							return rule;
 						}),
 					},
+					ruleName: '',
 				};
 			}
 			case UPDATE_EDITING_LANGUAGE_ID: {

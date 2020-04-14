@@ -16,7 +16,13 @@ import ClayButton from '@clayui/button';
 import {ClayInput} from '@clayui/form';
 import ClayModal, {useModal} from '@clayui/modal';
 import {RuleEditor} from 'dynamic-data-mapping-form-builder';
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 
 import AppContext from '../../AppContext.es';
 import {UPDATE_RULE_NAME} from '../../actions.es';
@@ -36,9 +42,7 @@ class RuleEditorWrapper extends RuleEditor {
 const RuleEditorModalContent = ({onClose, rule}) => {
 	const ruleEditorRef = useRef();
 	const [ruleEditor, setRuleEditor] = useState(null);
-	const [ruleName, setRuleName] = useState(
-		rule && rule.name ? rule.name.en_US : ''
-	);
+	const [ruleName, setRuleName] = useState('');
 
 	const [
 		{
@@ -56,13 +60,22 @@ const RuleEditorModalContent = ({onClose, rule}) => {
 		roles: [],
 	});
 
-	const onChangeRuleName = ({target: {value}}) => {
-		setRuleName(value);
-		dispatch({
-			payload: value,
-			type: UPDATE_RULE_NAME,
-		});
-	};
+	const onChangeRuleName = useCallback(
+		value => {
+			setRuleName(value);
+			dispatch({
+				payload: value,
+				type: UPDATE_RULE_NAME,
+			});
+		},
+		[dispatch]
+	);
+
+	useEffect(() => {
+		if (rule) {
+			onChangeRuleName(rule.name.en_US);
+		}
+	}, [onChangeRuleName, rule]);
 
 	useEffect(() => {
 		const {isLoading, roles} = state;
@@ -148,7 +161,9 @@ const RuleEditorModalContent = ({onClose, rule}) => {
 						<ClayInput
 							aria-label={Liferay.Language.get('untitled-rule')}
 							className="form-control-inline"
-							onChange={onChangeRuleName}
+							onChange={({target: {value}}) =>
+								onChangeRuleName(value)
+							}
 							placeholder={Liferay.Language.get('untitled-rule')}
 							type="text"
 							value={ruleName}
