@@ -35,6 +35,7 @@ import {
 	UPDATE_FOCUSED_FIELD,
 	UPDATE_IDS,
 	UPDATE_PAGES,
+	UPDATE_RULE_NAME,
 } from './actions.es';
 import * as DataLayoutVisitor from './utils/dataLayoutVisitor.es';
 import generateDataDefinitionFieldName from './utils/generateDataDefinitionFieldName.es';
@@ -68,6 +69,7 @@ const initialState = {
 	fieldTypes: [],
 	focusedCustomObjectField: {},
 	focusedField: {},
+	ruleName: '',
 	sidebarOpen: true,
 	sidebarPanelId: 'fields',
 	spritemap: `${Liferay.ThemeDisplay.getPathThemeImages()}/lexicon/icons.svg`,
@@ -224,9 +226,10 @@ const createReducer = dataLayoutBuilder => {
 				let {dataRule} = action.payload;
 				const {
 					dataLayout: {dataRules},
+					ruleName,
 				} = state;
 
-				dataRule = DataLayoutVisitor.normalizeLogicalOperator(dataRule);
+				dataRule = DataLayoutVisitor.normalizeRule(dataRule, ruleName);
 
 				return {
 					...state,
@@ -355,9 +358,10 @@ const createReducer = dataLayoutBuilder => {
 				let {dataRule} = action.payload;
 				const {
 					dataLayout: {dataRules},
+					ruleName,
 				} = state;
 
-				dataRule = DataLayoutVisitor.normalizeLogicalOperator(dataRule);
+				dataRule = DataLayoutVisitor.normalizeRule(dataRule, ruleName);
 
 				return {
 					...state,
@@ -459,6 +463,14 @@ const createReducer = dataLayoutBuilder => {
 					...state,
 					dataDefinitionId,
 					dataLayoutId,
+				};
+			}
+			case UPDATE_RULE_NAME: {
+				const ruleName = action.payload;
+
+				return {
+					...state,
+					ruleName,
 				};
 			}
 			case UPDATE_PAGES: {
