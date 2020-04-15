@@ -109,6 +109,8 @@ const App = props => {
 		groupId,
 	} = parseProps(props);
 
+	window.AppProps = props;
+
 	const sidebarConfig = initializeSidebarConfig(props);
 
 	const [loaded, setLoaded] = useState(false);

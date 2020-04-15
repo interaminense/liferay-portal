@@ -25,7 +25,7 @@ import java.util.Map;
 public interface DataLayoutBuilderDefinition {
 
 	public default boolean allowFieldSets() {
-		return false;
+		return true;
 	}
 
 	public default boolean allowMultiplePages() {
