@@ -26,9 +26,9 @@ export default ({keywords, toggleRulesEditorVisibility}) => {
 		},
 	] = useContext(AppContext);
 
-	const filtereDataRules = dataRules.filter(({name}) =>
-		new RegExp(keywords, 'ig').test(name)
-	);
+	const filtereDataRules = dataRules
+		.map((rule, ruleEditedIndex) => ({...rule, ruleEditedIndex}))
+		.filter(({name}) => new RegExp(keywords, 'ig').test(name));
 
 	return (
 		<>
