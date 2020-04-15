@@ -273,7 +273,7 @@ const createReducer = dataLayoutBuilder => {
 					dataLayout: {
 						...state.dataLayout,
 						dataRules: dataRules.filter(
-							rule => rule.ruleEditedIndex !== ruleEditedIndex
+							(_, index) => index !== ruleEditedIndex
 						),
 					},
 				};
@@ -368,11 +368,10 @@ const createReducer = dataLayoutBuilder => {
 					...state,
 					dataLayout: {
 						...state.dataLayout,
-						dataRules: dataRules.map(rule => {
-							if (
-								rule.ruleEditedIndex ===
-								dataRule.ruleEditedIndex
-							) {
+						dataRules: dataRules.map((rule, ruleEditedIndex) => {
+							if (ruleEditedIndex === dataRule.ruleEditedIndex) {
+								delete dataRule.ruleEditedIndex;
+
 								return dataRule;
 							}
 

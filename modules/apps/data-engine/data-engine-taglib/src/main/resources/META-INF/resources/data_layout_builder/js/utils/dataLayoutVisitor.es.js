@@ -106,8 +106,8 @@ export function normalizeRule(dataRule, ruleName) {
 		delete dataRule['logical-operator'];
 	}
 
-	if (!dataRule.ruleEditedIndex) {
-		dataRule.ruleEditedIndex = new Date().getTime();
+	if (isNaN(dataRule.ruleEditedIndex)) {
+		delete dataRule.ruleEditedIndex;
 	}
 
 	dataRule = {
