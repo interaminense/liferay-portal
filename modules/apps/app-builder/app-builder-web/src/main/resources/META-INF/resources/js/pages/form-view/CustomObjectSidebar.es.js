@@ -124,11 +124,7 @@ const Header = ({onCloseSearch, onSearch, searchText}) => {
 			<div
 				className={classNames(
 					'custom-object-sidebar-header',
-					'mt-4',
-					'p-2',
-					{
-						'ml-4': !searchMode,
-					}
+					'ml-4 mr-4 mt-4 pt-2 pb-2'
 				)}
 			>
 				<div className="autofit-row autofit-row-center">
