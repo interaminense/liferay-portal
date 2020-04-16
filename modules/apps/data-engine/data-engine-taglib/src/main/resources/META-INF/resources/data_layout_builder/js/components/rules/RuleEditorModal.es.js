@@ -106,8 +106,8 @@ const RuleEditorModalContent = ({onClose, rule}) => {
 				ref: 'RuleEditor',
 				roles,
 				rule,
-				...(rule && {ruleEditedIndex: rule.ruleEditedIndex}),
 				spritemap,
+				...(rule && {ruleEditedIndex: rule.ruleEditedIndex}),
 			},
 			ruleEditorRef.current
 		);
