@@ -229,7 +229,10 @@ const createReducer = dataLayoutBuilder => {
 					ruleName,
 				} = state;
 
-				dataRule = DataLayoutVisitor.normalizeRule(dataRule, ruleName);
+				dataRule = DataLayoutVisitor.normalizeRule({
+					dataRule,
+					ruleName,
+				});
 
 				return {
 					...state,
@@ -273,7 +276,7 @@ const createReducer = dataLayoutBuilder => {
 					dataLayout: {
 						...state.dataLayout,
 						dataRules: dataRules.filter(
-							(_, index) => index !== ruleEditedIndex
+							(_rule, index) => index !== ruleEditedIndex
 						),
 					},
 				};
@@ -362,7 +365,10 @@ const createReducer = dataLayoutBuilder => {
 					ruleName,
 				} = state;
 
-				dataRule = DataLayoutVisitor.normalizeRule(dataRule, ruleName);
+				dataRule = DataLayoutVisitor.normalizeRule({
+					dataRule,
+					ruleName,
+				});
 
 				return {
 					...state,
