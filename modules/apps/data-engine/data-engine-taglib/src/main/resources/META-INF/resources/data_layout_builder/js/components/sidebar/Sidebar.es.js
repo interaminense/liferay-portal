@@ -20,11 +20,7 @@ import SearchInput from '../search-input/SearchInput.es';
 const Sidebar = React.forwardRef(({children, className}, ref) => {
 	return (
 		<div
-			className={classNames(
-				className,
-				'data-layout-builder-sidebar',
-				'mr-4'
-			)}
+			className={classNames(className, 'data-layout-builder-sidebar')}
 			ref={ref}
 		>
 			<div className="sidebar sidebar-light">{children}</div>
