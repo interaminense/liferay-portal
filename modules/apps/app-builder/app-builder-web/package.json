@@ -15,6 +15,7 @@
 		"@clayui/pagination-bar": "3.1.2",
 		"@clayui/sticker": "3.1.0",
 		"@clayui/table": "4.0.0",
+		"@clayui/tabs": "3.1.0",
 		"classnames": "2.2.6",
 		"dynamic-data-mapping-form-renderer": "*",
 		"frontend-js-react-web": "*",
