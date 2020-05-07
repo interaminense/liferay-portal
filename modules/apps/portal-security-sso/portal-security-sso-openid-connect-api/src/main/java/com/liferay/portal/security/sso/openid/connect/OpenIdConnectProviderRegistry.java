@@ -24,11 +24,13 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface OpenIdConnectProviderRegistry<S, T> {
 
-	public OpenIdConnectProvider<S, T> findOpenIdConnectProvider(String name)
+	public OpenIdConnectProvider<S, T> findOpenIdConnectProvider(
+			long companyId, String name)
 		throws OpenIdConnectServiceException.ProviderException;
 
-	public OpenIdConnectProvider<S, T> getOpenIdConnectProvider(String name);
+	public OpenIdConnectProvider<S, T> getOpenIdConnectProvider(
+		long companyId, String name);
 
-	public Collection<String> getOpenIdConnectProviderNames();
+	public Collection<String> getOpenIdConnectProviderNames(long companyId);
 
 }
