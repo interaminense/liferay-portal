@@ -24,8 +24,6 @@ public class MockedNativeObject implements DataEngineNativeObject {
 
 		List<DataEngineNativeObjectField> list = new ArrayList<>();
 
-		list.add(dataEngineNativeObjectField);
-
 		return list;
 	}
 
