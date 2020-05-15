@@ -15,9 +15,8 @@
 package com.liferay.portal.security.sso.openid.connect.internal;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnectProvider;
@@ -33,9 +32,12 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,9 +61,8 @@ public class OpenIdConnectProviderRegistryImpl
 				   <OIDCClientMetadata, OIDCProviderMetadata> {
 
 	@Override
-	public void deleted(String factoryPid) {
-		removeOpenConnectIdProvider(
-			CompanyThreadLocal.getCompanyId(), factoryPid);
+	public void deleted(String pid) {
+		removeOpenConnectIdProvider(pid);
 	}
 
 	@Override
@@ -69,12 +70,12 @@ public class OpenIdConnectProviderRegistryImpl
 			findOpenIdConnectProvider(long companyId, String name)
 		throws OpenIdConnectServiceException.ProviderException {
 
-		OpenIdConnectProvider openIdConnectProvider = getOpenIdConnectProvider(
-			companyId, name);
+		OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
+			openIdConnectProvider = getOpenIdConnectProvider(companyId, name);
 
 		if (openIdConnectProvider == null) {
 			throw new OpenIdConnectServiceException.ProviderException(
-				"Unable to get OpenId Connect provider with name " + name);
+				"Unable to find an OpenId Connect provider with name " + name);
 		}
 
 		return openIdConnectProvider;
@@ -89,62 +90,56 @@ public class OpenIdConnectProviderRegistryImpl
 	public OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
 		getOpenIdConnectProvider(long companyId, String name) {
 
-		String openIdConnectCompanyIdentifier = _getOpenIdConnectCompanyName(
-			companyId, name);
-
-		return _openIdConnectProvidersPerCompanyName.get(
-			openIdConnectCompanyIdentifier);
+		return _getOpenIdConnectProvidersStream(
+			companyId
+		).filter(
+			openIdConnectProvider -> name.equals(
+				openIdConnectProvider.getName())
+		).findFirst(
+		).orElse(
+			null
+		);
 	}
 
 	@Override
 	public Collection<String> getOpenIdConnectProviderNames(long companyId) {
-		if (_openIdConnectProvidersPerCompanyName.isEmpty()) {
-			return Collections.emptySet();
-		}
-
-		Collection<String> openIdConnectProviderNames =
-			_getOpenIdConnectProviderNamesByCompany(_DEFAULT_COMPANY_ID);
-
-		openIdConnectProviderNames.addAll(
-			_getOpenIdConnectProviderNamesByCompany(companyId));
-
-		return openIdConnectProviderNames;
+		return _openIdConnectProviderNames.computeIfAbsent(
+			companyId, this::_getOpenIdConnectProviderNames);
 	}
 
 	@Override
-	public void updated(String factoryPid, Dictionary<String, ?> properties)
+	public void updated(String pid, Dictionary<String, ?> properties)
 		throws ConfigurationException {
 
-		OpenIdConnectProviderConfiguration openIdConnectProviderConfiguration =
-			ConfigurableUtil.createConfigurable(
-				OpenIdConnectProviderConfiguration.class, properties);
-
-		long companyId = GetterUtil.getLong(properties.get("companyId"));
-
-		synchronized (_openIdConnectProvidersPerFactory) {
-			OpenIdConnectProvider openIdConnectProvider =
-				createOpenIdConnectProvider(openIdConnectProviderConfiguration);
-
-			removeOpenConnectIdProvider(companyId, factoryPid);
-
-			addOpenConnectIdConnectProvider(
-				companyId, factoryPid, openIdConnectProvider);
-		}
+		addOpenConnectIdConnectProvider(
+			GetterUtil.getLong(properties.get("companyId")), pid,
+			createOpenIdConnectProvider(
+				ConfigurableUtil.createConfigurable(
+					OpenIdConnectProviderConfiguration.class, properties)));
 	}
 
 	protected void addOpenConnectIdConnectProvider(
-		long companyId, String factoryPid,
-		OpenIdConnectProvider openIdConnectProvider) {
+		long companyId, String pid,
+		OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
+			openIdConnectProvider) {
 
-		synchronized (_openIdConnectProvidersPerFactory) {
-			_openIdConnectProvidersPerFactory.put(
-				factoryPid, openIdConnectProvider);
+		synchronized (_companyIdPidMapping) {
+			if (_openIdConnectProviders.put(pid, openIdConnectProvider) !=
+					null) {
 
-			String openIdConnectCompanyName = _getOpenIdConnectCompanyName(
-				companyId, openIdConnectProvider.getName());
+				for (Set<String> pids : _companyIdPidMapping.values()) {
+					if (pids.remove(pid)) {
+						break;
+					}
+				}
+			}
 
-			_openIdConnectProvidersPerCompanyName.put(
-				openIdConnectCompanyName, openIdConnectProvider);
+			Set<String> pids = _companyIdPidMapping.computeIfAbsent(
+				companyId, cid -> new CopyOnWriteArraySet<>());
+
+			pids.add(pid);
+
+			_openIdConnectProviderNames.clear();
 		}
 	}
 
@@ -202,53 +197,67 @@ public class OpenIdConnectProviderRegistryImpl
 			openIdConnectMetadataFactory);
 	}
 
-	protected void removeOpenConnectIdProvider(
-		long companyId, String factoryPid) {
+	protected void removeOpenConnectIdProvider(String pid) {
+		synchronized (_companyIdPidMapping) {
+			if (_openIdConnectProviders.remove(pid) != null) {
+				for (Set<String> pids : _companyIdPidMapping.values()) {
+					if (pids.remove(pid)) {
+						break;
+					}
+				}
 
-		synchronized (_openIdConnectProvidersPerFactory) {
-			OpenIdConnectProvider openIdConnectProvider =
-				_openIdConnectProvidersPerFactory.remove(factoryPid);
-
-			if (openIdConnectProvider != null) {
-				String openIdConnectCompanyName = _getOpenIdConnectCompanyName(
-					companyId, openIdConnectProvider.getName());
-
-				_openIdConnectProvidersPerCompanyName.remove(
-					openIdConnectCompanyName);
+				_openIdConnectProviderNames.clear();
 			}
 		}
 	}
 
-	private String _getOpenIdConnectCompanyName(long companyId, String name) {
-		return companyId + StringPool.DASH + name;
+	private List<String> _getOpenIdConnectProviderNames(long companyId) {
+		return Collections.unmodifiableList(
+			_getOpenIdConnectProvidersStream(
+				companyId
+			).map(
+				OpenIdConnectProvider::getName
+			).distinct(
+			).sorted(
+			).collect(
+				Collectors.toList()
+			));
 	}
 
-	private Collection<String> _getOpenIdConnectProviderNamesByCompany(
-		long companyId) {
+	private Stream
+		<OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
+			_getOpenIdConnectProvidersStream(long companyId) {
 
-		Set<String> openIdConnectNames =
-			_openIdConnectProvidersPerCompanyName.keySet();
-
-		Stream<String> stream = openIdConnectNames.stream();
-
-		return stream.filter(
-			value -> value.startsWith(companyId + StringPool.DASH)
+		return _getStream(
+			_companyIdPidMapping.get(companyId),
+			_companyIdPidMapping.get(CompanyConstants.SYSTEM)
 		).map(
-			value -> value.substring(value.indexOf(StringPool.DASH) + 1)
-		).collect(
-			Collectors.toList()
+			_openIdConnectProviders::get
 		);
 	}
 
-	private static final long _DEFAULT_COMPANY_ID = 0;
+	private <T> Stream<T> _getStream(Set<T> set1, Set<T> set2) {
+		if ((set1 != null) && (set2 != null)) {
+			return Stream.concat(set1.stream(), set2.stream());
+		}
+		else if (set1 != null) {
+			return set1.stream();
+		}
+		else if (set2 != null) {
+			return set2.stream();
+		}
+		else {
+			return Stream.empty();
+		}
+	}
 
+	private final Map<Long, CopyOnWriteArraySet<String>> _companyIdPidMapping =
+		new ConcurrentHashMap<>();
+	private final Map<Long, List<String>> _openIdConnectProviderNames =
+		new HashMap<>();
 	private final Map
 		<String,
 		 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
-			_openIdConnectProvidersPerCompanyName = new ConcurrentHashMap<>();
-	private final Map
-		<String,
-		 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
-			_openIdConnectProvidersPerFactory = new ConcurrentHashMap<>();
+			_openIdConnectProviders = new HashMap<>();
 
 }
