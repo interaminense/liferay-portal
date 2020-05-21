@@ -106,6 +106,12 @@ class Email extends Component {
 		);
 	}
 
+	_autocompleteUserValueFn() {
+		const {autocompleteUser} = this.props;
+
+		return autocompleteUser;
+	}
+
 	_emailContentValueFn() {
 		return {
 			addresses: [],
@@ -235,12 +241,12 @@ Email.PROPS = {
 Email.STATE = {
 
 	/**
-	 * @default undefined
+	 * @default _autocompleteUserValueFn
 	 * @instance
 	 * @memberof Email
 	 * @type {!array}
 	 */
-	autocompleteUser: Config.array(),
+	autocompleteUser: Config.array().valueFn('_autocompleteUserValueFn'),
 
 	/**
 	 * @default undefined
