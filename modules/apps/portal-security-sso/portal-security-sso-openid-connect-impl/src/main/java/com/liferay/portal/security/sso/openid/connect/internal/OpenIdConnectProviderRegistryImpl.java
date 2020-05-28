@@ -103,6 +103,9 @@ public class OpenIdConnectProviderRegistryImpl
 
 	@Override
 	public Collection<String> getOpenIdConnectProviderNames(long companyId) {
+		/*This access is not synchronized and can produce
+		 ConcurrentModificationException*/
+
 		return _openIdConnectProviderNames.computeIfAbsent(
 			companyId, this::_getOpenIdConnectProviderNames);
 	}
@@ -254,7 +257,7 @@ public class OpenIdConnectProviderRegistryImpl
 	private final Map<Long, CopyOnWriteArraySet<String>> _companyIdPidMapping =
 		new ConcurrentHashMap<>();
 	private final Map<Long, List<String>> _openIdConnectProviderNames =
-		new HashMap<>();
+		new ConcurrentHashMap<>();
 	private final Map
 		<String,
 		 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
