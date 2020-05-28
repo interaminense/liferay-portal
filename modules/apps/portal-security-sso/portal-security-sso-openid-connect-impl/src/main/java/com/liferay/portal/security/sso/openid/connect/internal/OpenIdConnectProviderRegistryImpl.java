@@ -29,6 +29,7 @@ import com.liferay.portal.security.sso.openid.connect.internal.configuration.Ope
 import com.nimbusds.openid.connect.sdk.op.OIDCProviderMetadata;
 import com.nimbusds.openid.connect.sdk.rp.OIDCClientMetadata;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.Collection;
@@ -174,35 +175,14 @@ public class OpenIdConnectProviderRegistryImpl
 					openIdConnectProviderConfiguration)
 		throws ConfigurationException {
 
-		OpenIdConnectMetadataFactory openIdConnectMetadataFactory = null;
-
 		try {
-			if (Validator.isNotNull(
-					openIdConnectProviderConfiguration.discoveryEndPoint())) {
-
-				openIdConnectMetadataFactory =
-					new OpenIdConnectMetadataFactoryImpl(
-						openIdConnectProviderConfiguration.providerName(),
-						new URL(
-							openIdConnectProviderConfiguration.
-								discoveryEndPoint()),
-						openIdConnectProviderConfiguration.
-							discoveryEndPointCacheInMillis());
-			}
-			else {
-				openIdConnectMetadataFactory =
-					new OpenIdConnectMetadataFactoryImpl(
-						openIdConnectProviderConfiguration.providerName(),
-						openIdConnectProviderConfiguration.
-							idTokenSigningAlgValues(),
-						openIdConnectProviderConfiguration.issuerURL(),
-						openIdConnectProviderConfiguration.subjectTypes(),
-						openIdConnectProviderConfiguration.jwksURI(),
-						openIdConnectProviderConfiguration.
-							authorizationEndPoint(),
-						openIdConnectProviderConfiguration.tokenEndPoint(),
-						openIdConnectProviderConfiguration.userInfoEndPoint());
-			}
+			return new OpenIdConnectProviderImpl(
+				openIdConnectProviderConfiguration.providerName(),
+				openIdConnectProviderConfiguration.openIdConnectClientId(),
+				openIdConnectProviderConfiguration.openIdConnectClientSecret(),
+				openIdConnectProviderConfiguration.scopes(),
+				getOpenIdConnectMetadataFactory(
+					openIdConnectProviderConfiguration));
 		}
 		catch (Exception exception) {
 			throw new ConfigurationException(
@@ -213,13 +193,33 @@ public class OpenIdConnectProviderRegistryImpl
 					exception.getMessage()),
 				exception);
 		}
+	}
 
-		return new OpenIdConnectProviderImpl(
+	protected OpenIdConnectMetadataFactory getOpenIdConnectMetadataFactory(
+			OpenIdConnectProviderConfiguration
+				openIdConnectProviderConfiguration)
+		throws MalformedURLException,
+			   OpenIdConnectServiceException.ProviderException {
+
+		if (Validator.isNotNull(
+				openIdConnectProviderConfiguration.discoveryEndPoint())) {
+
+			return new OpenIdConnectMetadataFactoryImpl(
+				openIdConnectProviderConfiguration.providerName(),
+				new URL(openIdConnectProviderConfiguration.discoveryEndPoint()),
+				openIdConnectProviderConfiguration.
+					discoveryEndPointCacheInMillis());
+		}
+
+		return new OpenIdConnectMetadataFactoryImpl(
 			openIdConnectProviderConfiguration.providerName(),
-			openIdConnectProviderConfiguration.openIdConnectClientId(),
-			openIdConnectProviderConfiguration.openIdConnectClientSecret(),
-			openIdConnectProviderConfiguration.scopes(),
-			openIdConnectMetadataFactory);
+			openIdConnectProviderConfiguration.idTokenSigningAlgValues(),
+			openIdConnectProviderConfiguration.issuerURL(),
+			openIdConnectProviderConfiguration.subjectTypes(),
+			openIdConnectProviderConfiguration.jwksURI(),
+			openIdConnectProviderConfiguration.authorizationEndPoint(),
+			openIdConnectProviderConfiguration.tokenEndPoint(),
+			openIdConnectProviderConfiguration.userInfoEndPoint());
 	}
 
 	private void _rebuild(long companyId) {
