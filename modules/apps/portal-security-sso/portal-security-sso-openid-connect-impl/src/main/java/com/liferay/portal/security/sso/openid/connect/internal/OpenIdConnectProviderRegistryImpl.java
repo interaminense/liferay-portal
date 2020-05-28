@@ -16,7 +16,6 @@ package com.liferay.portal.security.sso.openid.connect.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnectProvider;
@@ -32,13 +31,8 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.framework.Constants;
 import org.osgi.service.cm.ConfigurationException;
@@ -61,7 +55,13 @@ public class OpenIdConnectProviderRegistryImpl
 
 	@Override
 	public void deleted(String pid) {
-		removeOpenConnectIdProvider(pid);
+		Dictionary<String, ?> properties = _configurationPidsProperties.remove(
+			pid);
+
+		removeOpenConnectIdProvider(
+			GetterUtil.getLong(properties.get("companyId")),
+			ConfigurableUtil.createConfigurable(
+				OpenIdConnectProviderConfiguration.class, properties));
 	}
 
 	@Override
@@ -89,61 +89,78 @@ public class OpenIdConnectProviderRegistryImpl
 	public OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
 		getOpenIdConnectProvider(long companyId, String name) {
 
-		return _getOpenIdConnectProvidersStream(
-			companyId
-		).filter(
-			openIdConnectProvider -> name.equals(
-				openIdConnectProvider.getName())
-		).findFirst(
-		).orElse(
-			null
-		);
+		Map
+			<String,
+			 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
+				openIdConnectProviderMap =
+					_companyIdProviderNameOpedIdConnectProviders.get(companyId);
+
+		if (openIdConnectProviderMap == null) {
+			return null;
+		}
+
+		return openIdConnectProviderMap.get(name);
 	}
 
 	@Override
 	public Collection<String> getOpenIdConnectProviderNames(long companyId) {
-		/*This access is not synchronized and can produce
-		 ConcurrentModificationException*/
+		Map
+			<String,
+			 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
+				openIdConnectProviderMap =
+					_companyIdProviderNameOpedIdConnectProviders.get(companyId);
 
-		return _openIdConnectProviderNames.computeIfAbsent(
-			companyId, this::_getOpenIdConnectProviderNames);
+		if (openIdConnectProviderMap == null) {
+			return Collections.emptySet();
+		}
+
+		return openIdConnectProviderMap.keySet();
 	}
 
 	@Override
 	public void updated(String pid, Dictionary<String, ?> properties)
 		throws ConfigurationException {
 
+		Dictionary<String, ?> oldProperties = _configurationPidsProperties.put(
+			pid, properties);
+
+		OpenIdConnectProviderConfiguration openIdConnectProviderConfiguration =
+			ConfigurableUtil.createConfigurable(
+				OpenIdConnectProviderConfiguration.class, properties);
+
+		if (oldProperties != null) {
+			removeOpenConnectIdProvider(
+				GetterUtil.getLong(properties.get("companyId")),
+				openIdConnectProviderConfiguration);
+		}
+
 		addOpenConnectIdConnectProvider(
-			GetterUtil.getLong(properties.get("companyId")), pid,
-			createOpenIdConnectProvider(
-				ConfigurableUtil.createConfigurable(
-					OpenIdConnectProviderConfiguration.class, properties)));
+			GetterUtil.getLong(properties.get("companyId")),
+			createOpenIdConnectProvider(openIdConnectProviderConfiguration));
 	}
 
 	protected void addOpenConnectIdConnectProvider(
-		long companyId, String pid,
+		long companyId,
 		OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
 			openIdConnectProvider) {
 
-		_openIdConnectProviders.compute(
-			pid,
-			(oldPid, oldOpenIdConnectProvider) -> {
-				if (oldOpenIdConnectProvider != null) {
-					for (Set<String> pids : _companyIdPidMapping.values()) {
-						if (pids.remove(pid)) {
-							break;
-						}
-					}
+		_companyIdProviderNameOpedIdConnectProviders.compute(
+			companyId,
+			(cid, openIdConnectProviderMap) -> {
+				if (openIdConnectProviderMap == null) {
+					openIdConnectProviderMap = new ConcurrentHashMap<>();
 				}
 
-				Set<String> pids = _companyIdPidMapping.computeIfAbsent(
-					companyId, cid -> new CopyOnWriteArraySet<>());
+				if (openIdConnectProviderMap.containsKey(
+						openIdConnectProvider.getName())) {
 
-				pids.add(pid);
+					throw new RuntimeException("Duplicated name");
+				}
 
-				_openIdConnectProviderNames.clear();
+				openIdConnectProviderMap.put(
+					openIdConnectProvider.getName(), openIdConnectProvider);
 
-				return openIdConnectProvider;
+				return openIdConnectProviderMap;
 			});
 	}
 
@@ -201,71 +218,36 @@ public class OpenIdConnectProviderRegistryImpl
 			openIdConnectMetadataFactory);
 	}
 
-	protected void removeOpenConnectIdProvider(String pid) {
-		_openIdConnectProviders.compute(
-			pid,
-			(oldPid, oldOpenIdConnectProvider) -> {
-				if (oldOpenIdConnectProvider != null) {
-					for (Set<String> pids : _companyIdPidMapping.values()) {
-						if (pids.remove(pid)) {
-							break;
-						}
-					}
+	protected void removeOpenConnectIdProvider(
+		long companyId,
+		OpenIdConnectProviderConfiguration openIdConnectProviderConfiguration) {
 
-					_openIdConnectProviderNames.clear();
+		_companyIdProviderNameOpedIdConnectProviders.compute(
+			companyId,
+			(cid, openIdConnectProviderMap) -> {
+				if (openIdConnectProviderMap == null) {
+					return null;
 				}
 
-				return null;
+				openIdConnectProviderMap.remove(
+					openIdConnectProviderConfiguration.providerName());
+
+				if (openIdConnectProviderMap.isEmpty()) {
+					return null;
+				}
+
+				return openIdConnectProviderMap;
 			});
 	}
 
-	private List<String> _getOpenIdConnectProviderNames(long companyId) {
-		return Collections.unmodifiableList(
-			_getOpenIdConnectProvidersStream(
-				companyId
-			).map(
-				OpenIdConnectProvider::getName
-			).distinct(
-			).sorted(
-			).collect(
-				Collectors.toList()
-			));
-	}
-
-	private Stream
-		<OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
-			_getOpenIdConnectProvidersStream(long companyId) {
-
-		return _getStream(
-			_companyIdPidMapping.get(companyId),
-			_companyIdPidMapping.get(CompanyConstants.SYSTEM)
-		).map(
-			_openIdConnectProviders::get
-		);
-	}
-
-	private <T> Stream<T> _getStream(Set<T> set1, Set<T> set2) {
-		if ((set1 != null) && (set2 != null)) {
-			return Stream.concat(set1.stream(), set2.stream());
-		}
-		else if (set1 != null) {
-			return set1.stream();
-		}
-		else if (set2 != null) {
-			return set2.stream();
-		}
-		else {
-			return Stream.empty();
-		}
-	}
-
-	private final Map<Long, CopyOnWriteArraySet<String>> _companyIdPidMapping =
-		new ConcurrentHashMap<>();
-	private final Map<Long, List<String>> _openIdConnectProviderNames =
-		new ConcurrentHashMap<>();
 	private final Map
-		<String,
-		 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
-			_openIdConnectProviders = new ConcurrentHashMap<>();
+		<Long,
+		 Map
+			 <String,
+			  OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>>
+				_companyIdProviderNameOpedIdConnectProviders =
+					new ConcurrentHashMap<>();
+	private final Map<String, Dictionary<String, ?>>
+		_configurationPidsProperties = new ConcurrentHashMap<>();
 
 }
