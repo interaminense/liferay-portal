@@ -32,7 +32,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -126,24 +125,26 @@ public class OpenIdConnectProviderRegistryImpl
 		OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
 			openIdConnectProvider) {
 
-		synchronized (_companyIdPidMapping) {
-			if (_openIdConnectProviders.put(pid, openIdConnectProvider) !=
-					null) {
-
-				for (Set<String> pids : _companyIdPidMapping.values()) {
-					if (pids.remove(pid)) {
-						break;
+		_openIdConnectProviders.compute(
+			pid,
+			(oldPid, oldOpenIdConnectProvider) -> {
+				if (oldOpenIdConnectProvider != null) {
+					for (Set<String> pids : _companyIdPidMapping.values()) {
+						if (pids.remove(pid)) {
+							break;
+						}
 					}
 				}
-			}
 
-			Set<String> pids = _companyIdPidMapping.computeIfAbsent(
-				companyId, cid -> new CopyOnWriteArraySet<>());
+				Set<String> pids = _companyIdPidMapping.computeIfAbsent(
+					companyId, cid -> new CopyOnWriteArraySet<>());
 
-			pids.add(pid);
+				pids.add(pid);
 
-			_openIdConnectProviderNames.clear();
-		}
+				_openIdConnectProviderNames.clear();
+
+				return openIdConnectProvider;
+			});
 	}
 
 	protected OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
@@ -201,17 +202,21 @@ public class OpenIdConnectProviderRegistryImpl
 	}
 
 	protected void removeOpenConnectIdProvider(String pid) {
-		synchronized (_companyIdPidMapping) {
-			if (_openIdConnectProviders.remove(pid) != null) {
-				for (Set<String> pids : _companyIdPidMapping.values()) {
-					if (pids.remove(pid)) {
-						break;
+		_openIdConnectProviders.compute(
+			pid,
+			(oldPid, oldOpenIdConnectProvider) -> {
+				if (oldOpenIdConnectProvider != null) {
+					for (Set<String> pids : _companyIdPidMapping.values()) {
+						if (pids.remove(pid)) {
+							break;
+						}
 					}
+
+					_openIdConnectProviderNames.clear();
 				}
 
-				_openIdConnectProviderNames.clear();
-			}
-		}
+				return null;
+			});
 	}
 
 	private List<String> _getOpenIdConnectProviderNames(long companyId) {
@@ -261,6 +266,6 @@ public class OpenIdConnectProviderRegistryImpl
 	private final Map
 		<String,
 		 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
-			_openIdConnectProviders = new HashMap<>();
+			_openIdConnectProviders = new ConcurrentHashMap<>();
 
 }
