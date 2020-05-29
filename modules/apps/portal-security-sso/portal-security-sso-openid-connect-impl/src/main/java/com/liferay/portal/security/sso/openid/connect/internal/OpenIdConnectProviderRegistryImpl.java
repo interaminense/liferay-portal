@@ -16,6 +16,8 @@ package com.liferay.portal.security.sso.openid.connect.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -31,6 +33,7 @@ import java.net.URL;
 
 import java.util.Collection;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -60,10 +63,7 @@ public class OpenIdConnectProviderRegistryImpl
 		Dictionary<String, ?> properties = _configurationPidsProperties.remove(
 			pid);
 
-		removeOpenIdConnectProvider(
-			GetterUtil.getLong(properties.get("companyId")),
-			ConfigurableUtil.createConfigurable(
-				OpenIdConnectProviderConfiguration.class, properties));
+		_rebuild(GetterUtil.getLong(properties.get("companyId")));
 	}
 
 	@Override
@@ -150,50 +150,22 @@ public class OpenIdConnectProviderRegistryImpl
 	}
 
 	@Override
-	public void updated(String pid, Dictionary<String, ?> properties)
-		throws ConfigurationException {
-
+	public void updated(String pid, Dictionary<String, ?> properties) {
 		Dictionary<String, ?> oldProperties = _configurationPidsProperties.put(
 			pid, properties);
 
-		OpenIdConnectProviderConfiguration openIdConnectProviderConfiguration =
-			ConfigurableUtil.createConfigurable(
-				OpenIdConnectProviderConfiguration.class, properties);
+		long companyId = GetterUtil.getLong(properties.get("companyId"));
 
 		if (oldProperties != null) {
-			removeOpenIdConnectProvider(
-				GetterUtil.getLong(properties.get("companyId")),
-				openIdConnectProviderConfiguration);
+			long oldCompanyId = GetterUtil.getLong(
+				oldProperties.get("companyId"));
+
+			if (oldCompanyId != companyId) {
+				_rebuild(oldCompanyId);
+			}
 		}
 
-		addOpenIdConnectProvider(
-			GetterUtil.getLong(properties.get("companyId")),
-			createOpenIdConnectProvider(openIdConnectProviderConfiguration));
-	}
-
-	protected void addOpenIdConnectProvider(
-		long companyId,
-		OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
-			openIdConnectProvider) {
-
-		_companyIdProviderNameOpedIdConnectProviders.compute(
-			companyId,
-			(cid, openIdConnectProviderMap) -> {
-				if (openIdConnectProviderMap == null) {
-					openIdConnectProviderMap = new ConcurrentHashMap<>();
-				}
-
-				if (openIdConnectProviderMap.containsKey(
-						openIdConnectProvider.getName())) {
-
-					throw new RuntimeException("Duplicated name");
-				}
-
-				openIdConnectProviderMap.put(
-					openIdConnectProvider.getName(), openIdConnectProvider);
-
-				return openIdConnectProviderMap;
-			});
+		_rebuild(companyId);
 	}
 
 	protected OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
@@ -250,29 +222,50 @@ public class OpenIdConnectProviderRegistryImpl
 			openIdConnectMetadataFactory);
 	}
 
-	protected void removeOpenIdConnectProvider(
-		long companyId,
-		OpenIdConnectProviderConfiguration openIdConnectProviderConfiguration) {
+	private void _rebuild(long companyId) {
+		Map
+			<String,
+			 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
+				openIdConnectProviderMap = new HashMap<>();
 
-		_companyIdProviderNameOpedIdConnectProviders.compute(
-			companyId,
-			(cid, openIdConnectProviderMap) -> {
-				if (openIdConnectProviderMap == null) {
-					return null;
+		for (Dictionary<String, ?> properties :
+				_configurationPidsProperties.values()) {
+
+			if (companyId != GetterUtil.getLong(properties.get("companyId"))) {
+				continue;
+			}
+
+			try {
+				OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
+					openIdConnectProvider = createOpenIdConnectProvider(
+						ConfigurableUtil.createConfigurable(
+							OpenIdConnectProviderConfiguration.class,
+							properties));
+
+				if (openIdConnectProviderMap.containsKey(
+						openIdConnectProvider.getName())) {
+
+					_log.error("Duplicated provider name");
+
+					continue;
 				}
 
-				openIdConnectProviderMap.remove(
-					openIdConnectProviderConfiguration.providerName());
+				openIdConnectProviderMap.put(
+					openIdConnectProvider.getName(), openIdConnectProvider);
+			}
+			catch (ConfigurationException configurationException) {
+				_log.error(configurationException, configurationException);
+			}
+		}
 
-				if (openIdConnectProviderMap.isEmpty()) {
-					return null;
-				}
-
-				return openIdConnectProviderMap;
-			});
+		_companyIdProviderNameOpedIdConnectProviders.put(
+			companyId, openIdConnectProviderMap);
 	}
 
-	private final Map
+	private static final Log _log = LogFactoryUtil.getLog(
+		OpenIdConnectProviderRegistryImpl.class);
+
+	private volatile Map
 		<Long,
 		 Map
 			 <String,
