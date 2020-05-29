@@ -16,6 +16,7 @@ package com.liferay.portal.security.sso.openid.connect.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnectProvider;
@@ -29,9 +30,10 @@ import com.nimbusds.openid.connect.sdk.rp.OIDCClientMetadata;
 import java.net.URL;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Dictionary;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.Constants;
@@ -95,26 +97,56 @@ public class OpenIdConnectProviderRegistryImpl
 				openIdConnectProviderMap =
 					_companyIdProviderNameOpedIdConnectProviders.get(companyId);
 
-		if (openIdConnectProviderMap == null) {
-			return null;
+		if (openIdConnectProviderMap != null) {
+			OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
+				openIdConnectProvider = openIdConnectProviderMap.get(name);
+
+			if (openIdConnectProvider != null) {
+				return openIdConnectProvider;
+			}
 		}
 
-		return openIdConnectProviderMap.get(name);
+		openIdConnectProviderMap =
+			_companyIdProviderNameOpedIdConnectProviders.get(
+				CompanyConstants.SYSTEM);
+
+		if (openIdConnectProviderMap != null) {
+			OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
+				openIdConnectProvider = openIdConnectProviderMap.get(name);
+
+			if (openIdConnectProvider != null) {
+				return openIdConnectProvider;
+			}
+		}
+
+		return null;
 	}
 
 	@Override
 	public Collection<String> getOpenIdConnectProviderNames(long companyId) {
+		Set<String> openIdConnectProviderNames = new HashSet<>();
+
 		Map
 			<String,
 			 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
 				openIdConnectProviderMap =
 					_companyIdProviderNameOpedIdConnectProviders.get(companyId);
 
-		if (openIdConnectProviderMap == null) {
-			return Collections.emptySet();
+		if (openIdConnectProviderMap != null) {
+			openIdConnectProviderNames.addAll(
+				openIdConnectProviderMap.keySet());
 		}
 
-		return openIdConnectProviderMap.keySet();
+		openIdConnectProviderMap =
+			_companyIdProviderNameOpedIdConnectProviders.get(
+				CompanyConstants.SYSTEM);
+
+		if (openIdConnectProviderMap != null) {
+			openIdConnectProviderNames.addAll(
+				openIdConnectProviderMap.keySet());
+		}
+
+		return openIdConnectProviderNames;
 	}
 
 	@Override
