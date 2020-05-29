@@ -96,7 +96,7 @@ public class OpenIdConnectProviderRegistryImpl
 			<String,
 			 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
 				openIdConnectProviderMap =
-					_companyIdProviderNameOpedIdConnectProviders.get(companyId);
+					_companyIdProviderNameOpenIdConnectProviders.get(companyId);
 
 		if (openIdConnectProviderMap != null) {
 			OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
@@ -108,7 +108,7 @@ public class OpenIdConnectProviderRegistryImpl
 		}
 
 		openIdConnectProviderMap =
-			_companyIdProviderNameOpedIdConnectProviders.get(
+			_companyIdProviderNameOpenIdConnectProviders.get(
 				CompanyConstants.SYSTEM);
 
 		if (openIdConnectProviderMap != null) {
@@ -131,7 +131,7 @@ public class OpenIdConnectProviderRegistryImpl
 			<String,
 			 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
 				openIdConnectProviderMap =
-					_companyIdProviderNameOpedIdConnectProviders.get(companyId);
+					_companyIdProviderNameOpenIdConnectProviders.get(companyId);
 
 		if (openIdConnectProviderMap != null) {
 			openIdConnectProviderNames.addAll(
@@ -139,7 +139,7 @@ public class OpenIdConnectProviderRegistryImpl
 		}
 
 		openIdConnectProviderMap =
-			_companyIdProviderNameOpedIdConnectProviders.get(
+			_companyIdProviderNameOpenIdConnectProviders.get(
 				CompanyConstants.SYSTEM);
 
 		if (openIdConnectProviderMap != null) {
@@ -258,7 +258,7 @@ public class OpenIdConnectProviderRegistryImpl
 			}
 		}
 
-		_companyIdProviderNameOpedIdConnectProviders.put(
+		_companyIdProviderNameOpenIdConnectProviders.put(
 			companyId, openIdConnectProviderMap);
 	}
 
@@ -270,7 +270,7 @@ public class OpenIdConnectProviderRegistryImpl
 		 Map
 			 <String,
 			  OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>>
-				_companyIdProviderNameOpedIdConnectProviders =
+				_companyIdProviderNameOpenIdConnectProviders =
 					new ConcurrentHashMap<>();
 	private final Map<String, Dictionary<String, ?>>
 		_configurationPidsProperties = new ConcurrentHashMap<>();
