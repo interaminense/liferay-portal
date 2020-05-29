@@ -60,7 +60,7 @@ public class OpenIdConnectProviderRegistryImpl
 		Dictionary<String, ?> properties = _configurationPidsProperties.remove(
 			pid);
 
-		removeOpenConnectIdProvider(
+		removeOpenIdConnectProvider(
 			GetterUtil.getLong(properties.get("companyId")),
 			ConfigurableUtil.createConfigurable(
 				OpenIdConnectProviderConfiguration.class, properties));
@@ -161,17 +161,17 @@ public class OpenIdConnectProviderRegistryImpl
 				OpenIdConnectProviderConfiguration.class, properties);
 
 		if (oldProperties != null) {
-			removeOpenConnectIdProvider(
+			removeOpenIdConnectProvider(
 				GetterUtil.getLong(properties.get("companyId")),
 				openIdConnectProviderConfiguration);
 		}
 
-		addOpenConnectIdConnectProvider(
+		addOpenIdConnectProvider(
 			GetterUtil.getLong(properties.get("companyId")),
 			createOpenIdConnectProvider(openIdConnectProviderConfiguration));
 	}
 
-	protected void addOpenConnectIdConnectProvider(
+	protected void addOpenIdConnectProvider(
 		long companyId,
 		OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
 			openIdConnectProvider) {
@@ -250,7 +250,7 @@ public class OpenIdConnectProviderRegistryImpl
 			openIdConnectMetadataFactory);
 	}
 
-	protected void removeOpenConnectIdProvider(
+	protected void removeOpenIdConnectProvider(
 		long companyId,
 		OpenIdConnectProviderConfiguration openIdConnectProviderConfiguration) {
 
