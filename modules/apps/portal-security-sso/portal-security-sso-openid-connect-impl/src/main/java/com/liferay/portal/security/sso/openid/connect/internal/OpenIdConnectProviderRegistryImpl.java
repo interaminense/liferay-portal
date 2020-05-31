@@ -33,11 +33,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.Constants;
@@ -64,7 +63,14 @@ public class OpenIdConnectProviderRegistryImpl
 		Dictionary<String, ?> properties = _configurationPidsProperties.remove(
 			pid);
 
-		_rebuild(GetterUtil.getLong(properties.get("companyId")));
+		long companyId = GetterUtil.getLong(properties.get("companyId"));
+
+		if (companyId == CompanyConstants.SYSTEM) {
+			_rebuildAll();
+		}
+		else {
+			_rebuild(companyId);
+		}
 	}
 
 	@Override
@@ -98,56 +104,26 @@ public class OpenIdConnectProviderRegistryImpl
 				openIdConnectProviderMap =
 					_companyIdProviderNameOpenIdConnectProviders.get(companyId);
 
-		if (openIdConnectProviderMap != null) {
-			OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
-				openIdConnectProvider = openIdConnectProviderMap.get(name);
-
-			if (openIdConnectProvider != null) {
-				return openIdConnectProvider;
-			}
+		if (openIdConnectProviderMap == null) {
+			return null;
 		}
 
-		openIdConnectProviderMap =
-			_companyIdProviderNameOpenIdConnectProviders.get(
-				CompanyConstants.SYSTEM);
-
-		if (openIdConnectProviderMap != null) {
-			OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
-				openIdConnectProvider = openIdConnectProviderMap.get(name);
-
-			if (openIdConnectProvider != null) {
-				return openIdConnectProvider;
-			}
-		}
-
-		return null;
+		return openIdConnectProviderMap.get(name);
 	}
 
 	@Override
 	public Collection<String> getOpenIdConnectProviderNames(long companyId) {
-		Set<String> openIdConnectProviderNames = new HashSet<>();
-
 		Map
 			<String,
 			 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
 				openIdConnectProviderMap =
 					_companyIdProviderNameOpenIdConnectProviders.get(companyId);
 
-		if (openIdConnectProviderMap != null) {
-			openIdConnectProviderNames.addAll(
-				openIdConnectProviderMap.keySet());
+		if (openIdConnectProviderMap == null) {
+			return Collections.emptySet();
 		}
 
-		openIdConnectProviderMap =
-			_companyIdProviderNameOpenIdConnectProviders.get(
-				CompanyConstants.SYSTEM);
-
-		if (openIdConnectProviderMap != null) {
-			openIdConnectProviderNames.addAll(
-				openIdConnectProviderMap.keySet());
-		}
-
-		return openIdConnectProviderNames;
+		return Collections.unmodifiableSet(openIdConnectProviderMap.keySet());
 	}
 
 	@Override
@@ -161,9 +137,22 @@ public class OpenIdConnectProviderRegistryImpl
 			long oldCompanyId = GetterUtil.getLong(
 				oldProperties.get("companyId"));
 
+			if ((companyId == CompanyConstants.SYSTEM) ||
+				(oldCompanyId == CompanyConstants.SYSTEM)) {
+
+				_rebuildAll();
+
+				return;
+			}
+
 			if (oldCompanyId != companyId) {
 				_rebuild(oldCompanyId);
 			}
+		}
+		else if (companyId == CompanyConstants.SYSTEM) {
+			_rebuildAll();
+
+			return;
 		}
 
 		_rebuild(companyId);
@@ -222,11 +211,19 @@ public class OpenIdConnectProviderRegistryImpl
 			openIdConnectProviderConfiguration.userInfoEndPoint());
 	}
 
+	private <U, V> Map<U, V> _addDefaults(
+		Map<U, V> map, Map<U, V> defaultsMap) {
+
+		defaultsMap.forEach(map::putIfAbsent);
+
+		return map;
+	}
+
 	private void _rebuild(long companyId) {
 		Map
 			<String,
 			 OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>>
-				openIdConnectProviderMap = new HashMap<>();
+				openIdConnectProviderMap = new TreeMap<>();
 
 		for (Dictionary<String, ?> properties :
 				_configurationPidsProperties.values()) {
@@ -258,8 +255,27 @@ public class OpenIdConnectProviderRegistryImpl
 			}
 		}
 
+		if (companyId != CompanyConstants.SYSTEM) {
+			_addDefaults(
+				openIdConnectProviderMap,
+				_companyIdProviderNameOpenIdConnectProviders.get(
+					CompanyConstants.SYSTEM));
+		}
+
 		_companyIdProviderNameOpenIdConnectProviders.put(
 			companyId, openIdConnectProviderMap);
+	}
+
+	private void _rebuildAll() {
+		_rebuild(CompanyConstants.SYSTEM);
+
+		for (long companyId :
+				_companyIdProviderNameOpenIdConnectProviders.keySet()) {
+
+			if (companyId != CompanyConstants.SYSTEM) {
+				_rebuild(companyId);
+			}
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
