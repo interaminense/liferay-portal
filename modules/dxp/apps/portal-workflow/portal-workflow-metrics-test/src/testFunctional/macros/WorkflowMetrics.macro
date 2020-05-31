@@ -269,9 +269,9 @@ definition {
 
 	macro checkWorkflowReports {
 
-		ProductMenu.gotoPortlet(
+		GlobalMenu.gotoPortlet(
 			category = "Workflow",
-			panel = "Control Panel",
+			panel = "Applications",
 			portlet = "Metrics");
 
 		AssertTextEquals(
@@ -548,9 +548,9 @@ definition {
 	}
 
 	macro goToWorkflowAllItems {
-		ProductMenu.gotoPortlet(
+		GlobalMenu.gotoPortlet(
 			category = "Workflow",
-			panel = "Control Panel",
+			panel = "Applications",
 			portlet = "Metrics");
 
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
@@ -561,15 +561,15 @@ definition {
 	macro goToWorkflowProcessMetrics {
 		var key_workflowProcessName = "${workflowProcessName}";
 
-		ProductMenu.gotoPortlet(
+		GlobalMenu.gotoPortlet(
 			category = "Workflow",
-			panel = "Control Panel",
+			panel = "Applications",
 			portlet = "Metrics");
 
 		while (IsElementNotPresent(locator1 = "WorkflowMetrics#METRICS_WORKFLOW_PROCESS_NAME") && (maxIterations = "10")) {
-			ProductMenu.gotoPortlet(
+			GlobalMenu.gotoPortlet(
 				category = "Workflow",
-				panel = "Control Panel",
+				panel = "Applications",
 				portlet = "Metrics");
 
 			Pause(locator1 = "6000");
