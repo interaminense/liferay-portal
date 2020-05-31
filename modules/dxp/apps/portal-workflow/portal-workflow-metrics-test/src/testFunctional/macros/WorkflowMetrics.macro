@@ -389,7 +389,7 @@ definition {
 	}
 
 	macro createUsersGroovy {
-		ProductMenu.gotoPortlet(
+		GlobalMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
 			portlet = "Server Administration");
@@ -438,7 +438,7 @@ definition {
 	macro executeWorkflowScript {
 		var key_scriptName = "${scriptName}";
 
-		ProductMenu.gotoPortlet(
+		GlobalMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
 			portlet = "Server Administration");
