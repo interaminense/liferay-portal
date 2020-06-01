@@ -153,8 +153,8 @@ public class CTCollectionServiceImpl extends CTCollectionServiceBaseImpl {
 			if (count > 0) {
 				throw new CTEnclosureException(
 					StringBundler.concat(
-						"{ctCollectionId=", ctCollectionId, ", classNameId=",
-						classNameId, ", classPK=", classPK, "}"));
+						"{classNameId=", classNameId, ", classPK=", classPK,
+						", ctCollectionId=", ctCollectionId, "}"));
 			}
 		}
 
