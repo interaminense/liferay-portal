@@ -242,7 +242,9 @@ public class OpenIdConnectProviderRegistryImpl
 				if (openIdConnectProviderMap.containsKey(
 						openIdConnectProvider.getName())) {
 
-					_log.error("Duplicated provider name");
+					_log.error(
+						"Duplicated OpenId Connect provider name \"" +
+							openIdConnectProvider.getName() + "\"");
 
 					continue;
 				}
