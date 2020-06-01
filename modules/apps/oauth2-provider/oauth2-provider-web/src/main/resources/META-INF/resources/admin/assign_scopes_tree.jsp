@@ -73,9 +73,7 @@ pageContext.setAttribute("scopeAliasesDescriptionsMap", scopeAliasesDescriptions
 							<oauth2-tree:tree
 								trees="<%= (Collection)scopeAliasTreeNode.getTrees() %>"
 							>
-								<jsp:attribute
-									name="nodeJspFragment"
-								>
+								<oauth2-tree:node>
 								<li class='borderless list-group-item<c:if test="${assignedDeletedScopeAliases.contains(tree.value)}"> removed-scope</c:if>' id="${tree.value}-container">
 									<clay:row>
 											<c:choose>
@@ -99,11 +97,9 @@ pageContext.setAttribute("scopeAliasesDescriptionsMap", scopeAliasesDescriptions
 								</li>
 
 								<oauth2-tree:render-children />
-								</jsp:attribute>
+								</oauth2-tree:node>
 
-								<jsp:attribute
-									name="leafJspFragment"
-								>
+								<oauth2-tree:leaf>
 								<li class='borderless list-group-item<c:if test="${assignedDeletedScopeAliases.contains(tree.value)}"> removed-scope</c:if>' id="${tree.value}-container">
 									<clay:row>
 											<c:choose>
@@ -125,7 +121,7 @@ pageContext.setAttribute("scopeAliasesDescriptionsMap", scopeAliasesDescriptions
 										</div>
 									</clay:row>
 								</li>
-								</jsp:attribute>
+								</oauth2-tree:leaf>
 							</oauth2-tree:tree>
 							</li>
 						</ul>
