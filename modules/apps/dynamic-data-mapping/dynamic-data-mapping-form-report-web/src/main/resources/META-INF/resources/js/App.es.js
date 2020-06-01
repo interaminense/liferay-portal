@@ -12,16 +12,17 @@
  * details.
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 
 import Card from './components/card/Card.es';
 import BarChart from './components/chart/bar/BarChart.es';
 import PieChart from './components/chart/pie/PieChart.es';
 import EmptyState from './components/empty-state/EmptyState.es';
-import toDataArray, {sumTotalEntries} from './utils/data.es';
+import List from './components/list/List.es';
+import toDataArray, {sumTotalEntries, toArray} from './utils/data.es';
 import fieldTypes from './utils/fieldTypes.es';
 
-const chartFactory = (options, type, values, totalEntries) => {
+	const chartFactory = (options, type, values, totalEntries) => {
 	switch (type) {
 		case 'checkbox_multiple':
 			return (
@@ -40,17 +41,29 @@ const chartFactory = (options, type, values, totalEntries) => {
 				/>
 			);
 
+		case 'text':
+			return (
+				<List
+					data={toArray(values)}
+					totalEntries={totalEntries}
+				/>
+			);
+
 		default:
 			return null;
 	}
 };
 
-export default ({data, fields}) => {
+export default ({data, fields, portletNamespace, url}) => {
 	let hasCards = false;
 
-	const cards = fields.map(({label, name, options, type}, index) => {
-		const {values = {}} = data[name] || {};
-		const totalEntries = sumTotalEntries(values);
+	const fieldSummary = fields.map(({label, name, options, type}, index) => {
+		const {values = {}, totalEntries: total} = data[name] || {};
+		let totalEntries = sumTotalEntries(values);
+		if (type == 'text') {
+			totalEntries = total;
+		}
+
 		const chart = chartFactory(options, type, values, totalEntries);
 
 		if (chart === null) {
@@ -68,9 +81,9 @@ export default ({data, fields}) => {
 		};
 
 		return (
-			<Card field={field} key={index} totalEntries={totalEntries}>
-				{chart}
-			</Card>
+				<Card field={field} key={index} totalEntries={totalEntries}>
+					{chart}
+				</Card>
 		);
 	});
 
@@ -78,5 +91,5 @@ export default ({data, fields}) => {
 		return <EmptyState />;
 	}
 
-	return cards;
+	return fieldSummary;
 };
