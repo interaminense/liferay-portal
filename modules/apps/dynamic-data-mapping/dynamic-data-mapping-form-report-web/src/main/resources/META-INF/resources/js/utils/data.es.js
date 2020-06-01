@@ -17,10 +17,14 @@ const roundPercentage = (value) => `${Math.trunc(value * 1000) / 10}%`;
 const sumTotalEntries = (values) =>
 	Object.values(values).reduce((acc, value) => acc + value, 0);
 
+const toArray = (values) => {
+	return values.map(({value}) => value);
+};
+
 const toDataArray = (options, values) =>
 	Object.entries(values)
 		.map(([name, count]) => ({count, label: options[name] || name}))
 		.sort((a, b) => (a.count > b.count ? -1 : b.count > a.count ? 1 : 0));
 
 export default toDataArray;
-export {roundPercentage, sumTotalEntries};
+export {roundPercentage, sumTotalEntries, toArray};
