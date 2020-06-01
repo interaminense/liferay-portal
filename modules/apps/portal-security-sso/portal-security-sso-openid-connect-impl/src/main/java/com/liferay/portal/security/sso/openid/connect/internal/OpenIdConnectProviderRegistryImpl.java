@@ -211,12 +211,12 @@ public class OpenIdConnectProviderRegistryImpl
 			openIdConnectProviderConfiguration.userInfoEndPoint());
 	}
 
-	private <U, V> Map<U, V> _addDefaults(
+	private <U, V> void _addDefaults(
 		Map<U, V> map, Map<U, V> defaultsMap) {
 
-		defaultsMap.forEach(map::putIfAbsent);
-
-		return map;
+		if (defaultsMap != null) {
+			defaultsMap.forEach(map::putIfAbsent);
+		}
 	}
 
 	private void _rebuild(long companyId) {
