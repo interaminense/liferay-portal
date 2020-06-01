@@ -17,6 +17,7 @@ package com.liferay.segments.asah.connector.internal.messaging;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.segments.asah.connector.internal.constants.SegmentsAsahDestinationNames;
 
@@ -41,10 +42,14 @@ public class InterestTermsMessageListener extends BaseMessageListener {
 			return;
 		}
 
-		_interestTermsChecker.checkInterestTerms(userId);
+		_interestTermsChecker.checkInterestTerms(
+			_portal.getDefaultCompanyId(), userId);
 	}
 
 	@Reference
 	private InterestTermsChecker _interestTermsChecker;
+
+	@Reference
+	private Portal _portal;
 
 }
