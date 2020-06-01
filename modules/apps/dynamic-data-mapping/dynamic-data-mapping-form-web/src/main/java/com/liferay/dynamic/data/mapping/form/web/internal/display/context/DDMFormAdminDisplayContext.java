@@ -596,12 +596,8 @@ public class DDMFormAdminDisplayContext {
 		return jsonObject.toString();
 	}
 
-	public String getFormLocalizedName() throws PortalException {
-		return getFormLocalizedName(_ddmFormInstance);
-	}
-
-	public String getFormLocalizedName(DDMFormInstance formInstance)
-		throws PortalException {
+	public <T> String getFormLocalizedName(T object) throws PortalException {
+		DDMFormInstance formInstance = (DDMFormInstance)object;
 
 		JSONObject jsonObject = jsonFactory.createJSONObject();
 
@@ -945,11 +941,11 @@ public class DDMFormAdminDisplayContext {
 			getFormLayoutURL(formAdminRequestHelper.getThemeDisplay(), false);
 	}
 
-	public String getShareFormInstanceURL() {
-		return getShareFormInstanceURL(_ddmFormInstance);
-	}
-
 	public String getShareFormInstanceURL(DDMFormInstance formInstance) {
+		if (formInstance == null) {
+			return StringPool.BLANK;
+		}
+
 		PortletURL shareFormInstanceURL = renderResponse.createActionURL();
 
 		shareFormInstanceURL.setParameter(
