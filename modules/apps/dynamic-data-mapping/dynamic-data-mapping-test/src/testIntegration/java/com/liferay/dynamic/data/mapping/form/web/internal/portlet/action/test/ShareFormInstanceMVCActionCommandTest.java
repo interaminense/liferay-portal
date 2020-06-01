@@ -75,7 +75,7 @@ public class ShareFormInstanceMVCActionCommandTest {
 	public void setUp() throws Exception {
 		_group = GroupTestUtil.addGroup();
 
-		setUpMVCActionCommand();
+		_setUpShareFormInstanceMVCActionCommandCommand();
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class ShareFormInstanceMVCActionCommandTest {
 		MockLiferayPortletActionResponse mockLiferayPortletActionResponse =
 			new MockLiferayPortletActionResponse();
 
-		DDMFormInstance ddmFormInstance = createFormInstance();
+		DDMFormInstance ddmFormInstance = _createFormInstance();
 
 		_mvcActionCommand.processAction(
 			_getMockLiferayPortletActionRequest(
@@ -123,7 +123,7 @@ public class ShareFormInstanceMVCActionCommandTest {
 		Assert.assertTrue(jsonObject.has("errorMessage"));
 	}
 
-	protected DDMFormInstance createFormInstance() throws Exception {
+	private DDMFormInstance _createFormInstance() throws Exception {
 		_ddmStructure = DDMStructureTestUtil.addStructure(
 			_group.getGroupId(), DDMFormInstance.class.getName());
 
@@ -131,14 +131,6 @@ public class ShareFormInstanceMVCActionCommandTest {
 			new DDMFormInstanceTestHelper(_group);
 
 		return ddmFormInstanceTestHelper.addDDMFormInstance(_ddmStructure);
-	}
-
-	protected void setUpMVCActionCommand() {
-		ReflectionTestUtil.setFieldValue(_mvcActionCommand, "_portal", _portal);
-
-		ReflectionTestUtil.setFieldValue(
-			_mvcActionCommand, "_ddmFormInstanceService",
-			_ddmFormInstanceService);
 	}
 
 	private LiferayPortletConfig _getLiferayPortletConfig() {
@@ -183,6 +175,14 @@ public class ShareFormInstanceMVCActionCommandTest {
 		themeDisplay.setLocale(LocaleUtil.getSiteDefault());
 
 		return themeDisplay;
+	}
+
+	private void _setUpShareFormInstanceMVCActionCommandCommand() {
+		ReflectionTestUtil.setFieldValue(_mvcActionCommand, "_portal", _portal);
+
+		ReflectionTestUtil.setFieldValue(
+			_mvcActionCommand, "_ddmFormInstanceService",
+			_ddmFormInstanceService);
 	}
 
 	@Inject

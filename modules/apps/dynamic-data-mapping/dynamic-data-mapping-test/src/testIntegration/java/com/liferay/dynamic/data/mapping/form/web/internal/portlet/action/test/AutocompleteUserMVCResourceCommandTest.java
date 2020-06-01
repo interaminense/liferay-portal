@@ -66,7 +66,7 @@ public class AutocompleteUserMVCResourceCommandTest {
 	public void setUp() throws Exception {
 		_users = new ArrayList<>();
 
-		setUpMvcResourceCommand();
+		_setUpAutocompleteUserMVCResourceCommand();
 	}
 
 	@Test
@@ -92,8 +92,8 @@ public class AutocompleteUserMVCResourceCommandTest {
 
 		Assert.assertEquals(_getUsersCount() - 1, jsonArray.length());
 
-		Assert.assertTrue(containsField(jsonArray, "emailAddress"));
-		Assert.assertTrue(containsField(jsonArray, "fullName"));
+		Assert.assertTrue(_containsField(jsonArray, "emailAddress"));
+		Assert.assertTrue(_containsField(jsonArray, "fullName"));
 	}
 
 	@Test
@@ -116,8 +116,8 @@ public class AutocompleteUserMVCResourceCommandTest {
 
 		Assert.assertEquals(_getUsersCount() - 1, jsonArray.length());
 
-		Assert.assertTrue(containsField(jsonArray, "emailAddress"));
-		Assert.assertTrue(containsField(jsonArray, "fullName"));
+		Assert.assertTrue(_containsField(jsonArray, "emailAddress"));
+		Assert.assertTrue(_containsField(jsonArray, "fullName"));
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class AutocompleteUserMVCResourceCommandTest {
 			new MockLiferayResourceResponse());
 	}
 
-	protected boolean containsField(JSONArray fieldValues, String field) {
+	private boolean _containsField(JSONArray fieldValues, String field) {
 		for (int i = 0; i < fieldValues.length(); i++) {
 			JSONObject jsonObject = fieldValues.getJSONObject(i);
 
@@ -164,17 +164,8 @@ public class AutocompleteUserMVCResourceCommandTest {
 		return false;
 	}
 
-	protected void setUpMvcResourceCommand() {
-		ReflectionTestUtil.setFieldValue(
-			_mvcResourceCommand, "_portal", _portal);
-
-		ReflectionTestUtil.setFieldValue(
-			_mvcResourceCommand, "_userLocalService", _userLocalService);
-	}
-
 	private MockLiferayResourceRequest _getMockLiferayResourceRequest(
-			ThemeDisplay themeDisplay)
-		throws Exception {
+		ThemeDisplay themeDisplay) {
 
 		MockLiferayResourceRequest mockLiferayResourceRequest =
 			new MockLiferayResourceRequest();
@@ -223,6 +214,14 @@ public class AutocompleteUserMVCResourceCommandTest {
 
 		return JSONFactoryUtil.createJSONArray(
 			new String(byteArrayOutputStream.toByteArray()));
+	}
+
+	private void _setUpAutocompleteUserMVCResourceCommand() {
+		ReflectionTestUtil.setFieldValue(
+			_mvcResourceCommand, "_portal", _portal);
+
+		ReflectionTestUtil.setFieldValue(
+			_mvcResourceCommand, "_userLocalService", _userLocalService);
 	}
 
 	@Inject
