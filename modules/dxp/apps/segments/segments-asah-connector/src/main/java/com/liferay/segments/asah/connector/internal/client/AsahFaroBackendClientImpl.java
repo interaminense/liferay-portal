@@ -40,6 +40,7 @@ import com.liferay.segments.asah.connector.internal.util.AsahUtil;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -269,10 +270,9 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 	}
 
 	private Map<String, String> _getHeaders(long companyId) {
-		return HashMapBuilder.put(
+		return Collections.singletonMap(
 			"OSB-Asah-Faro-Backend-Security-Signature",
-			AsahUtil.getAsahFaroBackendSecuritySignature(companyId)
-		).build();
+			AsahUtil.getAsahFaroBackendSecuritySignature(companyId));
 	}
 
 	private MultivaluedMap<String, Object> _getParameters(
