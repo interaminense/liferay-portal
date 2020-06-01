@@ -17,9 +17,7 @@ const roundPercentage = (value) => `${Math.trunc(value * 1000) / 10}%`;
 const sumTotalEntries = (values) =>
 	Object.values(values).reduce((acc, value) => acc + value, 0);
 
-const toArray = (values) => {
-	return values.map(({value}) => value);
-};
+const toArray = (values) => values.map(({value}) => value);
 
 const toDataArray = (options, values) =>
 	Object.entries(values)
