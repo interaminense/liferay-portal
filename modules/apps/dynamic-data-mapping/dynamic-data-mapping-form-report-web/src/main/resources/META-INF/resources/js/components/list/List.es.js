@@ -19,9 +19,7 @@ export default ({data, onClick, totalEntries}) => {
 	return (
 		<ul className="entries-list">
 			{Array.isArray(data) &&
-				data.map((field, index) => {
-					return <li key={index}>{field}</li>;
-				})}
+				data.map((field, index) => <li key={index}>{field}</li>)}
 
 			{totalEntries > 5 ? (
 				<li key={'see-more'}>
@@ -29,9 +27,7 @@ export default ({data, onClick, totalEntries}) => {
 						{Liferay.Language.get('see-all-entries')}
 					</ClayButton>
 				</li>
-			) : (
-				''
-			)}
+			) : null}
 		</ul>
 	);
 };

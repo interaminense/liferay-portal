@@ -12,7 +12,7 @@
  * details.
  */
 
-import React, {useState} from 'react';
+import React from 'react';
 
 import Card from './components/card/Card.es';
 import BarChart from './components/chart/bar/BarChart.es';
@@ -22,7 +22,7 @@ import List from './components/list/List.es';
 import toDataArray, {sumTotalEntries, toArray} from './utils/data.es';
 import fieldTypes from './utils/fieldTypes.es';
 
-	const chartFactory = (options, type, values, totalEntries) => {
+const chartFactory = (options, type, values, totalEntries) => {
 	switch (type) {
 		case 'checkbox_multiple':
 			return (
@@ -42,27 +42,19 @@ import fieldTypes from './utils/fieldTypes.es';
 			);
 
 		case 'text':
-			return (
-				<List
-					data={toArray(values)}
-					totalEntries={totalEntries}
-				/>
-			);
+			return <List data={toArray(values)} totalEntries={totalEntries} />;
 
 		default:
 			return null;
 	}
 };
 
-export default ({data, fields, portletNamespace, url}) => {
+export default ({data, fields}) => {
 	let hasCards = false;
 
-	const fieldSummary = fields.map(({label, name, options, type}, index) => {
-		const {values = {}, totalEntries: total} = data[name] || {};
-		let totalEntries = sumTotalEntries(values);
-		if (type == 'text') {
-			totalEntries = total;
-		}
+	const cards = fields.map(({label, name, options, type}, index) => {
+		const {values = {}, totalEntries = sumTotalEntries(values)} =
+			data[name] || {};
 
 		const chart = chartFactory(options, type, values, totalEntries);
 
@@ -81,9 +73,9 @@ export default ({data, fields, portletNamespace, url}) => {
 		};
 
 		return (
-				<Card field={field} key={index} totalEntries={totalEntries}>
-					{chart}
-				</Card>
+			<Card field={field} key={index} totalEntries={totalEntries}>
+				{chart}
+			</Card>
 		);
 	});
 
@@ -91,5 +83,5 @@ export default ({data, fields, portletNamespace, url}) => {
 		return <EmptyState />;
 	}
 
-	return fieldSummary;
+	return cards;
 };
