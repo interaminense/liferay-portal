@@ -39,7 +39,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Sarai Díaz
  */
-@Component(immediate = true, service = ModelListener.class)
+@Component(service = ModelListener.class)
 public class SegmentsExperimentRelModelListener
 	extends BaseModelListener<SegmentsExperimentRel> {
 

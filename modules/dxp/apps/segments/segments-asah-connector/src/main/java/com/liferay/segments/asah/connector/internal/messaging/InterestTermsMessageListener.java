@@ -28,7 +28,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Sarai Díaz
  */
 @Component(
-	immediate = true,
 	property = "destination.name=" + SegmentsAsahDestinationNames.INTEREST_TERMS,
 	service = MessageListener.class
 )

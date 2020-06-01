@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Sarai Díaz
  */
-@Component(immediate = true, service = InterestTermsChecker.class)
+@Component(service = InterestTermsChecker.class)
 public class InterestTermsChecker {
 
 	public void checkInterestTerms(long companyId, String userId) {

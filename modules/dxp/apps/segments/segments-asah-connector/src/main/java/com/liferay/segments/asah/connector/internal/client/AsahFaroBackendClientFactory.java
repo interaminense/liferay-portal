@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Sarai Díaz
  */
-@Component(immediate = true, service = AsahFaroBackendClientFactory.class)
+@Component(service = AsahFaroBackendClientFactory.class)
 public class AsahFaroBackendClientFactory {
 
 	public Optional<AsahFaroBackendClient> createAsahFaroBackendClient() {
