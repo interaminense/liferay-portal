@@ -66,7 +66,7 @@ public class OpenIdConnectProviderRegistryImpl
 		long companyId = GetterUtil.getLong(properties.get("companyId"));
 
 		if (companyId == CompanyConstants.SYSTEM) {
-			_rebuildAll();
+			_rebuild();
 		}
 		else {
 			_rebuild(companyId);
@@ -134,7 +134,7 @@ public class OpenIdConnectProviderRegistryImpl
 		long companyId = GetterUtil.getLong(properties.get("companyId"));
 
 		if (companyId == CompanyConstants.SYSTEM) {
-			_rebuildAll();
+			_rebuild();
 
 			return;
 		}
@@ -144,7 +144,7 @@ public class OpenIdConnectProviderRegistryImpl
 				oldProperties.get("companyId"));
 
 			if (oldCompanyId == CompanyConstants.SYSTEM) {
-				_rebuildAll();
+				_rebuild();
 
 				return;
 			}
@@ -240,7 +240,7 @@ public class OpenIdConnectProviderRegistryImpl
 						openIdConnectProvider.getName())) {
 
 					_log.error(
-						"Duplicated OpenId Connect provider name \"" +
+						"Duplicate OpenId Connect provider name \"" +
 							openIdConnectProvider.getName() + "\"");
 
 					continue;
@@ -265,7 +265,7 @@ public class OpenIdConnectProviderRegistryImpl
 			companyId, openIdConnectProviderMap);
 	}
 
-	private void _rebuildAll() {
+	private void _rebuild() {
 		_rebuild(CompanyConstants.SYSTEM);
 
 		for (long companyId :
