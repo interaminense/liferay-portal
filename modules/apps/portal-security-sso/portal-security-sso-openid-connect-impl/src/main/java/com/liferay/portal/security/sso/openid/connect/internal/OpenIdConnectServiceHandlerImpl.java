@@ -439,15 +439,14 @@ public class OpenIdConnectServiceHandlerImpl
 			return false;
 		}
 
-		long companyId = CompanyThreadLocal.getCompanyId();
-
 		String openIdConnectProviderName =
 			openIdConnectSessionImpl.getOpenIdProviderName();
 
 		OpenIdConnectProvider<OIDCClientMetadata, OIDCProviderMetadata>
 			openIdConnectProvider =
 				_openIdConnectProviderRegistry.findOpenIdConnectProvider(
-					companyId, openIdConnectProviderName);
+					CompanyThreadLocal.getCompanyId(),
+					openIdConnectProviderName);
 
 		OIDCProviderMetadata oidcProviderMetadata =
 			openIdConnectProvider.getOIDCProviderMetadata();
