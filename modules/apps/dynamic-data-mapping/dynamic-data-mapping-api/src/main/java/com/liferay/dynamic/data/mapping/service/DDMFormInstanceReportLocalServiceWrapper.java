@@ -349,6 +349,16 @@ public class DDMFormInstanceReportLocalServiceWrapper
 	}
 
 	@Override
+	public void updateFormInstanceReportAsync(
+		long formInstanceReportId, long formInstanceRecordVersionId,
+		String formInstanceReportEvent) {
+
+		_ddmFormInstanceReportLocalService.updateFormInstanceReportAsync(
+			formInstanceReportId, formInstanceRecordVersionId,
+			formInstanceReportEvent);
+	}
+
+	@Override
 	public CTPersistence<DDMFormInstanceReport> getCTPersistence() {
 		return _ddmFormInstanceReportLocalService.getCTPersistence();
 	}

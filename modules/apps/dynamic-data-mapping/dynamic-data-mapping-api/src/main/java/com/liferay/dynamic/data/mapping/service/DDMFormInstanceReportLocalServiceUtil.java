@@ -323,6 +323,15 @@ public class DDMFormInstanceReportLocalServiceUtil {
 			formInstanceReportEvent);
 	}
 
+	public static void updateFormInstanceReportAsync(
+		long formInstanceReportId, long formInstanceRecordVersionId,
+		String formInstanceReportEvent) {
+
+		getService().updateFormInstanceReportAsync(
+			formInstanceReportId, formInstanceRecordVersionId,
+			formInstanceReportEvent);
+	}
+
 	public static DDMFormInstanceReportLocalService getService() {
 		return _serviceTracker.getService();
 	}
