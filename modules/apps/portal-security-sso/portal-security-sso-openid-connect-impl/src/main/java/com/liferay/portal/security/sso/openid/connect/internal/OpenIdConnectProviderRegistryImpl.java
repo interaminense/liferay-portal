@@ -211,9 +211,7 @@ public class OpenIdConnectProviderRegistryImpl
 			openIdConnectProviderConfiguration.userInfoEndPoint());
 	}
 
-	private <U, V> void _addDefaults(
-		Map<U, V> map, Map<U, V> defaultsMap) {
-
+	private <U, V> void _addDefaults(Map<U, V> map, Map<U, V> defaultsMap) {
 		if (defaultsMap != null) {
 			defaultsMap.forEach(map::putIfAbsent);
 		}
