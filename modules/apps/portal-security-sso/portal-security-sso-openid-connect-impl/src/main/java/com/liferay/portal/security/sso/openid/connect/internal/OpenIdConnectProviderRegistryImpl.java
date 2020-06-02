@@ -133,13 +133,17 @@ public class OpenIdConnectProviderRegistryImpl
 
 		long companyId = GetterUtil.getLong(properties.get("companyId"));
 
+		if (companyId == CompanyConstants.SYSTEM) {
+			_rebuildAll();
+
+			return;
+		}
+
 		if (oldProperties != null) {
 			long oldCompanyId = GetterUtil.getLong(
 				oldProperties.get("companyId"));
 
-			if ((companyId == CompanyConstants.SYSTEM) ||
-				(oldCompanyId == CompanyConstants.SYSTEM)) {
-
+			if (oldCompanyId == CompanyConstants.SYSTEM) {
 				_rebuildAll();
 
 				return;
@@ -148,11 +152,6 @@ public class OpenIdConnectProviderRegistryImpl
 			if (oldCompanyId != companyId) {
 				_rebuild(oldCompanyId);
 			}
-		}
-		else if (companyId == CompanyConstants.SYSTEM) {
-			_rebuildAll();
-
-			return;
 		}
 
 		_rebuild(companyId);
