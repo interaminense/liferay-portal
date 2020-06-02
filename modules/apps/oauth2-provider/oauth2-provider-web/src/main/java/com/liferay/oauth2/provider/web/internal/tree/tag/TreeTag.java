@@ -35,7 +35,9 @@ public class TreeTag extends SimpleTagSupport {
 	public void doTag() throws IOException, JspException {
 		JspContext jspContext = getJspContext();
 
-		getJspBody().invoke(null);
+		JspFragment jspFragment = getJspBody();
+
+		jspFragment.invoke(null);
 
 		Object parentNodes = jspContext.getAttribute("parentNodes");
 

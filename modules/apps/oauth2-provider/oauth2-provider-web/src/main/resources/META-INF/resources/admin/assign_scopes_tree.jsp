@@ -98,6 +98,7 @@ pageContext.setAttribute("scopeAliasesDescriptionsMap", scopeAliasesDescriptions
 
 									<oauth2-tree:render-children />
 								</oauth2-tree:node>
+
 								<oauth2-tree:leaf>
 									<li class='borderless list-group-item<c:if test="${assignedDeletedScopeAliases.contains(tree.value)}"> removed-scope</c:if>' id="${tree.value}-container">
 										<clay:row>
