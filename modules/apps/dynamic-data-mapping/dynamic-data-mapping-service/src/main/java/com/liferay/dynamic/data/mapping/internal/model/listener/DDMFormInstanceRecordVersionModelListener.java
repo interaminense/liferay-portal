@@ -118,7 +118,7 @@ public class DDMFormInstanceRecordVersionModelListener
 					getFormInstanceReportByFormInstanceId(
 						ddmFormInstanceRecordVersion.getFormInstanceId());
 
-			_ddmFormInstanceReportLocalService.updateFormInstanceReport(
+			_ddmFormInstanceReportLocalService.updateFormInstanceReportAsync(
 				ddmFormInstanceReport.getFormInstanceReportId(),
 				ddmFormInstanceRecordVersion.getFormInstanceRecordVersionId(),
 				formInstanceReportEvent);
