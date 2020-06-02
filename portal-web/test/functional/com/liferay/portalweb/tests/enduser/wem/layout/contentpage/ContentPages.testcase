@@ -227,7 +227,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutRow();
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Row");
 
 			AssertElementNotPresent(
 				key_elementType = "Section",
@@ -314,7 +316,9 @@ definition {
 		}
 
 		task ("Add a Section to page") {
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Add the Language Selector into Section") {
@@ -395,7 +399,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutRow();
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Row");
 
 			PageEditor.editLayoutRow(
 				columnCount = "2",
@@ -410,7 +416,9 @@ definition {
 		}
 
 		task ("Add a section layout") {
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Assert the Section has Fixed Width, padding bottom x1 and padding top x1") {
@@ -670,7 +678,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Add a Row into Section") {
@@ -712,7 +722,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutRow();
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Row");
 		}
 
 		task ("Add a Web Content Display widget to column 1") {
@@ -814,7 +826,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Add a Row into Section") {
@@ -1323,7 +1337,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Add a Heading fragment into Section") {
@@ -1388,7 +1404,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Add a Heading fragment into Section") {
@@ -1607,7 +1625,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Add a Heading fragment into Section") {
@@ -1674,12 +1694,15 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Add the second Section to page") {
-			PageEditor.addLayoutSection(
-				dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]",
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section",
 				position = "2");
 		}
 
@@ -1726,7 +1749,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Assert restriction visual feedback shown when drag Section card over another one") {
@@ -1771,7 +1796,9 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutRow();
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Row");
 		}
 
 		task ("Assert restriction visual feedback shown when drag Section card over column of Row") {
@@ -1817,11 +1844,15 @@ definition {
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
 
-			PageEditor.addLayoutRow();
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Row");
 		}
 
 		task ("Add a section layout and add a Heading to section") {
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 
 			PageEditor.expandFragmentCollection(collectionName = "Basic Components");
 
@@ -1899,7 +1930,9 @@ definition {
 		}
 
 		task ("Add a Section to page") {
-			PageEditor.addLayoutSection(dropTarget = "//div[contains(@class,'page-editor__root page-editor__topper')]");
+			PageEditor.addFragment(
+				collectionName = "Layout Elements",
+				fragmentName = "Section");
 		}
 
 		task ("Add a Heading fragment into Section") {
