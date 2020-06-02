@@ -76,7 +76,6 @@ public class AutocompleteUserMVCResourceCommandTest {
 		_users.add(user);
 
 		_users.add(UserTestUtil.addUser());
-
 		_users.add(UserTestUtil.addUser());
 
 		MockLiferayResourceResponse mockLiferayResourceResponse =
@@ -91,7 +90,6 @@ public class AutocompleteUserMVCResourceCommandTest {
 		JSONArray jsonArray = _getUsersJSONArray(mockLiferayResourceResponse);
 
 		Assert.assertEquals(_getUsersCount() - 1, jsonArray.length());
-
 		Assert.assertTrue(_containsField(jsonArray, "emailAddress"));
 		Assert.assertTrue(_containsField(jsonArray, "fullName"));
 	}
@@ -99,7 +97,6 @@ public class AutocompleteUserMVCResourceCommandTest {
 	@Test
 	public void testServeResponseWithCompanyAdmin() throws Exception {
 		_users.add(UserTestUtil.addUser());
-
 		_users.add(UserTestUtil.addUser());
 
 		MockLiferayResourceResponse mockLiferayResourceResponse =
@@ -115,7 +112,6 @@ public class AutocompleteUserMVCResourceCommandTest {
 		JSONArray jsonArray = _getUsersJSONArray(mockLiferayResourceResponse);
 
 		Assert.assertEquals(_getUsersCount() - 1, jsonArray.length());
-
 		Assert.assertTrue(_containsField(jsonArray, "emailAddress"));
 		Assert.assertTrue(_containsField(jsonArray, "fullName"));
 	}
@@ -183,12 +179,9 @@ public class AutocompleteUserMVCResourceCommandTest {
 
 		themeDisplay.setCompany(
 			_companyLocalService.getCompany(TestPropsValues.getCompanyId()));
-
 		themeDisplay.setPermissionChecker(
 			PermissionCheckerFactoryUtil.create(user));
-
 		themeDisplay.setSignedIn(signedIn);
-
 		themeDisplay.setUser(user);
 
 		return themeDisplay;
@@ -219,7 +212,6 @@ public class AutocompleteUserMVCResourceCommandTest {
 	private void _setUpAutocompleteUserMVCResourceCommand() {
 		ReflectionTestUtil.setFieldValue(
 			_mvcResourceCommand, "_portal", _portal);
-
 		ReflectionTestUtil.setFieldValue(
 			_mvcResourceCommand, "_userLocalService", _userLocalService);
 	}
