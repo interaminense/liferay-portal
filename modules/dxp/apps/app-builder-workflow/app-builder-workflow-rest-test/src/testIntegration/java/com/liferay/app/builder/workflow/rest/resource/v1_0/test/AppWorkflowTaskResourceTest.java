@@ -35,6 +35,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -58,6 +59,7 @@ public class AppWorkflowTaskResourceTest
 	}
 
 	@Override
+	@Test
 	public void testGraphQLGetAppWorkflowTasksPage() throws Exception {
 		Long appId = testGetAppWorkflowTasksPage_getAppId();
 
