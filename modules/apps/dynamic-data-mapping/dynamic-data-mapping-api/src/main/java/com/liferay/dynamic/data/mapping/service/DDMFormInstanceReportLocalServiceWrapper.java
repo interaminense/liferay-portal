@@ -323,6 +323,16 @@ public class DDMFormInstanceReportLocalServiceWrapper
 			primaryKeyObj);
 	}
 
+	@Override
+	public void processFormInstanceReportEvent(
+		long formInstanceReportId, long formInstanceRecordVersionId,
+		String formInstanceReportEvent) {
+
+		_ddmFormInstanceReportLocalService.processFormInstanceReportEvent(
+			formInstanceReportId, formInstanceRecordVersionId,
+			formInstanceReportEvent);
+	}
+
 	/**
 	 * Updates the ddm form instance report in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -344,16 +354,6 @@ public class DDMFormInstanceReportLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ddmFormInstanceReportLocalService.updateFormInstanceReport(
-			formInstanceReportId, formInstanceRecordVersionId,
-			formInstanceReportEvent);
-	}
-
-	@Override
-	public void updateFormInstanceReportAsync(
-		long formInstanceReportId, long formInstanceRecordVersionId,
-		String formInstanceReportEvent) {
-
-		_ddmFormInstanceReportLocalService.updateFormInstanceReportAsync(
 			formInstanceReportId, formInstanceRecordVersionId,
 			formInstanceReportEvent);
 	}

@@ -259,6 +259,11 @@ public interface DDMFormInstanceReportLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Async
+	public void processFormInstanceReportEvent(
+		long formInstanceReportId, long formInstanceRecordVersionId,
+		String formInstanceReportEvent);
+
 	/**
 	 * Updates the ddm form instance report in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -273,11 +278,6 @@ public interface DDMFormInstanceReportLocalService
 			long formInstanceReportId, long formInstanceRecordVersionId,
 			String formInstanceReportEvent)
 		throws PortalException;
-
-	@Async
-	public void updateFormInstanceReportAsync(
-		long formInstanceReportId, long formInstanceRecordVersionId,
-		String formInstanceReportEvent);
 
 	@Override
 	@Transactional(enabled = false)
