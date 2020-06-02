@@ -36,7 +36,7 @@ public class LeafTag extends SimpleTagSupport {
 		}
 		else {
 			throw new IllegalStateException(
-				"Leaf has to be used inside a tree tag");
+				"Leaf must be used inside a tree tag");
 		}
 	}
 

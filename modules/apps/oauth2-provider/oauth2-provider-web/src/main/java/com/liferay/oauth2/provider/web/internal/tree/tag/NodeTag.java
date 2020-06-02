@@ -36,7 +36,7 @@ public class NodeTag extends SimpleTagSupport {
 		}
 		else {
 			throw new IllegalStateException(
-				"Node has to be used inside a tree tag");
+				"Node must be used inside a tree tag");
 		}
 	}
 
