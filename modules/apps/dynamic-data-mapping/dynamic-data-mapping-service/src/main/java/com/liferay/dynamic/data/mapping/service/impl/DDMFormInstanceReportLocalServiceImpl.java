@@ -78,26 +78,9 @@ public class DDMFormInstanceReportLocalServiceImpl
 			formInstanceId);
 	}
 
-	@Override
-	public DDMFormInstanceReport updateFormInstanceReport(
-			long formInstanceReportId, long formInstanceRecordVersionId,
-			String formInstanceReportEvent)
-		throws PortalException {
-
-		DDMFormInstanceReport formInstanceReport =
-			ddmFormInstanceReportPersistence.findByPrimaryKey(
-				formInstanceReportId);
-
-		formInstanceReport.setModifiedDate(new Date());
-		formInstanceReport.setData(
-			_getData(formInstanceRecordVersionId, formInstanceReportEvent));
-
-		return ddmFormInstanceReportPersistence.update(formInstanceReport);
-	}
-
 	@Async
 	@Override
-	public void updateFormInstanceReportAsync(
+	public void processFormInstanceReportEvent(
 		long formInstanceReportId, long formInstanceRecordVersionId,
 		String formInstanceReportEvent) {
 
@@ -117,6 +100,23 @@ public class DDMFormInstanceReportLocalServiceImpl
 				_log.warn(sb.toString(), exception);
 			}
 		}
+	}
+
+	@Override
+	public DDMFormInstanceReport updateFormInstanceReport(
+			long formInstanceReportId, long formInstanceRecordVersionId,
+			String formInstanceReportEvent)
+		throws PortalException {
+
+		DDMFormInstanceReport formInstanceReport =
+			ddmFormInstanceReportPersistence.findByPrimaryKey(
+				formInstanceReportId);
+
+		formInstanceReport.setModifiedDate(new Date());
+		formInstanceReport.setData(
+			_getData(formInstanceRecordVersionId, formInstanceReportEvent));
+
+		return ddmFormInstanceReportPersistence.update(formInstanceReport);
 	}
 
 	private String _getData(
