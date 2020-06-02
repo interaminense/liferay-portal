@@ -153,7 +153,7 @@ public class CucumberFeatureResult {
 			String content = JenkinsResultsParserUtil.toString(getURL());
 
 			content = content.replaceAll("&nbsp;", " ");
-			content = content.replaceAll("<br>", "<br/>");
+			content = content.replaceAll("<br>", "<br />");
 
 			_document = Dom4JUtil.parse(content);
 
