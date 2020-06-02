@@ -216,6 +216,18 @@ public class OpenIdConnectProviderRegistryImpl
 		}
 	}
 
+	private void _rebuild() {
+		_rebuild(CompanyConstants.SYSTEM);
+
+		for (long companyId :
+				_companyIdProviderNameOpenIdConnectProviders.keySet()) {
+
+			if (companyId != CompanyConstants.SYSTEM) {
+				_rebuild(companyId);
+			}
+		}
+	}
+
 	private void _rebuild(long companyId) {
 		Map
 			<String,
@@ -263,18 +275,6 @@ public class OpenIdConnectProviderRegistryImpl
 
 		_companyIdProviderNameOpenIdConnectProviders.put(
 			companyId, openIdConnectProviderMap);
-	}
-
-	private void _rebuild() {
-		_rebuild(CompanyConstants.SYSTEM);
-
-		for (long companyId :
-				_companyIdProviderNameOpenIdConnectProviders.keySet()) {
-
-			if (companyId != CompanyConstants.SYSTEM) {
-				_rebuild(companyId);
-			}
-		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
