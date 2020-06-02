@@ -11,13 +11,11 @@
 	<short-name>oauth2-tree</short-name>
 	<uri>http://liferay.com/tld/oauth2-tree</uri>
 	<tag>
-		<description><![CDATA[JSP Fragment describing how a tree leaf is rendered]]></description>
 		<name>leaf</name>
 		<tag-class>com.liferay.oauth2.provider.web.internal.tree.tag.LeafTag</tag-class>
 		<body-content>scriptless</body-content>
 	</tag>
 	<tag>
-		<description><![CDATA[JSP Fragment describing how a tree node is rendered]]></description>
 		<name>node</name>
 		<tag-class>com.liferay.oauth2.provider.web.internal.tree.tag.NodeTag</tag-class>
 		<body-content>scriptless</body-content>
