@@ -403,7 +403,8 @@ definition {
 
 		WorkflowMetrics.createUsersAndAssignInstancesWithGroovy(
 			numberOfBlogInstances = "5",
-			numberOfUsers = "5");
+			numberOfUsers = "5",
+			site = "Guest");
 
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
 
@@ -915,7 +916,8 @@ definition {
 
 		WorkflowMetrics.createUsersAndAssignInstances(
 			numberOfBlogInstances = "4",
-			numberOfUsers = "3");
+			numberOfUsers = "3",
+			site = "Guest");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -1046,7 +1048,8 @@ definition {
 
 		WorkflowMetrics.createUsersAndAssignInstancesWithGroovy(
 			numberOfBlogInstances = "4",
-			numberOfUsers = "3");
+			numberOfUsers = "3",
+			site = "Guest");
 
 		WorkflowMetrics.executeWorkflowScript(scriptName = "CompleteTasksAssignedToUsers.groovy");
 
@@ -1630,7 +1633,8 @@ definition {
 
 		WorkflowMetrics.createUsersAndAssignInstances(
 			numberOfBlogInstances = "4",
-			numberOfUsers = "3");
+			numberOfUsers = "3",
+			site = "Guest");
 
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
 
@@ -1932,7 +1936,8 @@ definition {
 
 		WorkflowMetrics.createUsersAndAssignInstancesWithGroovy(
 			numberOfBlogInstances = "10",
-			numberOfUsers = "10");
+			numberOfUsers = "10",
+			site = "Guest");
 
 		WorkflowMetrics.executeWorkflowScript(scriptName = "CompleteTasksAssignedToUsers.groovy");
 
@@ -1983,7 +1988,8 @@ definition {
 
 		WorkflowMetrics.createUsersAndAssignInstances(
 			numberOfBlogInstances = "3",
-			numberOfUsers = "3");
+			numberOfUsers = "3",
+			site = "Guest");
 
 		JSONBlog.addEntry(
 			entryContent = "Blogs Entry 4 Content",
@@ -2058,7 +2064,8 @@ definition {
 
 		WorkflowMetrics.createUsersAndAssignInstances(
 			numberOfBlogInstances = "4",
-			numberOfUsers = "3");
+			numberOfUsers = "3",
+			site = "Guest");
 
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
 
