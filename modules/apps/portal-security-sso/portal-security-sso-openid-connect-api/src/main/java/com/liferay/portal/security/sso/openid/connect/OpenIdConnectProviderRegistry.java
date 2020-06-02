@@ -28,8 +28,37 @@ public interface OpenIdConnectProviderRegistry<S, T> {
 			long companyId, String name)
 		throws OpenIdConnectServiceException.ProviderException;
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x)
+	 */
+	@Deprecated
+	public default OpenIdConnectProvider<S, T> findOpenIdConnectProvider(
+			String name)
+		throws OpenIdConnectServiceException.ProviderException {
+
+		throw new UnsupportedOperationException();
+	}
+
 	public OpenIdConnectProvider<S, T> getOpenIdConnectProvider(
 		long companyId, String name);
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x)
+	 */
+	@Deprecated
+	public default OpenIdConnectProvider<S, T> getOpenIdConnectProvider(
+		String name) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x)
+	 */
+	@Deprecated
+	public default Collection<String> getOpenIdConnectProviderNames() {
+		throw new UnsupportedOperationException();
+	}
 
 	public Collection<String> getOpenIdConnectProviderNames(long companyId);
 
