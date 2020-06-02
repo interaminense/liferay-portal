@@ -46,7 +46,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "No Workflow",
@@ -288,7 +289,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -387,7 +389,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -508,7 +511,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -719,7 +723,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -1137,7 +1142,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -1219,7 +1225,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -1287,7 +1294,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "${key_workflowProcessName}",
@@ -1380,7 +1388,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -1465,7 +1474,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -1681,7 +1691,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -1747,7 +1758,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -1807,7 +1819,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
@@ -1871,7 +1884,8 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
-			portlet = "Workflow");
+			portlet = "Workflow",
+			site = "Guest");
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
