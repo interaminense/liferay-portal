@@ -65,7 +65,7 @@ public class SidecarElasticsearchConnection
 
 	@Override
 	protected RestHighLevelClient createRestHighLevelClient() {
-		SearchLogHelperUtil.setRestClientLoggerLevel(_restClientLogLevel);
+		SearchLogHelperUtil.setRESTClientLoggerLevel(_restClientLogLevel);
 
 		return RestHighLevelClientFactory.builder(
 		).hostName(

@@ -35,10 +35,10 @@ public class SearchLogHelperUtil {
 		_searchLogHelper.logActionResponse(log, bulkResponse);
 	}
 
-	public static void setRestClientLoggerLevel(
+	public static void setRESTClientLoggerLevel(
 		RESTClientLoggerLevel restClientLoggerLevel) {
 
-		_searchLogHelper.setRestClientLoggerLevel(restClientLoggerLevel);
+		_searchLogHelper.setRESTClientLoggerLevel(restClientLoggerLevel);
 	}
 
 	public static void setSearchLogHelper(SearchLogHelper searchLogHelper) {

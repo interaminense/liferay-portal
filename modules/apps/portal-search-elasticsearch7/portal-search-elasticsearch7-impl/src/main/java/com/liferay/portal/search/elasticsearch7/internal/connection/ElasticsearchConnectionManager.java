@@ -376,7 +376,7 @@ public class ElasticsearchConnectionManager
 
 		setOperationMode(
 			translate(_elasticsearchConfiguration.operationMode()));
-		SearchLogHelperUtil.setRestClientLoggerLevel(
+		SearchLogHelperUtil.setRESTClientLoggerLevel(
 			_elasticsearchConfiguration.restClientLoggerLevel());
 	}
 

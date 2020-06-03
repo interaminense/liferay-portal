@@ -59,7 +59,7 @@ public class EmbeddedElasticsearchConnectionLogTest {
 
 		Mockito.verify(
 			_searchLogHelper
-		).setRestClientLoggerLevel(
+		).setRESTClientLoggerLevel(
 			RESTClientLoggerLevel.DEBUG
 		);
 	}

@@ -67,7 +67,7 @@ public class SearchLogHelperImpl implements SearchLogHelper {
 	}
 
 	@Override
-	public void setRestClientLoggerLevel(
+	public void setRESTClientLoggerLevel(
 		RESTClientLoggerLevel restClientLoggerLevel) {
 
 		org.apache.commons.logging.Log log = LogFactory.getLog(

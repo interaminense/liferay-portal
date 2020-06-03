@@ -59,7 +59,7 @@ public class SidecarElasticsearchConnectionLogTest {
 
 		Mockito.verify(
 			_searchLogHelper
-		).setRestClientLoggerLevel(
+		).setRESTClientLoggerLevel(
 			RESTClientLoggerLevel.DEBUG
 		);
 	}

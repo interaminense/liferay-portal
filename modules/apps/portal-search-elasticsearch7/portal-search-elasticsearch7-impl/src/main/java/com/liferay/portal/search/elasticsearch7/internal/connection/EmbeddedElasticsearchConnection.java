@@ -223,7 +223,7 @@ public class EmbeddedElasticsearchConnection
 
 	@Override
 	protected RestHighLevelClient createRestHighLevelClient() {
-		SearchLogHelperUtil.setRestClientLoggerLevel(
+		SearchLogHelperUtil.setRESTClientLoggerLevel(
 			elasticsearchConfiguration.restClientLoggerLevel());
 
 		startNode();

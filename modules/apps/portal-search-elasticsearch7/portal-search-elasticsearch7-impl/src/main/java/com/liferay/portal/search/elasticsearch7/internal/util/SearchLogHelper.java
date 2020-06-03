@@ -29,7 +29,7 @@ public interface SearchLogHelper {
 
 	public void logActionResponse(Log log, BulkResponse bulkResponse);
 
-	public void setRestClientLoggerLevel(
+	public void setRESTClientLoggerLevel(
 		RESTClientLoggerLevel restClientLoggerLevel);
 
 }
