@@ -600,9 +600,9 @@ public class MessageBoardThreadResourceImpl
 				creator = CreatorUtil.toCreator(
 					_portal, _userLocalService.fetchUser(mbThread.getUserId()));
 				creatorStatistics = CreatorStatisticsUtil.toCreatorStatistics(
+					mbMessage.getGroupId(),
 					contextAcceptLanguage.getPreferredLanguageId(),
-					_mbStatsUserLocalService, mbMessage.getGroupId(),
-					contextUriInfo,
+					_mbStatsUserLocalService, contextUriInfo,
 					_userLocalService.fetchUser(mbThread.getUserId()));
 				customFields = CustomFieldsUtil.toCustomFields(
 					contextAcceptLanguage.isAcceptAllLanguages(),
