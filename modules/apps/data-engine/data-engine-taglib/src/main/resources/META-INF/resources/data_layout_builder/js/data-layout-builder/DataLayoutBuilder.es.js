@@ -308,6 +308,10 @@ class DataLayoutBuilder extends React.Component {
 			ddmFormField[fieldName] = value;
 		});
 
+		if (!ddmFormField.instanceId) {
+			ddmFormField.instanceId = `${fieldName}-${new Date().toISOString()}`;
+		}
+
 		return ddmFormField;
 	}
 
