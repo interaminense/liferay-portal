@@ -102,6 +102,9 @@ export default function FieldSets({keywords}) {
 			})
 		);
 	};
+	fieldSets.sort(({name: a}, {name: b}) =>
+		a[defaultLanguageId].localeCompare(b[defaultLanguageId])
+	);
 
 	const AddButton = () => (
 		<ClayButton
