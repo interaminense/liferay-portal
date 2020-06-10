@@ -13,7 +13,9 @@
  */
 
 import classNames from 'classnames';
-import FormBuilderWithLayoutProvider from 'dynamic-data-mapping-form-builder';
+import FormBuilderWithLayoutProvider, {
+	FieldSupport,
+} from 'dynamic-data-mapping-form-builder';
 import {PagesVisitor} from 'dynamic-data-mapping-form-renderer';
 import core from 'metal';
 import React from 'react';
@@ -341,7 +343,7 @@ class DataLayoutBuilder extends React.Component {
 		}
 
 		if (!ddmFormField.instanceId) {
-			ddmFormField.instanceId = `${fieldName}-${new Date().toISOString()}`;
+			ddmFormField.instanceId = FieldSupport.generateInstanceId(8);
 		}
 
 		return ddmFormField;
