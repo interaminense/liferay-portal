@@ -843,7 +843,9 @@ public class DataDefinitionResourceImpl
 
 			type = "numeric";
 		}
-		else if (sqlType == Types.DATE) {
+		else if ((sqlType == Types.DATE) || (sqlType == Types.TIME) ||
+				 (sqlType == Types.TIMESTAMP)) {
+
 			type = "date";
 		}
 
