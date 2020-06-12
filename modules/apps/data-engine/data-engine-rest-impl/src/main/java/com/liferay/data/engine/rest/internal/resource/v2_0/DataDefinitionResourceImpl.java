@@ -1138,7 +1138,7 @@ public class DataDefinitionResourceImpl
 						customProperties = HashMapBuilder.<String, Object>put(
 							"fieldNamespace", StringPool.BLANK
 						).put(
-							"native-field", "native-field"
+							"nativeField", true
 						).build();
 						label = HashMapBuilder.<String, Object>put(
 							contextAcceptLanguage.getPreferredLanguageId(),
