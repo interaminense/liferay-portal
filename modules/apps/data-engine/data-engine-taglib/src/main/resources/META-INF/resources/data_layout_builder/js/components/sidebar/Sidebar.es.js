@@ -46,11 +46,14 @@ const SidebarHeader = ({children, className}) => {
 	);
 };
 
-const SidebarSearchInput = ({children, onSearch}) => (
+const SidebarSearchInput = ({children, onSearch, searchText}) => (
 	<div className="autofit-row sidebar-section">
 		<div className="autofit-col autofit-col-expand">
 			{onSearch && (
-				<SearchInput onChange={(searchText) => onSearch(searchText)} />
+				<SearchInput
+					onChange={(searchText) => onSearch(searchText)}
+					searchText={searchText}
+				/>
 			)}
 		</div>
 
@@ -58,13 +61,16 @@ const SidebarSearchInput = ({children, onSearch}) => (
 	</div>
 );
 
-const SidebarTabs = ({initialSelectedTab = 0, tabs}) => {
+const SidebarTabs = ({initialSelectedTab = 0, setKeywords, tabs}) => {
 	const [selectedTab, setSelectedTab] = useState(initialSelectedTab);
 
 	return (
 		<>
 			<SidebarTab
-				onTabClick={setSelectedTab}
+				onTabClick={(value) => {
+					setSelectedTab(value);
+					setKeywords('');
+				}}
 				selectedTab={selectedTab}
 				tabs={tabs}
 			/>
