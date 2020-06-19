@@ -99,6 +99,7 @@ const ModalContent = ({
 						{...appProps}
 						dataLayoutBuilderId={`${appProps.dataLayoutBuilderId}_2`}
 						defaultLanguageId={defaultLanguageId}
+						hasFieldWithinPageObject
 						setChildrenContext={setChildrenContext}
 						{...childrenAppProps}
 					/>
