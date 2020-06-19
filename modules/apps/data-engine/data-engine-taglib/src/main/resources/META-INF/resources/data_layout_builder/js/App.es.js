@@ -55,15 +55,17 @@ const AppContent = ({
 		if (dataLayoutBuilder) {
 			dataLayoutBuilder.emit('contextUpdated', state);
 		}
+	}, [dataLayoutBuilder, state]);
+
+	useEffect(() => {
 		if (setChildrenContext) {
 			setChildrenContext({dispatch, state});
 		}
-	}, [dataLayoutBuilder, dispatch, setChildrenContext, state]);
+	}, [dispatch, setChildrenContext, state]);
 
 	useEffect(() => {
 		if (!setChildrenContext) {
-			const payload = JSON.parse(appProps);
-			dispatch({payload, type: UPDATE_APP_PROPS});
+			dispatch({payload: JSON.parse(appProps), type: UPDATE_APP_PROPS});
 		}
 	}, [appProps, dispatch, setChildrenContext]);
 

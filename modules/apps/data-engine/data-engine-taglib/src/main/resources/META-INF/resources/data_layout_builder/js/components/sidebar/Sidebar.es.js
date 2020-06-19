@@ -61,7 +61,11 @@ const SidebarSearchInput = ({children, onSearch, searchText}) => (
 	</div>
 );
 
-const SidebarTabs = ({initialSelectedTab = 0, setKeywords, tabs}) => {
+const SidebarTabs = ({
+	initialSelectedTab = 0,
+	setKeywords = () => {},
+	tabs,
+}) => {
 	const [selectedTab, setSelectedTab] = useState(initialSelectedTab);
 
 	return (

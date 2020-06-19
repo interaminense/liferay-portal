@@ -338,7 +338,7 @@ class LayoutProvider extends Component {
 		const {props, state} = this;
 		const {pages} = state;
 
-		if (props.contentType === 'app-builder') {
+		if (props.verifyPagesToResize) {
 			const {fieldInstanceid, fieldName} = container.dataset;
 			const field = getField(pages, fieldName);
 
