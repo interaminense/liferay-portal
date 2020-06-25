@@ -178,9 +178,10 @@ export default (Component) => {
 							localizedValue &&
 							localizedValue[editingLanguageId.newVal]
 								? localizedValue[editingLanguageId.newVal]
-								: localizedValue[defaultLanguageId]
+								: localizedValue &&
+								  localizedValue[defaultLanguageId]
 								? localizedValue[defaultLanguageId]
-								: null,
+								: undefined,
 					}),
 					true
 				);

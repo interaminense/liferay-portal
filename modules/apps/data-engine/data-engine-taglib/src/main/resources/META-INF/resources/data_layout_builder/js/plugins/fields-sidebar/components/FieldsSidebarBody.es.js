@@ -31,7 +31,7 @@ export default function ({keywords}) {
 	] = useContext(AppContext);
 
 	const onDoubleClick = ({name}) => {
-		const {activePage, pages} = dataLayoutBuilder.getStore();
+		const {activePage = 0, pages} = dataLayoutBuilder.getStore();
 
 		dataLayoutBuilder.dispatch(
 			'fieldAdded',
