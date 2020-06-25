@@ -326,11 +326,11 @@ public class DDMFormInstanceReportLocalServiceWrapper
 	@Override
 	public void processFormInstanceReportEvent(
 		long formInstanceReportId, long formInstanceRecordVersionId,
-		String formInstanceReportEvent) {
+		String ddmFormInstanceReportEvent) {
 
 		_ddmFormInstanceReportLocalService.processFormInstanceReportEvent(
 			formInstanceReportId, formInstanceRecordVersionId,
-			formInstanceReportEvent);
+			ddmFormInstanceReportEvent);
 	}
 
 	/**
@@ -350,12 +350,12 @@ public class DDMFormInstanceReportLocalServiceWrapper
 	@Override
 	public DDMFormInstanceReport updateFormInstanceReport(
 			long formInstanceReportId, long formInstanceRecordVersionId,
-			String formInstanceReportEvent)
+			String ddmFormInstanceReportEvent)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ddmFormInstanceReportLocalService.updateFormInstanceReport(
 			formInstanceReportId, formInstanceRecordVersionId,
-			formInstanceReportEvent);
+			ddmFormInstanceReportEvent);
 	}
 
 	@Override

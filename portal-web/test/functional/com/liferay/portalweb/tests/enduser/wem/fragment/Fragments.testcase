@@ -785,6 +785,7 @@ definition {
 		task ("Add a section fragment to the fragment collection via JSON") {
 			JSONFragment.addSection(
 				collectionName = "Global Collection Name",
+				fragmentStatus = "Approved",
 				groupName = "Global",
 				name = "Global Fragment Name 1");
 		}
@@ -792,6 +793,7 @@ definition {
 		task ("Add a section fragment to the fragment collection via JSON") {
 			JSONFragment.addSection(
 				collectionName = "Global Collection Name",
+				fragmentStatus = "Approved",
 				groupName = "Global",
 				name = "Global Fragment Name 2");
 		}
@@ -960,6 +962,20 @@ definition {
 	@description = "Fragments that are being used cannot be deleted."
 	@priority = "5"
 	test ViewCannotDeleteFragmentInUse {
+		task ("Publish the fragment entry") {
+			FragmentsAdminNavigator.openFragmentsAdmin(siteURLKey = "test-site-name");
+
+			FragmentsAdminNavigator.gotoCollection(collectionName = "Collection Name");
+
+			FragmentsAdminNavigator.gotoEntryEllipsisItem(
+				entry = "Fragment Name",
+				item = "Edit");
+
+			Pause(locator1 = "3000");
+
+			PortletEntry.publish();
+		}
+
 		task ("Navigate to page templates admin") {
 			PageTemplatesAdmin.openPageTemplatesAdmin(siteURLKey = "test-site-name");
 		}
@@ -1060,6 +1076,7 @@ definition {
 		task ("Add a section fragment to the fragment collection via JSON") {
 			JSONFragment.addSection(
 				collectionName = "Global Collection Name",
+				fragmentStatus = "Approved",
 				groupName = "Global",
 				name = "Global Fragment Name 2");
 		}
@@ -1093,6 +1110,7 @@ definition {
 		task ("Add a section fragment to the fragment collection via JSON") {
 			JSONFragment.addSection(
 				collectionName = "Global Collection Name",
+				fragmentStatus = "Approved",
 				groupName = "Global",
 				name = "Global Fragment Name 1");
 		}
@@ -1100,6 +1118,7 @@ definition {
 		task ("Add a section fragment to the fragment collection via JSON") {
 			JSONFragment.addSection(
 				collectionName = "Global Collection Name",
+				fragmentStatus = "Approved",
 				groupName = "Global",
 				name = "Global Fragment Name 2");
 		}
@@ -1198,52 +1217,6 @@ definition {
 			value1 = "4");
 
 		AssertElementNotPresent(locator1 = "//*[contains(.,'Test Site Name 2')]");
-	}
-
-	@description = "Once fragments are published, they can no longer be saved as draft."
-	@priority = "4"
-	test ViewOnlyDraftFragmentsCanBeSaved {
-		task ("Navigate to the fragment collection") {
-			FragmentsAdminNavigator.gotoCollection(collectionName = "Collection Name");
-		}
-
-		task ("Add a second fragment") {
-			FragmentsAdmin.addFragment(fragmentName = "Fragment Name 2");
-
-			SiteAdmin.viewPortletTitle(portletTitle = "Fragment Name 2 (Draft)");
-		}
-
-		task ("Save the second fragment as draft") {
-			PortletEntry.saveAsDraft();
-		}
-
-		task ("Navigate to fragments admin") {
-			FragmentsAdminNavigator.openFragmentsAdmin(siteURLKey = "test-site-name");
-		}
-
-		task ("Navigate to the fragment collection") {
-			FragmentsAdminNavigator.gotoCollection(collectionName = "Collection Name");
-		}
-
-		task ("Assert the second fragment is in draft status") {
-			FragmentsAdmin.viewEntryWorkflowStatus(
-				entry = "Fragment Name 2",
-				workflowStatus = "Draft");
-		}
-
-		task ("Publish the second fragment") {
-			FragmentsAdminNavigator.gotoEntryEllipsisItem(
-				entry = "Fragment Name 2",
-				item = "Edit");
-
-			FragmentsEditor.publish();
-		}
-
-		FragmentsAdminNavigator.gotoEntry(entry = "Fragment Name 2");
-
-		task ("Assert the second fragment can no longer be saved as draft") {
-			AssertElementNotPresent(locator1 = "Button#SAVE_AS_DRAFT");
-		}
 	}
 
 }

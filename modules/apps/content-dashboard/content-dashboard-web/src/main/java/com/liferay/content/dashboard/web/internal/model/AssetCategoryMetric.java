@@ -14,19 +14,34 @@
 
 package com.liferay.content.dashboard.web.internal.model;
 
-import java.util.Collections;
-import java.util.List;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.ListUtil;
+
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author David Arques
  */
 public class AssetCategoryMetric {
 
-	public AssetCategoryMetric(String key, long value) {
+	public AssetCategoryMetric(
+		AssetVocabularyMetric assetVocabularyMetric, String key, String name,
+		long value) {
+
+		_assetVocabularyMetric = Optional.ofNullable(
+			assetVocabularyMetric
+		).orElse(
+			AssetVocabularyMetric.empty()
+		);
 		_key = key;
+		_name = name;
 		_value = value;
-		_assetCategoryMetrics = Collections.emptyList();
+	}
+
+	public AssetCategoryMetric(String key, String name, long value) {
+		this(AssetVocabularyMetric.empty(), key, name, value);
 	}
 
 	@Override
@@ -42,8 +57,8 @@ public class AssetCategoryMetric {
 		AssetCategoryMetric assetCategoryMetric = (AssetCategoryMetric)object;
 
 		if (Objects.equals(
-				_assetCategoryMetrics,
-				assetCategoryMetric._assetCategoryMetrics) &&
+				_assetVocabularyMetric,
+				assetCategoryMetric._assetVocabularyMetric) &&
 			Objects.equals(_key, assetCategoryMetric._key) &&
 			Objects.equals(_value, assetCategoryMetric._value)) {
 
@@ -53,12 +68,16 @@ public class AssetCategoryMetric {
 		return false;
 	}
 
-	public List<AssetCategoryMetric> getAssetCategoryMetrics() {
-		return _assetCategoryMetrics;
+	public AssetVocabularyMetric getAssetVocabularyMetric() {
+		return _assetVocabularyMetric;
 	}
 
 	public String getKey() {
 		return _key;
+	}
+
+	public String getName() {
+		return _name;
 	}
 
 	public long getValue() {
@@ -67,17 +86,32 @@ public class AssetCategoryMetric {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_assetCategoryMetrics, _key, _value);
+		return Objects.hash(_assetVocabularyMetric, _key, _value);
 	}
 
-	public void setAssetCategoryMetrics(
-		List<AssetCategoryMetric> assetCategoryMetrics) {
+	public JSONObject toJSONObject(String vocabularyName) {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		_assetCategoryMetrics = assetCategoryMetrics;
+		if (!ListUtil.isEmpty(
+				_assetVocabularyMetric.getAssetCategoryMetrics())) {
+
+			jsonObject.put("categories", _assetVocabularyMetric.toJSONArray());
+		}
+
+		return jsonObject.put(
+			"key", _key
+		).put(
+			"name", _name
+		).put(
+			"value", _value
+		).put(
+			"vocabularyName", vocabularyName
+		);
 	}
 
-	private List<AssetCategoryMetric> _assetCategoryMetrics;
+	private AssetVocabularyMetric _assetVocabularyMetric;
 	private final String _key;
+	private final String _name;
 	private final long _value;
 
 }

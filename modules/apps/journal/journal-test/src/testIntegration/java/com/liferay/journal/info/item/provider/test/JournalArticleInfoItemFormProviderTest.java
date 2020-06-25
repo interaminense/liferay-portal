@@ -23,7 +23,6 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.info.field.InfoField;
 import com.liferay.info.field.InfoFieldValue;
-import com.liferay.info.field.InfoFormValues;
 import com.liferay.info.field.type.BooleanInfoFieldType;
 import com.liferay.info.field.type.ImageInfoFieldType;
 import com.liferay.info.field.type.IntegerInfoFieldType;
@@ -31,25 +30,39 @@ import com.liferay.info.field.type.TextInfoFieldType;
 import com.liferay.info.field.type.URLInfoFieldType;
 import com.liferay.info.form.InfoForm;
 import com.liferay.info.item.InfoItemClassPKReference;
+import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemServiceTracker;
+import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.item.provider.InfoItemFormProvider;
+import com.liferay.info.localized.InfoLocalizedValue;
+import com.liferay.info.type.WebImage;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+
+import java.io.InputStream;
 
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -66,8 +79,10 @@ public class JournalArticleInfoItemFormProviderTest {
 
 	@ClassRule
 	@Rule
-	public static final LiferayIntegrationTestRule testRule =
-		new LiferayIntegrationTestRule();
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -203,18 +218,20 @@ public class JournalArticleInfoItemFormProviderTest {
 
 	@Test
 	public void testGetInfoFormValues() throws Exception {
-		InfoItemFormProvider<JournalArticle> infoItemFormProvider =
-			(InfoItemFormProvider<JournalArticle>)
-				_infoItemServiceTracker.getFirstInfoItemService(
-					InfoItemFormProvider.class, JournalArticle.class.getName());
+		InfoItemFieldValuesProvider<JournalArticle>
+			infoItemFieldValuesProvider =
+				(InfoItemFieldValuesProvider<JournalArticle>)
+					_infoItemServiceTracker.getFirstInfoItemService(
+						InfoItemFieldValuesProvider.class,
+						JournalArticle.class.getName());
 
 		JournalArticle journalArticle = _getJournalArticle();
 
-		InfoFormValues infoFormValues = infoItemFormProvider.getInfoFormValues(
-			journalArticle);
+		InfoItemFieldValues infoItemFieldValues =
+			infoItemFieldValuesProvider.getInfoItemFieldValues(journalArticle);
 
 		InfoItemClassPKReference infoItemClassPKReference =
-			infoFormValues.getInfoItemClassPKReference();
+			infoItemFieldValues.getInfoItemClassPKReference();
 
 		Assert.assertEquals(
 			journalArticle.getResourcePrimKey(),
@@ -224,13 +241,13 @@ public class JournalArticleInfoItemFormProviderTest {
 			infoItemClassPKReference.getClassName());
 
 		Collection<InfoFieldValue<Object>> infoFieldValues =
-			infoFormValues.getInfoFieldValues();
+			infoItemFieldValues.getInfoFieldValues();
 
 		Assert.assertEquals(
 			infoFieldValues.toString(), 12, infoFieldValues.size());
 
 		InfoFieldValue<Object> descriptionInfoFieldValue =
-			infoFormValues.getInfoFieldValue("description");
+			infoItemFieldValues.getInfoFieldValue("description");
 
 		Assert.assertEquals(
 			"Description",
@@ -240,7 +257,7 @@ public class JournalArticleInfoItemFormProviderTest {
 			descriptionInfoFieldValue.getValue(LocaleUtil.SPAIN));
 
 		InfoFieldValue<Object> titleInfoFieldValue =
-			infoFormValues.getInfoFieldValue("title");
+			infoItemFieldValues.getInfoFieldValue("title");
 
 		Assert.assertEquals(
 			"Test Article",
@@ -250,7 +267,7 @@ public class JournalArticleInfoItemFormProviderTest {
 			titleInfoFieldValue.getValue(LocaleUtil.SPAIN));
 
 		InfoFieldValue<Object> ddmTextInfoFieldValue =
-			infoFormValues.getInfoFieldValue("DDM_Text");
+			infoItemFieldValues.getInfoFieldValue("DDM_Text");
 
 		Assert.assertEquals(
 			"Some text",
@@ -260,7 +277,7 @@ public class JournalArticleInfoItemFormProviderTest {
 			ddmTextInfoFieldValue.getValue(LocaleUtil.SPAIN));
 
 		Collection<InfoFieldValue<Object>> ddmTextInfoFieldValues =
-			infoFormValues.getInfoFieldValues("DDM_Text");
+			infoItemFieldValues.getInfoFieldValues("DDM_Text");
 
 		Iterator<InfoFieldValue<Object>> ddmTextInfoFieldValuesIterator =
 			ddmTextInfoFieldValues.iterator();
@@ -285,9 +302,27 @@ public class JournalArticleInfoItemFormProviderTest {
 			"Un poco más de texto",
 			secondDDMTextInfoFieldValue.getValue(LocaleUtil.SPAIN));
 
-		Assert.assertNotNull(infoFormValues.getInfoFieldValue("boolean"));
-		Assert.assertNotNull(infoFormValues.getInfoFieldValue("image"));
-		Assert.assertNotNull(infoFormValues.getInfoFieldValue("integer"));
+		Assert.assertNotNull(infoItemFieldValues.getInfoFieldValue("boolean"));
+
+		InfoFieldValue<Object> imageInfoFieldValue =
+			infoItemFieldValues.getInfoFieldValue("image");
+
+		WebImage webImage = (WebImage)imageInfoFieldValue.getValue(
+			LocaleUtil.getDefault());
+
+		Optional<InfoLocalizedValue<String>> altInfoLocalizedValueOptional =
+			webImage.getAltInfoLocalizedValueOptional();
+
+		InfoLocalizedValue<String> altInfoLocalizedValue =
+			altInfoLocalizedValueOptional.get();
+
+		Assert.assertEquals(
+			"alt text",
+			altInfoLocalizedValue.getValue(LocaleUtil.getDefault()));
+
+		Assert.assertNotNull(webImage.getUrl());
+
+		Assert.assertNotNull(infoItemFieldValues.getInfoFieldValue("integer"));
 	}
 
 	private JournalArticle _getJournalArticle() throws Exception {
@@ -304,10 +339,27 @@ public class JournalArticleInfoItemFormProviderTest {
 		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
 			_group.getGroupId(), JournalArticle.class.getName(), ddmForm);
 
+		Class<?> clazz = getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
+		InputStream inputStream = classLoader.getResourceAsStream(
+			"/com/liferay/journal/dependencies/liferay.png");
+
+		FileEntry tempFileEntry = TempFileEntryUtil.addTempFileEntry(
+			_group.getGroupId(), TestPropsValues.getUserId(),
+			JournalArticle.class.getName(), "image.png", inputStream,
+			ContentTypes.IMAGE_PNG);
+
 		JournalArticle journalArticle =
 			JournalTestUtil.addArticleWithXMLContent(
 				_group.getGroupId(),
-				_readFileToString("dependencies/test-journal-content.xml"),
+				StringUtil.replace(
+					StringUtil.replace(
+						_readFileToString(
+							"dependencies/test-journal-content.xml"),
+						"$UUID", String.valueOf(tempFileEntry.getUuid())),
+					"$GROUP_ID", String.valueOf(_group.getGroupId())),
 				ddmStructure.getStructureKey(), null);
 
 		journalArticle.setDescriptionMap(

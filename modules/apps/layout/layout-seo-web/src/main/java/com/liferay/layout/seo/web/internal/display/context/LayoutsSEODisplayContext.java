@@ -27,9 +27,9 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.StorageEngine;
 import com.liferay.info.display.contributor.InfoDisplayContributor;
 import com.liferay.info.display.contributor.InfoDisplayContributorTracker;
+import com.liferay.info.exception.NoSuchClassTypeException;
 import com.liferay.info.form.InfoForm;
 import com.liferay.info.item.InfoItemServiceTracker;
-import com.liferay.info.item.NoSuchClassTypeException;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.ItemSelectorCriterion;
@@ -330,7 +330,7 @@ public class LayoutsSEODisplayContext {
 	}
 
 	public HashMap<String, Object> getOpenGraphMappingData()
-		throws NoSuchClassTypeException, PortalException {
+		throws PortalException {
 
 		return HashMapBuilder.<String, Object>putAll(
 			_getBaseSEOMappingData(
@@ -417,9 +417,7 @@ public class LayoutsSEODisplayContext {
 			layout.getLayoutId());
 	}
 
-	public HashMap<String, Object> getSEOMappingData()
-		throws NoSuchClassTypeException, PortalException {
-
+	public HashMap<String, Object> getSEOMappingData() throws PortalException {
 		return HashMapBuilder.<String, Object>putAll(
 			_getBaseSEOMappingData(
 				_getInfoForm(_getLayoutPageTemplateEntry()),
@@ -429,8 +427,7 @@ public class LayoutsSEODisplayContext {
 			_selLayout.getTypeSettingsProperty(
 				"mapped-description", "description")
 		).put(
-			"title",
-			_selLayout.getTypeSettingsProperty("title-description", "title")
+			"title", _selLayout.getTypeSettingsProperty("mapped-title", "title")
 		).build();
 	}
 

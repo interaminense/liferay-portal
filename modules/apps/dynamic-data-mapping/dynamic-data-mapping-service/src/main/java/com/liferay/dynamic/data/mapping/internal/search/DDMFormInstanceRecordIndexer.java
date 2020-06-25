@@ -220,12 +220,13 @@ public class DDMFormInstanceRecordIndexer
 		document.addKeyword(
 			Field.CLASS_TYPE_ID,
 			ddmFormInstanceRecordVersion.getFormInstanceId());
+		document.addDate(
+			Field.MODIFIED_DATE, ddmFormInstance.getModifiedDate());
 		document.addKeyword(Field.RELATED_ENTRY, true);
 		document.addKeyword(
 			Field.STATUS, ddmFormInstanceRecordVersion.getStatus());
 		document.addKeyword(
 			Field.VERSION, ddmFormInstanceRecordVersion.getVersion());
-
 		document.addKeyword(
 			"formInstanceId", ddmFormInstance.getFormInstanceId());
 

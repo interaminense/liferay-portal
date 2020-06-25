@@ -15,7 +15,6 @@
 package com.liferay.dynamic.data.mapping.internal.model.listener;
 
 import com.liferay.dynamic.data.mapping.constants.DDMFormInstanceReportConstants;
-import com.liferay.dynamic.data.mapping.exception.NoSuchFormInstanceReportException;
 import com.liferay.dynamic.data.mapping.internal.petra.executor.DDMFormInstanceReportPortalExecutor;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceReport;
@@ -109,41 +108,31 @@ public class DDMFormInstanceRecordVersionModelListener
 		}
 	}
 
+	@Reference
+	protected DDMFormInstanceReportLocalService
+		ddmFormInstanceReportLocalService;
+
 	private void _processFormInstanceReportEvent(
 			DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion,
 			String formInstanceReportEvent)
 		throws PortalException {
 
-		try {
-			DDMFormInstanceReport ddmFormInstanceReport =
-				_ddmFormInstanceReportLocalService.
-					getFormInstanceReportByFormInstanceId(
-						ddmFormInstanceRecordVersion.getFormInstanceId());
+		DDMFormInstanceReport ddmFormInstanceReport =
+			ddmFormInstanceReportLocalService.
+				getFormInstanceReportByFormInstanceId(
+					ddmFormInstanceRecordVersion.getFormInstanceId());
 
-			TransactionCommitCallbackUtil.registerCallback(
-				() -> {
-					_ddmFormInstanceReportPortalExecutor.execute(
-						() ->
-							_ddmFormInstanceReportLocalService.
-								updateFormInstanceReport(
-									ddmFormInstanceReport.
-										getFormInstanceReportId(),
-									ddmFormInstanceRecordVersion.
-										getFormInstanceRecordVersionId(),
-									formInstanceReportEvent));
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				ddmFormInstanceReportLocalService.
+					processFormInstanceReportEvent(
+						ddmFormInstanceReport.getFormInstanceReportId(),
+						ddmFormInstanceRecordVersion.
+							getFormInstanceRecordVersionId(),
+						formInstanceReportEvent);
 
-					return null;
-				});
-		}
-		catch (NoSuchFormInstanceReportException
-					noSuchFormInstanceReportException) {
-
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					noSuchFormInstanceReportException,
-					noSuchFormInstanceReportException);
-			}
-		}
+				return null;
+			});
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -152,10 +141,6 @@ public class DDMFormInstanceRecordVersionModelListener
 	@Reference
 	private DDMFormInstanceRecordVersionLocalService
 		_ddmFormInstanceRecordVersionLocalService;
-
-	@Reference
-	private DDMFormInstanceReportLocalService
-		_ddmFormInstanceReportLocalService;
 
 	@Reference
 	private DDMFormInstanceReportPortalExecutor

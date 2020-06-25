@@ -101,7 +101,6 @@ renderResponse.setTitle(selLayout.getName(locale));
 								<portlet:param name="redirect" value="<%= currentURL %>" />
 								<portlet:param name="selPlid" value="<%= String.valueOf(layoutsAdminDisplayContext.getSelPlid()) %>" />
 								<portlet:param name="layoutSetBranchId" value="0" />
-								<portlet:param name="selPlid" value="<%= String.valueOf(selLayout.getParentPlid()) %>" />
 							</portlet:actionURL>
 
 							submitForm(document.hrefFm, '<%= deleteLayoutURL %>');

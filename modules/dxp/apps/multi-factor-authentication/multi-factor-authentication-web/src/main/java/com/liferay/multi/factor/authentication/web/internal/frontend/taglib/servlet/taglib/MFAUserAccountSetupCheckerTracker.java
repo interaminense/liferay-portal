@@ -15,13 +15,16 @@
 package com.liferay.multi.factor.authentication.web.internal.frontend.taglib.servlet.taglib;
 
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
+import com.liferay.multi.factor.authentication.email.otp.configuration.MFAEmailOTPConfiguration;
 import com.liferay.multi.factor.authentication.spi.checker.setup.SetupMFAChecker;
 import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.util.Dictionary;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -38,21 +41,34 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 /**
  * @author Tomas Polesovsky
  */
-@Component(immediate = true, service = {})
+@Component(
+	configurationPid = "com.liferay.multi.factor.authentication.email.otp.configuration.MFAEmailOTPConfiguration.scoped",
+	immediate = true, service = {}
+)
 public class MFAUserAccountSetupCheckerTracker {
 
 	@Activate
-	protected void activate(BundleContext bundleContext) {
+	protected void activate(
+		BundleContext bundleContext, Map<String, Object> properties) {
+
 		_bundleContext = bundleContext;
 
-		_serviceTracker = ServiceTrackerFactory.open(
-			bundleContext, SetupMFAChecker.class,
-			new MFACheckerSetupServiceTrackerCustomizer());
+		MFAEmailOTPConfiguration mfaEmailOTPConfiguration =
+			ConfigurableUtil.createConfigurable(
+				MFAEmailOTPConfiguration.class, properties);
+
+		if (mfaEmailOTPConfiguration.enabled()) {
+			_serviceTracker = ServiceTrackerFactory.open(
+				bundleContext, SetupMFAChecker.class,
+				new MFACheckerSetupServiceTrackerCustomizer());
+		}
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTracker.close();
+		if (_serviceTracker != null) {
+			_serviceTracker.close();
+		}
 	}
 
 	private BundleContext _bundleContext;

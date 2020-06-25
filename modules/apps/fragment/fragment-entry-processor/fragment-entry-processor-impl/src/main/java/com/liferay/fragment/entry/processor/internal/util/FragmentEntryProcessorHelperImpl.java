@@ -26,9 +26,9 @@ import com.liferay.info.display.contributor.InfoDisplayContributor;
 import com.liferay.info.display.contributor.InfoDisplayContributorTracker;
 import com.liferay.info.display.contributor.InfoDisplayObjectProvider;
 import com.liferay.info.field.InfoFieldValue;
-import com.liferay.info.field.InfoFormValues;
+import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemServiceTracker;
-import com.liferay.info.item.provider.InfoItemFormProvider;
+import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.type.WebImage;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -116,12 +116,11 @@ public class FragmentEntryProcessorHelperImpl
 			className = FileEntry.class.getName();
 		}
 
-		InfoItemFormProvider<Object> infoItemFormProvider =
-			(InfoItemFormProvider<Object>)
-				_infoItemServiceTracker.getFirstInfoItemService(
-					InfoItemFormProvider.class, className);
+		InfoItemFieldValuesProvider<Object> infoItemFieldValuesProvider =
+			_infoItemServiceTracker.getFirstInfoItemService(
+				InfoItemFieldValuesProvider.class, className);
 
-		if (infoItemFormProvider == null) {
+		if (infoItemFieldValuesProvider == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to get info item form provider for class " +
@@ -132,7 +131,7 @@ public class FragmentEntryProcessorHelperImpl
 		}
 
 		InfoFieldValue<Object> infoFieldValue =
-			infoItemFormProvider.getInfoFieldValue(
+			infoItemFieldValuesProvider.getInfoItemFieldValue(
 				displayObjectOptional.get(),
 				jsonObject.getString("collectionFieldId"));
 
@@ -207,12 +206,12 @@ public class FragmentEntryProcessorHelperImpl
 			return null;
 		}
 
-		InfoItemFormProvider<Object> infoItemFormProvider =
-			(InfoItemFormProvider<Object>)
+		InfoItemFieldValuesProvider<Object> infoItemFieldValuesProvider =
+			(InfoItemFieldValuesProvider<Object>)
 				_infoItemServiceTracker.getFirstInfoItemService(
-					InfoItemFormProvider.class, className);
+					InfoItemFieldValuesProvider.class, className);
 
-		if (infoItemFormProvider == null) {
+		if (infoItemFieldValuesProvider == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to get info item form provider for class " +
@@ -227,10 +226,10 @@ public class FragmentEntryProcessorHelperImpl
 		Map<String, Object> fieldsValues = infoDisplaysFieldValues.get(classPK);
 
 		if (fieldsValues == null) {
-			InfoFormValues infoFormValues =
-				infoItemFormProvider.getInfoFormValues(object);
+			InfoItemFieldValues infoItemFieldValues =
+				infoItemFieldValuesProvider.getInfoItemFieldValues(object);
 
-			fieldsValues = infoFormValues.getMap(
+			fieldsValues = infoItemFieldValues.getMap(
 				fragmentEntryProcessorContext.getLocale());
 
 			infoDisplaysFieldValues.put(classPK, fieldsValues);

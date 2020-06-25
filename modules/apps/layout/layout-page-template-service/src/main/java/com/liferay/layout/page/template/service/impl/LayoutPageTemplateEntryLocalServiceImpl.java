@@ -105,20 +105,8 @@ public class LayoutPageTemplateEntryLocalServiceImpl
 		Company company = _companyLocalService.getCompany(
 			layoutPrototype.getCompanyId());
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		long groupId = company.getGroupId();
-
-		if (serviceContext != null) {
-			long scopeGroupId = serviceContext.getScopeGroupId();
-
-			if (scopeGroupId != 0) {
-				groupId = scopeGroupId;
-			}
-		}
-
-		return addLayoutPageTemplateEntry(groupId, layoutPrototype);
+		return addLayoutPageTemplateEntry(
+			company.getGroupId(), layoutPrototype);
 	}
 
 	/**

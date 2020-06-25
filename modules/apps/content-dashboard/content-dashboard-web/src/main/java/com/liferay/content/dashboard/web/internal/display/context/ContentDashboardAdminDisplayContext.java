@@ -16,10 +16,13 @@ package com.liferay.content.dashboard.web.internal.display.context;
 
 import com.liferay.content.dashboard.web.internal.configuration.ContentDashboardConfiguration;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
+import com.liferay.content.dashboard.web.internal.model.AssetVocabularyMetric;
 import com.liferay.content.dashboard.web.internal.servlet.taglib.util.ContentDashboardDropdownItemsProvider;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.item.selector.ItemSelector;
+import com.liferay.item.selector.criteria.URLItemSelectorReturnType;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
+import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -36,6 +39,7 @@ import com.liferay.users.admin.item.selector.UserItemSelectorCriterion;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.PortletURL;
 
@@ -45,6 +49,7 @@ import javax.portlet.PortletURL;
 public class ContentDashboardAdminDisplayContext {
 
 	public ContentDashboardAdminDisplayContext(
+		AssetVocabularyMetric assetVocabularyMetric,
 		ContentDashboardConfiguration contentDashboardConfiguration,
 		ContentDashboardDropdownItemsProvider
 			contentDashboardDropdownItemsProvider,
@@ -52,6 +57,7 @@ public class ContentDashboardAdminDisplayContext {
 		LiferayPortletResponse liferayPortletResponse, Portal portal,
 		SearchContainer<ContentDashboardItem<?>> searchContainer) {
 
+		_assetVocabularyMetric = assetVocabularyMetric;
 		_contentDashboardConfiguration = contentDashboardConfiguration;
 		_contentDashboardDropdownItemsProvider =
 			contentDashboardDropdownItemsProvider;
@@ -94,8 +100,20 @@ public class ContentDashboardAdminDisplayContext {
 
 		portletURL.setParameter(
 			"checkedUserIds", StringUtil.merge(getAuthorIds()));
+		portletURL.setParameter(
+			"checkedUserIdsEnabled", String.valueOf(Boolean.TRUE));
 
 		return portletURL.toString();
+	}
+
+	public Map<String, Object> getData() {
+		if (_data != null) {
+			return _data;
+		}
+
+		_data = Collections.singletonMap("props", _getProps());
+
+		return _data;
 	}
 
 	public List<DropdownItem> getDropdownItems(
@@ -103,6 +121,32 @@ public class ContentDashboardAdminDisplayContext {
 
 		return _contentDashboardDropdownItemsProvider.getDropdownItems(
 			contentDashboardItem);
+	}
+
+	public long getScopeId() {
+		if (_scopeId > 0) {
+			return _scopeId;
+		}
+
+		_scopeId = ParamUtil.getLong(_liferayPortletRequest, "scopeId");
+
+		return _scopeId;
+	}
+
+	public String getScopeIdItemSelectorURL() throws PortalException {
+		GroupItemSelectorCriterion groupItemSelectorCriterion =
+			new GroupItemSelectorCriterion();
+
+		groupItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+			new URLItemSelectorReturnType());
+		groupItemSelectorCriterion.setIncludeAllVisibleGroups(true);
+
+		return String.valueOf(
+			_itemSelector.getItemSelectorURL(
+				RequestBackedPortletURLFactoryUtil.create(
+					_liferayPortletRequest),
+				_liferayPortletResponse.getNamespace() + "selectedScopeIdItem",
+				groupItemSelectorCriterion));
 	}
 
 	public SearchContainer<ContentDashboardItem<?>> getSearchContainer() {
@@ -134,14 +178,22 @@ public class ContentDashboardAdminDisplayContext {
 		return _contentDashboardConfiguration.auditGraphEnabled();
 	}
 
+	private Map<String, Object> _getProps() {
+		return Collections.singletonMap(
+			"vocabularies", _assetVocabularyMetric.toJSONArray());
+	}
+
+	private final AssetVocabularyMetric _assetVocabularyMetric;
 	private List<Long> _authorIds;
 	private final ContentDashboardConfiguration _contentDashboardConfiguration;
 	private final ContentDashboardDropdownItemsProvider
 		_contentDashboardDropdownItemsProvider;
+	private Map<String, Object> _data;
 	private final ItemSelector _itemSelector;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final Portal _portal;
+	private long _scopeId;
 	private final SearchContainer<ContentDashboardItem<?>> _searchContainer;
 	private Integer _status;
 	private long _userId;

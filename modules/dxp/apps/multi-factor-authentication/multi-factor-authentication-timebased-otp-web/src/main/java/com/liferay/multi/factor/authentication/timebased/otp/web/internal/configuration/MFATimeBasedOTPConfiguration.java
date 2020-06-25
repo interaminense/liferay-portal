@@ -57,10 +57,4 @@ public interface MFATimeBasedOTPConfiguration {
 	)
 	public int algorithmKeySize();
 
-	@Meta.AD(
-		deflt = "-1", description = "validation-expiration-time-description",
-		name = "validation-expiration-time", required = false
-	)
-	public long validationExpirationTime();
-
 }

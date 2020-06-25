@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 
@@ -413,34 +412,7 @@ public class TimeBasedOTPBrowserSetupMFAChecker
 			return false;
 		}
 
-		if (_mfaTimeBasedOTPConfiguration.validationExpirationTime() < 0) {
-			_routeAuditMessage(
-				_mfaTimeBasedOTPAuditMessageBuilder.buildVerifiedAuditMessage(
-					user, _getClassName()));
-
-			return true;
-		}
-
-		long time =
-			_mfaTimeBasedOTPConfiguration.validationExpirationTime() *
-				Time.SECOND;
-
-		time += (long)httpSession.getAttribute(
-			MFATimeBasedOTPWebKeys.MFA_TIME_BASED_OTP_VALIDATED_AT_TIME);
-
-		if (time > System.currentTimeMillis()) {
-			_routeAuditMessage(
-				_mfaTimeBasedOTPAuditMessageBuilder.buildVerifiedAuditMessage(
-					user, _getClassName()));
-
-			return true;
-		}
-
-		_routeAuditMessage(
-			_mfaTimeBasedOTPAuditMessageBuilder.buildNotVerifiedAuditMessage(
-				user, _getClassName(), "Expired verification"));
-
-		return false;
+		return true;
 	}
 
 	private String _getClassName() {

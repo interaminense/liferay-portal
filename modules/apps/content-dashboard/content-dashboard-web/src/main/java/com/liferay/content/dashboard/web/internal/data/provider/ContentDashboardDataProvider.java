@@ -14,22 +14,29 @@
 
 package com.liferay.content.dashboard.web.internal.data.provider;
 
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.content.dashboard.web.internal.model.AssetCategoryMetric;
-import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.content.dashboard.web.internal.model.AssetVocabularyMetric;
+import com.liferay.content.dashboard.web.internal.search.request.ContentDashboardSearchContextBuilder;
+import com.liferay.content.dashboard.web.internal.searcher.ContentDashboardSearchRequestBuilderFactory;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.search.aggregation.Aggregations;
 import com.liferay.portal.search.aggregation.bucket.Bucket;
 import com.liferay.portal.search.aggregation.bucket.IncludeExcludeClause;
 import com.liferay.portal.search.aggregation.bucket.TermsAggregation;
 import com.liferay.portal.search.aggregation.bucket.TermsAggregationResult;
-import com.liferay.portal.search.legacy.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.searcher.Searcher;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author David Arques
@@ -37,107 +44,161 @@ import java.util.List;
 public class ContentDashboardDataProvider {
 
 	public ContentDashboardDataProvider(
-		Aggregations aggregations, SearchContext searchContext,
-		Searcher searcher,
-		SearchRequestBuilderFactory searchRequestBuilderFactory) {
+		Aggregations aggregations,
+		ContentDashboardSearchContextBuilder
+			contentDashboardSearchContextBuilder,
+		ContentDashboardSearchRequestBuilderFactory
+			contentDashboardSearchRequestBuilderFactory,
+		Locale locale, Searcher searcher) {
 
 		_aggregations = aggregations;
-		_searchContext = searchContext;
+		_locale = locale;
 		_searcher = searcher;
-		_searchRequestBuilderFactory = searchRequestBuilderFactory;
+
+		_searchRequestBuilder =
+			contentDashboardSearchRequestBuilderFactory.builder(
+				contentDashboardSearchContextBuilder.build());
 	}
 
-	public List<AssetCategoryMetric> getAssetCategoryMetrics(
-		String[] audienceAssetCategoryIds, String[] stageAssetCategoryIds) {
+	public AssetVocabularyMetric getAssetVocabularyMetric(
+		List<AssetVocabulary> assetVocabularies) {
 
-		if (ArrayUtil.isEmpty(audienceAssetCategoryIds) &&
-			ArrayUtil.isEmpty(stageAssetCategoryIds)) {
-
-			return Collections.emptyList();
+		if (ListUtil.isEmpty(assetVocabularies)) {
+			return AssetVocabularyMetric.empty();
 		}
 
-		TermsAggregation termsAggregation = null;
-
-		if (!ArrayUtil.isEmpty(audienceAssetCategoryIds)) {
-			termsAggregation = _getTermsAggregation(audienceAssetCategoryIds);
-
-			if (!ArrayUtil.isEmpty(stageAssetCategoryIds)) {
-				termsAggregation.addChildAggregation(
-					_getTermsAggregation(stageAssetCategoryIds));
-			}
-		}
-		else {
-			termsAggregation = _getTermsAggregation(stageAssetCategoryIds);
+		if (assetVocabularies.size() == 1) {
+			return _getAssetVocabularyMetric(assetVocabularies.get(0));
 		}
 
-		SearchRequestBuilder searchRequestBuilder =
-			_searchRequestBuilderFactory.builder(_searchContext);
-
-		return _toAssetCategoryMetrics(
-			_searcher.search(
-				searchRequestBuilder.addAggregation(
-					termsAggregation
-				).emptySearchEnabled(
-					true
-				).highlightEnabled(
-					false
-				).size(
-					0
-				).build()));
+		return _getAssetVocabularyMetric(
+			assetVocabularies.get(0), assetVocabularies.get(1));
 	}
 
-	private TermsAggregation _getTermsAggregation(String[] assetCategoryIds) {
-		TermsAggregation termsAggregation = _aggregations.terms(
-			"categories", "assetCategoryIds");
+	private Map<String, String> _getAssetCategoryTitlesMap(
+		AssetVocabulary assetVocabulary, Locale locale) {
 
-		termsAggregation.setIncludeExcludeClause(
-			new IncludeExcludeClauseImpl(assetCategoryIds, new String[0]));
+		List<AssetCategory> categories = assetVocabulary.getCategories();
 
-		return termsAggregation;
+		Stream<AssetCategory> stream = categories.stream();
+
+		return stream.collect(
+			Collectors.toMap(
+				entry -> String.valueOf(entry.getCategoryId()),
+				entry -> entry.getTitle(locale)));
 	}
 
-	private List<AssetCategoryMetric> _toAssetCategoryMetrics(
-		SearchResponse searchResponse) {
+	private AssetVocabularyMetric _getAssetVocabularyMetric(
+		AssetVocabulary assetVocabulary) {
 
-		List<AssetCategoryMetric> assetCategoryMetrics = new ArrayList<>();
+		Map<String, String> assetCategoryTitlesMap = _getAssetCategoryTitlesMap(
+			assetVocabulary, _locale);
+
+		return _toAssetVocabularyMetric(
+			assetCategoryTitlesMap, assetVocabulary,
+			_getBuckets(_getTermsAggregation(assetCategoryTitlesMap.keySet())));
+	}
+
+	private AssetVocabularyMetric _getAssetVocabularyMetric(
+		AssetVocabulary assetVocabulary, AssetVocabulary childAssetVocabulary) {
+
+		Map<String, String> assetCategoryTitlesMap = _getAssetCategoryTitlesMap(
+			assetVocabulary, _locale);
+
+		Map<String, String> childAssetCategoryTitlesMap =
+			_getAssetCategoryTitlesMap(childAssetVocabulary, _locale);
+
+		TermsAggregation termsAggregation = _getTermsAggregation(
+			assetCategoryTitlesMap.keySet());
+
+		termsAggregation.addChildAggregation(
+			_getTermsAggregation(childAssetCategoryTitlesMap.keySet()));
+
+		return new AssetVocabularyMetric(
+			String.valueOf(assetVocabulary.getVocabularyId()),
+			assetVocabulary.getTitle(_locale),
+			_toAssetCategoryMetrics(
+				assetCategoryTitlesMap, _getBuckets(termsAggregation),
+				childAssetCategoryTitlesMap, childAssetVocabulary));
+	}
+
+	private Collection<Bucket> _getBuckets(TermsAggregation termsAggregation) {
+		SearchResponse searchResponse = _searcher.search(
+			_searchRequestBuilder.addAggregation(
+				termsAggregation
+			).size(
+				0
+			).build());
 
 		TermsAggregationResult termsAggregationResult =
 			(TermsAggregationResult)searchResponse.getAggregationResult(
 				"categories");
 
-		for (Bucket bucket : termsAggregationResult.getBuckets()) {
-			AssetCategoryMetric assetCategoryMetric = new AssetCategoryMetric(
-				bucket.getKey(), bucket.getDocCount());
+		return termsAggregationResult.getBuckets();
+	}
 
-			assetCategoryMetric.setAssetCategoryMetrics(
-				_toAssetCategoryMetrics(
-					(TermsAggregationResult)bucket.getChildAggregationResult(
-						"categories")));
+	private TermsAggregation _getTermsAggregation(
+		Set<String> assetCategoryIds) {
 
-			assetCategoryMetrics.add(assetCategoryMetric);
-		}
+		TermsAggregation termsAggregation = _aggregations.terms(
+			"categories", "assetCategoryIds");
 
-		return assetCategoryMetrics;
+		termsAggregation.setIncludeExcludeClause(
+			new IncludeExcludeClauseImpl(
+				assetCategoryIds.toArray(new String[0]), new String[0]));
+
+		return termsAggregation;
 	}
 
 	private List<AssetCategoryMetric> _toAssetCategoryMetrics(
-		TermsAggregationResult termsAggregationResult) {
+		Map<String, String> assetCategoryTitlesMap, Collection<Bucket> buckets,
+		Map<String, String> childAssetCategoryTitlesMap,
+		AssetVocabulary childAssetVocabulary) {
 
-		List<AssetCategoryMetric> assetCategoryMetrics = new ArrayList<>();
+		Stream<Bucket> stream = buckets.stream();
 
-		for (Bucket childBucket : termsAggregationResult.getBuckets()) {
-			assetCategoryMetrics.add(
-				new AssetCategoryMetric(
-					childBucket.getKey(), childBucket.getDocCount()));
-		}
+		return stream.map(
+			bucket -> {
+				TermsAggregationResult termsAggregationResult =
+					(TermsAggregationResult)bucket.getChildAggregationResult(
+						"categories");
 
-		return assetCategoryMetrics;
+				return new AssetCategoryMetric(
+					_toAssetVocabularyMetric(
+						childAssetCategoryTitlesMap, childAssetVocabulary,
+						termsAggregationResult.getBuckets()),
+					bucket.getKey(),
+					assetCategoryTitlesMap.get(bucket.getKey()),
+					bucket.getDocCount());
+			}
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private AssetVocabularyMetric _toAssetVocabularyMetric(
+		Map<String, String> assetCategoryTitlesMap,
+		AssetVocabulary assetVocabulary, Collection<Bucket> buckets) {
+
+		Stream<Bucket> stream = buckets.stream();
+
+		return new AssetVocabularyMetric(
+			String.valueOf(assetVocabulary.getVocabularyId()),
+			assetVocabulary.getTitle(_locale),
+			stream.map(
+				bucket -> new AssetCategoryMetric(
+					bucket.getKey(),
+					assetCategoryTitlesMap.get(bucket.getKey()),
+					bucket.getDocCount())
+			).collect(
+				Collectors.toList()
+			));
 	}
 
 	private final Aggregations _aggregations;
-	private final SearchContext _searchContext;
+	private final Locale _locale;
 	private final Searcher _searcher;
-	private final SearchRequestBuilderFactory _searchRequestBuilderFactory;
+	private final SearchRequestBuilder _searchRequestBuilder;
 
 	private static class IncludeExcludeClauseImpl
 		implements IncludeExcludeClause {

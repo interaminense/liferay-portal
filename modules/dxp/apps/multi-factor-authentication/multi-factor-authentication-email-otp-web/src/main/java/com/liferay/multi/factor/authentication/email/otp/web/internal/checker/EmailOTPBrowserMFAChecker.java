@@ -307,29 +307,7 @@ public class EmailOTPBrowserMFAChecker implements BrowserMFAChecker {
 			return false;
 		}
 
-		if (_mfaEmailOTPConfiguration.validationExpirationTime() < 0) {
-			return true;
-		}
-
-		long time =
-			_mfaEmailOTPConfiguration.validationExpirationTime() * Time.SECOND;
-
-		time += (long)httpSession.getAttribute(
-			MFAEmailOTPWebKeys.MFA_EMAIL_OTP_VALIDATED_AT_TIME);
-
-		if (time > System.currentTimeMillis()) {
-			_routeAuditMessage(
-				_mfaEmailOTPAuditMessageBuilder.buildVerifiedAuditMessage(
-					user, _getClassName()));
-
-			return true;
-		}
-
-		_routeAuditMessage(
-			_mfaEmailOTPAuditMessageBuilder.buildNotVerifiedAuditMessage(
-				user, _getClassName(), "Expired verification"));
-
-		return false;
+		return true;
 	}
 
 	private String _getClassName() {

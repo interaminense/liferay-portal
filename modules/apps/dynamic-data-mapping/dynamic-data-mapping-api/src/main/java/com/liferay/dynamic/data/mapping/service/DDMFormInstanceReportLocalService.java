@@ -260,7 +260,7 @@ public interface DDMFormInstanceReportLocalService
 
 	public void processFormInstanceReportEvent(
 		long formInstanceReportId, long formInstanceRecordVersionId,
-		String formInstanceReportEvent);
+		String ddmFormInstanceReportEvent);
 
 	/**
 	 * Updates the ddm form instance report in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -274,7 +274,7 @@ public interface DDMFormInstanceReportLocalService
 
 	public DDMFormInstanceReport updateFormInstanceReport(
 			long formInstanceReportId, long formInstanceRecordVersionId,
-			String formInstanceReportEvent)
+			String ddmFormInstanceReportEvent)
 		throws PortalException;
 
 	@Override

@@ -114,13 +114,29 @@ public abstract class TopLevelBuild extends BaseBuild {
 		}
 	}
 
+	public String getAcceptanceUpstreamJobName() {
+		String jobName = getJobName();
+
+		if (jobName.contains("pullrequest")) {
+			String branchName = getBranchName();
+
+			if (branchName.startsWith("ee-")) {
+				return jobName.replace("pullrequest", "upstream");
+			}
+
+			return jobName.replace("pullrequest", "upstream-dxp");
+		}
+
+		return "";
+	}
+
 	public String getAcceptanceUpstreamJobURL() {
 		String jobName = getJobName();
 
 		if (jobName.contains("pullrequest")) {
 			String acceptanceUpstreamJobURL = JenkinsResultsParserUtil.combine(
 				"https://test-1-1.liferay.com/job/",
-				jobName.replace("pullrequest", "upstream-dxp"));
+				getAcceptanceUpstreamJobName());
 
 			try {
 				JenkinsResultsParserUtil.toString(
@@ -197,6 +213,39 @@ public abstract class TopLevelBuild extends BaseBuild {
 		}
 
 		return displayName;
+	}
+
+	public List<AxisBuild> getDownstreamAxisBuilds() {
+		List<AxisBuild> downstreamAxisBuilds = new ArrayList<>();
+
+		for (BatchBuild downstreamBatchBuild : getDownstreamBatchBuilds()) {
+			downstreamAxisBuilds.addAll(
+				downstreamBatchBuild.getDownstreamAxisBuilds());
+		}
+
+		Collections.sort(
+			downstreamAxisBuilds, new BaseBuild.BuildDisplayNameComparator());
+
+		return downstreamAxisBuilds;
+	}
+
+	public List<BatchBuild> getDownstreamBatchBuilds() {
+		List<BatchBuild> downstreamBatchBuilds = new ArrayList<>();
+
+		List<Build> downstreamBuilds = getDownstreamBuilds(null);
+
+		for (Build downstreamBuild : downstreamBuilds) {
+			if (!(downstreamBuild instanceof BatchBuild)) {
+				continue;
+			}
+
+			downstreamBatchBuilds.add((BatchBuild)downstreamBuild);
+		}
+
+		Collections.sort(
+			downstreamBatchBuilds, new BaseBuild.BuildDisplayNameComparator());
+
+		return downstreamBatchBuilds;
 	}
 
 	@Override

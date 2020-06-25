@@ -90,6 +90,16 @@ public class Dom4JUtil {
 		}
 	}
 
+	public static void detach(Object... items) {
+		for (Object item : items) {
+			if (item instanceof Node) {
+				Node node = (Node)item;
+
+				node.detach();
+			}
+		}
+	}
+
 	public static String format(Element element) throws IOException {
 		return format(element, true);
 	}
@@ -323,6 +333,27 @@ public class Dom4JUtil {
 			"pre", null,
 			getNewElement(
 				"code", null, JenkinsResultsParserUtil.redact(content)));
+	}
+
+	public static void truncateElement(Element element, int size) {
+		List<Node> nodes = new ArrayList<>();
+
+		nodes.add(element);
+		nodes.addAll(element.attributes());
+
+		for (Node node : nodes) {
+			String nodeText = node.getText();
+
+			if ((nodeText != null) && (nodeText.length() > size)) {
+				node.setText(nodeText.substring(0, size));
+			}
+		}
+
+		for (Iterator<Element> iterator = element.elementIterator();
+			 iterator.hasNext();) {
+
+			truncateElement(iterator.next(), size);
+		}
 	}
 
 }

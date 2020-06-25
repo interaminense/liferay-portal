@@ -68,6 +68,10 @@ page import="com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUti
 page import="com.liferay.dynamic.data.mapping.validator.DDMFormLayoutValidationException" %><%@
 page import="com.liferay.dynamic.data.mapping.validator.DDMFormValidationException" %><%@
 page import="com.liferay.exportimport.kernel.exception.ExportImportContentValidationException" %><%@
+page import="com.liferay.info.field.InfoField" %><%@
+page import="com.liferay.info.field.InfoFieldValue" %><%@
+page import="com.liferay.info.item.InfoItemFieldValues" %><%@
+page import="com.liferay.info.localized.InfoLocalizedValue" %><%@
 page import="com.liferay.journal.configuration.JournalFileUploadsConfiguration" %><%@
 page import="com.liferay.journal.configuration.JournalGroupServiceConfiguration" %><%@
 page import="com.liferay.journal.constants.JournalConstants" %><%@
@@ -209,7 +213,8 @@ page import="com.liferay.portal.upload.LiferayFileItem" %><%@
 page import="com.liferay.rss.util.RSSUtil" %><%@
 page import="com.liferay.taglib.search.ResultRow" %><%@
 page import="com.liferay.taglib.util.CustomAttributesUtil" %><%@
-page import="com.liferay.translation.exception.InvalidXLIFFFileException" %>
+page import="com.liferay.translation.exception.InvalidXLIFFFileException" %><%@
+page import="com.liferay.translation.info.field.TranslationInfoFieldChecker" %>
 
 <%@ page import="java.text.Format" %>
 

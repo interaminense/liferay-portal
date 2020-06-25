@@ -1082,15 +1082,15 @@ AUI.add(
 										instance.get('displayLocale')
 									];
 							}
-						}
 
-						if (Lang.isUndefined(value)) {
-							value = instance.getDefaultLocalization(
-								instance.get('displayLocale')
-							);
-						}
+							if (Lang.isUndefined(value)) {
+								value = instance.getDefaultLocalization(
+									instance.get('displayLocale')
+								);
+							}
 
-						instance.setValue(value);
+							instance.setValue(value);
+						}
 					}
 				},
 

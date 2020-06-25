@@ -15,6 +15,7 @@
 package com.liferay.dynamic.data.mapping.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.dynamic.data.mapping.exception.NoSuchFormInstanceReportException;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
@@ -25,12 +26,13 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalServiceUtil;
-import com.liferay.dynamic.data.mapping.service.persistence.DDMFormInstanceReportPersistence;
+import com.liferay.dynamic.data.mapping.service.DDMFormInstanceReportLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.StorageType;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -85,10 +87,41 @@ public class DDMFormInstanceReportLocalServiceTest
 			getServiceContext());
 
 		DDMFormInstanceReport ddmFormInstanceReport =
-			_ddmFormInstanceReportPersistence.findByFormInstanceId(
-				_ddmFormInstance.getFormInstanceId());
+			_ddmFormInstanceReportLocalService.
+				getFormInstanceReportByFormInstanceId(
+					_ddmFormInstance.getFormInstanceId());
 
 		Assert.assertNotNull(ddmFormInstanceReport);
+	}
+
+	@Test(expected = NoSuchFormInstanceReportException.class)
+	public void testDeleteDDMFormInstance() throws Exception {
+		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
+			group.getGroupId(), DDMFormInstance.class.getName());
+
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm("name");
+
+		_ddmFormInstance = DDMFormInstanceLocalServiceUtil.addFormInstance(
+			ddmStructure.getUserId(), ddmStructure.getGroupId(),
+			ddmStructure.getStructureId(), ddmStructure.getNameMap(),
+			ddmStructure.getDescriptionMap(),
+			DDMFormValuesTestUtil.createDDMFormValues(ddmForm),
+			getServiceContext());
+
+		DDMFormInstanceReport ddmFormInstanceReport =
+			_ddmFormInstanceReportLocalService.
+				getFormInstanceReportByFormInstanceId(
+					_ddmFormInstance.getFormInstanceId());
+
+		Assert.assertNotNull(ddmFormInstanceReport);
+
+		_ddmFormInstance =
+			DDMFormInstanceLocalServiceUtil.deleteDDMFormInstance(
+				_ddmFormInstance);
+
+		_ddmFormInstanceReportLocalService.
+			getFormInstanceReportByFormInstanceId(
+				_ddmFormInstance.getFormInstanceId());
 	}
 
 	@Test
@@ -97,8 +130,9 @@ public class DDMFormInstanceReportLocalServiceTest
 			createDDMFormInstanceRecord();
 
 		DDMFormInstanceReport ddmFormInstanceReport =
-			_ddmFormInstanceReportPersistence.findByFormInstanceId(
-				ddmFormInstanceRecord.getFormInstanceId());
+			_ddmFormInstanceReportLocalService.
+				getFormInstanceReportByFormInstanceId(
+					ddmFormInstanceRecord.getFormInstanceId());
 
 		JSONObject ddmFormInstanceReportDataJSONObject =
 			JSONFactoryUtil.createJSONObject(ddmFormInstanceReport.getData());
@@ -126,8 +160,9 @@ public class DDMFormInstanceReportLocalServiceTest
 			ddmFormInstanceRecord);
 
 		DDMFormInstanceReport ddmFormInstanceReport =
-			_ddmFormInstanceReportPersistence.findByFormInstanceId(
-				ddmFormInstanceRecord.getFormInstanceId());
+			_ddmFormInstanceReportLocalService.
+				getFormInstanceReportByFormInstanceId(
+					ddmFormInstanceRecord.getFormInstanceId());
 
 		JSONObject ddmFormInstanceReportDataJSONObject =
 			JSONFactoryUtil.createJSONObject(ddmFormInstanceReport.getData());
@@ -175,8 +210,9 @@ public class DDMFormInstanceReportLocalServiceTest
 			newDDMFormValues, getServiceContext());
 
 		DDMFormInstanceReport ddmFormInstanceReport =
-			_ddmFormInstanceReportPersistence.findByFormInstanceId(
-				ddmFormInstanceRecord.getFormInstanceId());
+			_ddmFormInstanceReportLocalService.
+				getFormInstanceReportByFormInstanceId(
+					ddmFormInstanceRecord.getFormInstanceId());
 
 		JSONObject ddmFormInstanceReportDataJSONObject =
 			JSONFactoryUtil.createJSONObject(ddmFormInstanceReport.getData());
@@ -246,6 +282,7 @@ public class DDMFormInstanceReportLocalServiceTest
 		_ddmFormInstanceRecordLocalService;
 
 	@Inject
-	private DDMFormInstanceReportPersistence _ddmFormInstanceReportPersistence;
+	private DDMFormInstanceReportLocalService
+		_ddmFormInstanceReportLocalService;
 
 }

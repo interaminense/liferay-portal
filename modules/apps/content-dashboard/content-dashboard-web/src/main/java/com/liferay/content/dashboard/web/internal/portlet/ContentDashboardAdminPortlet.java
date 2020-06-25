@@ -18,10 +18,14 @@ import com.liferay.content.dashboard.web.internal.configuration.ContentDashboard
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPortletKeys;
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardWebKeys;
 import com.liferay.content.dashboard.web.internal.dao.search.ContentDashboardItemSearchContainerFactory;
+import com.liferay.content.dashboard.web.internal.data.provider.ContentDashboardDataProvider;
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminDisplayContext;
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminManagementToolbarDisplayContext;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
+import com.liferay.content.dashboard.web.internal.provider.AssetVocabulariesProvider;
+import com.liferay.content.dashboard.web.internal.search.request.ContentDashboardSearchContextBuilder;
+import com.liferay.content.dashboard.web.internal.searcher.ContentDashboardSearchRequestBuilderFactory;
 import com.liferay.content.dashboard.web.internal.servlet.taglib.util.ContentDashboardDropdownItemsProvider;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -30,9 +34,13 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.search.aggregation.Aggregations;
+import com.liferay.portal.search.legacy.searcher.SearchRequestBuilderFactory;
+import com.liferay.portal.search.searcher.Searcher;
 
 import java.io.IOException;
 
@@ -84,6 +92,13 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
+		ContentDashboardDataProvider contentDashboardDataProvider =
+			new ContentDashboardDataProvider(
+				_aggregations,
+				new ContentDashboardSearchContextBuilder(
+					_portal.getHttpServletRequest(renderRequest)),
+				_contentDashboardSearchRequestBuilderFactory,
+				_portal.getLocale(renderRequest), _searcher);
 		LiferayPortletRequest liferayPortletRequest =
 			_portal.getLiferayPortletRequest(renderRequest);
 		LiferayPortletResponse liferayPortletResponse =
@@ -92,8 +107,9 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		ContentDashboardItemSearchContainerFactory
 			contentDashboardItemSearchContainerFactory =
 				ContentDashboardItemSearchContainerFactory.getInstance(
-					_contentDashboardItemFactoryTracker, _portal, renderRequest,
-					renderResponse);
+					_contentDashboardItemFactoryTracker,
+					_contentDashboardSearchRequestBuilderFactory, _portal,
+					renderRequest, renderResponse, _searcher);
 
 		SearchContainer<ContentDashboardItem<?>> searchContainer =
 			contentDashboardItemSearchContainerFactory.create();
@@ -101,6 +117,9 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
 				new ContentDashboardAdminDisplayContext(
+					contentDashboardDataProvider.getAssetVocabularyMetric(
+						_assetVocabulariesProvider.getAssetVocabularies(
+							_portal.getCompanyId(renderRequest))),
 					_contentDashboardConfiguration,
 					new ContentDashboardDropdownItemsProvider(
 						_http, _language, liferayPortletRequest,
@@ -115,10 +134,10 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		ContentDashboardAdminManagementToolbarDisplayContext
 			contentDashboardAdminManagementToolbarDisplayContext =
 				new ContentDashboardAdminManagementToolbarDisplayContext(
-					contentDashboardAdminDisplayContext,
+					contentDashboardAdminDisplayContext, _groupLocalService,
 					_portal.getHttpServletRequest(renderRequest),
 					liferayPortletRequest, liferayPortletResponse,
-					_userLocalService);
+					_portal.getLocale(renderRequest), _userLocalService);
 
 		renderRequest.setAttribute(
 			ContentDashboardWebKeys.
@@ -142,12 +161,25 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		_contentDashboardConfiguration = null;
 	}
 
+	@Reference
+	private Aggregations _aggregations;
+
+	@Reference
+	private AssetVocabulariesProvider _assetVocabulariesProvider;
+
 	private volatile ContentDashboardConfiguration
 		_contentDashboardConfiguration;
 
 	@Reference
 	private ContentDashboardItemFactoryTracker
 		_contentDashboardItemFactoryTracker;
+
+	@Reference
+	private ContentDashboardSearchRequestBuilderFactory
+		_contentDashboardSearchRequestBuilderFactory;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private Http _http;
@@ -160,6 +192,12 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private Searcher _searcher;
+
+	@Reference
+	private SearchRequestBuilderFactory _searchRequestBuilderFactory;
 
 	@Reference
 	private UserLocalService _userLocalService;

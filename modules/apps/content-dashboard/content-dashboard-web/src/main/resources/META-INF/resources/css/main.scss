@@ -12,11 +12,17 @@
 	}
 }
 
+.lfr-search-container-wrapper {
+	.taglib-search-iterator-page-iterator-bottom {
+		margin-top: 24px;
+	}
+}
+
 .empty-state {
 	left: 50%;
 	max-width: 350px;
 	position: absolute;
 	top: 10%;
-	translate: -42%;
+	transform: translateX(-40%);
 	z-index: 1;
 }
