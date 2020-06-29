@@ -41,17 +41,27 @@ export default ({children, dataLayoutBuilder}) => {
 
 	useEffect(() => {
 		const provider = dataLayoutBuilder.getLayoutProvider();
+		const availableLanguageIds = [
+			...new Set([
+				...provider.props.availableLanguageIds,
+				editingLanguageId,
+			]),
+		];
 
 		provider.props = {
 			...provider.props,
-			availableLanguageIds: [
-				...new Set([
-					...provider.props.availableLanguageIds,
-					editingLanguageId,
-				]),
-			],
+			availableLanguageIds,
 			editingLanguageId,
 		};
+
+		dataLayoutBuilder.formBuilderWithLayoutProvider.props.layoutProviderProps = {
+			...dataLayoutBuilder.formBuilderWithLayoutProvider.props.layoutProviderProps,
+			editingLanguageId,
+			defaultLanguageId: themeDisplay.getDefaultLanguageId(),
+			availableLanguageIds
+		};
+
+		dataLayoutBuilder.formBuilderWithLayoutProvider.props.layoutProviderProps = dataLayoutBuilder.formBuilderWithLayoutProvider.props.layoutProviderProps;
 
 		if (Object.keys(focusedField).length) {
 			provider.getEvents().fieldClicked(focusedField);

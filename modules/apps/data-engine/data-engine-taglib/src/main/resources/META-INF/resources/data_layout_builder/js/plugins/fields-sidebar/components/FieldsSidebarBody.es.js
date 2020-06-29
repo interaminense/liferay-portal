@@ -31,6 +31,7 @@ export default function ({keywords}) {
 	] = useContext(AppContext);
 
 	const onDoubleClick = ({name}) => {
+		// const {activePage = 0, pages} = dataLayoutBuilder.getStore();
 		const {activePage, pages} = dataLayoutBuilder.getStore();
 
 		dataLayoutBuilder.dispatch(

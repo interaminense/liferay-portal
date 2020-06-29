@@ -173,15 +173,21 @@ export default (Component) => {
 				const visitor = new PagesVisitor(this.pages);
 
 				this.pages = visitor.mapFields(
-					({localizedValue}) => ({
-						value:
-							localizedValue &&
-							localizedValue[editingLanguageId.newVal]
-								? localizedValue[editingLanguageId.newVal]
-								: localizedValue[defaultLanguageId]
-								? localizedValue[defaultLanguageId]
-								: null,
-					}),
+					({localizedValue}) => {
+						let value;
+
+						if (localizedValue) {
+							if (localizedValue[editingLanguageId.newVal]) {
+								value = localizedValue[editingLanguageId.newVal];
+							} else if (localizedValue[defaultLanguageId]) {
+								value = localizedValue[defaultLanguageId];
+							}
+						}
+
+						return {
+							value
+						}
+					},
 					true
 				);
 			}
