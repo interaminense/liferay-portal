@@ -21,12 +21,17 @@ import React, {useContext} from 'react';
 import AppContext from '../../../AppContext.es';
 import {getItem} from '../../../utils/client.es';
 
+const getName = ({name = {}}) => {
+	const defaultLanguageId = Liferay.ThemeDisplay.getDefaultLanguageId();
+
+	return name[defaultLanguageId] || Liferay.Language.get('untitled');
+};
+
 export default () => {
 	const [{dataDefinition, dataLayout}] = useContext(AppContext);
 	const [{onClose}, dispatchModal] = useContext(ClayModalContext);
-	const defaultLanguageId = Liferay.ThemeDisplay.getLanguageId();
 
-	return ({fieldSet, onPropagate}) => {
+	return ({fieldSet, modal, onPropagate}) => {
 		return getItem(
 			`/o/data-engine/v2.0/data-definitions/${fieldSet.id}/data-definition-field-links`
 		).then(({items}) => {
@@ -50,22 +55,15 @@ export default () => {
 
 				return {};
 			};
-
 			const {dataLayouts = [], dataListViews = []} =
 				items[0] || findDataDefinition();
 
-			const fieldSetIsUsed =
+			const isFieldSetUsed =
 				!!dataLayouts.length || !!dataListViews.length;
 
-			if (!items.length || !fieldSetIsUsed) {
+			if (!items.length || !isFieldSetUsed) {
 				return onPropagate(fieldSet, true);
 			}
-
-			const getName = ({name = {}}) => {
-				return (
-					name[defaultLanguageId] || Liferay.Language.get('untitled')
-				);
-			};
 
 			const Items = ({name}) => {
 				return items.map((item, index) => {
@@ -88,24 +86,33 @@ export default () => {
 			};
 
 			return new Promise((resolve) => {
+				const {
+					actionMessage,
+					fieldSetMessage,
+					headerMessage,
+					warningMessage,
+					...otherModalProps
+				} = modal;
+
 				const payload = {
 					payload: {
 						body: (
 							<>
-								<ClayAlert displayType="warning">
-									<strong>
-										{Liferay.Language.get('warning')}:
-									</strong>{' '}
-									{Liferay.Language.get(
-										'the-changes-include-the-deletion-of-fields-and-may-erase-the-data-collected-permanently'
-									)}
-								</ClayAlert>
+								{warningMessage && (
+									<ClayAlert displayType="warning">
+										<strong>
+											{Liferay.Language.get('warning')}:
+										</strong>
 
-								<p>
-									{Liferay.Language.get(
-										'do-you-want-to-propagate-the-changes-to-other-objects-views-using-this-fieldset'
-									)}
-								</p>
+										{warningMessage}
+									</ClayAlert>
+								)}
+
+								{fieldSetMessage && (
+									<p className="fieldset-message">
+										{fieldSetMessage}
+									</p>
+								)}
 
 								{dataLayouts.length > 0 && (
 									<ClayPanel
@@ -155,12 +162,13 @@ export default () => {
 										onClose();
 									}}
 								>
-									{Liferay.Language.get('propagate')}
+									{actionMessage}
 								</ClayButton>
 							</ClayButton.Group>,
 						],
-						header: Liferay.Language.get('propagate-changes'),
+						header: headerMessage,
 						size: 'md',
+						...otherModalProps,
 					},
 					type: 1,
 				};

@@ -140,6 +140,21 @@ export default function FieldSets({keywords}) {
 									action: () =>
 										propagateFieldSet({
 											fieldSet,
+											modal: {
+												actionMessage: Liferay.Language.get(
+													'delete'
+												),
+												fieldSetMessage: Liferay.Language.get(
+													'the-fieldset-will-be-deleted-permanently-from'
+												),
+												headerMessage: Liferay.Language.get(
+													'delete'
+												),
+												status: 'danger',
+												warningMessage: Liferay.Language.get(
+													'this-action-may-erase-data-permanently'
+												),
+											},
 											onPropagate: deleteFieldSet,
 										}),
 									name: Liferay.Language.get('delete'),
