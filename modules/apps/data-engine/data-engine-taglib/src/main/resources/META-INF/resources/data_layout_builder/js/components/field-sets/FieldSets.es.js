@@ -140,6 +140,7 @@ export default function FieldSets({keywords}) {
 									action: () =>
 										propagateFieldSet({
 											fieldSet,
+											isDeleteAction: true,
 											modal: {
 												actionMessage: Liferay.Language.get(
 													'delete'
