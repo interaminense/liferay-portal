@@ -19,7 +19,10 @@ import React, {useContext, useEffect, useState} from 'react';
 
 import App from '../../App.es';
 import AppContext from '../../AppContext.es';
-import {isDataLayoutEmpty} from '../../utils/dataLayoutVisitor.es';
+import {
+	containsField,
+	isDataLayoutEmpty,
+} from '../../utils/dataLayoutVisitor.es';
 import ModalWithEventPrevented from '../modal/ModalWithEventPrevented.es';
 import useCreateFieldSet from './actions/useCreateFieldSet.es';
 import usePropagateFieldSet from './actions/usePropagateFieldSet.es';
@@ -65,6 +68,25 @@ const ModalContent = ({
 
 	const onSave = () => {
 		if (fieldSet) {
+			const fieldNames = fieldSet.dataDefinitionFields.map(
+				({name}) => name
+			);
+
+			const prevLayoutFields = fieldNames.filter((field) =>
+				containsField(fieldSet.defaultDataLayout.dataLayoutPages, field)
+			);
+
+			const actualLayoutFields = fieldNames.filter((field) =>
+				containsField(
+					childrenContext.state.dataLayout.dataLayoutPages,
+					field
+				)
+			);
+
+			const containsRemovedFields = !!prevLayoutFields.filter(
+				(field) => !actualLayoutFields.includes(field)
+			).length;
+
 			propagateFieldSet({
 				fieldSet,
 				modal: {
@@ -73,9 +95,11 @@ const ModalContent = ({
 						'do-you-want-to-propagate-the-changes-to-other-objects-views-using-this-fieldset'
 					),
 					headerMessage: Liferay.Language.get('propagate-changes'),
-					warningMessage: Liferay.Language.get(
-						'the-changes-include-the-deletion-of-fields-and-may-erase-the-data-collected-permanently'
-					),
+					...(containsRemovedFields && {
+						warningMessage: Liferay.Language.get(
+							'the-changes-include-the-deletion-of-fields-and-may-erase-the-data-collected-permanently'
+						),
+					}),
 				},
 				onPropagate: () => saveFieldSet(name),
 			}).finally(onClose);
