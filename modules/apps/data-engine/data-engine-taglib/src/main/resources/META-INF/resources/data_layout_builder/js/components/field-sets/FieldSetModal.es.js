@@ -28,24 +28,18 @@ import useCreateFieldSet from './actions/useCreateFieldSet.es';
 import usePropagateFieldSet from './actions/usePropagateFieldSet.es';
 import useSaveFieldSet from './actions/useSaveFieldSet.es';
 
-const ModalContent = ({
-	childrenAppProps,
-	defaultLanguageId,
-	fieldSet,
-	onClose,
-}) => {
-	const [
-		{
-			appProps,
-			dataDefinition: {dataDefinitionFields},
-		},
-	] = useContext(AppContext);
+const ModalContent = ({childrenAppProps, fieldSet, onClose}) => {
+	const [{appProps, dataDefinition}] = useContext(AppContext);
+	const {dataDefinitionFields, defaultLanguageId} = dataDefinition;
 	const [childrenContext, setChildrenContext] = useState({
 		dataLayoutBuilder: null,
 		dispatch: () => {},
 		state: {},
 	});
 	const [dataLayoutIsEmpty, setDataLayoutIsEmpty] = useState(true);
+	const [editingLanguageId, setEditingLanguageId] = useState(
+		defaultLanguageId
+	);
 	const [name, setName] = useState({});
 	const {
 		dataLayoutBuilder,
@@ -54,12 +48,15 @@ const ModalContent = ({
 			dataDefinition: {
 				dataDefinitionFields: childrenDataDefinitionFields = [],
 			} = {},
-			editingLanguageId = defaultLanguageId,
 		},
 	} = childrenContext;
 
 	const availableLanguageIds = [
-		...new Set([...Object.keys(name), editingLanguageId]),
+		...new Set([
+			...Object.keys(name),
+			editingLanguageId,
+			themeDisplay.getLanguageId(),
+		]),
 	];
 
 	const normalizeDataDefinitionFields = (ddFields) => {
@@ -124,6 +121,8 @@ const ModalContent = ({
 	const propagateFieldSet = usePropagateFieldSet();
 	const onEditingLanguageIdChange = useCallback(
 		(editingLanguageId) => {
+			setEditingLanguageId(editingLanguageId);
+
 			childrenContext.dispatch({
 				payload: editingLanguageId,
 				type: UPDATE_EDITING_LANGUAGE_ID,
@@ -218,7 +217,7 @@ const ModalContent = ({
 								'untitled-fieldset'
 							)}
 							type="text"
-							value={name[editingLanguageId]}
+							value={name[editingLanguageId] || ''}
 						/>
 					</ClayInput.GroupItem>
 				</ClayInput.Group>
@@ -241,7 +240,7 @@ const ModalContent = ({
 						</ClayButton>
 						<ClayButton
 							disabled={
-								!name[defaultLanguageId] || dataLayoutIsEmpty
+								!name[editingLanguageId] || dataLayoutIsEmpty
 							}
 							onClick={onSave}
 						>

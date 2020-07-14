@@ -28,9 +28,8 @@ import useDeleteFieldSet from './actions/useDeleteFieldSet.es';
 import usePropagateFieldSet from './actions/usePropagateFieldSet.es';
 
 export default function FieldSets({keywords}) {
-	const defaultLanguageId = Liferay.ThemeDisplay.getDefaultLanguageId();
-
 	const [{appProps, dataDefinition, fieldSets}] = useContext(AppContext);
+	const {defaultLanguageId} = dataDefinition;
 	const [state, setState] = useState({
 		childrenAppProps: {},
 		fieldSet: null,
@@ -118,11 +117,13 @@ export default function FieldSets({keywords}) {
 	);
 
 	const filteredFieldSets = fieldSets
-		.filter(({name}) =>
+		.filter(({defaultLanguageId, name}) =>
 			new RegExp(keywords, 'ig').test(name[defaultLanguageId])
 		)
-		.sort(({name: a}, {name: b}) =>
-			a[defaultLanguageId].localeCompare(b[defaultLanguageId])
+		.sort((a, b) =>
+			a.name[a.defaultLanguageId].localeCompare(
+				b.name[b.defaultLanguageId]
+			)
 		);
 
 	return (
@@ -133,7 +134,7 @@ export default function FieldSets({keywords}) {
 					<div className="mt-3">
 						{filteredFieldSets.map((fieldSet) => {
 							const fieldSetName =
-								fieldSet.name[defaultLanguageId];
+								fieldSet.name[fieldSet.defaultLanguageId];
 							const dropDownActions = [
 								{
 									action: () => toggleFieldSet(fieldSet),
@@ -210,11 +211,7 @@ export default function FieldSets({keywords}) {
 				</div>
 			)}
 
-			<FieldSetModal
-				defaultLanguageId={defaultLanguageId}
-				onClose={() => toggleFieldSet()}
-				{...state}
-			/>
+			<FieldSetModal onClose={() => toggleFieldSet()} {...state} />
 		</>
 	);
 }
