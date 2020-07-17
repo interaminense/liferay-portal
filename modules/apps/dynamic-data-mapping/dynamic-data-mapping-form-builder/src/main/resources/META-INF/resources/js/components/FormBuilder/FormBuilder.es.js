@@ -49,32 +49,42 @@ class FormBuilderBase extends Component {
 		}
 	}
 
+	prepareFieldForRender(field) {
+		if (
+			field.type === 'select' &&
+			!field.dataSourceType.includes('manual')
+		) {
+			field = {
+				...field,
+				options: [
+					{
+						label: Liferay.Language.get('dynamically-loaded-data'),
+						value: 'dynamic',
+					},
+				],
+				value: 'dynamic',
+			};
+		}
+
+		return {
+			...field,
+			readOnly: true,
+		};
+	}
+
 	preparePagesForRender(pages) {
 		const visitor = new PagesVisitor(pages);
 
 		return visitor.mapFields((field) => {
-			if (
-				field.type === 'select' &&
-				!field.dataSourceType.includes('manual')
-			) {
-				field = {
-					...field,
-					options: [
-						{
-							label: Liferay.Language.get(
-								'dynamically-loaded-data'
-							),
-							value: 'dynamic',
-						},
-					],
-					value: 'dynamic',
-				};
+			field = this.prepareFieldForRender(field);
+
+			if (field.type === 'fieldset') {
+				field.nestedFields = field.nestedFields.map((nestedField) =>
+					this.prepareFieldForRender(nestedField)
+				);
 			}
 
-			return {
-				...field,
-				readOnly: true,
-			};
+			return field;
 		});
 	}
 

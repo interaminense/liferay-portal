@@ -617,22 +617,34 @@ class LayoutProvider extends Component {
 		};
 	}
 
+	_setInitialField(field) {
+		const {settingsContext} = field;
+
+		return {
+			...field,
+			localizedValue: {},
+			readOnly: true,
+			settingsContext: {
+				...this._setInitialSettingsContext(settingsContext),
+			},
+			value: undefined,
+			visible: true,
+		};
+	}
+
 	_setInitialPages(initialPages) {
 		const visitor = new PagesVisitor(initialPages);
 
 		return visitor.mapFields((field) => {
-			const {settingsContext} = field;
+			field = this._setInitialField(field);
 
-			return {
-				...field,
-				localizedValue: {},
-				readOnly: true,
-				settingsContext: {
-					...this._setInitialSettingsContext(settingsContext),
-				},
-				value: undefined,
-				visible: true,
-			};
+			if (field.type === 'fieldset') {
+				field.nestedFields = field.nestedFields.map((nestedField) =>
+					this._setInitialField(nestedField)
+				);
+			}
+
+			return field;
 		});
 	}
 
