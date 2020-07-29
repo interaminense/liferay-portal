@@ -12,6 +12,7 @@
 import {AppContext} from 'app-builder-web/js/AppContext.es';
 import ControlMenu from 'app-builder-web/js/components/control-menu/ControlMenu.es';
 import {Loading} from 'app-builder-web/js/components/loading/Loading.es';
+import useDataDefinition from 'app-builder-web/js/hooks/useDataDefinition.es';
 import useQuery from 'app-builder-web/js/hooks/useQuery.es';
 import {ViewDataLayoutPageValues} from 'app-builder-web/js/pages/entry/ViewEntry.es';
 import ViewEntryUpperToolbar from 'app-builder-web/js/pages/entry/ViewEntryUpperToolbar.es';
@@ -56,10 +57,8 @@ export default function ViewEntry({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [appWorkflowTasks]);
 
-	const {dataDefinition, dataLayouts, isLoading} = useDataLayouts(
-		dataDefinitionId,
-		dataLayoutIds
-	);
+	const dataDefinition = useDataDefinition(dataDefinitionId);
+	const dataLayouts = useDataLayouts(dataLayoutIds);
 
 	const [
 		{dataRecord, isFetching, page, totalCount, workflowInfo},
@@ -167,7 +166,7 @@ export default function ViewEntry({
 				{workflowInfo && <WorkflowInfoBar {...workflowInfo} />}
 			</ViewEntryUpperToolbar>
 
-			<Loading isLoading={isLoading || isFetching}>
+			<Loading isLoading={isFetching}>
 				<div className="container">
 					<div className="justify-content-center row">
 						<div className="col-lg-8">
