@@ -17,10 +17,7 @@ import {ViewDataLayoutPageValues} from 'app-builder-web/js/pages/entry/ViewEntry
 import ViewEntryUpperToolbar from 'app-builder-web/js/pages/entry/ViewEntryUpperToolbar.es';
 import {addItem, getItem} from 'app-builder-web/js/utils/client.es';
 import {errorToast} from 'app-builder-web/js/utils/toast.es';
-import {
-	getTranslatedValue,
-	isEqualObjects,
-} from 'app-builder-web/js/utils/utils.es';
+import {isEqualObjects} from 'app-builder-web/js/utils/utils.es';
 import {usePrevious} from 'frontend-js-react-web';
 import React, {useContext, useEffect, useState} from 'react';
 
@@ -184,9 +181,9 @@ export default function ViewEntry({
 									({dataLayoutPages = [], ...dataLayout}) => (
 										<>
 											<h3>
-												{getTranslatedValue(
-													dataLayout,
-													'name'
+												{getLocalizedValue(
+													dataDefinition.defaultLanguageId,
+													dataLayout.name
 												)}
 											</h3>
 
