@@ -36,7 +36,7 @@ const uppdateAppDeployment = (state, appDeploymentType, appDeployment) => ({
 	},
 });
 
-const reducer = (state, action) => {
+export const reducer = (state, action) => {
 	switch (action.type) {
 		case ADD_DEPLOYMENT: {
 			let settings = {};
@@ -166,7 +166,4 @@ const reducer = (state, action) => {
 	}
 };
 
-const EditAppContext = createContext();
-
-export {reducer};
-export default EditAppContext;
+export default createContext();

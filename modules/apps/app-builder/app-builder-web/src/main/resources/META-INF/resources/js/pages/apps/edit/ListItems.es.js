@@ -29,12 +29,12 @@ import EditAppContext, {
 const {Body, Cell, Head, Row} = ClayTable;
 
 const ListItems = ({defaultLanguageId, itemType, items}) => {
-	const {
-		dispatch,
-		state: {
+	const [
+		{
 			app: {dataLayoutId, dataListViewId},
 		},
-	} = useContext(EditAppContext);
+		dispatch,
+	] = useContext(EditAppContext);
 
 	const itemId = itemType === 'DATA_LAYOUT' ? dataLayoutId : dataListViewId;
 

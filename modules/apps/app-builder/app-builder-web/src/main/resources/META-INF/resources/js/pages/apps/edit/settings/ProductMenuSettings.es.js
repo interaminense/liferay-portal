@@ -48,12 +48,12 @@ const SCOPES = [
 ];
 
 export default () => {
-	const {
-		dispatch,
-		state: {
+	const [
+		{
 			app: {appDeployments},
 		},
-	} = useContext(EditAppContext);
+		dispatch,
+	] = useContext(EditAppContext);
 
 	const [sites, setSites] = useState([]);
 	const [active, setActive] = useState(false);

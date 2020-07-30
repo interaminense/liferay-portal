@@ -35,9 +35,7 @@ export default withRouter(
 		},
 		onCurrentStepChange,
 	}) => {
-		const {
-			state: {app},
-		} = useContext(EditAppContext);
+		const [{app}] = useContext(EditAppContext);
 
 		const {getStandaloneURL} = useContext(AppContext);
 

@@ -22,12 +22,12 @@ import EditAppContext, {
 } from '../EditAppContext.es';
 
 export default ({deploymentType, settings = () => <></>, subtitle, title}) => {
-	const {
-		dispatch,
-		state: {
+	const [
+		{
 			app: {appDeployments},
 		},
-	} = useContext(EditAppContext);
+		dispatch,
+	] = useContext(EditAppContext);
 
 	const checked = appDeployments.some(
 		(appDeployment) => appDeployment.type === deploymentType

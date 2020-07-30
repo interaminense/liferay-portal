@@ -95,7 +95,7 @@ export default ({
 			<ControlMenu backURL={backUrl} title={title} />
 
 			<Loading isLoading={isLoading}>
-				<EditAppContext.Provider value={{dispatch, state}}>
+				<EditAppContext.Provider value={[state, dispatch]}>
 					<ClayLayout.ContainerFluid className="mt-4" size="lg">
 						<div className="card card-root mb-0 shadowless-card">
 							<EditAppHeader
