@@ -56,9 +56,11 @@ if (mvcPath.startsWith("/edit_entry.jsp")) {
 					/>
 				</div>
 
+				
 				<clay:content-col
 					cssClass="text-right"
 				>
+					<div class="entry-translation-manager" />
 					<liferay-portlet:runtime
 						portletProviderAction="<%= PortletProvider.Action.VIEW %>"
 						portletProviderClassName="com.liferay.admin.kernel.util.PortalUserPersonalBarApplicationType$UserPersonalBar"
