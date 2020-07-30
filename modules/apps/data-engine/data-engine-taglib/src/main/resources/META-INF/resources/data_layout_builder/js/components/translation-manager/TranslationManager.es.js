@@ -87,7 +87,6 @@ export default ({
 			trigger={
 				<ClayButton
 					{...buttonProps}
-					className={buttonProps.className}
 					displayType="secondary"
 					monospaced={!showUserView}
 					symbol={formatLabel(editingLanguageId)}

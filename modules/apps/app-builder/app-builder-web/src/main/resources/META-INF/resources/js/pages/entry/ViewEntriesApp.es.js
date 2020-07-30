@@ -12,18 +12,19 @@
  * details.
  */
 
-import {TranslationManager} from 'data-engine-taglib';
 import React, {useState} from 'react';
-import {createPortal} from 'react-dom';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {AppContextProvider} from '../../AppContext.es';
 import useLazy from '../../hooks/useLazy.es';
 import {PermissionsContextProvider} from './PermissionsContext.es';
+import TranslationPortal, {
+	getStorageLocale,
+} from './TranslationPortal.es';
 
 export default function ({appTab, ...props}) {
-	const defaultLanguageId = 'en_US';
 	const PageComponent = useLazy();
+	const defaultLanguageId = getStorageLocale();
 	const [userLanguageId, setUserLanguageId] = useState(defaultLanguageId);
 	props.userLanguageId = userLanguageId;
 
@@ -37,19 +38,11 @@ export default function ({appTab, ...props}) {
 
 	return (
 		<div className="app-builder-root">
-			{createPortal(
-				<TranslationManager
-					buttonProps={{className: 'translation-manager-button'}}
-					defaultLanguageId={defaultLanguageId}
-					editingLanguageId={userLanguageId}
-					onEditingLanguageIdChange={setUserLanguageId}
-					showUserView
-					translatedLanguageIds={{
-						[defaultLanguageId]: defaultLanguageId,
-					}}
-				/>,
-				document.querySelector('.entry-translation-manager')
-			)}
+			<TranslationPortal
+				defaultLanguageId={defaultLanguageId}
+				setUserLanguageId={setUserLanguageId}
+				userLanguageId={userLanguageId}
+			/>
 			<AppContextProvider {...props}>
 				<PermissionsContextProvider
 					dataDefinitionId={props.dataDefinitionId}

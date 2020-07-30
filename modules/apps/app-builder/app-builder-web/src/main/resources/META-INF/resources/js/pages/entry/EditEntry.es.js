@@ -31,7 +31,7 @@ export const EditEntry = ({
 	ddmForm,
 	redirect,
 }) => {
-	const {basePortletURL} = useContext(AppContext);
+	const {basePortletURL, userLanguageId} = useContext(AppContext);
 
 	const onCancel = useCallback(() => {
 		if (redirect) {

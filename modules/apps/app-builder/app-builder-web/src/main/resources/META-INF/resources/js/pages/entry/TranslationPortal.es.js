@@ -1,0 +1,52 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+import {TranslationManager} from 'data-engine-taglib';
+import React from 'react';
+import {createPortal} from 'react-dom';
+
+const storageKey = '@app-builder/standalone/language';
+
+export const setStorageLocale = (value) => {
+	localStorage.setItem(storageKey, value);
+};
+
+export const getStorageLocale = () => {
+	return localStorage.getItem(storageKey) || 'en_US';
+};
+
+export default ({defaultLanguageId, setUserLanguageId, userLanguageId}) => {
+	const onEditingLanguageIdChange = (language) => {
+		setUserLanguageId(language)
+		setStorageLocale(language)
+	}
+
+	return (
+		<div>
+			{createPortal(
+				<TranslationManager
+					buttonProps={{className: 'translation-manager-button'}}
+					defaultLanguageId={defaultLanguageId}
+					editingLanguageId={userLanguageId}
+					onEditingLanguageIdChange={onEditingLanguageIdChange}
+					showUserView
+					translatedLanguageIds={{
+						[defaultLanguageId]: defaultLanguageId,
+					}}
+				/>,
+				document.querySelector('.entry-translation-manager')
+			)}
+		</div>
+	);
+};

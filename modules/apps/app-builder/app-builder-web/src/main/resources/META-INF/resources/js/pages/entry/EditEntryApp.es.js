@@ -12,16 +12,28 @@
  * details.
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 
 import {AppContextProvider} from '../../AppContext.es';
 import useLazy from '../../hooks/useLazy.es';
+import TranslationPortal, {
+	getStorageLocale,
+} from './TranslationPortal.es';
 
 export default ({appTab, ...props}) => {
 	const EditPage = useLazy(true);
+	const defaultLanguageId = getStorageLocale();
+	const [userLanguageId, setUserLanguageId] = useState(defaultLanguageId);
+	props.userLanguageId = userLanguageId;
+
 
 	return (
 		<AppContextProvider {...props}>
+			<TranslationPortal
+				defaultLanguageId={defaultLanguageId}
+				setUserLanguageId={setUserLanguageId}
+				userLanguageId={userLanguageId}
+			/>
 			<EditPage module={appTab.editEntryPoint} props={props} />
 		</AppContextProvider>
 	);
