@@ -141,7 +141,7 @@ export const reducer = (state, action) => {
 				...state,
 				app: {
 					...state.app,
-					name: action.appName,
+					name: action.name,
 				},
 			};
 		}
