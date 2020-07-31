@@ -22,7 +22,7 @@ import TranslationManagerWrapper, {
 
 export default ({appTab, ...props}) => {
 	const EditPage = useLazy(true);
-	const defaultLanguageId = getStorageLocale();
+	const defaultLanguageId = getStorageLocale(props.appId);
 	const [userLanguageId, setUserLanguageId] = useState(defaultLanguageId);
 
 	props.userLanguageId = userLanguageId;
@@ -30,7 +30,8 @@ export default ({appTab, ...props}) => {
 	return (
 		<AppContextProvider {...props}>
 			<TranslationManagerWrapper
-				defaultLanguageId={defaultLanguageId}
+				dataDefinitionId={props.dataDefinitionId}
+				reloadPage
 				setUserLanguageId={setUserLanguageId}
 				userLanguageId={userLanguageId}
 			/>

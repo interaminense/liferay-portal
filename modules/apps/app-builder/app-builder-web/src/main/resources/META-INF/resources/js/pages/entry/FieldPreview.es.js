@@ -21,16 +21,7 @@ import {DataDefinitionUtils} from 'data-engine-taglib';
 import React, {useContext, useEffect, useState} from 'react';
 
 import {AppContext} from '../../AppContext.es';
-
-const getLocalizedUserPreference = (localizedValues, defaultLanguageId) => {
-	const languageId = themeDisplay.getLanguageId();
-
-	if (localizedValues[defaultLanguageId]) {
-		return localizedValues[defaultLanguageId];
-	}
-
-	return localizedValues[languageId];
-};
+import {getLocalizedUserPreference} from '../../utils/lang.es';
 
 const createFileEntryPreviewURL = (groupId, fileEntryId) => {
 	const portletURL = Liferay.PortletURL.createURL(
@@ -168,9 +159,15 @@ export const SectionRenderer = ({
 	fieldName,
 }) => {
 	const {userLanguageId} = useContext(AppContext);
+	const fieldLabel = DataDefinitionUtils.getFieldLabel(
+		dataDefinition,
+		fieldName,
+		true
+	);
 	const label = getLocalizedUserPreference(
-		DataDefinitionUtils.getFieldLabel(dataDefinition, fieldName, true),
-		userLanguageId
+		fieldLabel,
+		userLanguageId,
+		dataDefinition.defaultLanguageId
 	);
 
 	return (
@@ -274,11 +271,22 @@ export const FieldValuePreview = ({
 	return <Renderer value={value} />;
 };
 
-export default ({dataDefinition, dataRecordValues, fieldName}) => {
+export default ({
+	dataDefinition,
+	dataRecordValues,
+	defaultLanguageId,
+	fieldName,
+}) => {
 	const {userLanguageId} = useContext(AppContext);
+	const fieldLabel = DataDefinitionUtils.getFieldLabel(
+		dataDefinition,
+		fieldName,
+		true
+	);
 	const label = getLocalizedUserPreference(
-		DataDefinitionUtils.getFieldLabel(dataDefinition, fieldName, true),
-		userLanguageId
+		fieldLabel,
+		userLanguageId,
+		defaultLanguageId
 	);
 
 	return (

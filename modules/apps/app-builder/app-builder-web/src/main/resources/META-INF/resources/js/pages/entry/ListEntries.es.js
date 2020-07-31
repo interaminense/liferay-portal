@@ -21,6 +21,7 @@ import {Loading} from '../../components/loading/Loading.es';
 import useDataListView from '../../hooks/useDataListView.es';
 import useEntriesActions from '../../hooks/useEntriesActions.es';
 import usePermissions from '../../hooks/usePermissions.es';
+import {getLocalizedUserPreference} from '../../utils/lang.es';
 import {buildEntries, navigateToEditPage} from './utils.es';
 
 export default function ListEntries() {
@@ -41,56 +42,66 @@ export default function ListEntries() {
 
 	const permissions = usePermissions();
 
-	const defaultLanguageId = 'en_US';
-
 	const formColumns = columns.map(({value, ...column}) => ({
 		...column,
-		value: value[userLanguageId] ?? value[defaultLanguageId],
+		value: getLocalizedUserPreference(
+			value,
+			userLanguageId,
+			dataDefinition.defaultLanguageId
+		),
 	}));
 
+	const portletParams = {
+		locale: userLanguageId,
+	};
+
 	return (
-		<>
-			<Loading isLoading={isLoading}>
-				<ListView
-					actions={useEntriesActions()}
-					addButton={() =>
+		<Loading isLoading={isLoading}>
+			<ListView
+				actions={useEntriesActions()}
+				addButton={() =>
+					showFormView &&
+					permissions.add && (
+						<Button
+							className="nav-btn nav-btn-monospaced"
+							onClick={() =>
+								navigateToEditPage(
+									basePortletURL,
+									portletParams
+								)
+							}
+							symbol="plus"
+							tooltip={Liferay.Language.get('new-entry')}
+						/>
+					)
+				}
+				columns={formColumns}
+				emptyState={{
+					button: () =>
 						showFormView &&
 						permissions.add && (
 							<Button
-								className="nav-btn nav-btn-monospaced"
+								displayType="secondary"
 								onClick={() =>
-									navigateToEditPage(basePortletURL)
+									navigateToEditPage(
+										basePortletURL,
+										portletParams
+									)
 								}
-								symbol="plus"
-								tooltip={Liferay.Language.get('new-entry')}
-							/>
-						)
-					}
-					columns={formColumns}
-					emptyState={{
-						button: () =>
-							showFormView &&
-							permissions.add && (
-								<Button
-									displayType="secondary"
-									onClick={() =>
-										navigateToEditPage(basePortletURL)
-									}
-								>
-									{Liferay.Language.get('new-entry')}
-								</Button>
-							),
-						title: Liferay.Language.get('there-are-no-entries-yet'),
-					}}
-					endpoint={`/o/data-engine/v2.0/data-definitions/${dataDefinitionId}/data-records`}
-					noActionsMessage={Liferay.Language.get(
-						'you-do-not-have-the-permission-to-manage-this-entry'
-					)}
-					queryParams={{dataListViewId}}
-				>
-					{buildEntries(fieldNames, dataDefinition, permissions)}
-				</ListView>
-			</Loading>
-		</>
+							>
+								{Liferay.Language.get('new-entry')}
+							</Button>
+						),
+					title: Liferay.Language.get('there-are-no-entries-yet'),
+				}}
+				endpoint={`/o/data-engine/v2.0/data-definitions/${dataDefinitionId}/data-records`}
+				noActionsMessage={Liferay.Language.get(
+					'you-do-not-have-the-permission-to-manage-this-entry'
+				)}
+				queryParams={{dataListViewId}}
+			>
+				{buildEntries(fieldNames, dataDefinition, permissions)}
+			</ListView>
+		</Loading>
 	);
 }

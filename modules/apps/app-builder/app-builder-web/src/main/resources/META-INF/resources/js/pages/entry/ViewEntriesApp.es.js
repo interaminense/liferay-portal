@@ -24,7 +24,7 @@ import TranslationManagerWrapper, {
 
 export default function ({appTab, ...props}) {
 	const PageComponent = useLazy();
-	const defaultLanguageId = getStorageLocale();
+	const defaultLanguageId = getStorageLocale(props.appId);
 	const [userLanguageId, setUserLanguageId] = useState(defaultLanguageId);
 
 	props.userLanguageId = userLanguageId;
@@ -39,13 +39,12 @@ export default function ({appTab, ...props}) {
 
 	return (
 		<div className="app-builder-root">
-			<TranslationManagerWrapper
-				defaultLanguageId={defaultLanguageId}
-				setUserLanguageId={setUserLanguageId}
-				userLanguageId={userLanguageId}
-			/>
-
 			<AppContextProvider {...props}>
+				<TranslationManagerWrapper
+					dataDefinitionId={props.dataDefinitionId}
+					setUserLanguageId={setUserLanguageId}
+					userLanguageId={userLanguageId}
+				/>
 				<PermissionsContextProvider
 					dataDefinitionId={props.dataDefinitionId}
 				>

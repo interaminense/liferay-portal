@@ -13,38 +13,102 @@
  */
 
 import {TranslationManager} from 'data-engine-taglib';
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
+
+import {AppContext} from '../../AppContext.es';
+import {getItem} from '../../utils/client.es';
+import {getLocalizedUserPreference} from '../../utils/lang.es';
+import {navigateToEditPage} from './utils.es';
 
 const storageKey = '@app-builder/standalone/language';
 
-export const setStorageLocale = (value) => {
-	localStorage.setItem(storageKey, value);
+export const setStorageLocale = (value, appId) => {
+	localStorage.setItem(`${storageKey}/${appId}`, value);
 };
 
-export const getStorageLocale = () => {
-	return localStorage.getItem(storageKey) || 'en_US';
+export const getStorageLocale = (appId) => {
+	return (
+		localStorage.getItem(`${storageKey}/${appId}`) ||
+		Liferay.ThemeDisplay.getLanguageId()
+	);
 };
 
-export default ({defaultLanguageId, setUserLanguageId, userLanguageId}) => {
-	const onEditingLanguageIdChange = (language) => {
-		setUserLanguageId(language)
-		setStorageLocale(language)
-	}
+export default ({
+	dataDefinitionId,
+	reloadPage,
+	setUserLanguageId,
+	userLanguageId,
+}) => {
+	const {appId, basePortletURL, dataRecordId} = useContext(AppContext);
+	const [{app, dataDefinition}, setState] = useState({
+		app: {
+			name: {},
+		},
+		dataDefinition: {
+			availableLanguageIds: [],
+			defaultLanguageId: '',
+		},
+	});
+	const defaultLanguageId = dataDefinition.defaultLanguageId;
+
+	const onEditingLanguageIdChange = (locale) => {
+		setUserLanguageId(locale);
+		setStorageLocale(locale, appId);
+
+		if (reloadPage) {
+			navigateToEditPage(basePortletURL, {dataRecordId, locale});
+		}
+	};
+
+	useEffect(() => {
+		if (appId && dataDefinitionId) {
+			Promise.all([
+				getItem(`/o/app-builder/v1.0/apps/${appId}`),
+				getItem(
+					`/o/data-engine/v2.0/data-definitions/${dataDefinitionId}`
+				),
+			]).then(([app, dataDefinition]) => {
+				setState({app, dataDefinition});
+			});
+		}
+	}, [appId, dataDefinitionId]);
+
+	const availableLanguageIds = dataDefinition.availableLanguageIds.reduce(
+		(acc, cur) => {
+			acc[cur] = cur;
+
+			return acc;
+		},
+		{}
+	);
+
+	const getEditingLanguageId = () => {
+		if (availableLanguageIds[userLanguageId]) {
+			return userLanguageId;
+		}
+
+		return defaultLanguageId;
+	};
 
 	return (
 		<div>
 			{createPortal(
+				getLocalizedUserPreference(
+					app.name,
+					userLanguageId,
+					defaultLanguageId
+				),
+				document.querySelector('#appStandaloneName')
+			)}
+			{createPortal(
 				<TranslationManager
-					defaultLanguageId={defaultLanguageId}
-					editingLanguageId={userLanguageId}
+					availableLanguageIds={availableLanguageIds}
+					editingLanguageId={getEditingLanguageId()}
 					onEditingLanguageIdChange={onEditingLanguageIdChange}
 					showUserView
-					translatedLanguageIds={{
-						[defaultLanguageId]: defaultLanguageId,
-					}}
 				/>,
-				document.querySelector('#entryTranslationManager')
+				document.querySelector('#appTranslationManager')
 			)}
 		</div>
 	);
