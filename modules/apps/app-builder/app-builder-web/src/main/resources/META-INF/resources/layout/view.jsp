@@ -56,9 +56,11 @@ if (mvcPath.startsWith("/edit_entry.jsp")) {
 					/>
 				</div>
 
-				<clay:content-col
-					cssClass="text-right"
-				>
+				<clay:content-col cssClass="align-items-center flex-row mr-4">
+					<div class="app-builder-standalone-translation-manager" id="entryTranslationManager"></div>
+				</clay:content-col>
+
+				<clay:content-col cssClass="align-items-center flex-row">
 					<liferay-portlet:runtime
 						portletProviderAction="<%= PortletProvider.Action.VIEW %>"
 						portletProviderClassName="com.liferay.admin.kernel.util.PortalUserPersonalBarApplicationType$UserPersonalBar"

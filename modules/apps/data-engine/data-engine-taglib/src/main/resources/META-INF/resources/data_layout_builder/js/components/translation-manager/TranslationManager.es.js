@@ -54,16 +54,17 @@ export default ({
 	editingLanguageId,
 	onActiveChange = () => {},
 	onEditingLanguageIdChange,
+	showUserView = false,
 	translatedLanguageIds,
 }) => {
 	const [active, setActive] = useState(false);
+	const [_availableLanguageIds, setAvailableLanguageIds] = useState({});
 
-	const availableLanguages = [
-		...new Set([
-			defaultLanguageId,
-			...Object.keys(availableLanguageIds).sort(),
-		]),
-	];
+	useEffect(() => {
+		AUI().use('portal-available-languages', () => {
+			setAvailableLanguageIds(availableLanguageIds || Liferay.Language.available)
+		})
+	}, [availableLanguageIds])
 
 	useEffect(() => {
 		onActiveChange(active);
@@ -77,24 +78,36 @@ export default ({
 			trigger={
 				<ClayButton
 					displayType="secondary"
-					monospaced
+					monospaced={!showUserView}
+					small
 					symbol={formatLabel(editingLanguageId)}
 				>
 					<span className="inline-item">
 						<ClayIcon symbol={formatIcon(editingLanguageId)} />
 					</span>
 
-					<span className="btn-section">
-						{formatLabel(editingLanguageId)}
-					</span>
+					{showUserView ? (
+						<span className="localizable-dropdown-label ml-2">
+							{_availableLanguageIds[editingLanguageId]}
+						</span>
+					) : (
+						<span className="btn-section">
+							{formatLabel(editingLanguageId)}
+						</span>
+					)}
+
+					{showUserView && (
+						<ClayIcon className="ml-2" symbol="caret-bottom" />
+					)}
 				</ClayButton>
 			}
 		>
 			<ClayDropDown.ItemList className="localizable-dropdown-ul">
-				{availableLanguages.map((languageId, index) => (
+				{Object.keys(_availableLanguageIds).map((languageId, index) => (
 					<ClayDropDown.Item
 						className={classNames('autofit-row', {
-							['localizable-item-default']: languageId === defaultLanguageId
+							['localizable-item-default']:
+								languageId === defaultLanguageId,
 						})}
 						key={index}
 						onClick={() => {
@@ -108,15 +121,19 @@ export default ({
 									<ClayIcon symbol={formatIcon(languageId)} />
 								</span>
 
-								{formatLabel(languageId)}
+								{showUserView
+									? _availableLanguageIds[languageId]
+									: formatLabel(languageId)}
 							</span>
 						</span>
 
-						<TranslationManagerLabel
-							defaultLanguageId={defaultLanguageId}
-							languageId={languageId}
-							translatedLanguageIds={translatedLanguageIds}
-						/>
+						{!showUserView && (
+							<TranslationManagerLabel
+								defaultLanguageId={defaultLanguageId}
+								languageId={languageId}
+								translatedLanguageIds={translatedLanguageIds}
+							/>
+						)}
 					</ClayDropDown.Item>
 				))}
 			</ClayDropDown.ItemList>

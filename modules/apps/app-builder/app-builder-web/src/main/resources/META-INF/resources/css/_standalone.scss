@@ -81,4 +81,25 @@
 			}
 		}
 	}
+
+	.app-builder-standalone-translation-manager {
+		align-items: center;
+		flex-direction: row;
+
+		.btn.btn-secondary.dropdown-toggle {
+			background-color: #393a4a;
+			color: #A7A9BC;
+			border-color: #6b6c7e;
+
+			&:hover {
+				background-color: rgba(107, 108, 126, 0.2);
+				color: #fff;
+				border-color: #6b6c7e;
+
+				.localizable-dropdown-label {
+					color: #fff;
+				}
+			}
+		}
+	}
 }

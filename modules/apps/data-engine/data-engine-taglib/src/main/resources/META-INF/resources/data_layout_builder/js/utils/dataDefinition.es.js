@@ -101,17 +101,21 @@ export const getDataDefinitionFieldSet = (dataDefinitionFields, fieldSetId) =>
 		({customProperties: {ddmStructureId}}) => ddmStructureId == fieldSetId
 	);
 
-export const getFieldLabel = (dataDefinition, fieldName) => {
+export const getFieldLabel = (dataDefinition, fieldName, withKeys = false) => {
 	const field = getDataDefinitionField(dataDefinition, fieldName);
 
-	if (field) {
-		return (
-			field.label[Liferay.ThemeDisplay.getLanguageId()] ||
-			field.label[dataDefinition.defaultLanguageId]
-		);
+	if (!field) {
+		return fieldName;
 	}
 
-	return fieldName;
+	if (withKeys) {
+		return field.label;
+	}
+
+	return (
+		field.label[Liferay.ThemeDisplay.getLanguageId()] ||
+		field.label[dataDefinition.defaultLanguageId]
+	);
 };
 
 export const getOptionLabel = (options = {}, value) => {

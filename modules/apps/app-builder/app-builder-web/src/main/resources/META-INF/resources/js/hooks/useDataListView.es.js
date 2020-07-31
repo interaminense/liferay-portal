@@ -41,7 +41,8 @@ export default function useDataListView(dataListViewId, dataDefinitionId) {
 						sortable: true,
 						value: DataDefinitionUtils.getFieldLabel(
 							dataDefinition,
-							column
+							column,
+							true
 						),
 					})),
 					dataDefinition: {

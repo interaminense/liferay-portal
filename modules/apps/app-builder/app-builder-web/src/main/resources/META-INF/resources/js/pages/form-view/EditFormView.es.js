@@ -72,7 +72,7 @@ const EditFormView = (props) => {
 
 				<FormViewUpperToolbar
 					newCustomObject={newCustomObject}
-					showTranslationManager={showTranslationManager}
+					showTranslationManager
 				/>
 
 				{createPortal(

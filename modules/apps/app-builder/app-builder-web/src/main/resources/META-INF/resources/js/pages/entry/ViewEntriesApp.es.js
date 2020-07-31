@@ -12,15 +12,22 @@
  * details.
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {AppContextProvider} from '../../AppContext.es';
 import useLazy from '../../hooks/useLazy.es';
 import {PermissionsContextProvider} from './PermissionsContext.es';
+import TranslationManagerWrapper, {
+	getStorageLocale,
+} from './TranslationManagerWrapper.es';
 
 export default function ({appTab, ...props}) {
 	const PageComponent = useLazy();
+	const defaultLanguageId = getStorageLocale();
+	const [userLanguageId, setUserLanguageId] = useState(defaultLanguageId);
+
+	props.userLanguageId = userLanguageId;
 
 	const ListPage = (props) => (
 		<PageComponent module={appTab.listEntryPoint} props={props} />
@@ -32,6 +39,12 @@ export default function ({appTab, ...props}) {
 
 	return (
 		<div className="app-builder-root">
+			<TranslationManagerWrapper
+				defaultLanguageId={defaultLanguageId}
+				setUserLanguageId={setUserLanguageId}
+				userLanguageId={userLanguageId}
+			/>
+
 			<AppContextProvider {...props}>
 				<PermissionsContextProvider
 					dataDefinitionId={props.dataDefinitionId}

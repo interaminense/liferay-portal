@@ -29,6 +29,7 @@ export default function ListEntries() {
 		dataDefinitionId,
 		dataListViewId,
 		showFormView,
+		userLanguageId,
 	} = useContext(AppContext);
 
 	const {
@@ -40,45 +41,56 @@ export default function ListEntries() {
 
 	const permissions = usePermissions();
 
+	const defaultLanguageId = 'en_US';
+
+	const formColumns = columns.map(({value, ...column}) => ({
+		...column,
+		value: value[userLanguageId] ?? value[defaultLanguageId],
+	}));
+
 	return (
-		<Loading isLoading={isLoading}>
-			<ListView
-				actions={useEntriesActions()}
-				addButton={() =>
-					showFormView &&
-					permissions.add && (
-						<Button
-							className="nav-btn nav-btn-monospaced"
-							onClick={() => navigateToEditPage(basePortletURL)}
-							symbol="plus"
-							tooltip={Liferay.Language.get('new-entry')}
-						/>
-					)
-				}
-				columns={columns}
-				emptyState={{
-					button: () =>
+		<>
+			<Loading isLoading={isLoading}>
+				<ListView
+					actions={useEntriesActions()}
+					addButton={() =>
 						showFormView &&
 						permissions.add && (
 							<Button
-								displayType="secondary"
+								className="nav-btn nav-btn-monospaced"
 								onClick={() =>
 									navigateToEditPage(basePortletURL)
 								}
-							>
-								{Liferay.Language.get('new-entry')}
-							</Button>
-						),
-					title: Liferay.Language.get('there-are-no-entries-yet'),
-				}}
-				endpoint={`/o/data-engine/v2.0/data-definitions/${dataDefinitionId}/data-records`}
-				noActionsMessage={Liferay.Language.get(
-					'you-do-not-have-the-permission-to-manage-this-entry'
-				)}
-				queryParams={{dataListViewId}}
-			>
-				{buildEntries(fieldNames, dataDefinition, permissions)}
-			</ListView>
-		</Loading>
+								symbol="plus"
+								tooltip={Liferay.Language.get('new-entry')}
+							/>
+						)
+					}
+					columns={formColumns}
+					emptyState={{
+						button: () =>
+							showFormView &&
+							permissions.add && (
+								<Button
+									displayType="secondary"
+									onClick={() =>
+										navigateToEditPage(basePortletURL)
+									}
+								>
+									{Liferay.Language.get('new-entry')}
+								</Button>
+							),
+						title: Liferay.Language.get('there-are-no-entries-yet'),
+					}}
+					endpoint={`/o/data-engine/v2.0/data-definitions/${dataDefinitionId}/data-records`}
+					noActionsMessage={Liferay.Language.get(
+						'you-do-not-have-the-permission-to-manage-this-entry'
+					)}
+					queryParams={{dataListViewId}}
+				>
+					{buildEntries(fieldNames, dataDefinition, permissions)}
+				</ListView>
+			</Loading>
+		</>
 	);
 }
