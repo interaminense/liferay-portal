@@ -25,7 +25,11 @@ export function useDDMFormSubmit(ddmForm, onSubmit) {
 	}, [ddmForm, onSubmit]);
 }
 
-export function useDDMFormValidation(ddmForm, onSubmitCallback) {
+export function useDDMFormValidation(
+	ddmForm,
+	onSubmitCallback,
+	languageId = themeDisplay.getLanguageId()
+) {
 	return useCallback(
 		(event) => {
 			if (typeof event.stopImmediatePropagation === 'function') {
@@ -43,7 +47,6 @@ export function useDDMFormValidation(ddmForm, onSubmitCallback) {
 					dataRecordValues: {},
 				};
 
-				const languageId = themeDisplay.getLanguageId();
 				const visitor = new PagesVisitor(ddmReactForm.get('pages'));
 
 				const setDataRecord = ({
@@ -98,7 +101,7 @@ export function useDDMFormValidation(ddmForm, onSubmitCallback) {
 				onSubmitCallback(dataRecord);
 			});
 		},
-		[ddmForm, onSubmitCallback]
+		[ddmForm, languageId, onSubmitCallback]
 	);
 }
 

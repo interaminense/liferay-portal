@@ -35,6 +35,7 @@ export default ({appTab, ...props}) => {
 				setUserLanguageId={setUserLanguageId}
 				userLanguageId={userLanguageId}
 			/>
+
 			<EditPage module={appTab.editEntryPoint} props={props} />
 		</AppContextProvider>
 	);
