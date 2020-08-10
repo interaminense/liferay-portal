@@ -18,6 +18,7 @@ import React, {useCallback, useContext} from 'react';
 import {AppContext} from '../../AppContext.es';
 import Button from '../../components/button/Button.es';
 import {ControlMenuBase} from '../../components/control-menu/ControlMenu.es';
+import useDataDefinition from '../../hooks/useDataDefinition.es';
 import withDDMForm, {
 	useDDMFormSubmit,
 	useDDMFormValidation,
@@ -32,6 +33,7 @@ export const EditEntry = ({
 	redirect,
 }) => {
 	const {basePortletURL} = useContext(AppContext);
+	const {defaultLanguageId} = useDataDefinition(dataDefinitionId);
 
 	const onCancel = useCallback(() => {
 		if (redirect) {
@@ -70,7 +72,8 @@ export const EditEntry = ({
 				}
 			},
 			[dataDefinitionId, dataRecordId, onCancel]
-		)
+		),
+		defaultLanguageId
 	);
 
 	useDDMFormSubmit(ddmForm, onSubmit);
