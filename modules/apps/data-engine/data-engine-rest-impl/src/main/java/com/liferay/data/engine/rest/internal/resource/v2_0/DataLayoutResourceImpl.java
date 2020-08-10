@@ -19,10 +19,12 @@ import com.jayway.jsonpath.JsonPath;
 
 import com.liferay.data.engine.constants.DataActionKeys;
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
+import com.liferay.data.engine.rest.dto.v2_0.DataDefinitionDefaultLayoutRenderingContext;
 import com.liferay.data.engine.rest.dto.v2_0.DataLayout;
 import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeTracker;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
+import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataRecordValuesUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataLayoutEntityModel;
 import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
 import com.liferay.data.engine.rest.resource.exception.DataLayoutValidationException;
@@ -30,6 +32,8 @@ import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
 import com.liferay.data.engine.service.DEDataDefinitionFieldLinkLocalService;
 import com.liferay.dynamic.data.mapping.form.builder.rule.DDMFormRuleDeserializer;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
+import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
+import com.liferay.dynamic.data.mapping.form.renderer.DDMFormTemplateContextFactory;
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -45,6 +49,7 @@ import com.liferay.dynamic.data.mapping.util.comparator.StructureLayoutModifiedD
 import com.liferay.dynamic.data.mapping.util.comparator.StructureLayoutNameComparator;
 import com.liferay.dynamic.data.mapping.validator.DDMFormLayoutValidationException;
 import com.liferay.dynamic.data.mapping.validator.DDMFormLayoutValidator;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.search.Field;
@@ -73,6 +78,7 @@ import java.util.Map;
 import javax.validation.ValidationException;
 
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -203,6 +209,68 @@ public class DataLayoutResourceImpl
 				_ddmFormLayoutSerializer, _ddmFormRuleDeserializer),
 			dataLayout.getDataLayoutKey(), dataLayout.getDescription(),
 			dataLayout.getName());
+	}
+
+	@Override
+	public Response postDataDefinitionDefaultLayoutContext(
+			Long dataDefinitionId,
+			DataDefinitionDefaultLayoutRenderingContext
+				dataDefinitionDefaultLayoutRenderingContext)
+		throws Exception {
+
+		_dataDefinitionModelResourcePermission.check(
+			PermissionThreadLocal.getPermissionChecker(), dataDefinitionId,
+			ActionKeys.VIEW);
+
+		DDMStructure ddmStructure = _ddmStructureLocalService.getDDMStructure(
+			dataDefinitionId);
+
+		DDMForm ddmForm = ddmStructure.getDDMForm();
+
+		DDMFormRenderingContext ddmFormRenderingContext =
+			new DDMFormRenderingContext();
+
+		ddmFormRenderingContext.setContainerId(
+			dataDefinitionDefaultLayoutRenderingContext.getContainerId());
+		ddmFormRenderingContext.setDDMFormValues(
+			DataRecordValuesUtil.toDDMFormValues(
+				dataDefinitionDefaultLayoutRenderingContext.
+					getDataRecordValues(),
+				ddmForm, contextAcceptLanguage.getPreferredLocale()));
+		ddmFormRenderingContext.setHttpServletRequest(
+			contextHttpServletRequest);
+		ddmFormRenderingContext.setHttpServletResponse(
+			contextHttpServletResponse);
+		ddmFormRenderingContext.setLocale(
+			contextAcceptLanguage.getPreferredLocale());
+		ddmFormRenderingContext.setPortletNamespace(
+			dataDefinitionDefaultLayoutRenderingContext.getNamespace());
+		ddmFormRenderingContext.setReadOnly(
+			dataDefinitionDefaultLayoutRenderingContext.getReadOnly());
+		ddmFormRenderingContext.setShowSubmitButton(false);
+		ddmFormRenderingContext.setViewMode(true);
+
+		DDMStructureLayout ddmStructureLayout =
+			_ddmStructureLayoutLocalService.getStructureLayout(
+				ddmStructure.getDefaultDDMStructureLayoutId());
+
+		Map<String, Object> ddmFormTemplateContextMap =
+			_ddmFormTemplateContextFactory.create(
+				ddmForm, ddmStructureLayout.getDDMFormLayout(),
+				ddmFormRenderingContext);
+
+		ddmFormTemplateContextMap.put("editable", false);
+		ddmFormTemplateContextMap.put(
+			"spritmap",
+			StringUtil.add(
+				dataDefinitionDefaultLayoutRenderingContext.
+					getPathThemeImages(),
+				"/clay/icons.svg", StringPool.BLANK));
+		ddmFormTemplateContextMap.remove("fieldTypes");
+
+		return Response.ok(
+			ddmFormTemplateContextMap
+		).build();
 	}
 
 	@Override
@@ -533,6 +601,9 @@ public class DataLayoutResourceImpl
 
 	@Reference
 	private DDMFormRuleDeserializer _ddmFormRuleDeserializer;
+
+	@Reference
+	private DDMFormTemplateContextFactory _ddmFormTemplateContextFactory;
 
 	@Reference
 	private DDMStructureLayoutLocalService _ddmStructureLayoutLocalService;
