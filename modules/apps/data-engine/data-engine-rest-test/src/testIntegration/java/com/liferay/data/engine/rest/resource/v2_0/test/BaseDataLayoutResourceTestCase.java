@@ -493,6 +493,11 @@ public abstract class BaseDataLayoutResourceTestCase {
 	}
 
 	@Test
+	public void testPostDataDefinitionDefaultLayoutContext() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
 	public void testDeleteDataLayout() throws Exception {
 		@SuppressWarnings("PMD.UnusedLocalVariable")
 		DataLayout dataLayout = testDeleteDataLayout_addDataLayout();
