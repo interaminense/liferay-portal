@@ -23,7 +23,7 @@ import {navigateToEditPage} from './utils.es';
 
 const storageKey = '@app-builder/standalone/language';
 
-export const setStorageLanguageId = (value, appId) => {
+const setStorageLanguageId = (appId, value) => {
 	localStorage.setItem(`${storageKey}/${appId}`, value);
 };
 
@@ -50,10 +50,11 @@ export default ({
 			defaultLanguageId: '',
 		},
 	});
+
 	const defaultLanguageId = dataDefinition.defaultLanguageId;
 
 	const onEditingLanguageIdChange = (languageId) => {
-		setStorageLanguageId(languageId, appId);
+		setStorageLanguageId(appId, languageId);
 
 		if (reloadPage) {
 			navigateToEditPage(basePortletURL, {dataRecordId, languageId});
