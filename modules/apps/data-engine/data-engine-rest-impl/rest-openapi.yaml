@@ -52,6 +52,21 @@ components:
                     format: int64
                     type: integer
             type: object
+        DataDefinitionDefaultLayoutRenderingContext:
+            properties:
+                containerId:
+                    type: string
+                dataRecordValues:
+                    additionalProperties:
+                        type: object
+                    type: object
+                namespace:
+                    type: string
+                pathThemeImages:
+                    type: string
+                readOnly:
+                    type: boolean
+            type: object
         DataDefinitionField:
             # @review
             description:
@@ -839,6 +854,40 @@ paths:
                     description:
                         ""
             tags: ["DataRecord"]
+    "/data-definitions/{dataDefinitionId}/default-layout-context":
+        post:
+            operationId: postDataDefinitionDefaultLayoutContext
+            parameters:
+                - in: path
+                  name: dataDefinitionId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/DataDefinitionDefaultLayoutRenderingContext"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/DataDefinitionDefaultLayoutRenderingContext"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                additionalProperties:
+                                    type: object
+                                type: object
+                        application/xml:
+                            schema:
+                                additionalProperties:
+                                    type: object
+                                type: object
+                    description:
+                        ""
+            tags: ["DataLayout"]
     "/data-definitions/{dataDefinitionId}/permissions":
         get:
             operationId: getDataDefinitionPermissionsPage
