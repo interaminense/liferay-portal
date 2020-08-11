@@ -14,8 +14,8 @@
 
 package com.liferay.data.engine.rest.client.resource.v2_0;
 
-import com.liferay.data.engine.rest.client.dto.v2_0.DataDefinitionDefaultLayoutRenderingContext;
 import com.liferay.data.engine.rest.client.dto.v2_0.DataLayout;
+import com.liferay.data.engine.rest.client.dto.v2_0.DataLayoutRenderingContext;
 import com.liferay.data.engine.rest.client.http.HttpInvoker;
 import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
@@ -76,17 +76,14 @@ public interface DataLayoutResource {
 				Long dataDefinitionId, String callbackURL, Object object)
 		throws Exception;
 
-	public void postDataDefinitionDefaultLayoutContext(
-			Long dataDefinitionId,
-			DataDefinitionDefaultLayoutRenderingContext
-				dataDefinitionDefaultLayoutRenderingContext)
+	public void postDataLayoutContext(
+			Long dataLayoutId,
+			DataLayoutRenderingContext dataLayoutRenderingContext)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse
-			postDataDefinitionDefaultLayoutContextHttpResponse(
-				Long dataDefinitionId,
-				DataDefinitionDefaultLayoutRenderingContext
-					dataDefinitionDefaultLayoutRenderingContext)
+	public HttpInvoker.HttpResponse postDataLayoutContextHttpResponse(
+			Long dataLayoutId,
+			DataLayoutRenderingContext dataLayoutRenderingContext)
 		throws Exception;
 
 	public void deleteDataLayout(Long dataLayoutId) throws Exception;
@@ -462,16 +459,14 @@ public interface DataLayoutResource {
 			return httpInvoker.invoke();
 		}
 
-		public void postDataDefinitionDefaultLayoutContext(
-				Long dataDefinitionId,
-				DataDefinitionDefaultLayoutRenderingContext
-					dataDefinitionDefaultLayoutRenderingContext)
+		public void postDataLayoutContext(
+				Long dataLayoutId,
+				DataLayoutRenderingContext dataLayoutRenderingContext)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				postDataDefinitionDefaultLayoutContextHttpResponse(
-					dataDefinitionId,
-					dataDefinitionDefaultLayoutRenderingContext);
+				postDataLayoutContextHttpResponse(
+					dataLayoutId, dataLayoutRenderingContext);
 
 			String content = httpResponse.getContent();
 
@@ -482,18 +477,15 @@ public interface DataLayoutResource {
 				"HTTP response status code: " + httpResponse.getStatusCode());
 		}
 
-		public HttpInvoker.HttpResponse
-				postDataDefinitionDefaultLayoutContextHttpResponse(
-					Long dataDefinitionId,
-					DataDefinitionDefaultLayoutRenderingContext
-						dataDefinitionDefaultLayoutRenderingContext)
+		public HttpInvoker.HttpResponse postDataLayoutContextHttpResponse(
+				Long dataLayoutId,
+				DataLayoutRenderingContext dataLayoutRenderingContext)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
 			httpInvoker.body(
-				dataDefinitionDefaultLayoutRenderingContext.toString(),
-				"application/json");
+				dataLayoutRenderingContext.toString(), "application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -517,8 +509,8 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v2.0/data-definitions/{dataDefinitionId}/default-layout-context",
-				dataDefinitionId);
+						"/o/data-engine/v2.0/data-layouts/{dataLayoutId}/context",
+				dataLayoutId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

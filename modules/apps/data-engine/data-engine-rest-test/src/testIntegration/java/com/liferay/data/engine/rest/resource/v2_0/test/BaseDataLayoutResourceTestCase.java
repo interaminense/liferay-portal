@@ -493,7 +493,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 	}
 
 	@Test
-	public void testPostDataDefinitionDefaultLayoutContext() throws Exception {
+	public void testPostDataLayoutContext() throws Exception {
 		Assert.assertTrue(false);
 	}
 

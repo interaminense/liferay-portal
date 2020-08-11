@@ -19,8 +19,8 @@ import com.jayway.jsonpath.JsonPath;
 
 import com.liferay.data.engine.constants.DataActionKeys;
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
-import com.liferay.data.engine.rest.dto.v2_0.DataDefinitionDefaultLayoutRenderingContext;
 import com.liferay.data.engine.rest.dto.v2_0.DataLayout;
+import com.liferay.data.engine.rest.dto.v2_0.DataLayoutRenderingContext;
 import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeTracker;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
@@ -49,7 +49,6 @@ import com.liferay.dynamic.data.mapping.util.comparator.StructureLayoutModifiedD
 import com.liferay.dynamic.data.mapping.util.comparator.StructureLayoutNameComparator;
 import com.liferay.dynamic.data.mapping.validator.DDMFormLayoutValidationException;
 import com.liferay.dynamic.data.mapping.validator.DDMFormLayoutValidator;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.search.Field;
@@ -212,18 +211,19 @@ public class DataLayoutResourceImpl
 	}
 
 	@Override
-	public Response postDataDefinitionDefaultLayoutContext(
-			Long dataDefinitionId,
-			DataDefinitionDefaultLayoutRenderingContext
-				dataDefinitionDefaultLayoutRenderingContext)
+	public Response postDataLayoutContext(
+			Long dataLayoutId,
+			DataLayoutRenderingContext dataLayoutRenderingContext)
 		throws Exception {
 
-		_dataDefinitionModelResourcePermission.check(
-			PermissionThreadLocal.getPermissionChecker(), dataDefinitionId,
-			ActionKeys.VIEW);
+		DDMStructureLayout ddmStructureLayout =
+			_ddmStructureLayoutLocalService.getDDMStructureLayout(dataLayoutId);
 
-		DDMStructure ddmStructure = _ddmStructureLocalService.getDDMStructure(
-			dataDefinitionId);
+		DDMStructure ddmStructure = ddmStructureLayout.getDDMStructure();
+
+		_dataDefinitionModelResourcePermission.check(
+			PermissionThreadLocal.getPermissionChecker(),
+			ddmStructure.getStructureId(), ActionKeys.VIEW);
 
 		DDMForm ddmForm = ddmStructure.getDDMForm();
 
@@ -231,12 +231,11 @@ public class DataLayoutResourceImpl
 			new DDMFormRenderingContext();
 
 		ddmFormRenderingContext.setContainerId(
-			dataDefinitionDefaultLayoutRenderingContext.getContainerId());
+			dataLayoutRenderingContext.getContainerId());
 		ddmFormRenderingContext.setDDMFormValues(
 			DataRecordValuesUtil.toDDMFormValues(
-				dataDefinitionDefaultLayoutRenderingContext.
-					getDataRecordValues(),
-				ddmForm, contextAcceptLanguage.getPreferredLocale()));
+				dataLayoutRenderingContext.getDataRecordValues(), ddmForm,
+				contextAcceptLanguage.getPreferredLocale()));
 		ddmFormRenderingContext.setHttpServletRequest(
 			contextHttpServletRequest);
 		ddmFormRenderingContext.setHttpServletResponse(
@@ -244,15 +243,11 @@ public class DataLayoutResourceImpl
 		ddmFormRenderingContext.setLocale(
 			contextAcceptLanguage.getPreferredLocale());
 		ddmFormRenderingContext.setPortletNamespace(
-			dataDefinitionDefaultLayoutRenderingContext.getNamespace());
+			dataLayoutRenderingContext.getNamespace());
 		ddmFormRenderingContext.setReadOnly(
-			dataDefinitionDefaultLayoutRenderingContext.getReadOnly());
+			dataLayoutRenderingContext.getReadOnly());
 		ddmFormRenderingContext.setShowSubmitButton(false);
 		ddmFormRenderingContext.setViewMode(true);
-
-		DDMStructureLayout ddmStructureLayout =
-			_ddmStructureLayoutLocalService.getStructureLayout(
-				ddmStructure.getDefaultDDMStructureLayoutId());
 
 		Map<String, Object> ddmFormTemplateContextMap =
 			_ddmFormTemplateContextFactory.create(
@@ -262,10 +257,8 @@ public class DataLayoutResourceImpl
 		ddmFormTemplateContextMap.put("editable", false);
 		ddmFormTemplateContextMap.put(
 			"spritmap",
-			StringUtil.add(
-				dataDefinitionDefaultLayoutRenderingContext.
-					getPathThemeImages(),
-				"/clay/icons.svg", StringPool.BLANK));
+			dataLayoutRenderingContext.getPathThemeImages() +
+				"/clay/icons.svg");
 		ddmFormTemplateContextMap.remove("fieldTypes");
 
 		return Response.ok(

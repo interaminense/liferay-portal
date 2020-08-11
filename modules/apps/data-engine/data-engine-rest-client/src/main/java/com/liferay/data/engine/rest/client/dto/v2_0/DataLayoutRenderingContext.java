@@ -15,7 +15,7 @@
 package com.liferay.data.engine.rest.client.dto.v2_0;
 
 import com.liferay.data.engine.rest.client.function.UnsafeSupplier;
-import com.liferay.data.engine.rest.client.serdes.v2_0.DataDefinitionDefaultLayoutRenderingContextSerDes;
+import com.liferay.data.engine.rest.client.serdes.v2_0.DataLayoutRenderingContextSerDes;
 
 import java.util.Map;
 import java.util.Objects;
@@ -27,12 +27,10 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class DataDefinitionDefaultLayoutRenderingContext implements Cloneable {
+public class DataLayoutRenderingContext implements Cloneable {
 
-	public static DataDefinitionDefaultLayoutRenderingContext toDTO(
-		String json) {
-
-		return DataDefinitionDefaultLayoutRenderingContextSerDes.toDTO(json);
+	public static DataLayoutRenderingContext toDTO(String json) {
+		return DataLayoutRenderingContextSerDes.toDTO(json);
 	}
 
 	public String getContainerId() {
@@ -142,10 +140,10 @@ public class DataDefinitionDefaultLayoutRenderingContext implements Cloneable {
 	protected Boolean readOnly;
 
 	@Override
-	public DataDefinitionDefaultLayoutRenderingContext clone()
+	public DataLayoutRenderingContext clone()
 		throws CloneNotSupportedException {
 
-		return (DataDefinitionDefaultLayoutRenderingContext)super.clone();
+		return (DataLayoutRenderingContext)super.clone();
 	}
 
 	@Override
@@ -154,16 +152,15 @@ public class DataDefinitionDefaultLayoutRenderingContext implements Cloneable {
 			return true;
 		}
 
-		if (!(object instanceof DataDefinitionDefaultLayoutRenderingContext)) {
+		if (!(object instanceof DataLayoutRenderingContext)) {
 			return false;
 		}
 
-		DataDefinitionDefaultLayoutRenderingContext
-			dataDefinitionDefaultLayoutRenderingContext =
-				(DataDefinitionDefaultLayoutRenderingContext)object;
+		DataLayoutRenderingContext dataLayoutRenderingContext =
+			(DataLayoutRenderingContext)object;
 
 		return Objects.equals(
-			toString(), dataDefinitionDefaultLayoutRenderingContext.toString());
+			toString(), dataLayoutRenderingContext.toString());
 	}
 
 	@Override
@@ -174,7 +171,7 @@ public class DataDefinitionDefaultLayoutRenderingContext implements Cloneable {
 	}
 
 	public String toString() {
-		return DataDefinitionDefaultLayoutRenderingContextSerDes.toJSON(this);
+		return DataLayoutRenderingContextSerDes.toJSON(this);
 	}
 
 }

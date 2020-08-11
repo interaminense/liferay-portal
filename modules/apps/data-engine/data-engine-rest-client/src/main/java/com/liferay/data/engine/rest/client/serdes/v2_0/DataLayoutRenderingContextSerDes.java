@@ -14,7 +14,7 @@
 
 package com.liferay.data.engine.rest.client.serdes.v2_0;
 
-import com.liferay.data.engine.rest.client.dto.v2_0.DataDefinitionDefaultLayoutRenderingContext;
+import com.liferay.data.engine.rest.client.dto.v2_0.DataLayoutRenderingContext;
 import com.liferay.data.engine.rest.client.json.BaseJSONParser;
 
 import java.util.Iterator;
@@ -30,35 +30,28 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class DataDefinitionDefaultLayoutRenderingContextSerDes {
+public class DataLayoutRenderingContextSerDes {
 
-	public static DataDefinitionDefaultLayoutRenderingContext toDTO(
-		String json) {
+	public static DataLayoutRenderingContext toDTO(String json) {
+		DataLayoutRenderingContextJSONParser
+			dataLayoutRenderingContextJSONParser =
+				new DataLayoutRenderingContextJSONParser();
 
-		DataDefinitionDefaultLayoutRenderingContextJSONParser
-			dataDefinitionDefaultLayoutRenderingContextJSONParser =
-				new DataDefinitionDefaultLayoutRenderingContextJSONParser();
-
-		return dataDefinitionDefaultLayoutRenderingContextJSONParser.parseToDTO(
-			json);
+		return dataLayoutRenderingContextJSONParser.parseToDTO(json);
 	}
 
-	public static DataDefinitionDefaultLayoutRenderingContext[] toDTOs(
-		String json) {
+	public static DataLayoutRenderingContext[] toDTOs(String json) {
+		DataLayoutRenderingContextJSONParser
+			dataLayoutRenderingContextJSONParser =
+				new DataLayoutRenderingContextJSONParser();
 
-		DataDefinitionDefaultLayoutRenderingContextJSONParser
-			dataDefinitionDefaultLayoutRenderingContextJSONParser =
-				new DataDefinitionDefaultLayoutRenderingContextJSONParser();
-
-		return dataDefinitionDefaultLayoutRenderingContextJSONParser.
-			parseToDTOs(json);
+		return dataLayoutRenderingContextJSONParser.parseToDTOs(json);
 	}
 
 	public static String toJSON(
-		DataDefinitionDefaultLayoutRenderingContext
-			dataDefinitionDefaultLayoutRenderingContext) {
+		DataLayoutRenderingContext dataLayoutRenderingContext) {
 
-		if (dataDefinitionDefaultLayoutRenderingContext == null) {
+		if (dataLayoutRenderingContext == null) {
 			return "null";
 		}
 
@@ -66,9 +59,7 @@ public class DataDefinitionDefaultLayoutRenderingContextSerDes {
 
 		sb.append("{");
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getContainerId() !=
-				null) {
-
+		if (dataLayoutRenderingContext.getContainerId() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -77,17 +68,12 @@ public class DataDefinitionDefaultLayoutRenderingContextSerDes {
 
 			sb.append("\"");
 
-			sb.append(
-				_escape(
-					dataDefinitionDefaultLayoutRenderingContext.
-						getContainerId()));
+			sb.append(_escape(dataLayoutRenderingContext.getContainerId()));
 
 			sb.append("\"");
 		}
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getDataRecordValues() !=
-				null) {
-
+		if (dataLayoutRenderingContext.getDataRecordValues() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -95,14 +81,10 @@ public class DataDefinitionDefaultLayoutRenderingContextSerDes {
 			sb.append("\"dataRecordValues\": ");
 
 			sb.append(
-				_toJSON(
-					dataDefinitionDefaultLayoutRenderingContext.
-						getDataRecordValues()));
+				_toJSON(dataLayoutRenderingContext.getDataRecordValues()));
 		}
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getNamespace() !=
-				null) {
-
+		if (dataLayoutRenderingContext.getNamespace() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -111,17 +93,12 @@ public class DataDefinitionDefaultLayoutRenderingContextSerDes {
 
 			sb.append("\"");
 
-			sb.append(
-				_escape(
-					dataDefinitionDefaultLayoutRenderingContext.
-						getNamespace()));
+			sb.append(_escape(dataLayoutRenderingContext.getNamespace()));
 
 			sb.append("\"");
 		}
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getPathThemeImages() !=
-				null) {
-
+		if (dataLayoutRenderingContext.getPathThemeImages() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
@@ -130,23 +107,19 @@ public class DataDefinitionDefaultLayoutRenderingContextSerDes {
 
 			sb.append("\"");
 
-			sb.append(
-				_escape(
-					dataDefinitionDefaultLayoutRenderingContext.
-						getPathThemeImages()));
+			sb.append(_escape(dataLayoutRenderingContext.getPathThemeImages()));
 
 			sb.append("\"");
 		}
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getReadOnly() != null) {
+		if (dataLayoutRenderingContext.getReadOnly() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
 			sb.append("\"readOnly\": ");
 
-			sb.append(
-				dataDefinitionDefaultLayoutRenderingContext.getReadOnly());
+			sb.append(dataLayoutRenderingContext.getReadOnly());
 		}
 
 		sb.append("}");
@@ -155,140 +128,118 @@ public class DataDefinitionDefaultLayoutRenderingContextSerDes {
 	}
 
 	public static Map<String, Object> toMap(String json) {
-		DataDefinitionDefaultLayoutRenderingContextJSONParser
-			dataDefinitionDefaultLayoutRenderingContextJSONParser =
-				new DataDefinitionDefaultLayoutRenderingContextJSONParser();
+		DataLayoutRenderingContextJSONParser
+			dataLayoutRenderingContextJSONParser =
+				new DataLayoutRenderingContextJSONParser();
 
-		return dataDefinitionDefaultLayoutRenderingContextJSONParser.parseToMap(
-			json);
+		return dataLayoutRenderingContextJSONParser.parseToMap(json);
 	}
 
 	public static Map<String, String> toMap(
-		DataDefinitionDefaultLayoutRenderingContext
-			dataDefinitionDefaultLayoutRenderingContext) {
+		DataLayoutRenderingContext dataLayoutRenderingContext) {
 
-		if (dataDefinitionDefaultLayoutRenderingContext == null) {
+		if (dataLayoutRenderingContext == null) {
 			return null;
 		}
 
 		Map<String, String> map = new TreeMap<>();
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getContainerId() ==
-				null) {
-
+		if (dataLayoutRenderingContext.getContainerId() == null) {
 			map.put("containerId", null);
 		}
 		else {
 			map.put(
 				"containerId",
-				String.valueOf(
-					dataDefinitionDefaultLayoutRenderingContext.
-						getContainerId()));
+				String.valueOf(dataLayoutRenderingContext.getContainerId()));
 		}
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getDataRecordValues() ==
-				null) {
-
+		if (dataLayoutRenderingContext.getDataRecordValues() == null) {
 			map.put("dataRecordValues", null);
 		}
 		else {
 			map.put(
 				"dataRecordValues",
 				String.valueOf(
-					dataDefinitionDefaultLayoutRenderingContext.
-						getDataRecordValues()));
+					dataLayoutRenderingContext.getDataRecordValues()));
 		}
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getNamespace() ==
-				null) {
-
+		if (dataLayoutRenderingContext.getNamespace() == null) {
 			map.put("namespace", null);
 		}
 		else {
 			map.put(
 				"namespace",
-				String.valueOf(
-					dataDefinitionDefaultLayoutRenderingContext.
-						getNamespace()));
+				String.valueOf(dataLayoutRenderingContext.getNamespace()));
 		}
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getPathThemeImages() ==
-				null) {
-
+		if (dataLayoutRenderingContext.getPathThemeImages() == null) {
 			map.put("pathThemeImages", null);
 		}
 		else {
 			map.put(
 				"pathThemeImages",
 				String.valueOf(
-					dataDefinitionDefaultLayoutRenderingContext.
-						getPathThemeImages()));
+					dataLayoutRenderingContext.getPathThemeImages()));
 		}
 
-		if (dataDefinitionDefaultLayoutRenderingContext.getReadOnly() == null) {
+		if (dataLayoutRenderingContext.getReadOnly() == null) {
 			map.put("readOnly", null);
 		}
 		else {
 			map.put(
 				"readOnly",
-				String.valueOf(
-					dataDefinitionDefaultLayoutRenderingContext.getReadOnly()));
+				String.valueOf(dataLayoutRenderingContext.getReadOnly()));
 		}
 
 		return map;
 	}
 
-	public static class DataDefinitionDefaultLayoutRenderingContextJSONParser
-		extends BaseJSONParser<DataDefinitionDefaultLayoutRenderingContext> {
+	public static class DataLayoutRenderingContextJSONParser
+		extends BaseJSONParser<DataLayoutRenderingContext> {
 
 		@Override
-		protected DataDefinitionDefaultLayoutRenderingContext createDTO() {
-			return new DataDefinitionDefaultLayoutRenderingContext();
+		protected DataLayoutRenderingContext createDTO() {
+			return new DataLayoutRenderingContext();
 		}
 
 		@Override
-		protected DataDefinitionDefaultLayoutRenderingContext[] createDTOArray(
-			int size) {
-
-			return new DataDefinitionDefaultLayoutRenderingContext[size];
+		protected DataLayoutRenderingContext[] createDTOArray(int size) {
+			return new DataLayoutRenderingContext[size];
 		}
 
 		@Override
 		protected void setField(
-			DataDefinitionDefaultLayoutRenderingContext
-				dataDefinitionDefaultLayoutRenderingContext,
+			DataLayoutRenderingContext dataLayoutRenderingContext,
 			String jsonParserFieldName, Object jsonParserFieldValue) {
 
 			if (Objects.equals(jsonParserFieldName, "containerId")) {
 				if (jsonParserFieldValue != null) {
-					dataDefinitionDefaultLayoutRenderingContext.setContainerId(
+					dataLayoutRenderingContext.setContainerId(
 						(String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "dataRecordValues")) {
 				if (jsonParserFieldValue != null) {
-					dataDefinitionDefaultLayoutRenderingContext.
-						setDataRecordValues(
-							(Map)
-								DataDefinitionDefaultLayoutRenderingContextSerDes.
-									toMap((String)jsonParserFieldValue));
+					dataLayoutRenderingContext.setDataRecordValues(
+						(Map)DataLayoutRenderingContextSerDes.toMap(
+							(String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "namespace")) {
 				if (jsonParserFieldValue != null) {
-					dataDefinitionDefaultLayoutRenderingContext.setNamespace(
+					dataLayoutRenderingContext.setNamespace(
 						(String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "pathThemeImages")) {
 				if (jsonParserFieldValue != null) {
-					dataDefinitionDefaultLayoutRenderingContext.
-						setPathThemeImages((String)jsonParserFieldValue);
+					dataLayoutRenderingContext.setPathThemeImages(
+						(String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "readOnly")) {
 				if (jsonParserFieldValue != null) {
-					dataDefinitionDefaultLayoutRenderingContext.setReadOnly(
+					dataLayoutRenderingContext.setReadOnly(
 						(Boolean)jsonParserFieldValue);
 				}
 			}

@@ -42,16 +42,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("DataDefinitionDefaultLayoutRenderingContext")
+@GraphQLName("DataLayoutRenderingContext")
 @JsonFilter("Liferay.Vulcan")
-@XmlRootElement(name = "DataDefinitionDefaultLayoutRenderingContext")
-public class DataDefinitionDefaultLayoutRenderingContext {
+@XmlRootElement(name = "DataLayoutRenderingContext")
+public class DataLayoutRenderingContext {
 
-	public static DataDefinitionDefaultLayoutRenderingContext toDTO(
-		String json) {
-
+	public static DataLayoutRenderingContext toDTO(String json) {
 		return ObjectMapperUtil.readValue(
-			DataDefinitionDefaultLayoutRenderingContext.class, json);
+			DataLayoutRenderingContext.class, json);
 	}
 
 	@Schema
@@ -202,16 +200,15 @@ public class DataDefinitionDefaultLayoutRenderingContext {
 			return true;
 		}
 
-		if (!(object instanceof DataDefinitionDefaultLayoutRenderingContext)) {
+		if (!(object instanceof DataLayoutRenderingContext)) {
 			return false;
 		}
 
-		DataDefinitionDefaultLayoutRenderingContext
-			dataDefinitionDefaultLayoutRenderingContext =
-				(DataDefinitionDefaultLayoutRenderingContext)object;
+		DataLayoutRenderingContext dataLayoutRenderingContext =
+			(DataLayoutRenderingContext)object;
 
 		return Objects.equals(
-			toString(), dataDefinitionDefaultLayoutRenderingContext.toString());
+			toString(), dataLayoutRenderingContext.toString());
 	}
 
 	@Override
@@ -294,7 +291,7 @@ public class DataDefinitionDefaultLayoutRenderingContext {
 	}
 
 	@Schema(
-		defaultValue = "com.liferay.data.engine.rest.dto.v2_0.DataDefinitionDefaultLayoutRenderingContext",
+		defaultValue = "com.liferay.data.engine.rest.dto.v2_0.DataLayoutRenderingContext",
 		name = "x-class-name"
 	)
 	public String xClassName;
