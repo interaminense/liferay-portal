@@ -20,9 +20,11 @@ import com.jayway.jsonpath.JsonPath;
 import com.liferay.data.engine.constants.DataActionKeys;
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.rest.dto.v2_0.DataLayout;
+import com.liferay.data.engine.rest.dto.v2_0.DataLayoutRenderingContext;
 import com.liferay.data.engine.rest.internal.content.type.DataDefinitionContentTypeTracker;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataDefinitionUtil;
 import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataLayoutUtil;
+import com.liferay.data.engine.rest.internal.dto.v2_0.util.DataRecordValuesUtil;
 import com.liferay.data.engine.rest.internal.odata.entity.v2_0.DataLayoutEntityModel;
 import com.liferay.data.engine.rest.internal.security.permission.resource.DataDefinitionModelResourcePermission;
 import com.liferay.data.engine.rest.resource.exception.DataLayoutValidationException;
@@ -30,6 +32,8 @@ import com.liferay.data.engine.rest.resource.v2_0.DataLayoutResource;
 import com.liferay.data.engine.service.DEDataDefinitionFieldLinkLocalService;
 import com.liferay.dynamic.data.mapping.form.builder.rule.DDMFormRuleDeserializer;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
+import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
+import com.liferay.dynamic.data.mapping.form.renderer.DDMFormTemplateContextFactory;
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -73,6 +77,7 @@ import java.util.Map;
 import javax.validation.ValidationException;
 
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -203,6 +208,62 @@ public class DataLayoutResourceImpl
 				_ddmFormLayoutSerializer, _ddmFormRuleDeserializer),
 			dataLayout.getDataLayoutKey(), dataLayout.getDescription(),
 			dataLayout.getName());
+	}
+
+	@Override
+	public Response postDataLayoutContext(
+			Long dataLayoutId,
+			DataLayoutRenderingContext dataLayoutRenderingContext)
+		throws Exception {
+
+		DDMStructureLayout ddmStructureLayout =
+			_ddmStructureLayoutLocalService.getDDMStructureLayout(dataLayoutId);
+
+		DDMStructure ddmStructure = ddmStructureLayout.getDDMStructure();
+
+		_dataDefinitionModelResourcePermission.check(
+			PermissionThreadLocal.getPermissionChecker(),
+			ddmStructure.getStructureId(), ActionKeys.VIEW);
+
+		DDMForm ddmForm = ddmStructure.getDDMForm();
+
+		DDMFormRenderingContext ddmFormRenderingContext =
+			new DDMFormRenderingContext();
+
+		ddmFormRenderingContext.setContainerId(
+			dataLayoutRenderingContext.getContainerId());
+		ddmFormRenderingContext.setDDMFormValues(
+			DataRecordValuesUtil.toDDMFormValues(
+				dataLayoutRenderingContext.getDataRecordValues(), ddmForm,
+				contextAcceptLanguage.getPreferredLocale()));
+		ddmFormRenderingContext.setHttpServletRequest(
+			contextHttpServletRequest);
+		ddmFormRenderingContext.setHttpServletResponse(
+			contextHttpServletResponse);
+		ddmFormRenderingContext.setLocale(
+			contextAcceptLanguage.getPreferredLocale());
+		ddmFormRenderingContext.setPortletNamespace(
+			dataLayoutRenderingContext.getNamespace());
+		ddmFormRenderingContext.setReadOnly(
+			dataLayoutRenderingContext.getReadOnly());
+		ddmFormRenderingContext.setShowSubmitButton(false);
+		ddmFormRenderingContext.setViewMode(true);
+
+		Map<String, Object> ddmFormTemplateContextMap =
+			_ddmFormTemplateContextFactory.create(
+				ddmForm, ddmStructureLayout.getDDMFormLayout(),
+				ddmFormRenderingContext);
+
+		ddmFormTemplateContextMap.put("editable", false);
+		ddmFormTemplateContextMap.put(
+			"spritemap",
+			dataLayoutRenderingContext.getPathThemeImages() +
+				"/clay/icons.svg");
+		ddmFormTemplateContextMap.remove("fieldTypes");
+
+		return Response.ok(
+			ddmFormTemplateContextMap
+		).build();
 	}
 
 	@Override
@@ -533,6 +594,9 @@ public class DataLayoutResourceImpl
 
 	@Reference
 	private DDMFormRuleDeserializer _ddmFormRuleDeserializer;
+
+	@Reference
+	private DDMFormTemplateContextFactory _ddmFormTemplateContextFactory;
 
 	@Reference
 	private DDMStructureLayoutLocalService _ddmStructureLayoutLocalService;
