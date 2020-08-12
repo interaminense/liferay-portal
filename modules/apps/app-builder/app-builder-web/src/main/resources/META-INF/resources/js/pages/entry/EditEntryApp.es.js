@@ -31,7 +31,6 @@ export default ({appTab, ...props}) => {
 		<AppContextProvider {...props}>
 			<TranslationManagerWrapper
 				dataDefinitionId={props.dataDefinitionId}
-				reloadPage
 				setUserLanguageId={setUserLanguageId}
 				userLanguageId={userLanguageId}
 			/>
