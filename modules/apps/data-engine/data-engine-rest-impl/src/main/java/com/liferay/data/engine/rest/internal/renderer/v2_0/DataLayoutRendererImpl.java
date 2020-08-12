@@ -75,6 +75,15 @@ public class DataLayoutRendererImpl implements DataLayoutRenderer {
 
 		ddmFormRenderingContext.setContainerId(
 			dataLayoutRendererContext.getContainerId());
+		ddmFormRenderingContext.setDDMFormValues(
+			DataRecordValuesUtil.toDDMFormValues(
+				dataLayoutRendererContext.getDataRecordValues(), ddmForm,
+				null));
+		ddmFormRenderingContext.setDDMStructureLayoutId(dataLayoutId);
+		ddmFormRenderingContext.setHttpServletRequest(
+			dataLayoutRendererContext.getHttpServletRequest());
+		ddmFormRenderingContext.setHttpServletResponse(
+			dataLayoutRendererContext.getHttpServletResponse());
 
 		Locale locale = null;
 
@@ -90,17 +99,8 @@ public class DataLayoutRendererImpl implements DataLayoutRenderer {
 			locale = LocaleUtil.fromLanguageId(languageId);
 		}
 
-		ddmFormRenderingContext.setDDMFormValues(
-			DataRecordValuesUtil.toDDMFormValues(
-				dataLayoutRendererContext.getDataRecordValues(), ddmForm,
-				locale));
-
-		ddmFormRenderingContext.setDDMStructureLayoutId(dataLayoutId);
-		ddmFormRenderingContext.setHttpServletRequest(
-			dataLayoutRendererContext.getHttpServletRequest());
-		ddmFormRenderingContext.setHttpServletResponse(
-			dataLayoutRendererContext.getHttpServletResponse());
 		ddmFormRenderingContext.setLocale(locale);
+
 		ddmFormRenderingContext.setPortletNamespace(
 			dataLayoutRendererContext.getPortletNamespace());
 		ddmFormRenderingContext.setReadOnly(

@@ -235,7 +235,7 @@ public class DataLayoutResourceImpl
 		ddmFormRenderingContext.setDDMFormValues(
 			DataRecordValuesUtil.toDDMFormValues(
 				dataLayoutRenderingContext.getDataRecordValues(), ddmForm,
-				contextAcceptLanguage.getPreferredLocale()));
+				null));
 		ddmFormRenderingContext.setHttpServletRequest(
 			contextHttpServletRequest);
 		ddmFormRenderingContext.setHttpServletResponse(
