@@ -38,6 +38,7 @@ export default ({
 	dataDefinitionId,
 	reloadPage,
 	setUserLanguageId,
+	showAppName,
 	userLanguageId,
 }) => {
 	const {appId, basePortletURL, dataRecordId} = useContext(AppContext);
@@ -63,17 +64,28 @@ export default ({
 	};
 
 	useEffect(() => {
-		if (appId && dataDefinitionId) {
-			Promise.all([
-				getItem(`/o/app-builder/v1.0/apps/${appId}`),
-				getItem(
-					`/o/data-engine/v2.0/data-definitions/${dataDefinitionId}`
-				),
-			]).then(([app, dataDefinition]) => {
-				setState({app, dataDefinition});
-			});
+		if (showAppName) {
+			getItem(`/o/app-builder/v1.0/apps/${appId}`).then((app) =>
+				setState((prevState) => ({
+					...prevState,
+					app,
+				}))
+			);
 		}
-	}, [appId, dataDefinitionId]);
+	}, [appId, showAppName]);
+
+	useEffect(() => {
+		if (dataDefinitionId) {
+			getItem(
+				`/o/data-engine/v2.0/data-definitions/${dataDefinitionId}`
+			).then((dataDefinition) =>
+				setState((prevState) => ({
+					...prevState,
+					dataDefinition,
+				}))
+			);
+		}
+	}, [dataDefinitionId]);
 
 	const availableLanguageIds = dataDefinition.availableLanguageIds.reduce(
 		(acc, cur) => {
@@ -99,7 +111,8 @@ export default ({
 
 	return (
 		<div>
-			{appStandaloneName &&
+			{showAppName &&
+				appStandaloneName &&
 				createPortal(
 					getLocalizedUserPreferenceValue(
 						app.name,
