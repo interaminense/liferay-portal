@@ -25,6 +25,7 @@ const formatDataRecord = (languageId, pages) => {
 	const setDataRecord = ({
 		fieldName,
 		localizable,
+		localizedValue,
 		repeatable,
 		value,
 		visible,
@@ -38,7 +39,10 @@ const formatDataRecord = (languageId, pages) => {
 		if (localizable) {
 			if (!dataRecordValues[fieldName]) {
 				dataRecordValues[fieldName] = {
-					[languageId]: [],
+					...{
+						[languageId]: [],
+					},
+					...localizedValue,
 				};
 			}
 
@@ -47,6 +51,7 @@ const formatDataRecord = (languageId, pages) => {
 			}
 			else {
 				dataRecordValues[fieldName] = {
+					...localizedValue,
 					[languageId]: _value,
 				};
 			}
@@ -130,8 +135,29 @@ export default function pageLanguageUpdate({
 		)
 			.then((response) => response.json())
 			.then(({pages}) => {
+				const visitor = new PagesVisitor(pages);
+				const newPages = visitor.mapFields(
+					(field) => {
+						if (!field.localizedValue) {
+							field.localizedValue = {};
+						}
+						if (newDataRecordValues[field.fieldName]) {
+							field.localizedValue = {
+								...newDataRecordValues[field.fieldName],
+							};
+						}
+
+						return field;
+					},
+					true,
+					true
+				);
+
 				dispatch({
-					payload: {editingLanguageId: nextEditingLanguageId, pages},
+					payload: {
+						editingLanguageId: nextEditingLanguageId,
+						pages: newPages,
+					},
 					type: EVENT_TYPES.ALL,
 				});
 
