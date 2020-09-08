@@ -185,6 +185,35 @@
 			}
 		}
 	}
+
+	.ddm-drag {
+		padding: 4px 0 9px;
+	}
+
+	.placeholder {
+		&.row {
+			.ddm-target {
+				&.targetOver,
+				&.target-over {
+					border: none;
+					border-radius: unset;
+					background: #fff;
+				}
+
+				&.targetOver::after,
+				&.target-over::after {
+					width: calc(100% - 4px);
+					height: 2px;
+					border: 1px solid #0b5fff;
+					content: '';
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					margin: auto;
+				}
+			}
+		}
+	}
 }
 
 .field-type-drag-preview .custom-object-field {
