@@ -539,6 +539,7 @@ describe('LayoutProvider', () => {
 							pageIndex
 						) => {
 							const {pages} = field.settingsContext;
+							let newPages = [];
 
 							if (pages.length) {
 								pages[0].rows[0].columns[0].fields[1].value =
@@ -556,6 +557,18 @@ describe('LayoutProvider', () => {
 
 									validation.fieldName = 'Any<String>';
 								}
+
+								const visitor = new PagesVisitor(pages);
+
+								newPages = visitor.mapFields((field) => ({
+									...field,
+
+									// Overrides the fieldName because it is generated when a field is duplicated,
+									// toMatchSnapshot has problems with deep arrays so we override it here to
+									// avoid this.
+
+									instanceId: 'Any<String>'
+								}))
 							}
 
 							return {
@@ -568,6 +581,10 @@ describe('LayoutProvider', () => {
 
 								instanceId: 'Any<String>',
 								name: `name${fieldIndex}${columnIndex}${rowIndex}${pageIndex}`,
+								settingsContext: {
+									...field.settingsContext,
+									pages: newPages
+								}
 							};
 						}
 					)
