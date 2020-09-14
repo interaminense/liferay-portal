@@ -567,8 +567,8 @@ describe('LayoutProvider', () => {
 									// toMatchSnapshot has problems with deep arrays so we override it here to
 									// avoid this.
 
-									instanceId: 'Any<String>'
-								}))
+									instanceId: 'Any<String>',
+								}));
 							}
 
 							return {
@@ -583,8 +583,8 @@ describe('LayoutProvider', () => {
 								name: `name${fieldIndex}${columnIndex}${rowIndex}${pageIndex}`,
 								settingsContext: {
 									...field.settingsContext,
-									pages: newPages
-								}
+									pages: newPages,
+								},
 							};
 						}
 					)
