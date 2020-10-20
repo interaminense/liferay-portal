@@ -122,7 +122,7 @@ export const EditEntry = ({
 	return (
 		<>
 			<ControlMenuBase
-				backURL={redirect ? redirect : getBackURL()}
+				backURL={redirect || getBackURL()}
 				title={
 					dataRecordId !== '0'
 						? Liferay.Language.get('edit-entry')
