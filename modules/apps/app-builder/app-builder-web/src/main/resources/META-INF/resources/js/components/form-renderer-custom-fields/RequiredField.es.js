@@ -13,7 +13,7 @@
  */
 
 import {ClayButtonWithIcon} from '@clayui/button';
-import ClayForm, {ClayRadio, ClayToggle} from '@clayui/form';
+import ClayForm, {ClayRadio, ClayRadioGroup, ClayToggle} from '@clayui/form';
 import ClayPopover from '@clayui/popover';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import {
@@ -24,47 +24,52 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 
 import isClickOutside from '../../utils/clickOutside.es';
 
-export default ({AppContext, dataLayoutBuilder}) => {
+export default ({AppContext, dataLayoutBuilder, index}) => {
 	const popoverRef = useRef(null);
 	const triggerRef = useRef(null);
 	const [showPopover, setShowPopover] = useState(false);
+	const []
 	const [
 		{
 			dataDefinition,
 			dataLayout: {dataLayoutFields},
-			focusedField: {fieldName: focusedFieldName},
+			focusedField: {fieldName},
 		},
 		dispatch,
 	] = useContext(AppContext);
 
 	const dataDefinitionField = DataDefinitionUtils.getDataDefinitionField(
 		dataDefinition,
-		focusedFieldName
+		fieldName
 	);
 
-	const {required = false} = dataLayoutFields[focusedFieldName] || {};
-	const objectLevelRequired = required && dataDefinitionField.required;
+	const requiredAtFormViewLevel = dataLayoutFields[fieldName]?.required ?? false;
+	// const requiredAtObjectViewLevel = requiredAtFormViewLevel && dataDefinitionField.required;
 
-	const onToggleRequired = (value) => {
+	function setRequireAtFormViewLevel(toggle) {
+		// Set required within an edited field in the data engine
+
 		dispatch({
 			payload: {
 				dataLayoutFields: {
 					...dataLayoutFields,
-					[focusedFieldName]: {
-						...dataLayoutFields[focusedFieldName],
-						required: value,
+					[fieldName]: {
+						...dataLayoutFields[fieldName],
+						required: toggle,
 					},
 				},
 			},
 			type: DataLayoutBuilderActions.UPDATE_DATA_LAYOUT_FIELDS,
 		});
+	
+		// Set required within an edited field in the form builder
 
 		dataLayoutBuilder.dispatch('fieldEdited', {
-			fieldName: focusedFieldName,
+			fieldName,
 			propertyName: 'required',
-			propertyValue: value,
+			propertyValue: toggle,
 		});
-	};
+	}
 
 	useEffect(() => {
 		const handler = ({target}) => {
@@ -85,19 +90,21 @@ export default ({AppContext, dataLayoutBuilder}) => {
 	}, [popoverRef, triggerRef]);
 
 	return (
-		<div className="d-flex form-renderer-required-field justify-content-between">
+		<div className="d-flex ddm-field form-renderer-required-field justify-content-between" data-field-name={fieldName} key={index}>
 			<ClayForm.Group className="form-renderer-required-field__toggle">
 				<ClayToggle
 					label={Liferay.Language.get('required-field')}
-					onToggle={onToggleRequired}
-					toggled={required}
+					onToggle={(toggle) => {
+						setRequireAtFormViewLevel(toggle);
+					}}
+					toggled={requiredAtFormViewLevel}
 				/>
 			</ClayForm.Group>
 
 			<ClayTooltipProvider>
 				<ClayButtonWithIcon
 					borderless
-					disabled={!required}
+					disabled={!requiredAtFormViewLevel}
 					displayType="secondary"
 					onClick={() => setShowPopover(!showPopover)}
 					ref={triggerRef}
@@ -116,22 +123,22 @@ export default ({AppContext, dataLayoutBuilder}) => {
 				show={showPopover}
 			>
 				<div className="mt-2">
-					<ClayRadio
-						defaultChecked={!objectLevelRequired}
-						label={Liferay.Language.get('only-for-this-form')}
-						name="required-level"
-						value="view-level"
-					/>
+					<ClayRadioGroup
+						onSelectedValueChange={(value) => {
+							console.log(value)
+						}}
+						selectedValue="view-level"
+					>
+						<ClayRadio
+							label={Liferay.Language.get('only-for-this-form')}
+							value="view-level"
+						/>
 
-					<ClayRadio
-						defaultChecked={objectLevelRequired}
-						disabled
-						label={Liferay.Language.get(
-							'for-all-forms-of-this-object'
-						)}
-						name="required-level"
-						value="object-level"
-					/>
+						<ClayRadio
+							label={Liferay.Language.get('for-all-forms-of-this-object')}
+							value="object-level"
+						/>
+					</ClayRadioGroup>
 				</div>
 			</ClayPopover>
 		</div>
