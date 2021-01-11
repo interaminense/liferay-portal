@@ -123,15 +123,15 @@ export default (props) => {
 
 			<ClayLayout.ContentCol className="pr-2" expand>
 				<div className="list-group-title text-truncate">
-					<span>
-						{label}
+					<label className="d-flex">
+						<span className="text-truncate">{label}</span>
 
 						{required && (
-							<span className="reference-mark">
+							<span className="pl-1 pt-1 reference-mark">
 								<ClayIcon symbol="asterisk" />
 							</span>
 						)}
-					</span>
+					</label>
 				</div>
 
 				{description && (

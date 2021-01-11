@@ -27,6 +27,7 @@ import {
 	UPDATE_APP_PROPS,
 	UPDATE_CONFIG,
 	UPDATE_DATA_DEFINITION,
+	UPDATE_DATA_DEFINITION_FIELDS,
 	UPDATE_DATA_LAYOUT,
 	UPDATE_DATA_LAYOUT_FIELDS,
 	UPDATE_DATA_LAYOUT_NAME,
@@ -117,6 +118,12 @@ const deleteDataDefinitionField = (dataDefinition, fieldName) => {
 const deleteDataLayoutField = (dataLayout, fieldName) => {
 	return {
 		...dataLayout,
+		dataLayoutFields: {
+			...dataLayout.dataLayoutFields,
+			[fieldName]: {
+				required: false,
+			},
+		},
 		dataLayoutPages: DataLayoutVisitor.deleteField(
 			dataLayout.dataLayoutPages,
 			fieldName
@@ -172,26 +179,48 @@ const setDataDefinitionFields = (
 	dataDefinition,
 	dataLayout
 ) => {
+	function requiredField(fieldName) {
+		const field = getDataDefinitionField(dataDefinition, fieldName);
+
+		return field?.required ?? false;
+	}
+
 	const {dataDefinitionFields} = dataDefinition;
-	const {dataLayoutFields, dataLayoutPages} = dataLayout;
+	const {dataLayoutPages} = dataLayout;
 
 	const {pages} = dataLayoutBuilder.getStore();
 	const visitor = new PagesVisitor(pages);
 
 	const newFields = [];
+	
+	dataDefinitionFields: [
+		{
+			'fieldA': {
+				required: false
+			}
+		}
+	]
 
 	visitor.mapFields((field) => {
 		const definitionField = dataLayoutBuilder.getDataDefinitionField(field);
-		const dataLayoutField = dataLayoutFields[definitionField.name];
 
-		// If the field is required at the form view level,
-		// it cannot be required at the object level
+		definitionField: [
+			{
+				'fieldA': {
+					required: true
+				}
+			}
+		]
 
-		if (dataLayoutField && dataLayoutField.required) {
-			definitionField.required = false;
-		}
+		newFields.push({
+			...definitionField,
 
-		newFields.push(definitionField);
+			// If you update the dataDefinitionField with the required from dataLayout,
+			// a field that is not required at the object level, it cannot receive
+			// the new required value
+
+			required: requiredField(field.fieldName),
+		});
 	});
 
 	return newFields.concat(
@@ -204,14 +233,35 @@ const setDataDefinitionFields = (
 };
 
 const setDataLayout = (dataLayout, dataLayoutBuilder) => {
-	const {dataRules} = dataLayout;
+	const {dataLayoutFields, dataRules} = dataLayout;
 	const {pages} = dataLayoutBuilder.getStore();
 	const {layout} = dataLayoutBuilder.getDataDefinitionAndDataLayout(
 		pages,
 		dataRules || []
 	);
 
-	return layout;
+	const visitor = new PagesVisitor(pages);
+
+	const fields = [];
+
+	visitor.mapFields((field) => {
+		const definitionField = dataLayoutBuilder.getDataDefinitionField(field);
+
+		fields.push(definitionField);
+	});
+
+	return {
+		...layout,
+		dataLayoutFields: fields.reduce((allFields, field) => {
+			return {
+				...allFields,
+				[field.name]: {
+					...dataLayoutFields[field.name],
+					required: field?.required ?? false,
+				},
+			};
+		}, {}),
+	};
 };
 
 const createReducer = (dataLayoutBuilder) => {
@@ -367,6 +417,17 @@ const createReducer = (dataLayoutBuilder) => {
 					},
 					initialAvailableLanguageIds:
 						dataDefinition.availableLanguageIds,
+				};
+			}
+			case UPDATE_DATA_DEFINITION_FIELDS: {
+				const {dataDefinitionFields} = action.payload;
+
+				return {
+					...state,
+					dataDefinition: {
+						...state.dataDefinition,
+						dataDefinitionFields,
+					},
 				};
 			}
 			case UPDATE_DATA_LAYOUT: {
