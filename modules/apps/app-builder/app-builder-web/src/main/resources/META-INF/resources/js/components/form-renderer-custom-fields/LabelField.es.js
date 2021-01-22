@@ -17,9 +17,8 @@ import ClayForm, {ClayInput, ClayRadio, ClayRadioGroup} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayPopover from '@clayui/popover';
 import {ClayTooltipProvider} from '@clayui/tooltip';
-import React, {useEffect, useRef, useState} from 'react';
-
-import isClickOutside from '../../utils/clickOutside.es';
+import React, {useRef, useState} from 'react';
+import useClickOutside from '../../hooks/useClickOutside.es';
 
 const ALL_FORMS = 'all-forms';
 const ONLY_THIS_FORM = 'only-this-form';
@@ -39,23 +38,7 @@ export default ({field}) => {
 	const [showPopover, setShowPopover] = useState(false);
 	const [selectedLabelLevel, setSelectedLabelLevel] = useState(ALL_FORMS);
 
-	useEffect(() => {
-		const handler = ({target}) => {
-			const outside = isClickOutside(
-				target,
-				popoverRef?.current,
-				triggerRef?.current
-			);
-
-			if (outside) {
-				setShowPopover(false);
-			}
-		};
-
-		window.addEventListener('click', handler);
-
-		return () => window.removeEventListener('click', handler);
-	}, [popoverRef, triggerRef]);
+	useClickOutside([popoverRef, triggerRef], setShowPopover);
 
 	return (
 		<div className="d-flex form-renderer-label-field justify-content-between">
@@ -70,7 +53,7 @@ export default ({field}) => {
 						/>
 					</span>
 				</label>
-				<ClayInput placeholder={field.placeholder} type="text" />
+				<ClayInput autoFocus placeholder={field.placeholder} type="text" />
 			</ClayForm.Group>
 
 			<ClayTooltipProvider>
