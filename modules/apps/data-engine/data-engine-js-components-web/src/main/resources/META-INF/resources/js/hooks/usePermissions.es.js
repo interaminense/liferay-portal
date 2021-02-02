@@ -12,32 +12,21 @@
  * details.
  */
 
+import {useContext} from 'react';
+
 import {
 	ACTIONS,
 	PermissionsContext,
-} from 'data-engine-js-components-web/js/components/entry/PermissionContext.es';
-import React from 'react';
+} from '../components/entry/PermissionContext.es';
 
-const defaultActionIds = [
-	ACTIONS.ADD_DATA_RECORD,
-	ACTIONS.DELETE_DATA_RECORD,
-	ACTIONS.UPDATE_DATA_RECORD,
-	ACTIONS.VIEW,
-	ACTIONS.VIEW_DATA_RECORD,
-];
+export default function usePermissions() {
+	const {actionIds, isLoading} = useContext(PermissionsContext);
 
-export default function PermissionsContextProviderWrapper({
-	children,
-	actionIds = defaultActionIds,
-}) {
-	const state = {
-		actionIds,
-		isLoading: false,
+	return {
+		add: actionIds.includes(ACTIONS.ADD_DATA_RECORD),
+		delete: actionIds.includes(ACTIONS.DELETE_DATA_RECORD),
+		isLoading,
+		update: actionIds.includes(ACTIONS.UPDATE_DATA_RECORD),
+		view: actionIds.includes(ACTIONS.VIEW_DATA_RECORD),
 	};
-
-	return (
-		<PermissionsContext.Provider value={state}>
-			{children}
-		</PermissionsContext.Provider>
-	);
 }
