@@ -12,16 +12,15 @@
  * details.
  */
 
-import ClayButton from '@clayui/button';
+import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayManagementToolbar from '@clayui/management-toolbar';
 import classNames from 'classnames';
 import React, {useContext, useState} from 'react';
 
-import {FILTER_NAMES} from '../../pages/apps/constants.es';
-import Button from '../button/Button.es';
-import SearchContext from '../management-toolbar/SearchContext.es';
 import DropDown, {CheckboxGroup, ItemsGroup, RadioGroup} from './DropDown.es';
+import SearchContext from './SearchContext.es';
+import {FILTER_NAMES} from './constants.es';
 
 const getSortable = (columns, sort = '') => {
 	if (sort.length) {
@@ -212,7 +211,7 @@ export default ({columns = [], disabled, filters = []}) => {
 					</ClayManagementToolbar.Item>
 
 					<ClayManagementToolbar.Item>
-						<Button
+						<ClayButtonWithIcon
 							className={classNames(
 								'nav-link',
 								'nav-link-monospaced',
@@ -221,13 +220,13 @@ export default ({columns = [], disabled, filters = []}) => {
 									'order-arrow-up-active': asc,
 								}
 							)}
+							data-title={Liferay.Language.get(
+								'reverse-sort-direction'
+							)}
 							disabled={disabled}
 							displayType="unstyled"
 							onClick={() => onSortButtonClick(!asc, column)}
 							symbol="order-arrow"
-							tooltip={Liferay.Language.get(
-								'reverse-sort-direction'
-							)}
 						/>
 					</ClayManagementToolbar.Item>
 				</ClayManagementToolbar.ItemList>

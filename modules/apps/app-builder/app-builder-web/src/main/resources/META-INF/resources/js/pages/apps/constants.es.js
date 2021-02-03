@@ -54,21 +54,6 @@ const DEPLOYMENT_TYPES = {
 	widget: Liferay.Language.get('widget'),
 };
 
-const FILTER_NAMES = {
-	author: [
-		Liferay.Language.get('author'),
-		Liferay.Language.get('filter-by-author'),
-	],
-	'deployment-type': [
-		Liferay.Language.get('deployment-type'),
-		Liferay.Language.get('filter-by-deployment-type'),
-	],
-	status: [
-		Liferay.Language.get('status'),
-		Liferay.Language.get('filter-by-status'),
-	],
-};
-
 const STATUSES = {
 	active: Liferay.Language.get('deployed'),
 	inactive: Liferay.Language.get('undeployed'),
@@ -101,6 +86,5 @@ export {
 	DEPLOYMENT_ACTION,
 	DEPLOYMENT_TYPES,
 	FILTERS,
-	FILTER_NAMES,
 	STATUSES,
 };

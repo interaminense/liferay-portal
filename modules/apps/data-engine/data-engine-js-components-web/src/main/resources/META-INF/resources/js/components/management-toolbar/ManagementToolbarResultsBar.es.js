@@ -12,15 +12,15 @@
  * details.
  */
 
+import ClayButton from '@clayui/button';
 import ClayLabel from '@clayui/label';
 import {ClayResultsBar} from '@clayui/management-toolbar';
-import {sub} from 'data-engine-js-components-web/js/utils/lang.es';
-import {concatValues} from 'data-engine-js-components-web/js/utils/utils.es';
 import React, {useContext} from 'react';
 
-import {FILTER_NAMES} from '../../pages/apps/constants.es';
-import Button from '../button/Button.es';
+import {sub} from '../../utils/lang.es';
+import {concatValues} from '../../utils/utils.es';
 import SearchContext from './SearchContext.es';
+import {FILTER_NAMES} from './constants.es';
 
 const FilterItem = ({filterKey, name, value}) => {
 	const [, dispatch] = useContext(SearchContext);
@@ -96,13 +96,13 @@ export default ({filters = [], isLoading, totalCount}) => {
 
 					<ClayResultsBar.Item expand>
 						<div className="tbar-section text-right">
-							<Button
+							<ClayButton
 								className="component-link tbar-link"
 								displayType="unstyled"
 								onClick={() => dispatch({type: 'CLEAR'})}
 							>
 								{Liferay.Language.get('clear-all')}
-							</Button>
+							</ClayButton>
 						</div>
 					</ClayResultsBar.Item>
 				</ClayResultsBar>

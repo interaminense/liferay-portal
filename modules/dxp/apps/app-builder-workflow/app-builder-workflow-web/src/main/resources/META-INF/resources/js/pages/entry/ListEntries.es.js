@@ -12,11 +12,6 @@
 import ClayLabel from '@clayui/label';
 import Button from 'app-builder-web/js/components/button/Button.es';
 import NoPermissionState from 'app-builder-web/js/components/empty-state/NoPermissionState.es';
-import ManagementToolbar from 'app-builder-web/js/components/management-toolbar/ManagementToolbar.es';
-import ManagementToolbarResultsBar from 'app-builder-web/js/components/management-toolbar/ManagementToolbarResultsBar.es';
-import SearchContext, {
-	reducer,
-} from 'app-builder-web/js/components/management-toolbar/SearchContext.es';
 import TableWithPagination from 'app-builder-web/js/components/table/TableWithPagination.es';
 import {AppContext} from 'data-engine-js-components-web/js/AppContext.es';
 import {
@@ -24,6 +19,11 @@ import {
 	navigateToEditPage,
 } from 'data-engine-js-components-web/js/components/entry/utils.es';
 import Loading from 'data-engine-js-components-web/js/components/loading/Loading.es';
+import ManagementToolbar from 'data-engine-js-components-web/js/components/management-toolbar/ManagementToolbar.es';
+import ManagementToolbarResultsBar from 'data-engine-js-components-web/js/components/management-toolbar/ManagementToolbarResultsBar.es';
+import SearchContext, {
+	reducer,
+} from 'data-engine-js-components-web/js/components/management-toolbar/SearchContext.es';
 import useDataListView from 'data-engine-js-components-web/js/hooks/useDataListView.es';
 import useEntriesActions from 'data-engine-js-components-web/js/hooks/useEntriesActions.es';
 import usePermissions from 'data-engine-js-components-web/js/hooks/usePermissions.es';
