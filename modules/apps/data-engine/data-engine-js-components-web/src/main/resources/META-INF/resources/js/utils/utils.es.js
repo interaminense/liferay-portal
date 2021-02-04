@@ -12,27 +12,18 @@
  * details.
  */
 
-import ClayLoadingIndicator from '@clayui/loading-indicator';
-import React from 'react';
+export const isEqualObjects = (firstObj, secondObj) => {
+	if (typeof firstObj !== 'object' || typeof secondObj !== 'object') {
+		return false;
+	}
 
-export const LoadingComponent = () => (
-	<div className="align-items-center d-flex loading-wrapper w-100">
-		<ClayLoadingIndicator />
-	</div>
-);
-
-export const withLoading = (Component) => {
-	const Wrapper = (props) => {
-		const {isLoading, ...restProps} = props;
-
-		if (isLoading) {
-			return <LoadingComponent />;
-		}
-
-		return <Component {...restProps} />;
-	};
-
-	return Wrapper;
+	return JSON.stringify(firstObj) === JSON.stringify(secondObj);
 };
 
-export const Loading = withLoading(({children}) => <>{children}</>);
+export const concatValues = (values) =>
+	values
+		.join(', ')
+		.replace(
+			/, ([^,]*)$/,
+			` ${Liferay.Language.get('and').toLowerCase()} $1`
+		);

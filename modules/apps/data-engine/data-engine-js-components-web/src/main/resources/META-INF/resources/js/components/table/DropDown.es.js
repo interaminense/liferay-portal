@@ -12,12 +12,11 @@
  * details.
  */
 
+import {ClayButtonWithIcon} from '@clayui/button';
 import ClayDropDown, {Align} from '@clayui/drop-down';
-import ClayIcon from '@clayui/icon';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import React, {cloneElement, useState} from 'react';
 
-import Button from '../button/Button.es';
 import DropDownAction from './DropDownAction.es';
 
 const {ItemList} = ClayDropDown;
@@ -26,9 +25,11 @@ export default ({actions, item, noActionsMessage}) => {
 	const [active, setActive] = useState(false);
 
 	const DropdownButton = (
-		<Button className="page-link" displayType="unstyled">
-			<ClayIcon symbol="ellipsis-v" />
-		</Button>
+		<ClayButtonWithIcon
+			className="page-link"
+			displayType="unstyled"
+			symbol="ellipsis-v"
+		/>
 	);
 
 	actions = actions.filter((action) =>

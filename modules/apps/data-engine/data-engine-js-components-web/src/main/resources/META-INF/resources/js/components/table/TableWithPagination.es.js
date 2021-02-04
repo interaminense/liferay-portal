@@ -16,7 +16,6 @@ import ClayLayout from '@clayui/layout';
 import {ClayPaginationBarWithBasicItems} from '@clayui/pagination-bar';
 import React, {useContext} from 'react';
 
-import {AppContext} from '../../AppContext.es';
 import {withLoading} from '../loading/Loading.es';
 import SearchContext from '../management-toolbar/SearchContext.es';
 import {withEmpty} from './EmptyState.es';
@@ -25,12 +24,12 @@ import Table from './Table.es';
 const TableWithPagination = ({
 	actions,
 	columns,
+	deltaValues = [4, 8, 20, 40, 60],
 	editMode,
 	items,
 	noActionsMessage,
 	totalCount,
 }) => {
-	const {deltaValues = [4, 8, 20, 40, 60]} = useContext(AppContext);
 	const [{page, pageSize}, dispatch] = useContext(SearchContext);
 
 	const deltas = deltaValues.map((label) => ({label}));
