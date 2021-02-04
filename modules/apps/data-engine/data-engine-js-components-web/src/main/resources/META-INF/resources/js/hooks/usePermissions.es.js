@@ -12,27 +12,21 @@
  * details.
  */
 
-import ClayLoadingIndicator from '@clayui/loading-indicator';
-import React from 'react';
+import {useContext} from 'react';
 
-export const LoadingComponent = () => (
-	<div className="align-items-center d-flex loading-wrapper w-100">
-		<ClayLoadingIndicator />
-	</div>
-);
+import {
+	ACTIONS,
+	PermissionsContext,
+} from '../components/entry/PermissionContext.es';
 
-export const withLoading = (Component) => {
-	const Wrapper = (props) => {
-		const {isLoading, ...restProps} = props;
+export default function usePermissions() {
+	const {actionIds, isLoading} = useContext(PermissionsContext);
 
-		if (isLoading) {
-			return <LoadingComponent />;
-		}
-
-		return <Component {...restProps} />;
+	return {
+		add: actionIds.includes(ACTIONS.ADD_DATA_RECORD),
+		delete: actionIds.includes(ACTIONS.DELETE_DATA_RECORD),
+		isLoading,
+		update: actionIds.includes(ACTIONS.UPDATE_DATA_RECORD),
+		view: actionIds.includes(ACTIONS.VIEW_DATA_RECORD),
 	};
-
-	return Wrapper;
-};
-
-export const Loading = withLoading(({children}) => <>{children}</>);
+}
