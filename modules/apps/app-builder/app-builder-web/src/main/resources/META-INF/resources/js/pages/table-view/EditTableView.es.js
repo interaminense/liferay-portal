@@ -14,17 +14,20 @@
 
 import ClayButton from '@clayui/button';
 import classNames from 'classnames';
+import {AppContext} from 'data-engine-js-components-web/js/AppContext.es';
+import Loading from 'data-engine-js-components-web/js/components/loading/Loading.es';
+import {
+	errorToast,
+	successToast,
+} from 'data-engine-js-components-web/js/utils/toast.es';
+import {normalizeNames} from 'data-engine-js-components-web/js/utils/utils.es';
 import {TranslationManager} from 'data-engine-taglib';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import {AppContext} from '../../AppContext.es';
 import ControlMenu from '../../components/control-menu/ControlMenu.es';
 import DragLayer from '../../components/drag-and-drop/DragLayer.es';
-import {Loading} from '../../components/loading/Loading.es';
 import UpperToolbar from '../../components/upper-toolbar/UpperToolbar.es';
-import {errorToast, successToast} from '../../utils/toast.es';
-import {normalizeNames} from '../../utils/utils.es';
 import DropZone from './DropZone.es';
 import EditTableViewContext, {
 	ADD_DATA_LIST_VIEW_FIELD,

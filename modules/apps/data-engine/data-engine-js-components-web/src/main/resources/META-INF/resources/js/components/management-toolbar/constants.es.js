@@ -12,27 +12,17 @@
  * details.
  */
 
-import ClayLoadingIndicator from '@clayui/loading-indicator';
-import React from 'react';
-
-export const LoadingComponent = () => (
-	<div className="align-items-center d-flex loading-wrapper w-100">
-		<ClayLoadingIndicator />
-	</div>
-);
-
-export const withLoading = (Component) => {
-	const Wrapper = (props) => {
-		const {isLoading, ...restProps} = props;
-
-		if (isLoading) {
-			return <LoadingComponent />;
-		}
-
-		return <Component {...restProps} />;
-	};
-
-	return Wrapper;
+export const FILTER_NAMES = {
+	author: [
+		Liferay.Language.get('author'),
+		Liferay.Language.get('filter-by-author'),
+	],
+	'deployment-type': [
+		Liferay.Language.get('deployment-type'),
+		Liferay.Language.get('filter-by-deployment-type'),
+	],
+	status: [
+		Liferay.Language.get('status'),
+		Liferay.Language.get('filter-by-status'),
+	],
 };
-
-export const Loading = withLoading(({children}) => <>{children}</>);

@@ -13,20 +13,20 @@
  */
 
 import ClayLabel from '@clayui/label';
+import {AppContext} from 'data-engine-js-components-web/js/AppContext.es';
+import {confirmDelete} from 'data-engine-js-components-web/js/utils/client.es';
+import {getLocalizedValue} from 'data-engine-js-components-web/js/utils/lang.es';
+import {concatValues} from 'data-engine-js-components-web/js/utils/utils.es';
 import {compile} from 'path-to-regexp';
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 
-import {AppContext} from '../../AppContext.es';
 import Button from '../../components/button/Button.es';
 import ListView from '../../components/list-view/ListView.es';
 import useBackUrl from '../../hooks/useBackUrl.es';
 import useDataDefinition from '../../hooks/useDataDefinition.es';
 import useDeployApp from '../../hooks/useDeployApp.es';
-import {confirmDelete} from '../../utils/client.es';
-import {getLocalizedValue} from '../../utils/lang.es';
 import {fromNow} from '../../utils/time.es';
-import {concatValues} from '../../utils/utils.es';
 import {
 	COLUMNS,
 	DEPLOYMENT_ACTION,

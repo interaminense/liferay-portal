@@ -16,7 +16,7 @@ import {useContext} from 'react';
 import {__RouterContext as RouterContext} from 'react-router-dom';
 
 import {AppContext} from '../AppContext.es';
-import {navigateToEditPage} from '../pages/entry/utils.es';
+import {navigateToEditPage} from '../components/entry/utils.es';
 import {confirmDelete} from '../utils/client.es';
 import usePermissions from './usePermissions.es';
 

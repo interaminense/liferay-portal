@@ -12,10 +12,10 @@
  * details.
  */
 
+import {LoadingComponent} from 'data-engine-js-components-web/js/components/loading/Loading.es';
+import usePermissions from 'data-engine-js-components-web/js/hooks/usePermissions.es';
 import React from 'react';
 
-import {LoadingComponent} from '../../components/loading/Loading.es';
-import usePermissions from '../../hooks/usePermissions.es';
 import NoPermissionEntry from './NoPermissionEntry.es';
 
 export default function PermissionTunnel({children, permissionType}) {

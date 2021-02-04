@@ -12,18 +12,20 @@
  * details.
  */
 
+import {AppContext} from 'data-engine-js-components-web/js/AppContext.es';
+import ManagementToolbar from 'data-engine-js-components-web/js/components/management-toolbar/ManagementToolbar.es';
+import ManagementToolbarResultsBar, {
+	getSelectedFilters,
+} from 'data-engine-js-components-web/js/components/management-toolbar/ManagementToolbarResultsBar.es';
+import SearchContext, {
+	reducer,
+} from 'data-engine-js-components-web/js/components/management-toolbar/SearchContext.es';
+import useQuery from 'data-engine-js-components-web/js/hooks/useQuery.es';
+import useResource from 'data-engine-js-components-web/js/hooks/useResource.es';
+import {errorToast} from 'data-engine-js-components-web/js/utils/toast.es';
 import React, {useCallback, useContext, useEffect} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import {AppContext} from '../../AppContext.es';
-import useQuery from '../../hooks/useQuery.es';
-import useResource from '../../hooks/useResource.es';
-import {errorToast} from '../../utils/toast.es';
-import ManagementToolbar from '../management-toolbar/ManagementToolbar.es';
-import ManagementToolbarResultsBar, {
-	getSelectedFilters,
-} from '../management-toolbar/ManagementToolbarResultsBar.es';
-import SearchContext, {reducer} from '../management-toolbar/SearchContext.es';
 import TableWithPagination from '../table/TableWithPagination.es';
 
 export default withRouter(

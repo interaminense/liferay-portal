@@ -13,10 +13,14 @@
  */
 
 import ClayButton from '@clayui/button';
+import {AppContext} from 'data-engine-js-components-web/js/AppContext.es';
+import {
+	errorToast,
+	successToast,
+} from 'data-engine-js-components-web/js/utils/toast.es';
 import {createResourceURL, fetch} from 'frontend-js-web';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
-import {AppContext} from '../../AppContext.es';
 import Button from '../../components/button/Button.es';
 import {ControlMenuBase} from '../../components/control-menu/ControlMenu.es';
 import useDataDefinition from '../../hooks/useDataDefinition.es';
@@ -24,7 +28,6 @@ import withDDMForm, {
 	useDDMFormSubmit,
 	useDDMFormValidation,
 } from '../../hooks/withDDMForm.es';
-import {errorToast, successToast} from '../../utils/toast.es';
 
 export const EditEntry = ({
 	dataDefinitionId,

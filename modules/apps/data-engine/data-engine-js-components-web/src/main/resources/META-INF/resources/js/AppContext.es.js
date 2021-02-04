@@ -12,34 +12,30 @@
  * details.
  */
 
-import {useEffect, useState} from 'react';
+import React, {createContext} from 'react';
 
-import {request} from '../utils/client.es';
+const AppContext = createContext();
 
-export default (endpoint) => {
-	const [state, setState] = useState({
-		error: null,
-		isLoading: true,
-		response: {},
-	});
+const AppContextProvider = ({
+	children,
+	pathFriendlyURLPublic,
+	portletNamespace,
+	...restProps
+}) => {
+	const getStandaloneURL = (appId) =>
+		`${Liferay.ThemeDisplay.getPortalURL()}${pathFriendlyURLPublic}/App${appId}`;
 
-	useEffect(() => {
-		request({endpoint})
-			.then((response) => {
-				setState({
-					error: null,
-					isLoading: false,
-					response,
-				});
-			})
-			.catch((error) => {
-				setState({
-					error,
-					isLoading: false,
-					response: {},
-				});
-			});
-	}, [endpoint]);
-
-	return state;
+	return (
+		<AppContext.Provider
+			value={{
+				getStandaloneURL,
+				namespace: portletNamespace,
+				...restProps,
+			}}
+		>
+			{children}
+		</AppContext.Provider>
+	);
 };
+
+export {AppContext, AppContextProvider};
