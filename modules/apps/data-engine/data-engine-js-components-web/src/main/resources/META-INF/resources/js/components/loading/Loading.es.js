@@ -35,4 +35,4 @@ export const withLoading = (Component) => {
 	return Wrapper;
 };
 
-export const Loading = withLoading(({children}) => <>{children}</>);
+export default withLoading(({children}) => <>{children}</>);
