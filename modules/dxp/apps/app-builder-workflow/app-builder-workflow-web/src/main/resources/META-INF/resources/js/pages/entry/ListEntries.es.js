@@ -18,7 +18,6 @@ import ManagementToolbarResultsBar from 'app-builder-web/js/components/managemen
 import SearchContext, {
 	reducer,
 } from 'app-builder-web/js/components/management-toolbar/SearchContext.es';
-import TableWithPagination from 'app-builder-web/js/components/table/TableWithPagination.es';
 import useDataListView from 'app-builder-web/js/hooks/useDataListView.es';
 import useEntriesActions from 'app-builder-web/js/hooks/useEntriesActions.es';
 import usePermissions from 'app-builder-web/js/hooks/usePermissions.es';
@@ -32,6 +31,7 @@ import {getLocalizedUserPreferenceValue} from 'app-builder-web/js/utils/lang.es'
 import {errorToast} from 'app-builder-web/js/utils/toast.es';
 import {concatValues, isEqualObjects} from 'app-builder-web/js/utils/utils.es';
 import Loading from 'data-engine-js-components-web/js/components/loading/Loading.es';
+import TableWithPagination from 'data-engine-js-components-web/js/components/table/TableWithPagination.es';
 import {usePrevious} from 'frontend-js-react-web';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
