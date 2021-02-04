@@ -13,14 +13,14 @@
  */
 
 import Loading from 'data-engine-js-components-web/js/components/loading/Loading.es';
+import useQuery from 'data-engine-js-components-web/js/hooks/useQuery.es';
+import {getItem} from 'data-engine-js-components-web/js/utils/client.es';
 import {usePrevious} from 'frontend-js-react-web';
 import React, {useContext, useEffect, useState} from 'react';
 
 import {AppContext} from '../../AppContext.es';
 import ControlMenu from '../../components/control-menu/ControlMenu.es';
 import useDataLayout from '../../hooks/useDataLayout.es';
-import useQuery from '../../hooks/useQuery.es';
-import {getItem} from '../../utils/client.es';
 import {errorToast} from '../../utils/toast.es';
 import {isEqualObjects} from '../../utils/utils.es';
 import FieldPreview, {SectionRenderer} from './FieldPreview.es';

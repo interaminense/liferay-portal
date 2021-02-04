@@ -21,17 +21,17 @@ import SearchContext, {
 import useDataListView from 'app-builder-web/js/hooks/useDataListView.es';
 import useEntriesActions from 'app-builder-web/js/hooks/useEntriesActions.es';
 import usePermissions from 'app-builder-web/js/hooks/usePermissions.es';
-import useQuery from 'app-builder-web/js/hooks/useQuery.es';
 import {
 	buildEntries,
 	navigateToEditPage,
 } from 'app-builder-web/js/pages/entry/utils.es';
-import {getItem} from 'app-builder-web/js/utils/client.es';
 import {getLocalizedUserPreferenceValue} from 'app-builder-web/js/utils/lang.es';
 import {errorToast} from 'app-builder-web/js/utils/toast.es';
 import {concatValues, isEqualObjects} from 'app-builder-web/js/utils/utils.es';
 import Loading from 'data-engine-js-components-web/js/components/loading/Loading.es';
 import TableWithPagination from 'data-engine-js-components-web/js/components/table/TableWithPagination.es';
+import useQuery from 'data-engine-js-components-web/js/hooks/useQuery.es';
+import {getItem} from 'data-engine-js-components-web/js/utils/client.es';
 import {usePrevious} from 'frontend-js-react-web';
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 
