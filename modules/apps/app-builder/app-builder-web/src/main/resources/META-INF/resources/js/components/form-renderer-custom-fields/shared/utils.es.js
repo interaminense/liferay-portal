@@ -68,7 +68,7 @@ export function getFormattedState({
  * @param {string} propertyName
  * @param {any} propertyValue
  */
-export function setPropertyAtObjectViewLevel(propertyName, propertyValue) {
+export function setPropertyAtStructureLevel(propertyName, propertyValue) {
 	return ({dataDefinitionFields, fieldName}, dispatch) => {
 		dispatch({
 			payload: {
@@ -93,7 +93,7 @@ export function setPropertyAtObjectViewLevel(propertyName, propertyValue) {
  * @param {string} propertyName
  * @param {any} propertyValue
  */
-export function setPropertyAtFormViewLevel(propertyName, propertyValue) {
+export function setPropertyAtViewLevel(propertyName, propertyValue) {
 	return ({dataLayoutFields, fieldName}, dispatch) => {
 		dispatch({
 			payload: {

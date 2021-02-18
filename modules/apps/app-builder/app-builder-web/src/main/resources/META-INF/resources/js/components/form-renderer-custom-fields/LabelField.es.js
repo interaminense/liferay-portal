@@ -26,8 +26,8 @@ import {
 	getDataDefinitionField,
 	getDataLayoutField,
 	getFormattedState,
-	setPropertyAtFormViewLevel,
-	setPropertyAtObjectViewLevel,
+	setPropertyAtStructureLevel,
+	setPropertyAtViewLevel,
 } from './shared/utils.es';
 
 const PROPERTY_NAME = 'label';
@@ -125,14 +125,11 @@ export default function LabelField({AppContext, dataLayoutBuilder, field}) {
 
 		if (value === VIEW_LEVEL) {
 			callbackFn(
-				setPropertyAtFormViewLevel(
-					PROPERTY_NAME,
-					dataDefinitionField.label
-				)
+				setPropertyAtViewLevel(PROPERTY_NAME, dataDefinitionField.label)
 			);
 		}
 		else {
-			callbackFn(setPropertyAtFormViewLevel(PROPERTY_NAME, {}));
+			callbackFn(setPropertyAtViewLevel(PROPERTY_NAME, {}));
 
 			setValue(
 				getLocalizedValue(dataDefinitionField.label, formattedState)
@@ -160,7 +157,7 @@ export default function LabelField({AppContext, dataLayoutBuilder, field}) {
 
 		if (selectedValue === VIEW_LEVEL) {
 			callbackFn(
-				setPropertyAtFormViewLevel(PROPERTY_NAME, {
+				setPropertyAtViewLevel(PROPERTY_NAME, {
 					...dataLayoutField.label,
 					...label,
 				})
@@ -168,7 +165,7 @@ export default function LabelField({AppContext, dataLayoutBuilder, field}) {
 		}
 		else {
 			callbackFn(
-				setPropertyAtObjectViewLevel(PROPERTY_NAME, {
+				setPropertyAtStructureLevel(PROPERTY_NAME, {
 					...dataDefinitionField.label,
 					...label,
 				})

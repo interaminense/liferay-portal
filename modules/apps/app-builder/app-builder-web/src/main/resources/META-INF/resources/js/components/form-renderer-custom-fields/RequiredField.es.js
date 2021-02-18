@@ -21,8 +21,8 @@ import {
 	containsFieldInsideFormBuilder,
 	getDataDefinitionField,
 	getFormattedState,
-	setPropertyAtFormViewLevel,
-	setPropertyAtObjectViewLevel,
+	setPropertyAtStructureLevel,
+	setPropertyAtViewLevel,
 } from './shared/utils.es';
 
 const PROPERTY_NAME = 'required';
@@ -30,15 +30,15 @@ const PROPERTY_NAME = 'required';
 const LEVEL = {
 	[STRUCTURE_LEVEL]: {
 		fn: (...params) => {
-			setPropertyAtObjectViewLevel(PROPERTY_NAME, true)(...params);
+			setPropertyAtStructureLevel(PROPERTY_NAME, true)(...params);
 		},
 		label: Liferay.Language.get('for-all-forms-using-this-field'),
 	},
 	[VIEW_LEVEL]: {
 		fn: (...params) => {
-			setPropertyAtFormViewLevel(PROPERTY_NAME, true)(...params);
+			setPropertyAtViewLevel(PROPERTY_NAME, true)(...params);
 
-			setPropertyAtObjectViewLevel(PROPERTY_NAME, false)(...params);
+			setPropertyAtStructureLevel(PROPERTY_NAME, false)(...params);
 		},
 		label: Liferay.Language.get('only-for-this-form'),
 	},
@@ -49,10 +49,7 @@ const LEVEL = {
  * @param {object} state
  */
 function initialToggledValue(state) {
-	if (
-		isRequiredAtObjectViewLevel(state) ||
-		isRequiredAtFormViewLevel(state)
-	) {
+	if (isRequiredAtStructureLevel(state) || isRequiredAtViewLevel(state)) {
 		return true;
 	}
 
@@ -64,7 +61,7 @@ function initialToggledValue(state) {
  * @param {object} state
  */
 function initialLevelSelected(state) {
-	if (isRequiredAtObjectViewLevel(state)) {
+	if (isRequiredAtStructureLevel(state)) {
 		return STRUCTURE_LEVEL;
 	}
 
@@ -83,7 +80,7 @@ function isRequiredField(field) {
  * Check if it is required at form view level
  * @param {object} state
  */
-function isRequiredAtFormViewLevel({dataLayoutFields, fieldName}) {
+function isRequiredAtViewLevel({dataLayoutFields, fieldName}) {
 	return isRequiredField(dataLayoutFields[fieldName]);
 }
 
@@ -91,7 +88,7 @@ function isRequiredAtFormViewLevel({dataLayoutFields, fieldName}) {
  * Check if it is required at object view level
  * @param {object} state
  */
-function isRequiredAtObjectViewLevel(state) {
+function isRequiredAtStructureLevel(state) {
 	return isRequiredField(getDataDefinitionField(state));
 }
 
@@ -138,9 +135,9 @@ export default function RequiredField({AppContext, dataLayoutBuilder}) {
 		}
 		else {
 			callbackFn((...params) => {
-				setPropertyAtFormViewLevel(PROPERTY_NAME, false)(...params);
+				setPropertyAtViewLevel(PROPERTY_NAME, false)(...params);
 
-				setPropertyAtObjectViewLevel(PROPERTY_NAME, false)(...params);
+				setPropertyAtStructureLevel(PROPERTY_NAME, false)(...params);
 			});
 		}
 	};
