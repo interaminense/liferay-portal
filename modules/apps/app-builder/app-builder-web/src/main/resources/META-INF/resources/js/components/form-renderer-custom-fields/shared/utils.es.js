@@ -28,22 +28,6 @@ export function containsFieldInsideFormBuilder(dataLayoutBuilder, {fieldName}) {
 }
 
 /**
- * Get data definition field
- * @param {Object} state
- */
-export function getDataDefinitionField({dataDefinitionFields, fieldName}) {
-	return dataDefinitionFields.find(({name}) => name === fieldName);
-}
-
-/**
- * Get data layout field
- * @param {Object} state
- */
-export function getDataLayoutField({dataLayoutFields, fieldName}) {
-	return dataLayoutFields[fieldName];
-}
-
-/**
  * Return the formatted state
  * @param {object} state
  */
@@ -54,8 +38,18 @@ export function getFormattedState({
 	focusedCustomObjectField: {name: focusedCustomObjectFieldName},
 	focusedField: {fieldName},
 }) {
+	const dataDefinitionField = dataDefinitionFields.find(
+		({name}) => name === fieldName
+	);
+
 	return {
+		dataDefinitionField,
 		dataDefinitionFields,
+		dataLayoutField: {
+			...dataLayoutFields[fieldName],
+			label:
+				dataLayoutFields[fieldName]?.label ?? dataDefinitionField.label,
+		},
 		dataLayoutFields,
 		defaultLanguageId,
 		editingLanguageId,
@@ -68,7 +62,7 @@ export function getFormattedState({
  * @param {string} propertyName
  * @param {any} propertyValue
  */
-export function setPropertyAtObjectViewLevel(propertyName, propertyValue) {
+export function setPropertyAtStructureLevel(propertyName, propertyValue) {
 	return ({dataDefinitionFields, fieldName}, dispatch) => {
 		dispatch({
 			payload: {
@@ -93,7 +87,7 @@ export function setPropertyAtObjectViewLevel(propertyName, propertyValue) {
  * @param {string} propertyName
  * @param {any} propertyValue
  */
-export function setPropertyAtFormViewLevel(propertyName, propertyValue) {
+export function setPropertyAtViewLevel(propertyName, propertyValue) {
 	return ({dataLayoutFields, fieldName}, dispatch) => {
 		dispatch({
 			payload: {
