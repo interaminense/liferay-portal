@@ -402,7 +402,6 @@ class DataLayoutBuilder extends React.Component {
 				editingLanguageId,
 			]),
 		];
-		const focusedField = layoutProvider.getFocusedField();
 
 		this.setState({
 			availableLanguageIds,
@@ -425,6 +424,8 @@ class DataLayoutBuilder extends React.Component {
 		};
 
 		this.formBuilderWithLayoutProvider.props.layoutProviderProps = this.formBuilderWithLayoutProvider.props.layoutProviderProps; // eslint-disable-line
+
+		const focusedField = layoutProvider.getFocusedField();
 
 		if (Object.keys(focusedField).length) {
 			layoutProvider
