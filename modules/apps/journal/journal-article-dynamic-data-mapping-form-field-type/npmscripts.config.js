@@ -16,7 +16,7 @@ module.exports = {
 	build: {
 		dependencies: [
 			'dynamic-data-mapping-form-field-type',
-			'dynamic-data-mapping-form-renderer',
+			'data-engine-js-components-web',
 		],
 	},
 };

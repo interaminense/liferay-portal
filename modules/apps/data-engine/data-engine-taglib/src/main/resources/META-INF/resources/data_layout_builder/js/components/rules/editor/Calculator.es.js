@@ -21,7 +21,7 @@ import ClayLayout from '@clayui/layout';
 import RulesSupport from 'dynamic-data-mapping-form-builder/js/components/RuleBuilder/RulesSupport.es';
 import Token from 'dynamic-data-mapping-form-builder/js/expressions/Token.es';
 import Tokenizer from 'dynamic-data-mapping-form-builder/js/expressions/Tokenizer.es';
-import {FieldStateless} from 'dynamic-data-mapping-form-renderer';
+import {FieldStateless} from 'data-engine-js-components-web';
 import React, {forwardRef, useMemo, useState} from 'react';
 
 import CalculatorButtonArea from './CalculatorButtonArea.es';

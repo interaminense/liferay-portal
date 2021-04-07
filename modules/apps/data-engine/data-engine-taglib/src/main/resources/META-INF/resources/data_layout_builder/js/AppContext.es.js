@@ -13,7 +13,7 @@
  */
 
 import {FieldSupport} from 'dynamic-data-mapping-form-builder';
-import {PagesVisitor} from 'dynamic-data-mapping-form-renderer';
+import {PagesVisitor} from 'data-engine-js-components-web';
 import {createContext} from 'react';
 
 import {
