@@ -12,8 +12,8 @@
  * details.
  */
 
-import {FieldSupport} from 'dynamic-data-mapping-form-builder';
 import {PagesVisitor} from 'data-engine-js-components-web';
+import {FieldSupport} from 'dynamic-data-mapping-form-builder';
 import {createContext} from 'react';
 
 import {
