@@ -17,7 +17,7 @@ module.exports = {
 		dependencies: [
 			'data-engine-taglib',
 			'dynamic-data-mapping-form-builder',
-			'dynamic-data-mapping-form-renderer',
+			'data-engine-js-components-web',
 		],
 	},
 };
