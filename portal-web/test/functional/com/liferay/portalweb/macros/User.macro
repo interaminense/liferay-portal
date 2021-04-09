@@ -1034,7 +1034,7 @@ definition {
 				password = "test",
 				userEmailAddress = "${userEmailAddress}");
 
-			User.logoutUserPG();
+			User.logoutPG();
 
 			User.loginPG(
 				authenticationMethod = "${authenticationMethod}",
@@ -1066,7 +1066,7 @@ definition {
 				password = "test1",
 				userEmailAddress = "${userEmailAddress}");
 
-			User.logoutUserPG();
+			User.logoutPG();
 
 			User.loginPG(
 				authenticationMethod = "${authenticationMethod}",
@@ -2257,24 +2257,12 @@ definition {
 
 	@description = "Log out of Liferay Portal."
 	macro logoutPG {
-		if (isSet(nodePort)) {
-			Navigator.openSpecificURL(url = "http://localhost:${nodePort}");
+		if (isSet(specificURL)) {
+			Navigator.openSpecificURL(url = "${specificURL}");
 		}
 		else {
-			if (isSet(specificURL)) {
-				Navigator.openSpecificURL(url = "${specificURL}");
-			}
-			else {
-				Navigator.openURL();
-			}
+			Navigator.openURL();
 		}
-
-		UserBar.signOut();
-	}
-
-	@description = "Log out of Liferay Portal."
-	macro logoutUserPG {
-		Navigator.openURL();
 
 		UserBar.signOut();
 	}

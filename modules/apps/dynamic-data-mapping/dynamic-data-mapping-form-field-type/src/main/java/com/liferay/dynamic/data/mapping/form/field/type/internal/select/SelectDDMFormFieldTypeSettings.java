@@ -40,10 +40,10 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 				"setOptions('predefinedValue', getValue('options'))",
 				"setRequired('ddmDataProviderInstanceId', contains(getValue('dataSourceType'), \"data-provider\"))",
 				"setRequired('ddmDataProviderInstanceOutput', contains(getValue('dataSourceType'), \"data-provider\"))",
-				"setRequired('options', contains(getValue('dataSourceType'), \"manual\"))",
+				"setRequired('options', isEmpty(getValue('dataSourceType')) OR contains(getValue('dataSourceType'), \"manual\"))",
 				"setVisible('ddmDataProviderInstanceId', contains(getValue('dataSourceType'), \"data-provider\"))",
 				"setVisible('ddmDataProviderInstanceOutput', contains(getValue('dataSourceType'), \"data-provider\"))",
-				"setVisible('options', contains(getValue('dataSourceType'), \"manual\"))",
+				"setVisible('options', isEmpty(getValue('dataSourceType')) OR contains(getValue('dataSourceType'), \"manual\"))",
 				"setVisible('predefinedValue', contains(getValue('dataSourceType'), \"manual\"))",
 				"setVisible('validation', false)"
 			},

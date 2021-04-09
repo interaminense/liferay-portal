@@ -90,6 +90,19 @@
 		border-bottom: 4px solid $primary-l1;
 	}
 
+	// For left and right, we use box-shadow instead of border because border is
+	// automatically inverted in rtl, and we don't want that behavior here
+
+	&.drag-over-left:after {
+		box-shadow: inset 4px 0 0 0 $primary-l1;
+		transition: none;
+	}
+
+	&.drag-over-right:after {
+		box-shadow: inset -4px 0 0 0 $primary-l1;
+		transition: none;
+	}
+
 	&.drag-over-top:after {
 		border-top: 4px solid $primary-l1;
 	}
@@ -116,10 +129,18 @@
 
 	&.drag-over-middle
 		> .page-editor__topper__content
-		> .page-editor__container,
+		> .page-editor__container.empty,
 	&.drag-over-middle.page-editor__col.empty:before,
 	&.drag-over-middle.page-editor__collection-item:before {
 		box-shadow: inset 0 0 0 4px $primary-l1;
+	}
+
+	&.drag-over-middle
+		> .page-editor__topper__content
+		> .page-editor__container
+		> :last-child:after {
+		box-shadow: inset -4px 0 0 0 $primary-l1;
+		transition: none;
 	}
 
 	&.drag-over-middle.page-editor__col
@@ -235,5 +256,9 @@
 		&.active:after {
 			box-shadow: inset 0 0 0 $borderWidth $purple;
 		}
+	}
+
+	& > .page-editor__topper__content {
+		height: 100%;
 	}
 }

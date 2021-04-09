@@ -13,13 +13,9 @@
  */
 
 import classNames from 'classnames';
+import {useConfig, useForm, useFormState} from 'data-engine-js-components-web';
+import {EVENT_TYPES as CORE_EVENT_TYPES} from 'data-engine-js-components-web/js/core/actions/eventTypes.es';
 import {FieldsSidebar} from 'data-engine-taglib';
-import {
-	useConfig,
-	useForm,
-	useFormState,
-} from 'dynamic-data-mapping-form-renderer';
-import {EVENT_TYPES as CORE_EVENT_TYPES} from 'dynamic-data-mapping-form-renderer/js/core/actions/eventTypes.es';
 import React from 'react';
 
 import {EVENT_TYPES} from '../../../eventTypes.es';

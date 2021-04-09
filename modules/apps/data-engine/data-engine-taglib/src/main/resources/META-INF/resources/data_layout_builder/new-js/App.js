@@ -17,14 +17,14 @@ import {
 	ConfigProvider,
 	FormProvider,
 	parseProps,
-} from 'dynamic-data-mapping-form-renderer';
+} from 'data-engine-js-components-web';
 import {
 	dragAndDropReducer,
 	fieldEditableReducer,
 	languageReducer,
 	pagesStructureReducer,
-} from 'dynamic-data-mapping-form-renderer/js/core/reducers/index.es';
-import {pageReducer} from 'dynamic-data-mapping-form-renderer/js/custom/form/reducers/index.es';
+} from 'data-engine-js-components-web/js/core/reducers/index.es';
+import {pageReducer} from 'data-engine-js-components-web/js/custom/form/reducers/index.es';
 import React from 'react';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
@@ -32,6 +32,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 import DataEngineFormBuilder from './DataEngineFormBuilder';
 import INITIAL_CONFIG from './config/initialConfig';
 import INITIAL_STATE from './config/initialState';
+import sidebarReducer from './reducers/sidebarReducer';
 
 const App = (props) => {
 	const {config, state} = parseProps(props);
@@ -48,6 +49,7 @@ const App = (props) => {
 							languageReducer,
 							pageReducer,
 							pagesStructureReducer,
+							sidebarReducer,
 						]}
 						value={state}
 					>

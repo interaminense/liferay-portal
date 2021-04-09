@@ -12,8 +12,8 @@
  * details.
  */
 
+import {normalizeFieldName} from 'data-engine-js-components-web';
 import {getDefaultFieldName} from 'dynamic-data-mapping-form-builder/js/util/fieldSupport.es';
-import {normalizeFieldName} from 'dynamic-data-mapping-form-renderer';
 
 export const random = (a) => {
 	return a

@@ -16,11 +16,12 @@ import ClayAutocomplete from '@clayui/autocomplete';
 import ClayDropDown from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
 import {usePrevious} from '@liferay/frontend-js-react-web';
-import {normalizeFieldName} from 'dynamic-data-mapping-form-renderer';
+import {normalizeFieldName} from 'data-engine-js-components-web';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 
 import {FieldBase} from '../FieldBase/ReactFieldBase.es';
 import {useSyncValue} from '../hooks/useSyncValue.es';
+import withConfirmationField from '../util/withConfirmationField.es';
 
 const Text = ({
 	defaultLanguageId,
@@ -383,4 +384,4 @@ const Main = ({
 
 Main.displayName = 'Text';
 
-export default Main;
+export default withConfirmationField(Main);

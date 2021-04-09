@@ -12,6 +12,14 @@
  * details.
  */
 
-import {INITIAL_STATE} from 'dynamic-data-mapping-form-renderer/js/core/config/index.es';
+import {INITIAL_STATE as CORE_INITIAL_STATE} from 'data-engine-js-components-web/js/core/config/index.es';
+
+const INITIAL_STATE = {
+	...CORE_INITIAL_STATE,
+	dataDefinitionId: 0,
+	dataLayoutId: 0,
+	editingDataDefinitionId: 0,
+	name: {},
+};
 
 export default INITIAL_STATE;

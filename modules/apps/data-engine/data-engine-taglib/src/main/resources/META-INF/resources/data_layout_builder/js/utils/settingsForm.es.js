@@ -12,7 +12,7 @@
  * details.
  */
 
-import {PagesVisitor, generateName} from 'dynamic-data-mapping-form-renderer';
+import {PagesVisitor, generateName} from 'data-engine-js-components-web';
 
 const getPredefinedValues = ({locale, localizedValue, options}) => {
 	if (Array.isArray(localizedValue[locale])) {
@@ -80,6 +80,7 @@ export const getFilteredSettingsContext = ({
 							name: generateName(name, updatedField),
 							predefinedValue: '["manual"]',
 							readOnly: true,
+							visibilityExpression: 'FALSE',
 							visible: false,
 						};
 					}
@@ -87,6 +88,7 @@ export const getFilteredSettingsContext = ({
 					if (fieldName === 'ddmDataProviderInstanceId') {
 						return {
 							...updatedField,
+							visibilityExpression: 'FALSE',
 							visible: false,
 						};
 					}
@@ -94,6 +96,7 @@ export const getFilteredSettingsContext = ({
 					if (fieldName === 'ddmDataProviderInstanceOutput') {
 						return {
 							...updatedField,
+							visibilityExpression: 'FALSE',
 							visible: false,
 						};
 					}

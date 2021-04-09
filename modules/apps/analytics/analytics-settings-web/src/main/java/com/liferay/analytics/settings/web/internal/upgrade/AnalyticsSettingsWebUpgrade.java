@@ -36,6 +36,12 @@ public class AnalyticsSettingsWebUpgrade implements UpgradeStepRegistrator {
 					_configurationAdmin));
 
 		registry.register(
+			"0.0.1", "1.0.0",
+			new com.liferay.analytics.settings.web.internal.upgrade.v1_0_0.
+				AnalyticsConfigurationPreferencesUpgradeProcess(
+					_configurationAdmin));
+
+		registry.register(
 			"1.0.0", "1.0.1",
 			new com.liferay.analytics.settings.web.internal.upgrade.v1_0_1.
 				AnalyticsConfigurationPreferencesUpgradeProcess(

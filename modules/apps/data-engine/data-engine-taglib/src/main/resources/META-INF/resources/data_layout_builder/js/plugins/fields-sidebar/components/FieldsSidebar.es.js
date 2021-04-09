@@ -14,7 +14,7 @@
 
 import ClayForm from '@clayui/form';
 import classNames from 'classnames';
-import {MAPPED_EVENT_TYPES} from 'dynamic-data-mapping-form-renderer';
+import {MAPPED_EVENT_TYPES} from 'data-engine-js-components-web';
 import React, {useContext, useState} from 'react';
 
 import AppContext from '../../../AppContext.es';
@@ -119,8 +119,8 @@ export const DataEngineFieldsSidebar = ({title}) => {
 					'fieldAdded',
 					dropLayoutBuilderField({
 						addedToPlaceholder: true,
-						dataLayoutBuilder,
 						fieldTypeName: name,
+						fieldTypes: dataLayoutBuilder.props.fieldTypes,
 						indexes: {
 							columnIndex: 0,
 							pageIndex: activePage,

@@ -78,7 +78,7 @@ RedirectManagementToolbarDisplayContext redirectManagementToolbarDisplayContext 
 						%>
 
 						<liferay-ui:search-container-column-text
-							cssClass="table-cell-expand"
+							cssClass="table-cell-expand table-cell-text-truncate-reverse"
 							name="source-url"
 						>
 
@@ -86,13 +86,13 @@ RedirectManagementToolbarDisplayContext redirectManagementToolbarDisplayContext 
 							String sourceURL = HtmlUtil.escape(RedirectUtil.getGroupBaseURL(themeDisplay) + StringPool.SLASH + redirectEntry.getSourceURL());
 							%>
 
-							<span class="text-truncate text-truncate-reverse" data-title="<%= HtmlUtil.escapeAttribute(sourceURL) %>">
-								<bdi><%= sourceURL %></bdi>
-							</span>
+							<bdi data-title="<%= HtmlUtil.escapeAttribute(sourceURL) %>">
+								<%= sourceURL %>
+							</bdi>
 						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-text
-							cssClass="table-cell-expand"
+							cssClass="table-cell-expand table-cell-text-truncate-reverse"
 							name="destination-url"
 						>
 
@@ -100,9 +100,9 @@ RedirectManagementToolbarDisplayContext redirectManagementToolbarDisplayContext 
 							String destinationURL = HtmlUtil.escape(redirectEntry.getDestinationURL());
 							%>
 
-							<span class="text-truncate text-truncate-reverse" data-title="<%= HtmlUtil.escapeAttribute(destinationURL) %>">
-								<bdi><%= destinationURL %></bdi>
-							</span>
+							<bdi data-title="<%= HtmlUtil.escapeAttribute(destinationURL) %>">
+								<%= destinationURL %>
+							</bdi>
 						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-text

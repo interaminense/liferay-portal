@@ -38,8 +38,11 @@ import moveItem from '../../../../../app/thunks/moveItem';
 import {deepEqual} from '../../../../../app/utils/checkDeepEqual';
 import checkAllowedChild from '../../../../../app/utils/drag-and-drop/checkAllowedChild';
 import {DRAG_DROP_TARGET_TYPE} from '../../../../../app/utils/drag-and-drop/constants/dragDropTargetType';
-import {TARGET_POSITION} from '../../../../../app/utils/drag-and-drop/constants/targetPosition';
-import getTargetPosition from '../../../../../app/utils/drag-and-drop/getTargetPosition';
+import {ORIENTATIONS} from '../../../../../app/utils/drag-and-drop/constants/orientations';
+import {TARGET_POSITIONS} from '../../../../../app/utils/drag-and-drop/constants/targetPositions';
+import getDropTargetPosition from '../../../../../app/utils/drag-and-drop/getDropTargetPosition';
+import getTargetData from '../../../../../app/utils/drag-and-drop/getTargetData';
+import getTargetPositions from '../../../../../app/utils/drag-and-drop/getTargetPositions';
 import itemIsAncestor from '../../../../../app/utils/drag-and-drop/itemIsAncestor';
 import toControlsId from '../../../../../app/utils/drag-and-drop/toControlsId';
 import {
@@ -162,11 +165,11 @@ function StructureTreeNodeContent({
 			aria-selected={isActive}
 			className={classNames('page-editor__page-structure__tree-node', {
 				'drag-over-bottom':
-					isOverTarget && targetPosition === TARGET_POSITION.BOTTOM,
+					isOverTarget && targetPosition === TARGET_POSITIONS.BOTTOM,
 				'drag-over-middle':
-					isOverTarget && targetPosition === TARGET_POSITION.MIDDLE,
+					isOverTarget && targetPosition === TARGET_POSITIONS.MIDDLE,
 				'drag-over-top':
-					isOverTarget && targetPosition === TARGET_POSITION.TOP,
+					isOverTarget && targetPosition === TARGET_POSITIONS.TOP,
 				dragged: isDraggingSource,
 				'page-editor__page-structure__tree-node--activable':
 					node.activable && node.itemType !== ITEM_TYPES.editable,
@@ -322,7 +325,7 @@ function computeHover({
 		const targetIsParent = sourceItem.parentId === targetItem.itemId;
 
 		return (
-			targetPositionWithMiddle === TARGET_POSITION.MIDDLE &&
+			targetPositionWithMiddle === TARGET_POSITIONS.MIDDLE &&
 			(targetIsEmpty || targetIsColumn || targetIsContainer) &&
 			!targetIsFragment &&
 			!targetIsParent
@@ -431,13 +434,14 @@ function getItemPosition(item, monitor, layoutDataRef, targetRefs) {
 	const [
 		targetPositionWithMiddle,
 		targetPositionWithoutMiddle,
-	] = getTargetPosition(
+	] = getDropTargetPosition(
 		clientOffsetY,
-		hoverBoundingRect,
-		ELEVATION_BORDER_SIZE
+		ELEVATION_BORDER_SIZE,
+		getTargetPositions(ORIENTATIONS.vertical),
+		getTargetData(hoverBoundingRect, ORIENTATIONS.vertical)
 	);
 
-	const elevation = targetPositionWithMiddle !== TARGET_POSITION.MIDDLE;
+	const elevation = targetPositionWithMiddle !== TARGET_POSITIONS.MIDDLE;
 
 	return [targetPositionWithMiddle, targetPositionWithoutMiddle, elevation];
 }

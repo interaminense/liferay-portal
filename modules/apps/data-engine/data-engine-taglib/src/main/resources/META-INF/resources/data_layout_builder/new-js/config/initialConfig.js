@@ -12,6 +12,19 @@
  * details.
  */
 
-import {INITIAL_CONFIG_STATE} from 'dynamic-data-mapping-form-renderer/js/core/config/index.es';
+import {INITIAL_CONFIG_STATE} from 'data-engine-js-components-web/js/core/config/index.es';
 
-export default INITIAL_CONFIG_STATE;
+const INITIAL_CONFIG = {
+	...INITIAL_CONFIG_STATE,
+	allowFieldSets: false,
+	allowNestedFields: true,
+	allowRules: false,
+	disabledProperties: [],
+	disabledTabs: [],
+	multiPage: true,
+	ruleSettings: {},
+	unimplementedProperties: [],
+	visibleProperties: [],
+};
+
+export default INITIAL_CONFIG;

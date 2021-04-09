@@ -588,57 +588,52 @@ currentURLObj.setParameter("historyKey", liferayPortletResponse.getNamespace() +
 					'.modify-link'
 				);
 
-				A.one('#<portlet:namespace />selectSiteRoleLink').on('click', (event) => {
-					var searchContainerName = '<portlet:namespace />siteRolesSearchContainer';
+				const selectSiteRoleLink = document.getElementById(
+					'<portlet:namespace />selectSiteRoleLink'
+				);
 
-					var searchContainer = Liferay.SearchContainer.get(searchContainerName);
-
-					Util.selectEntity(
-						{
-							dialog: {
-								constrain: true,
-								modal: true,
+				if (selectSiteRoleLink) {
+					selectSiteRoleLink.addEventListener('click', (event) => {
+						Util.openSelectionModal({
+							onSelect: (selectedItem) => {
+								<portlet:namespace />selectRole(
+									selectedItem.entityid,
+									selectedItem.entityname,
+									selectedItem.searchcontainername,
+									selectedItem.groupdescriptivename,
+									selectedItem.groupid,
+									selectedItem.iconcssclass
+								);
 							},
 
 							<%
 							String siteRoleEventName = liferayPortletResponse.getNamespace() + "selectSiteRole";
 							%>
 
-							id: '<%= siteRoleEventName %>',
+							selectEventName: '<%= siteRoleEventName %>',
+
 							selectedData: searchContainer.getData(true),
 							title:
 								'<liferay-ui:message arguments="site-role" key="select-x" />',
-
-							<%
-							PortletURL selectSiteRoleURL = PortletURLBuilder.create(
-								PortletProviderUtil.getPortletURL(request, Role.class.getName(), PortletProvider.Action.BROWSE)
-							).setParameter(
-								"p_u_i_d", (selUser == null) ? "0" : String.valueOf(selUser.getUserId())
-							).setParameter(
-								"step", "1"
-							).setParameter(
-								"roleType", String.valueOf(RoleConstants.TYPE_SITE)
-							).setParameter(
-								"eventName", siteRoleEventName
-							).setWindowState(
-								LiferayWindowState.POP_UP
-							).build();
-							%>
-
-							uri: '<%= selectSiteRoleURL.toString() %>',
-						},
-						(event) => {
-							<portlet:namespace />selectRole(
-								event.entityid,
-								event.entityname,
-								event.searchcontainername,
-								event.groupdescriptivename,
-								event.groupid,
-								event.iconcssclass
-							);
-						}
-					);
-				});
+							url:
+								'<%=
+									PortletURLBuilder.create(
+										PortletProviderUtil.getPortletURL(request, Role.class.getName(), PortletProvider.Action.BROWSE)
+									).setParameter(
+										"p_u_i_d", (selUser == null) ? "0" : String.valueOf(selUser.getUserId())
+									).setParameter(
+										"step", "1"
+									).setParameter(
+										"roleType", String.valueOf(RoleConstants.TYPE_SITE)
+									).setParameter(
+										"eventName", siteRoleEventName
+									).setWindowState(
+										LiferayWindowState.POP_UP
+									).build()
+								%>',
+						});
+					});
+				}
 			</aui:script>
 		</c:if>
 	</c:if>
