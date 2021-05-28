@@ -16,6 +16,7 @@ import './FieldBase.scss';
 
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
+import ClayLabel from '@clayui/label';
 import ClayPopover from '@clayui/popover';
 import classNames from 'classnames';
 import {
@@ -136,6 +137,7 @@ function FieldBase({
 	displayErrors,
 	errorMessage,
 	fieldName,
+	hideField = false,
 	id,
 	label,
 	localizedValue = {},
@@ -293,11 +295,23 @@ function FieldBase({
 								aria-describedby={fieldDetailsId}
 								className={classNames({
 									'ddm-empty': !showLabel && !required,
-									'ddm-label': showLabel || required,
+									'ddm-label': showLabel || required
 								})}
 								tabIndex="0"
 							>
-								{label && showLabel && label}
+								{label && showLabel && (
+									hideField ? (
+										<>
+											<span className="text-secondary mr-1">
+												{label}
+											</span>
+
+											<ClayLabel displayType="secondary">
+												{Liferay.Language.get('hidden')}
+											</ClayLabel>
+										</>
+									) : label
+								)}
 
 								<FieldProperties
 									required={required}
