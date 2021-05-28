@@ -295,14 +295,15 @@ function FieldBase({
 								aria-describedby={fieldDetailsId}
 								className={classNames({
 									'ddm-empty': !showLabel && !required,
-									'ddm-label': showLabel || required
+									'ddm-label': showLabel || required,
 								})}
 								tabIndex="0"
 							>
-								{label && showLabel && (
-									hideField ? (
+								{label &&
+									showLabel &&
+									(hideField ? (
 										<>
-											<span className="text-secondary mr-1">
+											<span className="mr-1 text-secondary">
 												{label}
 											</span>
 
@@ -310,8 +311,9 @@ function FieldBase({
 												{Liferay.Language.get('hidden')}
 											</ClayLabel>
 										</>
-									) : label
-								)}
+									) : (
+										label
+									))}
 
 								<FieldProperties
 									required={required}

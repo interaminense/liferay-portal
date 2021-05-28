@@ -246,8 +246,14 @@ describe('ReactFieldBase', () => {
 
 		expect(getByText('hidden')).toBeInTheDocument();
 		expect(getByText('Text')).toBeInTheDocument();
-	
-		expect(getByText('hidden').parentNode).toHaveAttribute('class', 'label label-secondary');
-		expect(getByText('Text')).toHaveAttribute('class', 'text-secondary mr-1');
+
+		expect(getByText('hidden').parentNode).toHaveAttribute(
+			'class',
+			'label label-secondary'
+		);
+		expect(getByText('Text')).toHaveAttribute(
+			'class',
+			'mr-1 text-secondary'
+		);
 	});
 });
