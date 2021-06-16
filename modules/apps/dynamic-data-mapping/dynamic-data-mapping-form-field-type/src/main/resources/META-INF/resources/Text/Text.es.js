@@ -17,7 +17,7 @@ import ClayDropDown from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
 import {usePrevious} from '@liferay/frontend-js-react-web';
 import {normalizeFieldName} from 'data-engine-js-components-web';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import {FieldBase} from '../FieldBase/ReactFieldBase.es';
 import {useSyncValue} from '../hooks/useSyncValue.es';
@@ -188,26 +188,27 @@ const Autocomplete = ({
 		(item) => item && item.match(escapeChars(value))
 	);
 
+	const isValidItem = useCallback(() => {
+		return (
+			!selectedItem &&
+			filteredItems.length > 1 &&
+			!filteredItems.includes(value)
+		);
+	}, [filteredItems, selectedItem, value]);
+
 	useEffect(() => {
+		const ddmPageContainerLayout = inputRef.current.closest(
+			'.ddm-page-container-layout'
+		);
+
 		if (
-			selectedItem ||
-			(filteredItems.length === 1 && filteredItems.includes(value))
+			!isValidItem() &&
+			ddmPageContainerLayout &&
+			ddmPageContainerLayout.classList.contains('hide')
 		) {
 			setVisible(false);
 		}
-		else {
-			const ddmPageContainerLayout = inputRef.current.closest(
-				'.ddm-page-container-layout'
-			);
-
-			if (
-				ddmPageContainerLayout &&
-				ddmPageContainerLayout.classList.contains('hide')
-			) {
-				setVisible(false);
-			}
-		}
-	}, [filteredItems, value, selectedItem]);
+	}, [filteredItems, isValidItem, value, selectedItem]);
 
 	const handleFocus = (event, direction) => {
 		const target = event.target;
@@ -237,9 +238,6 @@ const Autocomplete = ({
 			event.stopPropagation();
 			inputRef.current.focus();
 		}
-		else {
-			setVisible(!!value);
-		}
 	};
 
 	return (
@@ -253,21 +251,16 @@ const Autocomplete = ({
 				name={name}
 				onBlur={onBlur}
 				onChange={(event) => {
-					setVisible(!!event.target.value);
 					setValue(event.target.value);
+					setVisible(!!event.target.value);
 					setSelectedItem(false);
 					onChange(event);
 				}}
 				onFocus={(event) => {
-					if (
-						!(
-							selectedItem ||
-							(filteredItems.length === 1 &&
-								filteredItems.includes(value))
-						)
-					) {
-						setVisible(!!event.target.value);
+					if (isValidItem() && event.target.value) {
+						setVisible(true);
 					}
+
 					onFocus(event);
 				}}
 				onKeyDown={(event) => {
@@ -325,6 +318,7 @@ const Autocomplete = ({
 							match={value}
 							onClick={() => {
 								setValue(label);
+								setVisible(false);
 								setSelectedItem(true);
 								onChange({target: {value: label}});
 							}}
