@@ -16,7 +16,7 @@ import {act, cleanup, fireEvent, render} from '@testing-library/react';
 import {PageProvider} from 'data-engine-js-components-web';
 import React from 'react';
 
-import Validation from '../../../src/main/resources/META-INF/resources/Validation/Validation.es';
+import Validation from '../../../src/main/resources/META-INF/resources/Validation/Validation';
 
 const globalLanguageDirection = Liferay.Language.direction;
 
@@ -92,6 +92,7 @@ describe('Validation', () => {
 
 		const {container} = render(
 			<ValidationWithProvider
+				dataType="string"
 				defaultLanguageId="en_US"
 				editingLanguageId="en_US"
 				expression={{}}

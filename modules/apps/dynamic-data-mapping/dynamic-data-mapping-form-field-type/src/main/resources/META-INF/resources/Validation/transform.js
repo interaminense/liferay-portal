@@ -69,15 +69,18 @@ const getValidation = (
 
 		return {
 			enableValidation,
-			errorMessage:
-				errorMessage[editingLanguageId] ||
-				errorMessage[defaultLanguageId],
+			errorMessage,
 			expression,
-			parameter:
-				parameter[editingLanguageId] || parameter[defaultLanguageId],
+			parameter,
 			parameterMessage,
 			selectedValidation,
 		};
+	};
+};
+
+export const getLocalizedValue = ({defaultLanguageId, editingLanguageId}) => {
+	return (value) => {
+		return value[editingLanguageId] || value[defaultLanguageId];
 	};
 };
 
