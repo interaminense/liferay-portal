@@ -13,6 +13,14 @@
  */
 
 export const VALIDATIONS = {
+	date: [
+		{
+			label: Liferay.Language.get('starts-from'),
+			name: 'futureDates',
+			regex: /^futureDates\((.+), "(.*)"\)$/,
+			template: 'futureDates({name}, "{parameter}")',
+		},
+	],
 	numeric: [
 		{
 			label: Liferay.Language.get('is-equal-to'),
