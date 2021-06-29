@@ -32,9 +32,8 @@ const getValidationFromExpression = (validations, validation) => {
 	};
 };
 
-const transformValidations = (initialValidations, initialDataType) => {
-	const dataType = initialDataType !== 'string' ? 'numeric' : initialDataType;
-	const validations = initialValidations ? initialValidations : VALIDATIONS;
+const transformValidations = (initialValidations, dataType) => {
+	const validations = initialValidations || VALIDATIONS;
 
 	return validations[dataType].map((validation) => {
 		return {
@@ -45,12 +44,7 @@ const transformValidations = (initialValidations, initialDataType) => {
 	});
 };
 
-const getValidation = (
-	defaultLanguageId,
-	editingLanguageId,
-	validations,
-	transformValidationFromExpression
-) => {
+const getValidation = (validations, transformValidationFromExpression) => {
 	return function transformValue(value) {
 		const {errorMessage = {}, expression = {}, parameter = {}} = value;
 		let parameterMessage = '';
@@ -66,17 +60,24 @@ const getValidation = (
 
 		return {
 			enableValidation,
-			errorMessage:
-				errorMessage[editingLanguageId] ||
-				errorMessage[defaultLanguageId],
+			errorMessage,
 			expression,
-			parameter:
-				parameter[editingLanguageId] || parameter[defaultLanguageId],
+			parameter,
 			parameterMessage,
 			selectedValidation,
 		};
 	};
 };
+
+const normalizeDataType = (initialDataType) => {
+	return initialDataType === 'double' || initialDataType === 'integer'
+		? 'numeric'
+		: initialDataType;
+};
+
+export const getLocalizedValue = ({defaultLanguageId, editingLanguageId}) => (
+	value
+) => value[editingLanguageId] || value[defaultLanguageId];
 
 export const getSelectedValidation = (validations) => {
 	return function transformSelectedValidation(value) {
@@ -105,8 +106,6 @@ export const transformData = ({
 	const dataType = validation?.dataType || initialDataType;
 	const validations = transformValidations(initialValidations, dataType);
 	const parsedValidation = getValidation(
-		defaultLanguageId,
-		editingLanguageId,
 		validations,
 		getValidationFromExpression(validations, validation)
 	)(value);
