@@ -35,7 +35,7 @@ const getValidationFromExpression = (validations, validation) => {
 const transformValidations = (initialValidations, dataType) => {
 	const validations = initialValidations || VALIDATIONS;
 
-	return validations[dataType].map((validation) => {
+	return validations[normalizeDataType(dataType)].map((validation) => {
 		return {
 			...validation,
 			checked: false,
@@ -69,7 +69,7 @@ const getValidation = (validations, transformValidationFromExpression) => {
 	};
 };
 
-const normalizeDataType = (initialDataType) => {
+export const normalizeDataType = (initialDataType) => {
 	if (initialDataType === 'double' || initialDataType === 'integer') {
 		return 'numeric';
 	}
@@ -107,7 +107,7 @@ export const transformData = ({
 	validations: initialValidations,
 	value,
 }) => {
-	const dataType = normalizeDataType(validation?.dataType ?? initialDataType);
+	const dataType = validation?.dataType ?? initialDataType;
 	const validations = transformValidations(initialValidations, dataType);
 	const parsedValidation = getValidation(
 		validations,
