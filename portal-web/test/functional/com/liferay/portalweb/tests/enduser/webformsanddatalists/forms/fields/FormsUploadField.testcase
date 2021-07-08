@@ -393,8 +393,9 @@ definition {
 	@description = "Verify that an Upload Field can be set to repeatable"
 	@priority = "5"
 	test CanBeSetToRepeatable {
-		property forms.functional = "quarantine";
+		property forms.functional = "true";
 		property portal.acceptance = "false";
+		property test.name.skip.portal.instance = "FormsUploadField#CanBeSetToRepeatable";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",

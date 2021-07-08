@@ -74,13 +74,6 @@
 			"url": "https://learn.liferay.com/dxp/latest/en/site-building/personalizing-site-experience/enabling-automated-live-chat-systems/getting-a-chat-provider-account-id/tidio.html"
 		}
 	},
-	"chat-provider-account-id-help-tolvnow": {
-		"deprecated": "true",
-		"en_US": {
-			"message": "Get my account token for Tolvnow.",
-			"url": "https://learn.liferay.com/dxp/latest/en/site-building/personalizing-site-experience/enabling-automated-live-chat-systems/getting-a-chat-provider-account-id/tolvnow.html"
-		}
-	},
 	"chat-provider-account-id-help-zendesk": {
 		"deprecated": "true",
 		"en_US": {
@@ -128,12 +121,6 @@
 		"en_US": {
 			"message": "Get my account token for Tidio.",
 			"url": "https://learn.liferay.com/dxp/latest/en/site-building/personalizing-site-experience/enabling-automated-live-chat-systems/getting-a-chat-provider-account-id/tidio.html"
-		}
-	},
-	"chat-provider-account-id-tolvnow": {
-		"en_US": {
-			"message": "Get my account token for Tolvnow.",
-			"url": "https://learn.liferay.com/dxp/latest/en/site-building/personalizing-site-experience/enabling-automated-live-chat-systems/getting-a-chat-provider-account-id/tolvnow.html"
 		}
 	},
 	"chat-provider-account-id-zendesk": {

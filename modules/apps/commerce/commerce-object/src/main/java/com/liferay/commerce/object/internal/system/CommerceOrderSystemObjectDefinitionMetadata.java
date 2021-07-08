@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.commerce.internal.object.system;
+package com.liferay.commerce.object.internal.system;
 
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.system.BaseSystemObjectDefinitionMetadata;

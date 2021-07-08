@@ -179,7 +179,8 @@ public class OpenIdConnectServiceHandlerImpl
 			openIdConnectProvider.geTokenConnectionTimeout());
 
 		updateSessionTokens(
-			openIdConnectSessionImpl, tokens, System.currentTimeMillis());
+			openIdConnectSessionImpl, tokens, System.currentTimeMillis(),
+			false);
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			httpServletRequest);
@@ -455,11 +456,11 @@ public class OpenIdConnectServiceHandlerImpl
 
 		Tokens tokens = requestRefreshToken(
 			refreshToken, getOIDCClientInformation(openIdConnectProvider),
-			oidcProviderMetadata, openIdConnectSessionImpl.getNonce(),
+			oidcProviderMetadata,
 			openIdConnectProvider.geTokenConnectionTimeout());
 
 		updateSessionTokens(
-			openIdConnectSessionImpl, tokens, System.currentTimeMillis());
+			openIdConnectSessionImpl, tokens, System.currentTimeMillis(), true);
 
 		return true;
 	}
@@ -482,7 +483,7 @@ public class OpenIdConnectServiceHandlerImpl
 	protected Tokens requestRefreshToken(
 			RefreshToken refreshToken,
 			OIDCClientInformation oidcClientInformation,
-			OIDCProviderMetadata oidcProviderMetadata, Nonce nonce,
+			OIDCProviderMetadata oidcProviderMetadata,
 			int tokenConnectionTimeout)
 		throws OpenIdConnectServiceException {
 
@@ -490,7 +491,7 @@ public class OpenIdConnectServiceHandlerImpl
 			refreshToken);
 
 		return requestTokens(
-			oidcClientInformation, oidcProviderMetadata, nonce,
+			oidcClientInformation, oidcProviderMetadata, null,
 			refreshTokenGrant, tokenConnectionTimeout);
 	}
 
@@ -619,10 +620,16 @@ public class OpenIdConnectServiceHandlerImpl
 
 	protected void updateSessionTokens(
 		OpenIdConnectSessionImpl openIdConnectSessionImpl, Tokens tokens,
-		long loginTime) {
+		long loginTime, boolean exchangeRefreshToken) {
 
 		openIdConnectSessionImpl.setAccessToken(tokens.getAccessToken());
-		openIdConnectSessionImpl.setRefreshToken(tokens.getRefreshToken());
+
+		if (!exchangeRefreshToken ||
+			(exchangeRefreshToken && (tokens.getRefreshToken() != null))) {
+
+			openIdConnectSessionImpl.setRefreshToken(tokens.getRefreshToken());
+		}
+
 		openIdConnectSessionImpl.setLoginTime(loginTime);
 	}
 

@@ -12,15 +12,15 @@
  * details.
  */
 
-package com.liferay.batch.engine.internal.task;
+package com.liferay.fragment.collection.filter;
 
-import java.io.InputStream;
+import java.util.Locale;
 
 /**
- * @author Matija Petanjek
+ * @author Pablo Molina
  */
-public interface BatchEngineTaskProgress {
+public interface FragmentCollectionFilter {
 
-	public int getTotalItemsCount(InputStream inputStream);
+	public String getLabel(Locale locale);
 
 }

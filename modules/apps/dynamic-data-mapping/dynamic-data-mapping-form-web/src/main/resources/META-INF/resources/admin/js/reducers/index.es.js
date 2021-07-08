@@ -14,5 +14,6 @@
 
 export {default as elementSetReducer} from './elementSetReducer.es';
 export {default as formInfoReducer} from './formInfoReducer.es';
+export {default as objectFieldsReducer} from './objectFieldsReducer.es';
 export {default as rulesReducer} from './rulesReducer.es';
 export {default as sidebarReducer} from './sidebarReducer.es';

@@ -14,16 +14,11 @@
 
 package com.liferay.commerce.product.content.search.web.internal.portlet;
 
-import com.liferay.commerce.account.model.CommerceAccount;
-import com.liferay.commerce.account.util.CommerceAccountHelper;
 import com.liferay.commerce.currency.util.CommercePriceFormatter;
 import com.liferay.commerce.product.constants.CPField;
 import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.commerce.product.content.search.web.internal.configuration.CPPriceRangeFacetsPortletInstanceConfiguration;
 import com.liferay.commerce.product.content.search.web.internal.display.context.CPPriceRangeFacetsDisplayContext;
-import com.liferay.commerce.product.model.CPDefinition;
-import com.liferay.commerce.product.model.CommerceChannel;
-import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.search.facet.SerializableFacet;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.json.JSONObjectImpl;
@@ -33,16 +28,12 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.RangeFacet;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.searcher.SearchRequest;
@@ -105,7 +96,7 @@ public class CPPriceRangeFacetsPortlet
 			SearchContext searchContext =
 				portletSharedSearchSettings.getSearchContext();
 
-			Facet facet = getFacet(renderRequest);
+			Facet facet = getFacet(renderRequest, searchContext);
 
 			Optional<String[]> parameterValuesOptional =
 				portletSharedSearchSettings.getParameterValues71(
@@ -140,7 +131,7 @@ public class CPPriceRangeFacetsPortlet
 			CPPriceRangeFacetsDisplayContext cpPriceRangeFacetsDisplayContext =
 				new CPPriceRangeFacetsDisplayContext(
 					_commercePriceFormatter, renderRequest,
-					getFacet(renderRequest),
+					portletSharedSearchResponse.getFacet(CPField.BASE_PRICE),
 					getPaginationStartParameterName(
 						portletSharedSearchResponse),
 					portletSharedSearchResponse);
@@ -156,55 +147,8 @@ public class CPPriceRangeFacetsPortlet
 		super.render(renderRequest, renderResponse);
 	}
 
-	protected SearchContext buildSearchContext(RenderRequest renderRequest)
-		throws PortalException {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		SearchContext searchContext = new SearchContext();
-
-		searchContext.setCompanyId(themeDisplay.getCompanyId());
-		searchContext.setLayout(themeDisplay.getLayout());
-		searchContext.setLocale(themeDisplay.getLocale());
-		searchContext.setTimeZone(themeDisplay.getTimeZone());
-		searchContext.setUserId(themeDisplay.getUserId());
-
-		QueryConfig queryConfig = searchContext.getQueryConfig();
-
-		queryConfig.setLocale(themeDisplay.getLocale());
-
-		searchContext.setAttribute(CPField.PUBLISHED, Boolean.TRUE);
-
-		CommerceChannel commerceChannel =
-			_commerceChannelLocalService.fetchCommerceChannelBySiteGroupId(
-				themeDisplay.getScopeGroupId());
-
-		if (commerceChannel != null) {
-			searchContext.setAttribute(
-				"commerceChannelGroupId", commerceChannel.getGroupId());
-
-			CommerceAccount commerceAccount =
-				_commerceAccountHelper.getCurrentCommerceAccount(
-					commerceChannel.getGroupId(),
-					_portal.getHttpServletRequest(renderRequest));
-
-			if (commerceAccount != null) {
-				long[] commerceAccountGroupIds =
-					_commerceAccountHelper.getCommerceAccountGroupIds(
-						commerceAccount.getCommerceAccountId());
-
-				searchContext.setAttribute(
-					"commerceAccountGroupIds", commerceAccountGroupIds);
-			}
-		}
-
-		searchContext.setAttribute("secure", Boolean.TRUE);
-
-		return searchContext;
-	}
-
-	protected Facet getFacet(RenderRequest renderRequest)
+	protected Facet getFacet(
+			RenderRequest renderRequest, SearchContext searchContext)
 		throws PortalException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
@@ -216,8 +160,6 @@ public class CPPriceRangeFacetsPortlet
 			cpPriceRangeFacetsPortletInstanceConfiguration =
 				portletDisplay.getPortletInstanceConfiguration(
 					CPPriceRangeFacetsPortletInstanceConfiguration.class);
-
-		SearchContext searchContext = buildSearchContext(renderRequest);
 
 		Facet facet = new RangeFacet(searchContext);
 
@@ -242,13 +184,6 @@ public class CPPriceRangeFacetsPortlet
 
 		facet.setFieldName(CPField.BASE_PRICE);
 
-		searchContext.addFacet(facet);
-
-		Indexer<CPDefinition> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-			CPDefinition.class);
-
-		indexer.search(searchContext);
-
 		return facet;
 	}
 
@@ -270,15 +205,6 @@ public class CPPriceRangeFacetsPortlet
 		CPPriceRangeFacetsPortlet.class);
 
 	@Reference
-	private CommerceAccountHelper _commerceAccountHelper;
-
-	@Reference
-	private CommerceChannelLocalService _commerceChannelLocalService;
-
-	@Reference
 	private CommercePriceFormatter _commercePriceFormatter;
-
-	@Reference
-	private Portal _portal;
 
 }
