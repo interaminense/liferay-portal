@@ -16,6 +16,49 @@ import ClayPanel from '@clayui/panel';
 import {getFieldsGroupedByTypes} from 'data-engine-js-components-web/js/utils/objectFields';
 import React from 'react';
 
+const fieldsTypeString = [
+	Liferay.Language.get('checkbox-multiple-field-type-label'),
+	Liferay.Language.get('color-field-type-label'),
+	Liferay.Language.get('grid-field-type-label'),
+	Liferay.Language.get('radio-field-type-label'),
+	Liferay.Language.get('rich-text-field-type-label'),
+	Liferay.Language.get('select-field-type-label'),
+	Liferay.Language.get('text-field-type-label'),
+];
+
+const fieldTypeDecimalNumeric = Liferay.Util.sub(
+	Liferay.Language.get('decimal-x'),
+	Liferay.Language.get('numeric-field-type-label')
+);
+
+const fieldTypeIntegerNumeric = Liferay.Util.sub(
+	Liferay.Language.get('integer-x'),
+	Liferay.Language.get('numeric-field-type-label')
+);
+
+const fieldTypes = {
+	bigdecimal: fieldTypeDecimalNumeric,
+	blob: fieldsTypeString,
+	double: fieldTypeDecimalNumeric,
+	integer: fieldTypeIntegerNumeric,
+	long: fieldTypeIntegerNumeric,
+	string: fieldsTypeString,
+};
+
+const getDescription = (type) => {
+	const fieldType = fieldTypes[type.toLowerCase()];
+
+	if (fieldType) {
+		if (Array.isArray(fieldType)) {
+			return `${type} (${fieldType.join(', ')})`;
+		}
+
+		return `${type} (${fieldType})`;
+	}
+
+	return type;
+};
+
 const ObjectRestrictionSection = ({children, description, title}) => {
 	return (
 		<>
@@ -50,7 +93,9 @@ const ModalObjectRestrictionsBody = ({
 				>
 					{requiredObjectFieldsGroupedByType.map(({fields, type}) => (
 						<div key={type}>
-							<strong className="text-capitalize">{type}</strong>
+							<strong className="text-capitalize">
+								{getDescription(type)}
+							</strong>
 
 							<ol>
 								{fields.map(({name}) => (
