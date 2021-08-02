@@ -15,8 +15,15 @@
 package com.liferay.object.admin.rest.internal.dto.v1_0.util;
 
 import com.liferay.object.admin.rest.dto.v1_0.ObjectField;
+import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.service.ObjectDefinitionService;
 import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+
+import java.util.Map;
 
 /**
  * @author Gabriel Albuquerque
@@ -24,7 +31,26 @@ import com.liferay.portal.kernel.util.GetterUtil;
 public class ObjectFieldUtil {
 
 	public static ObjectField toObjectField(
-		com.liferay.object.model.ObjectField serviceBuilderObjectField) {
+			ObjectDefinitionService objectDefinitionService,
+			com.liferay.object.model.ObjectField serviceBuilderObjectField)
+		throws PortalException {
+
+		HashMapBuilder.HashMapWrapper<String, Map<String, String>> mapBuilder =
+			HashMapBuilder.<String, Map<String, String>>put(
+				"delete", _addAction(ActionKeys.UPDATE)
+			).put(
+				"get", _addAction(ActionKeys.VIEW)
+			).put(
+				"update", _addAction(ActionKeys.UPDATE)
+			);
+
+		ObjectDefinition objectDefinition =
+			objectDefinitionService.getObjectDefinition(
+				serviceBuilderObjectField.getObjectDefinitionId());
+
+		if (!objectDefinition.isSystem()) {
+			mapBuilder.put("delete", _addAction(ActionKeys.DELETE));
+		}
 
 		return new ObjectField() {
 			{
@@ -60,6 +86,15 @@ public class ObjectFieldUtil {
 		serviceBuilderObjectField.setType(objectField.getType());
 
 		return serviceBuilderObjectField;
+	}
+
+	private static Map<String, String> _addAction(String actionKey) {
+
+		//TODO Replace this with proper logic using permission
+
+		return HashMapBuilder.put(
+			actionKey, ""
+		).build();
 	}
 
 }

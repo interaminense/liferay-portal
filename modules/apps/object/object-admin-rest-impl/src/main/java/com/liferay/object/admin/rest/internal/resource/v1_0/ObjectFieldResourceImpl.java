@@ -18,6 +18,7 @@ import com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectField;
 import com.liferay.object.admin.rest.internal.dto.v1_0.util.ObjectFieldUtil;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectFieldResource;
+import com.liferay.object.service.ObjectDefinitionService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -44,7 +45,8 @@ public class ObjectFieldResourceImpl extends BaseObjectFieldResourceImpl {
 		return Page.of(
 			transform(
 				_objectFieldLocalService.getObjectFields(objectDefinitionId),
-				ObjectFieldUtil::toObjectField),
+				objectField -> ObjectFieldUtil.toObjectField(
+					_objectDefinitionService, objectField)),
 			pagination,
 			_objectFieldLocalService.getObjectFieldsCount(objectDefinitionId));
 	}
@@ -55,6 +57,7 @@ public class ObjectFieldResourceImpl extends BaseObjectFieldResourceImpl {
 		throws Exception {
 
 		return ObjectFieldUtil.toObjectField(
+			_objectDefinitionService,
 			_objectFieldLocalService.addObjectField(
 				contextUser.getUserId(), objectDefinitionId,
 				objectField.getName(), objectField.getIndexed(),
@@ -62,6 +65,9 @@ public class ObjectFieldResourceImpl extends BaseObjectFieldResourceImpl {
 				objectField.getIndexedLanguageId(), objectField.getName(),
 				objectField.getRequired(), objectField.getType()));
 	}
+
+	@Reference
+	private ObjectDefinitionService _objectDefinitionService;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

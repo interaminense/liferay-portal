@@ -12,19 +12,13 @@
  * details.
  */
 
-package com.liferay.object.web.internal.constants;
-
-/**
- * @author Jorge Ferrer
- */
-public class ObjectWebKeys {
-
-	public static final String OBJECT_DEFINITION = "OBJECT_DEFINITION";
-
-	public static final String OBJECT_ENTRY = "OBJECT_ENTRY";
-
-	public static final String OBJECT_ENTRY_VALUES = "OBJECT_ENTRY_VALUES";
-
-	public static final String OBJECT_FIELD = "OBJECT_FIELD";
-
+import React from 'react';
+declare global {
+	const Liferay: any;
 }
+interface IProps extends React.HTMLAttributes<HTMLElement> {
+	apiURL: string;
+	spritemap: string;
+}
+declare const ModalWithProvider: React.FC<IProps>;
+export default ModalWithProvider;

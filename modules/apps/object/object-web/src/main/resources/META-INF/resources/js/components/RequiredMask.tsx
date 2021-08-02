@@ -12,19 +12,21 @@
  * details.
  */
 
-package com.liferay.object.web.internal.constants;
+import ClayIcon from '@clayui/icon';
+import React from 'react';
 
-/**
- * @author Jorge Ferrer
- */
-public class ObjectWebKeys {
+const RequiredMask: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
+	return (
+		<>
+			<span className="ml-1 reference-mark text-warning">
+				<ClayIcon symbol="asterisk" />
+			</span>
 
-	public static final String OBJECT_DEFINITION = "OBJECT_DEFINITION";
+			<span className="hide-accessible">
+				{Liferay.Language.get('required')}
+			</span>
+		</>
+	);
+};
 
-	public static final String OBJECT_ENTRY = "OBJECT_ENTRY";
-
-	public static final String OBJECT_ENTRY_VALUES = "OBJECT_ENTRY_VALUES";
-
-	public static final String OBJECT_FIELD = "OBJECT_FIELD";
-
-}
+export default RequiredMask;
