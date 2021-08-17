@@ -24,7 +24,13 @@ import {useFormState} from './useForm.es';
  */
 export const useEvaluate = (thunk) => {
 	const {groupId, portletNamespace, viewMode} = useConfig();
-	const {defaultLanguageId, editingLanguageId, pages, rules} = useFormState();
+	const {
+		defaultLanguageId,
+		editingLanguageId,
+		objectFields,
+		pages,
+		rules,
+	} = useFormState();
 
 	return useCallback(
 		(args) =>
@@ -32,6 +38,7 @@ export const useEvaluate = (thunk) => {
 				defaultLanguageId,
 				editingLanguageId,
 				groupId,
+				objectFields,
 				pages,
 				portletNamespace,
 				rules,
@@ -42,6 +49,7 @@ export const useEvaluate = (thunk) => {
 			defaultLanguageId,
 			editingLanguageId,
 			groupId,
+			objectFields,
 			pages,
 			portletNamespace,
 			rules,
