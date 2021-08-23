@@ -161,7 +161,7 @@ public class ObjectFieldLocalServiceImpl
 		}
 
 		_validateIndexed(indexed, indexedAsKeyword, indexedLanguageId, type);
-		_validateName(objectDefinition, name);
+		_validateName(objectDefinition, name, true);
 		validateType(type);
 
 		objectField.setIndexed(indexed);
@@ -193,7 +193,7 @@ public class ObjectFieldLocalServiceImpl
 
 		_validateIndexed(indexed, indexedAsKeyword, indexedLanguageId, type);
 		_validateLabel(labelMap, LocaleUtil.getSiteDefault());
-		_validateName(objectDefinition, name);
+		_validateName(objectDefinition, name, false);
 		validateType(type);
 
 		ObjectField objectField = objectFieldPersistence.create(
@@ -275,7 +275,9 @@ public class ObjectFieldLocalServiceImpl
 		}
 	}
 
-	private void _validateName(ObjectDefinition objectDefinition, String name)
+	private void _validateName(
+			ObjectDefinition objectDefinition, String name,
+			boolean updateCustomObjectField)
 		throws PortalException {
 
 		if (Validator.isNull(name)) {
@@ -311,7 +313,7 @@ public class ObjectFieldLocalServiceImpl
 		ObjectField objectField = objectFieldPersistence.fetchByODI_N(
 			objectDefinition.getObjectDefinitionId(), name);
 
-		if (objectField != null) {
+		if (!updateCustomObjectField && (objectField != null)) {
 			throw new DuplicateObjectFieldException("Duplicate name " + name);
 		}
 	}
