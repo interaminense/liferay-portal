@@ -6,6 +6,14 @@
 	& &-header {
 		background-color: #fff !important;
 	}
+
+	&__tabs {
+		padding: 0.5rem 1rem 0;
+
+		.nav-link {
+			padding: 1rem;
+		}
+	}
 }
 
 .side-panel-content {
