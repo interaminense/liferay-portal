@@ -13,14 +13,9 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
-}
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
+
+const InfoScreen: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
+	return <div>Info</div>;
 };
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+
+export default InfoScreen;

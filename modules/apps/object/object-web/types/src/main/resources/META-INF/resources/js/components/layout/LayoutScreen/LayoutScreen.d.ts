@@ -13,14 +13,6 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
-}
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+import './LayoutScreen.scss';
+declare const LayoutScreen: React.FC<React.HTMLAttributes<HTMLElement>>;
+export default LayoutScreen;

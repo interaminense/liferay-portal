@@ -12,15 +12,27 @@
  * details.
  */
 
+import ClayLabel from '@clayui/label';
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
+
+interface IRequiredLabelProps extends React.HTMLAttributes<HTMLElement> {
+	required: boolean;
 }
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
+
+const RequiredLabel: React.FC<IRequiredLabelProps> = ({className, required = false}) => {
+	return (
+		<>
+			{required ? (
+				<ClayLabel className={className} displayType="warning">
+					{Liferay.Language.get('mandatory')}
+				</ClayLabel>
+			) : (
+				<ClayLabel className={className} displayType="success">
+					{Liferay.Language.get('optional')}
+				</ClayLabel>
+			)}
+		</>
+	);
 };
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+
+export default RequiredLabel;

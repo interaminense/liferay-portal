@@ -13,14 +13,9 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
+interface IModalAddNewBlockProps extends React.HTMLAttributes<HTMLElement> {
+	observer: any;
+	onClose: () => void;
 }
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+declare const ModalAddNewBlock: React.FC<IModalAddNewBlockProps>;
+export default ModalAddNewBlock;

@@ -12,15 +12,28 @@
  * details.
  */
 
-import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
-}
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
+import {TObjectField} from './LayoutScreen/types';
+
+export type TLayoutData = {
+	label: string;
+	tabs: {
+		label: string;
+		type: string;
+		boxs: {
+			collapsible: boolean;
+			label: string;
+			rows: {
+				columns: {
+					fields: number[];
+				}[];
+			}[];
+		}[];
+	}[];
 };
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+
+const layoutData: TLayoutData = {
+	label: 'layoutA',
+	tabs: [],
+};
+
+export default layoutData;

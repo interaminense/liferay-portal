@@ -18,6 +18,23 @@
 
 <%
 ObjectDefinition objectDefinition = (ObjectDefinition)request.getAttribute(ObjectWebKeys.OBJECT_DEFINITION);
+%>
+
+<liferay-frontend:side-panel-content title='<%= LanguageUtil.get(request, "field") %>'>
+	<react:component
+		module="js/components/layout/index"
+		props='<%=
+			HashMapBuilder.<String, Object>put(
+				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
+			).put(
+				"objectDefinitionId", objectDefinition.getObjectDefinitionId()
+			).build()
+		%>'	
+	/>
+</liferay-frontend:side-panel-content>
+
+<%-- <%
+ObjectDefinition objectDefinition = (ObjectDefinition)request.getAttribute(ObjectWebKeys.OBJECT_DEFINITION);
 ObjectField objectField = (ObjectField)request.getAttribute(ObjectWebKeys.OBJECT_FIELD);
 %>
 
@@ -232,4 +249,4 @@ ObjectField objectField = (ObjectField)request.getAttribute(ObjectWebKeys.OBJECT
 				}
 			});
 	}
-</script>
+</script> --%>

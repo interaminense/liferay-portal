@@ -12,15 +12,12 @@
  * details.
  */
 
-import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
+declare type TUseLiferayFetch = ({
+	apiURL,
+	options,
+}: {
 	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
-}
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+	options: {};
+}) => any;
+declare const useLiferayFetch: TUseLiferayFetch;
+export default useLiferayFetch;

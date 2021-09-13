@@ -13,14 +13,11 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
+interface IModalAddNewFieldProps extends React.HTMLAttributes<HTMLElement> {
+	boxIndex: number;
+	observer: any;
+	onClose: () => void;
+	tabIndex: number;
 }
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+declare const ModalAddNewField: React.FC<IModalAddNewFieldProps>;
+export default ModalAddNewField;

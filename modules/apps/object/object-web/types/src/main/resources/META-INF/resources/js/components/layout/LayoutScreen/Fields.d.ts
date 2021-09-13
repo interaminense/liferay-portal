@@ -13,14 +13,13 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
+import {TObjectField} from './types';
+interface ILayoutFieldsProps extends React.HTMLAttributes<HTMLElement> {
+	boxIndex: number;
+	columnIndex: number;
+	fields: TObjectField[];
+	rowIndex: number;
+	tabIndex: number;
 }
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+declare const LayoutFields: React.FC<ILayoutFieldsProps>;
+export default LayoutFields;

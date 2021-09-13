@@ -13,14 +13,8 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
+interface IRequiredLabelProps extends React.HTMLAttributes<HTMLElement> {
+	required: boolean;
 }
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+declare const RequiredLabel: React.FC<IRequiredLabelProps>;
+export default RequiredLabel;

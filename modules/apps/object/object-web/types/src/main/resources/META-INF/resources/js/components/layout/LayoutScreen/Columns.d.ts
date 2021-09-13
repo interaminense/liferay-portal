@@ -13,14 +13,12 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
+import {TColumns} from './types';
+interface ILayoutColumnsProps extends React.HTMLAttributes<HTMLElement> {
+	boxIndex: number;
+	columns?: TColumns;
+	rowIndex: number;
+	tabIndex: number;
 }
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+declare const LayoutColumns: React.FC<ILayoutColumnsProps>;
+export default LayoutColumns;

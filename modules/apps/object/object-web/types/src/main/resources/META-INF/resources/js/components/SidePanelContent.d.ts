@@ -13,14 +13,10 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
-}
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
+interface ISidePanelContentBody extends React.HTMLAttributes<HTMLElement> {}
+interface ISidePanelContentFooter extends React.HTMLAttributes<HTMLElement> {}
+declare const SidePanelContent: React.FC<React.HTMLAttributes<HTMLElement>> & {
+	Body: React.FC<ISidePanelContentBody>;
+	Footer: React.FC<ISidePanelContentFooter>;
 };
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+export default SidePanelContent;

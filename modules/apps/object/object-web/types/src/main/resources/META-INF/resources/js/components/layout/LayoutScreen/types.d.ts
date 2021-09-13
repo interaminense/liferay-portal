@@ -12,15 +12,22 @@
  * details.
  */
 
-import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
-}
-declare type TObjectDefinition = {
-	id: string;
+export declare type TRows = {
+	columns?: TColumns;
+}[];
+export declare type TColumns = {
+	fields?: TObjectField[];
+}[];
+export declare type TObjectField = {
+	id: number;
+	indexed: boolean;
+	indexedAsKeyword: boolean;
+	indexedLanguageId: string;
+	label: {
+		[key: string]: string;
+	};
+	listTypeDefinitionId: boolean;
 	name: string;
+	required: boolean;
+	type: string;
 };
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;

@@ -13,14 +13,20 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
-}
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
+
+import AddNewTabButton from './AddNewTabButton';
+import LayoutTabs from './Tabs';
+
+import './LayoutScreen.scss';
+
+const LayoutScreen: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
+	return (
+		<div className="layout-tab">
+			<AddNewTabButton />
+
+			<LayoutTabs />
+		</div>
+	);
 };
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+
+export default LayoutScreen;

@@ -13,14 +13,11 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
+import {TRows} from './types';
+interface ILayoutRowsProps extends React.HTMLAttributes<HTMLElement> {
+	boxIndex: number;
+	rows?: TRows;
+	tabIndex: number;
 }
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+declare const LayoutRows: React.FC<ILayoutRowsProps>;
+export default LayoutRows;

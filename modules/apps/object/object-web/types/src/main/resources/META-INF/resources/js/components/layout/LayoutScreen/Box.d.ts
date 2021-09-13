@@ -13,14 +13,13 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
+import {TRows} from './types';
+interface ILayoutBoxProps extends React.HTMLAttributes<HTMLElement> {
+	boxIndex: number;
+	tabIndex: number;
+	collapsible: boolean;
+	label: string;
+	rows?: TRows;
 }
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+declare const LayoutBox: React.FC<ILayoutBoxProps>;
+export default LayoutBox;

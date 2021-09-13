@@ -13,14 +13,10 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
+interface ICustomSelectProps extends React.HTMLAttributes<HTMLElement> {
+	value?: string;
 }
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
-};
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+declare const CustomSelect: React.ForwardRefExoticComponent<
+	ICustomSelectProps & React.RefAttributes<HTMLDivElement>
+>;
+export default CustomSelect;

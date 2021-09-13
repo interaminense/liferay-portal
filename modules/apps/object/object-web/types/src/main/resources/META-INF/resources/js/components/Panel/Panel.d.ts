@@ -13,14 +13,20 @@
  */
 
 import React from 'react';
-interface IProps extends React.HTMLAttributes<HTMLElement> {
-	apiURL: string;
-	spritemap: string;
-	objectDefinitions: TObjectDefinition[];
-}
-declare type TObjectDefinition = {
-	id: string;
-	name: string;
+import './Panel.scss';
+declare const Panel: React.FC<React.HTMLAttributes<HTMLElement>> & {
+	Body: React.FC<IPanelBodyProps>;
+	Header: React.FC<IPanelHeaderProps>;
+	SimpleBody: React.FC<IPanelSimpleBodyProps>;
 };
-declare const ModalWithProvider: React.FC<IProps>;
-export default ModalWithProvider;
+interface IPanelBodyProps extends React.HTMLAttributes<HTMLElement> {}
+interface IPanelHeaderProps extends React.HTMLAttributes<HTMLElement> {
+	title: string;
+	contentLeft?: React.ReactNode;
+	contentRight?: React.ReactNode;
+}
+interface IPanelSimpleBodyProps extends React.HTMLAttributes<HTMLElement> {
+	title: string;
+	contentRight?: React.ReactNode;
+}
+export default Panel;
