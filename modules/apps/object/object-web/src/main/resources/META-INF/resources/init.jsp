@@ -33,6 +33,7 @@ page import="com.liferay.object.exception.ObjectDefinitionStatusException" %><%@
 page import="com.liferay.object.model.ObjectDefinition" %><%@
 page import="com.liferay.object.model.ObjectEntry" %><%@
 page import="com.liferay.object.model.ObjectField" %><%@
+page import="com.liferay.object.model.ObjectLayout" %><%@
 page import="com.liferay.object.scope.ObjectScopeProvider" %><%@
 page import="com.liferay.object.web.internal.constants.ObjectWebKeys" %><%@
 page import="com.liferay.object.web.internal.object.definitions.constants.ObjectDefinitionsClayDataSetDisplayNames" %><%@

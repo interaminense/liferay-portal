@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,23 +11,14 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/init.jsp" %>
-
-<%
-	ObjectLayout objectLayout = (ObjectLayout)request.getAttribute(ObjectWebKeys.OBJECT_LAYOUT);
-%>
-
-<liferay-frontend:side-panel-content title='<%= LanguageUtil.get(request, "layout") %>'>
-	<react:component
-		module="js/components/layout/index"
-		props='<%=
-			HashMapBuilder.<String, Object>put(
-				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
-			).put(
-				"objectLayoutId", objectLayout.getObjectLayoutId()
-			).build()
-		%>'	
-	/>
-</liferay-frontend:side-panel-content>
+import React from 'react';
+interface ILayoutFieldsProps extends React.HTMLAttributes<HTMLElement> {
+	boxIndex: number;
+	columnIndex: number;
+	fields: number[];
+	rowIndex: number;
+	tabIndex: number;
+}
+declare const LayoutFields: React.FC<ILayoutFieldsProps>;
+export default LayoutFields;

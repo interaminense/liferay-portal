@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,23 +11,22 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/init.jsp" %>
+import React from 'react';
 
-<%
-	ObjectLayout objectLayout = (ObjectLayout)request.getAttribute(ObjectWebKeys.OBJECT_LAYOUT);
-%>
+import AddNewTabButton from './AddNewTabButton';
+import ObjectLayoutTabs from './ObjectLayoutTabs';
 
-<liferay-frontend:side-panel-content title='<%= LanguageUtil.get(request, "layout") %>'>
-	<react:component
-		module="js/components/layout/index"
-		props='<%=
-			HashMapBuilder.<String, Object>put(
-				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
-			).put(
-				"objectLayoutId", objectLayout.getObjectLayoutId()
-			).build()
-		%>'	
-	/>
-</liferay-frontend:side-panel-content>
+import './LayoutScreen.scss';
+
+const LayoutScreen: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
+	return (
+		<div className="layout-tab">
+			<AddNewTabButton />
+
+			<ObjectLayoutTabs />
+		</div>
+	);
+};
+
+export default LayoutScreen;

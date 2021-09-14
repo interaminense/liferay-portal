@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,23 +11,31 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/init.jsp" %>
+import ClayLabel from '@clayui/label';
+import React from 'react';
 
-<%
-	ObjectLayout objectLayout = (ObjectLayout)request.getAttribute(ObjectWebKeys.OBJECT_LAYOUT);
-%>
+interface IRequiredLabelProps extends React.HTMLAttributes<HTMLElement> {
+	required: boolean;
+}
 
-<liferay-frontend:side-panel-content title='<%= LanguageUtil.get(request, "layout") %>'>
-	<react:component
-		module="js/components/layout/index"
-		props='<%=
-			HashMapBuilder.<String, Object>put(
-				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
-			).put(
-				"objectLayoutId", objectLayout.getObjectLayoutId()
-			).build()
-		%>'	
-	/>
-</liferay-frontend:side-panel-content>
+const RequiredLabel: React.FC<IRequiredLabelProps> = ({
+	className,
+	required = false,
+}) => {
+	return (
+		<>
+			{required ? (
+				<ClayLabel className={className} displayType="warning">
+					{Liferay.Language.get('mandatory')}
+				</ClayLabel>
+			) : (
+				<ClayLabel className={className} displayType="success">
+					{Liferay.Language.get('optional')}
+				</ClayLabel>
+			)}
+		</>
+	);
+};
+
+export default RequiredLabel;
