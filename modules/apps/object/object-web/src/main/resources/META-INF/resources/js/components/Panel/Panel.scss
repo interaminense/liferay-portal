@@ -2,9 +2,9 @@ $borderColor: #cdced9;
 $bgColor: #fff;
 
 .object-admin-panel {
-	border-radius: 4px;
-	border: 1px solid $borderColor;
 	background-color: $bgColor;
+	border: 1px solid $borderColor;
+	border-radius: 4px;
 	margin-bottom: 1.5rem;
 
 	&:last-child {
@@ -26,15 +26,15 @@ $bgColor: #fff;
 		padding: 0.5rem;
 
 		&__content-left {
-			display: flex;
 			align-items: center;
+			display: flex;
 		}
 	}
 
 	& &__header {
+		border-bottom: 1px solid $borderColor;
 		display: flex;
 		justify-content: space-between;
-		border-bottom: 1px solid $borderColor;
 		padding: 0.5em;
 
 		&:not(&--expanded) {
@@ -43,8 +43,8 @@ $bgColor: #fff;
 
 		&__content-left,
 		&__content-right {
-			display: flex;
 			align-items: center;
+			display: flex;
 		}
 	}
 
