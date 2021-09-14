@@ -17,18 +17,20 @@
 <%@ include file="/init.jsp" %>
 
 <%
-	ObjectLayout objectLayout = (ObjectLayout)request.getAttribute(ObjectWebKeys.OBJECT_LAYOUT);
+ObjectLayout objectLayout = (ObjectLayout)request.getAttribute(ObjectWebKeys.OBJECT_LAYOUT);
 %>
 
-<liferay-frontend:side-panel-content title='<%= LanguageUtil.get(request, "layout") %>'>
+<liferay-frontend:side-panel-content
+	title='<%= LanguageUtil.get(request, "layout") %>'
+>
 	<react:component
 		module="js/components/layout/index"
 		props='<%=
 			HashMapBuilder.<String, Object>put(
-				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
-			).put(
 				"objectLayoutId", objectLayout.getObjectLayoutId()
+			).put(
+				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
 			).build()
-		%>'	
+		%>'
 	/>
 </liferay-frontend:side-panel-content>

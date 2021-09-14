@@ -3,8 +3,8 @@ $bgColor: #f7f8f9;
 .layout-tab {
 	&__add-tab-btn {
 		background-color: $bgColor;
-		border-radius: 4px;
 		border: 2px dashed #a7a9bc;
+		border-radius: 4px;
 		display: grid;
 		margin-bottom: 1.5rem;
 		padding: 1.5em;
