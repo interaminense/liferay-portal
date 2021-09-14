@@ -16,8 +16,19 @@
 
 <%@ include file="/init.jsp" %>
 
-<liferay-frontend:side-panel-content
-	title='<%= LanguageUtil.get(request, "layout") %>'
->
+<%
+	ObjectLayout objectLayout = (ObjectLayout)request.getAttribute(ObjectWebKeys.OBJECT_LAYOUT);
+%>
 
+<liferay-frontend:side-panel-content title='<%= LanguageUtil.get(request, "layout") %>'>
+	<react:component
+		module="js/components/layout/index"
+		props='<%=
+			HashMapBuilder.<String, Object>put(
+				"spritemap", themeDisplay.getPathThemeImages() + "/clay/icons.svg"
+			).put(
+				"objectLayoutId", objectLayout.getObjectLayoutId()
+			).build()
+		%>'	
+	/>
 </liferay-frontend:side-panel-content>
