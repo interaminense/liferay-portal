@@ -19,10 +19,16 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.list.type.model.ListTypeDefinition;
 import com.liferay.object.web.internal.constants.ObjectWebKeys;
 import com.liferay.object.web.internal.display.context.util.ObjectRequestHelper;
+import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletURLUtil;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.portlet.PortletException;
+import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,6 +54,19 @@ public class ViewListTypeEntriesDisplayContext {
 
 		return Arrays.asList(
 			new ClayDataSetActionDropdownItem(
+				PortletURLBuilder.create(
+					getPortletURL()
+				).setMVCRenderCommandName(
+					"/list_type_definitions/edit_list_type_entry"
+				).setParameter(
+					"listTypeEntryId", "{id}"
+				).setWindowState(
+					LiferayWindowState.POP_UP
+				).buildString(),
+				"view", "view",
+				LanguageUtil.get(_objectRequestHelper.getRequest(), "view"),
+				"get", null, "modal"),
+			new ClayDataSetActionDropdownItem(
 				"/o/headless-admin-list-type/v1.0/list-type-entries/{id}",
 				"trash", "delete",
 				LanguageUtil.get(_objectRequestHelper.getRequest(), "delete"),
@@ -67,6 +86,14 @@ public class ViewListTypeEntriesDisplayContext {
 			});
 
 		return creationMenu;
+	}
+
+	public PortletURL getPortletURL() throws PortletException {
+		return PortletURLUtil.clone(
+			PortletURLUtil.getCurrent(
+				_objectRequestHelper.getLiferayPortletRequest(),
+				_objectRequestHelper.getLiferayPortletResponse()),
+			_objectRequestHelper.getLiferayPortletResponse());
 	}
 
 	private long _getListTypeDefinitionId() {
