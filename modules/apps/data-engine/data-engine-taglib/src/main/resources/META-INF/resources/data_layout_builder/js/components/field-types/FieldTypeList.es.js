@@ -19,9 +19,10 @@ import {
 	useForm,
 	useFormState,
 } from 'data-engine-js-components-web';
-import React from 'react';
+import React, {useMemo} from 'react';
 
 import {dropLayoutBuilderField} from '../../actions.es';
+import useStorageType from '../../hooks/useStorageType.es';
 import {getSearchRegex} from '../../utils/search.es';
 import CollapsablePanel from '../collapsable-panel/CollapsablePanel.es';
 import EmptyState from '../empty-state/EmptyState.es';
@@ -79,20 +80,31 @@ const FieldTypeList = ({
 	showEmptyState = true,
 }) => {
 	const {fieldTypes} = useConfig();
-	const regex = getSearchRegex(keywords);
 
-	const filteredFieldTypes = fieldTypes
-		.filter(({description, label, system}) => {
-			if (system) {
-				return false;
-			}
-			if (!keywords) {
-				return true;
-			}
+	const storageType = useStorageType();
 
-			return regex.test(description) || regex.test(label);
-		})
-		.sort(({displayOrder: a}, {displayOrder: b}) => a - b);
+	const filteredFieldTypes = useMemo(() => {
+		const regex = getSearchRegex(keywords);
+
+		return fieldTypes
+			.filter(({description, label, name, system}) => {
+				if (
+					name === 'object-relationship' &&
+					storageType !== 'object'
+				) {
+					return false;
+				}
+				if (system) {
+					return false;
+				}
+				if (!keywords) {
+					return true;
+				}
+
+				return regex.test(description) || regex.test(label);
+			})
+			.sort(({displayOrder: a}, {displayOrder: b}) => a - b);
+	}, [fieldTypes, keywords, storageType]);
 
 	if (showEmptyState && !filteredFieldTypes.length) {
 		return <EmptyState emptyState={emptyState} keywords={keywords} small />;

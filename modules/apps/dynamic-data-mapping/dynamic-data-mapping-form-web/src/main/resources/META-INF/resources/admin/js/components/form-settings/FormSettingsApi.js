@@ -42,11 +42,11 @@ const FormSettingsApi = React.forwardRef((_, ref) => {
 	}, [ref]);
 
 	const fields = useMemo(() => getFields(pages), [pages]);
+	const storageType = getFielProperty(fields, 'storageType');
 
 	ref.current = {
 		getFields: () => fields,
 		getObjectDefinitionId: () => {
-			const storageType = getFielProperty(fields, 'storageType');
 			const objectDefinitionId = getFielProperty(
 				fields,
 				'objectDefinitionId'
@@ -56,6 +56,7 @@ const FormSettingsApi = React.forwardRef((_, ref) => {
 				? objectDefinitionId
 				: null;
 		},
+		getStorageType: () => storageType,
 	};
 
 	return null;
