@@ -13,11 +13,12 @@
  */
 
 import {ClassicEditor} from 'frontend-editor-ckeditor-web';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useMemo} from 'react';
 
 import {FieldBase} from '../FieldBase/ReactFieldBase.es';
 
 const RichText = ({
+	editable,
 	editingLanguageId,
 	editorConfig,
 	id,
@@ -31,11 +32,13 @@ const RichText = ({
 }) => {
 	const editorRef = useRef();
 
-	const [contents, setContents] = useState(value ?? predefinedValue ?? '');
+	const contents = useMemo(() => {
+		if (editable) {
+			return predefinedValue ?? ''
+		}
 
-	useEffect(() => {
-		setContents(value ?? predefinedValue);
-	}, [predefinedValue, value]);
+		return value ?? predefinedValue ?? '';
+	}, [editable, predefinedValue, value]);
 
 	useEffect(() => {
 		const editor = editorRef.current?.editor;
