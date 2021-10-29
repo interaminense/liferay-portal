@@ -13,6 +13,8 @@
  */
 
 const applicationId = 'Page';
+const beforeunloadEventListener = 'beforeunload';
+let enableTabEvent = true;
 
 /**
  * Handle differents browser versions to Visibility API
@@ -46,11 +48,13 @@ function getHiddenKey() {
 function handleVisibilityChange(analytics) {
 	const {hidden} = getHiddenKey();
 
-	if (document[hidden]) {
-		analytics.send('tabBlurred', applicationId);
-	}
-	else {
-		analytics.send('tabFocused', applicationId);
+	if (enableTabEvent) {
+		if (document[hidden]) {
+			analytics.send('tabBlurred', applicationId);
+		}
+		else {
+			analytics.send('tabFocused', applicationId);
+		}
 	}
 }
 
@@ -64,12 +68,24 @@ function visibility(analytics) {
 	if (visibilityChange) {
 		const onVisibilityChange = handleVisibilityChange.bind(null, analytics);
 
+		window.addEventListener(
+			beforeunloadEventListener,
+			enableTabEventHandle
+		);
 		document.addEventListener(visibilityChange, onVisibilityChange);
 
 		return () => {
+			window.removeEventListener(
+				beforeunloadEventListener,
+				enableTabEventHandle
+			);
 			document.removeEventListener(visibilityChange, onVisibilityChange);
 		};
 	}
+}
+
+function enableTabEventHandle() {
+	enableTabEvent = false;
 }
 
 export {visibility};
