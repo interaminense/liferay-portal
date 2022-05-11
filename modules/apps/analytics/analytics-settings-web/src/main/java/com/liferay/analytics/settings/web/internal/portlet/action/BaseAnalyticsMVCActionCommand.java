@@ -145,6 +145,14 @@ public abstract class BaseAnalyticsMVCActionCommand
 					actionRequest, actionResponse,
 					ParamUtil.getString(actionRequest, "redirect"));
 			}
+
+			// 			HttpServletRequest httpServletRequest =
+			//				PortalUtil.getHttpServletRequest(actionRequest);
+			//
+			//			if (WizardModeUtil.isNextStep(
+			//			httpServletRequest.getSession())) {
+			//
+			//			}
 		}
 		catch (PrincipalException principalException) {
 			_log.error(principalException);

@@ -15,6 +15,7 @@
 package com.liferay.analytics.settings.web.internal.portlet.action;
 
 import com.liferay.analytics.settings.web.internal.util.AnalyticsSettingsUtil;
+import com.liferay.analytics.settings.web.internal.util.WizardModeUtil;
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -97,6 +98,8 @@ public class EditWorkspaceConnectionMVCActionCommand
 		}
 
 		_connect(actionRequest, configurationProperties, upgrade);
+
+		WizardModeUtil.setNextStep(actionRequest, true);
 	}
 
 	private void _connect(
