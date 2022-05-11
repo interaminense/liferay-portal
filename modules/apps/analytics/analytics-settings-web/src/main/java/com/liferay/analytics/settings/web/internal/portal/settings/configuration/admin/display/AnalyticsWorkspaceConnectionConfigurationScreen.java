@@ -16,6 +16,9 @@ package com.liferay.analytics.settings.web.internal.portal.settings.configuratio
 
 import com.liferay.configuration.admin.display.ConfigurationScreen;
 
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
+
 import javax.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
@@ -35,7 +38,11 @@ public class AnalyticsWorkspaceConnectionConfigurationScreen
 
 	@Override
 	protected String getJspPath() {
-		return "/edit_workspace_connection.jsp";
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LRAC-10857"))) {
+			return "/first_workspace_connection.jsp";
+		} else {
+			return "/edit_workspace_connection.jsp";
+		}
 	}
 
 	@Override
