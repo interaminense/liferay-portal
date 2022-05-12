@@ -22,6 +22,12 @@ public class AnalyticsSettingsWebKeys {
 	public static final String ANALYTICS_CONFIGURATION =
 		"ANALYTICS_CONFIGURATION";
 
+	public static final String ANALYTICS_CONFIGURATION_WIZARD_MODE =
+		"ANALYTICS_CONFIGURATION_WIZARD_MODE";
+
+	public static final String ANALYTICS_DISPLAY_CONTEXT =
+		"ANALYTICS_DISPLAY_CONTEXT";
+
 	public static final String ANALYTICS_USERS_MANAGER =
 		"ANALYTICS_USERS_MANAGER";
 
