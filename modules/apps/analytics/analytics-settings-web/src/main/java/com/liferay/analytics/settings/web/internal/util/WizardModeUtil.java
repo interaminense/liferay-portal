@@ -15,9 +15,11 @@
 package com.liferay.analytics.settings.web.internal.util;
 
 import com.liferay.analytics.settings.web.internal.constants.AnalyticsSettingsWebKeys;
+import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,9 +30,24 @@ import javax.servlet.http.HttpSession;
  */
 public class WizardModeUtil {
 
-	public static boolean isNextStep(HttpSession httpSession) {
-		return GetterUtil.getBoolean(
-			httpSession.getAttribute(_ANALYTICS_CONFIGURATION_NEXT_STEP));
+	public static String getNextConfigurationScreenKey(
+		HttpSession httpSession) {
+
+		return GetterUtil.getString(
+			httpSession.getAttribute(_NEXT_CONFIGURATION_SCREEN_KEY), null);
+	}
+
+	public static String getNextStepURL(
+		ActionResponse actionResponse, String configurationScreenKey) {
+
+		return PortletURLBuilder.createRenderURL(
+			PortalUtil.getLiferayPortletResponse(actionResponse)
+		).setMVCRenderCommandName(
+			"/configuration_admin/view_configuration_screen"
+		).setParameter(
+			"configurationScreenKey", configurationScreenKey
+		).buildPortletURL(
+		).toString();
 	}
 
 	public static boolean isWizardMode(HttpSession httpSession) {
@@ -39,17 +56,21 @@ public class WizardModeUtil {
 				AnalyticsSettingsWebKeys.ANALYTICS_CONFIGURATION_WIZARD_MODE));
 	}
 
-	public static void setNextStep(HttpSession httpSession, boolean nextStep) {
-		httpSession.setAttribute(_ANALYTICS_CONFIGURATION_NEXT_STEP, nextStep);
+	public static void setNextConfigurationScreenKey(
+		HttpSession httpSession, String configurationScreenKey) {
+
+		httpSession.setAttribute(
+			_NEXT_CONFIGURATION_SCREEN_KEY, configurationScreenKey);
 	}
 
-	public static void setNextStep(
-		PortletRequest portletRequest, boolean nextStep) {
+	public static void setNextConfigurationScreenKey(
+		PortletRequest portletRequest, String nextStep) {
 
 		HttpServletRequest httpServletRequest =
 			PortalUtil.getHttpServletRequest(portletRequest);
 
-		setNextStep(httpServletRequest.getSession(), nextStep);
+		setNextConfigurationScreenKey(
+			httpServletRequest.getSession(), nextStep);
 	}
 
 	public static void setWizardMode(
@@ -60,7 +81,7 @@ public class WizardModeUtil {
 			wizardMode);
 	}
 
-	private static final String _ANALYTICS_CONFIGURATION_NEXT_STEP =
+	private static final String _NEXT_CONFIGURATION_SCREEN_KEY =
 		"ANALYTICS_CONFIGURATION_NEXT_STEP";
 
 }
