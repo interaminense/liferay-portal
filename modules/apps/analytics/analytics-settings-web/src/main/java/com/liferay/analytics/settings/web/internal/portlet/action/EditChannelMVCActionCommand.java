@@ -15,6 +15,7 @@
 package com.liferay.analytics.settings.web.internal.portlet.action;
 
 import com.liferay.analytics.settings.web.internal.util.AnalyticsSettingsUtil;
+import com.liferay.analytics.settings.web.internal.util.WizardModeUtil;
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -96,6 +97,9 @@ public class EditChannelMVCActionCommand extends BaseAnalyticsMVCActionCommand {
 
 		configurationProperties.put(
 			"syncedGroupIds", liferayAnalyticsGroupIds.toArray(new String[0]));
+
+		WizardModeUtil.setNextConfigurationScreenKey(
+			actionRequest, "2-synced-contact-data");
 	}
 
 	private JSONObject _buildGroupJSONObject(

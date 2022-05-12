@@ -17,6 +17,7 @@ package com.liferay.analytics.settings.web.internal.portlet.action;
 import aQute.bnd.annotation.metatype.Meta;
 
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
+import com.liferay.analytics.settings.web.internal.util.WizardModeUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -40,6 +41,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -55,6 +57,8 @@ import java.util.Set;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.MutableRenderParameters;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -146,13 +150,19 @@ public abstract class BaseAnalyticsMVCActionCommand
 					ParamUtil.getString(actionRequest, "redirect"));
 			}
 
-			// 			HttpServletRequest httpServletRequest =
-			//				PortalUtil.getHttpServletRequest(actionRequest);
-			//
-			//			if (WizardModeUtil.isNextStep(
-			//			httpServletRequest.getSession())) {
-			//
-			//			}
+			HttpServletRequest httpServletRequest =
+				PortalUtil.getHttpServletRequest(actionRequest);
+
+			String nextConfigurationScreenKey =
+				WizardModeUtil.getNextConfigurationScreenKey(
+					httpServletRequest.getSession());
+
+			if (nextConfigurationScreenKey != null) {
+				sendRedirect(
+					actionRequest, actionResponse,
+					WizardModeUtil.getNextStepURL(
+						actionResponse, nextConfigurationScreenKey));
+			}
 		}
 		catch (PrincipalException principalException) {
 			_log.error(principalException);

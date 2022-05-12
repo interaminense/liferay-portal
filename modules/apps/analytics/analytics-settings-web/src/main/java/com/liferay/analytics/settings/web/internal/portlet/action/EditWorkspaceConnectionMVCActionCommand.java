@@ -99,7 +99,8 @@ public class EditWorkspaceConnectionMVCActionCommand
 
 		_connect(actionRequest, configurationProperties, upgrade);
 
-		WizardModeUtil.setNextStep(actionRequest, true);
+		WizardModeUtil.setNextConfigurationScreenKey(
+			actionRequest, "1-synced-sites");
 	}
 
 	private void _connect(
