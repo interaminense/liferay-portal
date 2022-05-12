@@ -34,8 +34,18 @@ public class AnalyticsWorkspaceConnectionConfigurationScreen
 	}
 
 	@Override
-	protected String getJspPath() {
+	protected String getDefaultJspPath() {
+		return "/LRAC-10757/edit_workspace_connection.jsp";
+	}
+
+	@Override
+	protected String getLegacyJspPath() {
 		return "/edit_workspace_connection.jsp";
+	}
+
+	@Override
+	protected String getNextJspPath() {
+		return "/edit_synced_sites.jsp";
 	}
 
 	@Override

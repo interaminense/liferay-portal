@@ -17,11 +17,14 @@ package com.liferay.analytics.settings.web.internal.portal.settings.configuratio
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.web.internal.constants.AnalyticsSettingsWebKeys;
 import com.liferay.analytics.settings.web.internal.user.AnalyticsUsersManager;
+import com.liferay.analytics.settings.web.internal.util.WizardModeUtil;
 import com.liferay.configuration.admin.display.ConfigurationScreen;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
@@ -32,6 +35,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -66,7 +70,8 @@ public abstract class BaseAnalyticsConfigurationScreen
 			ServletContext servletContext = getServletContext();
 
 			RequestDispatcher requestDispatcher =
-				servletContext.getRequestDispatcher(getJspPath());
+				servletContext.getRequestDispatcher(
+					getJspPath(httpServletRequest));
 
 			_setHttpServletRequestAttributes(httpServletRequest);
 
@@ -74,11 +79,33 @@ public abstract class BaseAnalyticsConfigurationScreen
 		}
 		catch (Exception exception) {
 			throw new IOException(
-				"Unable to render " + getJspPath(), exception);
+				"Unable to render " + getJspPath(httpServletRequest),
+				exception);
 		}
 	}
 
-	protected abstract String getJspPath();
+	protected abstract String getDefaultJspPath();
+
+	protected String getJspPath(HttpServletRequest httpServletRequest) {
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LRAC-10757"))) {
+			HttpSession httpSession = httpServletRequest.getSession();
+
+			if (WizardModeUtil.isWizardMode(httpSession) &&
+				WizardModeUtil.isNextStep(httpSession)) {
+
+				return getNextJspPath();
+			}
+		}
+		else {
+			return getLegacyJspPath();
+		}
+
+		return getDefaultJspPath();
+	}
+
+	protected abstract String getLegacyJspPath();
+
+	protected abstract String getNextJspPath();
 
 	protected abstract ServletContext getServletContext();
 
