@@ -16,9 +16,10 @@ package com.liferay.analytics.settings.web.internal.portal.settings.configuratio
 
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.web.internal.constants.AnalyticsSettingsWebKeys;
+import com.liferay.analytics.settings.web.internal.display.context.DisplayContext;
 import com.liferay.analytics.settings.web.internal.user.AnalyticsUsersManager;
-import com.liferay.analytics.settings.web.internal.util.WizardModeUtil;
 import com.liferay.configuration.admin.display.ConfigurationScreen;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
@@ -35,7 +36,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -70,42 +70,33 @@ public abstract class BaseAnalyticsConfigurationScreen
 			ServletContext servletContext = getServletContext();
 
 			RequestDispatcher requestDispatcher =
-				servletContext.getRequestDispatcher(
-					getJspPath(httpServletRequest));
+				servletContext.getRequestDispatcher(getJspPath());
 
-			_setHttpServletRequestAttributes(httpServletRequest);
+			_setHttpServletRequestAttributes(
+				httpServletRequest, httpServletResponse);
 
 			requestDispatcher.include(httpServletRequest, httpServletResponse);
 		}
 		catch (Exception exception) {
 			throw new IOException(
-				"Unable to render " + getJspPath(httpServletRequest),
-				exception);
+				"Unable to render " + getJspPath(), exception);
 		}
 	}
 
 	protected abstract String getDefaultJspPath();
 
-	protected String getJspPath(HttpServletRequest httpServletRequest) {
+	protected abstract DisplayContext getDisplayContext(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws PortalException;
+
+	protected String getJspPath() {
 		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LRAC-10757"))) {
-			HttpSession httpSession = httpServletRequest.getSession();
-
-			if (WizardModeUtil.isWizardMode(httpSession) &&
-				WizardModeUtil.isNextStep(httpSession)) {
-
-				return getNextJspPath();
-			}
-		}
-		else {
-			return getLegacyJspPath();
+			return "/LRAC-10757" + getDefaultJspPath();
 		}
 
 		return getDefaultJspPath();
 	}
-
-	protected abstract String getLegacyJspPath();
-
-	protected abstract String getNextJspPath();
 
 	protected abstract ServletContext getServletContext();
 
@@ -123,7 +114,8 @@ public abstract class BaseAnalyticsConfigurationScreen
 	protected ConfigurationProvider configurationProvider;
 
 	private void _setHttpServletRequestAttributes(
-			HttpServletRequest httpServletRequest)
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
 		throws Exception {
 
 		ThemeDisplay themeDisplay =
@@ -134,6 +126,15 @@ public abstract class BaseAnalyticsConfigurationScreen
 			AnalyticsSettingsWebKeys.ANALYTICS_CONFIGURATION,
 			configurationProvider.getCompanyConfiguration(
 				AnalyticsConfiguration.class, themeDisplay.getCompanyId()));
+
+		DisplayContext displayContext = getDisplayContext(
+			httpServletRequest, httpServletResponse);
+
+		if (displayContext != null) {
+			httpServletRequest.setAttribute(
+				AnalyticsSettingsWebKeys.ANALYTICS_DISPLAY_CONTEXT,
+				getDisplayContext(httpServletRequest, httpServletResponse));
+		}
 
 		httpServletRequest.setAttribute(
 			AnalyticsSettingsWebKeys.ANALYTICS_USERS_MANAGER,
