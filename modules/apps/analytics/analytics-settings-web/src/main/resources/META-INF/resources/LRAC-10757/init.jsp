@@ -14,6 +14,11 @@
  */
 --%>
 
-<%@ page import="com.liferay.analytics.settings.web.internal.display.context.QADisplayContext" %>
+<%@ taglib uri="http://liferay.com/tld/frontend-data-set" prefix="frontend-data-set" %>
+
+<%@ page import="com.liferay.analytics.settings.web.internal.display.context.PropertyDisplayContext" %><%@
+page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
+page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
+page import="com.liferay.analytics.settings.web.internal.display.context.QADisplayContext" %>
 
 <%@ include file="/init.jsp" %>
