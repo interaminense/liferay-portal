@@ -1,4 +1,5 @@
-<%--
+<%@ page
+	import="com.liferay.analytics.settings.web.internal.display.context.PropertyDisplayContext" %><%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -17,7 +18,11 @@
 <%@ include file="/LRAC-10757/init.jsp" %>
 
 <%
-QADisplayContext qaDisplayContext = (QADisplayContext)request.getAttribute(AnalyticsSettingsWebKeys.ANALYTICS_DISPLAY_CONTEXT);
+PropertyDisplayContext propertyDisplayContext = (PropertyDisplayContext) request.getAttribute(AnalyticsSettingsWebKeys.ANALYTICS_DISPLAY_CONTEXT);
+
+ChannelSearch channelSearch = propertyDisplayContext.getChannelSearch();
+
+String keywords = ParamUtil.getString(request, "keywords");
 %>
 
 <div class="wizard-mode">
@@ -75,13 +80,13 @@ QADisplayContext qaDisplayContext = (QADisplayContext)request.getAttribute(Analy
 			<liferay-ui:message key="property-assignment" />
 		</h2>
 
-		<c:choose>
-			<c:when test="<%= qaDisplayContext.isWizardMode() %>">
-				<p class="mb-2 mt-3">Test success, we are in Wizard Mode.</p>
-			</c:when>
-			<c:otherwise>
-				<p class="mb-2 mt-3">Test FAIL, we are NOT in Wizard Mode.</p>
-			</c:otherwise>
-		</c:choose>
+		<frontend-data-set:classic-display
+			contextParams="<%= propertyDisplayContext.getContextParams() %>"
+			creationMenu="<%= propertyDisplayContext.getCreationMenu() %>"
+			dataProviderKey="some-key"
+			formName="fm"
+			id="some-very-long-id"
+			style="fluid"
+		/>
 	</clay:sheet>
 </div>

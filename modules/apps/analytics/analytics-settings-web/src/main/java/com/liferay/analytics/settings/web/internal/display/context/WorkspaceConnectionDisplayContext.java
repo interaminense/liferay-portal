@@ -15,7 +15,6 @@
 package com.liferay.analytics.settings.web.internal.display.context;
 
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
-import com.liferay.portal.kernel.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,9 +29,7 @@ public class WorkspaceConnectionDisplayContext extends BaseDisplayContext {
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse) {
 
-		super(httpServletRequest, httpServletResponse);
-
-		_analyticsConfiguration = analyticsConfiguration;
+		super(analyticsConfiguration, httpServletRequest, httpServletResponse);
 
 		if (!isConnected()) {
 			setWizardMode(true);
@@ -41,19 +38,4 @@ public class WorkspaceConnectionDisplayContext extends BaseDisplayContext {
 			setWizardMode(false);
 		}
 	}
-
-	public String getLiferayAnalyticsURL() {
-		return _analyticsConfiguration.liferayAnalyticsURL();
-	}
-
-	public String getToken() {
-		return _analyticsConfiguration.token();
-	}
-
-	public boolean isConnected() {
-		return !Validator.isBlank(_analyticsConfiguration.token());
-	}
-
-	private final AnalyticsConfiguration _analyticsConfiguration;
-
 }

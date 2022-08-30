@@ -14,6 +14,7 @@
 
 package com.liferay.analytics.settings.web.internal.display.context;
 
+import com.liferay.analytics.settings.web.internal.search.ChannelSearch;
 import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchContainerManagementToolbarDisplayContext;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
@@ -22,6 +23,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -30,6 +32,8 @@ import java.util.ResourceBundle;
 
 import javax.portlet.PortletURL;
 
+import javax.portlet.RenderURL;
+import javax.portlet.WindowStateException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -39,14 +43,14 @@ public class ChannelManagementToolbarDisplayContext
 	extends SearchContainerManagementToolbarDisplayContext {
 
 	public ChannelManagementToolbarDisplayContext(
-		ChannelDisplayContext channelDisplayContext,
+		ChannelSearch channelSearch,
 		HttpServletRequest httpServletRequest,
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse) {
 
 		super(
 			httpServletRequest, liferayPortletRequest, liferayPortletResponse,
-			channelDisplayContext.getChannelSearch());
+			channelSearch);
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
@@ -74,10 +78,13 @@ public class ChannelManagementToolbarDisplayContext
 	public CreationMenu getCreationMenu() {
 		return CreationMenuBuilder.addPrimaryDropdownItem(
 			dropdownItem -> {
-				dropdownItem.setHref(
-					liferayPortletResponse.createRenderURL(),
-					"mvcRenderCommandName", "/analytics_settings/add_channel",
-					"redirect", currentURLObj.toString());
+//				dropdownItem.setHref(
+//					liferayPortletResponse.createRenderURL(),
+//					"mvcRenderCommandName", "/analytics_settings/add_channel",
+//					"redirect", currentURLObj.toString());
+				dropdownItem.setHref(liferayPortletResponse.getNamespace() + "addProperty");
+				dropdownItem.setTarget("event");
+				dropdownItem.setType("button");
 				dropdownItem.setLabel(
 					LanguageUtil.get(_resourceBundle, "new-property"));
 			}

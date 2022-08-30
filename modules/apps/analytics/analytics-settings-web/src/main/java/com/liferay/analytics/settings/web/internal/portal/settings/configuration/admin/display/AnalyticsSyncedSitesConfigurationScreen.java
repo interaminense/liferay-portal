@@ -14,8 +14,9 @@
 
 package com.liferay.analytics.settings.web.internal.portal.settings.configuration.admin.display;
 
+import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.web.internal.display.context.DisplayContext;
-import com.liferay.analytics.settings.web.internal.display.context.QADisplayContext;
+import com.liferay.analytics.settings.web.internal.display.context.PropertyDisplayContext;
 import com.liferay.configuration.admin.display.ConfigurationScreen;
 import com.liferay.portal.kernel.exception.PortalException;
 
@@ -23,6 +24,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.WebKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -49,7 +52,16 @@ public class AnalyticsSyncedSitesConfigurationScreen
 			HttpServletResponse httpServletResponse)
 		throws PortalException {
 
-		return new QADisplayContext(httpServletRequest, httpServletResponse);
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		AnalyticsConfiguration analyticsConfiguration =
+			configurationProvider.getCompanyConfiguration(
+				AnalyticsConfiguration.class, themeDisplay.getCompanyId());
+
+		return new PropertyDisplayContext(
+			analyticsConfiguration, httpServletRequest, httpServletResponse);
 	}
 
 	@Override

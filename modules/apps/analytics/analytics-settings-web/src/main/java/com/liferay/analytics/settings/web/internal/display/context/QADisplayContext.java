@@ -14,6 +14,8 @@
 
 package com.liferay.analytics.settings.web.internal.display.context;
 
+import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,10 +25,11 @@ import javax.servlet.http.HttpServletResponse;
 public class QADisplayContext extends BaseDisplayContext {
 
 	public QADisplayContext(
+		AnalyticsConfiguration analyticsConfiguration,
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse) {
 
-		super(httpServletRequest, httpServletResponse);
+		super(analyticsConfiguration, httpServletRequest, httpServletResponse);
 	}
 
 }
