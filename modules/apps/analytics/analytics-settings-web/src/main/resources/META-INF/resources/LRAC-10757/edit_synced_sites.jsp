@@ -128,6 +128,7 @@ String keywords = ParamUtil.getString(request, "keywords");
 				<clay:management-toolbar
 					cssClass="custom-management-toolbar"
 					managementToolbarDisplayContext="<%= new ChannelManagementToolbarDisplayContext(propertyDisplayContext.getChannelSearch(), request, liferayPortletRequest, liferayPortletResponse) %>"
+					propsTransformer="LRAC-10757/js/AddPropertyManagementToolbarPropsTransformer"
 				/>
 
 				<liferay-ui:search-container
@@ -171,52 +172,3 @@ String keywords = ParamUtil.getString(request, "keywords");
 		</c:choose>
 	</clay:sheet>
 </div>
-
-<div id="<portlet:namespace />addProperty">
-	<react:component
-		module="LRAC-10757/js/AddPropertyModal"
-		props='<%=
-			HashMapBuilder.<String, Object>put(
-				"contextPath", application.getContextPath()
-			).put(
-				"defaultLocale", LocaleUtil.toLanguageId(LocaleUtil.getDefault())
-			).put(
-				"editSXPBlueprintURL",
-				PortletURLBuilder.createRenderURL(
-					renderResponse
-				).setMVCRenderCommandName(
-					"/sxp_blueprint_admin/edit_sxp_blueprint"
-				).buildString()
-			).put(
-				"portletNamespace", liferayPortletResponse.getNamespace()
-			).build()
-		%>'
-	/>
-</div>
-<aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />addProperty2',
-		(event) => {
-			Liferay.Util.openModal({
-					bodyHTML: '<div>hell</div>',
-					buttons: [
-						{
-						label: '<liferay-ui:message key="close" />',
-						onClick: function () {
-						Liferay.Util.getOpener().Liferay.fire(
-						'closeModal',
-						{
-						id: 'some-id',
-						}
-						);
-						},
-						},
-					],
-				id: 'some-id',
-				title: '<liferay-ui:message key="source" />',
-			});
-		},
-		['aui-base', 'liferay-util-window']
-	);
-</aui:script>
