@@ -76,17 +76,21 @@ public class ChannelManagementToolbarDisplayContext
 
 	@Override
 	public CreationMenu getCreationMenu() {
+		String addPropertyURL = PortletURLBuilder.createActionURL(
+			liferayPortletResponse
+		).setActionName(
+			"/analytics_settings/add_channel"
+		).setWindowState(
+			LiferayWindowState.POP_UP
+		).buildString();
+
 		return CreationMenuBuilder.addPrimaryDropdownItem(
 			dropdownItem -> {
-//				dropdownItem.setHref(
-//					liferayPortletResponse.createRenderURL(),
-//					"mvcRenderCommandName", "/analytics_settings/add_channel",
-//					"redirect", currentURLObj.toString());
-				dropdownItem.setHref(liferayPortletResponse.getNamespace() + "addProperty");
-				dropdownItem.setTarget("event");
-				dropdownItem.setType("button");
 				dropdownItem.setLabel(
 					LanguageUtil.get(_resourceBundle, "new-property"));
+				dropdownItem.putData("action", "addProperty");
+				dropdownItem.putData("addPropertyURL", addPropertyURL);
+				dropdownItem.putData("dialogTitle", LanguageUtil.get(_resourceBundle, "new-property"));
 			}
 		).build();
 	}

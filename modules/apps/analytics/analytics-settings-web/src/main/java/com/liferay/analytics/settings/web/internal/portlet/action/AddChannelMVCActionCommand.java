@@ -26,8 +26,10 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.CompanyService;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -75,6 +77,26 @@ import org.osgi.service.component.annotations.Reference;
 public class AddChannelMVCActionCommand extends BaseAnalyticsMVCActionCommand {
 
 	@Override
+	protected void doProcessAction(
+		ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+		_log.warn("doProcess");
+
+		JSONObject jsonObject = JSONUtil.put(
+			"redirectURL", ""
+			);
+
+//		if (SessionErrors.contains(
+//			actionRequest, "assetListEntryNameInvalid")) {
+//
+//			addSuccessMessage(actionRequest, actionResponse);
+//		}
+
+		JSONPortletResponseUtil.writeJSON(
+			actionRequest, actionResponse, jsonObject);
+	}
+
+		@Override
 	protected void updateConfigurationProperties(
 			ActionRequest actionRequest,
 			Dictionary<String, Object> configurationProperties)
