@@ -15,3 +15,24 @@
 --%>
 
 <%@ include file="/init.jsp" %>
+
+<div>
+    <react:component
+        module="js/App"
+        
+    />
+</div>
+
+<aui:script>
+    function <portlet:namespace />resetPage() {
+        const portlet = document.querySelector('#portlet<portlet:namespace />'.slice(0, -1));
+        const container = portlet.querySelectorAll('.portlet-body > .container-fluid')[1];
+        const firstColumn = container.querySelector('.row > .col-md-3');
+        const secondColumn = container.querySelector('.row > .col-md-9');
+
+        firstColumn.remove();
+        secondColumn.className = 'col-md-12';
+    }
+
+    <portlet:namespace />resetPage();
+</aui:script>
