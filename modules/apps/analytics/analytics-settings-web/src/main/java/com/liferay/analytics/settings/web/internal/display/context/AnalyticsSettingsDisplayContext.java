@@ -15,6 +15,7 @@
 package com.liferay.analytics.settings.web.internal.display.context;
 
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
+import com.liferay.analytics.settings.web.internal.constants.AnalyticsSettingsWebKeys;
 import com.liferay.portal.kernel.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,9 @@ public class AnalyticsSettingsDisplayContext extends BaseDisplayContext {
 
 		super(httpServletRequest, httpServletResponse);
 
-		_analyticsConfiguration = analyticsConfiguration;
+		_analyticsConfiguration =
+			(AnalyticsConfiguration)httpServletRequest.getAttribute(
+				AnalyticsSettingsWebKeys.ANALYTICS_CONFIGURATION);
 	}
 
 	public String getLiferayAnalyticsURL() {
