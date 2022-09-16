@@ -16,23 +16,39 @@
 
 <%@ include file="/init.jsp" %>
 
+<%
+AnalyticsSettingsDisplayContext analyticsSettingsDisplayContext = new AnalyticsSettingsDisplayContext(request, response);
+%>
+
 <div>
-    <react:component
-        module="js/App"
-        
-    />
+	<react:component
+		module="js/App"
+		props='<%=
+			HashMapBuilder.<String, Object>put(
+				"connected", analyticsSettingsDisplayContext.isConnected()
+			).put(
+				"liferayAnalyticsURL", analyticsSettingsDisplayContext.getLiferayAnalyticsURL()
+			).put(
+				"token", analyticsSettingsDisplayContext.getToken()
+			).build()
+		%>'
+	/>
 </div>
 
 <aui:script>
-    function <portlet:namespace />resetPage() {
-        const portlet = document.querySelector('#portlet<portlet:namespace />'.slice(0, -1));
-        const container = portlet.querySelectorAll('.portlet-body > .container-fluid')[1];
-        const firstColumn = container.querySelector('.row > .col-md-3');
-        const secondColumn = container.querySelector('.row > .col-md-9');
+	function <portlet:namespace />resetPage() {
+		const portlet = document.querySelector(
+			'#portlet<portlet:namespace />'.slice(0, -1)
+		);
+		const container = portlet.querySelectorAll(
+			'.portlet-body > .container-fluid'
+		)[1];
+		const firstColumn = container.querySelector('.row > .col-md-3');
+		const secondColumn = container.querySelector('.row > .col-md-9');
 
-        firstColumn.remove();
-        secondColumn.className = 'col-md-12';
-    }
+		firstColumn.remove();
+		secondColumn.className = 'col-md-12';
+	}
 
-    <portlet:namespace />resetPage();
+	<portlet:namespace />resetPage();
 </aui:script>
