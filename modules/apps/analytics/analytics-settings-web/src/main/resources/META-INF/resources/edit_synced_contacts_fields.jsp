@@ -55,7 +55,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(resourceBundle, "
 
 <portlet:actionURL name="/analytics_settings/edit_synced_contacts" var="editSyncedContactsURL" />
 
-<clay:container-fluid>
+<%-- <clay:container-fluid>
 	<clay:row>
 		<clay:col
 			size="12"
@@ -67,7 +67,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(resourceBundle, "
 			</div>
 		</clay:col>
 	</clay:row>
-</clay:container-fluid>
+</clay:container-fluid> --%>
 
 <clay:sheet
 	cssClass="portlet-analytics-settings"
@@ -194,13 +194,22 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(resourceBundle, "
 			<aui:button-row>
 				<aui:button href="" onClick='<%= liferayPortletResponse.getNamespace() + "showConfirmationModal(this);" %>' value="cancel" />
 
-				<aui:button type="submit" value="save" />
+				<aui:button type="submit" id="submitForm" value="save" />
 			</aui:button-row>
 		</div>
 	</aui:form>
 </clay:sheet>
 
 <aui:script>
+	var submitButton = document.querySelector("#<portlet:namespace />submitForm");
+	var form = document.querySelector("form[action='<%= editSyncedContactsURL %>']");
+
+	debugger;
+
+	submitButton.addEventListener("click", function() {
+		form.submit();
+	})
+
 	Liferay.provide(
 		window,
 		'<portlet:namespace />showConfirmationModal',
