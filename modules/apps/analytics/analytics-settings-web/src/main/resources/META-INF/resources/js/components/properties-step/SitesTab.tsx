@@ -19,9 +19,9 @@ import ComposedTable from '../ComposedTable';
 import {TData} from '../TabsTemplate';
 import {TProperty} from './PropertiesTable';
 import {
-	updateAvailableCheckboxesItem,
-	updateItems,
-	useSelectedAllItems,
+	syncItemsWithDisabledProperty,
+	updateItemsWithChannelName,
+	useCheckSelectedAllItems,
 } from './utils';
 
 interface ISiteTabProps {
@@ -41,7 +41,7 @@ const SitesTab: React.FC<ISiteTabProps> = ({property}) => {
 		request();
 	}, []);
 
-	const selectedAllItems = useSelectedAllItems(items);
+	const selectedAllItems = useCheckSelectedAllItems(items);
 
 	return (
 		<ComposedTable
@@ -71,11 +71,21 @@ const SitesTab: React.FC<ISiteTabProps> = ({property}) => {
 				console.log('filter clicked', selectedFilter);
 			}}
 			onCheckboxItemChange={(index: number) => {
-				setItems(updateItems(items, index, property.name));
+				setItems(
+					updateItemsWithChannelName({
+						index,
+						items,
+						propertyName: property.name,
+					})
+				);
 			}}
 			onSelectAllItems={(checked: boolean) => {
 				setItems(
-					updateAvailableCheckboxesItem(checked, items, property.name)
+					syncItemsWithDisabledProperty({
+						checked,
+						items,
+						propertyName: property.name,
+					})
 				);
 			}}
 		/>

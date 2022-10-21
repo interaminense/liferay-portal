@@ -18,9 +18,9 @@ import {fetchChannels} from '../../utils/api';
 import ComposedTable from '../ComposedTable';
 import {TProperty} from './PropertiesTable';
 import {
-	updateAvailableCheckboxesItem,
-	updateItems,
-	useSelectedAllItems,
+	syncItemsWithDisabledProperty,
+	updateItemsWithChannelName,
+	useCheckSelectedAllItems,
 } from './utils';
 
 export type TData = {
@@ -50,7 +50,7 @@ const ChannelTab: React.FC<IChannelTabProps> = ({
 		request();
 	}, []);
 
-	const selectedAllItems = useSelectedAllItems(items);
+	const selectedAllItems = useCheckSelectedAllItems<TData>(items);
 
 	return (
 		<ComposedTable
@@ -80,16 +80,22 @@ const ChannelTab: React.FC<IChannelTabProps> = ({
 				console.log('filter clicked', selectedFilter);
 			}}
 			onCheckboxItemChange={(index: number) => {
-				setItems(updateItems(items, index, property.name));
+				setItems(
+					updateItemsWithChannelName({
+						index,
+						items,
+						propertyName: property.name,
+					})
+				);
 			}}
 			onSelectAllItems={(checked: boolean) => {
 				setItems(
-					updateAvailableCheckboxesItem(
+					syncItemsWithDisabledProperty<TData>({
 						checked,
+						displayChannels,
 						items,
-						property.name,
-						displayChannels
-					)
+						propertyName: property.name,
+					})
 				);
 			}}
 			tableDisabled={!displayChannels}

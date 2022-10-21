@@ -14,48 +14,61 @@
 
 import {useEffect, useState} from 'react';
 
-export function useSelectedAllItems(items: any) {
+interface Item {
+	channelName?: string;
+}
+
+export function useCheckSelectedAllItems<T extends Item>(items: T[]) {
 	const [selectedAllItems, setSelectedAllItems] = useState(false);
 
 	useEffect(() => {
-		setSelectedAllItems(items.every((item: any) => item.channelName));
+		setSelectedAllItems(items.every((item: T) => item.channelName));
 	}, [items]);
 
 	return selectedAllItems;
 }
 
-export function updateItems(items: any, index: number, propertyName: string) {
+export function updateItemsWithChannelName<T extends Item>({
+	index,
+	items,
+	propertyName,
+}: {
+	index: number;
+	items: T[];
+	propertyName: string;
+}) {
 	const newItems = items;
-	newItems[index].channelName
-		? delete newItems[index].channelName
-		: (newItems[index].channelName = propertyName);
+
+	if (newItems[index]?.channelName) {
+		delete newItems[index].channelName;
+	} else {
+		newItems[index].channelName = propertyName;
+	}
 
 	return [...newItems];
 }
 
-// TODO: Find better name for this FN
-
-export function updateAvailableCheckboxesItem(
-	checked: boolean,
-	items: any,
-	propertyName: string,
-	displayChannels: boolean = false
-) {
-	const newItems = items.map((item: any) => {
-		const disabled =
-			(item.channelName && item.channelName !== propertyName) ||
-			!displayChannels;
+export function syncItemsWithDisabledProperty<T extends Item>({
+	checked,
+	displayChannels,
+	items,
+	propertyName,
+}: {
+	checked: boolean;
+	displayChannels?: boolean;
+	items: T[];
+	propertyName: string;
+}) {
+	const newItems = items.map((item: T) => {
+		const disabled = item?.channelName !== propertyName || !displayChannels;
 
 		if (disabled) {
 			return item;
 		} else {
-			if (
-				(checked && !item.channelName) ||
-				(checked && item.channelName)
-			) {
+			if (checked) {
 				return {...item, channelName: propertyName};
 			} else {
-				delete item.channelName;
+				delete item?.channelName;
 
 				return item;
 			}
