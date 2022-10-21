@@ -24,8 +24,8 @@ import {AppContext, Events} from '../App';
 import {ESteps} from '../pages/wizard/WizardPage';
 import {fetchConnection} from '../utils/api';
 import BasePage from './BasePage';
-import DisconnectModal from './DisconnectModal';
 import LoadingInline from './LoadingInline';
+import DisconnectModal from './modals/DisconnectModal';
 
 interface IConnectProps {
 	onChangeStep?: (step: ESteps) => void;
@@ -61,8 +61,7 @@ const Connect: React.FC<IConnectProps> = ({onChangeStep, title}) => {
 				});
 
 				onChangeStep && onChangeStep(ESteps.Property);
-			}
-			else {
+			} else {
 				Liferay.Util.openToast({
 					message: Liferay.Language.get(
 						'an-unexpected-system-error-occurred'

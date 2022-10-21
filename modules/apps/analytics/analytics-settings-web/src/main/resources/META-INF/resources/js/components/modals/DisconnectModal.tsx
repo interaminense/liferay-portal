@@ -16,8 +16,8 @@ import ClayButton from '@clayui/button';
 import ClayModal from '@clayui/modal';
 import React, {useState} from 'react';
 
-import {deleteConnection} from '../utils/api';
-import LoadingInline from './LoadingInline';
+import {deleteConnection} from '../../utils/api';
+import LoadingInline from '../LoadingInline';
 
 interface IDisconnectModalProps {
 	observer: any;

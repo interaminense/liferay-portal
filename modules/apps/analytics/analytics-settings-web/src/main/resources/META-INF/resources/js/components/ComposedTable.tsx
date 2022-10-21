@@ -13,96 +13,80 @@
  */
 
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
-import {Text} from '@clayui/core';
 import {ClayDropDownWithItems} from '@clayui/drop-down';
 import {ClayCheckbox, ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayManagementToolbar from '@clayui/management-toolbar';
-import {ClayPaginationBarWithBasicItems} from '@clayui/pagination-bar';
+
+// import {ClayPaginationBarWithBasicItems} from '@clayui/pagination-bar';
+
 import ClayTable from '@clayui/table';
-import React, {useEffect, useState} from 'react';
+import classNames from 'classnames';
+import React, {useState} from 'react';
 
-import {TProperty} from './properties-step/PropertiesTable';
-
-export type TData = {
-	channelName?: string;
-	friendlyURL: string;
-	id: string;
-	name: string;
-	siteName: string;
-}[];
-interface ITabsTemplate {
-	channelTab?: boolean;
-	checked?: boolean;
-	displayChannels?: boolean;
-	handleCheckboxChange: Function;
-	handleSelectAll: Function;
-	items: TData;
-	property: TProperty;
-	selectedAllDisabled?: boolean;
-	siteTab?: boolean;
+enum FilterOrder {
+	Asc = 'ASC',
+	Desc = 'DESC',
 }
 
-const TabsTemplate: React.FC<ITabsTemplate> = ({
-	channelTab,
-	checked: initialChecked = false,
-	displayChannels,
-	handleCheckboxChange,
-	handleSelectAll,
-	items,
-	property,
-	selectedAllDisabled,
-	siteTab,
+interface IComposedTableProps {
+	allItemsChecked?: boolean;
+	filters?: {label: string}[];
+	headerColumns: Column[];
+	items: Item[];
+	onChangeFilterOrder: (order: 'ASC' | 'DESC') => void;
+	onCheckboxItemChange: (itemIndex: number) => void;
+	onSelectAllItems: (checked: boolean) => void;
+	selectedAllDisabled?: boolean;
+	tableDisabled?: boolean;
+}
+
+type Column = {
+	expanded: boolean;
+	label: string;
+};
+
+type Item = {
+	checked: boolean;
+	columns: string[];
+	disabled: boolean;
+	id: string;
+};
+
+const ComposedTable: React.FC<IComposedTableProps> = ({
+	allItemsChecked: initialAllItemsChecked = false,
+	filters = [],
+	headerColumns = [],
+	items = [],
+	onChangeFilterOrder,
+	onCheckboxItemChange,
+	onSelectAllItems,
+	selectedAllDisabled = false,
+	tableDisabled = false,
 }) => {
+	const [allItemsChecked, setChecked] = useState(initialAllItemsChecked);
+	const [filterOrder, setFilterOrder] = useState<FilterOrder>(
+		FilterOrder.Asc
+	);
 	const [searchMobile, setSearchMobile] = useState(false);
-	const [checked, setChecked] = useState(initialChecked);
-	const [delta, setDelta] = useState(5);
-
-	const filterItems = [
-		{
-			label: Liferay.Language.get('channel-name'),
-			onClick: () => alert('Filter clicked'),
-		},
-		{
-			label: Liferay.Language.get('related-site'),
-			onClick: () => alert('Filter clicked'),
-		},
-		{
-			label: Liferay.Language.get('assigned-property'),
-			onClick: () => alert('Filter clicked'),
-		},
-	];
-
-	useEffect(() => {
-		setChecked(initialChecked);
-	}, [initialChecked]);
 
 	return (
-		<>
-			<div className="mt-3">
-				<Text as="p" color="secondary" size={3}>
-					{channelTab &&
-						Liferay.Language.get('channels-tab-description')}
-
-					{siteTab && Liferay.Language.get('sites-tab-description')}
-				</Text>
-			</div>
-
+		<div>
 			<ClayManagementToolbar>
 				<ClayManagementToolbar.ItemList>
 					<ClayManagementToolbar.Item>
 						<ClayCheckbox
-							checked={checked}
+							checked={allItemsChecked}
 							disabled={selectedAllDisabled}
 							onChange={() => {
-								handleSelectAll(!checked);
-								setChecked(!checked);
+								onSelectAllItems(!allItemsChecked);
+								setChecked(!allItemsChecked);
 							}}
 						/>
 					</ClayManagementToolbar.Item>
 
 					<ClayDropDownWithItems
-						items={filterItems}
+						items={filters}
 						trigger={
 							<ClayButton
 								className="nav-link"
@@ -132,9 +116,23 @@ const TabsTemplate: React.FC<ITabsTemplate> = ({
 						<ClayButton
 							className="nav-link nav-link-monospaced"
 							displayType="unstyled"
-							onClick={() => {}}
+							onClick={() => {
+								const currentFilterOrder =
+									filterOrder === FilterOrder.Asc
+										? FilterOrder.Desc
+										: FilterOrder.Asc;
+
+								setFilterOrder(currentFilterOrder);
+								onChangeFilterOrder(currentFilterOrder);
+							}}
 						>
-							<ClayIcon symbol="order-list-up" />
+							<ClayIcon
+								symbol={
+									filterOrder === FilterOrder.Asc
+										? 'order-list-up'
+										: 'order-list-down'
+								}
+							/>
 						</ClayButton>
 					</ClayManagementToolbar.Item>
 				</ClayManagementToolbar.ItemList>
@@ -183,74 +181,60 @@ const TabsTemplate: React.FC<ITabsTemplate> = ({
 				</ClayManagementToolbar.ItemList>
 			</ClayManagementToolbar>
 
-			<ClayTable hover={displayChannels}>
+			<ClayTable hover={!tableDisabled}>
 				<ClayTable.Head>
 					<ClayTable.Row>
 						<ClayTable.Cell></ClayTable.Cell>
 
-						<ClayTable.Cell expanded headingCell>
-							{channelTab && Liferay.Language.get('channel-name')}
-
-							{siteTab && Liferay.Language.get('site-name')}
-						</ClayTable.Cell>
-
-						<ClayTable.Cell expanded headingCell>
-							{channelTab && Liferay.Language.get('related-site')}
-
-							{siteTab && Liferay.Language.get('friendly-url')}
-						</ClayTable.Cell>
-
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('assigned-property')}
-						</ClayTable.Cell>
+						{headerColumns.map(({expanded, label}) => (
+							<ClayTable.Cell
+								expanded={expanded}
+								headingCell
+								key={label}
+							>
+								{label}
+							</ClayTable.Cell>
+						))}
 					</ClayTable.Row>
 				</ClayTable.Head>
 
 				<ClayTable.Body>
-					{items &&
-						items.map((item, index) => {
-							const disabledRow =
-								(item.channelName &&
-									item.channelName !== property.name) ||
-								!displayChannels;
-
+					{items.map(
+						({checked, columns, disabled = false, id}, index) => {
 							return (
 								<ClayTable.Row
-									className={disabledRow ? 'text-muted' : ''}
-									key={item.id}
+									className={classNames({
+										'text-muted': disabled,
+									})}
+									key={id}
 								>
 									<ClayTable.Cell>
 										<ClayCheckbox
-											checked={!!item.channelName}
-											disabled={disabledRow}
-											id={item.id}
+											checked={checked}
+											disabled={tableDisabled || disabled}
+											id={id}
 											onChange={() =>
-												handleCheckboxChange(index)
+												onCheckboxItemChange(index)
 											}
 										/>
 									</ClayTable.Cell>
 
-									<ClayTable.Cell>{item.name}</ClayTable.Cell>
-
-									<ClayTable.Cell>
-										{channelTab && item.siteName}
-
-										{siteTab && item.friendlyURL}
-									</ClayTable.Cell>
-
-									<ClayTable.Cell>
-										{item?.channelName}
-									</ClayTable.Cell>
+									{columns.map((label, index: number) => (
+										<ClayTable.Cell key={index}>
+											{label}
+										</ClayTable.Cell>
+									))}
 								</ClayTable.Row>
 							);
-						})}
+						}
+					)}
 				</ClayTable.Body>
 			</ClayTable>
 
 			{/* // TODO: update this component with function to handle the pagination component. 
 			// The function will be created on another story (LRAC-12019) */}
 
-			<ClayPaginationBarWithBasicItems
+			{/* <ClayPaginationBarWithBasicItems
 				activeDelta={delta}
 				defaultActive={1}
 				deltas={[4, 8, 20, 40, 60].map((size) => ({
@@ -258,9 +242,9 @@ const TabsTemplate: React.FC<ITabsTemplate> = ({
 				}))}
 				onDeltaChange={setDelta}
 				totalItems={10}
-			/>
-		</>
+			/> */}
+		</div>
 	);
 };
 
-export default TabsTemplate;
+export default ComposedTable;

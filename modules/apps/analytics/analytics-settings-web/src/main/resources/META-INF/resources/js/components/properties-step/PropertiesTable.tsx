@@ -18,7 +18,7 @@ import {useModal} from '@clayui/modal';
 import ClayTable from '@clayui/table';
 import React, {useState} from 'react';
 
-import AssignModal from '../components/AssignModal';
+import AssignModal from '../modals/AssignModal';
 
 export type TDataSource = {
 	commerceChannelIds: Array<number>;

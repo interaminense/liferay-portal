@@ -17,8 +17,8 @@ import ClayForm, {ClayInput} from '@clayui/form';
 import ClayModal from '@clayui/modal';
 import React, {useState} from 'react';
 
-import {createProperty} from '../utils/api';
-import LoadingInline from './LoadingInline';
+import {createProperty} from '../../utils/api';
+import LoadingInline from '../LoadingInline';
 
 interface IModalProps {
 	observer: any;
@@ -48,8 +48,7 @@ const CreatePropertyModal: React.FC<IModalProps> = ({
 				});
 
 				onCloseModal();
-			}
-			else {
+			} else {
 				Liferay.Util.openToast({
 					message: Liferay.Language.get(
 						'an-unexpected-system-error-occurred'

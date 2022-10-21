@@ -20,8 +20,8 @@ import React, {useEffect, useState} from 'react';
 // import AssignModal from '../../components/AssignModal';
 
 import BasePage from '../../components/BasePage';
-import CreatePropertyModal from '../../components/CreatePropertyModal';
-import PropertiesTable from '../../components/PropertiesTable';
+import CreatePropertyModal from '../../components/modals/CreatePropertyModal';
+import PropertiesTable from '../../components/properties-step/PropertiesTable';
 import {fetchProperties} from '../../utils/api';
 import {ESteps, TGenericComponent} from './WizardPage';
 

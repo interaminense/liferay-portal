@@ -17,9 +17,9 @@ import ClayModal from '@clayui/modal';
 import ClayTabs from '@clayui/tabs';
 import React, {useState} from 'react';
 
-import {TProperty} from '../components/PropertiesTable';
-import ChannelTab from './ChannelTab';
-import SitesTab from './SitesTab';
+import ChannelTab from '../properties-step/ChannelTab';
+import {TProperty} from '../properties-step/PropertiesTable';
+import SitesTab from '../properties-step/SitesTab';
 
 interface IAssignModalProps {
 	observer: any;
