@@ -66,4 +66,11 @@ export declare function changeItemsBasedOnAllChecked<T extends Item>({
 	items: T[];
 	propertyName: string;
 }): T[];
+export declare function getSelectedItems(
+	items: {
+		channelName?: string;
+		id: string;
+		name: string;
+	}[]
+): number[];
 export {};

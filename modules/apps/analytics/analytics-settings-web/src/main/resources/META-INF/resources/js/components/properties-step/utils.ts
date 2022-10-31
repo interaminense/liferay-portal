@@ -130,3 +130,17 @@ export function changeItemsBasedOnAllChecked<T extends Item>({
 
 	return newItems;
 }
+
+export function getSelectedItems(
+	items: {
+		channelName?: string;
+		id: string;
+		name: string;
+	}[]
+) {
+	return items
+		.filter(({channelName, name}) => {
+			return channelName === name;
+		})
+		.map(({id}) => Number(id));
+}

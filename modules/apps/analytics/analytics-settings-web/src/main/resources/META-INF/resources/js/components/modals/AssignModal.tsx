@@ -19,14 +19,13 @@ import ClayTabs from '@clayui/tabs';
 import React, {useState} from 'react';
 
 import {TProperty} from '../../pages/wizard/PropertyStep';
-
-// import {updateChannel} from '../../utils/api';
-// import {SUCCESS_MESSAGE} from '../../utils/constants';
-
+import {updateProperty} from '../../utils/api';
+import {SUCCESS_MESSAGE} from '../../utils/constants';
 import Loading from '../Loading';
 import ChannelTab from '../properties-step/ChannelTab';
 import SitesTab from '../properties-step/SitesTab';
 import {TItem} from '../properties-step/Tab';
+import {getSelectedItems} from '../properties-step/utils';
 
 interface IAssignModalProps {
 	observer: any;
@@ -62,24 +61,22 @@ const AssignModal: React.FC<IAssignModalProps> = ({
 			// eslint-disable-next-line no-console
 			console.log({channels, sites});
 
-			// TODO: Ta faltando o POST de channels e sites
-			// const {ok} = await updateChannel({
-			// 	channelId: property.channelId,
-			// 	commerceChannelIds: channels.map(({id}) => Number(id)),
-			// 	dataSourceId: property.dataSources[0]?.dataSourceId,
-			// 	name: property.name,
-			// 	siteIds: sites.map(({id}) => Number(id)),
-			// });
+			const {ok} = await updateProperty({
+				channelId: property.channelId,
+				commerceChannelIds: getSelectedItems(channels),
+				dataSourceId: property.dataSources[0]?.dataSourceId,
+				siteIds: getSelectedItems(sites),
+			});
 
-			// if (ok) {
-			// 	setSubmitting(false);
+			setSubmitting(false);
 
-			// 	Liferay.Util.openToast({
-			// 		message: SUCCESS_MESSAGE,
-			// 	});
+			if (ok) {
+				Liferay.Util.openToast({
+					message: SUCCESS_MESSAGE,
+				});
 
-			// 	onCloseModal();
-			// }
+				onCloseModal();
+			}
 		};
 
 		request();

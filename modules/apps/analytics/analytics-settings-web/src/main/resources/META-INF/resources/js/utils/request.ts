@@ -60,7 +60,9 @@ function request(path: string, config: RequestInit) {
 
 		const status = STATUS[response.status as Status];
 
-		if (response.status === Status.NoContent) {
+		if (response.status === Status.Forbidden) {
+			window.location.reload();
+		} else if (response.status === Status.NoContent) {
 			return status;
 		} else if (response.status >= Status.MultipleChoices || status) {
 			Liferay.Util.openToast({

@@ -13,12 +13,14 @@
  */
 
 import ClayButton from '@clayui/button';
-import ClayEmptyState from '@clayui/empty-state';
 import {useModal} from '@clayui/modal';
 import React, {useEffect, useState} from 'react';
 
 import BasePage from '../../components/BasePage';
-import StateRenderer from '../../components/StateRenderer';
+import StateRenderer, {
+	EmptyStateComponent,
+	ErrorStateComponent,
+} from '../../components/StateRenderer';
 import AssignModal from '../../components/modals/AssignModal';
 import CreatePropertyModal from '../../components/modals/CreatePropertyModal';
 import PropertiesTable from '../../components/properties-step/PropertiesTable';
@@ -78,39 +80,31 @@ const Step: React.FC<IStepProps> = ({onChangeStep}) => {
 				error={error}
 				loading={loading}
 			>
-				<StateRenderer.Error
-					disabled={refetching}
-					onClickRefetch={refetch}
-				/>
+				<StateRenderer.Error>
+					<ErrorStateComponent
+						className="empty-state-border mb-0 pb-5"
+						disabled={refetching}
+						onClickRefetch={refetch}
+					/>
+				</StateRenderer.Error>
 
 				<StateRenderer.Empty>
-					<div className="empty-state-border">
-						<ClayEmptyState
-							description={Liferay.Language.get(
-								'create-a-property-to-add-sites-and-channels'
-							)}
-							imgProps={{
-								alt: Liferay.Language.get(
-									'create-a-new-property'
-								),
-								title: Liferay.Language.get(
-									'create-a-new-property'
-								),
-							}}
-							imgSrc={NOT_FOUND_GIF}
-							title={Liferay.Language.get(
-								'create-a-new-property'
-							)}
+					<EmptyStateComponent
+						className="empty-state-border"
+						description={Liferay.Language.get(
+							'create-a-property-to-add-sites-and-channels'
+						)}
+						imgSrc={NOT_FOUND_GIF}
+						title={Liferay.Language.get('create-a-new-property')}
+					>
+						<ClayButton
+							displayType="secondary"
+							onClick={() => onPropertyModalOpenChange(true)}
+							type="button"
 						>
-							<ClayButton
-								displayType="secondary"
-								onClick={() => onPropertyModalOpenChange(true)}
-								type="button"
-							>
-								{Liferay.Language.get('new-property')}
-							</ClayButton>
-						</ClayEmptyState>
-					</div>
+							{Liferay.Language.get('new-property')}
+						</ClayButton>
+					</EmptyStateComponent>
 				</StateRenderer.Empty>
 
 				<StateRenderer.Success>

@@ -40,6 +40,26 @@ export function createProperty(name: string) {
 	});
 }
 
+export function updateProperty({
+	channelId,
+	commerceChannelIds,
+	dataSourceId,
+	siteIds,
+}: {
+	channelId: string;
+	commerceChannelIds: number[];
+	dataSourceId: string;
+	siteIds: number[];
+}) {
+	return request('/channels', {
+		body: JSON.stringify({
+			channelId,
+			dataSources: [{commerceChannelIds, dataSourceId, siteIds}],
+		}),
+		method: 'PATCH',
+	});
+}
+
 export function fetchChannels() {
 	return request('/commerce-channels', {method: 'GET'});
 }

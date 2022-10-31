@@ -24,10 +24,27 @@ declare const StateRenderer: React.FC<IStateRendererProps> & {
 	Success: typeof SuccessState;
 };
 declare const EmptyState: React.FC<React.HTMLAttributes<HTMLElement>>;
-interface IErrorStateProps extends React.HTMLAttributes<HTMLElement> {
+declare const ErrorState: React.FC<React.HTMLAttributes<HTMLElement>>;
+declare const SuccessState: React.FC<React.HTMLAttributes<HTMLElement>>;
+interface IErrorStateComponentProps extends React.HTMLAttributes<HTMLElement> {
 	disabled?: boolean;
 	onClickRefetch?: () => void;
 }
-declare const ErrorState: React.FC<IErrorStateProps>;
-declare const SuccessState: React.FC<React.HTMLAttributes<HTMLElement>>;
+export declare function ErrorStateComponent({
+	className,
+	disabled,
+	onClickRefetch,
+}: IErrorStateComponentProps): JSX.Element;
+interface IEmptyStateComponentProps extends React.HTMLAttributes<HTMLElement> {
+	description?: string;
+	imgSrc: string;
+	title?: string;
+}
+export declare function EmptyStateComponent({
+	children,
+	className,
+	description,
+	imgSrc,
+	title,
+}: IEmptyStateComponentProps): JSX.Element;
 export default StateRenderer;

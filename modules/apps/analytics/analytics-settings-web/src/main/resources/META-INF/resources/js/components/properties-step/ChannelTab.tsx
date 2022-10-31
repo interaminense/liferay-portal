@@ -30,7 +30,7 @@ const ChannelTab: React.FC<IChannelTabProps> = ({
 	<Tab
 		columns={['name', 'siteName', 'channelName']}
 		description="Channels can only be assigned to a single property at a time. Sites belonging to a channel will be automatically selected when a channel has been selected."
-		emptyStateDescription={Liferay.Language.get('there-are-no-channels')}
+		emptyStateTitle={Liferay.Language.get('there-are-no-channels')}
 		enableCheckboxs={!!property.commerceEnabled}
 		fetchFn={fetchChannels}
 		header={[

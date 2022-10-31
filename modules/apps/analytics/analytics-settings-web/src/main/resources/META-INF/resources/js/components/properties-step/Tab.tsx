@@ -13,7 +13,6 @@
  */
 
 import {Text} from '@clayui/core';
-import ClayEmptyState from '@clayui/empty-state';
 import React, {useEffect, useState} from 'react';
 
 import {TProperty} from '../../pages/wizard/PropertyStep';
@@ -26,7 +25,10 @@ import {
 	getSafePagination,
 } from '../../utils/pagination';
 import ComposedTable, {TColumn} from '../ComposedTable';
-import StateRenderer from '../StateRenderer';
+import StateRenderer, {
+	EmptyStateComponent,
+	ErrorStateComponent,
+} from '../StateRenderer';
 import {
 	changeItemsBasedOnAllChecked,
 	toggleChannelName,
@@ -45,7 +47,7 @@ export type TItem = {
 interface ITabProps {
 	columns: Array<keyof TItem>;
 	description?: string;
-	emptyStateDescription: string;
+	emptyStateTitle: string;
 	enableCheckboxs?: boolean;
 	fetchFn: () => Promise<any>;
 	header: TColumn[];
@@ -60,7 +62,7 @@ interface TData extends TRawPagination {
 function Tab({
 	columns,
 	description,
-	emptyStateDescription,
+	emptyStateTitle,
 	enableCheckboxs = true,
 	fetchFn,
 	header,
@@ -103,23 +105,21 @@ function Tab({
 				error={error}
 				loading={loading}
 			>
-				<StateRenderer.Error
-					disabled={refetching}
-					onClickRefetch={refetch}
-				/>
+				<StateRenderer.Error>
+					<ErrorStateComponent
+						className="empty-state-border mb-0 pb-5"
+						disabled={refetching}
+						onClickRefetch={refetch}
+					/>
+				</StateRenderer.Error>
 
 				<StateRenderer.Empty>
-					<div className="empty-state-border">
-						<ClayEmptyState
-							description=""
-							imgProps={{
-								alt: emptyStateDescription,
-								title: emptyStateDescription,
-							}}
-							imgSrc={EMPTY_STATE_GIF}
-							title={emptyStateDescription}
-						/>
-					</div>
+					<EmptyStateComponent
+						className="empty-state-border"
+						description=""
+						imgSrc={EMPTY_STATE_GIF}
+						title={emptyStateTitle}
+					/>
 				</StateRenderer.Empty>
 
 				<StateRenderer.Success>

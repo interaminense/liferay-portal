@@ -26,7 +26,7 @@ export declare type TItem = {
 interface ITabProps {
 	columns: Array<keyof TItem>;
 	description?: string;
-	emptyStateDescription: string;
+	emptyStateTitle: string;
 	enableCheckboxs?: boolean;
 	fetchFn: () => Promise<any>;
 	header: TColumn[];
@@ -36,7 +36,7 @@ interface ITabProps {
 declare function Tab({
 	columns,
 	description,
-	emptyStateDescription,
+	emptyStateTitle,
 	enableCheckboxs,
 	fetchFn,
 	header,

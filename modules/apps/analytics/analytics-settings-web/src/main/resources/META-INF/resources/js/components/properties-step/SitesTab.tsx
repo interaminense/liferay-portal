@@ -27,7 +27,7 @@ const SitesTab: React.FC<ISiteTabProps> = ({onSitesChange, property}) => (
 	<Tab
 		columns={['name', 'friendlyURL', 'channelName']}
 		description="Channels can only be assigned to a single property at a time. Sites belonging to a channel will be automatically selected when a channel has been selected."
-		emptyStateDescription={Liferay.Language.get('there-are-no-sites')}
+		emptyStateTitle={Liferay.Language.get('there-are-no-sites')}
 		fetchFn={fetchSites}
 		header={[
 			{

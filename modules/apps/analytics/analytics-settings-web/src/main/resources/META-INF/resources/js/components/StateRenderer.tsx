@@ -55,34 +55,12 @@ const EmptyState: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 	return !error && !loading && empty ? <>{children}</> : null;
 };
 
-interface IErrorStateProps extends React.HTMLAttributes<HTMLElement> {
-	disabled?: boolean;
-	onClickRefetch?: () => void;
-}
-
-const ErrorState: React.FC<IErrorStateProps> = ({
-	disabled = false,
-	onClickRefetch,
+const ErrorState: React.FC<React.HTMLAttributes<HTMLElement>> = ({
+	children,
 }) => {
 	const {error, loading} = useContext(Context);
 
-	return !loading && error ? (
-		<ClayEmptyState
-			className="text-center"
-			description=""
-			title={ERROR_MESSAGE}
-		>
-			{onClickRefetch && (
-				<ClayButton
-					disabled={disabled}
-					displayType="secondary"
-					onClick={onClickRefetch}
-				>
-					{Liferay.Language.get('try-again')}
-				</ClayButton>
-			)}
-		</ClayEmptyState>
-	) : null;
+	return !loading && error ? <>{children}</> : null;
 };
 
 const SuccessState: React.FC<React.HTMLAttributes<HTMLElement>> = ({
@@ -92,6 +70,67 @@ const SuccessState: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
 	return !error && !loading && !empty ? <>{children}</> : null;
 };
+
+interface IErrorStateComponentProps extends React.HTMLAttributes<HTMLElement> {
+	disabled?: boolean;
+	onClickRefetch?: () => void;
+}
+
+export function ErrorStateComponent({
+	className,
+	disabled,
+	onClickRefetch,
+}: IErrorStateComponentProps) {
+	return (
+		<div className={className}>
+			<ClayEmptyState
+				className="text-center"
+				description=""
+				title={ERROR_MESSAGE}
+			>
+				{onClickRefetch && (
+					<ClayButton
+						disabled={disabled}
+						displayType="secondary"
+						onClick={onClickRefetch}
+					>
+						{Liferay.Language.get('try-again')}
+					</ClayButton>
+				)}
+			</ClayEmptyState>
+		</div>
+	);
+}
+
+interface IEmptyStateComponentProps extends React.HTMLAttributes<HTMLElement> {
+	description?: string;
+	imgSrc: string;
+	title?: string;
+}
+
+export function EmptyStateComponent({
+	children,
+	className,
+	description,
+	imgSrc,
+	title,
+}: IEmptyStateComponentProps) {
+	return (
+		<div className={className}>
+			<ClayEmptyState
+				description={description}
+				imgProps={{
+					alt: title,
+					title,
+				}}
+				imgSrc={imgSrc}
+				title={title}
+			>
+				{children}
+			</ClayEmptyState>
+		</div>
+	);
+}
 
 StateRenderer.Empty = EmptyState;
 StateRenderer.Error = ErrorState;
