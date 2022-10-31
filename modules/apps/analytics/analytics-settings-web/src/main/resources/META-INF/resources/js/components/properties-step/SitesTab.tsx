@@ -12,84 +12,44 @@
  * details.
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
+import {TProperty} from '../../pages/wizard/PropertyStep';
 import {fetchSites} from '../../utils/api';
-import ComposedTable from '../ComposedTable';
-import {TData} from '../TabsTemplate';
-import {TProperty} from './PropertiesTable';
-import {
-	syncItemsWithDisabledProperty,
-	updateItemsWithChannelName,
-	useCheckSelectedAllItems,
-} from './utils';
+import Tab, {TItem} from './Tab';
 
 interface ISiteTabProps {
-	description?: string;
-	displayChannels: boolean;
+	onSitesChange: (items: TItem[]) => void;
 	property: TProperty;
 }
 
-const SitesTab: React.FC<ISiteTabProps> = ({property}) => {
-	const [items, setItems] = useState<TData>([]);
-
-	useEffect(() => {
-		const request = async () => {
-			const response = await fetchSites();
-			setItems(response.items);
-		};
-		request();
-	}, []);
-
-	const selectedAllItems = useCheckSelectedAllItems(items);
-
-	return (
-		<ComposedTable
-			allItemsChecked={selectedAllItems}
-			headerColumns={[
-				{
-					expanded: true,
-					label: Liferay.Language.get('site-name'),
-				},
-				{
-					expanded: true,
-					label: Liferay.Language.get('friendly-url'),
-				},
-				{
-					expanded: true,
-					label: Liferay.Language.get('assigned-property'),
-				},
-			]}
-			items={items.map(({channelName, friendlyURL, id, name}) => ({
-				checked: !!channelName,
-				columns: [name, friendlyURL, channelName || ''],
-				disabled: !!channelName && channelName !== property.name,
-				id,
-			}))}
-			onChangeFilterOrder={(selectedFilter) => {
-				// eslint-disable-next-line no-console
-				console.log('filter clicked', selectedFilter);
-			}}
-			onCheckboxItemChange={(index: number) => {
-				setItems(
-					updateItemsWithChannelName({
-						index,
-						items,
-						propertyName: property.name,
-					})
-				);
-			}}
-			onSelectAllItems={(checked: boolean) => {
-				setItems(
-					syncItemsWithDisabledProperty({
-						checked,
-						items,
-						propertyName: property.name,
-					})
-				);
-			}}
-		/>
-	);
-};
+const SitesTab: React.FC<ISiteTabProps> = ({onSitesChange, property}) => (
+	<Tab
+		columns={['name', 'friendlyURL', 'channelName']}
+		description="Channels can only be assigned to a single property at a time. Sites belonging to a channel will be automatically selected when a channel has been selected."
+		emptyStateDescription={Liferay.Language.get('there-are-no-sites')}
+		fetchFn={fetchSites}
+		header={[
+			{
+				expanded: true,
+				label: Liferay.Language.get('site-name'),
+				value: 'siteName',
+			},
+			{
+				expanded: true,
+				label: Liferay.Language.get('friendly-url'),
+				sortable: false,
+				value: 'friendlyUrl',
+			},
+			{
+				expanded: true,
+				label: Liferay.Language.get('assigned-property'),
+				value: 'assignedProperty',
+			},
+		]}
+		onItemsChange={onSitesChange}
+		property={property}
+	/>
+);
 
 export default SitesTab;

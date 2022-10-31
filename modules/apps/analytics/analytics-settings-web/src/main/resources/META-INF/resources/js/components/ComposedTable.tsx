@@ -14,61 +14,125 @@
 
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import {ClayDropDownWithItems} from '@clayui/drop-down';
+import ClayEmptyState from '@clayui/empty-state';
 import {ClayCheckbox, ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import ClayManagementToolbar from '@clayui/management-toolbar';
-
-// import {ClayPaginationBarWithBasicItems} from '@clayui/pagination-bar';
-
+import ClayManagementToolbar, {
+	ClayResultsBar,
+} from '@clayui/management-toolbar';
+import {ClayPaginationWithBasicItems} from '@clayui/pagination';
+import ClayPaginationBar from '@clayui/pagination-bar';
 import ClayTable from '@clayui/table';
 import classNames from 'classnames';
-import React, {useState} from 'react';
+import {sub} from 'frontend-js-web';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 
-enum FilterOrder {
+import {NOT_FOUND_GIF, PAGINATION} from '../utils/constants';
+
+enum OrderBy {
 	Asc = 'ASC',
 	Desc = 'DESC',
 }
 
-interface IComposedTableProps {
-	allItemsChecked?: boolean;
-	filters?: {label: string}[];
-	headerColumns: Column[];
-	items: Item[];
-	onChangeFilterOrder: (order: 'ASC' | 'DESC') => void;
-	onCheckboxItemChange: (itemIndex: number) => void;
-	onSelectAllItems: (checked: boolean) => void;
-	selectedAllDisabled?: boolean;
-	tableDisabled?: boolean;
-}
-
-type Column = {
+export type TColumn = {
 	expanded: boolean;
 	label: string;
+	sortable?: boolean;
+	value: string;
 };
 
-type Item = {
+export type TFilter = {
+	type: OrderBy;
+	value: TColumn['value'];
+};
+
+interface IComposedTableProps {
+	allChecked?: boolean;
+	columns: TColumn[];
+	disabled?: boolean;
+	items: TItem[];
+	onFilterChange: (filter: TFilter) => void;
+	onPaginationChange: (pagination: TPagination) => void;
+	onSearchChange: (query: string) => void;
+	onSelectAllItemsChange: (checked: boolean) => void;
+	onSelectItemChange: (itemIndex: number) => void;
+	pagination: TPagination;
+}
+
+type TItem = {
 	checked: boolean;
 	columns: string[];
 	disabled: boolean;
 	id: string;
 };
 
+export type TPagination = {
+	delta: number;
+	page: number;
+	total: number;
+};
+
 const ComposedTable: React.FC<IComposedTableProps> = ({
-	allItemsChecked: initialAllItemsChecked = false,
-	filters = [],
-	headerColumns = [],
+	allChecked: initialallChecked = false,
+	columns: initialColumns = [],
+	disabled = false,
 	items = [],
-	onChangeFilterOrder,
-	onCheckboxItemChange,
-	onSelectAllItems,
-	selectedAllDisabled = false,
-	tableDisabled = false,
+	onFilterChange,
+	onPaginationChange,
+	onSearchChange,
+	onSelectAllItemsChange,
+	onSelectItemChange,
+	pagination: initialPagination,
 }) => {
-	const [allItemsChecked, setChecked] = useState(initialAllItemsChecked);
-	const [filterOrder, setFilterOrder] = useState<FilterOrder>(
-		FilterOrder.Asc
-	);
+	const [allChecked, setAllChecked] = useState(false);
+	const [filter, setFilter] = useState<TFilter>({
+		type: OrderBy.Desc,
+		value: initialColumns[0].value,
+	});
 	const [searchMobile, setSearchMobile] = useState(false);
+	const [keywords, setkeywords] = useState('');
+	const [keywordsValue, setkeywordsValue] = useState('');
+	const [pagination, setPagination] = useState<TPagination>(PAGINATION);
+
+	useEffect(() => {
+		setAllChecked(initialallChecked);
+	}, [initialallChecked]);
+
+	useEffect(() => {
+		setPagination(initialPagination);
+	}, [initialPagination]);
+
+	const handleFilterChange = useCallback(
+		(params: Partial<TFilter>) => {
+			const newFilter = {...filter, ...params};
+
+			setFilter(newFilter);
+			onFilterChange(newFilter);
+		},
+		[filter, onFilterChange]
+	);
+
+	const columns = useMemo(
+		() =>
+			initialColumns.map((column) => ({
+				...column,
+				onClick: () =>
+					handleFilterChange({
+						value: column.value,
+					}),
+			})),
+		[handleFilterChange, initialColumns]
+	);
+
+	const handlePaginationChange = useCallback(
+		(params: Partial<TPagination>) => {
+			const newPagination = {...pagination, ...params};
+
+			setPagination(newPagination);
+			onPaginationChange(newPagination);
+		},
+		[onPaginationChange, pagination]
+	);
 
 	return (
 		<div>
@@ -76,17 +140,17 @@ const ComposedTable: React.FC<IComposedTableProps> = ({
 				<ClayManagementToolbar.ItemList>
 					<ClayManagementToolbar.Item>
 						<ClayCheckbox
-							checked={allItemsChecked}
-							disabled={selectedAllDisabled}
+							checked={allChecked}
+							disabled={disabled}
 							onChange={() => {
-								onSelectAllItems(!allItemsChecked);
-								setChecked(!allItemsChecked);
+								onSelectAllItemsChange(!allChecked);
+								setAllChecked(!allChecked);
 							}}
 						/>
 					</ClayManagementToolbar.Item>
 
 					<ClayDropDownWithItems
-						items={filters}
+						items={columns.filter(({sortable = true}) => sortable)}
 						trigger={
 							<ClayButton
 								className="nav-link"
@@ -117,18 +181,20 @@ const ComposedTable: React.FC<IComposedTableProps> = ({
 							className="nav-link nav-link-monospaced"
 							displayType="unstyled"
 							onClick={() => {
-								const currentFilterOrder =
-									filterOrder === FilterOrder.Asc
-										? FilterOrder.Desc
-										: FilterOrder.Asc;
+								let type = filter.type;
 
-								setFilterOrder(currentFilterOrder);
-								onChangeFilterOrder(currentFilterOrder);
+								if (type === OrderBy.Asc) {
+									type = OrderBy.Desc;
+								} else {
+									type = OrderBy.Asc;
+								}
+
+								handleFilterChange({type});
 							}}
 						>
 							<ClayIcon
 								symbol={
-									filterOrder === FilterOrder.Asc
+									filter.type === OrderBy.Asc
 										? 'order-list-up'
 										: 'order-list-down'
 								}
@@ -137,17 +203,26 @@ const ComposedTable: React.FC<IComposedTableProps> = ({
 					</ClayManagementToolbar.Item>
 				</ClayManagementToolbar.ItemList>
 
-				{/* // TODO: update this component with function to handle the search component (filter results). 
-				// The function will be created on another story (LRAC-12019) */}
+				<ClayManagementToolbar.Search
+					onSubmit={(event) => {
+						event.preventDefault();
 
-				<ClayManagementToolbar.Search showMobile={searchMobile}>
+						setkeywords(keywordsValue);
+						onSearchChange(keywordsValue);
+					}}
+					showMobile={searchMobile}
+				>
 					<ClayInput.Group>
 						<ClayInput.GroupItem>
 							<ClayInput
-								aria-label="Search"
+								aria-label={Liferay.Language.get('search')}
 								className="form-control input-group-inset input-group-inset-after"
-								placeholder="Search"
+								onChange={({target: {value}}) =>
+									setkeywordsValue(value)
+								}
+								placeholder={Liferay.Language.get('search')}
 								type="text"
+								value={keywordsValue}
 							/>
 
 							<ClayInput.GroupInsetItem after tag="span">
@@ -181,18 +256,76 @@ const ComposedTable: React.FC<IComposedTableProps> = ({
 				</ClayManagementToolbar.ItemList>
 			</ClayManagementToolbar>
 
-			<ClayTable hover={!tableDisabled}>
+			{keywords && (
+				<ClayResultsBar>
+					<ClayResultsBar.Item expand>
+						<span className="component-text text-truncate-inline">
+							<span className="text-truncate">
+								<span>
+									{items.length > 1
+										? sub(
+												Liferay.Language.get(
+													'x-results-for'
+												).toLowerCase(),
+												items.length
+										  )
+										: sub(
+												Liferay.Language.get(
+													'x-result-for'
+												).toLowerCase(),
+												items.length
+										  )}
+								</span>
+
+								<strong>{` "${keywords}"`}</strong>
+							</span>
+						</span>
+					</ClayResultsBar.Item>
+
+					<ClayResultsBar.Item>
+						<ClayButton
+							className="component-link tbar-link"
+							displayType="unstyled"
+							onClick={() => {
+								setkeywords('');
+								setkeywordsValue('');
+								onSearchChange('');
+							}}
+						>
+							{Liferay.Language.get('clear')}
+						</ClayButton>
+					</ClayResultsBar.Item>
+				</ClayResultsBar>
+			)}
+
+			{keywords && !items.length && (
+				<ClayEmptyState imgSrc={NOT_FOUND_GIF} />
+			)}
+
+			<ClayTable hover={!disabled}>
 				<ClayTable.Head>
 					<ClayTable.Row>
 						<ClayTable.Cell></ClayTable.Cell>
 
-						{headerColumns.map(({expanded, label}) => (
+						{columns.map(({expanded = false, label, value}) => (
 							<ClayTable.Cell
 								expanded={expanded}
 								headingCell
 								key={label}
 							>
-								{label}
+								<span>{label}</span>
+
+								{filter.value === value && (
+									<span>
+										<ClayIcon
+											symbol={
+												filter.type === OrderBy.Asc
+													? 'order-arrow-up'
+													: 'order-arrow-down'
+											}
+										/>
+									</span>
+								)}
 							</ClayTable.Cell>
 						))}
 					</ClayTable.Row>
@@ -200,49 +333,93 @@ const ComposedTable: React.FC<IComposedTableProps> = ({
 
 				<ClayTable.Body>
 					{items.map(
-						({checked, columns, disabled = false, id}, index) => {
-							return (
-								<ClayTable.Row
-									className={classNames({
-										'text-muted': disabled,
-									})}
-									key={id}
-								>
-									<ClayTable.Cell>
-										<ClayCheckbox
-											checked={checked}
-											disabled={tableDisabled || disabled}
-											id={id}
-											onChange={() =>
-												onCheckboxItemChange(index)
-											}
-										/>
-									</ClayTable.Cell>
+						(
+							{
+								checked,
+								columns,
+								disabled: disabledItem = false,
+								id,
+							},
+							index
+						) => (
+							<ClayTable.Row
+								className={classNames({
+									'text-muted': disabled,
+								})}
+								key={id}
+							>
+								<ClayTable.Cell>
+									<ClayCheckbox
+										checked={checked}
+										disabled={disabled || disabledItem}
+										id={id}
+										onChange={() =>
+											onSelectItemChange(index)
+										}
+									/>
+								</ClayTable.Cell>
 
-									{columns.map((label, index: number) => (
-										<ClayTable.Cell key={index}>
-											{label}
-										</ClayTable.Cell>
-									))}
-								</ClayTable.Row>
-							);
-						}
+								{columns.map((label, index: number) => (
+									<ClayTable.Cell key={index}>
+										{label}
+									</ClayTable.Cell>
+								))}
+							</ClayTable.Row>
+						)
 					)}
 				</ClayTable.Body>
 			</ClayTable>
 
-			{/* // TODO: update this component with function to handle the pagination component. 
-			// The function will be created on another story (LRAC-12019) */}
+			{!!pagination.total && (
+				<ClayPaginationBar>
+					<ClayPaginationBar.DropDown
+						items={[5, 10, 20, 30, 50].map(
+							(delta: TPagination['delta']) => ({
+								label: String(delta),
+								onClick: () =>
+									handlePaginationChange({delta, page: 1}),
+							})
+						)}
+						trigger={
+							<ClayButton displayType="unstyled">
+								<strong>
+									{sub(
+										Liferay.Language.get('x-entries'),
+										pagination.delta
+									)}
+								</strong>
 
-			{/* <ClayPaginationBarWithBasicItems
-				activeDelta={delta}
-				defaultActive={1}
-				deltas={[4, 8, 20, 40, 60].map((size) => ({
-					label: size,
-				}))}
-				onDeltaChange={setDelta}
-				totalItems={10}
-			/> */}
+								<ClayIcon symbol="caret-double-l" />
+							</ClayButton>
+						}
+					/>
+
+					<ClayPaginationBar.Results>
+						{sub(
+							Liferay.Language.get('showing-x-to-x-of-x-entries'),
+							[
+								(pagination.page - 1) * pagination.delta + 1,
+								pagination.page * pagination.delta <
+								pagination.total
+									? pagination.page * pagination.delta
+									: pagination.total,
+								pagination.total,
+							]
+						)}
+					</ClayPaginationBar.Results>
+
+					<ClayPaginationWithBasicItems
+						active={pagination.page}
+						defaultActive={1}
+						onActiveChange={(page: number) => {
+							handlePaginationChange({page});
+						}}
+						totalPages={Math.ceil(
+							pagination.total / pagination.delta
+						)}
+					/>
+				</ClayPaginationBar>
+			)}
 		</div>
 	);
 };

@@ -12,95 +12,47 @@
  * details.
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
+import {TProperty} from '../../pages/wizard/PropertyStep';
 import {fetchChannels} from '../../utils/api';
-import ComposedTable from '../ComposedTable';
-import {TProperty} from './PropertiesTable';
-import {
-	syncItemsWithDisabledProperty,
-	updateItemsWithChannelName,
-	useCheckSelectedAllItems,
-} from './utils';
-
-export type TData = {
-	channelName?: string;
-	id: string;
-	name: string;
-	siteName: string;
-};
+import Tab, {TItem} from './Tab';
 
 interface IChannelTabProps {
-	description?: string;
-	displayChannels?: boolean;
+	onChannelsChange: (items: TItem[]) => void;
 	property: TProperty;
 }
 
 const ChannelTab: React.FC<IChannelTabProps> = ({
-	displayChannels,
+	onChannelsChange,
 	property,
-}) => {
-	const [items, setItems] = useState<TData[]>([]);
-
-	useEffect(() => {
-		const request = async () => {
-			const response = await fetchChannels();
-			setItems(response.items);
-		};
-		request();
-	}, []);
-
-	const selectedAllItems = useCheckSelectedAllItems<TData>(items);
-
-	return (
-		<ComposedTable
-			allItemsChecked={selectedAllItems}
-			headerColumns={[
-				{
-					expanded: true,
-					label: Liferay.Language.get('channel-name'),
-				},
-				{
-					expanded: true,
-					label: Liferay.Language.get('related-site'),
-				},
-				{
-					expanded: true,
-					label: Liferay.Language.get('assigned-property'),
-				},
-			]}
-			items={items.map(({channelName, id, name, siteName}) => ({
-				checked: !!channelName,
-				columns: [name, siteName, channelName || ''],
-				disabled: !!channelName && channelName !== property.name,
-				id,
-			}))}
-			onChangeFilterOrder={(selectedFilter) => {
-				// eslint-disable-next-line no-console
-				console.log('filter clicked', selectedFilter);
-			}}
-			onCheckboxItemChange={(index: number) => {
-				setItems(
-					updateItemsWithChannelName({
-						index,
-						items,
-						propertyName: property.name,
-					})
-				);
-			}}
-			onSelectAllItems={(checked: boolean) => {
-				setItems(
-					syncItemsWithDisabledProperty<TData>({
-						checked,
-						displayChannels,
-						items,
-						propertyName: property.name,
-					})
-				);
-			}}
-			tableDisabled={!displayChannels}
-		/>
-	);
-};
+}) => (
+	<Tab
+		columns={['name', 'siteName', 'channelName']}
+		description="Channels can only be assigned to a single property at a time. Sites belonging to a channel will be automatically selected when a channel has been selected."
+		emptyStateDescription={Liferay.Language.get('there-are-no-channels')}
+		enableCheckboxs={!!property.commerceEnabled}
+		fetchFn={fetchChannels}
+		header={[
+			{
+				expanded: true,
+				label: Liferay.Language.get('channel-name'),
+				value: 'channelName',
+			},
+			{
+				expanded: true,
+				label: Liferay.Language.get('related-site'),
+				value: 'relatedSite',
+			},
+			{
+				expanded: true,
+				label: Liferay.Language.get('assigned-property'),
+				value: 'assignedProperty',
+			},
+		]}
+		onItemsChange={onChannelsChange}
+		property={property}
+	/>
+);
 
 export default ChannelTab;

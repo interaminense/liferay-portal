@@ -11,25 +11,13 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
-import React from 'react';
-import { TProperty } from './properties-step/PropertiesTable';
-export declare type TData = {
-    channelName?: string;
-    friendlyURL: string;
-    id: string;
-    name: string;
-    siteName: string;
-}[];
-interface ITabsTemplate {
-    channelTab?: boolean;
-    checked?: boolean;
-    displayChannels?: boolean;
-    handleCheckboxChange: Function;
-    handleSelectAll: Function;
-    items: TData;
-    property: TProperty;
-    selectedAllDisabled?: boolean;
-    siteTab?: boolean;
-}
-declare const TabsTemplate: React.FC<ITabsTemplate>;
-export default TabsTemplate;
+
+export declare const NOT_FOUND_GIF: string;
+export declare const EMPTY_STATE_GIF: string;
+export declare const PAGINATION: {
+	delta: number;
+	page: number;
+	total: number;
+};
+export declare const SUCCESS_MESSAGE: string;
+export declare const ERROR_MESSAGE: string;

@@ -12,23 +12,63 @@
  * details.
  */
 
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 
 interface Item {
 	channelName?: string;
+	id: string;
 }
 
-export function useCheckSelectedAllItems<T extends Item>(items: T[]) {
-	const [selectedAllItems, setSelectedAllItems] = useState(false);
+interface TFormattedItem {
+	checked: boolean;
+	columns: any[];
+	disabled: boolean;
+	id: string;
+}
+
+/**
+ * Hook to format items
+ */
+export function useFormatItems<T extends Item>(
+	items: T[],
+	propertyName: string,
+	columns: Array<keyof T>
+): TFormattedItem[] {
+	const formattedItems: TFormattedItem[] = useMemo(
+		() =>
+			items.map((item) => ({
+				checked: !!item.channelName,
+				columns: columns.map((column) => item?.[column] ?? ''),
+				disabled: !!(
+					item.channelName && item.channelName !== propertyName
+				),
+				id: item.id,
+			})),
+		[columns, items, propertyName]
+	);
+
+	return formattedItems;
+}
+
+/**
+ * Hook to check if all items are selected
+ */
+export function useCheckAllSelectedItems<T extends Item>(items: T[]): boolean {
+	const [allSelectedItems, setAllSelectedItems] = useState(false);
 
 	useEffect(() => {
-		setSelectedAllItems(items.every((item: T) => item.channelName));
+		setAllSelectedItems(
+			!!items.length && items.every((item: T) => item.channelName)
+		);
 	}, [items]);
 
-	return selectedAllItems;
+	return allSelectedItems;
 }
 
-export function updateItemsWithChannelName<T extends Item>({
+/**
+ * Function to toggle channelName in a specific item
+ */
+export function toggleChannelName<T extends Item>({
 	index,
 	items,
 	propertyName,
@@ -36,10 +76,10 @@ export function updateItemsWithChannelName<T extends Item>({
 	index: number;
 	items: T[];
 	propertyName: string;
-}) {
+}): T[] {
 	const newItems = items;
 
-	if (newItems[index]?.channelName) {
+	if (newItems[index].channelName) {
 		delete newItems[index].channelName;
 	} else {
 		newItems[index].channelName = propertyName;
@@ -48,31 +88,44 @@ export function updateItemsWithChannelName<T extends Item>({
 	return [...newItems];
 }
 
-export function syncItemsWithDisabledProperty<T extends Item>({
-	checked,
-	displayChannels,
+/**
+ * Function to enable/disable items based on allChecked property
+ */
+export function changeItemsBasedOnAllChecked<T extends Item>({
+	allChecked,
+	enableCheckboxs = true,
 	items,
 	propertyName,
 }: {
-	checked: boolean;
-	displayChannels?: boolean;
+	allChecked: boolean;
+	enableCheckboxs?: boolean;
 	items: T[];
 	propertyName: string;
-}) {
+}): T[] {
 	const newItems = items.map((item: T) => {
-		const disabled = item?.channelName !== propertyName || !displayChannels;
+		// Checks if the item is associated with a channel name
+		// that does not belong to the current property
 
-		if (disabled) {
-			return item;
-		} else {
-			if (checked) {
+		const belongsTotheCurrentProperty = !!(
+			item.channelName && item.channelName === propertyName
+		);
+
+		if (
+			(belongsTotheCurrentProperty || !item.channelName) &&
+			enableCheckboxs
+		) {
+			if (allChecked) {
 				return {...item, channelName: propertyName};
 			} else {
-				delete item?.channelName;
+				if (item.channelName) {
+					delete item.channelName;
+				}
 
 				return item;
 			}
 		}
+
+		return item;
 	});
 
 	return newItems;

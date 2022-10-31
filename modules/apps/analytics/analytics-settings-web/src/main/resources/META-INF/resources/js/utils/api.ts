@@ -12,54 +12,121 @@
  * details.
  */
 
-import {fetch} from 'frontend-js-web';
+import request from './request';
 
 export function fetchConnection(token: string) {
-	return fetch('/o/analytics-settings-rest/v1.0/data-sources', {
+	return request('/data-sources', {
 		body: JSON.stringify({
 			token,
 		}),
-		headers: {'Content-Type': 'application/json'},
 		method: 'POST',
 	});
 }
 
 export function deleteConnection() {
-	return fetch('/o/analytics-settings-rest/v1.0/data-sources', {
-		method: 'DELETE',
-	});
+	return request('/data-sources', {method: 'DELETE'});
 }
 
 export function fetchProperties() {
-	return fetch('/o/analytics-settings-rest/v1.0/channels', {
-		method: 'GET',
-	})
-		.then((response) => response.json())
-		.then((data) => data);
+	return request('/channels', {method: 'GET'});
 }
 
 export function createProperty(name: string) {
-	return fetch('/o/analytics-settings-rest/v1.0/channels', {
+	return request('/channels', {
 		body: JSON.stringify({
 			name,
 		}),
-		headers: {'Content-Type': 'application/json'},
 		method: 'POST',
 	});
 }
 
 export function fetchChannels() {
-	return fetch('/o/analytics-settings-rest/v1.0/commerce-channels', {
-		method: 'GET',
-	})
-		.then((response) => response.json())
-		.then((data) => data);
+	return request('/commerce-channels', {method: 'GET'});
 }
 
 export function fetchSites() {
-	return fetch('/o/analytics-settings-rest/v1.0/sites', {
-		method: 'GET',
-	})
-		.then((response) => response.json())
-		.then((data) => data);
+	return request('/sites', {method: 'GET'});
 }
+
+// export function fetchMockedSites() {
+// 	const items = [
+// 		{
+// 			id: '7961307173093376',
+// 			name: 'Isabella Simpson',
+// 		},
+// 		{
+// 			id: '7832205885702144',
+// 			name: 'Shawn Howell',
+// 		},
+// 		{
+// 			id: '7732418901442560',
+// 			name: 'Alice Lowe',
+// 		},
+// 		{
+// 			id: '6531634824216576',
+// 			name: 'Clara Colon',
+// 		},
+// 		{
+// 			channelName: 'SA',
+// 			id: '7989042842959872',
+// 			name: 'Jessie Wells',
+// 		},
+// 	];
+
+// 	return Promise.resolve({
+// 		items,
+// 		page: 1,
+// 		pageSize: 20,
+// 		totalCount: items.length,
+// 	});
+// }
+
+// export function fetchMockedChannels() {
+// 	const items = [
+// 		{
+// 			id: '7961307173093376',
+// 			name: 'Isabella Simpson',
+// 		},
+// 		{
+// 			id: '7832205885702144',
+// 			name: 'Shawn Howell',
+// 		},
+// 		{
+// 			id: '7732418901442560',
+// 			name: 'Alice Lowe',
+// 		},
+// 		{
+// 			id: '6531634824216576',
+// 			name: 'Clara Colon',
+// 		},
+// 		{
+// 			id: '7989042842959872',
+// 			name: 'Jessie Wells',
+// 		},
+// 		{
+// 			id: '6449278788567040',
+// 			name: 'Florence Hale',
+// 		},
+// 		{
+// 			id: '3720906014720000',
+// 			name: 'Mamie Lowe',
+// 		},
+// 		{
+// 			id: '4383168540966912',
+// 			name: 'Ivan Marshall',
+// 			siteName: 'MW',
+// 		},
+// 		{
+// 			id: '2544839214235648',
+// 			name: 'Lillie Rose',
+// 			siteName: 'NR',
+// 		},
+// 	];
+
+// 	return Promise.resolve({
+// 		items,
+// 		page: 1,
+// 		pageSize: 20,
+// 		totalCount: items.length,
+// 	});
+// }

@@ -13,13 +13,20 @@
  */
 
 import ClayButton from '@clayui/button';
+import ClayForm from '@clayui/form';
 import ClayModal from '@clayui/modal';
 import ClayTabs from '@clayui/tabs';
 import React, {useState} from 'react';
 
+import {TProperty} from '../../pages/wizard/PropertyStep';
+
+// import {updateChannel} from '../../utils/api';
+// import {SUCCESS_MESSAGE} from '../../utils/constants';
+
+import Loading from '../Loading';
 import ChannelTab from '../properties-step/ChannelTab';
-import {TProperty} from '../properties-step/PropertiesTable';
 import SitesTab from '../properties-step/SitesTab';
+import {TItem} from '../properties-step/Tab';
 
 interface IAssignModalProps {
 	observer: any;
@@ -40,6 +47,43 @@ const AssignModal: React.FC<IAssignModalProps> = ({
 	const [activeTabKeyValue, setActiveTabKeyValue] = useState<ETabs>(
 		ETabs.Channel
 	);
+	const [submitting, setSubmitting] = useState(false);
+	const [sites, setSites] = useState<TItem[]>([]);
+	const [channels, setChannels] = useState<TItem[]>([]);
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		setSubmitting(true);
+
+		const request = async () => {
+			// eslint-disable-next-line no-console
+			console.log({property});
+			// eslint-disable-next-line no-console
+			console.log({channels, sites});
+
+			// TODO: Ta faltando o POST de channels e sites
+			// const {ok} = await updateChannel({
+			// 	channelId: property.channelId,
+			// 	commerceChannelIds: channels.map(({id}) => Number(id)),
+			// 	dataSourceId: property.dataSources[0]?.dataSourceId,
+			// 	name: property.name,
+			// 	siteIds: sites.map(({id}) => Number(id)),
+			// });
+
+			// if (ok) {
+			// 	setSubmitting(false);
+
+			// 	Liferay.Util.openToast({
+			// 		message: SUCCESS_MESSAGE,
+			// 	});
+
+			// 	onCloseModal();
+			// }
+		};
+
+		request();
+	};
 
 	return (
 		<ClayModal center observer={observer} size="lg">
@@ -47,60 +91,73 @@ const AssignModal: React.FC<IAssignModalProps> = ({
 				{Liferay.Language.get('assign-to')} {property.name}
 			</ClayModal.Header>
 
-			<ClayModal.Body>
-				<ClayTabs displayType="underline" modern>
-					<ClayTabs.Item
-						active={activeTabKeyValue === ETabs.Channel}
-						innerProps={{
-							'aria-controls': 'tabpanel-1',
-						}}
-						onClick={() => setActiveTabKeyValue(ETabs.Channel)}
-					>
-						{Liferay.Language.get('channel')}
-					</ClayTabs.Item>
-
-					<ClayTabs.Item
-						active={activeTabKeyValue === ETabs.Sites}
-						innerProps={{
-							'aria-controls': 'tabpanel-2',
-						}}
-						onClick={() => setActiveTabKeyValue(ETabs.Sites)}
-					>
-						{Liferay.Language.get('sites')}
-					</ClayTabs.Item>
-				</ClayTabs>
-
-				<ClayTabs.Content activeIndex={activeTabKeyValue} fade>
-					<ClayTabs.TabPane aria-labelledby="tab-1">
-						<ChannelTab
-							description="Channels can only be assigned to a single property at a time. Sites belonging to a channel will be automatically selected when a channel has been selected. "
-							displayChannels={!!property?.commerceEnabled}
-							property={property}
-						/>
-					</ClayTabs.TabPane>
-
-					<ClayTabs.TabPane aria-labelledby="tab-2">
-						<SitesTab displayChannels property={property} />
-					</ClayTabs.TabPane>
-				</ClayTabs.Content>
-			</ClayModal.Body>
-
-			<ClayModal.Footer
-				last={
-					<ClayButton.Group spaced>
-						<ClayButton
-							displayType="secondary"
-							onClick={() => onCloseModal()}
+			<ClayForm onSubmit={handleSubmit}>
+				<ClayModal.Body>
+					<ClayTabs displayType="underline" modern>
+						<ClayTabs.Item
+							active={activeTabKeyValue === ETabs.Channel}
+							innerProps={{
+								'aria-controls': 'tabpanel-1',
+							}}
+							onClick={() => setActiveTabKeyValue(ETabs.Channel)}
 						>
-							{Liferay.Language.get('cancel')}
-						</ClayButton>
+							{Liferay.Language.get('channel')}
+						</ClayTabs.Item>
 
-						<ClayButton displayType="primary">
-							{Liferay.Language.get('assign')}
-						</ClayButton>
-					</ClayButton.Group>
-				}
-			/>
+						<ClayTabs.Item
+							active={activeTabKeyValue === ETabs.Sites}
+							innerProps={{
+								'aria-controls': 'tabpanel-2',
+							}}
+							onClick={() => setActiveTabKeyValue(ETabs.Sites)}
+						>
+							{Liferay.Language.get('sites')}
+						</ClayTabs.Item>
+					</ClayTabs>
+
+					<ClayTabs.Content activeIndex={activeTabKeyValue} fade>
+						<ClayTabs.TabPane aria-labelledby="tab-1">
+							<ChannelTab
+								onChannelsChange={setChannels}
+								property={property}
+							/>
+						</ClayTabs.TabPane>
+
+						<ClayTabs.TabPane aria-labelledby="tab-2">
+							<SitesTab
+								onSitesChange={setSites}
+								property={property}
+							/>
+						</ClayTabs.TabPane>
+					</ClayTabs.Content>
+				</ClayModal.Body>
+
+				<ClayModal.Footer
+					last={
+						<ClayButton.Group spaced>
+							<ClayButton
+								displayType="secondary"
+								onClick={() => onCloseModal()}
+							>
+								{Liferay.Language.get('cancel')}
+							</ClayButton>
+
+							<ClayButton
+								disabled={
+									(!sites.length && !channels.length) ||
+									submitting
+								}
+								displayType="primary"
+								type="submit"
+							>
+								{submitting && <Loading inline />}
+
+								{Liferay.Language.get('assign')}
+							</ClayButton>
+						</ClayButton.Group>
+					}
+				/>
+			</ClayForm>
 		</ClayModal>
 	);
 };

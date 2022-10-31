@@ -12,9 +12,9 @@
  * details.
  */
 
-export declare function fetchConnection(token: string): Promise<Response>;
-export declare function deleteConnection(): Promise<Response>;
+export declare function fetchConnection(token: string): Promise<any>;
+export declare function deleteConnection(): Promise<any>;
 export declare function fetchProperties(): Promise<any>;
-export declare function createProperty(name: string): Promise<Response>;
+export declare function createProperty(name: string): Promise<any>;
 export declare function fetchChannels(): Promise<any>;
 export declare function fetchSites(): Promise<any>;

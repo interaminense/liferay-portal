@@ -47,7 +47,7 @@ const STEPS: TStep[] = [
 	},
 	{
 		Component: PropertyStep,
-		available: false,
+		available: true,
 		title: Liferay.Language.get('property'),
 		value: ESteps.Property,
 	},

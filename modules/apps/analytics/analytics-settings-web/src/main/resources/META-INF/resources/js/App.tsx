@@ -56,17 +56,14 @@ const App: React.FC<IAppProps> = ({connected, liferayAnalyticsURL, token}) => {
 	};
 
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const PageView: React.FC =
-		View[connected ? EPageView.Default : EPageView.Wizard];
+	const PageView: React.FC = View[EPageView.Wizard];
 
 	const spritemap =
 		Liferay.ThemeDisplay.getPathThemeImages() + '/clay/icons.svg';
 
-	const value: any = [state, dispatch];
-
 	return (
 		<ClayIconSpriteContext.Provider value={spritemap}>
-			<AppContext.Provider value={value}>
+			<AppContext.Provider value={[state, dispatch]}>
 				<div className="analytics-settings-web mt-5">
 					<PageView />
 				</div>
