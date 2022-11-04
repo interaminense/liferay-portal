@@ -15,5 +15,16 @@
 import React from 'react';
 import {TGenericComponent} from './WizardPage';
 interface IStepProps extends TGenericComponent {}
+export declare type TProperty = {
+	channelId: string;
+	commerceEnabled?: boolean;
+	dataSources: Array<TDataSource>;
+	name: string;
+};
+export declare type TDataSource = {
+	commerceChannelIds: Array<number>;
+	dataSourceId: string;
+	siteIds: Array<number>;
+};
 declare const Step: React.FC<IStepProps>;
 export default Step;

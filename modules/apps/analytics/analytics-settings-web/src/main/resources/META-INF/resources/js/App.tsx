@@ -17,6 +17,7 @@ import React, {useReducer} from 'react';
 
 import DefaultPage from './pages/default/DefaultPage';
 import WizardPage from './pages/wizard/WizardPage';
+import {SPRITEMAP} from './utils/constants';
 
 export const AppContext = React.createContext({
 	connected: false,
@@ -56,17 +57,11 @@ const App: React.FC<IAppProps> = ({connected, liferayAnalyticsURL, token}) => {
 	};
 
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const PageView: React.FC =
-		View[connected ? EPageView.Default : EPageView.Wizard];
-
-	const spritemap =
-		Liferay.ThemeDisplay.getPathThemeImages() + '/clay/icons.svg';
-
-	const value: any = [state, dispatch];
+	const PageView: React.FC = View[EPageView.Wizard];
 
 	return (
-		<ClayIconSpriteContext.Provider value={spritemap}>
-			<AppContext.Provider value={value}>
+		<ClayIconSpriteContext.Provider value={SPRITEMAP}>
+			<AppContext.Provider value={[state, dispatch]}>
 				<div className="analytics-settings-web mt-5">
 					<PageView />
 				</div>

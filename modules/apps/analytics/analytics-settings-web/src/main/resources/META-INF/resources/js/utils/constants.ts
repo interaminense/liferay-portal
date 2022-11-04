@@ -11,25 +11,19 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
-import React from 'react';
-import { TProperty } from './properties-step/PropertiesTable';
-export declare type TData = {
-    channelName?: string;
-    friendlyURL: string;
-    id: string;
-    name: string;
-    siteName: string;
-}[];
-interface ITabsTemplate {
-    channelTab?: boolean;
-    checked?: boolean;
-    displayChannels?: boolean;
-    handleCheckboxChange: Function;
-    handleSelectAll: Function;
-    items: TData;
-    property: TProperty;
-    selectedAllDisabled?: boolean;
-    siteTab?: boolean;
-}
-declare const TabsTemplate: React.FC<ITabsTemplate>;
-export default TabsTemplate;
+
+const IMAGES_PATH = Liferay.ThemeDisplay.getPathThemeImages();
+
+export const SPRITEMAP = IMAGES_PATH + '/clay/icons.svg';
+
+export const NOT_FOUND_GIF = `${IMAGES_PATH}/states/search_state.gif`;
+
+export const EMPTY_STATE_GIF = `${IMAGES_PATH}/states/empty_state.gif`;
+
+export const SUCCESS_MESSAGE = Liferay.Language.get(
+	'your-request-completed-successfully'
+);
+
+export const ERROR_MESSAGE = Liferay.Language.get(
+	'an-unexpected-system-error-occurred'
+);

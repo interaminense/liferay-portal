@@ -11,25 +11,27 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+
 import React from 'react';
-import { TProperty } from './properties-step/PropertiesTable';
-export declare type TData = {
-    channelName?: string;
-    friendlyURL: string;
-    id: string;
-    name: string;
-    siteName: string;
-}[];
-interface ITabsTemplate {
-    channelTab?: boolean;
-    checked?: boolean;
-    displayChannels?: boolean;
-    handleCheckboxChange: Function;
-    handleSelectAll: Function;
-    items: TData;
-    property: TProperty;
-    selectedAllDisabled?: boolean;
-    siteTab?: boolean;
+import {TProperty} from '../../pages/wizard/PropertyStep';
+import {TColumn, TItem} from '../table/Table';
+declare type TRawItem = {
+	channelName?: string;
+	friendlyURL?: string;
+	id: string;
+	name: string;
+	siteName: string;
+};
+interface ITabProps {
+	columns: Array<keyof TRawItem>;
+	description?: string;
+	emptyStateTitle: string;
+	enableCheckboxs?: boolean;
+	fetchFn: (queryString?: string) => Promise<any>;
+	header: TColumn[];
+	noResultsTitle: string;
+	onItemsChange: (items: TItem[]) => void;
+	property: TProperty;
 }
-declare const TabsTemplate: React.FC<ITabsTemplate>;
-export default TabsTemplate;
+declare const Tab: React.FC<ITabProps>;
+export default Tab;

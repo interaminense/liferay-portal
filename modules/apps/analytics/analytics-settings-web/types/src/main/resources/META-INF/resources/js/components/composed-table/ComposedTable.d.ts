@@ -11,25 +11,27 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+
 import React from 'react';
-import { TProperty } from './properties-step/PropertiesTable';
-export declare type TData = {
-    channelName?: string;
-    friendlyURL: string;
-    id: string;
-    name: string;
-    siteName: string;
-}[];
-interface ITabsTemplate {
-    channelTab?: boolean;
-    checked?: boolean;
-    displayChannels?: boolean;
-    handleCheckboxChange: Function;
-    handleSelectAll: Function;
-    items: TData;
-    property: TProperty;
-    selectedAllDisabled?: boolean;
-    siteTab?: boolean;
+export declare type TColumn = {
+	expanded: boolean;
+	label: string;
+	sortable?: boolean;
+	value: string;
+};
+export declare type TItem = {
+	checked: boolean;
+	columns: string[];
+	disabled: boolean;
+	id: string;
+};
+interface IComposedTableProps {
+	columns: TColumn[];
+	disabled?: boolean;
+	emptyStateTitle: string;
+	fetchFn: (queryString: string) => Promise<any>;
+	mapperItems: (items: any) => TItem[];
+	onItemsChange?: (items: TItem[]) => void;
 }
-declare const TabsTemplate: React.FC<ITabsTemplate>;
-export default TabsTemplate;
+declare const ComposedTableWrapper: React.FC<IComposedTableProps>;
+export default ComposedTableWrapper;

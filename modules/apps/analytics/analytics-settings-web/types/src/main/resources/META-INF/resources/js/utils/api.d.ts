@@ -12,9 +12,20 @@
  * details.
  */
 
-export declare function fetchConnection(token: string): Promise<Response>;
-export declare function deleteConnection(): Promise<Response>;
+export declare function fetchConnection(token: string): Promise<any>;
+export declare function deleteConnection(): Promise<any>;
 export declare function fetchProperties(): Promise<any>;
-export declare function createProperty(name: string): Promise<Response>;
-export declare function fetchChannels(): Promise<any>;
-export declare function fetchSites(): Promise<any>;
+export declare function createProperty(name: string): Promise<any>;
+export declare function updateProperty({
+	channelId,
+	commerceChannelIds,
+	dataSourceId,
+	siteIds,
+}: {
+	channelId: string;
+	commerceChannelIds: number[];
+	dataSourceId: string;
+	siteIds: number[];
+}): Promise<any>;
+export declare function fetchChannels(queryString?: string): Promise<any>;
+export declare function fetchSites(queryString?: string): Promise<any>;
