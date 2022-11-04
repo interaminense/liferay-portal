@@ -12,8 +12,11 @@
  * details.
  */
 
-export declare const SPRITEMAP: string;
-export declare const NOT_FOUND_GIF: string;
-export declare const EMPTY_STATE_GIF: string;
-export declare const SUCCESS_MESSAGE: string;
-export declare const ERROR_MESSAGE: string;
+import React from 'react';
+import {TColumn} from './Table';
+interface IManagementToolbarProps {
+	columns: TColumn[];
+	disabled: boolean;
+}
+declare const ManagementToolbar: React.FC<IManagementToolbarProps>;
+export default ManagementToolbar;

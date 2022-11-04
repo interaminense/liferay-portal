@@ -12,8 +12,15 @@
  * details.
  */
 
-export declare const SPRITEMAP: string;
-export declare const NOT_FOUND_GIF: string;
-export declare const EMPTY_STATE_GIF: string;
-export declare const SUCCESS_MESSAGE: string;
-export declare const ERROR_MESSAGE: string;
+export declare type TUseFecthDataResult = {
+	data?: any;
+	error: boolean;
+	loading: boolean;
+	refetch: () => void;
+	refetching: boolean;
+};
+declare function useFetchData(
+	fetchFn: (queryString?: string) => Promise<any>,
+	queryString?: string
+): TUseFecthDataResult;
+export default useFetchData;

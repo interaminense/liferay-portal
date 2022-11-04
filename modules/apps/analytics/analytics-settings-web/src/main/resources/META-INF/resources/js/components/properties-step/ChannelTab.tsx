@@ -16,7 +16,8 @@ import React from 'react';
 
 import {TProperty} from '../../pages/wizard/PropertyStep';
 import {fetchChannels} from '../../utils/api';
-import Tab, {TItem} from './Tab';
+import {TItem} from '../table/Table';
+import Tab from './Tab';
 
 interface IChannelTabProps {
 	onChannelsChange: (items: TItem[]) => void;
@@ -29,7 +30,9 @@ const ChannelTab: React.FC<IChannelTabProps> = ({
 }) => (
 	<Tab
 		columns={['name', 'siteName', 'channelName']}
-		description="Channels can only be assigned to a single property at a time. Sites belonging to a channel will be automatically selected when a channel has been selected."
+		description={Liferay.Language.get(
+			'analytics-cloud-assign-commerce-channel-help'
+		)}
 		emptyStateTitle={Liferay.Language.get('there-are-no-channels')}
 		enableCheckboxs={!!property.commerceEnabled}
 		fetchFn={fetchChannels}
@@ -37,19 +40,21 @@ const ChannelTab: React.FC<IChannelTabProps> = ({
 			{
 				expanded: true,
 				label: Liferay.Language.get('channel-name'),
-				value: 'channelName',
+				value: 'name',
 			},
 			{
 				expanded: true,
 				label: Liferay.Language.get('related-site'),
-				value: 'relatedSite',
+				value: 'siteName',
 			},
 			{
 				expanded: true,
 				label: Liferay.Language.get('assigned-property'),
-				value: 'assignedProperty',
+				sortable: false,
+				value: 'channelName',
 			},
 		]}
+		noResultsTitle={Liferay.Language.get('no-channels-were-found')}
 		onItemsChange={onChannelsChange}
 		property={property}
 	/>

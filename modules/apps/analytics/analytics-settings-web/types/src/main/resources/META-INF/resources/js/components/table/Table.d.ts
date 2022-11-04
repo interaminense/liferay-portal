@@ -12,8 +12,27 @@
  * details.
  */
 
-export declare const SPRITEMAP: string;
-export declare const NOT_FOUND_GIF: string;
-export declare const EMPTY_STATE_GIF: string;
-export declare const SUCCESS_MESSAGE: string;
-export declare const ERROR_MESSAGE: string;
+import React from 'react';
+export declare type TColumn = {
+	expanded: boolean;
+	label: string;
+	sortable?: boolean;
+	value: string;
+};
+export declare type TItem = {
+	checked: boolean;
+	columns: string[];
+	disabled: boolean;
+	id: string;
+};
+interface ITableProps {
+	columns: TColumn[];
+	disabled?: boolean;
+	emptyStateTitle: string;
+	fetchFn: (queryString?: string) => Promise<any>;
+	mapperItems: (items: any) => TItem[];
+	noResultsTitle: string;
+	onItemsChange?: (items: TItem[]) => void;
+}
+declare const TableWrapper: React.FC<ITableProps>;
+export default TableWrapper;

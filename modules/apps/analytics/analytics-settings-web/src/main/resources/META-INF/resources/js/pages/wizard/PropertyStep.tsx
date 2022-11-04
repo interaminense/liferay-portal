@@ -26,7 +26,7 @@ import CreatePropertyModal from '../../components/modals/CreatePropertyModal';
 import PropertiesTable from '../../components/properties-step/PropertiesTable';
 import {fetchProperties} from '../../utils/api';
 import {NOT_FOUND_GIF} from '../../utils/constants';
-import {useFetchData} from '../../utils/hooks';
+import useFetchData from '../../utils/useFecthData';
 import {ESteps, TGenericComponent} from './WizardPage';
 
 interface IStepProps extends TGenericComponent {}
@@ -60,9 +60,9 @@ const Step: React.FC<IStepProps> = ({onChangeStep}) => {
 		properties[0]
 	);
 
-	const {data, error, loading, refetch, refetching} = useFetchData<{
-		items: TProperty[];
-	}>(fetchProperties);
+	const {data, error, loading, refetch, refetching} = useFetchData(
+		fetchProperties
+	);
 
 	useEffect(() => {
 		if (data?.items) {

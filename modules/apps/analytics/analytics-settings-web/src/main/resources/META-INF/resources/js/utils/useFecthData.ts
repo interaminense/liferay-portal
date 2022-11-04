@@ -14,25 +14,26 @@
 
 import {useCallback, useEffect, useState} from 'react';
 
-type TUseFecthDataResult<T> = {
-	data: T | null;
+export type TUseFecthDataResult = {
+	data?: any;
 	error: boolean;
 	loading: boolean;
 	refetch: () => void;
 	refetching: boolean;
 };
 
-export function useFetchData<T>(
-	fetchFn: () => Promise<any>
-): TUseFecthDataResult<T> {
-	const [data, setData] = useState<T | null>(null);
+function useFetchData(
+	fetchFn: (queryString?: string) => Promise<any>,
+	queryString?: string
+): TUseFecthDataResult {
+	const [data, setData] = useState(null);
 	const [error, setError] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [refetching, setRefetching] = useState(false);
 
 	const _fetchFn = useCallback(() => {
 		const request = async () => {
-			const response = await fetchFn();
+			const response = await fetchFn(queryString);
 
 			try {
 				if (response.error) {
@@ -51,7 +52,7 @@ export function useFetchData<T>(
 		};
 
 		request();
-	}, [fetchFn]);
+	}, [fetchFn, queryString]);
 
 	useEffect(() => {
 		_fetchFn();
@@ -71,3 +72,5 @@ export function useFetchData<T>(
 		refetching,
 	};
 }
+
+export default useFetchData;

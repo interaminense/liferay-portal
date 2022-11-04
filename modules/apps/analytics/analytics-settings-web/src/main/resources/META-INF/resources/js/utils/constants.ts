@@ -14,15 +14,11 @@
 
 const IMAGES_PATH = Liferay.ThemeDisplay.getPathThemeImages();
 
+export const SPRITEMAP = IMAGES_PATH + '/clay/icons.svg';
+
 export const NOT_FOUND_GIF = `${IMAGES_PATH}/states/search_state.gif`;
 
 export const EMPTY_STATE_GIF = `${IMAGES_PATH}/states/empty_state.gif`;
-
-export const PAGINATION = {
-	delta: 20,
-	page: 1,
-	total: 0,
-};
 
 export const SUCCESS_MESSAGE = Liferay.Language.get(
 	'your-request-completed-successfully'

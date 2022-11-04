@@ -12,11 +12,10 @@
  * details.
  */
 
-/// <reference types="react" />
-
+import React from 'react';
 import {TProperty} from '../../pages/wizard/PropertyStep';
-import {TColumn} from '../ComposedTable';
-export declare type TItem = {
+import {TColumn, TItem} from '../table/Table';
+declare type TRawItem = {
 	channelName?: string;
 	friendlyURL?: string;
 	id: string;
@@ -24,23 +23,15 @@ export declare type TItem = {
 	siteName: string;
 };
 interface ITabProps {
-	columns: Array<keyof TItem>;
+	columns: Array<keyof TRawItem>;
 	description?: string;
 	emptyStateTitle: string;
 	enableCheckboxs?: boolean;
-	fetchFn: () => Promise<any>;
+	fetchFn: (queryString?: string) => Promise<any>;
 	header: TColumn[];
+	noResultsTitle: string;
 	onItemsChange: (items: TItem[]) => void;
 	property: TProperty;
 }
-declare function Tab({
-	columns,
-	description,
-	emptyStateTitle,
-	enableCheckboxs,
-	fetchFn,
-	header,
-	onItemsChange,
-	property,
-}: ITabProps): JSX.Element;
+declare const Tab: React.FC<ITabProps>;
 export default Tab;

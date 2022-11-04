@@ -12,8 +12,19 @@
  * details.
  */
 
-export declare const SPRITEMAP: string;
-export declare const NOT_FOUND_GIF: string;
-export declare const EMPTY_STATE_GIF: string;
-export declare const SUCCESS_MESSAGE: string;
-export declare const ERROR_MESSAGE: string;
+export type TFilter = {
+	type: OrderBy;
+	value: string;
+};
+
+export enum OrderBy {
+	Asc = 'asc',
+	Desc = 'desc',
+}
+
+export function DEFAULT_FILTER(value: string) {
+	return {
+		type: OrderBy.Asc,
+		value,
+	};
+}

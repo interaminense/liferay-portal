@@ -60,12 +60,16 @@ export function updateProperty({
 	});
 }
 
-export function fetchChannels() {
-	return request('/commerce-channels', {method: 'GET'});
+export function fetchChannels(queryString?: string) {
+	return request(`/commerce-channels?${queryString}`, {
+		method: 'GET',
+	});
 }
 
-export function fetchSites() {
-	return request('/sites', {method: 'GET'});
+export function fetchSites(queryString?: string) {
+	return request(`/sites?${queryString}`, {
+		method: 'GET',
+	});
 }
 
 // export function fetchMockedSites() {

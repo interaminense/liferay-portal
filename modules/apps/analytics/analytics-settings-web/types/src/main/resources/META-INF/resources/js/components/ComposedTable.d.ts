@@ -13,42 +13,24 @@
  */
 
 import React from 'react';
-declare enum OrderBy {
-	Asc = 'ASC',
-	Desc = 'DESC',
-}
 export declare type TColumn = {
 	expanded: boolean;
 	label: string;
 	sortable?: boolean;
 	value: string;
 };
-export declare type TFilter = {
-	type: OrderBy;
-	value: TColumn['value'];
-};
-interface IComposedTableProps {
-	allChecked?: boolean;
-	columns: TColumn[];
-	disabled?: boolean;
-	items: TItem[];
-	onFilterChange: (filter: TFilter) => void;
-	onPaginationChange: (pagination: TPagination) => void;
-	onSearchChange: (query: string) => void;
-	onSelectAllItemsChange: (checked: boolean) => void;
-	onSelectItemChange: (itemIndex: number) => void;
-	pagination: TPagination;
-}
-declare type TItem = {
+export declare type TItem = {
 	checked: boolean;
 	columns: string[];
 	disabled: boolean;
 	id: string;
 };
-export declare type TPagination = {
-	delta: number;
-	page: number;
-	total: number;
-};
-declare const ComposedTable: React.FC<IComposedTableProps>;
-export default ComposedTable;
+interface IComposedTableProps {
+	columns: TColumn[];
+	disabled?: boolean;
+	emptyStateTitle: string;
+	fetchFn: (queryString: string) => Promise<any>;
+	items: (data?: any) => TItem[];
+}
+declare const ComposedTableWrapper: React.FC<IComposedTableProps>;
+export default ComposedTableWrapper;

@@ -12,23 +12,14 @@
  * details.
  */
 
-export declare type TSafePagination = {
-	delta: number;
-	page: number;
-	total: number;
-};
-export declare type TRawPagination = {
+export declare type TPagination = {
 	page: number;
 	pageSize: number;
 	totalCount: number;
 };
 export declare const DEFAULT_PAGINATION: {
-	delta: number;
 	page: number;
-	total: number;
+	pageSize: number;
+	totalCount: number;
 };
-export declare function getSafePagination({
-	page,
-	pageSize,
-	totalCount,
-}: TRawPagination): TSafePagination;
+export declare const DELTAS: number[];

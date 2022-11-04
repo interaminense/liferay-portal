@@ -12,8 +12,14 @@
  * details.
  */
 
-export declare const SPRITEMAP: string;
-export declare const NOT_FOUND_GIF: string;
-export declare const EMPTY_STATE_GIF: string;
-export declare const SUCCESS_MESSAGE: string;
-export declare const ERROR_MESSAGE: string;
+import React from 'react';
+import {TUseFecthDataResult} from '../../utils/useFecthData';
+import {TColumn} from './ComposedTable';
+interface IComposedTableStateRendererProps extends TUseFecthDataResult {
+	columns: TColumn[];
+	disabled: boolean;
+	empty: boolean;
+	emptyStateTitle: string;
+}
+declare const ComposedTableStateRenderer: React.FC<IComposedTableStateRendererProps>;
+export default ComposedTableStateRenderer;

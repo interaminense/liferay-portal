@@ -27,5 +27,5 @@ export declare function updateProperty({
 	dataSourceId: string;
 	siteIds: number[];
 }): Promise<any>;
-export declare function fetchChannels(): Promise<any>;
-export declare function fetchSites(): Promise<any>;
+export declare function fetchChannels(queryString?: string): Promise<any>;
+export declare function fetchSites(queryString?: string): Promise<any>;

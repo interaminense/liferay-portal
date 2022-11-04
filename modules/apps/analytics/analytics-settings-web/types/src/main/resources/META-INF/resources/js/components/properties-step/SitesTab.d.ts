@@ -14,7 +14,7 @@
 
 import React from 'react';
 import {TProperty} from '../../pages/wizard/PropertyStep';
-import {TItem} from './Tab';
+import {TItem} from '../table/Table';
 interface ISiteTabProps {
 	onSitesChange: (items: TItem[]) => void;
 	property: TProperty;
