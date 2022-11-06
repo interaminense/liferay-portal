@@ -14,10 +14,10 @@
 
 import React from 'react';
 interface IPanelProps {
-	groupLabel: string;
-	groupSection: string;
-	icon: string;
-	title: string;
+	onSyncAllAccountsChange: () => void;
+	onSyncAllContactsChange: () => void;
+	syncAllAccounts: boolean;
+	syncAllContacts: boolean;
 }
-declare const Panel: React.FC<IPanelProps>;
-export default Panel;
+declare const SelectPanels: React.FC<IPanelProps>;
+export default SelectPanels;

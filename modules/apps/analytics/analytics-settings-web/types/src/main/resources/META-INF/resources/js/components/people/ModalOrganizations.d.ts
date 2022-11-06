@@ -13,9 +13,6 @@
  */
 
 import React from 'react';
-interface IModalOrganizations {
-	observer: any;
-	onCloseModal: () => void;
-}
-declare const ModalOrganizations: React.FC<IModalOrganizations>;
+import {ICommonModalProps} from './Modal';
+declare const ModalOrganizations: React.FC<ICommonModalProps>;
 export default ModalOrganizations;

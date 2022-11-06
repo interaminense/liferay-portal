@@ -12,10 +12,8 @@
  * details.
  */
 
-import React from 'react';
-interface IModalAccountGroups {
-	observer: any;
-	onCloseModal: () => void;
+export interface IPages<T, K> {
+	Component: React.FC<T>;
+	key: K;
+	title: string;
 }
-declare const ModalAccountGroups: React.FC<IModalAccountGroups>;
-export default ModalAccountGroups;

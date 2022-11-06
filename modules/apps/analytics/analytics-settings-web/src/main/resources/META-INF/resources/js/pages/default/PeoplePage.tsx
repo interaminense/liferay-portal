@@ -13,8 +13,18 @@
  */
 
 import React from 'react';
-export interface IGenericPageProps {
-	title: string;
-}
-declare const DefaultPage: React.FC<React.HTMLAttributes<HTMLElement>>;
-export default DefaultPage;
+
+import BasePage from '../../components/BasePage';
+import People from '../../components/people/People';
+import {IGenericPageProps} from './DefaultPage';
+
+const PeoplePage: React.FC<IGenericPageProps> = ({title}) => (
+	<BasePage
+		description={Liferay.Language.get('sync-people-description')}
+		title={title}
+	>
+		<People />
+	</BasePage>
+);
+
+export default PeoplePage;

@@ -13,15 +13,6 @@
  */
 
 import React from 'react';
-import {TProperty} from '../properties/Properties';
-interface IAssignModalProps {
-	observer: any;
-	onCloseModal: () => void;
-	property: TProperty;
-}
-export declare enum ETabs {
-	Channel = 0,
-	Sites = 1,
-}
-declare const AssignModal: React.FC<IAssignModalProps>;
-export default AssignModal;
+import {IGenericPageProps} from './DefaultPage';
+declare const PeoplePage: React.FC<IGenericPageProps>;
+export default PeoplePage;

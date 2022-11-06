@@ -12,15 +12,17 @@
  * details.
  */
 
-import React from 'react';
-interface IPanelProps {
-	accountsCount: number;
-	onSyncAllAccountsChange: () => void;
-	onSyncAllContactsChange: () => void;
-	organizationsCount: number;
+import {TItem} from '../table/Table';
+interface IUseAddItemsProps {
+	name: string;
+	onCloseModal: () => void;
 	syncAllAccounts: boolean;
 	syncAllContacts: boolean;
-	usersCount: number;
 }
-declare const SelectPanels: React.FC<IPanelProps>;
-export default SelectPanels;
+export declare function useAddItems({
+	name,
+	onCloseModal,
+	syncAllAccounts,
+	syncAllContacts,
+}: IUseAddItemsProps): (items: TItem[]) => Promise<void>;
+export {};
