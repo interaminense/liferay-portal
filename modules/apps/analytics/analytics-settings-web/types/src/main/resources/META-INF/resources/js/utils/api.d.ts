@@ -34,10 +34,10 @@ export declare function updateProperty({
 	siteIds,
 }: {
 	channelId: string;
-	commerceChannelIds: number[];
+	commerceChannelIds?: number[];
 	commerceSyncEnabled?: boolean;
-	dataSourceId: string;
-	siteIds: number[];
+	dataSourceId?: string;
+	siteIds?: number[];
 }): Promise<any>;
 export declare function updatePeopleData({
 	syncAllAccounts,
