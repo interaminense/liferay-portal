@@ -12,5 +12,4 @@
  * details.
  */
 
-declare const Step: () => JSX.Element;
-export default Step;
+import '@testing-library/jest-dom/extend-expect';

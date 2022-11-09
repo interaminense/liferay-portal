@@ -12,7 +12,5 @@
  * details.
  */
 
-/// <reference types="react" />
-
 declare const PeopleWrapper: () => JSX.Element;
 export default PeopleWrapper;

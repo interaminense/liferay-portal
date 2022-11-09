@@ -12,5 +12,6 @@
  * details.
  */
 
-declare const Step: () => JSX.Element;
-export default Step;
+/* eslint-env node */
+
+module.exports = {};
