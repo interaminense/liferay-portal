@@ -16,7 +16,7 @@ import React, {createContext, useContext, useReducer} from 'react';
 
 import {DEFAULT_FILTER, TFilter} from '../../utils/filter';
 import {DEFAULT_PAGINATION, TPagination} from '../../utils/pagination';
-import {TItem} from './Table';
+import {TItem, TStorageItems} from './Table';
 
 export enum Events {
 	ChangeFilter = 'CHANGE_FILTER',
@@ -28,21 +28,23 @@ export enum Events {
 }
 
 const initialState = {
-	checked: false,
 	filter: DEFAULT_FILTER,
+	globalChecked: false,
 	internalKeywords: '',
-	items: [],
 	keywords: '',
 	pagination: DEFAULT_PAGINATION,
+	rows: [],
+	storageItems: {},
 };
 
 type TState = {
-	checked: boolean;
 	filter: TFilter;
+	globalChecked: boolean;
 	internalKeywords: string;
-	items: TItem[];
 	keywords: string;
 	pagination: TPagination;
+	rows: string[];
+	storageItems: TStorageItems;
 };
 
 const TableContextData = createContext<TState>(initialState);
@@ -51,59 +53,107 @@ const TableContextDispatch = createContext<any>(null);
 const useData = () => useContext(TableContextData);
 const useDispatch = () => useContext(TableContextDispatch);
 
+const checkGlobalChecked = (storageItems: TStorageItems) =>
+	!!Object.values(storageItems).every(({checked}) => checked);
+
 function reducer(state: TState, action: {payload: any; type: Events}) {
 	switch (action.type) {
-		case Events.ChangeFilter:
+		case Events.ChangeFilter: {
 			return {
 				...state,
-				checked: false,
 				filter: {
 					...state.filter,
 					...action.payload,
 				},
 			};
-		case Events.ChangeItems:
-			return {
-				...state,
-				checked: state.items.every(({checked}) => checked),
-				items: action.payload,
+		}
+		case Events.ChangeItems: {
+			const storageItems = {
+				...state.storageItems,
+				[action.payload]: {
+					...state.storageItems[action.payload],
+					checked: !state.storageItems[action.payload].checked,
+				},
 			};
-		case Events.ChangeKeywords:
+
 			return {
 				...state,
-				checked: false,
-				keywords: action.payload,
-			};
-		case Events.FormatData: {
-			return {
-				...state,
-				...action.payload,
+				globalChecked: checkGlobalChecked(storageItems),
+				storageItems,
 			};
 		}
-		case Events.ChangePagination:
+		case Events.ChangeKeywords: {
 			return {
 				...state,
-				checked: false,
+				keywords: action.payload,
+			};
+		}
+		case Events.FormatData: {
+			const {items, page, pageSize, totalCount} = action.payload;
+
+			const storageItems: TStorageItems = {
+				...items.reduce((accumulator: {}, value: TItem) => {
+					return {
+						...accumulator,
+						[value.id]: {
+							...value,
+							checked: state.globalChecked || value.checked,
+						},
+					};
+				}, {}),
+				...state.storageItems,
+			};
+
+			return {
+				...state,
+				globalChecked: checkGlobalChecked(storageItems),
+				pagination: {
+					page,
+					pageSize,
+					totalCount,
+				},
+				rows: items.map(({id}: TItem) => id),
+				storageItems,
+			};
+		}
+		case Events.ChangePagination: {
+			return {
+				...state,
 				pagination: {
 					...state.pagination,
 					...action.payload,
 				},
 			};
-		case Events.ToggleCheckbox:
+		}
+		case Events.ToggleCheckbox: {
 			return {
 				...state,
-				checked: action.payload,
-				items: state.items.map((item) => {
-					if (!item.disabled) {
-						return {
-							...item,
-							checked: action.payload,
-						};
-					}
+				globalChecked: action.payload,
+				storageItems: Object.values(state.storageItems).reduce(
+					(acc, item) => {
+						// If the item is disabled, we must
+						// not change the checked value.
 
-					return item;
-				}),
+						if (item.disabled) {
+							return {
+								...acc,
+								[item.id]: item,
+							};
+						}
+
+						return {
+							...acc,
+							[item.id]: {
+								...item,
+								checked: action.payload,
+							},
+						};
+					},
+					{}
+				),
 			};
+		}
+
 		default:
 			throw new Error();
 	}

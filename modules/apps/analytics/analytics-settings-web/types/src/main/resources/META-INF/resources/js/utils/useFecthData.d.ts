@@ -20,7 +20,7 @@ export declare type TUseFecthDataResult = {
 	refetching: boolean;
 };
 declare function useFetchData(
-	fetchFn: (queryString?: string) => Promise<any>,
-	queryString?: string
+	fetchFn: (params?: any) => Promise<any>,
+	params?: any
 ): TUseFecthDataResult;
 export default useFetchData;

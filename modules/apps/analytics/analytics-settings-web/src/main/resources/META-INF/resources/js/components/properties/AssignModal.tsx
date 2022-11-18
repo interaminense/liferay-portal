@@ -20,15 +20,16 @@ import React, {useState} from 'react';
 
 import {updateProperty} from '../../utils/api';
 import {SUCCESS_MESSAGE} from '../../utils/constants';
+import {getIds} from '../../utils/shared';
 import Loading from '../Loading';
-import {TItem} from '../table/Table';
 import ChannelTab from './ChannelTab';
 import {TProperty} from './Properties';
 import SitesTab from './SitesTab';
 
 interface IAssignModalProps {
 	observer: any;
-	onCloseModal: () => void;
+	onCancel: () => void;
+	onSubmit: () => void;
 	property: TProperty;
 }
 
@@ -37,56 +38,35 @@ export enum ETabs {
 	Sites = 1,
 }
 
-function getIds(items: TItem[]): number[] {
-	return items
-		.filter(({checked, disabled}) => checked && !disabled)
-		.map(({id}) => Number(id));
-}
-
 const AssignModal: React.FC<IAssignModalProps> = ({
 	observer,
-	onCloseModal,
+	onCancel,
+	onSubmit,
 	property,
 }) => {
+	const {
+		name,
+		dataSources: [
+			{
+				commerceChannelIds: initialCommerceChannelIds,
+				siteIds: initialSiteIds,
+			} = {commerceChannelIds: [], siteIds: []},
+		],
+	} = property;
+
 	const [activeTabKeyValue, setActiveTabKeyValue] = useState<ETabs>(
 		ETabs.Channel
 	);
 	const [submitting, setSubmitting] = useState(false);
-	const [commerceChannelIds, setCommerceChannelIds] = useState<number[]>([]);
-	const [siteIds, setSiteIds] = useState<number[]>([]);
-
-	const handleSubmit = () => {
-		setSubmitting(true);
-
-		const request = async () => {
-			const {channelId, commerceSyncEnabled, dataSources} = property;
-
-			const {ok} = await updateProperty({
-				channelId,
-				commerceChannelIds,
-				commerceSyncEnabled,
-				dataSourceId: dataSources[0]?.dataSourceId,
-				siteIds,
-			});
-
-			setSubmitting(false);
-
-			if (ok) {
-				Liferay.Util.openToast({
-					message: SUCCESS_MESSAGE,
-				});
-
-				onCloseModal();
-			}
-		};
-
-		request();
-	};
+	const [commerceChannelIds, setCommerceChannelIds] = useState<number[]>(
+		initialCommerceChannelIds
+	);
+	const [siteIds, setSiteIds] = useState<number[]>(initialSiteIds);
 
 	return (
 		<ClayModal center observer={observer} size="lg">
 			<ClayModal.Header>
-				{sub(Liferay.Language.get('assign-to-x'), property.name)}
+				{sub(Liferay.Language.get('assign-to-x'), name)}
 			</ClayModal.Header>
 
 			<ClayModal.Body>
@@ -116,7 +96,9 @@ const AssignModal: React.FC<IAssignModalProps> = ({
 					<ClayTabs.TabPane aria-labelledby="tab-1">
 						<ChannelTab
 							onChannelsChange={(items) =>
-								setCommerceChannelIds(getIds(items))
+								setCommerceChannelIds(
+									getIds(items, commerceChannelIds)
+								)
 							}
 							property={property}
 						/>
@@ -124,9 +106,9 @@ const AssignModal: React.FC<IAssignModalProps> = ({
 
 					<ClayTabs.TabPane aria-labelledby="tab-2">
 						<SitesTab
-							onSitesChange={(items) => {
-								setSiteIds(getIds(items));
-							}}
+							onSitesChange={(items) =>
+								setSiteIds(getIds(items, siteIds))
+							}
 							property={property}
 						/>
 					</ClayTabs.TabPane>
@@ -138,7 +120,7 @@ const AssignModal: React.FC<IAssignModalProps> = ({
 					<ClayButton.Group spaced>
 						<ClayButton
 							displayType="secondary"
-							onClick={() => onCloseModal()}
+							onClick={() => onCancel()}
 						>
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
@@ -146,7 +128,31 @@ const AssignModal: React.FC<IAssignModalProps> = ({
 						<ClayButton
 							disabled={submitting}
 							displayType="primary"
-							onClick={handleSubmit}
+							onClick={async () => {
+								const {
+									channelId,
+									commerceSyncEnabled,
+									dataSources: [{dataSourceId}],
+								} = property;
+
+								const {ok} = await updateProperty({
+									channelId,
+									commerceChannelIds,
+									commerceSyncEnabled,
+									dataSourceId,
+									siteIds,
+								});
+
+								setSubmitting(false);
+
+								if (ok) {
+									Liferay.Util.openToast({
+										message: SUCCESS_MESSAGE,
+									});
+
+									onSubmit();
+								}
+							}}
 							type="submit"
 						>
 							{submitting && <Loading inline />}

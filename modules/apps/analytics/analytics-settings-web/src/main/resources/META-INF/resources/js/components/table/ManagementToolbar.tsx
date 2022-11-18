@@ -24,7 +24,7 @@ import React, {useState} from 'react';
 
 import {OrderBy, TFilter} from '../../utils/filter';
 import {Events, useData, useDispatch} from './Context';
-import {TColumn, TItem} from './Table';
+import {TColumn} from './Table';
 
 function getOrderBy({type}: TFilter): OrderBy {
 	return type === OrderBy.Asc ? OrderBy.Desc : OrderBy.Asc;
@@ -34,18 +34,15 @@ function getOrderBySymbol({type}: TFilter): string {
 	return type === OrderBy.Asc ? 'order-list-up' : 'order-list-down';
 }
 
-function getResultsLanguage(items: TItem[]) {
-	if (items.length > 1) {
+function getResultsLanguage(rows: string[]) {
+	if (rows.length > 1) {
 		return sub(
 			Liferay.Language.get('x-results-for').toLowerCase(),
-			items.length
+			rows.length
 		);
 	}
 
-	return sub(
-		Liferay.Language.get('x-result-for').toLowerCase(),
-		items.length
-	);
+	return sub(Liferay.Language.get('x-result-for').toLowerCase(), rows.length);
 }
 
 interface IManagementToolbarProps {
@@ -57,7 +54,7 @@ const ManagementToolbar: React.FC<IManagementToolbarProps> = ({
 	columns,
 	disabled,
 }) => {
-	const {checked, filter, items, keywords: storedKeywords} = useData();
+	const {filter, globalChecked, keywords: storedKeywords, rows} = useData();
 	const dispatch = useDispatch();
 
 	const [keywords, setKeywords] = useState('');
@@ -69,11 +66,11 @@ const ManagementToolbar: React.FC<IManagementToolbarProps> = ({
 				<ClayManagementToolbar.ItemList>
 					<ClayManagementToolbar.Item>
 						<ClayCheckbox
-							checked={checked}
+							checked={globalChecked}
 							disabled={disabled}
 							onChange={() => {
 								dispatch({
-									payload: !checked,
+									payload: !globalChecked,
 									type: Events.ToggleCheckbox,
 								});
 							}}
@@ -201,7 +198,7 @@ const ManagementToolbar: React.FC<IManagementToolbarProps> = ({
 					<ClayResultsBar.Item expand>
 						<span className="component-text text-truncate-inline">
 							<span className="text-truncate">
-								<span>{getResultsLanguage(items)}</span>
+								<span>{getResultsLanguage(rows)}</span>
 
 								<strong>{` "${storedKeywords}"`}</strong>
 							</span>

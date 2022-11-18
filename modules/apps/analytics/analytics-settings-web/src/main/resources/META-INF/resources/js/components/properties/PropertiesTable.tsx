@@ -54,7 +54,16 @@ const PropertiesTable: React.FC<IPropertiesTable> = ({
 
 			<ClayTable.Body>
 				{properties.map(
-					({commerceSyncEnabled, dataSources, name}, index) => (
+					(
+						{
+							commerceSyncEnabled,
+							dataSources: [
+								{commerceChannelIds = [], siteIds = []} = {},
+							],
+							name,
+						},
+						index
+					) => (
 						<Fragment key={index}>
 							<ClayTable.Row>
 								<ClayTable.Cell className="table-cell-expand">
@@ -65,19 +74,14 @@ const PropertiesTable: React.FC<IPropertiesTable> = ({
 									className="mr-2"
 									columnTextAlignment="end"
 								>
-									{commerceSyncEnabled
-										? dataSources[0].commerceChannelIds
-												.length
-										: '-'}
+									{commerceChannelIds.length}
 								</ClayTable.Cell>
 
 								<ClayTable.Cell
 									className="mr-2"
 									columnTextAlignment="end"
 								>
-									{dataSources.length
-										? dataSources[0].siteIds.length
-										: dataSources.length}
+									{siteIds.length}
 								</ClayTable.Cell>
 
 								<ClayTable.Cell
@@ -96,9 +100,9 @@ const PropertiesTable: React.FC<IPropertiesTable> = ({
 								<ClayTable.Cell columnTextAlignment="end">
 									<ClayButton
 										displayType="secondary"
-										onClick={() => {
-											onAssignModalButtonClick(index);
-										}}
+										onClick={() =>
+											onAssignModalButtonClick(index)
+										}
 										type="button"
 									>
 										{Liferay.Language.get('assign')}

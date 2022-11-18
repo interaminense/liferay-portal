@@ -12,12 +12,8 @@
  * details.
  */
 
-import React from 'react';
-interface IPanelProps {
-	onSyncAllAccountsChange: () => void;
-	onSyncAllContactsChange: () => void;
-	syncAllAccounts: boolean;
-	syncAllContacts: boolean;
-}
-declare const SelectPanels: React.FC<IPanelProps>;
-export default SelectPanels;
+import {TStorageItems} from '../components/table/Table';
+export declare function getIds(
+	items: TStorageItems,
+	initialIds: number[]
+): number[];

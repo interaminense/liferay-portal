@@ -13,10 +13,10 @@
  */
 
 import React from 'react';
-import {TItem} from '../table/Table';
+import {TStorageItems} from '../table/Table';
 import {TProperty} from './Properties';
 interface ISiteTabProps {
-	onSitesChange: (items: TItem[]) => void;
+	onSitesChange: (items: TStorageItems) => void;
 	property: TProperty;
 }
 declare const SitesTab: React.FC<ISiteTabProps>;

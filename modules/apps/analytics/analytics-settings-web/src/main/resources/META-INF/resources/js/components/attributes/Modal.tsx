@@ -16,12 +16,16 @@ import ClayButton from '@clayui/button';
 import ClayModal from '@clayui/modal';
 import React, {useState} from 'react';
 
-import Table, {TColumn, TItem} from '../table/Table';
+import {TQueries} from '../../utils/request';
+import Table, {TColumn, TStorageItems} from '../table/Table';
 
 type TRawItem = {
-	id: number;
+	example: string;
 	name: string;
+	required: boolean;
 	selected: boolean;
+	source: string;
+	type: string;
 };
 
 export interface ICommonModalProps {
@@ -31,9 +35,9 @@ export interface ICommonModalProps {
 
 interface IModalProps {
 	columns: TColumn[];
-	fetchFn: () => Promise<any>;
+	fetchFn: (params: TQueries) => Promise<any>;
 	observer: any;
-	onAddItems: (items: TItem[]) => void;
+	onAddItems: (items: TStorageItems) => void;
 	onCloseModal: () => void;
 	title: string;
 }
@@ -46,7 +50,7 @@ const Modal: React.FC<IModalProps> = ({
 	onCloseModal,
 	title,
 }) => {
-	const [items, setItems] = useState<TItem[]>([]);
+	const [items, setItems] = useState<TStorageItems>({});
 
 	return (
 		<ClayModal center observer={observer} size="lg">
@@ -60,17 +64,21 @@ const Modal: React.FC<IModalProps> = ({
 					)}
 					fetchFn={fetchFn}
 					mapperItems={(items: TRawItem[]) => {
-
-						// TODO: when attributes backend is done, check if the returned object on map will have changes.
-						// Check what values will be passed instead of empty strings on "columns: [name, '', '']"
-						// If changes neccessary, check if mapperItems will need to be passed on the parent component.
-
-						return items.map(({id, name, selected}) => ({
-							checked: selected,
-							columns: [name, '', ''],
-							disabled: false,
-							id: String(id),
-						}));
+						return items.map(
+							({
+								example,
+								name,
+								required,
+								selected,
+								source,
+								type,
+							}) => ({
+								checked: selected,
+								columns: [name, type, example, source],
+								disabled: required,
+								id: name,
+							})
+						);
 					}}
 					noResultsTitle={Liferay.Language.get(
 						'no-attributes-were-found'
@@ -98,5 +106,18 @@ const Modal: React.FC<IModalProps> = ({
 		</ClayModal>
 	);
 };
+
+export function getFields(items: TStorageItems): TRawItem[] {
+	return Object.values(items).map(
+		({checked, columns: [name, type, example, source], disabled}) => ({
+			example,
+			name,
+			required: disabled,
+			selected: checked,
+			source,
+			type,
+		})
+	);
+}
 
 export default Modal;

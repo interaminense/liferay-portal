@@ -13,9 +13,11 @@
  */
 
 import React from 'react';
+import {TQueries} from '../../utils/request';
 export declare type TColumn = {
 	expanded: boolean;
 	label: string;
+	show?: boolean;
 	sortable?: boolean;
 	value: string;
 };
@@ -25,14 +27,17 @@ export declare type TItem = {
 	disabled: boolean;
 	id: string;
 };
+export declare type TStorageItems = {
+	[key: string]: TItem;
+};
 interface ITableProps {
 	columns: TColumn[];
 	disabled?: boolean;
 	emptyStateTitle: string;
-	fetchFn: (queryString?: string) => Promise<any>;
-	mapperItems: (items: any) => TItem[];
+	fetchFn: (params: TQueries) => Promise<any>;
+	mapperItems: (items: any[]) => TItem[];
 	noResultsTitle: string;
-	onItemsChange?: (items: TItem[]) => void;
+	onItemsChange?: (items: TStorageItems) => void;
 }
 declare const TableWrapper: React.FC<ITableProps>;
 export default TableWrapper;

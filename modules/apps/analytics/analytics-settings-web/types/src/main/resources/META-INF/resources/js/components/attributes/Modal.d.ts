@@ -13,18 +13,28 @@
  */
 
 import React from 'react';
-import {TColumn, TItem} from '../table/Table';
+import {TQueries} from '../../utils/request';
+import {TColumn, TStorageItems} from '../table/Table';
+declare type TRawItem = {
+	example: string;
+	name: string;
+	required: boolean;
+	selected: boolean;
+	source: string;
+	type: string;
+};
 export interface ICommonModalProps {
 	observer: any;
 	onCloseModal: () => void;
 }
 interface IModalProps {
 	columns: TColumn[];
-	fetchFn: () => Promise<any>;
+	fetchFn: (params: TQueries) => Promise<any>;
 	observer: any;
-	onAddItems: (items: TItem[]) => void;
+	onAddItems: (items: TStorageItems) => void;
 	onCloseModal: () => void;
 	title: string;
 }
 declare const Modal: React.FC<IModalProps>;
+export declare function getFields(items: TStorageItems): TRawItem[];
 export default Modal;

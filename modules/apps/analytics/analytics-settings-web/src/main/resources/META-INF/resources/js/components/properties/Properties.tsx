@@ -30,14 +30,14 @@ import PropertiesTable from './PropertiesTable';
 export type TProperty = {
 	channelId: string;
 	commerceSyncEnabled: boolean;
-	dataSources: Array<TDataSource>;
+	dataSources: TDataSource[] | [];
 	name: string;
 };
 
 type TDataSource = {
-	commerceChannelIds: Array<number>;
+	commerceChannelIds: number[];
 	dataSourceId: string;
-	siteIds: Array<number>;
+	siteIds: number[];
 };
 
 const Properties: React.FC = () => {
@@ -65,6 +65,14 @@ const Properties: React.FC = () => {
 			setProperties(data.items);
 		}
 	}, [data]);
+
+	const handleCloseModal = async (closeFn: (value: boolean) => void) => {
+		const {items} = await fetchProperties();
+
+		setProperties(items);
+
+		closeFn(false);
+	};
 
 	return (
 		<>
@@ -144,7 +152,8 @@ const Properties: React.FC = () => {
 			{assignModalOpen && (
 				<AssignModal
 					observer={assignModalObserver}
-					onCloseModal={() => onAssignModalOpenChange(false)}
+					onCancel={() => onAssignModalOpenChange(false)}
+					onSubmit={() => handleCloseModal(onAssignModalOpenChange)}
 					property={selectedProperty}
 				/>
 			)}
@@ -152,19 +161,8 @@ const Properties: React.FC = () => {
 			{propertyModalOpen && (
 				<CreatePropertyModal
 					observer={propertyModalObserver}
-					onCloseModal={(updateProperty) => {
-						if (updateProperty) {
-							const request = async () => {
-								const response = await fetchProperties();
-
-								setProperties(response.items);
-							};
-
-							request();
-						}
-
-						onPropertyModalOpenChange(false);
-					}}
+					onCancel={() => onPropertyModalOpenChange(false)}
+					onSubmit={() => handleCloseModal(onPropertyModalOpenChange)}
 				/>
 			)}
 		</>

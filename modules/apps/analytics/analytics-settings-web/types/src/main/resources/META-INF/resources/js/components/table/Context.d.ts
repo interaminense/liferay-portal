@@ -15,7 +15,7 @@
 import React from 'react';
 import {TFilter} from '../../utils/filter';
 import {TPagination} from '../../utils/pagination';
-import {TItem} from './Table';
+import {TStorageItems} from './Table';
 export declare enum Events {
 	ChangeFilter = 'CHANGE_FILTER',
 	ChangeItems = 'CHANGE_ITEMS',
@@ -25,12 +25,13 @@ export declare enum Events {
 	ToggleCheckbox = 'TOGGLE_CHECKBOX',
 }
 declare type TState = {
-	checked: boolean;
 	filter: TFilter;
+	globalChecked: boolean;
 	internalKeywords: string;
-	items: TItem[];
 	keywords: string;
 	pagination: TPagination;
+	rows: string[];
+	storageItems: TStorageItems;
 };
 declare const useData: () => TState;
 declare const useDispatch: () => any;

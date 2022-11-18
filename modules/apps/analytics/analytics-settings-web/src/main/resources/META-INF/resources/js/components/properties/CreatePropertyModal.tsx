@@ -23,41 +23,21 @@ import Loading from '../Loading';
 
 interface IModalProps {
 	observer: any;
-	onCloseModal: (updateProperty: boolean) => void;
+	onCancel: () => void;
+	onSubmit: () => void;
 }
 
 const CreatePropertyModal: React.FC<IModalProps> = ({
 	observer,
-	onCloseModal,
+	onCancel,
+	onSubmit,
 }) => {
 	const [propertyName, setPropertyName] = useState('');
 	const [submitting, setSubmitting] = useState(false);
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-
-		const request = async () => {
-			setSubmitting(true);
-
-			const {ok} = await createProperty(propertyName);
-
-			setSubmitting(false);
-
-			if (ok) {
-				Liferay.Util.openToast({
-					message: SUCCESS_MESSAGE,
-				});
-
-				onCloseModal(true);
-			}
-		};
-
-		request();
-	};
-
 	return (
 		<ClayModal center observer={observer}>
-			<ClayForm onSubmit={handleSubmit}>
+			<ClayForm>
 				<ClayModal.Header>
 					{Liferay.Language.get('new-property')}
 				</ClayModal.Header>
@@ -84,14 +64,30 @@ const CreatePropertyModal: React.FC<IModalProps> = ({
 						<ClayButton.Group spaced>
 							<ClayButton
 								displayType="secondary"
-								onClick={() => onCloseModal(false)}
+								onClick={onCancel}
 							>
 								{Liferay.Language.get('cancel')}
 							</ClayButton>
 
 							<ClayButton
 								disabled={!propertyName || submitting}
-								type="submit"
+								onClick={async () => {
+									setSubmitting(true);
+
+									const {ok} = await createProperty(
+										propertyName
+									);
+
+									setSubmitting(false);
+
+									if (ok) {
+										Liferay.Util.openToast({
+											message: SUCCESS_MESSAGE,
+										});
+
+										onSubmit();
+									}
+								}}
 							>
 								{submitting && <Loading inline />}
 

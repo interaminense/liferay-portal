@@ -23,8 +23,8 @@ export type TUseFecthDataResult = {
 };
 
 function useFetchData(
-	fetchFn: (queryString?: string) => Promise<any>,
-	queryString?: string
+	fetchFn: (params?: any) => Promise<any>,
+	params?: any
 ): TUseFecthDataResult {
 	const [data, setData] = useState(null);
 	const [error, setError] = useState(false);
@@ -33,17 +33,15 @@ function useFetchData(
 
 	const _fetchFn = useCallback(() => {
 		const request = async () => {
-			const response = await fetchFn(queryString);
+			const response = await fetchFn(params);
 
 			try {
 				if (response.error) {
 					throw response.error;
-				}
-				else {
+				} else {
 					setData(response);
 				}
-			}
-			catch (error) {
+			} catch (error) {
 				console.error(error);
 
 				setError(true);
@@ -54,7 +52,9 @@ function useFetchData(
 		};
 
 		request();
-	}, [fetchFn, queryString]);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [fetchFn, JSON.stringify(params)]);
 
 	useEffect(() => {
 		_fetchFn();

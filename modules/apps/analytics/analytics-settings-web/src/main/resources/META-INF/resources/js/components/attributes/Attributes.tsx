@@ -16,8 +16,9 @@ import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
 import {useModal} from '@clayui/modal';
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 
+import {fetchAttributeSelectedFields} from '../../utils/api';
 import AccountsAttributesModal from './AccountsAttributesModal';
 import OrderAttributsModal from './OrderAttributsModal';
 import PeopleAttributesModal from './PeopleAttributesModal';
@@ -45,43 +46,66 @@ const Attributes: React.FC = () => {
 		open: openOrderAttributes,
 	} = useModal();
 
+	const [{account, order, people, product}, setSelectedFields] = useState({
+		account: 0,
+		order: 0,
+		people: 0,
+		product: 0,
+	});
+
+	const syncData = async () => {
+		const selectedFields = await fetchAttributeSelectedFields();
+
+		setSelectedFields(selectedFields);
+	};
+
+	useEffect(() => {
+		syncData();
+	}, []);
+
 	const attributesList = useMemo(
 		() => [
-
-			// TODO: Remove mocked data on "count" property
-
 			{
-				count: 15,
+				count: people,
 				icon: 'users',
 				onOpenModal: () => onOpenChangePeopleAttributes(true),
 				title: Liferay.Language.get('people'),
 			},
 			{
-				count: 3,
+				count: account,
 				icon: 'briefcase',
 				onOpenModal: () => onOpenChangeAccountsAttributes(true),
 				title: Liferay.Language.get('account'),
 			},
 			{
-				count: 7,
+				count: product,
 				icon: 'categories',
 				onOpenModal: () => onOpenChangeProductsAttributes(true),
 				title: Liferay.Language.get('products'),
 			},
 			{
-				count: 13,
+				count: order,
 				icon: 'shopping-cart',
 				onOpenModal: () => onOpenChangeOrderAttributes(true),
 				title: Liferay.Language.get('order'),
 			},
 		],
 		[
+			account,
 			onOpenChangeAccountsAttributes,
 			onOpenChangeOrderAttributes,
 			onOpenChangePeopleAttributes,
 			onOpenChangeProductsAttributes,
+			order,
+			people,
+			product,
 		]
 	);
+
+	const handleCloseModal = (closeFn: (value: boolean) => void) => {
+		syncData();
+		closeFn(false);
+	};
 
 	return (
 		<>
@@ -99,7 +123,7 @@ const Attributes: React.FC = () => {
 						<ClayList.ItemField expand>
 							<ClayList.ItemTitle>{title}</ClayList.ItemTitle>
 
-							<ClayList.ItemText>
+							<ClayList.ItemText className="text-secondary">
 								{`${count} ${Liferay.Language.get('selected')}`}
 							</ClayList.ItemText>
 						</ClayList.ItemField>
@@ -119,28 +143,36 @@ const Attributes: React.FC = () => {
 			{openAccountsAttributes && (
 				<AccountsAttributesModal
 					observer={observerAccountsAttributes}
-					onCloseModal={() => onOpenChangeAccountsAttributes(false)}
+					onCloseModal={() =>
+						handleCloseModal(onOpenChangeAccountsAttributes)
+					}
 				/>
 			)}
 
 			{openPeopleAttributes && (
 				<PeopleAttributesModal
 					observer={observerPeopleAttributes}
-					onCloseModal={() => onOpenChangePeopleAttributes(false)}
+					onCloseModal={() =>
+						handleCloseModal(onOpenChangePeopleAttributes)
+					}
 				/>
 			)}
 
 			{openProductsAttributes && (
 				<ProductsAttributesModal
 					observer={observerProductsAttributes}
-					onCloseModal={() => onOpenChangeProductsAttributes(false)}
+					onCloseModal={() =>
+						handleCloseModal(onOpenChangeProductsAttributes)
+					}
 				/>
 			)}
 
 			{openOrderAttributes && (
 				<OrderAttributsModal
 					observer={observerOrderAttributes}
-					onCloseModal={() => onOpenChangeOrderAttributes(false)}
+					onCloseModal={() =>
+						handleCloseModal(onOpenChangeOrderAttributes)
+					}
 				/>
 			)}
 		</>

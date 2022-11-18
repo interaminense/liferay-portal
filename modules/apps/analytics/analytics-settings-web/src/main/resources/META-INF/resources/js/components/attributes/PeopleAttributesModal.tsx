@@ -14,34 +14,57 @@
 
 import React from 'react';
 
-import Modal, {ICommonModalProps} from './Modal';
+import {fetchPeopleFields, updatePeopleFields} from '../../utils/api';
+import {SUCCESS_MESSAGE} from '../../utils/constants';
+import Modal, {ICommonModalProps, getFields} from './Modal';
+
+const columns = [
+	{
+		expanded: true,
+		label: Liferay.Language.get('attribute'),
+		value: 'name',
+	},
+	{
+		expanded: true,
+		label: Liferay.Language.get('data-type'),
+		sortable: false,
+		value: 'type',
+	},
+	{
+		expanded: true,
+		label: Liferay.Language.get('sample-data'),
+		sortable: false,
+		value: 'example',
+	},
+	{
+		expanded: false,
+		label: Liferay.Language.get('source'),
+		show: false,
+		value: 'source',
+	},
+];
 
 const PeopleAttributesModal: React.FC<ICommonModalProps> = ({
 	observer,
 	onCloseModal,
 }) => (
 	<Modal
-		columns={[
-			{
-				expanded: true,
-				label: Liferay.Language.get('attribute'),
-				value: 'attribute',
-			},
-
-			{
-				expanded: true,
-				label: Liferay.Language.get('data-type'),
-				value: 'dataType',
-			},
-			{
-				expanded: true,
-				label: Liferay.Language.get('sample-data'),
-				value: 'sampleData',
-			},
-		]}
-		fetchFn={() => Promise.resolve()}
+		columns={columns}
+		fetchFn={fetchPeopleFields}
 		observer={observer}
-		onAddItems={() => {}}
+		onAddItems={async (items) => {
+			const fields = getFields(items);
+
+			const {ok} = await updatePeopleFields(fields);
+
+			if (ok) {
+				Liferay.Util.openToast({
+					message: SUCCESS_MESSAGE,
+				});
+
+				onCloseModal();
+			}
+		}}
 		onCloseModal={onCloseModal}
 		title={Liferay.Language.get('sync-people-attributes')}
 	/>

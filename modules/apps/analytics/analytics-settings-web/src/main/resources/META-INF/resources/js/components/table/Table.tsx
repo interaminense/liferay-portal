@@ -18,8 +18,8 @@ import ClayTable from '@clayui/table';
 import classNames from 'classnames';
 import React, {useEffect} from 'react';
 
-import {OrderBy, TFilter} from '../../utils/filter';
-import {TPagination} from '../../utils/pagination';
+import {OrderBy} from '../../utils/filter';
+import {TQueries} from '../../utils/request';
 import useFetchData from '../../utils/useFecthData';
 import TableContext, {Events, useData, useDispatch} from './Context';
 import ManagementToolbar from './ManagementToolbar';
@@ -29,6 +29,7 @@ import StateRenderer from './StateRenderer';
 export type TColumn = {
 	expanded: boolean;
 	label: string;
+	show?: boolean;
 	sortable?: boolean;
 	value: string;
 };
@@ -40,29 +41,7 @@ export type TItem = {
 	id: string;
 };
 
-function serializeQueries({
-	filter: {type, value},
-	keywords,
-	pagination: {page, pageSize},
-}: {
-	filter: TFilter;
-	keywords: string;
-	pagination: TPagination;
-}): string {
-	const params = {
-		keywords,
-		page,
-		pageSize,
-		sort: `${value}:${type}`,
-	};
-
-	// @ts-ignore
-
-	const arrs = Object.keys(params).map((key) => [key, String(params[key])]);
-	const path = new URLSearchParams(arrs);
-
-	return decodeURIComponent(path.toString());
-}
+export type TStorageItems = {[key: string]: TItem};
 
 interface ITableContentProps {
 	columns: TColumn[];
@@ -70,7 +49,7 @@ interface ITableContentProps {
 }
 
 const TableContent: React.FC<ITableContentProps> = ({columns, disabled}) => {
-	const {filter, items} = useData();
+	const {filter, rows, storageItems} = useData();
 	const dispatch = useDispatch();
 
 	return (
@@ -79,36 +58,43 @@ const TableContent: React.FC<ITableContentProps> = ({columns, disabled}) => {
 				<ClayTable.Row>
 					<ClayTable.Cell></ClayTable.Cell>
 
-					{columns.map(({expanded = false, label, value}) => (
-						<ClayTable.Cell
-							expanded={expanded}
-							headingCell
-							key={label}
-						>
-							<span>{label}</span>
+					{columns.map(
+						({expanded = false, label, show = true, value}) =>
+							show && (
+								<ClayTable.Cell
+									expanded={expanded}
+									headingCell
+									key={label}
+								>
+									<span>{label}</span>
 
-							{filter.value === value && (
-								<span>
-									<ClayIcon
-										symbol={
-											filter.type === OrderBy.Asc
-												? 'order-arrow-up'
-												: 'order-arrow-down'
-										}
-									/>
-								</span>
-							)}
-						</ClayTable.Cell>
-					))}
+									{filter.value === value && (
+										<span>
+											<ClayIcon
+												symbol={
+													filter.type === OrderBy.Asc
+														? 'order-arrow-up'
+														: 'order-arrow-down'
+												}
+											/>
+										</span>
+									)}
+								</ClayTable.Cell>
+							)
+					)}
 				</ClayTable.Row>
 			</ClayTable.Head>
 
 			<ClayTable.Body>
-				{items.map(
-					(
-						{checked, columns, disabled: disabledItem = false, id},
-						index
-					) => (
+				{rows.map((rowId) => {
+					const {
+						checked,
+						columns,
+						disabled: disabledItem = false,
+						id,
+					} = storageItems[rowId];
+
+					return (
 						<ClayTable.Row
 							className={classNames({
 								'table-active': checked,
@@ -122,30 +108,24 @@ const TableContent: React.FC<ITableContentProps> = ({columns, disabled}) => {
 									disabled={disabled || disabledItem}
 									id={id}
 									onChange={() => {
-										const newItems = [...items];
-
 										if (!disabled && !disabledItem) {
-											newItems[index].checked = !newItems[
-												index
-											].checked;
+											dispatch({
+												payload: id,
+												type: Events.ChangeItems,
+											});
 										}
-
-										dispatch({
-											payload: newItems,
-											type: Events.ChangeItems,
-										});
 									}}
 								/>
 							</ClayTable.Cell>
 
-							{columns.map((label, index: number) => (
+							{columns.map((label, index) => (
 								<ClayTable.Cell key={index}>
 									{label}
 								</ClayTable.Cell>
 							))}
 						</ClayTable.Row>
-					)
-				)}
+					);
+				})}
 			</ClayTable.Body>
 		</ClayTable>
 	);
@@ -155,10 +135,10 @@ interface ITableProps {
 	columns: TColumn[];
 	disabled?: boolean;
 	emptyStateTitle: string;
-	fetchFn: (queryString?: string) => Promise<any>;
-	mapperItems: (items: any) => TItem[];
+	fetchFn: (params: TQueries) => Promise<any>;
+	mapperItems: (items: any[]) => TItem[];
 	noResultsTitle: string;
-	onItemsChange?: (items: TItem[]) => void;
+	onItemsChange?: (items: TStorageItems) => void;
 }
 
 const Table: React.FC<ITableProps> = ({
@@ -170,28 +150,23 @@ const Table: React.FC<ITableProps> = ({
 	noResultsTitle,
 	onItemsChange,
 }) => {
-	const {filter, items, keywords, pagination} = useData();
+	const {filter, keywords, pagination, storageItems} = useData();
 	const dispatch = useDispatch();
 
-	const {data, error, loading, refetch, refetching} = useFetchData(
-		fetchFn,
-		serializeQueries({filter, keywords, pagination})
-	);
+	const {data, error, loading, refetch, refetching} = useFetchData(fetchFn, {
+		filter,
+		keywords,
+		pagination,
+	});
 
 	const empty = !data?.items.length;
 
 	useEffect(() => {
 		if (data) {
-			const {items, page, pageSize, totalCount} = data;
-
 			dispatch({
 				payload: {
-					items: mapperItems(items),
-					pagination: {
-						page,
-						pageSize,
-						totalCount,
-					},
+					...data,
+					items: mapperItems(data.items),
 				},
 				type: Events.FormatData,
 			});
@@ -200,9 +175,9 @@ const Table: React.FC<ITableProps> = ({
 	}, [data, dispatch]);
 
 	useEffect(() => {
-		onItemsChange && onItemsChange(items);
+		onItemsChange && onItemsChange(storageItems);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [items]);
+	}, [storageItems]);
 
 	return (
 		<>

@@ -15,10 +15,11 @@
 import {Text} from '@clayui/core';
 import React from 'react';
 
-import Table, {TColumn, TItem} from '../table/Table';
+import {TQueries} from '../../utils/request';
+import Table, {TColumn, TStorageItems} from '../table/Table';
 import {TProperty} from './Properties';
 
-type TRawItem = {
+export type TRawItem = {
 	channelName?: string;
 	friendlyURL?: string;
 	id: string;
@@ -31,10 +32,10 @@ interface ITabProps {
 	description?: string;
 	emptyStateTitle: string;
 	enableCheckboxs?: boolean;
-	fetchFn: (queryString?: string) => Promise<any>;
+	fetchFn: (params: TQueries) => Promise<any>;
 	header: TColumn[];
 	noResultsTitle: string;
-	onItemsChange: (items: TItem[]) => void;
+	onItemsChange: (items: TStorageItems) => void;
 	property: TProperty;
 }
 
@@ -63,7 +64,9 @@ const Tab: React.FC<ITabProps> = ({
 			fetchFn={fetchFn}
 			mapperItems={(items: TRawItem[]) => {
 				return items.map((item) => ({
-					checked: !!item.channelName,
+					checked: !!(
+						item.channelName && item.channelName === property.name
+					),
 					columns: columns.map((column) => item?.[column] ?? ''),
 					disabled: !!(
 						item.channelName && item.channelName !== property.name
