@@ -132,14 +132,14 @@ const AssignModal: React.FC<IAssignModalProps> = ({
 								const {
 									channelId,
 									commerceSyncEnabled,
-									dataSources: [{dataSourceId}],
+									dataSources,
 								} = property;
 
 								const {ok} = await updateProperty({
 									channelId,
 									commerceChannelIds,
 									commerceSyncEnabled,
-									dataSourceId,
+									dataSourceId: dataSources[0]?.dataSourceId,
 									siteIds,
 								});
 
