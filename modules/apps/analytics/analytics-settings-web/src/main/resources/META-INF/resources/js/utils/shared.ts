@@ -12,9 +12,9 @@
  * details.
  */
 
-import {TStorageItems} from '../components/table/Table';
+import {TFormattedItems} from '../components/table/Table';
 
-export function getIds(items: TStorageItems, initialIds: number[]): number[] {
+export function getIds(items: TFormattedItems, initialIds: number[]): number[] {
 	const ids = [...initialIds];
 
 	Object.values(items).forEach((item) => {
@@ -22,11 +22,13 @@ export function getIds(items: TStorageItems, initialIds: number[]): number[] {
 			ids.forEach((id, index) => {
 				if (id === Number(item.id) && !item.checked) {
 					ids.splice(index, 1);
-				} else if (id !== Number(item.id) && item.checked) {
+				}
+				else if (id !== Number(item.id) && item.checked) {
 					ids.push(Number(item.id));
 				}
 			});
-		} else if (item.checked) {
+		}
+		else if (item.checked) {
 			ids.push(Number(item.id));
 		}
 	});

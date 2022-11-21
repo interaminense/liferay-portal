@@ -21,13 +21,10 @@ import StateRenderer, {
 	ErrorStateComponent,
 } from '../StateRenderer';
 import {useData} from './Context';
-import {TColumn} from './Table';
 
 interface ITableStateRendererProps
 	extends TUseFecthDataResult,
 		React.HTMLAttributes<HTMLElement> {
-	columns: TColumn[];
-	disabled: boolean;
 	empty: boolean;
 	emptyStateTitle: string;
 	noResultsTitle: string;

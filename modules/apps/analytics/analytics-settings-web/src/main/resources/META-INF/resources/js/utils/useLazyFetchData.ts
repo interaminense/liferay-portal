@@ -12,30 +12,29 @@
  * details.
  */
 
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
 
-export type TUseFecthDataResult = {
+export type TuseLazyFetchDataResult = {
 	data?: any;
 	error: boolean;
 	loading: boolean;
-	refetch: () => void;
-	refetching: boolean;
 };
 
-function useFetchData(
+function useLazyFetchData(
 	fetchFn: (params?: any) => Promise<any>,
 	params?: any
-): TUseFecthDataResult {
+): [() => void, TuseLazyFetchDataResult] {
 	const [data, setData] = useState(null);
 	const [error, setError] = useState(false);
-	const [loading, setLoading] = useState(true);
-	const [refetching, setRefetching] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const _fetchFn = useCallback(async () => {
+		setLoading(true);
+
 		const response = await fetchFn(params);
 
 		try {
-			if (response?.error) {
+			if (response.error) {
 				throw response.error;
 			}
 			else {
@@ -49,28 +48,18 @@ function useFetchData(
 		}
 
 		setLoading(false);
-		setRefetching(false);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fetchFn, JSON.stringify(params)]);
 
-	useEffect(() => {
-		_fetchFn();
-	}, [_fetchFn]);
-
-	return {
-		data,
-		error,
-		loading,
-		refetch: () => {
-			setError(false);
-			setLoading(true);
-			setRefetching(true);
-
-			_fetchFn();
+	return [
+		() => _fetchFn(),
+		{
+			data,
+			error,
+			loading,
 		},
-		refetching,
-	};
+	];
 }
 
-export default useFetchData;
+export default useLazyFetchData;

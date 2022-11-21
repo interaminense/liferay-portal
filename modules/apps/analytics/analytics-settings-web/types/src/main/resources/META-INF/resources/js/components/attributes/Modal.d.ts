@@ -14,7 +14,7 @@
 
 import React from 'react';
 import {TQueries} from '../../utils/request';
-import {TColumn, TStorageItems} from '../table/Table';
+import {TColumn, TFormattedItems} from '../table/Table';
 declare type TRawItem = {
 	example: string;
 	name: string;
@@ -25,16 +25,17 @@ declare type TRawItem = {
 };
 export interface ICommonModalProps {
 	observer: any;
-	onCloseModal: () => void;
+	onCancel: () => void;
+	onSubmit: () => void;
 }
 interface IModalProps {
 	columns: TColumn[];
 	fetchFn: (params: TQueries) => Promise<any>;
 	observer: any;
-	onAddItems: (items: TStorageItems) => void;
-	onCloseModal: () => void;
+	onCancel: () => void;
+	onSubmit: (items: TFormattedItems) => void;
 	title: string;
 }
 declare const Modal: React.FC<IModalProps>;
-export declare function getFields(items: TStorageItems): TRawItem[];
+export declare function getFields(items: TFormattedItems): TRawItem[];
 export default Modal;

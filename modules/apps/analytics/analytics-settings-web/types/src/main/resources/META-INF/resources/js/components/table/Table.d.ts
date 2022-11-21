@@ -23,11 +23,14 @@ export declare type TColumn = {
 };
 export declare type TItem = {
 	checked: boolean;
-	columns: string[];
+	columns: {
+		label: string;
+		show?: boolean;
+	}[];
 	disabled: boolean;
 	id: string;
 };
-export declare type TStorageItems = {
+export declare type TFormattedItems = {
 	[key: string]: TItem;
 };
 interface ITableProps {
@@ -37,7 +40,7 @@ interface ITableProps {
 	fetchFn: (params: TQueries) => Promise<any>;
 	mapperItems: (items: any[]) => TItem[];
 	noResultsTitle: string;
-	onItemsChange?: (items: TStorageItems) => void;
+	onItemsChange?: (items: TFormattedItems) => void;
 }
 declare const TableWrapper: React.FC<ITableProps>;
 export default TableWrapper;

@@ -12,12 +12,13 @@
  * details.
  */
 
-import React from 'react';
-import {TFormattedItems} from '../table/Table';
-import {TProperty} from './Properties';
-interface ISiteTabProps {
-	onSitesChange: (items: TFormattedItems) => void;
-	property: TProperty;
-}
-declare const SitesTab: React.FC<ISiteTabProps>;
-export default SitesTab;
+export declare type TUseMutationDataResult = {
+	data?: any;
+	error: boolean;
+	loading: boolean;
+};
+declare function useMutationData(
+	fetchFn: (params?: any) => Promise<any>,
+	params?: any
+): [() => void, TUseMutationDataResult];
+export default useMutationData;

@@ -13,11 +13,10 @@
  */
 
 import React from 'react';
-import {TFormattedItems} from '../table/Table';
-import {TProperty} from './Properties';
-interface ISiteTabProps {
-	onSitesChange: (items: TFormattedItems) => void;
-	property: TProperty;
+import {TColumn} from './Table';
+interface IContentProps {
+	columns: TColumn[];
+	disabled: boolean;
 }
-declare const SitesTab: React.FC<ISiteTabProps>;
-export default SitesTab;
+declare const Content: React.FC<IContentProps>;
+export default Content;

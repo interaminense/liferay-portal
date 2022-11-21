@@ -15,7 +15,7 @@
 import React from 'react';
 
 import {fetchChannels} from '../../utils/api';
-import {TStorageItems} from '../table/Table';
+import {TFormattedItems} from '../table/Table';
 import {TProperty} from './Properties';
 import Tab, {TRawItem} from './Tab';
 
@@ -39,7 +39,7 @@ const columns = [
 ];
 
 interface IChannelTabProps {
-	onChannelsChange: (items: TStorageItems) => void;
+	onChannelsChange: (items: TFormattedItems) => void;
 	property: TProperty;
 }
 

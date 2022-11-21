@@ -17,7 +17,7 @@ import ClayModal from '@clayui/modal';
 import React, {useState} from 'react';
 
 import {TQueries} from '../../utils/request';
-import Table, {TColumn, TStorageItems} from '../table/Table';
+import Table, {TColumn, TFormattedItems} from '../table/Table';
 
 type TRawItem = {
 	example: string;
@@ -30,15 +30,16 @@ type TRawItem = {
 
 export interface ICommonModalProps {
 	observer: any;
-	onCloseModal: () => void;
+	onCancel: () => void;
+	onSubmit: () => void;
 }
 
 interface IModalProps {
 	columns: TColumn[];
 	fetchFn: (params: TQueries) => Promise<any>;
 	observer: any;
-	onAddItems: (items: TStorageItems) => void;
-	onCloseModal: () => void;
+	onCancel: () => void;
+	onSubmit: (items: TFormattedItems) => void;
 	title: string;
 }
 
@@ -46,11 +47,11 @@ const Modal: React.FC<IModalProps> = ({
 	columns,
 	fetchFn,
 	observer,
-	onAddItems,
-	onCloseModal,
+	onCancel,
+	onSubmit,
 	title,
 }) => {
-	const [items, setItems] = useState<TStorageItems>({});
+	const [items, setItems] = useState<TFormattedItems>({});
 
 	return (
 		<ClayModal center observer={observer} size="lg">
@@ -74,7 +75,12 @@ const Modal: React.FC<IModalProps> = ({
 								type,
 							}) => ({
 								checked: selected,
-								columns: [name, type, example, source],
+								columns: [
+									{label: name},
+									{label: type},
+									{label: example},
+									{label: source, show: false},
+								],
 								disabled: required,
 								id: name,
 							})
@@ -90,14 +96,11 @@ const Modal: React.FC<IModalProps> = ({
 			<ClayModal.Footer
 				last={
 					<ClayButton.Group spaced>
-						<ClayButton
-							displayType="secondary"
-							onClick={() => onCloseModal()}
-						>
+						<ClayButton displayType="secondary" onClick={onCancel}>
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
 
-						<ClayButton onClick={() => onAddItems(items)}>
+						<ClayButton onClick={() => onSubmit(items)}>
 							{Liferay.Language.get('sync')}
 						</ClayButton>
 					</ClayButton.Group>
@@ -107,9 +110,18 @@ const Modal: React.FC<IModalProps> = ({
 	);
 };
 
-export function getFields(items: TStorageItems): TRawItem[] {
+export function getFields(items: TFormattedItems): TRawItem[] {
 	return Object.values(items).map(
-		({checked, columns: [name, type, example, source], disabled}) => ({
+		({
+			checked,
+			columns: [
+				{label: name},
+				{label: type},
+				{label: example},
+				{label: source},
+			],
+			disabled,
+		}) => ({
 			example,
 			name,
 			required: disabled,

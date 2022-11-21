@@ -19,7 +19,6 @@ import {sub} from 'frontend-js-web';
 import React, {useState} from 'react';
 
 import {updateProperty} from '../../utils/api';
-import {SUCCESS_MESSAGE} from '../../utils/constants';
 import {getIds} from '../../utils/shared';
 import Loading from '../Loading';
 import ChannelTab from './ChannelTab';
@@ -145,15 +144,8 @@ const AssignModal: React.FC<IAssignModalProps> = ({
 
 								setSubmitting(false);
 
-								if (ok) {
-									Liferay.Util.openToast({
-										message: SUCCESS_MESSAGE,
-									});
-
-									onSubmit();
-								}
+								ok && onSubmit();
 							}}
-							type="submit"
 						>
 							{submitting && <Loading inline />}
 

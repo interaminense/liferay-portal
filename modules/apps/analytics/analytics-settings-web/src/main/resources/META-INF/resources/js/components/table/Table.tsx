@@ -12,15 +12,12 @@
  * details.
  */
 
-import {ClayCheckbox} from '@clayui/form';
-import ClayIcon from '@clayui/icon';
-import ClayTable from '@clayui/table';
-import classNames from 'classnames';
 import React, {useEffect} from 'react';
 
-import {OrderBy} from '../../utils/filter';
 import {TQueries} from '../../utils/request';
 import useFetchData from '../../utils/useFecthData';
+import useLazyFetchData from '../../utils/useLazyFetchData';
+import Content from './Content';
 import TableContext, {Events, useData, useDispatch} from './Context';
 import ManagementToolbar from './ManagementToolbar';
 import PaginationBar from './PaginationBar';
@@ -36,100 +33,12 @@ export type TColumn = {
 
 export type TItem = {
 	checked: boolean;
-	columns: string[];
+	columns: {label: string; show?: boolean}[];
 	disabled: boolean;
 	id: string;
 };
 
-export type TStorageItems = {[key: string]: TItem};
-
-interface ITableContentProps {
-	columns: TColumn[];
-	disabled: boolean;
-}
-
-const TableContent: React.FC<ITableContentProps> = ({columns, disabled}) => {
-	const {filter, rows, storageItems} = useData();
-	const dispatch = useDispatch();
-
-	return (
-		<ClayTable hover={!disabled}>
-			<ClayTable.Head>
-				<ClayTable.Row>
-					<ClayTable.Cell></ClayTable.Cell>
-
-					{columns.map(
-						({expanded = false, label, show = true, value}) =>
-							show && (
-								<ClayTable.Cell
-									expanded={expanded}
-									headingCell
-									key={label}
-								>
-									<span>{label}</span>
-
-									{filter.value === value && (
-										<span>
-											<ClayIcon
-												symbol={
-													filter.type === OrderBy.Asc
-														? 'order-arrow-up'
-														: 'order-arrow-down'
-												}
-											/>
-										</span>
-									)}
-								</ClayTable.Cell>
-							)
-					)}
-				</ClayTable.Row>
-			</ClayTable.Head>
-
-			<ClayTable.Body>
-				{rows.map((rowId) => {
-					const {
-						checked,
-						columns,
-						disabled: disabledItem = false,
-						id,
-					} = storageItems[rowId];
-
-					return (
-						<ClayTable.Row
-							className={classNames({
-								'table-active': checked,
-								'text-muted': disabled,
-							})}
-							key={id}
-						>
-							<ClayTable.Cell>
-								<ClayCheckbox
-									checked={checked}
-									disabled={disabled || disabledItem}
-									id={id}
-									onChange={() => {
-										if (!disabled && !disabledItem) {
-											dispatch({
-												payload: id,
-												type: Events.ChangeItems,
-											});
-										}
-									}}
-								/>
-							</ClayTable.Cell>
-
-							{columns.map((label, index) => (
-								<ClayTable.Cell key={index}>
-									{label}
-								</ClayTable.Cell>
-							))}
-						</ClayTable.Row>
-					);
-				})}
-			</ClayTable.Body>
-		</ClayTable>
-	);
-};
+export type TFormattedItems = {[key: string]: TItem};
 
 interface ITableProps {
 	columns: TColumn[];
@@ -138,7 +47,7 @@ interface ITableProps {
 	fetchFn: (params: TQueries) => Promise<any>;
 	mapperItems: (items: any[]) => TItem[];
 	noResultsTitle: string;
-	onItemsChange?: (items: TStorageItems) => void;
+	onItemsChange?: (items: TFormattedItems) => void;
 }
 
 const Table: React.FC<ITableProps> = ({
@@ -150,7 +59,13 @@ const Table: React.FC<ITableProps> = ({
 	noResultsTitle,
 	onItemsChange,
 }) => {
-	const {filter, keywords, pagination, storageItems} = useData();
+	const {
+		filter,
+		formattedItems,
+		globalChecked,
+		keywords,
+		pagination,
+	} = useData();
 	const dispatch = useDispatch();
 
 	const {data, error, loading, refetch, refetching} = useFetchData(fetchFn, {
@@ -159,46 +74,77 @@ const Table: React.FC<ITableProps> = ({
 		pagination,
 	});
 
+	const [lazyRequest, lazyResult] = useLazyFetchData(fetchFn, {
+		filter,
+		keywords,
+		pagination: {
+			...pagination,
+			pageSize: pagination.totalCount,
+		},
+	});
+
 	const empty = !data?.items.length;
 
 	useEffect(() => {
-		if (data) {
+		if (lazyResult.data) {
 			dispatch({
 				payload: {
-					...data,
-					items: mapperItems(data.items),
+					globalChecked: !globalChecked,
+					items: mapperItems(lazyResult.data.items),
+				},
+				type: Events.ToggleGlobalCheckbox,
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [lazyResult.data]);
+
+	useEffect(() => {
+		if (data) {
+			const {items, page, pageSize, totalCount} = data;
+			const mappedItems = mapperItems(items);
+
+			dispatch({
+				payload: {
+					items: mappedItems,
+					pagination: {
+						page,
+						pageSize,
+						totalCount,
+					},
+					rows: mappedItems.map(({id}: TItem) => id),
 				},
 				type: Events.FormatData,
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data, dispatch]);
+	}, [data]);
 
 	useEffect(() => {
-		onItemsChange && onItemsChange(storageItems);
+		onItemsChange && onItemsChange(formattedItems);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [storageItems]);
+	}, [formattedItems]);
 
 	return (
 		<>
 			<ManagementToolbar
 				columns={columns}
-				disabled={disabled || (empty && !keywords)}
+				disabled={
+					disabled || (empty && !keywords) || lazyResult.loading
+				}
+				lazyRequest={lazyRequest}
 			/>
 
 			<StateRenderer
-				columns={columns}
 				data={data}
-				disabled={disabled}
 				empty={empty}
 				emptyStateTitle={emptyStateTitle}
-				error={error}
-				loading={loading}
+				error={error || lazyResult.error}
+				loading={loading || lazyResult.loading}
 				noResultsTitle={noResultsTitle}
 				refetch={refetch}
 				refetching={refetching}
 			>
-				<TableContent columns={columns} disabled={disabled} />
+				<Content columns={columns} disabled={disabled} />
 			</StateRenderer>
 
 			<PaginationBar disabled={empty} />
@@ -206,9 +152,9 @@ const Table: React.FC<ITableProps> = ({
 	);
 };
 
-const TableWrapper: React.FC<ITableProps> = ({columns, ...otherProps}) => (
+const TableWrapper: React.FC<ITableProps> = (props) => (
 	<TableContext>
-		<Table {...otherProps} columns={columns} />
+		<Table {...props} />
 	</TableContext>
 );
 

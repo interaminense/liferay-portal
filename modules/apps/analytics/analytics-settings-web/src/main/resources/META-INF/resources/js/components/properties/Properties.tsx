@@ -17,7 +17,7 @@ import {useModal} from '@clayui/modal';
 import React, {useEffect, useState} from 'react';
 
 import {fetchProperties, updateProperty} from '../../utils/api';
-import {NOT_FOUND_GIF} from '../../utils/constants';
+import {NOT_FOUND_GIF, SUCCESS_MESSAGE} from '../../utils/constants';
 import useFetchData from '../../utils/useFecthData';
 import StateRenderer, {
 	EmptyStateComponent,
@@ -48,9 +48,9 @@ const Properties: React.FC = () => {
 		open: assignModalOpen,
 	} = useModal();
 	const {
-		observer: propertyModalObserver,
-		onOpenChange: onPropertyModalOpenChange,
-		open: propertyModalOpen,
+		observer: createPropertyModalObserver,
+		onOpenChange: onCreatePropertyModalOpenChange,
+		open: createPropertyModalOpen,
 	} = useModal();
 	const [selectedProperty, setSelectedProperty] = useState<TProperty>(
 		properties[0]
@@ -70,6 +70,10 @@ const Properties: React.FC = () => {
 		const {items} = await fetchProperties();
 
 		setProperties(items);
+
+		Liferay.Util.openToast({
+			message: SUCCESS_MESSAGE,
+		});
 
 		closeFn(false);
 	};
@@ -100,7 +104,9 @@ const Properties: React.FC = () => {
 					>
 						<ClayButton
 							displayType="secondary"
-							onClick={() => onPropertyModalOpenChange(true)}
+							onClick={() =>
+								onCreatePropertyModalOpenChange(true)
+							}
 							type="button"
 						>
 							{Liferay.Language.get('new-property')}
@@ -112,7 +118,9 @@ const Properties: React.FC = () => {
 					<div className="text-right">
 						<ClayButton
 							displayType="secondary"
-							onClick={() => onPropertyModalOpenChange(true)}
+							onClick={() =>
+								onCreatePropertyModalOpenChange(true)
+							}
 							type="button"
 						>
 							{Liferay.Language.get('new-property')}
@@ -120,7 +128,7 @@ const Properties: React.FC = () => {
 					</div>
 
 					<PropertiesTable
-						onAssignModalButtonClick={(index: number) => {
+						onAssignModal={(index: number) => {
 							setSelectedProperty(properties[index]);
 							onAssignModalOpenChange(true);
 						}}
@@ -158,11 +166,13 @@ const Properties: React.FC = () => {
 				/>
 			)}
 
-			{propertyModalOpen && (
+			{createPropertyModalOpen && (
 				<CreatePropertyModal
-					observer={propertyModalObserver}
-					onCancel={() => onPropertyModalOpenChange(false)}
-					onSubmit={() => handleCloseModal(onPropertyModalOpenChange)}
+					observer={createPropertyModalObserver}
+					onCancel={() => onCreatePropertyModalOpenChange(false)}
+					onSubmit={() =>
+						handleCloseModal(onCreatePropertyModalOpenChange)
+					}
 				/>
 			)}
 		</>

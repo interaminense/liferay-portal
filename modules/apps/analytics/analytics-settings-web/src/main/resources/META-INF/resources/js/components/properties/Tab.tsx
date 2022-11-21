@@ -16,7 +16,7 @@ import {Text} from '@clayui/core';
 import React from 'react';
 
 import {TQueries} from '../../utils/request';
-import Table, {TColumn, TStorageItems} from '../table/Table';
+import Table, {TColumn, TFormattedItems} from '../table/Table';
 import {TProperty} from './Properties';
 
 export type TRawItem = {
@@ -35,7 +35,7 @@ interface ITabProps {
 	fetchFn: (params: TQueries) => Promise<any>;
 	header: TColumn[];
 	noResultsTitle: string;
-	onItemsChange: (items: TStorageItems) => void;
+	onItemsChange: (items: TFormattedItems) => void;
 	property: TProperty;
 }
 
@@ -67,7 +67,9 @@ const Tab: React.FC<ITabProps> = ({
 					checked: !!(
 						item.channelName && item.channelName === property.name
 					),
-					columns: columns.map((column) => item?.[column] ?? ''),
+					columns: columns.map((column) => ({
+						label: item?.[column] ?? '',
+					})),
 					disabled: !!(
 						item.channelName && item.channelName !== property.name
 					),

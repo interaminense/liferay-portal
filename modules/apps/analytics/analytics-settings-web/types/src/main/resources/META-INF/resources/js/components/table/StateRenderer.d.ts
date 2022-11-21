@@ -14,12 +14,9 @@
 
 import React from 'react';
 import {TUseFecthDataResult} from '../../utils/useFecthData';
-import {TColumn} from './Table';
 interface ITableStateRendererProps
 	extends TUseFecthDataResult,
 		React.HTMLAttributes<HTMLElement> {
-	columns: TColumn[];
-	disabled: boolean;
 	empty: boolean;
 	emptyStateTitle: string;
 	noResultsTitle: string;

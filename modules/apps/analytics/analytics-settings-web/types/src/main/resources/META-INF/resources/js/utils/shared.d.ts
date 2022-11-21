@@ -12,8 +12,8 @@
  * details.
  */
 
-import {TStorageItems} from '../components/table/Table';
+import {TFormattedItems} from '../components/table/Table';
 export declare function getIds(
-	items: TStorageItems,
+	items: TFormattedItems,
 	initialIds: number[]
 ): number[];

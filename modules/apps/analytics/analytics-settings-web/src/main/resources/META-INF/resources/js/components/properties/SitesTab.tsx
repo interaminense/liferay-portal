@@ -15,7 +15,7 @@
 import React from 'react';
 
 import {fetchSites} from '../../utils/api';
-import {TStorageItems} from '../table/Table';
+import {TFormattedItems} from '../table/Table';
 import {TProperty} from './Properties';
 import Tab, {TRawItem} from './Tab';
 
@@ -39,22 +39,20 @@ const columns = [
 ];
 
 interface ISiteTabProps {
-	onSitesChange: (items: TStorageItems) => void;
+	onSitesChange: (items: TFormattedItems) => void;
 	property: TProperty;
 }
 
-const SitesTab: React.FC<ISiteTabProps> = ({onSitesChange, property}) => {
-	return (
-		<Tab
-			columns={columns.map(({value}) => value) as Array<keyof TRawItem>}
-			emptyStateTitle={Liferay.Language.get('there-are-no-sites')}
-			fetchFn={fetchSites}
-			header={columns}
-			noResultsTitle={Liferay.Language.get('no-sites-were-found')}
-			onItemsChange={onSitesChange}
-			property={property}
-		/>
-	);
-};
+const SitesTab: React.FC<ISiteTabProps> = ({onSitesChange, property}) => (
+	<Tab
+		columns={columns.map(({value}) => value) as Array<keyof TRawItem>}
+		emptyStateTitle={Liferay.Language.get('there-are-no-sites')}
+		fetchFn={fetchSites}
+		header={columns}
+		noResultsTitle={Liferay.Language.get('no-sites-were-found')}
+		onItemsChange={onSitesChange}
+		property={property}
+	/>
+);
 
 export default SitesTab;

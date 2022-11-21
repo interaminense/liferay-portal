@@ -51,7 +51,7 @@ export declare function updateAttributesConfiguration({
 	syncedOrganizationIds?: string[];
 	syncedUserGroupIds?: string[];
 }): Promise<any>;
-export declare function fetchAttributeSelectedFields(): Promise<any>;
+export declare function fetchSelectedFields(): Promise<any>;
 export declare function fetchPeopleFields(params: TQueries): Promise<any>;
 declare type TField = {
 	example: string;

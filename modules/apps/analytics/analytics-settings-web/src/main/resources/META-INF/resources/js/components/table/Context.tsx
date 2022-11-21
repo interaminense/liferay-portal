@@ -16,7 +16,7 @@ import React, {createContext, useContext, useReducer} from 'react';
 
 import {DEFAULT_FILTER, TFilter} from '../../utils/filter';
 import {DEFAULT_PAGINATION, TPagination} from '../../utils/pagination';
-import {TItem, TStorageItems} from './Table';
+import {TFormattedItems, TItem} from './Table';
 
 export enum Events {
 	ChangeFilter = 'CHANGE_FILTER',
@@ -24,27 +24,27 @@ export enum Events {
 	ChangeKeywords = 'CHANGE_KEYWORDS',
 	ChangePagination = 'CHANGE_PAGINATION',
 	FormatData = 'FORMAT_DATA',
-	ToggleCheckbox = 'TOGGLE_CHECKBOX',
+	ToggleGlobalCheckbox = 'TOGGLE_CHECKBOX',
 }
 
 const initialState = {
 	filter: DEFAULT_FILTER,
+	formattedItems: {},
 	globalChecked: false,
 	internalKeywords: '',
 	keywords: '',
 	pagination: DEFAULT_PAGINATION,
 	rows: [],
-	storageItems: {},
 };
 
 type TState = {
 	filter: TFilter;
+	formattedItems: TFormattedItems;
 	globalChecked: boolean;
 	internalKeywords: string;
 	keywords: string;
 	pagination: TPagination;
 	rows: string[];
-	storageItems: TStorageItems;
 };
 
 const TableContextData = createContext<TState>(initialState);
@@ -53,8 +53,42 @@ const TableContextDispatch = createContext<any>(null);
 const useData = () => useContext(TableContextData);
 const useDispatch = () => useContext(TableContextDispatch);
 
-const checkGlobalChecked = (storageItems: TStorageItems) =>
-	!!Object.values(storageItems).every(({checked}) => checked);
+const getGlobalChecked = (formattedItems: TFormattedItems): boolean =>
+	!!Object.values(formattedItems).length &&
+	Object.values(formattedItems).every(({checked}) => checked);
+
+const updateFormattedItems = (
+	formattedItems: TFormattedItems,
+	checked: boolean
+): TFormattedItems =>
+	Object.values(formattedItems).reduce(
+		(accumulator: TFormattedItems, item) => {
+			if (item.disabled) {
+				return {
+					...accumulator,
+					[item.id]: item,
+				};
+			}
+
+			return {
+				...accumulator,
+				[item.id]: {
+					...item,
+					checked,
+				},
+			};
+		},
+		{}
+	);
+
+const getFormattedItems = (items: TItem[]): TFormattedItems => {
+	return items.reduce((accumulator: TFormattedItems, item) => {
+		return {
+			...accumulator,
+			[item.id]: item,
+		};
+	}, {});
+};
 
 function reducer(state: TState, action: {payload: any; type: Events}) {
 	switch (action.type) {
@@ -68,18 +102,18 @@ function reducer(state: TState, action: {payload: any; type: Events}) {
 			};
 		}
 		case Events.ChangeItems: {
-			const storageItems = {
-				...state.storageItems,
+			const formattedItems = {
+				...state.formattedItems,
 				[action.payload]: {
-					...state.storageItems[action.payload],
-					checked: !state.storageItems[action.payload].checked,
+					...state.formattedItems[action.payload],
+					checked: !state.formattedItems[action.payload].checked,
 				},
 			};
 
 			return {
 				...state,
-				globalChecked: checkGlobalChecked(storageItems),
-				storageItems,
+				formattedItems,
+				globalChecked: getGlobalChecked(formattedItems),
 			};
 		}
 		case Events.ChangeKeywords: {
@@ -89,31 +123,23 @@ function reducer(state: TState, action: {payload: any; type: Events}) {
 			};
 		}
 		case Events.FormatData: {
-			const {items, page, pageSize, totalCount} = action.payload;
+			const {
+				items,
+				pagination = state.pagination,
+				rows = state.rows,
+			} = action.payload;
 
-			const storageItems: TStorageItems = {
-				...items.reduce((accumulator: {}, value: TItem) => {
-					return {
-						...accumulator,
-						[value.id]: {
-							...value,
-							checked: state.globalChecked || value.checked,
-						},
-					};
-				}, {}),
-				...state.storageItems,
+			const formattedItems = {
+				...getFormattedItems(items),
+				...state.formattedItems,
 			};
 
 			return {
 				...state,
-				globalChecked: checkGlobalChecked(storageItems),
-				pagination: {
-					page,
-					pageSize,
-					totalCount,
-				},
-				rows: items.map(({id}: TItem) => id),
-				storageItems,
+				formattedItems,
+				globalChecked: getGlobalChecked(formattedItems),
+				pagination,
+				rows,
 			};
 		}
 		case Events.ChangePagination: {
@@ -125,35 +151,21 @@ function reducer(state: TState, action: {payload: any; type: Events}) {
 				},
 			};
 		}
-		case Events.ToggleCheckbox: {
+		case Events.ToggleGlobalCheckbox: {
+			const {globalChecked, items} = action.payload;
+
 			return {
 				...state,
-				globalChecked: action.payload,
-				storageItems: Object.values(state.storageItems).reduce(
-					(acc, item) => {
-						// If the item is disabled, we must
-						// not change the checked value.
-
-						if (item.disabled) {
-							return {
-								...acc,
-								[item.id]: item,
-							};
-						}
-
-						return {
-							...acc,
-							[item.id]: {
-								...item,
-								checked: action.payload,
-							},
-						};
+				formattedItems: updateFormattedItems(
+					{
+						...getFormattedItems(items),
+						...state.formattedItems,
 					},
-					{}
+					globalChecked
 				),
+				globalChecked,
 			};
 		}
-
 		default:
 			throw new Error();
 	}

@@ -15,7 +15,6 @@
 import React from 'react';
 
 import {fetchPeopleFields, updatePeopleFields} from '../../utils/api';
-import {SUCCESS_MESSAGE} from '../../utils/constants';
 import Modal, {ICommonModalProps, getFields} from './Modal';
 
 const columns = [
@@ -40,32 +39,27 @@ const columns = [
 		expanded: false,
 		label: Liferay.Language.get('source'),
 		show: false,
+		sortable: false,
 		value: 'source',
 	},
 ];
 
 const PeopleAttributesModal: React.FC<ICommonModalProps> = ({
 	observer,
-	onCloseModal,
+	onCancel,
+	onSubmit,
 }) => (
 	<Modal
 		columns={columns}
 		fetchFn={fetchPeopleFields}
 		observer={observer}
-		onAddItems={async (items) => {
+		onCancel={onCancel}
+		onSubmit={async (items) => {
 			const fields = getFields(items);
-
 			const {ok} = await updatePeopleFields(fields);
 
-			if (ok) {
-				Liferay.Util.openToast({
-					message: SUCCESS_MESSAGE,
-				});
-
-				onCloseModal();
-			}
+			ok && onSubmit();
 		}}
-		onCloseModal={onCloseModal}
 		title={Liferay.Language.get('sync-people-attributes')}
 	/>
 );

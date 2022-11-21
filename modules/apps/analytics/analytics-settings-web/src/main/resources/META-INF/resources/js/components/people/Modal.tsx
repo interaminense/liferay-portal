@@ -20,7 +20,7 @@ import {updateAttributesConfiguration} from '../../utils/api';
 import {SUCCESS_MESSAGE} from '../../utils/constants';
 import {TQueries} from '../../utils/request';
 import {getIds} from '../../utils/shared';
-import Table, {TColumn, TStorageItems} from '../table/Table';
+import Table, {TColumn, TFormattedItems} from '../table/Table';
 import {EPeople} from './People';
 
 type TRawItem = {
@@ -68,7 +68,7 @@ const Modal: React.FC<IModalProps> = ({
 	syncedIds,
 	title,
 }) => {
-	const [items, setItems] = useState<TStorageItems>({});
+	const [items, setItems] = useState<TFormattedItems>({});
 
 	return (
 		<ClayModal center observer={observer} size="lg">
@@ -82,7 +82,7 @@ const Modal: React.FC<IModalProps> = ({
 					mapperItems={(items: TRawItem[]) => {
 						return items.map(({id, name, selected}) => ({
 							checked: selected,
-							columns: [name],
+							columns: [{label: name}],
 							disabled: false,
 							id: String(id),
 						}));

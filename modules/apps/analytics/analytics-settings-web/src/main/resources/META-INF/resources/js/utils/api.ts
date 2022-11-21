@@ -142,7 +142,7 @@ export function updateAttributesConfiguration({
 	});
 }
 
-export function fetchAttributeSelectedFields() {
+export function fetchSelectedFields() {
 	return request('/fields', {method: 'GET'});
 }
 

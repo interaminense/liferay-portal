@@ -48,11 +48,13 @@ function getResultsLanguage(rows: string[]) {
 interface IManagementToolbarProps {
 	columns: TColumn[];
 	disabled: boolean;
+	lazyRequest: () => void;
 }
 
 const ManagementToolbar: React.FC<IManagementToolbarProps> = ({
 	columns,
 	disabled,
+	lazyRequest,
 }) => {
 	const {filter, globalChecked, keywords: storedKeywords, rows} = useData();
 	const dispatch = useDispatch();
@@ -68,28 +70,29 @@ const ManagementToolbar: React.FC<IManagementToolbarProps> = ({
 						<ClayCheckbox
 							checked={globalChecked}
 							disabled={disabled}
-							onChange={() => {
-								dispatch({
-									payload: !globalChecked,
-									type: Events.ToggleCheckbox,
-								});
-							}}
+							onChange={lazyRequest}
 						/>
 					</ClayManagementToolbar.Item>
 
 					<ClayDropDownWithItems
 						items={columns
-							.map((column) => ({
-								...column,
-								onClick: () => {
-									dispatch({
-										payload: {
-											value: column.value,
-										},
-										type: Events.ChangeFilter,
-									});
-								},
-							}))
+							.map(
+								({
+									expanded: _expanded,
+									show: _show,
+									...column
+								}) => ({
+									...column,
+									onClick: () => {
+										dispatch({
+											payload: {
+												value: column.value,
+											},
+											type: Events.ChangeFilter,
+										});
+									},
+								})
+							)
 							.filter(({sortable = true}) => sortable)}
 						trigger={
 							<ClayButton

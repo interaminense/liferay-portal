@@ -18,7 +18,6 @@ import ClayModal from '@clayui/modal';
 import React, {useState} from 'react';
 
 import {createProperty} from '../../utils/api';
-import {SUCCESS_MESSAGE} from '../../utils/constants';
 import Loading from '../Loading';
 
 interface IModalProps {
@@ -80,13 +79,7 @@ const CreatePropertyModal: React.FC<IModalProps> = ({
 
 									setSubmitting(false);
 
-									if (ok) {
-										Liferay.Util.openToast({
-											message: SUCCESS_MESSAGE,
-										});
-
-										onSubmit();
-									}
+									ok && onSubmit();
 								}}
 							>
 								{submitting && <Loading inline />}

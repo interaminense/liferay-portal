@@ -20,13 +20,13 @@ import React, {Fragment} from 'react';
 import {TProperty} from './Properties';
 
 interface IPropertiesTable {
-	onAssignModalButtonClick: (index: number) => void;
+	onAssignModal: (index: number) => void;
 	onCommerceSwitchChange: (index: number) => void;
 	properties: TProperty[];
 }
 
 const PropertiesTable: React.FC<IPropertiesTable> = ({
-	onAssignModalButtonClick,
+	onAssignModal,
 	onCommerceSwitchChange,
 	properties,
 }) => {
@@ -100,10 +100,7 @@ const PropertiesTable: React.FC<IPropertiesTable> = ({
 								<ClayTable.Cell columnTextAlignment="end">
 									<ClayButton
 										displayType="secondary"
-										onClick={() =>
-											onAssignModalButtonClick(index)
-										}
-										type="button"
+										onClick={() => onAssignModal(index)}
 									>
 										{Liferay.Language.get('assign')}
 									</ClayButton>

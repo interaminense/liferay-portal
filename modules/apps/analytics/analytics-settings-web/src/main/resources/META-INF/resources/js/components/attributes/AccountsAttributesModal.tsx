@@ -18,7 +18,8 @@ import Modal, {ICommonModalProps} from './Modal';
 
 const AccountsAttributesModal: React.FC<ICommonModalProps> = ({
 	observer,
-	onCloseModal,
+	onCancel,
+	onSubmit,
 }) => (
 	<Modal
 		columns={[
@@ -41,8 +42,8 @@ const AccountsAttributesModal: React.FC<ICommonModalProps> = ({
 		]}
 		fetchFn={() => Promise.resolve()}
 		observer={observer}
-		onAddItems={() => {}}
-		onCloseModal={onCloseModal}
+		onCancel={onCancel}
+		onSubmit={onSubmit}
 		title={Liferay.Language.get('sync-account-attributes')}
 	/>
 );

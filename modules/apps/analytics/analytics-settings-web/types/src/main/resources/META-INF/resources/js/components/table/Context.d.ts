@@ -15,23 +15,23 @@
 import React from 'react';
 import {TFilter} from '../../utils/filter';
 import {TPagination} from '../../utils/pagination';
-import {TStorageItems} from './Table';
+import {TFormattedItems} from './Table';
 export declare enum Events {
 	ChangeFilter = 'CHANGE_FILTER',
 	ChangeItems = 'CHANGE_ITEMS',
 	ChangeKeywords = 'CHANGE_KEYWORDS',
 	ChangePagination = 'CHANGE_PAGINATION',
 	FormatData = 'FORMAT_DATA',
-	ToggleCheckbox = 'TOGGLE_CHECKBOX',
+	ToggleGlobalCheckbox = 'TOGGLE_CHECKBOX',
 }
 declare type TState = {
 	filter: TFilter;
+	formattedItems: TFormattedItems;
 	globalChecked: boolean;
 	internalKeywords: string;
 	keywords: string;
 	pagination: TPagination;
 	rows: string[];
-	storageItems: TStorageItems;
 };
 declare const useData: () => TState;
 declare const useDispatch: () => any;
