@@ -12,16 +12,4 @@
  * details.
  */
 
-export declare type TDataSource = {
-	commerceChannelIds: number[];
-	dataSourceId?: string;
-	siteIds: number[];
-};
-export declare type TProperty = {
-	channelId: string;
-	commerceSyncEnabled: boolean;
-	dataSources: TDataSource[] | [];
-	name: string;
-};
-declare const PropertiesWrapper: () => JSX.Element;
-export default PropertiesWrapper;
+import '@testing-library/jest-dom/extend-expect';

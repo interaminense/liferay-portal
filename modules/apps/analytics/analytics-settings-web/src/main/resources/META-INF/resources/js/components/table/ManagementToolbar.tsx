@@ -61,6 +61,7 @@ const ManagementToolbar: React.FC<IManagementToolbarProps> = ({
 						<ClayManagementToolbar.Item>
 							<ClayCheckbox
 								checked={globalChecked}
+								data-testid="globalCheckbox"
 								disabled={disabled}
 								onChange={makeRequest}
 							/>

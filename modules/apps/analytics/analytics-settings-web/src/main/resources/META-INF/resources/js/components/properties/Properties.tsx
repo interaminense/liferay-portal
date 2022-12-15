@@ -109,8 +109,8 @@ const ToggleSwitch = ({
 	);
 };
 
-const getCommerceChannelIdsValue = (enabled: boolean, ids: number[]): string =>
-	enabled ? String(ids.length) : '-';
+const getCommerceChannelIdsValue = (enabled: boolean, total: number): string =>
+	enabled ? String(total) : '-';
 
 const getSafeProperty = (
 	property: TProperty
@@ -152,16 +152,19 @@ const Properties: React.FC = () => {
 
 	const [selectedProperty, setSelectedProperty] = useState<TProperty>();
 
-	const toggleSwitch = (
-		item: TItem,
-		{channelId, dataSources: [{commerceChannelIds}]}: TProperty
-	) => (
+	const toggleSwitch = (item: TItem, {channelId}: TProperty) => (
 		<ToggleSwitch
 			onToggle={async (commerceSyncEnabled) => {
 				const {ok} = await updatecommerceSyncEnabled({
 					channelId,
 					commerceSyncEnabled,
 				});
+
+				const value = Number(
+					item.columns.find(
+						({id}) => id === EColumn.CommerceChannelIds
+					)?.value
+				);
 
 				if (ok) {
 					dispatch({
@@ -176,7 +179,7 @@ const Properties: React.FC = () => {
 									id: EColumn.CommerceChannelIds,
 									value: getCommerceChannelIdsValue(
 										commerceSyncEnabled,
-										commerceChannelIds
+										value
 									),
 								},
 							],
@@ -241,7 +244,7 @@ const Properties: React.FC = () => {
 
 						const commerceChannelIdsValue = getCommerceChannelIdsValue(
 							commerceSyncEnabled,
-							commerceChannelIds
+							commerceChannelIds.length
 						);
 						const siteIdsValue = String(siteIds.length);
 
@@ -306,7 +309,7 @@ const Properties: React.FC = () => {
 										id: EColumn.CommerceChannelIds,
 										value: getCommerceChannelIdsValue(
 											!!selectedProperty?.commerceSyncEnabled,
-											commerceChannelIds
+											commerceChannelIds.length
 										),
 									},
 									{

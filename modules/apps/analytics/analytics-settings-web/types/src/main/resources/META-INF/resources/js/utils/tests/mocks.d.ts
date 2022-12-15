@@ -12,6 +12,7 @@
  * details.
  */
 
+import {TTableRequestParams} from '../../components/table/types';
 export declare const fetchPropertiesResponse: {
 	actions: {};
 	facets: never[];
@@ -24,6 +25,23 @@ export declare const fetchPropertiesResponse: {
 			siteIds: number[];
 		}[];
 		name: string;
+	}[];
+	lastPage: number;
+	page: number;
+	pageSize: number;
+	totalCount: number;
+};
+export declare function fetchTableData(
+	params: TTableRequestParams
+): Promise<any>;
+export declare const fetchTableDataResponse: {
+	actions: {};
+	facets: never[];
+	items: {
+		age: number;
+		firstName: string;
+		id: string;
+		lastName: string;
 	}[];
 	lastPage: number;
 	page: number;

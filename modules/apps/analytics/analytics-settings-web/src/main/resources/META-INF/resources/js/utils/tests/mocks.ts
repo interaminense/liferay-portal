@@ -12,6 +12,10 @@
  * details.
  */
 
+import {TTableRequestParams} from '../../components/table/types';
+import {serializeTableRequestParams} from '../../components/table/utils';
+import request from '../request';
+
 export const fetchPropertiesResponse = {
 	actions: {},
 	facets: [],
@@ -45,4 +49,51 @@ export const fetchPropertiesResponse = {
 	page: 1,
 	pageSize: 20,
 	totalCount: 2,
+};
+
+export function fetchTableData(params: TTableRequestParams) {
+	const queryString = serializeTableRequestParams(params);
+
+	return request(`/table-data?${queryString}`, {method: 'GET'});
+}
+
+export const fetchTableDataResponse = {
+	actions: {},
+	facets: [],
+	items: [
+		{
+			age: 19,
+			firstName: 'Andre',
+			id: '8189001028599808',
+			lastName: 'Patton',
+		},
+		{
+			age: 76,
+			firstName: 'Jayden',
+			id: '6317360201859072',
+			lastName: 'Holloway',
+		},
+		{
+			age: 63,
+			firstName: 'Etta',
+			id: '7304891437416448',
+			lastName: 'Garrett',
+		},
+		{
+			age: 21,
+			firstName: 'Eugenia',
+			id: '6979819478712320',
+			lastName: 'Rios',
+		},
+		{
+			age: 33,
+			firstName: 'Earl',
+			id: '8324407053254656',
+			lastName: 'Medina',
+		},
+	],
+	lastPage: 1,
+	page: 1,
+	pageSize: 20,
+	totalCount: 5,
 };
