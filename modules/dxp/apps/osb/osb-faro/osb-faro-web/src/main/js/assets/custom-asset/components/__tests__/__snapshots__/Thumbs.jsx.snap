@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddReport should render 1`] = `
+<div>
+  <ul
+    class="analytics-add-report-thumbs"
+  >
+    <li
+      class="selected"
+      data-id="0"
+      data-tooltip="true"
+      title="this is a thumb 1"
+    >
+      <button>
+        <svg
+          class="cerebro-thumb-line-chart"
+          viewBox=""
+        >
+          <use
+            xlink:href="/o/osb-faro-web/dist/sprite.svg#cerebro-thumb-line-chart"
+          />
+        </svg>
+      </button>
+    </li>
+    <li
+      class=""
+      data-id="1"
+      data-tooltip="true"
+      title="this is a thumb 2"
+    >
+      <button>
+        <svg
+          class="cerebro-thumb-line-chart"
+          viewBox=""
+        >
+          <use
+            xlink:href="/o/osb-faro-web/dist/sprite.svg#cerebro-thumb-line-chart"
+          />
+        </svg>
+      </button>
+    </li>
+    <li
+      class=""
+      data-id="2"
+      data-tooltip="true"
+      title="this is a thumb 3"
+    >
+      <button>
+        <svg
+          class="cerebro-thumb-line-chart"
+          viewBox=""
+        >
+          <use
+            xlink:href="/o/osb-faro-web/dist/sprite.svg#cerebro-thumb-line-chart"
+          />
+        </svg>
+      </button>
+    </li>
+  </ul>
+</div>
+`;
