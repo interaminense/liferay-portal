@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddDataSource should render 1`] = `
+<div>
+  <div
+    class="settings-base-page-root add-data-source-root"
+  >
+    <div
+      class="maintenance-alert-root"
+    />
+    <ol
+      class="breadcrumb breadcrumbs-root"
+    >
+      <li
+        class="breadcrumb-item"
+      >
+        <a
+          class="breadcrumb-link breadcrumb-text-truncate"
+          href="/workspace/23/settings/data-source"
+        >
+          Data Sources
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item active"
+      >
+        <span
+          class="breadcrumb-text-truncate"
+        >
+          Add Data Source
+        </span>
+      </li>
+    </ol>
+    <div
+      class="content-header"
+    >
+      <div
+        class="header-text"
+      >
+        <div
+          class="d-flex"
+        >
+          <h3
+            class="title-text text-truncate"
+          >
+            <span
+              class="text-truncate"
+              data-tooltip="false"
+              title=""
+            >
+              Add Data Source
+            </span>
+          </h3>
+        </div>
+        <div
+          class="description"
+        >
+          Add a Data Source to bring in data from various sources in to Analytics Cloud. Analytics Cloud automatic integration is supported for Liferay Portal version 7.0+. You can connect older versions of Liferay Portal by extracting data to a CSV and importing it as a CSV data source.
+        </div>
+      </div>
+      <div
+        class="page-actions-container"
+      />
+    </div>
+    <div>
+      <div
+        class="select-data-source-root"
+      >
+        <section>
+          <h4
+            class="text-uppercase section-title"
+          >
+            Choose Source
+          </h4>
+          <div
+            class="section-items"
+          >
+            <button
+              class="button-root btn btn-unstyled data-source-item"
+              type="button"
+            >
+              <div
+                class="image"
+              >
+                <svg
+                  class="icon-root lexicon-icon lexicon-icon-liferay-logo icon-size-xxxl"
+                  viewBox=""
+                >
+                  <use
+                    xlink:href="/o/osb-faro-web/dist/sprite.svg#liferay-logo"
+                  />
+                </svg>
+              </div>
+              <div
+                class="details"
+              >
+                <div
+                  class="title"
+                >
+                  <h4>
+                    Liferay DXP
+                  </h4>
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  Supports Liferay 7.0+
+                </div>
+              </div>
+            </button>
+            <a
+              class="button-root btn btn-unstyled data-source-item"
+              href="/workspace/23/settings/data-source/salesforce"
+            >
+              <div
+                class="image"
+              >
+                <svg
+                  class="icon-root lexicon-icon lexicon-icon-salesforce-logo icon-size-xxl"
+                  viewBox=""
+                >
+                  <use
+                    xlink:href="/o/osb-faro-web/dist/sprite.svg#salesforce-logo"
+                  />
+                </svg>
+              </div>
+              <div
+                class="details"
+              >
+                <div
+                  class="title"
+                >
+                  <h4>
+                    Salesforce
+                  </h4>
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  Import Contacts, Accounts, & Leads.
+                </div>
+              </div>
+            </a>
+            <a
+              class="button-root btn btn-unstyled data-source-item"
+              href="/workspace/23/settings/data-source/csv"
+            >
+              <div
+                class="image"
+              >
+                <svg
+                  class="icon-root lexicon-icon lexicon-icon-csv-logo icon-size-xl"
+                  viewBox=""
+                >
+                  <use
+                    xlink:href="/o/osb-faro-web/dist/sprite.svg#csv-logo"
+                  />
+                </svg>
+              </div>
+              <div
+                class="details"
+              >
+                <div
+                  class="title"
+                >
+                  <h4>
+                    CSV File
+                  </h4>
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  Import contacts from a CSV.
+                </div>
+              </div>
+            </a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+`;
