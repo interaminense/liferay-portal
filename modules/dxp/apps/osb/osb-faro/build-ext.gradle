@@ -44,8 +44,10 @@ allprojects {
 	}
 
 	node {
+		global = false
 		nodeVersion = "10.15.3"
-		npmVersion = "6.4.1"
+		useNpm = false
+		yarnVersion = "1.22.5"
 	}
 }
 
