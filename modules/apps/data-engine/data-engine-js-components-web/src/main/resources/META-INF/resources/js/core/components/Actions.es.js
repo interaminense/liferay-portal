@@ -196,6 +196,7 @@ export const Actions = forwardRef(
 	(
 		{
 			activePage,
+			disableDropdown = false,
 			field,
 			fieldId,
 			fieldType,
@@ -309,7 +310,7 @@ export const Actions = forwardRef(
 
 				<span className="actions-label">{label}</span>
 
-				<ClayDropDownWithItems
+				{!disableDropdown && ( <ClayDropDownWithItems
 					className="dropdown-action"
 					items={actions.map(({action, ...otherProps}) => ({
 						onClick: () =>
@@ -329,7 +330,7 @@ export const Actions = forwardRef(
 							symbol="ellipsis-v"
 						/>
 					}
-				/>
+				/>)}
 			</div>
 		);
 	}

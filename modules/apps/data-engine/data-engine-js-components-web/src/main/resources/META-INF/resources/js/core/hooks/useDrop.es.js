@@ -156,7 +156,7 @@ export function useDrop({
 	} = DRAG_TYPES;
 
 	const [{canDrop, overTarget}, drop] = useDndDrop({
-		accept: [...Object.values(DRAG_TYPES), DRAG_ELEMENT_SET_ADD],
+		accept: [...Object.values(DRAG_TYPES), DRAG_ELEMENT_SET_ADD, 'rebeca'],
 		canDrop: (item) =>
 			!isElementsSetOverTarget(field, item.data) &&
 			!isElementsSetOverTarget(parentField, item.data) &&
@@ -291,6 +291,8 @@ export function useDrop({
 
 				case DRAG_ELEMENT_SET_ADD:
 					dispatch(elementSetAdded({indexes, ...data.payload}));
+					break;
+				case 'rebeca':
 					break;
 
 				default:

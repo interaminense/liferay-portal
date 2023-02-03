@@ -219,7 +219,7 @@ const Page = ({
 						</p>
 					)}
 
-					<Layout
+					<Layout // vai precisar upar o layout também com a lógica do merge variants
 						components={Components}
 						editable={editable}
 						itemPath={[pageIndex]}
