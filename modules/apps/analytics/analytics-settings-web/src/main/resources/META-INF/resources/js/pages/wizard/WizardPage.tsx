@@ -15,7 +15,7 @@
 import ClayMultiStepNav from '@clayui/multi-step-nav';
 import React, {useState} from 'react';
 
-import {EPageView, Events, useDispatch} from '../../App';
+import {EPageView, Events, useData, useDispatch} from '../../App';
 import {IPages} from '../../utils/types';
 import AttributesStep from './AttributesStep';
 import ConnectStep from './ConnectStep';
@@ -38,7 +38,9 @@ interface IStepProps<T, K> extends IPages<T, K> {
 	available: boolean;
 }
 
-const STEPS: IStepProps<IGenericStepProps, ESteps>[] = [
+const STEPS: (connected: boolean) => IStepProps<IGenericStepProps, ESteps>[] = (
+	connected
+) => [
 	{
 		Component: ConnectStep,
 		available: true,
@@ -47,7 +49,7 @@ const STEPS: IStepProps<IGenericStepProps, ESteps>[] = [
 	},
 	{
 		Component: PropertyStep,
-		available: false,
+		available: connected,
 		key: ESteps.Property,
 		title: Liferay.Language.get('property'),
 	},
@@ -66,10 +68,11 @@ const STEPS: IStepProps<IGenericStepProps, ESteps>[] = [
 ];
 
 const WizardPage: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
-	const [step, setStep] = useState<ESteps>(ESteps.ConnectAC);
-	const [steps, setSteps] = useState(STEPS);
-
+	const {connected} = useData();
 	const dispatch = useDispatch();
+
+	const [step, setStep] = useState<ESteps>(ESteps.ConnectAC);
+	const [steps, setSteps] = useState(STEPS(connected));
 
 	return (
 		<div className="sheet-lg">
