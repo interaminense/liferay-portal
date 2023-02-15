@@ -13,10 +13,8 @@
  */
 
 
- import ClayLayout from '@clayui/layout';
  import classNames from 'classnames';
  import React, {
-	 useCallback,
 	 useContext,
 	 useEffect,
 	 useMemo,
@@ -36,7 +34,6 @@
  import FieldDragPreview from '../FieldDragPreview.es';
  import {useIsOverTarget as useIsOverKeyboardTarget} from '../KeyboardDNDContext';
  import {Placeholder} from '../Placeholder.es';
- import ResizableColumn from '../ResizableColumn.es';
  import * as DefaultVariant from './DefaultVariant.es';
 
 
@@ -48,20 +45,17 @@
 	 index: columnIndex,
 	 itemPath,
 	 pageIndex,
-	 resizeInfoRef,
 	 rowIndex,
-	 rowRef,
  }) {
 	 const parentField = useContext(ParentFieldContext);
 
+	 const [sameName, setSameName] = useState('');
+
+	 console.log(children);
 
 	 const actionsRef = useRef(null);
 	 const columnRef = useRef(null);
 	 const resizeRef = useRef(null);
-
-
-	 //const [resizing, setResizing] = useState(false);
-
 
 	 const firstField = column.fields[0];
 
@@ -101,8 +95,7 @@
 				 rowIndex,
 			 },
 			 sourceParentField: parentField,
-			 type: 'rebeca',
-			 //type: DRAG_FIELD_TYPE_MOVE,
+			 type: DRAG_FIELD_TYPE_MOVE,
 		 },
 		 canDrag: isFieldRepetable,
 	 });
@@ -111,9 +104,6 @@
 	 useEffect(() => {
 		 preview(getEmptyImage(), {captureDraggingState: true});
 	 }, [preview]);
-
-
-	 const handleResize = useCallback((resizing) => setResizing(resizing), []);
 
 
 	 if (!column.fields.length) {
@@ -145,25 +135,24 @@
 
 
 	 return (
-		 <ActionsControls
-			 actionsRef={actionsRef}
-			 activePage={pageIndex}
-			 columnRef={columnRef}
-			 field={fieldRootOrCurrent}
-		 >
-			 <DefaultVariant.Column // fazer um desse para colocar a classe droppable ao verificar que o campo é repeatable
+		//  <ActionsControls
+		// 	 actionsRef={actionsRef}
+		// 	 activePage={pageIndex}
+		// 	 columnRef={columnRef}
+		// 	 field={fieldRootOrCurrent}
+		//  >
+			 <DefaultVariant.Column
 				 className={classNames({
 					 'droppable': isFieldRepetable,
-					 'dragging': isDragging, // talvez não precisa dessa porque nao tem resize
+					 'dragging': isDragging,
 					 'hovered': isFieldRepetable && firstField.fieldName === hoveredId,
 					 'selected': isFieldRepetable && firstField.fieldName === activeId,
 					 'target-droppable': canDrop || overFieldKeyboardTarget,
-					 // 'target-over targetOver':
-					 // 	(!rootParentField.ddmStructureId &&
-					 // 		overTarget &&
-					 // 		canDrop) ||
-					 // 	resizing ||
-					 // 	overFieldKeyboardTarget,
+					 'target-over targetOver':
+					 	(!rootParentField.ddmStructureId &&
+					 		overTarget &&
+					 		canDrop) ||
+					 	overFieldKeyboardTarget,
 				 })}
 				 column={column}
 				 index={columnIndex}
@@ -171,34 +160,27 @@
 				 ref={columnRef}
 				 rowIndex={rowIndex}
 			 >
-				 {isFieldRepetable && (
-					 <Actions
-						 activePage={pageIndex}
-                         disableDropdown={true}
-						 field={fieldRootOrCurrent}
-						 fieldId={firstField.fieldName}
-						 fieldType={firstField.type}
-						 isFieldSelected={isFieldSelected}
-						 isFieldSet={isFieldSet}
-						 itemPath={itemPath}
-						 parentFieldName={parentField?.fieldName}
-						 ref={actionsRef}
-					 />
-				 )}
+				 
+				 {/* {isFieldRepetable && (
+				 		<Actions
+							activePage={pageIndex}
+							disableDropdown={true}
+							field={fieldRootOrCurrent}
+							fieldId={firstField.fieldName}
+							fieldType={firstField.type}
+							isFieldSelected={isFieldSelected}
+							isFieldSet={isFieldSet}
+							itemPath={itemPath}
+							parentFieldName={parentField?.fieldName}
+							ref={actionsRef}
+					 />)} */}
 
+					 {/* {children} se descomentar isso e comentar a div de baixo, funciona
+					 mas fica sem as classes e o comportamento do drag and drop*/}
 
-				 <ResizableColumn
-					 currentLoc={{columnIndex, pageIndex, rowIndex}}
-					 disabled={true}
-					 instanceId={firstField.instanceId}
-					 onResizing={handleResize}
-					 resizeInfoRef={resizeInfoRef}
-					 rowRef={rowRef}
-				 >
 					 <div
 						 className={classNames({
 							 'ddm-drag': isFieldRepetable,
-							 'rebeca-drag': isFieldRepetable, // remover depois
 							 'py-0': isFieldSetOrGroup,
 						 })}
 						 ref={(node) => {
@@ -214,26 +196,26 @@
 							 resizeRef.current = node;
 						 }}
 					 >
-						 {column.fields.map((field, index) =>
-							 children({
-								 field,
-								 index,
-								 loc: {
-									 columnIndex,
-									 pageIndex,
-									 rowIndex,
-								 },
-							 })
-						 )}
+						{column.fields.map((field, index) =>
+							children({
+								field,
+								index,
+								loc: {
+									columnIndex,
+									pageIndex,
+									rowIndex,
+								},
+							})
+						)}
+						 
 					 </div>
-				 </ResizableColumn>
 			 </DefaultVariant.Column>
-		 </ActionsControls>
+		// </ActionsControls>
 	 );
  }
 
 
- Column.displayName = 'EditorVariant.Column';
+ Column.displayName = 'ViewVariant.Column';
 
 
  export function Page({
@@ -318,47 +300,13 @@
 			 invalidFormMessage={invalidFormMessage}
 			 pageIndex={pageIndex}
 		 >
-			 {editable && empty ? (
-				 <ClayLayout.Row>
-					 <ClayLayout.Col
-						 className="col-ddm col-empty last-col lfr-initial-col mb-4 mt-5"
-						 data-ddm-field-column="0"
-						 data-ddm-field-page={pageIndex}
-						 data-ddm-field-row="0"
-					 >
-						 <div
-							 className={classNames('ddm-empty-page ddm-target', {
-								 'target-droppable':
-									 canDrop || overKeyboardTarget,
-								 'target-over targetOver':
-									 overTarget || overKeyboardTarget,
-							 })}
-							 ref={(element) => {
-								 if (drop) {
-									 drop(element);
-								 }
-
-
-								 dropTargetRef.current = element;
-							 }}
-						 >
-							 <p className="ddm-empty-page-message">
-								 {Liferay.Language.get(
-									 'drag-fields-from-the-sidebar-to-compose-your-form'
-								 )}
-							 </p>
-						 </div>
-					 </ClayLayout.Col>
-				 </ClayLayout.Row>
-			 ) : (
-				 children
-			 )}
+			 {children}
 		 </DefaultVariant.Page>
 	 );
  }
 
 
- Page.displayName = 'EditorVariant.Page';
+ Page.displayName = 'ViewVariant.Page';
 
 
  export function Rows({children, editable, itemPath, pageIndex, rows}) {
@@ -403,16 +351,16 @@
  }
 
 
- Rows.displayName = 'EditorVariant.Rows';
+ Rows.displayName = 'ViewVariant.Rows';
 
 
  export function Row({children, row}) {
 	 const rowRef = useRef(null);
 	 const resizeInfoRef = useRef(null);
-
+// tambem deve ter algum erro aqui
 
 	 return (
-		 <div className="position-relative row" ref={rowRef}>
+		 <div className="position-relative row" ref={rowRef}> 
 			 {row.columns.map((column, index) =>
 				 children({column, index, resizeInfoRef, rowRef})
 			 )}
@@ -421,5 +369,5 @@
  }
 
 
- Row.displayName = 'EditorVariant.Row';
+ Row.displayName = 'ViewVariant.Row';
 

@@ -13,11 +13,12 @@
  */
 
 import * as EditorVariant from '../components/PageRenderer/EditorVariant.es';
+import * as ViewVariant from '../components/PageRenderer/ViewVariant.es';
 
-export function mergeVariants(editable, {defaults, overrides, variant}) {
+export function mergeVariants(contentType, editable, {defaults, overrides, variant}) {
 	return {
 		...defaults,
-		...(editable ? EditorVariant : {}),
+		...(editable ? EditorVariant : contentType === "journal" ? ViewVariant : {}),
 		...variant,
 		...overrides,
 	};

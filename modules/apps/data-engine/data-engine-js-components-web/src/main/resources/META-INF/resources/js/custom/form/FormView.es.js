@@ -45,6 +45,11 @@ import {
 	paginationReducer,
 } from './reducers/index.es';
 
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
+
+import './test.scss';
+
 const DDM_FORM_PORTLET_NAMESPACE =
 	'_com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormPortlet_';
 
@@ -400,37 +405,39 @@ export const FormView = React.forwardRef((props, ref) => {
 	const unstable_onEventRef = useRef(null);
 
 	return (
-		<ConfigProvider config={config} initialConfig={INITIAL_CONFIG_STATE}>
-			<FormProvider
-				init={({paginationMode, ...otherProps}) => ({
-					...otherProps,
-					paginationMode:
-						PAGINATION_MODE_MAPPED[paginationMode] ??
-						paginationMode,
-				})}
-				initialState={INITIAL_STATE}
-				onAction={(action) => {
-					if (unstable_onEventRef.current) {
-						unstable_onEventRef.current(action);
-					}
-				}}
-				reducers={[
-					activePageReducer,
-					fieldReducer,
-					languageReducer,
-					objectRelationshipReducer,
-					pagesStructureReducer,
-					pageValidationReducer,
-					paginationReducer,
-				]}
-				value={state}
-			>
-				<Form
-					ref={ref ?? defaultRef}
-					unstable_onEventRef={unstable_onEventRef}
-				/>
-			</FormProvider>
-		</ConfigProvider>
+		<DndProvider backend={HTML5Backend}>
+			<ConfigProvider config={config} initialConfig={INITIAL_CONFIG_STATE}>
+				<FormProvider
+					init={({paginationMode, ...otherProps}) => ({
+						...otherProps,
+						paginationMode:
+							PAGINATION_MODE_MAPPED[paginationMode] ??
+							paginationMode,
+					})}
+					initialState={INITIAL_STATE}
+					onAction={(action) => {
+						if (unstable_onEventRef.current) {
+							unstable_onEventRef.current(action);
+						}
+					}}
+					reducers={[
+						activePageReducer,
+						fieldReducer,
+						languageReducer,
+						objectRelationshipReducer,
+						pagesStructureReducer,
+						pageValidationReducer,
+						paginationReducer,
+					]}
+					value={state}
+				>
+					<Form
+						ref={ref ?? defaultRef}
+						unstable_onEventRef={unstable_onEventRef}
+					/>
+				</FormProvider>
+			</ConfigProvider>
+		</DndProvider>
 	);
 });
 

@@ -157,6 +157,8 @@ const Page = ({
 	strings,
 	viewMode,
 }) => {
+
+	const contentType = "journal";
 	const empty = isEmptyPage(defaultPage);
 	const page = normalizePage(defaultPage, editingLanguageId);
 
@@ -169,7 +171,7 @@ const Page = ({
 		variant: variantComponents,
 	};
 
-	const Components = mergeVariants(editable, variants);
+	const Components = mergeVariants(contentType, editable, variants);
 
 	let hasFieldRequired = false;
 
@@ -222,6 +224,7 @@ const Page = ({
 					<Layout // vai precisar upar o layout também com a lógica do merge variants
 						components={Components}
 						editable={editable}
+						contentType={contentType}
 						itemPath={[pageIndex]}
 						rows={page.rows}
 						viewMode={viewMode}

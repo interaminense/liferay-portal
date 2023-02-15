@@ -207,9 +207,86 @@ export const Actions = forwardRef(
 		},
 		actionsRef
 	) => {
+
+		console.log(fieldType);
 		const {fieldTypes} = useConfig();
 		const formState = useFormState();
 		const {actions, dispatch} = useActions();
+
+		const fieldTypes2 = [ // mock para tirar depois
+			{
+				label: "Text",
+				name: "text",
+
+			},
+			{
+				label: "Single Selection",
+				name: "radio",
+
+			},
+			{
+				label: "Date",
+				name: "date",
+
+			},
+			{
+				label: "Link to Page",
+				name: "link_to_layout",
+			},
+			{
+				label: "Select from List",
+				name: "select",
+			},
+			{
+				label: "Color",
+				name: "color",
+			},
+			{
+				label: "Fields Group",
+				name: "fieldset",
+
+			},
+			{
+				label: "Numeric",
+				name: "numeric",
+			},
+			{
+				label: "Multiple Selection",
+				name: "checkbox_multiple",
+			}, 
+			{
+				label: "Web Content",
+				name: "journal_article",
+			},
+			{
+				label: "Boolean",
+				name: "checkbox"
+			},
+			{
+				label: "Image",
+				name: "image"
+			},
+			{
+				label: "Separator",
+				name: "separator",
+			},
+			{
+				label: "Grid",
+				name: "grid",
+			},
+			{
+				label: "Rich Text",
+				name: "rich_text",
+			},
+			{
+				label: "Upload",
+				name: "document_library",
+			},
+			{
+				label: "Geolocation",
+				name: "geolocation",
+			}
+		]
 
 		const setKeyboardDNDSourceItem = useSetKeyboardDNDSourceItem();
 
@@ -218,8 +295,8 @@ export const Actions = forwardRef(
 				return Liferay.Language.get('fieldset');
 			}
 
-			return fieldTypes.find(({name}) => name === fieldType).label;
-		}, [fieldType, isFieldSet, fieldTypes]);
+			return fieldTypes2 .find(({name}) => name === fieldType).label;
+		}, [fieldType, isFieldSet, fieldTypes2]);
 
 		const handleEditButtonClick = () => {
 			dispatch({
