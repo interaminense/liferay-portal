@@ -1,4 +1,3 @@
-
 Liferay-Releng-App-Description:
 Liferay-Releng-App-Title: ${liferay.releng.app.title.prefix} OSB Faro
 Liferay-Releng-Bundle: true
