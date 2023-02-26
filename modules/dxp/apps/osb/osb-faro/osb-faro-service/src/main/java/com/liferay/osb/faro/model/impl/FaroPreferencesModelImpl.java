@@ -32,13 +32,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
-
 import java.sql.Blob;
 import java.sql.Types;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -87,6 +84,61 @@ public class FaroPreferencesModelImpl
 		TABLE_COLUMNS_MAP.put("modifiedTime", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("ownerId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("preferences", Types.VARCHAR);
+	}
+
+	@Override
+	public FaroPreferences cloneWithOriginalValues() {
+		FaroPreferencesImpl faroPreferencesImpl =
+				new FaroPreferencesImpl();
+
+		faroPreferencesImpl.setFaroPreferencesId(
+				this.<Long>getColumnOriginalValue("faroPreferencesId"));
+		faroPreferencesImpl.setGroupId(
+				this.<Long>getColumnOriginalValue("groupId"));
+		faroPreferencesImpl.setUserId(
+				this.<Long>getColumnOriginalValue("userId"));
+		faroPreferencesImpl.setUserName(
+				this.<String>getColumnOriginalValue("userName"));
+		faroPreferencesImpl.setCreateTime(
+				this.<Long>getColumnOriginalValue("createTime"));
+		faroPreferencesImpl.setModifiedTime(
+				this.<Long>getColumnOriginalValue("modifiedTime"));
+		faroPreferencesImpl.setOwnerId(
+				this.<Long>getColumnOriginalValue("ownerId"));
+		faroPreferencesImpl.setPreferences(
+				this.<String>getColumnOriginalValue("preferences"));
+
+		return faroPreferencesImpl;
+	}
+
+	public <T> T getColumnOriginalValue(String columnName) {
+		if (_columnOriginalValues == null) {
+			return null;
+		}
+
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		return (T)_columnOriginalValues.get(columnName);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	private void _setColumnOriginalValues() {
+		_columnOriginalValues = new HashMap<String, Object>();
+
+		_columnOriginalValues.put("faroPreferencesId", _faroPreferencesId);
+		_columnOriginalValues.put("groupId", _groupId);
+		_columnOriginalValues.put("userId", _userId);
+		_columnOriginalValues.put(
+				"userName", _userName);
+		_columnOriginalValues.put("createTime", _createTime);
+		_columnOriginalValues.put("modifiedTime", _modifiedTime);
+		_columnOriginalValues.put(
+				"ownerId", _ownerId);
+		_columnOriginalValues.put("preferences", _preferences);
+
 	}
 
 	public static final String TABLE_SQL_CREATE =

@@ -796,6 +796,70 @@ public class FaroUserModelImpl
 	}
 
 	@Override
+	public FaroUser cloneWithOriginalValues() {
+		FaroUserImpl faroUserImpl =
+				new FaroUserImpl();
+
+		faroUserImpl.setUserId(
+				this.<Long>getColumnOriginalValue("faroUserId"));
+		faroUserImpl.setGroupId(
+				this.<Long>getColumnOriginalValue("groupId"));
+		faroUserImpl.setUserId(
+				this.<Long>getColumnOriginalValue("userId"));
+		faroUserImpl.setUserName(
+				this.<String>getColumnOriginalValue("userName"));
+		faroUserImpl.setCreateTime(
+				this.<Long>getColumnOriginalValue("createTime"));
+		faroUserImpl.setModifiedTime(
+				this.<Long>getColumnOriginalValue("modifiedTime"));
+		faroUserImpl.setLiveUserId(
+				this.<Long>getColumnOriginalValue("liveUserId"));
+		faroUserImpl.setRoleId(
+				this.<Long>getColumnOriginalValue("roleId"));
+		faroUserImpl.setEmailAddress(
+				this.<String>getColumnOriginalValue("emailAddress"));
+		faroUserImpl.setKey(
+				this.<String>getColumnOriginalValue("key_"));
+		faroUserImpl.setStatus(
+				this.<Integer>getColumnOriginalValue("status"));
+
+		return faroUserImpl;
+	}
+
+	public <T> T getColumnOriginalValue(String columnName) {
+		if (_columnOriginalValues == null) {
+			return null;
+		}
+
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		return (T)_columnOriginalValues.get(columnName);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
+	private void _setColumnOriginalValues() {
+		_columnOriginalValues = new HashMap<String, Object>();
+
+		_columnOriginalValues.put("faroUserId", _faroUserId);
+		_columnOriginalValues.put("groupId", _groupId);
+		_columnOriginalValues.put("userId", _userId);
+		_columnOriginalValues.put("userName", _userName);
+		_columnOriginalValues.put("createTime", _createTime);
+		_columnOriginalValues.put("modifiedTime", _modifiedTime);
+		_columnOriginalValues.put(
+				"liveUserId", _liveUserId);
+		_columnOriginalValues.put("roleId", _roleId);
+		_columnOriginalValues.put("emailAddress", _emailAddress);
+		_columnOriginalValues.put(
+				"key_", _key);
+		_columnOriginalValues.put(
+				"status", _status);
+	}
+
+	@Override
 	public int compareTo(FaroUser faroUser) {
 		long primaryKey = faroUser.getPrimaryKey();
 

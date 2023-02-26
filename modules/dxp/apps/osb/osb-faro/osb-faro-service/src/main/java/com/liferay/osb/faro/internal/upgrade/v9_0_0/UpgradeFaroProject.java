@@ -23,9 +23,7 @@ public class UpgradeFaroProject extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-
-		alterTableAddColumn("OSBFaro_FaroProject","timeZoneId", "VARCHAR(75)" );
-
+		alterTableAddColumn("OSBFaro_FaroProject", "timeZoneId", "VARCHAR(75)");
 
 		runSQL("update OSBFaro_FaroProject set timeZoneId = 'UTC'");
 	}

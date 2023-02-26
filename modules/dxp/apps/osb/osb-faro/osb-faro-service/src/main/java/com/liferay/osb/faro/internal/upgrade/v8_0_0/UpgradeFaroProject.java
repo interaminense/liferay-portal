@@ -23,8 +23,8 @@ public class UpgradeFaroProject extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn("OSBFaro_FaroProject","recommendationsEnabled", "BOOLEAN" );
-
+		alterTableAddColumn(
+			"OSBFaro_FaroProject", "recommendationsEnabled", "BOOLEAN");
 	}
 
 }

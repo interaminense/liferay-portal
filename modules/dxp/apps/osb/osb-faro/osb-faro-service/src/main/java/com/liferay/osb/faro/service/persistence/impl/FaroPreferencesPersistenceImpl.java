@@ -803,6 +803,7 @@ public class FaroPreferencesPersistenceImpl
 		return count.intValue();
 	}
 
+
 	private static final String _FINDER_COLUMN_G_O_GROUPID_2 =
 		"faroPreferences.groupId = ? AND ";
 

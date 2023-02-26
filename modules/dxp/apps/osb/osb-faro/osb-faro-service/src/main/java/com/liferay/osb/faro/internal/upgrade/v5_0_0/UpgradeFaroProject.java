@@ -22,10 +22,8 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 public class UpgradeFaroProject extends UpgradeProcess {
 
 	@Override
-	protected
-	void doUpgrade() throws Exception {
-		alterTableAddColumn("OSBFaro_FaroProject","ipAddresses", "STRING" );
-
+	protected void doUpgrade() throws Exception {
+		alterTableAddColumn("OSBFaro_FaroProject", "ipAddresses", "STRING");
 	}
 
 }

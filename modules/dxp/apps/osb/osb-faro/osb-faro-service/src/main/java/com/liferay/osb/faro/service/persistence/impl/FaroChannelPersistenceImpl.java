@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
@@ -1903,7 +1903,7 @@ public class FaroChannelPersistenceImpl
 	@Override
 	public void cacheResult(FaroChannel faroChannel) {
 		entityCache.putResult(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED, FaroChannelImpl.class,
+			 FaroChannelImpl.class,
 			faroChannel.getPrimaryKey(), faroChannel);
 
 		finderCache.putResult(
@@ -1934,7 +1934,6 @@ public class FaroChannelPersistenceImpl
 
 		for (FaroChannel faroChannel : faroChannels) {
 			if (entityCache.getResult(
-					FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
 					FaroChannelImpl.class, faroChannel.getPrimaryKey()) ==
 						null) {
 
@@ -1957,9 +1956,7 @@ public class FaroChannelPersistenceImpl
 	public void clearCache() {
 		entityCache.clearCache(FaroChannelImpl.class);
 
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FaroChannelImpl.class);
 	}
 
 	/**
@@ -1972,23 +1969,20 @@ public class FaroChannelPersistenceImpl
 	@Override
 	public void clearCache(FaroChannel faroChannel) {
 		entityCache.removeResult(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED, FaroChannelImpl.class,
+			FaroChannelImpl.class,
 			faroChannel.getPrimaryKey());
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FaroChannelImpl.class);
 
 		clearUniqueFindersCache((FaroChannelModelImpl)faroChannel, true);
 	}
 
 	@Override
 	public void clearCache(List<FaroChannel> faroChannels) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FaroChannelImpl.class);
 
 		for (FaroChannel faroChannel : faroChannels) {
 			entityCache.removeResult(
-				FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
 				FaroChannelImpl.class, faroChannel.getPrimaryKey());
 
 			clearUniqueFindersCache((FaroChannelModelImpl)faroChannel, true);
@@ -1996,13 +1990,10 @@ public class FaroChannelPersistenceImpl
 	}
 
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		finderCache.clearCache(FaroChannelImpl.class);
 
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
-				FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
 				FaroChannelImpl.class, primaryKey);
 		}
 	}
@@ -2016,9 +2007,9 @@ public class FaroChannelPersistenceImpl
 		};
 
 		finderCache.putResult(
-			_finderPathCountByChannelId, args, Long.valueOf(1), false);
+			_finderPathCountByChannelId, args, Long.valueOf(1));
 		finderCache.putResult(
-			_finderPathFetchByChannelId, args, faroChannelModelImpl, false);
+			_finderPathFetchByChannelId, args, faroChannelModelImpl);
 	}
 
 	protected void clearUniqueFindersCache(
@@ -2192,10 +2183,10 @@ public class FaroChannelPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FaroChannelImpl.class);
 
 		if (!FaroChannelModelImpl.COLUMN_BITMASK_ENABLED) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			finderCache.clearCache(FaroChannelImpl.class);
 		}
 		else if (isNew) {
 			Object[] args = new Object[] {faroChannelModelImpl.getGroupId()};
@@ -2291,8 +2282,8 @@ public class FaroChannelPersistenceImpl
 		}
 
 		entityCache.putResult(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED, FaroChannelImpl.class,
-			faroChannel.getPrimaryKey(), faroChannel, false);
+			 FaroChannelImpl.class,
+			faroChannel.getPrimaryKey(), faroChannel);
 
 		clearUniqueFindersCache(faroChannelModelImpl, false);
 		cacheUniqueFindersCache(faroChannelModelImpl);
@@ -2349,8 +2340,7 @@ public class FaroChannelPersistenceImpl
 	 */
 	@Override
 	public FaroChannel fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED, FaroChannelImpl.class,
+		Serializable serializable = entityCache.getResult(FaroChannelImpl.class,
 			primaryKey);
 
 		if (serializable == nullModel) {
@@ -2507,7 +2497,6 @@ public class FaroChannelPersistenceImpl
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
 				entityCache.putResult(
-					FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
 					FaroChannelImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -2720,43 +2709,32 @@ public class FaroChannelPersistenceImpl
 			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
-			FaroChannelModelImpl.FINDER_CACHE_ENABLED, FaroChannelImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0], new String[0], true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
-			FaroChannelModelImpl.FINDER_CACHE_ENABLED, FaroChannelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0]);
+			new String[0], new String[0], false);
 
 		_finderPathCountAll = new FinderPath(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
-			FaroChannelModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
+			new String[0], new String[0], false);
 
 		_finderPathWithPaginationFindByGroupId = new FinderPath(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
-			FaroChannelModelImpl.FINDER_CACHE_ENABLED, FaroChannelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
-			});
+			}, new String[] {"groupId"}, true);
 
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
-			FaroChannelModelImpl.FINDER_CACHE_ENABLED, FaroChannelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			FaroChannelModelImpl.GROUPID_COLUMN_BITMASK);
+				new String[] {"groupId"}, false);
 
 		_finderPathCountByGroupId = new FinderPath(
-			FaroChannelModelImpl.ENTITY_CACHE_ENABLED,
-			FaroChannelModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
-			new String[] {Long.class.getName()});
+			new String[] {Long.class.getName()}, new String[] {"groupId"},
+				false);
 
 		_finderPathWithPaginationFindByWorkspaceGroupId = new FinderPath(
 			FaroChannelModelImpl.ENTITY_CACHE_ENABLED,

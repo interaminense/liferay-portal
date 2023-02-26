@@ -4024,8 +4024,8 @@ public class FaroUserPersistenceImpl
 		}
 
 		entityCache.putResult(
-			FaroUserModelImpl.ENTITY_CACHE_ENABLED, FaroUserImpl.class,
-			faroUser.getPrimaryKey(), faroUser, false);
+			FaroUserImpl.class,
+			faroUser.getPrimaryKey(), faroUser);
 
 		clearUniqueFindersCache(faroUserModelImpl, false);
 		cacheUniqueFindersCache(faroUserModelImpl);

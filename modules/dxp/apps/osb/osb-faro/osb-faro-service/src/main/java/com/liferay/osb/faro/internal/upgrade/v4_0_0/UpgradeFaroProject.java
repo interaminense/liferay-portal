@@ -23,7 +23,7 @@ public class UpgradeFaroProject extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn("OSBFaro_FaroProject","lastAccessTime", "LONG");
+		alterTableAddColumn("OSBFaro_FaroProject", "lastAccessTime", "LONG");
 
 		runSQL(
 			"update OSBFaro_FaroProject set lastAccessTime = " +
