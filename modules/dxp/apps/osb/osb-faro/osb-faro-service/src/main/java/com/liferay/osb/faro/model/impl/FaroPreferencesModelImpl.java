@@ -86,61 +86,6 @@ public class FaroPreferencesModelImpl
 		TABLE_COLUMNS_MAP.put("preferences", Types.VARCHAR);
 	}
 
-	@Override
-	public FaroPreferences cloneWithOriginalValues() {
-		FaroPreferencesImpl faroPreferencesImpl =
-				new FaroPreferencesImpl();
-
-		faroPreferencesImpl.setFaroPreferencesId(
-				this.<Long>getColumnOriginalValue("faroPreferencesId"));
-		faroPreferencesImpl.setGroupId(
-				this.<Long>getColumnOriginalValue("groupId"));
-		faroPreferencesImpl.setUserId(
-				this.<Long>getColumnOriginalValue("userId"));
-		faroPreferencesImpl.setUserName(
-				this.<String>getColumnOriginalValue("userName"));
-		faroPreferencesImpl.setCreateTime(
-				this.<Long>getColumnOriginalValue("createTime"));
-		faroPreferencesImpl.setModifiedTime(
-				this.<Long>getColumnOriginalValue("modifiedTime"));
-		faroPreferencesImpl.setOwnerId(
-				this.<Long>getColumnOriginalValue("ownerId"));
-		faroPreferencesImpl.setPreferences(
-				this.<String>getColumnOriginalValue("preferences"));
-
-		return faroPreferencesImpl;
-	}
-
-	public <T> T getColumnOriginalValue(String columnName) {
-		if (_columnOriginalValues == null) {
-			return null;
-		}
-
-		if (_columnOriginalValues == Collections.EMPTY_MAP) {
-			_setColumnOriginalValues();
-		}
-
-		return (T)_columnOriginalValues.get(columnName);
-	}
-
-	private transient Map<String, Object> _columnOriginalValues;
-
-	private void _setColumnOriginalValues() {
-		_columnOriginalValues = new HashMap<String, Object>();
-
-		_columnOriginalValues.put("faroPreferencesId", _faroPreferencesId);
-		_columnOriginalValues.put("groupId", _groupId);
-		_columnOriginalValues.put("userId", _userId);
-		_columnOriginalValues.put(
-				"userName", _userName);
-		_columnOriginalValues.put("createTime", _createTime);
-		_columnOriginalValues.put("modifiedTime", _modifiedTime);
-		_columnOriginalValues.put(
-				"ownerId", _ownerId);
-		_columnOriginalValues.put("preferences", _preferences);
-
-	}
-
 	public static final String TABLE_SQL_CREATE =
 		"create table OSBFaro_FaroPreferences (faroPreferencesId LONG not null primary key,groupId LONG,userId LONG,userName VARCHAR(75) null,createTime LONG,modifiedTime LONG,ownerId LONG,preferences STRING null)";
 
@@ -679,6 +624,31 @@ public class FaroPreferencesModelImpl
 	}
 
 	@Override
+	public FaroPreferences cloneWithOriginalValues() {
+		FaroPreferencesImpl faroPreferencesImpl =
+				new FaroPreferencesImpl();
+
+		faroPreferencesImpl.setFaroPreferencesId(
+				this.<Long>getColumnOriginalValue("faroPreferencesId"));
+		faroPreferencesImpl.setGroupId(
+				this.<Long>getColumnOriginalValue("groupId"));
+		faroPreferencesImpl.setUserId(
+				this.<Long>getColumnOriginalValue("userId"));
+		faroPreferencesImpl.setUserName(
+				this.<String>getColumnOriginalValue("userName"));
+		faroPreferencesImpl.setCreateTime(
+				this.<Long>getColumnOriginalValue("createTime"));
+		faroPreferencesImpl.setModifiedTime(
+				this.<Long>getColumnOriginalValue("modifiedTime"));
+		faroPreferencesImpl.setOwnerId(
+				this.<Long>getColumnOriginalValue("ownerId"));
+		faroPreferencesImpl.setPreferences(
+				this.<String>getColumnOriginalValue("preferences"));
+
+		return faroPreferencesImpl;
+	}
+
+	@Override
 	public int compareTo(FaroPreferences faroPreferences) {
 		long primaryKey = faroPreferences.getPrimaryKey();
 
@@ -880,5 +850,35 @@ public class FaroPreferencesModelImpl
 	private String _preferences;
 	private long _columnBitmask;
 	private FaroPreferences _escapedModel;
+
+
+	public <T> T getColumnOriginalValue(String columnName) {
+		if (_columnOriginalValues == null) {
+			return null;
+		}
+
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		return (T)_columnOriginalValues.get(columnName);
+	}
+
+	private void _setColumnOriginalValues() {
+		_columnOriginalValues = new HashMap<String, Object>();
+
+		_columnOriginalValues.put("faroPreferencesId", _faroPreferencesId);
+		_columnOriginalValues.put("groupId", _groupId);
+		_columnOriginalValues.put("userId", _userId);
+		_columnOriginalValues.put(
+				"userName", _userName);
+		_columnOriginalValues.put("createTime", _createTime);
+		_columnOriginalValues.put("modifiedTime", _modifiedTime);
+		_columnOriginalValues.put(
+				"ownerId", _ownerId);
+		_columnOriginalValues.put("preferences", _preferences);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
 
 }

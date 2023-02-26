@@ -89,67 +89,6 @@ public class FaroNotificationModelImpl
 		TABLE_COLUMNS_MAP.put("subtype", Types.VARCHAR);
 	}
 
-	@Override
-	public FaroNotification cloneWithOriginalValues() {
-		FaroNotificationImpl faroNotificationImpl =
-				new FaroNotificationImpl();
-
-		faroNotificationImpl.setFaroNotificationId(
-				this.<Long>getColumnOriginalValue("faroNotificationId"));
-		faroNotificationImpl.setGroupId(
-				this.<Long>getColumnOriginalValue("groupId"));
-		faroNotificationImpl.setUserId(
-				this.<Long>getColumnOriginalValue("userId"));
-		faroNotificationImpl.setCreateTime(
-				this.<Long>getColumnOriginalValue("createTime"));
-		faroNotificationImpl.setModifiedTime(
-				this.<Long>getColumnOriginalValue("modifiedTime"));
-		faroNotificationImpl.setOwnerId(
-				this.<Long>getColumnOriginalValue("ownerId"));
-		faroNotificationImpl.setScope(
-				this.<String>getColumnOriginalValue("scope"));
-		faroNotificationImpl.setRead(
-				this.<Boolean>getColumnOriginalValue("read_"));
-		faroNotificationImpl.setType(
-				this.<String>getColumnOriginalValue("type_"));
-		faroNotificationImpl.setSubtype(
-				this.<String>getColumnOriginalValue("subtype"));
-
-		return faroNotificationImpl;
-	}
-
-	public <T> T getColumnOriginalValue(String columnName) {
-		if (_columnOriginalValues == null) {
-			return null;
-		}
-
-		if (_columnOriginalValues == Collections.EMPTY_MAP) {
-			_setColumnOriginalValues();
-		}
-
-		return (T)_columnOriginalValues.get(columnName);
-	}
-
-	private transient Map<String, Object> _columnOriginalValues;
-
-	private void _setColumnOriginalValues() {
-		_columnOriginalValues = new HashMap<String, Object>();
-
-		_columnOriginalValues.put("faroNotificationId", _faroNotificationId);
-		_columnOriginalValues.put("groupId", _groupId);
-		_columnOriginalValues.put("userId", _userId);
-		_columnOriginalValues.put("createTime", _createTime);
-		_columnOriginalValues.put("modifiedTime", _modifiedTime);
-		_columnOriginalValues.put(
-				"ownerId", _ownerId);
-		_columnOriginalValues.put("scope", _scope);
-		_columnOriginalValues.put("read_", _read);
-		_columnOriginalValues.put(
-				"type_", _type);
-		_columnOriginalValues.put(
-				"subtype", _subtype);
-	}
-
 	public static final String TABLE_SQL_CREATE =
 		"create table OSBFaro_FaroNotification (faroNotificationId LONG not null primary key,groupId LONG,userId LONG,createTime LONG,modifiedTime LONG,ownerId LONG,scope VARCHAR(75) null,read_ BOOLEAN,type_ VARCHAR(75) null,subtype VARCHAR(75) null)";
 
@@ -818,6 +757,35 @@ public class FaroNotificationModelImpl
 	}
 
 	@Override
+	public FaroNotification cloneWithOriginalValues() {
+		FaroNotificationImpl faroNotificationImpl =
+				new FaroNotificationImpl();
+
+		faroNotificationImpl.setFaroNotificationId(
+				this.<Long>getColumnOriginalValue("faroNotificationId"));
+		faroNotificationImpl.setGroupId(
+				this.<Long>getColumnOriginalValue("groupId"));
+		faroNotificationImpl.setUserId(
+				this.<Long>getColumnOriginalValue("userId"));
+		faroNotificationImpl.setCreateTime(
+				this.<Long>getColumnOriginalValue("createTime"));
+		faroNotificationImpl.setModifiedTime(
+				this.<Long>getColumnOriginalValue("modifiedTime"));
+		faroNotificationImpl.setOwnerId(
+				this.<Long>getColumnOriginalValue("ownerId"));
+		faroNotificationImpl.setScope(
+				this.<String>getColumnOriginalValue("scope"));
+		faroNotificationImpl.setRead(
+				this.<Boolean>getColumnOriginalValue("read_"));
+		faroNotificationImpl.setType(
+				this.<String>getColumnOriginalValue("type_"));
+		faroNotificationImpl.setSubtype(
+				this.<String>getColumnOriginalValue("subtype"));
+
+		return faroNotificationImpl;
+	}
+
+	@Override
 	public int compareTo(FaroNotification faroNotification) {
 		long primaryKey = faroNotification.getPrimaryKey();
 
@@ -1050,5 +1018,38 @@ public class FaroNotificationModelImpl
 	private String _originalSubtype;
 	private long _columnBitmask;
 	private FaroNotification _escapedModel;
+
+	public <T> T getColumnOriginalValue(String columnName) {
+		if (_columnOriginalValues == null) {
+			return null;
+		}
+
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		return (T)_columnOriginalValues.get(columnName);
+	}
+
+	private void _setColumnOriginalValues() {
+		_columnOriginalValues = new HashMap<String, Object>();
+
+		_columnOriginalValues.put("faroNotificationId", _faroNotificationId);
+		_columnOriginalValues.put("groupId", _groupId);
+		_columnOriginalValues.put("userId", _userId);
+		_columnOriginalValues.put("createTime", _createTime);
+		_columnOriginalValues.put("modifiedTime", _modifiedTime);
+		_columnOriginalValues.put(
+				"ownerId", _ownerId);
+		_columnOriginalValues.put("scope", _scope);
+		_columnOriginalValues.put("read_", _read);
+		_columnOriginalValues.put(
+				"type_", _type);
+		_columnOriginalValues.put(
+				"subtype", _subtype);
+	}
+
+	private transient Map<String, Object> _columnOriginalValues;
+
 
 }
