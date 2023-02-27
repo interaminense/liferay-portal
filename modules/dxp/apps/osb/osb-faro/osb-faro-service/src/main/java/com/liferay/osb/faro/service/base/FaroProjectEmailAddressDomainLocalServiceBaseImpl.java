@@ -18,6 +18,7 @@ import com.liferay.osb.faro.model.FaroProjectEmailAddressDomain;
 import com.liferay.osb.faro.service.FaroProjectEmailAddressDomainLocalService;
 import com.liferay.osb.faro.service.FaroProjectEmailAddressDomainLocalServiceUtil;
 import com.liferay.osb.faro.service.persistence.FaroProjectEmailAddressDomainPersistence;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -31,6 +32,8 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.search.Indexable;
@@ -147,6 +150,18 @@ public abstract class FaroProjectEmailAddressDomainLocalServiceBaseImpl
 
 		return faroProjectEmailAddressDomainPersistence.remove(
 			faroProjectEmailAddressDomain);
+	}
+
+	@Override
+	public <T> T dslQuery(DSLQuery dslQuery) {
+		return faroProjectEmailAddressDomainPersistence.dslQuery(dslQuery);
+	}
+
+	@Override
+	public int dslQueryCount(DSLQuery dslQuery) {
+		Long count = dslQuery(dslQuery);
+
+		return count.intValue();
 	}
 
 	@Override
@@ -315,14 +330,31 @@ public abstract class FaroProjectEmailAddressDomainLocalServiceBaseImpl
 	 * @throws PortalException
 	 */
 	@Override
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+
+		return faroProjectEmailAddressDomainPersistence.create(
+			((Long)primaryKeyObj).longValue());
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
+
+		if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Implement FaroProjectEmailAddressDomainLocalServiceImpl#deleteFaroProjectEmailAddressDomain(FaroProjectEmailAddressDomain) to avoid orphaned data");
+		}
 
 		return faroProjectEmailAddressDomainLocalService.
 			deleteFaroProjectEmailAddressDomain(
 				(FaroProjectEmailAddressDomain)persistedModel);
 	}
 
+	@Override
 	public BasePersistence<FaroProjectEmailAddressDomain> getBasePersistence() {
 		return faroProjectEmailAddressDomainPersistence;
 	}
@@ -545,6 +577,9 @@ public abstract class FaroProjectEmailAddressDomainLocalServiceBaseImpl
 	)
 	protected com.liferay.counter.kernel.service.CounterLocalService
 		counterLocalService;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FaroProjectEmailAddressDomainLocalServiceBaseImpl.class);
 
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
 	protected PersistedModelLocalServiceRegistry

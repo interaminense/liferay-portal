@@ -15,9 +15,10 @@
 package com.liferay.osb.faro.model.impl;
 
 import com.liferay.osb.faro.model.FaroProjectEmailAddressDomain;
-import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.petra.lang.HashUtil;
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.MVCCModel;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -31,7 +32,8 @@ import java.io.ObjectOutput;
  * @generated
  */
 public class FaroProjectEmailAddressDomainCacheModel
-	implements CacheModel<FaroProjectEmailAddressDomain>, Externalizable {
+	implements CacheModel<FaroProjectEmailAddressDomain>, Externalizable,
+			   MVCCModel {
 
 	@Override
 	public boolean equals(Object object) {
@@ -47,9 +49,11 @@ public class FaroProjectEmailAddressDomainCacheModel
 			faroProjectEmailAddressDomainCacheModel =
 				(FaroProjectEmailAddressDomainCacheModel)object;
 
-		if (faroProjectEmailAddressDomainId ==
+		if ((faroProjectEmailAddressDomainId ==
 				faroProjectEmailAddressDomainCacheModel.
-					faroProjectEmailAddressDomainId) {
+					faroProjectEmailAddressDomainId) &&
+			(mvccVersion ==
+				faroProjectEmailAddressDomainCacheModel.mvccVersion)) {
 
 			return true;
 		}
@@ -59,17 +63,33 @@ public class FaroProjectEmailAddressDomainCacheModel
 
 	@Override
 	public int hashCode() {
-		return HashUtil.hash(0, faroProjectEmailAddressDomainId);
+		int hashCode = HashUtil.hash(0, faroProjectEmailAddressDomainId);
+
+		return HashUtil.hash(hashCode, mvccVersion);
+	}
+
+	@Override
+	public long getMvccVersion() {
+		return mvccVersion;
+	}
+
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		this.mvccVersion = mvccVersion;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(13);
 
-		sb.append("{faroProjectEmailAddressDomainId=");
+		sb.append("{mvccVersion=");
+		sb.append(mvccVersion);
+		sb.append(", faroProjectEmailAddressDomainId=");
 		sb.append(faroProjectEmailAddressDomainId);
 		sb.append(", groupId=");
 		sb.append(groupId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", faroProjectId=");
 		sb.append(faroProjectId);
 		sb.append(", emailAddressDomain=");
@@ -84,9 +104,11 @@ public class FaroProjectEmailAddressDomainCacheModel
 		FaroProjectEmailAddressDomainImpl faroProjectEmailAddressDomainImpl =
 			new FaroProjectEmailAddressDomainImpl();
 
+		faroProjectEmailAddressDomainImpl.setMvccVersion(mvccVersion);
 		faroProjectEmailAddressDomainImpl.setFaroProjectEmailAddressDomainId(
 			faroProjectEmailAddressDomainId);
 		faroProjectEmailAddressDomainImpl.setGroupId(groupId);
+		faroProjectEmailAddressDomainImpl.setCompanyId(companyId);
 		faroProjectEmailAddressDomainImpl.setFaroProjectId(faroProjectId);
 
 		if (emailAddressDomain == null) {
@@ -104,9 +126,13 @@ public class FaroProjectEmailAddressDomainCacheModel
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		mvccVersion = objectInput.readLong();
+
 		faroProjectEmailAddressDomainId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
+
+		companyId = objectInput.readLong();
 
 		faroProjectId = objectInput.readLong();
 		emailAddressDomain = objectInput.readUTF();
@@ -114,9 +140,13 @@ public class FaroProjectEmailAddressDomainCacheModel
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(faroProjectEmailAddressDomainId);
 
 		objectOutput.writeLong(groupId);
+
+		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(faroProjectId);
 
@@ -128,8 +158,10 @@ public class FaroProjectEmailAddressDomainCacheModel
 		}
 	}
 
+	public long mvccVersion;
 	public long faroProjectEmailAddressDomainId;
 	public long groupId;
+	public long companyId;
 	public long faroProjectId;
 	public String emailAddressDomain;
 

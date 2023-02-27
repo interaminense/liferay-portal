@@ -14,16 +14,11 @@
 
 package com.liferay.osb.faro.model;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
-import com.liferay.portal.kernel.service.ServiceContext;
-
-import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * <p>
@@ -34,7 +29,8 @@ import java.util.Objects;
  * @see FaroProjectEmailAddressDomain
  * @generated
  */
-public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroProjectEmailAddressDomain>
+public class FaroProjectEmailAddressDomainWrapper
+	extends BaseModelWrapper<FaroProjectEmailAddressDomain>
 	implements FaroProjectEmailAddressDomain,
 			   ModelWrapper<FaroProjectEmailAddressDomain> {
 
@@ -45,23 +41,15 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 	}
 
 	@Override
-	public Class<?> getModelClass() {
-		return FaroProjectEmailAddressDomain.class;
-	}
-
-	@Override
-	public String getModelClassName() {
-		return FaroProjectEmailAddressDomain.class.getName();
-	}
-
-	@Override
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put(
 			"faroProjectEmailAddressDomainId",
 			getFaroProjectEmailAddressDomainId());
 		attributes.put("groupId", getGroupId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("faroProjectId", getFaroProjectId());
 		attributes.put("emailAddressDomain", getEmailAddressDomain());
 
@@ -70,6 +58,12 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		Long mvccVersion = (Long)attributes.get("mvccVersion");
+
+		if (mvccVersion != null) {
+			setMvccVersion(mvccVersion);
+		}
+
 		Long faroProjectEmailAddressDomainId = (Long)attributes.get(
 			"faroProjectEmailAddressDomainId");
 
@@ -81,6 +75,12 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 
 		if (groupId != null) {
 			setGroupId(groupId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long faroProjectId = (Long)attributes.get("faroProjectId");
@@ -98,23 +98,18 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 	}
 
 	@Override
-	public Object clone() {
-		return new FaroProjectEmailAddressDomainWrapper(
-			(FaroProjectEmailAddressDomain)
-				model.clone());
-	}
-
-	@Override
 	public FaroProjectEmailAddressDomain cloneWithOriginalValues() {
 		return wrap(model.cloneWithOriginalValues());
 	}
 
+	/**
+	 * Returns the company ID of this faro project email address domain.
+	 *
+	 * @return the company ID of this faro project email address domain
+	 */
 	@Override
-	public int compareTo(
-		FaroProjectEmailAddressDomain faroProjectEmailAddressDomain) {
-
-		return model.compareTo(
-			faroProjectEmailAddressDomain);
+	public long getCompanyId() {
+		return model.getCompanyId();
 	}
 
 	/**
@@ -127,11 +122,6 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 		return model.getEmailAddressDomain();
 	}
 
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return model.getExpandoBridge();
-	}
-
 	/**
 	 * Returns the faro project email address domain ID of this faro project email address domain.
 	 *
@@ -139,8 +129,7 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 	 */
 	@Override
 	public long getFaroProjectEmailAddressDomainId() {
-		return model.
-			getFaroProjectEmailAddressDomainId();
+		return model.getFaroProjectEmailAddressDomainId();
 	}
 
 	/**
@@ -164,6 +153,16 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 	}
 
 	/**
+	 * Returns the mvcc version of this faro project email address domain.
+	 *
+	 * @return the mvcc version of this faro project email address domain
+	 */
+	@Override
+	public long getMvccVersion() {
+		return model.getMvccVersion();
+	}
+
+	/**
 	 * Returns the primary key of this faro project email address domain.
 	 *
 	 * @return the primary key of this faro project email address domain
@@ -174,38 +173,18 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 	}
 
 	@Override
-	public Serializable getPrimaryKeyObj() {
-		return model.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return model.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return model.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return model.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return model.isNew();
-	}
-
-	@Override
 	public void persist() {
 		model.persist();
 	}
 
+	/**
+	 * Sets the company ID of this faro project email address domain.
+	 *
+	 * @param companyId the company ID of this faro project email address domain
+	 */
 	@Override
-	public void setCachedModel(boolean cachedModel) {
-		model.setCachedModel(cachedModel);
+	public void setCompanyId(long companyId) {
+		model.setCompanyId(companyId);
 	}
 
 	/**
@@ -215,27 +194,7 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 	 */
 	@Override
 	public void setEmailAddressDomain(String emailAddressDomain) {
-		model.setEmailAddressDomain(
-			emailAddressDomain);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		model.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		model.setExpandoBridgeAttributes(
-			expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		model.setExpandoBridgeAttributes(
-			serviceContext);
+		model.setEmailAddressDomain(emailAddressDomain);
 	}
 
 	/**
@@ -271,9 +230,14 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 		model.setGroupId(groupId);
 	}
 
+	/**
+	 * Sets the mvcc version of this faro project email address domain.
+	 *
+	 * @param mvccVersion the mvcc version of this faro project email address domain
+	 */
 	@Override
-	public void setNew(boolean n) {
-		model.setNew(n);
+	public void setMvccVersion(long mvccVersion) {
+		model.setMvccVersion(mvccVersion);
 	}
 
 	/**
@@ -287,88 +251,16 @@ public class FaroProjectEmailAddressDomainWrapper extends BaseModelWrapper<FaroP
 	}
 
 	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		model.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel
-		<FaroProjectEmailAddressDomain> toCacheModel() {
-
-		return model.toCacheModel();
-	}
-
-	@Override
-	public FaroProjectEmailAddressDomain toEscapedModel() {
-		return new FaroProjectEmailAddressDomainWrapper(
-			model.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return model.toString();
-	}
-
-	@Override
-	public FaroProjectEmailAddressDomain toUnescapedModel() {
-		return new FaroProjectEmailAddressDomainWrapper(
-			model.toUnescapedModel());
-	}
-
-	@Override
-	protected FaroProjectEmailAddressDomainWrapper wrap(FaroProjectEmailAddressDomain faroProjectEmailAddressDomain) {
-		return new FaroProjectEmailAddressDomainWrapper(faroProjectEmailAddressDomain);
-	}
-
-	@Override
 	public String toXmlString() {
 		return model.toXmlString();
 	}
 
 	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
+	protected FaroProjectEmailAddressDomainWrapper wrap(
+		FaroProjectEmailAddressDomain faroProjectEmailAddressDomain) {
 
-		if (!(object instanceof FaroProjectEmailAddressDomainWrapper)) {
-			return false;
-		}
-
-		FaroProjectEmailAddressDomainWrapper
-			faroProjectEmailAddressDomainWrapper =
-				(FaroProjectEmailAddressDomainWrapper)object;
-
-		if (Objects.equals(
-				model,
-				faroProjectEmailAddressDomainWrapper.
-					model)) {
-
-			return true;
-		}
-
-		return false;
+		return new FaroProjectEmailAddressDomainWrapper(
+			faroProjectEmailAddressDomain);
 	}
-
-	@Override
-	public FaroProjectEmailAddressDomain getWrappedModel() {
-		return model;
-	}
-
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return model.isEntityCacheEnabled();
-	}
-
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return model.isFinderCacheEnabled();
-	}
-
-	@Override
-	public void resetOriginalValues() {
-		model.resetOriginalValues();
-	}
-
 
 }

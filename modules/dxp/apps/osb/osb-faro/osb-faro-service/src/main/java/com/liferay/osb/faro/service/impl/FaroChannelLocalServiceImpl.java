@@ -51,12 +51,17 @@ import java.util.ResourceBundle;
 
 import javax.mail.internet.InternetAddress;
 
+import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Matthew Kong
  * @see FaroChannelLocalServiceBaseImpl
  */
+@Component(
+	property = "model.class.name=com.liferay.osb.faro.model.FaroChannel",
+	service = FaroChannel.class
+)
 public class FaroChannelLocalServiceImpl
 	extends FaroChannelLocalServiceBaseImpl {
 
@@ -105,7 +110,7 @@ public class FaroChannelLocalServiceImpl
 			long userId, long workspaceGroupId)
 		throws PortalException {
 
-		FaroChannel faroChannel = faroChannelPersistence.findByChannelId(
+		FaroChannel faroChannel = faroChannelPersistence.findByC_W(
 			channelId, workspaceGroupId);
 
 		Role role = _roleLocalService.getRole(
@@ -137,7 +142,7 @@ public class FaroChannelLocalServiceImpl
 			List<Integer> statuses, long workspaceGroupId)
 		throws PortalException {
 
-		FaroChannel faroChannel = faroChannelPersistence.findByChannelId(
+		FaroChannel faroChannel = faroChannelPersistence.findByC_W(
 			channelId, workspaceGroupId);
 
 		return _faroUserFinder.countByChannelKeywords(
@@ -160,8 +165,7 @@ public class FaroChannelLocalServiceImpl
 		throws PortalException {
 
 		return deleteFaroChannel(
-			faroChannelPersistence.findByChannelId(
-				channelId, workspaceGroupId));
+			faroChannelPersistence.findByC_W(channelId, workspaceGroupId));
 	}
 
 	@Override
@@ -183,7 +187,7 @@ public class FaroChannelLocalServiceImpl
 			OrderByComparator<FaroUser> orderByComparator)
 		throws PortalException {
 
-		FaroChannel faroChannel = faroChannelPersistence.findByChannelId(
+		FaroChannel faroChannel = faroChannelPersistence.findByC_W(
 			channelId, workspaceGroupId);
 
 		return _faroUserFinder.findByChannelKeywords(
@@ -195,8 +199,7 @@ public class FaroChannelLocalServiceImpl
 	public FaroChannel getFaroChannel(String channelId, long workspaceGroupId)
 		throws PortalException {
 
-		return faroChannelPersistence.findByChannelId(
-			channelId, workspaceGroupId);
+		return faroChannelPersistence.findByC_W(channelId, workspaceGroupId);
 	}
 
 	@Override
@@ -204,7 +207,7 @@ public class FaroChannelLocalServiceImpl
 			String channelId, List<Long> userIds, long workspaceGroupId)
 		throws PortalException {
 
-		FaroChannel faroChannel = faroChannelPersistence.findByChannelId(
+		FaroChannel faroChannel = faroChannelPersistence.findByC_W(
 			channelId, workspaceGroupId);
 
 		for (long userId : userIds) {

@@ -17,14 +17,9 @@ package com.liferay.osb.faro.service.base;
 import com.liferay.osb.faro.model.FaroProject;
 import com.liferay.osb.faro.service.FaroProjectLocalService;
 import com.liferay.osb.faro.service.FaroProjectLocalServiceUtil;
-import com.liferay.osb.faro.service.persistence.FaroChannelFinder;
-import com.liferay.osb.faro.service.persistence.FaroChannelPersistence;
-import com.liferay.osb.faro.service.persistence.FaroPreferencesPersistence;
-import com.liferay.osb.faro.service.persistence.FaroProjectEmailAddressDomainPersistence;
 import com.liferay.osb.faro.service.persistence.FaroProjectFinder;
 import com.liferay.osb.faro.service.persistence.FaroProjectPersistence;
-import com.liferay.osb.faro.service.persistence.FaroUserFinder;
-import com.liferay.osb.faro.service.persistence.FaroUserPersistence;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -38,6 +33,8 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.search.Indexable;
@@ -45,8 +42,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
-import com.liferay.portal.kernel.service.persistence.GroupPersistence;
-import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -144,6 +139,18 @@ public abstract class FaroProjectLocalServiceBaseImpl
 	@Override
 	public FaroProject deleteFaroProject(FaroProject faroProject) {
 		return faroProjectPersistence.remove(faroProject);
+	}
+
+	@Override
+	public <T> T dslQuery(DSLQuery dslQuery) {
+		return faroProjectPersistence.dslQuery(dslQuery);
+	}
+
+	@Override
+	public int dslQueryCount(DSLQuery dslQuery) {
+		Long count = dslQuery(dslQuery);
+
+		return count.intValue();
 	}
 
 	@Override
@@ -298,13 +305,29 @@ public abstract class FaroProjectLocalServiceBaseImpl
 	 * @throws PortalException
 	 */
 	@Override
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+
+		return faroProjectPersistence.create(((Long)primaryKeyObj).longValue());
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
+
+		if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Implement FaroProjectLocalServiceImpl#deleteFaroProject(FaroProject) to avoid orphaned data");
+		}
 
 		return faroProjectLocalService.deleteFaroProject(
 			(FaroProject)persistedModel);
 	}
 
+	@Override
 	public BasePersistence<FaroProject> getBasePersistence() {
 		return faroProjectPersistence;
 	}
@@ -442,300 +465,6 @@ public abstract class FaroProjectLocalServiceBaseImpl
 		this.counterLocalService = counterLocalService;
 	}
 
-	/**
-	 * Returns the faro channel local service.
-	 *
-	 * @return the faro channel local service
-	 */
-	public com.liferay.osb.faro.service.FaroChannelLocalService
-		getFaroChannelLocalService() {
-
-		return faroChannelLocalService;
-	}
-
-	/**
-	 * Sets the faro channel local service.
-	 *
-	 * @param faroChannelLocalService the faro channel local service
-	 */
-	public void setFaroChannelLocalService(
-		com.liferay.osb.faro.service.FaroChannelLocalService
-			faroChannelLocalService) {
-
-		this.faroChannelLocalService = faroChannelLocalService;
-	}
-
-	/**
-	 * Returns the faro channel persistence.
-	 *
-	 * @return the faro channel persistence
-	 */
-	public FaroChannelPersistence getFaroChannelPersistence() {
-		return faroChannelPersistence;
-	}
-
-	/**
-	 * Sets the faro channel persistence.
-	 *
-	 * @param faroChannelPersistence the faro channel persistence
-	 */
-	public void setFaroChannelPersistence(
-		FaroChannelPersistence faroChannelPersistence) {
-
-		this.faroChannelPersistence = faroChannelPersistence;
-	}
-
-	/**
-	 * Returns the faro channel finder.
-	 *
-	 * @return the faro channel finder
-	 */
-	public FaroChannelFinder getFaroChannelFinder() {
-		return faroChannelFinder;
-	}
-
-	/**
-	 * Sets the faro channel finder.
-	 *
-	 * @param faroChannelFinder the faro channel finder
-	 */
-	public void setFaroChannelFinder(FaroChannelFinder faroChannelFinder) {
-		this.faroChannelFinder = faroChannelFinder;
-	}
-
-	/**
-	 * Returns the faro preferences local service.
-	 *
-	 * @return the faro preferences local service
-	 */
-	public com.liferay.osb.faro.service.FaroPreferencesLocalService
-		getFaroPreferencesLocalService() {
-
-		return faroPreferencesLocalService;
-	}
-
-	/**
-	 * Sets the faro preferences local service.
-	 *
-	 * @param faroPreferencesLocalService the faro preferences local service
-	 */
-	public void setFaroPreferencesLocalService(
-		com.liferay.osb.faro.service.FaroPreferencesLocalService
-			faroPreferencesLocalService) {
-
-		this.faroPreferencesLocalService = faroPreferencesLocalService;
-	}
-
-	/**
-	 * Returns the faro preferences persistence.
-	 *
-	 * @return the faro preferences persistence
-	 */
-	public FaroPreferencesPersistence getFaroPreferencesPersistence() {
-		return faroPreferencesPersistence;
-	}
-
-	/**
-	 * Sets the faro preferences persistence.
-	 *
-	 * @param faroPreferencesPersistence the faro preferences persistence
-	 */
-	public void setFaroPreferencesPersistence(
-		FaroPreferencesPersistence faroPreferencesPersistence) {
-
-		this.faroPreferencesPersistence = faroPreferencesPersistence;
-	}
-
-	/**
-	 * Returns the group local service.
-	 *
-	 * @return the group local service
-	 */
-	public com.liferay.portal.kernel.service.GroupLocalService
-		getGroupLocalService() {
-
-		return groupLocalService;
-	}
-
-	/**
-	 * Sets the group local service.
-	 *
-	 * @param groupLocalService the group local service
-	 */
-	public void setGroupLocalService(
-		com.liferay.portal.kernel.service.GroupLocalService groupLocalService) {
-
-		this.groupLocalService = groupLocalService;
-	}
-
-	/**
-	 * Returns the group persistence.
-	 *
-	 * @return the group persistence
-	 */
-	public GroupPersistence getGroupPersistence() {
-		return groupPersistence;
-	}
-
-	/**
-	 * Sets the group persistence.
-	 *
-	 * @param groupPersistence the group persistence
-	 */
-	public void setGroupPersistence(GroupPersistence groupPersistence) {
-		this.groupPersistence = groupPersistence;
-	}
-
-	/**
-	 * Returns the user local service.
-	 *
-	 * @return the user local service
-	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
-		return userLocalService;
-	}
-
-	/**
-	 * Sets the user local service.
-	 *
-	 * @param userLocalService the user local service
-	 */
-	public void setUserLocalService(
-		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
-		this.userLocalService = userLocalService;
-	}
-
-	/**
-	 * Returns the user persistence.
-	 *
-	 * @return the user persistence
-	 */
-	public UserPersistence getUserPersistence() {
-		return userPersistence;
-	}
-
-	/**
-	 * Sets the user persistence.
-	 *
-	 * @param userPersistence the user persistence
-	 */
-	public void setUserPersistence(UserPersistence userPersistence) {
-		this.userPersistence = userPersistence;
-	}
-
-	/**
-	 * Returns the faro project email address domain local service.
-	 *
-	 * @return the faro project email address domain local service
-	 */
-	public
-		com.liferay.osb.faro.service.FaroProjectEmailAddressDomainLocalService
-			getFaroProjectEmailAddressDomainLocalService() {
-
-		return faroProjectEmailAddressDomainLocalService;
-	}
-
-	/**
-	 * Sets the faro project email address domain local service.
-	 *
-	 * @param faroProjectEmailAddressDomainLocalService the faro project email address domain local service
-	 */
-	public void setFaroProjectEmailAddressDomainLocalService(
-		com.liferay.osb.faro.service.FaroProjectEmailAddressDomainLocalService
-			faroProjectEmailAddressDomainLocalService) {
-
-		this.faroProjectEmailAddressDomainLocalService =
-			faroProjectEmailAddressDomainLocalService;
-	}
-
-	/**
-	 * Returns the faro project email address domain persistence.
-	 *
-	 * @return the faro project email address domain persistence
-	 */
-	public FaroProjectEmailAddressDomainPersistence
-		getFaroProjectEmailAddressDomainPersistence() {
-
-		return faroProjectEmailAddressDomainPersistence;
-	}
-
-	/**
-	 * Sets the faro project email address domain persistence.
-	 *
-	 * @param faroProjectEmailAddressDomainPersistence the faro project email address domain persistence
-	 */
-	public void setFaroProjectEmailAddressDomainPersistence(
-		FaroProjectEmailAddressDomainPersistence
-			faroProjectEmailAddressDomainPersistence) {
-
-		this.faroProjectEmailAddressDomainPersistence =
-			faroProjectEmailAddressDomainPersistence;
-	}
-
-	/**
-	 * Returns the faro user local service.
-	 *
-	 * @return the faro user local service
-	 */
-	public com.liferay.osb.faro.service.FaroUserLocalService
-		getFaroUserLocalService() {
-
-		return faroUserLocalService;
-	}
-
-	/**
-	 * Sets the faro user local service.
-	 *
-	 * @param faroUserLocalService the faro user local service
-	 */
-	public void setFaroUserLocalService(
-		com.liferay.osb.faro.service.FaroUserLocalService
-			faroUserLocalService) {
-
-		this.faroUserLocalService = faroUserLocalService;
-	}
-
-	/**
-	 * Returns the faro user persistence.
-	 *
-	 * @return the faro user persistence
-	 */
-	public FaroUserPersistence getFaroUserPersistence() {
-		return faroUserPersistence;
-	}
-
-	/**
-	 * Sets the faro user persistence.
-	 *
-	 * @param faroUserPersistence the faro user persistence
-	 */
-	public void setFaroUserPersistence(
-		FaroUserPersistence faroUserPersistence) {
-
-		this.faroUserPersistence = faroUserPersistence;
-	}
-
-	/**
-	 * Returns the faro user finder.
-	 *
-	 * @return the faro user finder
-	 */
-	public FaroUserFinder getFaroUserFinder() {
-		return faroUserFinder;
-	}
-
-	/**
-	 * Sets the faro user finder.
-	 *
-	 * @param faroUserFinder the faro user finder
-	 */
-	public void setFaroUserFinder(FaroUserFinder faroUserFinder) {
-		this.faroUserFinder = faroUserFinder;
-	}
-
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.faro.model.FaroProject", faroProjectLocalService);
@@ -823,67 +552,8 @@ public abstract class FaroProjectLocalServiceBaseImpl
 	protected com.liferay.counter.kernel.service.CounterLocalService
 		counterLocalService;
 
-	@BeanReference(
-		type = com.liferay.osb.faro.service.FaroChannelLocalService.class
-	)
-	protected com.liferay.osb.faro.service.FaroChannelLocalService
-		faroChannelLocalService;
-
-	@BeanReference(type = FaroChannelPersistence.class)
-	protected FaroChannelPersistence faroChannelPersistence;
-
-	@BeanReference(type = FaroChannelFinder.class)
-	protected FaroChannelFinder faroChannelFinder;
-
-	@BeanReference(
-		type = com.liferay.osb.faro.service.FaroPreferencesLocalService.class
-	)
-	protected com.liferay.osb.faro.service.FaroPreferencesLocalService
-		faroPreferencesLocalService;
-
-	@BeanReference(type = FaroPreferencesPersistence.class)
-	protected FaroPreferencesPersistence faroPreferencesPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.GroupLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.GroupLocalService
-		groupLocalService;
-
-	@ServiceReference(type = GroupPersistence.class)
-	protected GroupPersistence groupPersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
-	protected com.liferay.portal.kernel.service.UserLocalService
-		userLocalService;
-
-	@ServiceReference(type = UserPersistence.class)
-	protected UserPersistence userPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.faro.service.FaroProjectEmailAddressDomainLocalService.class
-	)
-	protected
-		com.liferay.osb.faro.service.FaroProjectEmailAddressDomainLocalService
-			faroProjectEmailAddressDomainLocalService;
-
-	@BeanReference(type = FaroProjectEmailAddressDomainPersistence.class)
-	protected FaroProjectEmailAddressDomainPersistence
-		faroProjectEmailAddressDomainPersistence;
-
-	@BeanReference(
-		type = com.liferay.osb.faro.service.FaroUserLocalService.class
-	)
-	protected com.liferay.osb.faro.service.FaroUserLocalService
-		faroUserLocalService;
-
-	@BeanReference(type = FaroUserPersistence.class)
-	protected FaroUserPersistence faroUserPersistence;
-
-	@BeanReference(type = FaroUserFinder.class)
-	protected FaroUserFinder faroUserFinder;
+	private static final Log _log = LogFactoryUtil.getLog(
+		FaroProjectLocalServiceBaseImpl.class);
 
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
 	protected PersistedModelLocalServiceRegistry

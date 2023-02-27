@@ -14,7 +14,6 @@
 
 package com.liferay.osb.faro.service;
 
-import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -27,6 +26,10 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
 public class FaroPreferencesLocalServiceWrapper
 	implements FaroPreferencesLocalService,
 			   ServiceWrapper<FaroPreferencesLocalService> {
+
+	public FaroPreferencesLocalServiceWrapper() {
+		this(null);
+	}
 
 	public FaroPreferencesLocalServiceWrapper(
 		FaroPreferencesLocalService faroPreferencesLocalService) {
@@ -63,6 +66,17 @@ public class FaroPreferencesLocalServiceWrapper
 
 		return _faroPreferencesLocalService.createFaroPreferences(
 			faroPreferencesId);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _faroPreferencesLocalService.createPersistedModel(primaryKeyObj);
 	}
 
 	/**
@@ -129,12 +143,14 @@ public class FaroPreferencesLocalServiceWrapper
 	}
 
 	@Override
-	public <T> T dslQuery(DSLQuery dslQuery) {
+	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
 		return _faroPreferencesLocalService.dslQuery(dslQuery);
 	}
 
 	@Override
-	public int dslQueryCount(DSLQuery dslQuery) {
+	public int dslQueryCount(
+		com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
+
 		return _faroPreferencesLocalService.dslQueryCount(dslQuery);
 	}
 

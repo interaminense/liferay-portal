@@ -14,7 +14,6 @@
 
 package com.liferay.osb.faro.service;
 
-import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -27,6 +26,10 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
 public class FaroNotificationLocalServiceWrapper
 	implements FaroNotificationLocalService,
 			   ServiceWrapper<FaroNotificationLocalService> {
+
+	public FaroNotificationLocalServiceWrapper() {
+		this(null);
+	}
 
 	public FaroNotificationLocalServiceWrapper(
 		FaroNotificationLocalService faroNotificationLocalService) {
@@ -78,6 +81,18 @@ public class FaroNotificationLocalServiceWrapper
 
 		return _faroNotificationLocalService.createFaroNotification(
 			faroNotificationId);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _faroNotificationLocalService.createPersistedModel(
+			primaryKeyObj);
 	}
 
 	/**
@@ -139,21 +154,23 @@ public class FaroNotificationLocalServiceWrapper
 	}
 
 	@Override
-	public <T> T dslQuery(DSLQuery dslQuery) {
-		return _faroNotificationLocalService.dslQuery(dslQuery);
-	}
-
-	@Override
-	public int dslQueryCount(DSLQuery dslQuery) {
-		return _faroNotificationLocalService.dslQueryCount(dslQuery);
-	}
-
-	@Override
 	public void deleteUnreadFaroNotifications(
 		long groupId, String type, String subtype, long userId) {
 
 		_faroNotificationLocalService.deleteUnreadFaroNotifications(
 			groupId, type, subtype, userId);
+	}
+
+	@Override
+	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
+		return _faroNotificationLocalService.dslQuery(dslQuery);
+	}
+
+	@Override
+	public int dslQueryCount(
+		com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
+
+		return _faroNotificationLocalService.dslQueryCount(dslQuery);
 	}
 
 	@Override

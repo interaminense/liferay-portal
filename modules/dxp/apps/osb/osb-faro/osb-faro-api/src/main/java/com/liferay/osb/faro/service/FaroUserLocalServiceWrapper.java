@@ -14,7 +14,6 @@
 
 package com.liferay.osb.faro.service;
 
-import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -26,6 +25,10 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  */
 public class FaroUserLocalServiceWrapper
 	implements FaroUserLocalService, ServiceWrapper<FaroUserLocalService> {
+
+	public FaroUserLocalServiceWrapper() {
+		this(null);
+	}
 
 	public FaroUserLocalServiceWrapper(
 		FaroUserLocalService faroUserLocalService) {
@@ -80,6 +83,17 @@ public class FaroUserLocalServiceWrapper
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _faroUserLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the faro user from the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
@@ -131,12 +145,14 @@ public class FaroUserLocalServiceWrapper
 	}
 
 	@Override
-	public <T> T dslQuery(DSLQuery dslQuery) {
+	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
 		return _faroUserLocalService.dslQuery(dslQuery);
 	}
 
 	@Override
-	public int dslQueryCount(DSLQuery dslQuery) {
+	public int dslQueryCount(
+		com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
+
 		return _faroUserLocalService.dslQueryCount(dslQuery);
 	}
 

@@ -14,16 +14,11 @@
 
 package com.liferay.osb.faro.model;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
-import com.liferay.portal.kernel.service.ServiceContext;
-
-import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * <p>
@@ -34,7 +29,8 @@ import java.util.Objects;
  * @see FaroChannel
  * @generated
  */
-public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
+public class FaroChannelWrapper
+	extends BaseModelWrapper<FaroChannel>
 	implements FaroChannel, ModelWrapper<FaroChannel> {
 
 	public FaroChannelWrapper(FaroChannel faroChannel) {
@@ -42,24 +38,16 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	}
 
 	@Override
-	public Class<?> getModelClass() {
-		return FaroChannel.class;
-	}
-
-	@Override
-	public String getModelClassName() {
-		return FaroChannel.class.getName();
-	}
-
-	@Override
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put("faroChannelId", getFaroChannelId());
 		attributes.put("groupId", getGroupId());
+		attributes.put("companyId", getCompanyId());
+		attributes.put("createTime", getCreateTime());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
-		attributes.put("createTime", getCreateTime());
 		attributes.put("modifiedTime", getModifiedTime());
 		attributes.put("channelId", getChannelId());
 		attributes.put("name", getName());
@@ -71,6 +59,12 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		Long mvccVersion = (Long)attributes.get("mvccVersion");
+
+		if (mvccVersion != null) {
+			setMvccVersion(mvccVersion);
+		}
+
 		Long faroChannelId = (Long)attributes.get("faroChannelId");
 
 		if (faroChannelId != null) {
@@ -83,6 +77,18 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 			setGroupId(groupId);
 		}
 
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
+		}
+
+		Long createTime = (Long)attributes.get("createTime");
+
+		if (createTime != null) {
+			setCreateTime(createTime);
+		}
+
 		Long userId = (Long)attributes.get("userId");
 
 		if (userId != null) {
@@ -93,12 +99,6 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 
 		if (userName != null) {
 			setUserName(userName);
-		}
-
-		Long createTime = (Long)attributes.get("createTime");
-
-		if (createTime != null) {
-			setCreateTime(createTime);
 		}
 
 		Long modifiedTime = (Long)attributes.get("modifiedTime");
@@ -133,25 +133,8 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	}
 
 	@Override
-	public Object clone() {
-		return new FaroChannelWrapper((FaroChannel)model.clone());
-	}
-
-	@Override
 	public FaroChannel cloneWithOriginalValues() {
 		return wrap(model.cloneWithOriginalValues());
-	}
-
-	@Override
-	protected FaroChannelWrapper wrap(
-			FaroChannel faroChannel) {
-
-		return new FaroChannelWrapper(faroChannel);
-	}
-
-	@Override
-	public int compareTo(FaroChannel faroChannel) {
-		return model.compareTo(faroChannel);
 	}
 
 	/**
@@ -165,6 +148,16 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	}
 
 	/**
+	 * Returns the company ID of this faro channel.
+	 *
+	 * @return the company ID of this faro channel
+	 */
+	@Override
+	public long getCompanyId() {
+		return model.getCompanyId();
+	}
+
+	/**
 	 * Returns the create time of this faro channel.
 	 *
 	 * @return the create time of this faro channel
@@ -172,11 +165,6 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	@Override
 	public long getCreateTime() {
 		return model.getCreateTime();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return model.getExpandoBridge();
 	}
 
 	/**
@@ -210,6 +198,16 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	}
 
 	/**
+	 * Returns the mvcc version of this faro channel.
+	 *
+	 * @return the mvcc version of this faro channel
+	 */
+	@Override
+	public long getMvccVersion() {
+		return model.getMvccVersion();
+	}
+
+	/**
 	 * Returns the name of this faro channel.
 	 *
 	 * @return the name of this faro channel
@@ -237,11 +235,6 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return model.getPrimaryKeyObj();
 	}
 
 	/**
@@ -285,33 +278,8 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	}
 
 	@Override
-	public int hashCode() {
-		return model.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return model.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return model.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return model.isNew();
-	}
-
-	@Override
 	public void persist() {
 		model.persist();
-	}
-
-	@Override
-	public void setCachedModel(boolean cachedModel) {
-		model.setCachedModel(cachedModel);
 	}
 
 	/**
@@ -325,6 +293,16 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	}
 
 	/**
+	 * Sets the company ID of this faro channel.
+	 *
+	 * @param companyId the company ID of this faro channel
+	 */
+	@Override
+	public void setCompanyId(long companyId) {
+		model.setCompanyId(companyId);
+	}
+
+	/**
 	 * Sets the create time of this faro channel.
 	 *
 	 * @param createTime the create time of this faro channel
@@ -332,23 +310,6 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	@Override
 	public void setCreateTime(long createTime) {
 		model.setCreateTime(createTime);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		model.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		model.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		model.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
@@ -382,6 +343,16 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	}
 
 	/**
+	 * Sets the mvcc version of this faro channel.
+	 *
+	 * @param mvccVersion the mvcc version of this faro channel
+	 */
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		model.setMvccVersion(mvccVersion);
+	}
+
+	/**
 	 * Sets the name of this faro channel.
 	 *
 	 * @param name the name of this faro channel
@@ -389,11 +360,6 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	@Override
 	public void setName(String name) {
 		model.setName(name);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		model.setNew(n);
 	}
 
 	/**
@@ -414,11 +380,6 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		model.setPrimaryKeyObj(primaryKeyObj);
 	}
 
 	/**
@@ -462,70 +423,13 @@ public class FaroChannelWrapper extends BaseModelWrapper<FaroChannel>
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<FaroChannel>
-		toCacheModel() {
-
-		return model.toCacheModel();
-	}
-
-	@Override
-	public FaroChannel toEscapedModel() {
-		return new FaroChannelWrapper(model.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return model.toString();
-	}
-
-	@Override
-	public FaroChannel toUnescapedModel() {
-		return new FaroChannelWrapper(model.toUnescapedModel());
-	}
-
-	@Override
 	public String toXmlString() {
 		return model.toXmlString();
 	}
 
 	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
-
-		if (!(object instanceof FaroChannelWrapper)) {
-			return false;
-		}
-
-		FaroChannelWrapper faroChannelWrapper = (FaroChannelWrapper)object;
-
-		if (Objects.equals(model, faroChannelWrapper.model)) {
-			return true;
-		}
-
-		return false;
+	protected FaroChannelWrapper wrap(FaroChannel faroChannel) {
+		return new FaroChannelWrapper(faroChannel);
 	}
-
-	@Override
-	public FaroChannel getWrappedModel() {
-		return model;
-	}
-
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return model.isEntityCacheEnabled();
-	}
-
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return model.isFinderCacheEnabled();
-	}
-
-	@Override
-	public void resetOriginalValues() {
-		model.resetOriginalValues();
-	}
-
 
 }

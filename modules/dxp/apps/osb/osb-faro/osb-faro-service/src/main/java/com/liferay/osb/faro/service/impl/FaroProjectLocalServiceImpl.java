@@ -26,6 +26,7 @@ import com.liferay.osb.faro.service.FaroProjectEmailAddressDomainLocalService;
 import com.liferay.osb.faro.service.FaroUserLocalService;
 import com.liferay.osb.faro.service.base.FaroProjectLocalServiceBaseImpl;
 import com.liferay.osb.faro.util.EmailUtil;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -54,11 +55,16 @@ import java.util.ResourceBundle;
 
 import javax.mail.internet.InternetAddress;
 
+import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Matthew Kong
  */
+@Component(
+	property = "model.class.name=com.liferay.osb.faro.model.FaroProject",
+	service = FaroProject.class
+)
 public class FaroProjectLocalServiceImpl
 	extends FaroProjectLocalServiceBaseImpl {
 
@@ -136,6 +142,16 @@ public class FaroProjectLocalServiceImpl
 		_groupLocalService.deleteGroup(groupId);
 
 		return faroProjectPersistence.removeByGroupId(groupId);
+	}
+
+	@Override
+	public <T> T dslQuery(DSLQuery dslQuery) {
+		return faroProjectPersistence.dslQuery(dslQuery);
+	}
+
+	@Override
+	public int dslQueryCount(DSLQuery dslQuery) {
+		return faroProjectPersistence.dslQueryCount(dslQuery);
 	}
 
 	@Override

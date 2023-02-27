@@ -16,10 +16,12 @@ package com.liferay.osb.faro.service.persistence.impl;
 
 import com.liferay.osb.faro.exception.NoSuchFaroProjectEmailAddressDomainException;
 import com.liferay.osb.faro.model.FaroProjectEmailAddressDomain;
+import com.liferay.osb.faro.model.FaroProjectEmailAddressDomainTable;
 import com.liferay.osb.faro.model.impl.FaroProjectEmailAddressDomainImpl;
 import com.liferay.osb.faro.model.impl.FaroProjectEmailAddressDomainModelImpl;
 import com.liferay.osb.faro.service.persistence.FaroProjectEmailAddressDomainPersistence;
 import com.liferay.osb.faro.service.persistence.FaroProjectEmailAddressDomainUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -29,13 +31,13 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
@@ -43,10 +45,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -239,10 +237,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 				}
 			}
 			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
-
 				throw processException(exception);
 			}
 			finally {
@@ -581,8 +575,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception exception) {
-				finderCache.removeResult(finderPath, finderArgs);
-
 				throw processException(exception);
 			}
 			finally {
@@ -760,10 +752,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 				}
 			}
 			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
-
 				throw processException(exception);
 			}
 			finally {
@@ -1103,8 +1091,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception exception) {
-				finderCache.removeResult(finderPath, finderArgs);
-
 				throw processException(exception);
 			}
 			finally {
@@ -1120,6 +1106,11 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 
 	public FaroProjectEmailAddressDomainPersistenceImpl() {
 		setModelClass(FaroProjectEmailAddressDomain.class);
+
+		setModelImplClass(FaroProjectEmailAddressDomainImpl.class);
+		setModelPKClass(long.class);
+
+		setTable(FaroProjectEmailAddressDomainTable.INSTANCE);
 	}
 
 	/**
@@ -1135,8 +1126,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 			FaroProjectEmailAddressDomainImpl.class,
 			faroProjectEmailAddressDomain.getPrimaryKey(),
 			faroProjectEmailAddressDomain);
-
-		faroProjectEmailAddressDomain.resetOriginalValues();
 	}
 
 	private int _valueObjectFinderCacheListThreshold;
@@ -1166,9 +1155,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 					faroProjectEmailAddressDomain.getPrimaryKey()) == null) {
 
 				cacheResult(faroProjectEmailAddressDomain);
-			}
-			else {
-				faroProjectEmailAddressDomain.resetOriginalValues();
 			}
 		}
 	}
@@ -1200,15 +1186,12 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 
 		entityCache.removeResult(
 			FaroProjectEmailAddressDomainImpl.class,
-				faroProjectEmailAddressDomain);
-
+			faroProjectEmailAddressDomain);
 	}
 
 	@Override
 	public void clearCache(
 		List<FaroProjectEmailAddressDomain> faroProjectEmailAddressDomains) {
-
-		finderCache.clearCache(FaroProjectEmailAddressDomain.class);
 
 		for (FaroProjectEmailAddressDomain faroProjectEmailAddressDomain :
 				faroProjectEmailAddressDomains) {
@@ -1219,8 +1202,9 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 		}
 	}
 
+	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FaroProjectEmailAddressDomain.class);
+		finderCache.clearCache(FaroProjectEmailAddressDomainImpl.class);
 
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
@@ -1244,6 +1228,9 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 		faroProjectEmailAddressDomain.setNew(true);
 		faroProjectEmailAddressDomain.setPrimaryKey(
 			faroProjectEmailAddressDomainId);
+
+		faroProjectEmailAddressDomain.setCompanyId(
+			CompanyThreadLocal.getCompanyId());
 
 		return faroProjectEmailAddressDomain;
 	}
@@ -1380,8 +1367,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 
 			if (isNew) {
 				session.save(faroProjectEmailAddressDomain);
-
-				faroProjectEmailAddressDomain.setNew(false);
 			}
 			else {
 				faroProjectEmailAddressDomain =
@@ -1396,81 +1381,13 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FaroProjectEmailAddressDomain.class);
-
-		if (!FaroProjectEmailAddressDomainModelImpl.COLUMN_BITMASK_ENABLED) {
-			finderCache.clearCache(FaroProjectEmailAddressDomain.class);
-		}
-		else if (isNew) {
-			Object[] args = new Object[] {
-				faroProjectEmailAddressDomainModelImpl.getGroupId()
-			};
-
-			finderCache.removeResult(_finderPathCountByGroupId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByGroupId, args);
-
-			args = new Object[] {
-				faroProjectEmailAddressDomainModelImpl.getFaroProjectId()
-			};
-
-			finderCache.removeResult(_finderPathCountByFaroProjectId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByFaroProjectId, args);
-
-			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
-		}
-		else {
-			if ((faroProjectEmailAddressDomainModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByGroupId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					faroProjectEmailAddressDomainModelImpl.getOriginalGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-
-				args = new Object[] {
-					faroProjectEmailAddressDomainModelImpl.getGroupId()
-				};
-
-				finderCache.removeResult(_finderPathCountByGroupId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByGroupId, args);
-			}
-
-			if ((faroProjectEmailAddressDomainModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByFaroProjectId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					faroProjectEmailAddressDomainModelImpl.
-						getOriginalFaroProjectId()
-				};
-
-				finderCache.removeResult(_finderPathCountByFaroProjectId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFaroProjectId, args);
-
-				args = new Object[] {
-					faroProjectEmailAddressDomainModelImpl.getFaroProjectId()
-				};
-
-				finderCache.removeResult(_finderPathCountByFaroProjectId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByFaroProjectId, args);
-			}
-		}
-
 		entityCache.putResult(
 			FaroProjectEmailAddressDomainImpl.class,
-			faroProjectEmailAddressDomain,
-			true, false);
+			faroProjectEmailAddressDomainModelImpl, false, true);
+
+		if (isNew) {
+			faroProjectEmailAddressDomain.setNew(false);
+		}
 
 		faroProjectEmailAddressDomain.resetOriginalValues();
 
@@ -1522,59 +1439,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 	/**
 	 * Returns the faro project email address domain with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the faro project email address domain
-	 * @return the faro project email address domain, or <code>null</code> if a faro project email address domain with the primary key could not be found
-	 */
-	@Override
-	public FaroProjectEmailAddressDomain fetchByPrimaryKey(
-		Serializable primaryKey) {
-
-		Serializable serializable = entityCache.getResult(
-			FaroProjectEmailAddressDomainImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		FaroProjectEmailAddressDomain faroProjectEmailAddressDomain =
-			(FaroProjectEmailAddressDomain)serializable;
-
-		if (faroProjectEmailAddressDomain == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				faroProjectEmailAddressDomain =
-					(FaroProjectEmailAddressDomain)session.get(
-						FaroProjectEmailAddressDomainImpl.class, primaryKey);
-
-				if (faroProjectEmailAddressDomain != null) {
-					cacheResult(faroProjectEmailAddressDomain);
-				}
-				else {
-					entityCache.putResult(
-						FaroProjectEmailAddressDomainImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					FaroProjectEmailAddressDomainImpl.class, primaryKey);
-
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return faroProjectEmailAddressDomain;
-	}
-
-	/**
-	 * Returns the faro project email address domain with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param faroProjectEmailAddressDomainId the primary key of the faro project email address domain
 	 * @return the faro project email address domain, or <code>null</code> if a faro project email address domain with the primary key could not be found
 	 */
@@ -1583,131 +1447,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 		long faroProjectEmailAddressDomainId) {
 
 		return fetchByPrimaryKey((Serializable)faroProjectEmailAddressDomainId);
-	}
-
-	@Override
-	public Map<Serializable, FaroProjectEmailAddressDomain> fetchByPrimaryKeys(
-		Set<Serializable> primaryKeys) {
-
-		if (primaryKeys.isEmpty()) {
-			return Collections.emptyMap();
-		}
-
-		Map<Serializable, FaroProjectEmailAddressDomain> map =
-			new HashMap<Serializable, FaroProjectEmailAddressDomain>();
-
-		if (primaryKeys.size() == 1) {
-			Iterator<Serializable> iterator = primaryKeys.iterator();
-
-			Serializable primaryKey = iterator.next();
-
-			FaroProjectEmailAddressDomain faroProjectEmailAddressDomain =
-				fetchByPrimaryKey(primaryKey);
-
-			if (faroProjectEmailAddressDomain != null) {
-				map.put(primaryKey, faroProjectEmailAddressDomain);
-			}
-
-			return map;
-		}
-
-		if ((databaseInMaxParameters > 0) &&
-			(primaryKeys.size() > databaseInMaxParameters)) {
-
-			Iterator<Serializable> iterator = primaryKeys.iterator();
-
-			while (iterator.hasNext()) {
-				Set<Serializable> page = new HashSet<>();
-
-				for (int i = 0;
-					 (i < databaseInMaxParameters) && iterator.hasNext(); i++) {
-
-					page.add(iterator.next());
-				}
-
-				map.putAll(fetchByPrimaryKeys(page));
-			}
-
-			return map;
-		}
-
-		Set<Serializable> uncachedPrimaryKeys = null;
-
-		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				FaroProjectEmailAddressDomainImpl.class, primaryKey);
-
-			if (serializable != nullModel) {
-				if (serializable == null) {
-					if (uncachedPrimaryKeys == null) {
-						uncachedPrimaryKeys = new HashSet<Serializable>();
-					}
-
-					uncachedPrimaryKeys.add(primaryKey);
-				}
-				else {
-					map.put(
-						primaryKey,
-						(FaroProjectEmailAddressDomain)serializable);
-				}
-			}
-		}
-
-		if (uncachedPrimaryKeys == null) {
-			return map;
-		}
-
-		StringBundler sb = new StringBundler(
-			(uncachedPrimaryKeys.size() * 2) + 1);
-
-		sb.append(_SQL_SELECT_FAROPROJECTEMAILADDRESSDOMAIN_WHERE_PKS_IN);
-
-		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
-
-			sb.append(",");
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		sb.append(")");
-
-		String sql = sb.toString();
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			Query query = session.createQuery(sql);
-
-			for (FaroProjectEmailAddressDomain faroProjectEmailAddressDomain :
-					(List<FaroProjectEmailAddressDomain>)query.list()) {
-
-				map.put(
-					faroProjectEmailAddressDomain.getPrimaryKeyObj(),
-					faroProjectEmailAddressDomain);
-
-				cacheResult(faroProjectEmailAddressDomain);
-
-				uncachedPrimaryKeys.remove(
-					faroProjectEmailAddressDomain.getPrimaryKeyObj());
-			}
-
-			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					FaroProjectEmailAddressDomainImpl.class, primaryKey,
-					nullModel);
-			}
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-
-		return map;
 	}
 
 	/**
@@ -1837,10 +1576,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 				}
 			}
 			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
-
 				throw processException(exception);
 			}
 			finally {
@@ -1889,9 +1624,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception exception) {
-				finderCache.removeResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY);
-
 				throw processException(exception);
 			}
 			finally {
@@ -1900,6 +1632,21 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 		}
 
 		return count.intValue();
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
+	protected String getPKDBName() {
+		return "faroProjectEmailAddressDomainId";
+	}
+
+	@Override
+	protected String getSelectSQL() {
+		return _SQL_SELECT_FAROPROJECTEMAILADDRESSDOMAIN;
 	}
 
 	@Override
@@ -1915,52 +1662,52 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
-
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0], new String[0], true);
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
+			new String[0], true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-			new String[0], new String[0], true);
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
+			new String[0], true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0],  new String[0], false);
+			new String[0], new String[0], false);
 
 		_finderPathWithPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
-			}, new String[] {"groupId"}, true);
+			},
+			new String[] {"groupId"}, true);
 
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()}, new String[] {"groupId"},
-				true);
+			true);
 
 		_finderPathCountByGroupId = new FinderPath(
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByGroupId", new String[] {Long.class.getName()}, new String[] {"groupId"},
-				false);
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
+			new String[] {Long.class.getName()}, new String[] {"groupId"},
+			false);
 
 		_finderPathWithPaginationFindByFaroProjectId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFaroProjectId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
-			}, new String[] {"faroProjectId"},
-		true);
+			},
+			new String[] {"faroProjectId"}, true);
 
 		_finderPathWithoutPaginationFindByFaroProjectId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFaroProjectId",
-			new String[] {Long.class.getName()},
-				new String[] {"faroProjectId"},
-				false);
+			new String[] {Long.class.getName()}, new String[] {"faroProjectId"},
+			true);
 
 		_finderPathCountByFaroProjectId = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByFaroProjectId", new String[] {Long.class.getName()}, new String[] {"faroProjectId"},
-				false);
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFaroProjectId",
+			new String[] {Long.class.getName()}, new String[] {"faroProjectId"},
+			false);
 
 		_setFaroProjectEmailAddressDomainUtilPersistence(this);
 	}
@@ -1970,10 +1717,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 
 		entityCache.removeCache(
 			FaroProjectEmailAddressDomainImpl.class.getName());
-
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	private void _setFaroProjectEmailAddressDomainUtilPersistence(
@@ -2004,10 +1747,6 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 		"SELECT faroProjectEmailAddressDomain FROM FaroProjectEmailAddressDomain faroProjectEmailAddressDomain";
 
 	private static final String
-		_SQL_SELECT_FAROPROJECTEMAILADDRESSDOMAIN_WHERE_PKS_IN =
-			"SELECT faroProjectEmailAddressDomain FROM FaroProjectEmailAddressDomain faroProjectEmailAddressDomain WHERE faroProjectEmailAddressDomainId IN (";
-
-	private static final String
 		_SQL_SELECT_FAROPROJECTEMAILADDRESSDOMAIN_WHERE =
 			"SELECT faroProjectEmailAddressDomain FROM FaroProjectEmailAddressDomain faroProjectEmailAddressDomain WHERE ";
 
@@ -2028,5 +1767,10 @@ public class FaroProjectEmailAddressDomainPersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FaroProjectEmailAddressDomainPersistenceImpl.class);
+
+	@Override
+	protected FinderCache getFinderCache() {
+		return finderCache;
+	}
 
 }
