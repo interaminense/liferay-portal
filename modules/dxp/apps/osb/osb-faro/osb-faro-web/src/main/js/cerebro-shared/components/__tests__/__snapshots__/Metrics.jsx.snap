@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Metrics should render 1`] = `
+<div>
+  <div
+    class="analytics-metrics"
+  >
+    <ul
+      class="card-tabs-root analytics-metrics-tabs"
+    >
+      <li
+        class="card-tab active"
+        data-testid="0"
+      >
+        <button
+          class="button-root btn btn-unstyled"
+          type="button"
+        >
+          <span
+            class="title"
+          >
+            Vistors
+          </span>
+          <div>
+            <span>
+              <span
+                class="primary-content"
+              >
+                <div
+                  class="metric-value"
+                >
+                  123123
+                  <span
+                    class="metric-value-letter"
+                  />
+                </div>
+              </span>
+              <div
+                class="analytics-trend"
+                style="color: rgb(40, 125, 60);"
+              >
+                <svg
+                  class="icon-root lexicon-icon lexicon-icon-caret-top-1"
+                  viewBox=""
+                >
+                  <use
+                    xlink:href="/o/osb-faro-web/dist/sprite.svg#caret-top-1"
+                  />
+                </svg>
+                <span
+                  class="analytics-trend-percent mb-0"
+                >
+                  20%
+                </span>
+              </div>
+            </span>
+          </div>
+        </button>
+      </li>
+      <li
+        class="card-tab"
+        data-testid="1"
+      >
+        <button
+          class="button-root btn btn-unstyled"
+          type="button"
+        >
+          <span
+            class="title"
+          >
+            Users
+          </span>
+          <div>
+            <span>
+              <span
+                class="primary-content"
+              >
+                <div
+                  class="metric-value"
+                >
+                  12.2
+                  <span
+                    class="metric-value-letter"
+                  >
+                    k
+                  </span>
+                </div>
+              </span>
+              <div
+                class="analytics-trend"
+              >
+                <span
+                  class="analytics-trend-percent mb-0"
+                >
+                  20%
+                </span>
+              </div>
+            </span>
+          </div>
+        </button>
+      </li>
+      <li
+        class="card-tab"
+        data-testid="2"
+      >
+        <button
+          class="button-root btn btn-unstyled"
+          type="button"
+        >
+          <span
+            class="title"
+          >
+            Views
+          </span>
+          <div>
+            <span>
+              <span
+                class="primary-content"
+              >
+                <div
+                  class="metric-value"
+                >
+                  220.5
+                  <span
+                    class="metric-value-letter"
+                  >
+                    k
+                  </span>
+                </div>
+              </span>
+              <div
+                class="analytics-trend"
+              >
+                <span
+                  class="analytics-trend-percent mb-0"
+                >
+                  20%
+                </span>
+              </div>
+            </span>
+          </div>
+        </button>
+      </li>
+    </ul>
+    <div
+      class="analytics-metrics-chart"
+    >
+      <div
+        class="composed-chart-with-empty-state"
+      >
+        <div
+          class="recharts-responsive-container"
+          style="width: 100%; height: 350px;"
+        >
+          <div
+            style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
+          />
+        </div>
+      </div>
+      <div
+        class="analytics-metrics-chart-sub-content-wrapper"
+      >
+        <div
+          class="custom-control custom-checkbox"
+        >
+          <label>
+            <input
+              class="custom-control-input"
+              type="checkbox"
+              value="false"
+            />
+            <span
+              class="custom-control-label"
+            >
+              <span
+                class="custom-control-label-text"
+              >
+                Compare to Previous
+              </span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

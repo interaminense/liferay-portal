@@ -1,0 +1,35 @@
+import {DocumentNode} from 'graphql';
+import {pickBy} from 'lodash';
+
+export type GQLQuery =
+	| {
+			definitions: {
+				variableDefinitions: {
+					variable: {
+						name: {
+							value: string;
+						};
+					};
+				}[];
+			}[];
+	  }
+	| DocumentNode;
+
+/**
+ * Returns an object of variable keys used in the graphQL query.
+ */
+export const getVariableDefinitions = (gqlQuery: GQLQuery) =>
+	gqlQuery.definitions.reduce((acc, {variableDefinitions}) => {
+		variableDefinitions.forEach(({variable}) => {
+			const {
+				name: {value}
+			} = variable;
+
+			acc[value] = true;
+		});
+
+		return acc;
+	}, {});
+
+export const removeUnusedVariables = (variables, validVariables) =>
+	pickBy(variables, (_, key) => validVariables[key]);
