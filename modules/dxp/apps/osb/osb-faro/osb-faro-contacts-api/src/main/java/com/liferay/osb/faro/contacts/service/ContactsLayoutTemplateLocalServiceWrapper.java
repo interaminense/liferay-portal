@@ -14,7 +14,6 @@
 
 package com.liferay.osb.faro.contacts.service;
 
-import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -27,6 +26,10 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
 public class ContactsLayoutTemplateLocalServiceWrapper
 	implements ContactsLayoutTemplateLocalService,
 			   ServiceWrapper<ContactsLayoutTemplateLocalService> {
+
+	public ContactsLayoutTemplateLocalServiceWrapper() {
+		this(null);
+	}
 
 	public ContactsLayoutTemplateLocalServiceWrapper(
 		ContactsLayoutTemplateLocalService contactsLayoutTemplateLocalService) {
@@ -78,6 +81,18 @@ public class ContactsLayoutTemplateLocalServiceWrapper
 
 		return _contactsLayoutTemplateLocalService.createContactsLayoutTemplate(
 			contactsLayoutTemplateId);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _contactsLayoutTemplateLocalService.createPersistedModel(
+			primaryKeyObj);
 	}
 
 	/**
@@ -139,12 +154,14 @@ public class ContactsLayoutTemplateLocalServiceWrapper
 	}
 
 	@Override
-	public <T> T dslQuery(DSLQuery dslQuery) {
+	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
 		return _contactsLayoutTemplateLocalService.dslQuery(dslQuery);
 	}
 
 	@Override
-	public int dslQueryCount(DSLQuery dslQuery) {
+	public int dslQueryCount(
+		com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
+
 		return _contactsLayoutTemplateLocalService.dslQueryCount(dslQuery);
 	}
 

@@ -14,16 +14,11 @@
 
 package com.liferay.osb.faro.contacts.model;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
-import com.liferay.portal.kernel.service.ServiceContext;
-
-import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * <p>
@@ -34,7 +29,8 @@ import java.util.Objects;
  * @see ContactsCardTemplate
  * @generated
  */
-public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTemplate>
+public class ContactsCardTemplateWrapper
+	extends BaseModelWrapper<ContactsCardTemplate>
 	implements ContactsCardTemplate, ModelWrapper<ContactsCardTemplate> {
 
 	public ContactsCardTemplateWrapper(
@@ -44,24 +40,16 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	}
 
 	@Override
-	public Class<?> getModelClass() {
-		return ContactsCardTemplate.class;
-	}
-
-	@Override
-	public String getModelClassName() {
-		return ContactsCardTemplate.class.getName();
-	}
-
-	@Override
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put("contactsCardTemplateId", getContactsCardTemplateId());
 		attributes.put("groupId", getGroupId());
+		attributes.put("companyId", getCompanyId());
+		attributes.put("createTime", getCreateTime());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
-		attributes.put("createTime", getCreateTime());
 		attributes.put("modifiedTime", getModifiedTime());
 		attributes.put("name", getName());
 		attributes.put("settings", getSettings());
@@ -72,6 +60,12 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		Long mvccVersion = (Long)attributes.get("mvccVersion");
+
+		if (mvccVersion != null) {
+			setMvccVersion(mvccVersion);
+		}
+
 		Long contactsCardTemplateId = (Long)attributes.get(
 			"contactsCardTemplateId");
 
@@ -85,6 +79,18 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 			setGroupId(groupId);
 		}
 
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
+		}
+
+		Long createTime = (Long)attributes.get("createTime");
+
+		if (createTime != null) {
+			setCreateTime(createTime);
+		}
+
 		Long userId = (Long)attributes.get("userId");
 
 		if (userId != null) {
@@ -95,12 +101,6 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 
 		if (userName != null) {
 			setUserName(userName);
-		}
-
-		Long createTime = (Long)attributes.get("createTime");
-
-		if (createTime != null) {
-			setCreateTime(createTime);
 		}
 
 		Long modifiedTime = (Long)attributes.get("modifiedTime");
@@ -129,19 +129,18 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	}
 
 	@Override
-	public Object clone() {
-		return new ContactsCardTemplateWrapper(
-			(ContactsCardTemplate)model.clone());
-	}
-
-	@Override
 	public ContactsCardTemplate cloneWithOriginalValues() {
 		return wrap(model.cloneWithOriginalValues());
 	}
 
+	/**
+	 * Returns the company ID of this contacts card template.
+	 *
+	 * @return the company ID of this contacts card template
+	 */
 	@Override
-	public int compareTo(ContactsCardTemplate contactsCardTemplate) {
-		return model.compareTo(contactsCardTemplate);
+	public long getCompanyId() {
+		return model.getCompanyId();
 	}
 
 	/**
@@ -162,11 +161,6 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	@Override
 	public long getCreateTime() {
 		return model.getCreateTime();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return model.getExpandoBridge();
 	}
 
 	/**
@@ -190,6 +184,16 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	}
 
 	/**
+	 * Returns the mvcc version of this contacts card template.
+	 *
+	 * @return the mvcc version of this contacts card template
+	 */
+	@Override
+	public long getMvccVersion() {
+		return model.getMvccVersion();
+	}
+
+	/**
 	 * Returns the name of this contacts card template.
 	 *
 	 * @return the name of this contacts card template
@@ -207,11 +211,6 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return model.getPrimaryKeyObj();
 	}
 
 	/**
@@ -265,33 +264,18 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	}
 
 	@Override
-	public int hashCode() {
-		return model.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return model.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return model.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return model.isNew();
-	}
-
-	@Override
 	public void persist() {
 		model.persist();
 	}
 
+	/**
+	 * Sets the company ID of this contacts card template.
+	 *
+	 * @param companyId the company ID of this contacts card template
+	 */
 	@Override
-	public void setCachedModel(boolean cachedModel) {
-		model.setCachedModel(cachedModel);
+	public void setCompanyId(long companyId) {
+		model.setCompanyId(companyId);
 	}
 
 	/**
@@ -312,23 +296,6 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	@Override
 	public void setCreateTime(long createTime) {
 		model.setCreateTime(createTime);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		model.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		model.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		model.setExpandoBridgeAttributes(serviceContext);
 	}
 
 	/**
@@ -352,6 +319,16 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	}
 
 	/**
+	 * Sets the mvcc version of this contacts card template.
+	 *
+	 * @param mvccVersion the mvcc version of this contacts card template
+	 */
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		model.setMvccVersion(mvccVersion);
+	}
+
+	/**
 	 * Sets the name of this contacts card template.
 	 *
 	 * @param name the name of this contacts card template
@@ -359,11 +336,6 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	@Override
 	public void setName(String name) {
 		model.setName(name);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		model.setNew(n);
 	}
 
 	/**
@@ -374,11 +346,6 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		model.setPrimaryKeyObj(primaryKeyObj);
 	}
 
 	/**
@@ -432,80 +399,15 @@ public class ContactsCardTemplateWrapper extends BaseModelWrapper<ContactsCardTe
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ContactsCardTemplate>
-		toCacheModel() {
-
-		return model.toCacheModel();
-	}
-
-	@Override
-	public ContactsCardTemplate toEscapedModel() {
-		return new ContactsCardTemplateWrapper(
-			model.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return model.toString();
-	}
-
-	@Override
-	public ContactsCardTemplate toUnescapedModel() {
-		return new ContactsCardTemplateWrapper(
-			model.toUnescapedModel());
-	}
-
-	@Override
-	protected ContactsCardTemplate wrap(ContactsCardTemplate contactsCardTemplate) {
-		return new ContactsCardTemplateWrapper(contactsCardTemplate);
-	}
-
-	@Override
 	public String toXmlString() {
 		return model.toXmlString();
 	}
 
 	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
+	protected ContactsCardTemplateWrapper wrap(
+		ContactsCardTemplate contactsCardTemplate) {
 
-		if (!(object instanceof ContactsCardTemplateWrapper)) {
-			return false;
-		}
-
-		ContactsCardTemplateWrapper contactsCardTemplateWrapper =
-			(ContactsCardTemplateWrapper)object;
-
-		if (Objects.equals(
-				model,
-				contactsCardTemplateWrapper.model)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public ContactsCardTemplate getWrappedModel() {
-		return model;
-	}
-
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return model.isEntityCacheEnabled();
-	}
-
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return model.isFinderCacheEnabled();
-	}
-
-	@Override
-	public void resetOriginalValues() {
-		model.resetOriginalValues();
+		return new ContactsCardTemplateWrapper(contactsCardTemplate);
 	}
 
 }
