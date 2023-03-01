@@ -28,15 +28,21 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Matthew Kong
  */
+@Component(
+	property = "model.class.name=com.liferay.osb.faro.model.FaroUser",
+	service = FaroUser.class
+)
 public class FaroUserFinderImpl
 	extends FaroUserFinderBaseImpl implements FaroUserFinder {
 
@@ -338,7 +344,7 @@ public class FaroUserFinderImpl
 	private static final String _FARO_USER_SQL =
 		"Users_Groups.groupId IS NOT NULL";
 
-	@ServiceReference(type = CustomSQL.class)
+	@Reference
 	private CustomSQL _customSQL;
 
 }

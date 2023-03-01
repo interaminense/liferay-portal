@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -448,16 +447,16 @@ public class FaroUserLocalServiceImpl extends FaroUserLocalServiceBaseImpl {
 	@Reference
 	private GroupLocalService _groupLocalService;
 
-	@ServiceReference(type = Http.class)
+	@Reference
 	private Http _http;
 
-	@ServiceReference(type = Language.class)
+	@Reference
 	private Language _language;
 
-	@ServiceReference(type = MailService.class)
+	@Reference
 	private MailService _mailService;
 
-	@ServiceReference(type = Portal.class)
+	@Reference
 	private Portal _portal;
 
 	@Reference

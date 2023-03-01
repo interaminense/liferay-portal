@@ -46,15 +46,16 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.GroupNameComparator;
-import com.liferay.portal.spring.extender.service.ServiceReference;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
-import javax.mail.internet.InternetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javax.mail.internet.InternetAddress;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Matthew Kong
@@ -372,10 +373,10 @@ public class FaroProjectLocalServiceImpl
 	@Reference
 	private GroupLocalService _groupLocalService;
 
-	@ServiceReference(type = Language.class)
+	@Reference
 	private Language _language;
 
-	@ServiceReference(type = MailService.class)
+	@Reference
 	private MailService _mailService;
 
 	@Reference

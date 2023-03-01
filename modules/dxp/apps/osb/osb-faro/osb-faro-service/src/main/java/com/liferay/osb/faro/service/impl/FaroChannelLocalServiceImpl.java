@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Collections;
 import java.util.List;
@@ -307,10 +306,10 @@ public class FaroChannelLocalServiceImpl
 	@Reference
 	private GroupLocalService _groupLocalService;
 
-	@ServiceReference(type = Language.class)
+	@Reference
 	private Language _language;
 
-	@ServiceReference(type = MailService.class)
+	@Reference
 	private MailService _mailService;
 
 	@Reference
