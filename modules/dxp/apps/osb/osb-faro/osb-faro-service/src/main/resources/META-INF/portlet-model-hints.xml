@@ -76,13 +76,13 @@
 		<field name="timeZoneId" type="String" />
 		<field name="weDeployKey" type="String" />
 	</model>
-	<model name="com.liferay.osb.faro.model.FaroProjectEmailAddressDomain">
+	<model name="com.liferay.osb.faro.model.FaroProjectEmailDomain">
 		<field name="mvccVersion" type="long" />
-		<field name="faroProjectEmailAddressDomainId" type="long" />
+		<field name="faroProjectEmailDomainId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="faroProjectId" type="long" />
-		<field name="emailAddressDomain" type="String" />
+		<field name="emailDomain" type="String" />
 	</model>
 	<model name="com.liferay.osb.faro.model.FaroUser">
 		<field name="mvccVersion" type="long" />

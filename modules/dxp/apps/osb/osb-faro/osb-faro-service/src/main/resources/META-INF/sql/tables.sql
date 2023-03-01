@@ -67,13 +67,13 @@ create table OSBFaro_FaroProject (
 	weDeployKey VARCHAR(75) null
 );
 
-create table OSBFaro_FaroProjectEmailAddressDomain (
+create table OSBFaro_FaroProjectEmailDomain (
 	mvccVersion LONG default 0 not null,
-	faroProjectEmailAddressDomainId LONG not null primary key,
+	faroProjectEmailDomainId LONG not null primary key,
 	groupId LONG,
 	companyId LONG,
 	faroProjectId LONG,
-	emailAddressDomain VARCHAR(75) null
+	emailDomain VARCHAR(75) null
 );
 
 create table OSBFaro_FaroUser (

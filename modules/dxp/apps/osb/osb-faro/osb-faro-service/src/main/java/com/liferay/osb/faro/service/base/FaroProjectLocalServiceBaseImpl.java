@@ -20,7 +20,7 @@ import com.liferay.osb.faro.service.FaroProjectLocalServiceUtil;
 import com.liferay.osb.faro.service.persistence.FaroProjectFinder;
 import com.liferay.osb.faro.service.persistence.FaroProjectPersistence;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
-import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
@@ -40,12 +40,11 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
-import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
@@ -54,6 +53,9 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.sql.DataSource;
+
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * Provides the base implementation for the faro project local service.
@@ -68,7 +70,7 @@ import javax.sql.DataSource;
  */
 public abstract class FaroProjectLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
-	implements FaroProjectLocalService, IdentifiableOSGiService {
+	implements AopService, FaroProjectLocalService, IdentifiableOSGiService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -384,99 +386,24 @@ public abstract class FaroProjectLocalServiceBaseImpl
 		return faroProjectPersistence.update(faroProject);
 	}
 
-	/**
-	 * Returns the faro project local service.
-	 *
-	 * @return the faro project local service
-	 */
-	public FaroProjectLocalService getFaroProjectLocalService() {
-		return faroProjectLocalService;
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
 	}
 
-	/**
-	 * Sets the faro project local service.
-	 *
-	 * @param faroProjectLocalService the faro project local service
-	 */
-	public void setFaroProjectLocalService(
-		FaroProjectLocalService faroProjectLocalService) {
-
-		this.faroProjectLocalService = faroProjectLocalService;
+	@Override
+	public Class<?>[] getAopInterfaces() {
+		return new Class<?>[] {
+			FaroProjectLocalService.class, IdentifiableOSGiService.class,
+			PersistedModelLocalService.class
+		};
 	}
 
-	/**
-	 * Returns the faro project persistence.
-	 *
-	 * @return the faro project persistence
-	 */
-	public FaroProjectPersistence getFaroProjectPersistence() {
-		return faroProjectPersistence;
-	}
-
-	/**
-	 * Sets the faro project persistence.
-	 *
-	 * @param faroProjectPersistence the faro project persistence
-	 */
-	public void setFaroProjectPersistence(
-		FaroProjectPersistence faroProjectPersistence) {
-
-		this.faroProjectPersistence = faroProjectPersistence;
-	}
-
-	/**
-	 * Returns the faro project finder.
-	 *
-	 * @return the faro project finder
-	 */
-	public FaroProjectFinder getFaroProjectFinder() {
-		return faroProjectFinder;
-	}
-
-	/**
-	 * Sets the faro project finder.
-	 *
-	 * @param faroProjectFinder the faro project finder
-	 */
-	public void setFaroProjectFinder(FaroProjectFinder faroProjectFinder) {
-		this.faroProjectFinder = faroProjectFinder;
-	}
-
-	/**
-	 * Returns the counter local service.
-	 *
-	 * @return the counter local service
-	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
-		return counterLocalService;
-	}
-
-	/**
-	 * Sets the counter local service.
-	 *
-	 * @param counterLocalService the counter local service
-	 */
-	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
-		this.counterLocalService = counterLocalService;
-	}
-
-	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register(
-			"com.liferay.osb.faro.model.FaroProject", faroProjectLocalService);
+	@Override
+	public void setAopProxy(Object aopProxy) {
+		faroProjectLocalService = (FaroProjectLocalService)aopProxy;
 
 		_setLocalServiceUtilService(faroProjectLocalService);
-	}
-
-	public void destroy() {
-		persistedModelLocalServiceRegistry.unregister(
-			"com.liferay.osb.faro.model.FaroProject");
-
-		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -537,26 +464,19 @@ public abstract class FaroProjectLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = FaroProjectLocalService.class)
 	protected FaroProjectLocalService faroProjectLocalService;
 
-	@BeanReference(type = FaroProjectPersistence.class)
+	@Reference
 	protected FaroProjectPersistence faroProjectPersistence;
 
-	@BeanReference(type = FaroProjectFinder.class)
+	@Reference
 	protected FaroProjectFinder faroProjectFinder;
 
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
+	@Reference
 	protected com.liferay.counter.kernel.service.CounterLocalService
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FaroProjectLocalServiceBaseImpl.class);
-
-	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry
-		persistedModelLocalServiceRegistry;
 
 }

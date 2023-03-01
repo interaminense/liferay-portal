@@ -22,7 +22,7 @@ import com.liferay.osb.faro.model.FaroProject;
 import com.liferay.osb.faro.model.FaroUser;
 import com.liferay.osb.faro.service.FaroChannelLocalService;
 import com.liferay.osb.faro.service.FaroPreferencesLocalService;
-import com.liferay.osb.faro.service.FaroProjectEmailAddressDomainLocalService;
+import com.liferay.osb.faro.service.FaroProjectEmailDomainLocalService;
 import com.liferay.osb.faro.service.FaroUserLocalService;
 import com.liferay.osb.faro.service.base.FaroProjectLocalServiceBaseImpl;
 import com.liferay.osb.faro.util.EmailUtil;
@@ -47,16 +47,14 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.GroupNameComparator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
+import javax.mail.internet.InternetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import javax.mail.internet.InternetAddress;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Matthew Kong
@@ -123,9 +121,8 @@ public class FaroProjectLocalServiceImpl
 		faroProject.setTimeZoneId(timeZoneId);
 		faroProject.setWeDeployKey(weDeployKey);
 
-		_faroProjectEmailAddressDomainLocalService.
-			addFaroProjectEmailAddressDomains(
-				groupId, faroProjectId, emailAddressDomains);
+		_faroProjectEmailDomainLocalService.addFaroProjectEmailDomains(
+			groupId, faroProjectId, emailAddressDomains);
 
 		return faroProjectPersistence.update(faroProject);
 	}
@@ -366,8 +363,8 @@ public class FaroProjectLocalServiceImpl
 	private FaroPreferencesLocalService _faroPreferencesLocalService;
 
 	@Reference
-	private FaroProjectEmailAddressDomainLocalService
-		_faroProjectEmailAddressDomainLocalService;
+	private FaroProjectEmailDomainLocalService
+		_faroProjectEmailDomainLocalService;
 
 	@Reference
 	private FaroUserLocalService _faroUserLocalService;

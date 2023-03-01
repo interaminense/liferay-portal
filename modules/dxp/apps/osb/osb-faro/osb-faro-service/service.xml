@@ -186,11 +186,11 @@
 			<finder-column name="weDeployKey" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="FaroProjectEmailAddressDomain" remote-service="false">
+	<entity local-service="true" name="FaroProjectEmailDomain" remote-service="false">
 
 		<!-- PK fields -->
 
-		<column name="faroProjectEmailAddressDomainId" primary="true" type="long" />
+		<column name="faroProjectEmailDomainId" primary="true" type="long" />
 
 		<!-- Group instance -->
 
@@ -203,7 +203,7 @@
 		<!-- Other fields -->
 
 		<column name="faroProjectId" type="long" />
-		<column name="emailAddressDomain" type="String" />
+		<column name="emailDomain" type="String" />
 
 		<!-- Finder methods -->
 
