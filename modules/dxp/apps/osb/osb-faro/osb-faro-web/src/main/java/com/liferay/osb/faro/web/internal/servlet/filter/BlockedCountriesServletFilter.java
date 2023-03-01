@@ -70,12 +70,12 @@ public class BlockedCountriesServletFilter extends BaseFilter {
 		filterChain.doFilter(httpServletRequest, httpServletResponse);
 	}
 
-	private boolean _isBlockedCountry(HttpServletRequest ipAddress) {
-		if (ipAddress == null) {
+	private boolean _isBlockedCountry(HttpServletRequest httpServletRequest) {
+		if (httpServletRequest == null) {
 			return false;
 		}
 
-		IPInfo ipInfo = _ipGeocoder.getIPInfo(ipAddress);
+		IPInfo ipInfo = _ipGeocoder.getIPInfo(httpServletRequest);
 
 		return _blockedCountryCodes.contains(ipInfo.getCountryCode());
 	}

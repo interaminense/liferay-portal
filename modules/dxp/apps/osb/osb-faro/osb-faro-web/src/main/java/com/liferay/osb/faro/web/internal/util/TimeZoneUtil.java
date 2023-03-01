@@ -74,24 +74,6 @@ public class TimeZoneUtil {
 		}
 	}
 
-	private int compareTimeZoneId(String timeZoneId1, String timeZoneId2) {
-		Instant instant = Instant.now();
-
-		ZonedDateTime zonedDateTime1 = instant.atZone(ZoneId.of(timeZoneId1));
-		ZonedDateTime zonedDateTime2 = instant.atZone(ZoneId.of(timeZoneId2));
-
-		ZoneOffset zoneOffset1 = zonedDateTime1.getOffset();
-		ZoneOffset zoneOffset2 = zonedDateTime2.getOffset();
-
-		int value = zoneOffset2.compareTo(zoneOffset1);
-
-		if (value == 0) {
-			return timeZoneId1.compareTo(timeZoneId2);
-		}
-
-		return value;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(TimeZoneUtil.class);
 
 	private static final Map<String, String> _timeZoneIdCountryMap;
