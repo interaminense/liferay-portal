@@ -17,7 +17,6 @@ package com.liferay.osb.faro.internal.upgrade.v17_0_0;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
-import com.liferay.portal.kernel.util.StringBundler;
 
 /**
  * @author Leilany Ulisses
@@ -29,13 +28,6 @@ public class UpgradeFaroProjectEmailDomain extends UpgradeProcess {
 		alterTableName(
 			"OSBFaro_FaroProjectEmailAddressDomain",
 			"OSBFaro_FaroProjectEmailDomain");
-
-		runSQL(
-			StringBundler.concat(
-				"alter table OSBFaro_FaroProjectEmailAddressDomain rename to ",
-				"OSBFaro_FaroProjectEmailDomain and alter column ",
-				"faroProjectEmailAddressDomainId rename to ",
-				"faroProjectEmailDomainId"));
 	}
 
 	@Override
