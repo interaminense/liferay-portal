@@ -42,13 +42,6 @@ allprojects {
 		incrementalAnalysis = false
 		toolVersion = "5.8.1"
 	}
-
-	node {
-		global = false
-		nodeVersion = "10.15.3"
-		useNpm = false
-		yarnVersion = "1.22.5"
-	}
 }
 
 appDocker {
