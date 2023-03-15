@@ -1,0 +1,13 @@
+buildscript {
+	repositories {
+		mavenLocal()
+
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
+
+apply plugin: "com.liferay.root.defaults.plugin"
+
+apply from: "build-ext.gradle"
