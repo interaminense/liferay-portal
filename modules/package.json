@@ -29,6 +29,7 @@
 		"format": "liferay-npm-scripts fix",
 		"types": "liferay-npm-scripts types"
 	},
+	"name": "test",
 	"workspaces": {
 		"packages": [
 			"apps/*/*",
