@@ -213,72 +213,88 @@ public class FaroProjectEmailDomainModelImpl
 	public Map<String, Function<FaroProjectEmailDomain, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<FaroProjectEmailDomain, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<FaroProjectEmailDomain, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<FaroProjectEmailDomain, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<FaroProjectEmailDomain, Object>>
-			attributeGetterFunctions =
-				new LinkedHashMap
-					<String, Function<FaroProjectEmailDomain, Object>>();
-		Map<String, BiConsumer<FaroProjectEmailDomain, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<FaroProjectEmailDomain, ?>>();
+		private static final Map
+			<String, Function<FaroProjectEmailDomain, Object>>
+				_attributeGetterFunctions;
 
-		attributeGetterFunctions.put(
-			"mvccVersion", FaroProjectEmailDomain::getMvccVersion);
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			(BiConsumer<FaroProjectEmailDomain, Long>)
-				FaroProjectEmailDomain::setMvccVersion);
-		attributeGetterFunctions.put(
-			"faroProjectEmailDomainId",
-			FaroProjectEmailDomain::getFaroProjectEmailDomainId);
-		attributeSetterBiConsumers.put(
-			"faroProjectEmailDomainId",
-			(BiConsumer<FaroProjectEmailDomain, Long>)
-				FaroProjectEmailDomain::setFaroProjectEmailDomainId);
-		attributeGetterFunctions.put(
-			"groupId", FaroProjectEmailDomain::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId",
-			(BiConsumer<FaroProjectEmailDomain, Long>)
-				FaroProjectEmailDomain::setGroupId);
-		attributeGetterFunctions.put(
-			"companyId", FaroProjectEmailDomain::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId",
-			(BiConsumer<FaroProjectEmailDomain, Long>)
-				FaroProjectEmailDomain::setCompanyId);
-		attributeGetterFunctions.put(
-			"faroProjectId", FaroProjectEmailDomain::getFaroProjectId);
-		attributeSetterBiConsumers.put(
-			"faroProjectId",
-			(BiConsumer<FaroProjectEmailDomain, Long>)
-				FaroProjectEmailDomain::setFaroProjectId);
-		attributeGetterFunctions.put(
-			"emailDomain", FaroProjectEmailDomain::getEmailDomain);
-		attributeSetterBiConsumers.put(
-			"emailDomain",
-			(BiConsumer<FaroProjectEmailDomain, String>)
-				FaroProjectEmailDomain::setEmailDomain);
+		static {
+			Map<String, Function<FaroProjectEmailDomain, Object>>
+				attributeGetterFunctions =
+					new LinkedHashMap
+						<String, Function<FaroProjectEmailDomain, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put(
+				"mvccVersion", FaroProjectEmailDomain::getMvccVersion);
+			attributeGetterFunctions.put(
+				"faroProjectEmailDomainId",
+				FaroProjectEmailDomain::getFaroProjectEmailDomainId);
+			attributeGetterFunctions.put(
+				"groupId", FaroProjectEmailDomain::getGroupId);
+			attributeGetterFunctions.put(
+				"companyId", FaroProjectEmailDomain::getCompanyId);
+			attributeGetterFunctions.put(
+				"faroProjectId", FaroProjectEmailDomain::getFaroProjectId);
+			attributeGetterFunctions.put(
+				"emailDomain", FaroProjectEmailDomain::getEmailDomain);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map
+			<String, BiConsumer<FaroProjectEmailDomain, Object>>
+				_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<FaroProjectEmailDomain, ?>>
+				attributeSetterBiConsumers =
+					new LinkedHashMap
+						<String, BiConsumer<FaroProjectEmailDomain, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"mvccVersion",
+				(BiConsumer<FaroProjectEmailDomain, Long>)
+					FaroProjectEmailDomain::setMvccVersion);
+			attributeSetterBiConsumers.put(
+				"faroProjectEmailDomainId",
+				(BiConsumer<FaroProjectEmailDomain, Long>)
+					FaroProjectEmailDomain::setFaroProjectEmailDomainId);
+			attributeSetterBiConsumers.put(
+				"groupId",
+				(BiConsumer<FaroProjectEmailDomain, Long>)
+					FaroProjectEmailDomain::setGroupId);
+			attributeSetterBiConsumers.put(
+				"companyId",
+				(BiConsumer<FaroProjectEmailDomain, Long>)
+					FaroProjectEmailDomain::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"faroProjectId",
+				(BiConsumer<FaroProjectEmailDomain, Long>)
+					FaroProjectEmailDomain::setFaroProjectId);
+			attributeSetterBiConsumers.put(
+				"emailDomain",
+				(BiConsumer<FaroProjectEmailDomain, String>)
+					FaroProjectEmailDomain::setEmailDomain);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@Override
@@ -644,7 +660,8 @@ public class FaroProjectEmailDomainModelImpl
 
 	public <T> T getColumnValue(String columnName) {
 		Function<FaroProjectEmailDomain, Object> function =
-			_attributeGetterFunctions.get(columnName);
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(

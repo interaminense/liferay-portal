@@ -219,81 +219,104 @@ public class FaroPreferencesModelImpl
 	public Map<String, Function<FaroPreferences, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<FaroPreferences, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<FaroPreferences, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<FaroPreferences, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<FaroPreferences, Object>>
-			attributeGetterFunctions =
-				new LinkedHashMap<String, Function<FaroPreferences, Object>>();
-		Map<String, BiConsumer<FaroPreferences, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<FaroPreferences, ?>>();
+		private static final Map<String, Function<FaroPreferences, Object>>
+			_attributeGetterFunctions;
 
-		attributeGetterFunctions.put(
-			"mvccVersion", FaroPreferences::getMvccVersion);
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			(BiConsumer<FaroPreferences, Long>)FaroPreferences::setMvccVersion);
-		attributeGetterFunctions.put(
-			"faroPreferencesId", FaroPreferences::getFaroPreferencesId);
-		attributeSetterBiConsumers.put(
-			"faroPreferencesId",
-			(BiConsumer<FaroPreferences, Long>)
-				FaroPreferences::setFaroPreferencesId);
-		attributeGetterFunctions.put("groupId", FaroPreferences::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId",
-			(BiConsumer<FaroPreferences, Long>)FaroPreferences::setGroupId);
-		attributeGetterFunctions.put(
-			"companyId", FaroPreferences::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId",
-			(BiConsumer<FaroPreferences, Long>)FaroPreferences::setCompanyId);
-		attributeGetterFunctions.put(
-			"createTime", FaroPreferences::getCreateTime);
-		attributeSetterBiConsumers.put(
-			"createTime",
-			(BiConsumer<FaroPreferences, Long>)FaroPreferences::setCreateTime);
-		attributeGetterFunctions.put("userId", FaroPreferences::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId",
-			(BiConsumer<FaroPreferences, Long>)FaroPreferences::setUserId);
-		attributeGetterFunctions.put("userName", FaroPreferences::getUserName);
-		attributeSetterBiConsumers.put(
-			"userName",
-			(BiConsumer<FaroPreferences, String>)FaroPreferences::setUserName);
-		attributeGetterFunctions.put(
-			"modifiedTime", FaroPreferences::getModifiedTime);
-		attributeSetterBiConsumers.put(
-			"modifiedTime",
-			(BiConsumer<FaroPreferences, Long>)
-				FaroPreferences::setModifiedTime);
-		attributeGetterFunctions.put("ownerId", FaroPreferences::getOwnerId);
-		attributeSetterBiConsumers.put(
-			"ownerId",
-			(BiConsumer<FaroPreferences, Long>)FaroPreferences::setOwnerId);
-		attributeGetterFunctions.put(
-			"preferences", FaroPreferences::getPreferences);
-		attributeSetterBiConsumers.put(
-			"preferences",
-			(BiConsumer<FaroPreferences, String>)
-				FaroPreferences::setPreferences);
+		static {
+			Map<String, Function<FaroPreferences, Object>>
+				attributeGetterFunctions =
+					new LinkedHashMap
+						<String, Function<FaroPreferences, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put(
+				"mvccVersion", FaroPreferences::getMvccVersion);
+			attributeGetterFunctions.put(
+				"faroPreferencesId", FaroPreferences::getFaroPreferencesId);
+			attributeGetterFunctions.put(
+				"groupId", FaroPreferences::getGroupId);
+			attributeGetterFunctions.put(
+				"companyId", FaroPreferences::getCompanyId);
+			attributeGetterFunctions.put(
+				"createTime", FaroPreferences::getCreateTime);
+			attributeGetterFunctions.put("userId", FaroPreferences::getUserId);
+			attributeGetterFunctions.put(
+				"userName", FaroPreferences::getUserName);
+			attributeGetterFunctions.put(
+				"modifiedTime", FaroPreferences::getModifiedTime);
+			attributeGetterFunctions.put(
+				"ownerId", FaroPreferences::getOwnerId);
+			attributeGetterFunctions.put(
+				"preferences", FaroPreferences::getPreferences);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map<String, BiConsumer<FaroPreferences, Object>>
+			_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<FaroPreferences, ?>>
+				attributeSetterBiConsumers =
+					new LinkedHashMap<String, BiConsumer<FaroPreferences, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"mvccVersion",
+				(BiConsumer<FaroPreferences, Long>)
+					FaroPreferences::setMvccVersion);
+			attributeSetterBiConsumers.put(
+				"faroPreferencesId",
+				(BiConsumer<FaroPreferences, Long>)
+					FaroPreferences::setFaroPreferencesId);
+			attributeSetterBiConsumers.put(
+				"groupId",
+				(BiConsumer<FaroPreferences, Long>)FaroPreferences::setGroupId);
+			attributeSetterBiConsumers.put(
+				"companyId",
+				(BiConsumer<FaroPreferences, Long>)
+					FaroPreferences::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"createTime",
+				(BiConsumer<FaroPreferences, Long>)
+					FaroPreferences::setCreateTime);
+			attributeSetterBiConsumers.put(
+				"userId",
+				(BiConsumer<FaroPreferences, Long>)FaroPreferences::setUserId);
+			attributeSetterBiConsumers.put(
+				"userName",
+				(BiConsumer<FaroPreferences, String>)
+					FaroPreferences::setUserName);
+			attributeSetterBiConsumers.put(
+				"modifiedTime",
+				(BiConsumer<FaroPreferences, Long>)
+					FaroPreferences::setModifiedTime);
+			attributeSetterBiConsumers.put(
+				"ownerId",
+				(BiConsumer<FaroPreferences, Long>)FaroPreferences::setOwnerId);
+			attributeSetterBiConsumers.put(
+				"preferences",
+				(BiConsumer<FaroPreferences, String>)
+					FaroPreferences::setPreferences);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@Override
@@ -758,7 +781,8 @@ public class FaroPreferencesModelImpl
 
 	public <T> T getColumnValue(String columnName) {
 		Function<FaroPreferences, Object> function =
-			_attributeGetterFunctions.get(columnName);
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(

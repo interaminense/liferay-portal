@@ -216,99 +216,115 @@ public class ContactsCardTemplateModelImpl
 	public Map<String, Function<ContactsCardTemplate, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<ContactsCardTemplate, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<ContactsCardTemplate, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ContactsCardTemplate, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<ContactsCardTemplate, Object>>
-			attributeGetterFunctions =
-				new LinkedHashMap
-					<String, Function<ContactsCardTemplate, Object>>();
-		Map<String, BiConsumer<ContactsCardTemplate, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<ContactsCardTemplate, ?>>();
+		private static final Map<String, Function<ContactsCardTemplate, Object>>
+			_attributeGetterFunctions;
 
-		attributeGetterFunctions.put(
-			"mvccVersion", ContactsCardTemplate::getMvccVersion);
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			(BiConsumer<ContactsCardTemplate, Long>)
-				ContactsCardTemplate::setMvccVersion);
-		attributeGetterFunctions.put(
-			"contactsCardTemplateId",
-			ContactsCardTemplate::getContactsCardTemplateId);
-		attributeSetterBiConsumers.put(
-			"contactsCardTemplateId",
-			(BiConsumer<ContactsCardTemplate, Long>)
-				ContactsCardTemplate::setContactsCardTemplateId);
-		attributeGetterFunctions.put(
-			"groupId", ContactsCardTemplate::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId",
-			(BiConsumer<ContactsCardTemplate, Long>)
-				ContactsCardTemplate::setGroupId);
-		attributeGetterFunctions.put(
-			"companyId", ContactsCardTemplate::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId",
-			(BiConsumer<ContactsCardTemplate, Long>)
-				ContactsCardTemplate::setCompanyId);
-		attributeGetterFunctions.put(
-			"createTime", ContactsCardTemplate::getCreateTime);
-		attributeSetterBiConsumers.put(
-			"createTime",
-			(BiConsumer<ContactsCardTemplate, Long>)
-				ContactsCardTemplate::setCreateTime);
-		attributeGetterFunctions.put("userId", ContactsCardTemplate::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId",
-			(BiConsumer<ContactsCardTemplate, Long>)
-				ContactsCardTemplate::setUserId);
-		attributeGetterFunctions.put(
-			"userName", ContactsCardTemplate::getUserName);
-		attributeSetterBiConsumers.put(
-			"userName",
-			(BiConsumer<ContactsCardTemplate, String>)
-				ContactsCardTemplate::setUserName);
-		attributeGetterFunctions.put(
-			"modifiedTime", ContactsCardTemplate::getModifiedTime);
-		attributeSetterBiConsumers.put(
-			"modifiedTime",
-			(BiConsumer<ContactsCardTemplate, Long>)
-				ContactsCardTemplate::setModifiedTime);
-		attributeGetterFunctions.put("name", ContactsCardTemplate::getName);
-		attributeSetterBiConsumers.put(
-			"name",
-			(BiConsumer<ContactsCardTemplate, String>)
-				ContactsCardTemplate::setName);
-		attributeGetterFunctions.put(
-			"settings", ContactsCardTemplate::getSettings);
-		attributeSetterBiConsumers.put(
-			"settings",
-			(BiConsumer<ContactsCardTemplate, String>)
-				ContactsCardTemplate::setSettings);
-		attributeGetterFunctions.put("type", ContactsCardTemplate::getType);
-		attributeSetterBiConsumers.put(
-			"type",
-			(BiConsumer<ContactsCardTemplate, Integer>)
-				ContactsCardTemplate::setType);
+		static {
+			Map<String, Function<ContactsCardTemplate, Object>>
+				attributeGetterFunctions =
+					new LinkedHashMap
+						<String, Function<ContactsCardTemplate, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put(
+				"mvccVersion", ContactsCardTemplate::getMvccVersion);
+			attributeGetterFunctions.put(
+				"contactsCardTemplateId",
+				ContactsCardTemplate::getContactsCardTemplateId);
+			attributeGetterFunctions.put(
+				"groupId", ContactsCardTemplate::getGroupId);
+			attributeGetterFunctions.put(
+				"companyId", ContactsCardTemplate::getCompanyId);
+			attributeGetterFunctions.put(
+				"createTime", ContactsCardTemplate::getCreateTime);
+			attributeGetterFunctions.put(
+				"userId", ContactsCardTemplate::getUserId);
+			attributeGetterFunctions.put(
+				"userName", ContactsCardTemplate::getUserName);
+			attributeGetterFunctions.put(
+				"modifiedTime", ContactsCardTemplate::getModifiedTime);
+			attributeGetterFunctions.put("name", ContactsCardTemplate::getName);
+			attributeGetterFunctions.put(
+				"settings", ContactsCardTemplate::getSettings);
+			attributeGetterFunctions.put("type", ContactsCardTemplate::getType);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map
+			<String, BiConsumer<ContactsCardTemplate, Object>>
+				_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<ContactsCardTemplate, ?>>
+				attributeSetterBiConsumers =
+					new LinkedHashMap
+						<String, BiConsumer<ContactsCardTemplate, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"mvccVersion",
+				(BiConsumer<ContactsCardTemplate, Long>)
+					ContactsCardTemplate::setMvccVersion);
+			attributeSetterBiConsumers.put(
+				"contactsCardTemplateId",
+				(BiConsumer<ContactsCardTemplate, Long>)
+					ContactsCardTemplate::setContactsCardTemplateId);
+			attributeSetterBiConsumers.put(
+				"groupId",
+				(BiConsumer<ContactsCardTemplate, Long>)
+					ContactsCardTemplate::setGroupId);
+			attributeSetterBiConsumers.put(
+				"companyId",
+				(BiConsumer<ContactsCardTemplate, Long>)
+					ContactsCardTemplate::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"createTime",
+				(BiConsumer<ContactsCardTemplate, Long>)
+					ContactsCardTemplate::setCreateTime);
+			attributeSetterBiConsumers.put(
+				"userId",
+				(BiConsumer<ContactsCardTemplate, Long>)
+					ContactsCardTemplate::setUserId);
+			attributeSetterBiConsumers.put(
+				"userName",
+				(BiConsumer<ContactsCardTemplate, String>)
+					ContactsCardTemplate::setUserName);
+			attributeSetterBiConsumers.put(
+				"modifiedTime",
+				(BiConsumer<ContactsCardTemplate, Long>)
+					ContactsCardTemplate::setModifiedTime);
+			attributeSetterBiConsumers.put(
+				"name",
+				(BiConsumer<ContactsCardTemplate, String>)
+					ContactsCardTemplate::setName);
+			attributeSetterBiConsumers.put(
+				"settings",
+				(BiConsumer<ContactsCardTemplate, String>)
+					ContactsCardTemplate::setSettings);
+			attributeSetterBiConsumers.put(
+				"type",
+				(BiConsumer<ContactsCardTemplate, Integer>)
+					ContactsCardTemplate::setType);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@Override
@@ -804,7 +820,8 @@ public class ContactsCardTemplateModelImpl
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<ContactsCardTemplate, Object> function =
-			_attributeGetterFunctions.get(columnName);
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(

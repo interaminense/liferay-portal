@@ -226,107 +226,125 @@ public class ContactsLayoutTemplateModelImpl
 	public Map<String, Function<ContactsLayoutTemplate, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<ContactsLayoutTemplate, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<ContactsLayoutTemplate, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ContactsLayoutTemplate, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<ContactsLayoutTemplate, Object>>
-			attributeGetterFunctions =
-				new LinkedHashMap
-					<String, Function<ContactsLayoutTemplate, Object>>();
-		Map<String, BiConsumer<ContactsLayoutTemplate, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<ContactsLayoutTemplate, ?>>();
+		private static final Map
+			<String, Function<ContactsLayoutTemplate, Object>>
+				_attributeGetterFunctions;
 
-		attributeGetterFunctions.put(
-			"mvccVersion", ContactsLayoutTemplate::getMvccVersion);
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			(BiConsumer<ContactsLayoutTemplate, Long>)
-				ContactsLayoutTemplate::setMvccVersion);
-		attributeGetterFunctions.put(
-			"contactsLayoutTemplateId",
-			ContactsLayoutTemplate::getContactsLayoutTemplateId);
-		attributeSetterBiConsumers.put(
-			"contactsLayoutTemplateId",
-			(BiConsumer<ContactsLayoutTemplate, Long>)
-				ContactsLayoutTemplate::setContactsLayoutTemplateId);
-		attributeGetterFunctions.put(
-			"groupId", ContactsLayoutTemplate::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId",
-			(BiConsumer<ContactsLayoutTemplate, Long>)
-				ContactsLayoutTemplate::setGroupId);
-		attributeGetterFunctions.put(
-			"companyId", ContactsLayoutTemplate::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId",
-			(BiConsumer<ContactsLayoutTemplate, Long>)
-				ContactsLayoutTemplate::setCompanyId);
-		attributeGetterFunctions.put(
-			"createTime", ContactsLayoutTemplate::getCreateTime);
-		attributeSetterBiConsumers.put(
-			"createTime",
-			(BiConsumer<ContactsLayoutTemplate, Long>)
-				ContactsLayoutTemplate::setCreateTime);
-		attributeGetterFunctions.put(
-			"userId", ContactsLayoutTemplate::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId",
-			(BiConsumer<ContactsLayoutTemplate, Long>)
-				ContactsLayoutTemplate::setUserId);
-		attributeGetterFunctions.put(
-			"userName", ContactsLayoutTemplate::getUserName);
-		attributeSetterBiConsumers.put(
-			"userName",
-			(BiConsumer<ContactsLayoutTemplate, String>)
-				ContactsLayoutTemplate::setUserName);
-		attributeGetterFunctions.put(
-			"modifiedTime", ContactsLayoutTemplate::getModifiedTime);
-		attributeSetterBiConsumers.put(
-			"modifiedTime",
-			(BiConsumer<ContactsLayoutTemplate, Long>)
-				ContactsLayoutTemplate::setModifiedTime);
-		attributeGetterFunctions.put(
-			"headerContactsCardTemplateIds",
-			ContactsLayoutTemplate::getHeaderContactsCardTemplateIds);
-		attributeSetterBiConsumers.put(
-			"headerContactsCardTemplateIds",
-			(BiConsumer<ContactsLayoutTemplate, String>)
-				ContactsLayoutTemplate::setHeaderContactsCardTemplateIds);
-		attributeGetterFunctions.put("name", ContactsLayoutTemplate::getName);
-		attributeSetterBiConsumers.put(
-			"name",
-			(BiConsumer<ContactsLayoutTemplate, String>)
-				ContactsLayoutTemplate::setName);
-		attributeGetterFunctions.put(
-			"settings", ContactsLayoutTemplate::getSettings);
-		attributeSetterBiConsumers.put(
-			"settings",
-			(BiConsumer<ContactsLayoutTemplate, String>)
-				ContactsLayoutTemplate::setSettings);
-		attributeGetterFunctions.put("type", ContactsLayoutTemplate::getType);
-		attributeSetterBiConsumers.put(
-			"type",
-			(BiConsumer<ContactsLayoutTemplate, Integer>)
-				ContactsLayoutTemplate::setType);
+		static {
+			Map<String, Function<ContactsLayoutTemplate, Object>>
+				attributeGetterFunctions =
+					new LinkedHashMap
+						<String, Function<ContactsLayoutTemplate, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put(
+				"mvccVersion", ContactsLayoutTemplate::getMvccVersion);
+			attributeGetterFunctions.put(
+				"contactsLayoutTemplateId",
+				ContactsLayoutTemplate::getContactsLayoutTemplateId);
+			attributeGetterFunctions.put(
+				"groupId", ContactsLayoutTemplate::getGroupId);
+			attributeGetterFunctions.put(
+				"companyId", ContactsLayoutTemplate::getCompanyId);
+			attributeGetterFunctions.put(
+				"createTime", ContactsLayoutTemplate::getCreateTime);
+			attributeGetterFunctions.put(
+				"userId", ContactsLayoutTemplate::getUserId);
+			attributeGetterFunctions.put(
+				"userName", ContactsLayoutTemplate::getUserName);
+			attributeGetterFunctions.put(
+				"modifiedTime", ContactsLayoutTemplate::getModifiedTime);
+			attributeGetterFunctions.put(
+				"headerContactsCardTemplateIds",
+				ContactsLayoutTemplate::getHeaderContactsCardTemplateIds);
+			attributeGetterFunctions.put(
+				"name", ContactsLayoutTemplate::getName);
+			attributeGetterFunctions.put(
+				"settings", ContactsLayoutTemplate::getSettings);
+			attributeGetterFunctions.put(
+				"type", ContactsLayoutTemplate::getType);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map
+			<String, BiConsumer<ContactsLayoutTemplate, Object>>
+				_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<ContactsLayoutTemplate, ?>>
+				attributeSetterBiConsumers =
+					new LinkedHashMap
+						<String, BiConsumer<ContactsLayoutTemplate, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"mvccVersion",
+				(BiConsumer<ContactsLayoutTemplate, Long>)
+					ContactsLayoutTemplate::setMvccVersion);
+			attributeSetterBiConsumers.put(
+				"contactsLayoutTemplateId",
+				(BiConsumer<ContactsLayoutTemplate, Long>)
+					ContactsLayoutTemplate::setContactsLayoutTemplateId);
+			attributeSetterBiConsumers.put(
+				"groupId",
+				(BiConsumer<ContactsLayoutTemplate, Long>)
+					ContactsLayoutTemplate::setGroupId);
+			attributeSetterBiConsumers.put(
+				"companyId",
+				(BiConsumer<ContactsLayoutTemplate, Long>)
+					ContactsLayoutTemplate::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"createTime",
+				(BiConsumer<ContactsLayoutTemplate, Long>)
+					ContactsLayoutTemplate::setCreateTime);
+			attributeSetterBiConsumers.put(
+				"userId",
+				(BiConsumer<ContactsLayoutTemplate, Long>)
+					ContactsLayoutTemplate::setUserId);
+			attributeSetterBiConsumers.put(
+				"userName",
+				(BiConsumer<ContactsLayoutTemplate, String>)
+					ContactsLayoutTemplate::setUserName);
+			attributeSetterBiConsumers.put(
+				"modifiedTime",
+				(BiConsumer<ContactsLayoutTemplate, Long>)
+					ContactsLayoutTemplate::setModifiedTime);
+			attributeSetterBiConsumers.put(
+				"headerContactsCardTemplateIds",
+				(BiConsumer<ContactsLayoutTemplate, String>)
+					ContactsLayoutTemplate::setHeaderContactsCardTemplateIds);
+			attributeSetterBiConsumers.put(
+				"name",
+				(BiConsumer<ContactsLayoutTemplate, String>)
+					ContactsLayoutTemplate::setName);
+			attributeSetterBiConsumers.put(
+				"settings",
+				(BiConsumer<ContactsLayoutTemplate, String>)
+					ContactsLayoutTemplate::setSettings);
+			attributeSetterBiConsumers.put(
+				"type",
+				(BiConsumer<ContactsLayoutTemplate, Integer>)
+					ContactsLayoutTemplate::setType);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@Override
@@ -872,7 +890,8 @@ public class ContactsLayoutTemplateModelImpl
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<ContactsLayoutTemplate, Object> function =
-			_attributeGetterFunctions.get(columnName);
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(

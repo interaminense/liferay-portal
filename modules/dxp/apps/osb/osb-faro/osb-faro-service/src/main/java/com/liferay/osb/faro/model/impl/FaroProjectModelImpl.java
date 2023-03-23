@@ -258,135 +258,161 @@ public class FaroProjectModelImpl
 	public Map<String, Function<FaroProject, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<FaroProject, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<FaroProject, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<FaroProject, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<FaroProject, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<FaroProject, Object>>();
-		Map<String, BiConsumer<FaroProject, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<FaroProject, ?>>();
+		private static final Map<String, Function<FaroProject, Object>>
+			_attributeGetterFunctions;
 
-		attributeGetterFunctions.put(
-			"mvccVersion", FaroProject::getMvccVersion);
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			(BiConsumer<FaroProject, Long>)FaroProject::setMvccVersion);
-		attributeGetterFunctions.put(
-			"faroProjectId", FaroProject::getFaroProjectId);
-		attributeSetterBiConsumers.put(
-			"faroProjectId",
-			(BiConsumer<FaroProject, Long>)FaroProject::setFaroProjectId);
-		attributeGetterFunctions.put("groupId", FaroProject::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId", (BiConsumer<FaroProject, Long>)FaroProject::setGroupId);
-		attributeGetterFunctions.put("companyId", FaroProject::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId",
-			(BiConsumer<FaroProject, Long>)FaroProject::setCompanyId);
-		attributeGetterFunctions.put("createTime", FaroProject::getCreateTime);
-		attributeSetterBiConsumers.put(
-			"createTime",
-			(BiConsumer<FaroProject, Long>)FaroProject::setCreateTime);
-		attributeGetterFunctions.put("userId", FaroProject::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId", (BiConsumer<FaroProject, Long>)FaroProject::setUserId);
-		attributeGetterFunctions.put("userName", FaroProject::getUserName);
-		attributeSetterBiConsumers.put(
-			"userName",
-			(BiConsumer<FaroProject, String>)FaroProject::setUserName);
-		attributeGetterFunctions.put(
-			"modifiedTime", FaroProject::getModifiedTime);
-		attributeSetterBiConsumers.put(
-			"modifiedTime",
-			(BiConsumer<FaroProject, Long>)FaroProject::setModifiedTime);
-		attributeGetterFunctions.put("name", FaroProject::getName);
-		attributeSetterBiConsumers.put(
-			"name", (BiConsumer<FaroProject, String>)FaroProject::setName);
-		attributeGetterFunctions.put("accountKey", FaroProject::getAccountKey);
-		attributeSetterBiConsumers.put(
-			"accountKey",
-			(BiConsumer<FaroProject, String>)FaroProject::setAccountKey);
-		attributeGetterFunctions.put(
-			"accountName", FaroProject::getAccountName);
-		attributeSetterBiConsumers.put(
-			"accountName",
-			(BiConsumer<FaroProject, String>)FaroProject::setAccountName);
-		attributeGetterFunctions.put(
-			"corpProjectName", FaroProject::getCorpProjectName);
-		attributeSetterBiConsumers.put(
-			"corpProjectName",
-			(BiConsumer<FaroProject, String>)FaroProject::setCorpProjectName);
-		attributeGetterFunctions.put(
-			"corpProjectUuid", FaroProject::getCorpProjectUuid);
-		attributeSetterBiConsumers.put(
-			"corpProjectUuid",
-			(BiConsumer<FaroProject, String>)FaroProject::setCorpProjectUuid);
-		attributeGetterFunctions.put(
-			"ipAddresses", FaroProject::getIpAddresses);
-		attributeSetterBiConsumers.put(
-			"ipAddresses",
-			(BiConsumer<FaroProject, String>)FaroProject::setIpAddresses);
-		attributeGetterFunctions.put(
-			"incidentReportEmailAddresses",
-			FaroProject::getIncidentReportEmailAddresses);
-		attributeSetterBiConsumers.put(
-			"incidentReportEmailAddresses",
-			(BiConsumer<FaroProject, String>)
-				FaroProject::setIncidentReportEmailAddresses);
-		attributeGetterFunctions.put(
-			"lastAccessTime", FaroProject::getLastAccessTime);
-		attributeSetterBiConsumers.put(
-			"lastAccessTime",
-			(BiConsumer<FaroProject, Long>)FaroProject::setLastAccessTime);
-		attributeGetterFunctions.put(
-			"recommendationsEnabled", FaroProject::getRecommendationsEnabled);
-		attributeSetterBiConsumers.put(
-			"recommendationsEnabled",
-			(BiConsumer<FaroProject, Boolean>)
-				FaroProject::setRecommendationsEnabled);
-		attributeGetterFunctions.put(
-			"serverLocation", FaroProject::getServerLocation);
-		attributeSetterBiConsumers.put(
-			"serverLocation",
-			(BiConsumer<FaroProject, String>)FaroProject::setServerLocation);
-		attributeGetterFunctions.put("services", FaroProject::getServices);
-		attributeSetterBiConsumers.put(
-			"services",
-			(BiConsumer<FaroProject, String>)FaroProject::setServices);
-		attributeGetterFunctions.put("state", FaroProject::getState);
-		attributeSetterBiConsumers.put(
-			"state", (BiConsumer<FaroProject, String>)FaroProject::setState);
-		attributeGetterFunctions.put(
-			"subscription", FaroProject::getSubscription);
-		attributeSetterBiConsumers.put(
-			"subscription",
-			(BiConsumer<FaroProject, String>)FaroProject::setSubscription);
-		attributeGetterFunctions.put("timeZoneId", FaroProject::getTimeZoneId);
-		attributeSetterBiConsumers.put(
-			"timeZoneId",
-			(BiConsumer<FaroProject, String>)FaroProject::setTimeZoneId);
-		attributeGetterFunctions.put(
-			"weDeployKey", FaroProject::getWeDeployKey);
-		attributeSetterBiConsumers.put(
-			"weDeployKey",
-			(BiConsumer<FaroProject, String>)FaroProject::setWeDeployKey);
+		static {
+			Map<String, Function<FaroProject, Object>>
+				attributeGetterFunctions =
+					new LinkedHashMap<String, Function<FaroProject, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put(
+				"mvccVersion", FaroProject::getMvccVersion);
+			attributeGetterFunctions.put(
+				"faroProjectId", FaroProject::getFaroProjectId);
+			attributeGetterFunctions.put("groupId", FaroProject::getGroupId);
+			attributeGetterFunctions.put(
+				"companyId", FaroProject::getCompanyId);
+			attributeGetterFunctions.put(
+				"createTime", FaroProject::getCreateTime);
+			attributeGetterFunctions.put("userId", FaroProject::getUserId);
+			attributeGetterFunctions.put("userName", FaroProject::getUserName);
+			attributeGetterFunctions.put(
+				"modifiedTime", FaroProject::getModifiedTime);
+			attributeGetterFunctions.put("name", FaroProject::getName);
+			attributeGetterFunctions.put(
+				"accountKey", FaroProject::getAccountKey);
+			attributeGetterFunctions.put(
+				"accountName", FaroProject::getAccountName);
+			attributeGetterFunctions.put(
+				"corpProjectName", FaroProject::getCorpProjectName);
+			attributeGetterFunctions.put(
+				"corpProjectUuid", FaroProject::getCorpProjectUuid);
+			attributeGetterFunctions.put(
+				"ipAddresses", FaroProject::getIpAddresses);
+			attributeGetterFunctions.put(
+				"incidentReportEmailAddresses",
+				FaroProject::getIncidentReportEmailAddresses);
+			attributeGetterFunctions.put(
+				"lastAccessTime", FaroProject::getLastAccessTime);
+			attributeGetterFunctions.put(
+				"recommendationsEnabled",
+				FaroProject::getRecommendationsEnabled);
+			attributeGetterFunctions.put(
+				"serverLocation", FaroProject::getServerLocation);
+			attributeGetterFunctions.put("services", FaroProject::getServices);
+			attributeGetterFunctions.put("state", FaroProject::getState);
+			attributeGetterFunctions.put(
+				"subscription", FaroProject::getSubscription);
+			attributeGetterFunctions.put(
+				"timeZoneId", FaroProject::getTimeZoneId);
+			attributeGetterFunctions.put(
+				"weDeployKey", FaroProject::getWeDeployKey);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map<String, BiConsumer<FaroProject, Object>>
+			_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<FaroProject, ?>> attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<FaroProject, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"mvccVersion",
+				(BiConsumer<FaroProject, Long>)FaroProject::setMvccVersion);
+			attributeSetterBiConsumers.put(
+				"faroProjectId",
+				(BiConsumer<FaroProject, Long>)FaroProject::setFaroProjectId);
+			attributeSetterBiConsumers.put(
+				"groupId",
+				(BiConsumer<FaroProject, Long>)FaroProject::setGroupId);
+			attributeSetterBiConsumers.put(
+				"companyId",
+				(BiConsumer<FaroProject, Long>)FaroProject::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"createTime",
+				(BiConsumer<FaroProject, Long>)FaroProject::setCreateTime);
+			attributeSetterBiConsumers.put(
+				"userId",
+				(BiConsumer<FaroProject, Long>)FaroProject::setUserId);
+			attributeSetterBiConsumers.put(
+				"userName",
+				(BiConsumer<FaroProject, String>)FaroProject::setUserName);
+			attributeSetterBiConsumers.put(
+				"modifiedTime",
+				(BiConsumer<FaroProject, Long>)FaroProject::setModifiedTime);
+			attributeSetterBiConsumers.put(
+				"name", (BiConsumer<FaroProject, String>)FaroProject::setName);
+			attributeSetterBiConsumers.put(
+				"accountKey",
+				(BiConsumer<FaroProject, String>)FaroProject::setAccountKey);
+			attributeSetterBiConsumers.put(
+				"accountName",
+				(BiConsumer<FaroProject, String>)FaroProject::setAccountName);
+			attributeSetterBiConsumers.put(
+				"corpProjectName",
+				(BiConsumer<FaroProject, String>)
+					FaroProject::setCorpProjectName);
+			attributeSetterBiConsumers.put(
+				"corpProjectUuid",
+				(BiConsumer<FaroProject, String>)
+					FaroProject::setCorpProjectUuid);
+			attributeSetterBiConsumers.put(
+				"ipAddresses",
+				(BiConsumer<FaroProject, String>)FaroProject::setIpAddresses);
+			attributeSetterBiConsumers.put(
+				"incidentReportEmailAddresses",
+				(BiConsumer<FaroProject, String>)
+					FaroProject::setIncidentReportEmailAddresses);
+			attributeSetterBiConsumers.put(
+				"lastAccessTime",
+				(BiConsumer<FaroProject, Long>)FaroProject::setLastAccessTime);
+			attributeSetterBiConsumers.put(
+				"recommendationsEnabled",
+				(BiConsumer<FaroProject, Boolean>)
+					FaroProject::setRecommendationsEnabled);
+			attributeSetterBiConsumers.put(
+				"serverLocation",
+				(BiConsumer<FaroProject, String>)
+					FaroProject::setServerLocation);
+			attributeSetterBiConsumers.put(
+				"services",
+				(BiConsumer<FaroProject, String>)FaroProject::setServices);
+			attributeSetterBiConsumers.put(
+				"state",
+				(BiConsumer<FaroProject, String>)FaroProject::setState);
+			attributeSetterBiConsumers.put(
+				"subscription",
+				(BiConsumer<FaroProject, String>)FaroProject::setSubscription);
+			attributeSetterBiConsumers.put(
+				"timeZoneId",
+				(BiConsumer<FaroProject, String>)FaroProject::setTimeZoneId);
+			attributeSetterBiConsumers.put(
+				"weDeployKey",
+				(BiConsumer<FaroProject, String>)FaroProject::setWeDeployKey);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@Override
@@ -1282,8 +1308,9 @@ public class FaroProjectModelImpl
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
-		Function<FaroProject, Object> function = _attributeGetterFunctions.get(
-			columnName);
+		Function<FaroProject, Object> function =
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(

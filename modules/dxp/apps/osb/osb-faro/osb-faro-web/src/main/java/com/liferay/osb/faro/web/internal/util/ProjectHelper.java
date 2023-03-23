@@ -98,7 +98,7 @@ public class ProjectHelper {
 		List<Long> keysLong = new ArrayList<>();
 
 		for (String keyString : keys) {
-			keysLong.add(GetterUtil.getLong(key));
+			keysLong.add(GetterUtil.getLong(keyString));
 		}
 
 		return keysLong;

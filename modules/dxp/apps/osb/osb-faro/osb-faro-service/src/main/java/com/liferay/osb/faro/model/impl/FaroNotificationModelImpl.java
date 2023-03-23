@@ -246,90 +246,117 @@ public class FaroNotificationModelImpl
 	public Map<String, Function<FaroNotification, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<FaroNotification, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<FaroNotification, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<FaroNotification, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<FaroNotification, Object>>
-			attributeGetterFunctions =
-				new LinkedHashMap<String, Function<FaroNotification, Object>>();
-		Map<String, BiConsumer<FaroNotification, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<FaroNotification, ?>>();
+		private static final Map<String, Function<FaroNotification, Object>>
+			_attributeGetterFunctions;
 
-		attributeGetterFunctions.put(
-			"mvccVersion", FaroNotification::getMvccVersion);
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			(BiConsumer<FaroNotification, Long>)
-				FaroNotification::setMvccVersion);
-		attributeGetterFunctions.put(
-			"faroNotificationId", FaroNotification::getFaroNotificationId);
-		attributeSetterBiConsumers.put(
-			"faroNotificationId",
-			(BiConsumer<FaroNotification, Long>)
-				FaroNotification::setFaroNotificationId);
-		attributeGetterFunctions.put("groupId", FaroNotification::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId",
-			(BiConsumer<FaroNotification, Long>)FaroNotification::setGroupId);
-		attributeGetterFunctions.put(
-			"companyId", FaroNotification::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId",
-			(BiConsumer<FaroNotification, Long>)FaroNotification::setCompanyId);
-		attributeGetterFunctions.put(
-			"createTime", FaroNotification::getCreateTime);
-		attributeSetterBiConsumers.put(
-			"createTime",
-			(BiConsumer<FaroNotification, Long>)
-				FaroNotification::setCreateTime);
-		attributeGetterFunctions.put("userId", FaroNotification::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId",
-			(BiConsumer<FaroNotification, Long>)FaroNotification::setUserId);
-		attributeGetterFunctions.put(
-			"modifiedTime", FaroNotification::getModifiedTime);
-		attributeSetterBiConsumers.put(
-			"modifiedTime",
-			(BiConsumer<FaroNotification, Long>)
-				FaroNotification::setModifiedTime);
-		attributeGetterFunctions.put("ownerId", FaroNotification::getOwnerId);
-		attributeSetterBiConsumers.put(
-			"ownerId",
-			(BiConsumer<FaroNotification, Long>)FaroNotification::setOwnerId);
-		attributeGetterFunctions.put("scope", FaroNotification::getScope);
-		attributeSetterBiConsumers.put(
-			"scope",
-			(BiConsumer<FaroNotification, String>)FaroNotification::setScope);
-		attributeGetterFunctions.put("read", FaroNotification::getRead);
-		attributeSetterBiConsumers.put(
-			"read",
-			(BiConsumer<FaroNotification, Boolean>)FaroNotification::setRead);
-		attributeGetterFunctions.put("type", FaroNotification::getType);
-		attributeSetterBiConsumers.put(
-			"type",
-			(BiConsumer<FaroNotification, String>)FaroNotification::setType);
-		attributeGetterFunctions.put("subtype", FaroNotification::getSubtype);
-		attributeSetterBiConsumers.put(
-			"subtype",
-			(BiConsumer<FaroNotification, String>)FaroNotification::setSubtype);
+		static {
+			Map<String, Function<FaroNotification, Object>>
+				attributeGetterFunctions =
+					new LinkedHashMap
+						<String, Function<FaroNotification, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put(
+				"mvccVersion", FaroNotification::getMvccVersion);
+			attributeGetterFunctions.put(
+				"faroNotificationId", FaroNotification::getFaroNotificationId);
+			attributeGetterFunctions.put(
+				"groupId", FaroNotification::getGroupId);
+			attributeGetterFunctions.put(
+				"companyId", FaroNotification::getCompanyId);
+			attributeGetterFunctions.put(
+				"createTime", FaroNotification::getCreateTime);
+			attributeGetterFunctions.put("userId", FaroNotification::getUserId);
+			attributeGetterFunctions.put(
+				"modifiedTime", FaroNotification::getModifiedTime);
+			attributeGetterFunctions.put(
+				"ownerId", FaroNotification::getOwnerId);
+			attributeGetterFunctions.put("scope", FaroNotification::getScope);
+			attributeGetterFunctions.put("read", FaroNotification::getRead);
+			attributeGetterFunctions.put("type", FaroNotification::getType);
+			attributeGetterFunctions.put(
+				"subtype", FaroNotification::getSubtype);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map<String, BiConsumer<FaroNotification, Object>>
+			_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<FaroNotification, ?>>
+				attributeSetterBiConsumers =
+					new LinkedHashMap
+						<String, BiConsumer<FaroNotification, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"mvccVersion",
+				(BiConsumer<FaroNotification, Long>)
+					FaroNotification::setMvccVersion);
+			attributeSetterBiConsumers.put(
+				"faroNotificationId",
+				(BiConsumer<FaroNotification, Long>)
+					FaroNotification::setFaroNotificationId);
+			attributeSetterBiConsumers.put(
+				"groupId",
+				(BiConsumer<FaroNotification, Long>)
+					FaroNotification::setGroupId);
+			attributeSetterBiConsumers.put(
+				"companyId",
+				(BiConsumer<FaroNotification, Long>)
+					FaroNotification::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"createTime",
+				(BiConsumer<FaroNotification, Long>)
+					FaroNotification::setCreateTime);
+			attributeSetterBiConsumers.put(
+				"userId",
+				(BiConsumer<FaroNotification, Long>)
+					FaroNotification::setUserId);
+			attributeSetterBiConsumers.put(
+				"modifiedTime",
+				(BiConsumer<FaroNotification, Long>)
+					FaroNotification::setModifiedTime);
+			attributeSetterBiConsumers.put(
+				"ownerId",
+				(BiConsumer<FaroNotification, Long>)
+					FaroNotification::setOwnerId);
+			attributeSetterBiConsumers.put(
+				"scope",
+				(BiConsumer<FaroNotification, String>)
+					FaroNotification::setScope);
+			attributeSetterBiConsumers.put(
+				"read",
+				(BiConsumer<FaroNotification, Boolean>)
+					FaroNotification::setRead);
+			attributeSetterBiConsumers.put(
+				"type",
+				(BiConsumer<FaroNotification, String>)
+					FaroNotification::setType);
+			attributeSetterBiConsumers.put(
+				"subtype",
+				(BiConsumer<FaroNotification, String>)
+					FaroNotification::setSubtype);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@Override
@@ -891,7 +918,8 @@ public class FaroNotificationModelImpl
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<FaroNotification, Object> function =
-			_attributeGetterFunctions.get(columnName);
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(

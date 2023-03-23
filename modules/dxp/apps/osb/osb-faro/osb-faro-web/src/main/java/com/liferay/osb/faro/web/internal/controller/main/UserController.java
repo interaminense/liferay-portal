@@ -213,7 +213,7 @@ public class UserController extends BaseFaroController {
 		List<FaroUserDisplay> faroUserDisplay = new ArrayList<>();
 
 		for (FaroUser faroUser : faroUsers) {
-			faroUserDisplay.add(new FaroUserDisplay());
+			faroUserDisplay.add(new FaroUserDisplay(faroUser));
 		}
 
 		return new FaroResultsDisplay(

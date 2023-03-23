@@ -246,73 +246,95 @@ public class FaroUserModelImpl
 	public Map<String, Function<FaroUser, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<FaroUser, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<FaroUser, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<FaroUser, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<FaroUser, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<FaroUser, Object>>();
-		Map<String, BiConsumer<FaroUser, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<FaroUser, ?>>();
+		private static final Map<String, Function<FaroUser, Object>>
+			_attributeGetterFunctions;
 
-		attributeGetterFunctions.put("mvccVersion", FaroUser::getMvccVersion);
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			(BiConsumer<FaroUser, Long>)FaroUser::setMvccVersion);
-		attributeGetterFunctions.put("faroUserId", FaroUser::getFaroUserId);
-		attributeSetterBiConsumers.put(
-			"faroUserId", (BiConsumer<FaroUser, Long>)FaroUser::setFaroUserId);
-		attributeGetterFunctions.put("groupId", FaroUser::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId", (BiConsumer<FaroUser, Long>)FaroUser::setGroupId);
-		attributeGetterFunctions.put("companyId", FaroUser::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId", (BiConsumer<FaroUser, Long>)FaroUser::setCompanyId);
-		attributeGetterFunctions.put("createTime", FaroUser::getCreateTime);
-		attributeSetterBiConsumers.put(
-			"createTime", (BiConsumer<FaroUser, Long>)FaroUser::setCreateTime);
-		attributeGetterFunctions.put("userId", FaroUser::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId", (BiConsumer<FaroUser, Long>)FaroUser::setUserId);
-		attributeGetterFunctions.put("userName", FaroUser::getUserName);
-		attributeSetterBiConsumers.put(
-			"userName", (BiConsumer<FaroUser, String>)FaroUser::setUserName);
-		attributeGetterFunctions.put("modifiedTime", FaroUser::getModifiedTime);
-		attributeSetterBiConsumers.put(
-			"modifiedTime",
-			(BiConsumer<FaroUser, Long>)FaroUser::setModifiedTime);
-		attributeGetterFunctions.put("liveUserId", FaroUser::getLiveUserId);
-		attributeSetterBiConsumers.put(
-			"liveUserId", (BiConsumer<FaroUser, Long>)FaroUser::setLiveUserId);
-		attributeGetterFunctions.put("roleId", FaroUser::getRoleId);
-		attributeSetterBiConsumers.put(
-			"roleId", (BiConsumer<FaroUser, Long>)FaroUser::setRoleId);
-		attributeGetterFunctions.put("emailAddress", FaroUser::getEmailAddress);
-		attributeSetterBiConsumers.put(
-			"emailAddress",
-			(BiConsumer<FaroUser, String>)FaroUser::setEmailAddress);
-		attributeGetterFunctions.put("key", FaroUser::getKey);
-		attributeSetterBiConsumers.put(
-			"key", (BiConsumer<FaroUser, String>)FaroUser::setKey);
-		attributeGetterFunctions.put("status", FaroUser::getStatus);
-		attributeSetterBiConsumers.put(
-			"status", (BiConsumer<FaroUser, Integer>)FaroUser::setStatus);
+		static {
+			Map<String, Function<FaroUser, Object>> attributeGetterFunctions =
+				new LinkedHashMap<String, Function<FaroUser, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put(
+				"mvccVersion", FaroUser::getMvccVersion);
+			attributeGetterFunctions.put("faroUserId", FaroUser::getFaroUserId);
+			attributeGetterFunctions.put("groupId", FaroUser::getGroupId);
+			attributeGetterFunctions.put("companyId", FaroUser::getCompanyId);
+			attributeGetterFunctions.put("createTime", FaroUser::getCreateTime);
+			attributeGetterFunctions.put("userId", FaroUser::getUserId);
+			attributeGetterFunctions.put("userName", FaroUser::getUserName);
+			attributeGetterFunctions.put(
+				"modifiedTime", FaroUser::getModifiedTime);
+			attributeGetterFunctions.put("liveUserId", FaroUser::getLiveUserId);
+			attributeGetterFunctions.put("roleId", FaroUser::getRoleId);
+			attributeGetterFunctions.put(
+				"emailAddress", FaroUser::getEmailAddress);
+			attributeGetterFunctions.put("key", FaroUser::getKey);
+			attributeGetterFunctions.put("status", FaroUser::getStatus);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map<String, BiConsumer<FaroUser, Object>>
+			_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<FaroUser, ?>> attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<FaroUser, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"mvccVersion",
+				(BiConsumer<FaroUser, Long>)FaroUser::setMvccVersion);
+			attributeSetterBiConsumers.put(
+				"faroUserId",
+				(BiConsumer<FaroUser, Long>)FaroUser::setFaroUserId);
+			attributeSetterBiConsumers.put(
+				"groupId", (BiConsumer<FaroUser, Long>)FaroUser::setGroupId);
+			attributeSetterBiConsumers.put(
+				"companyId",
+				(BiConsumer<FaroUser, Long>)FaroUser::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"createTime",
+				(BiConsumer<FaroUser, Long>)FaroUser::setCreateTime);
+			attributeSetterBiConsumers.put(
+				"userId", (BiConsumer<FaroUser, Long>)FaroUser::setUserId);
+			attributeSetterBiConsumers.put(
+				"userName",
+				(BiConsumer<FaroUser, String>)FaroUser::setUserName);
+			attributeSetterBiConsumers.put(
+				"modifiedTime",
+				(BiConsumer<FaroUser, Long>)FaroUser::setModifiedTime);
+			attributeSetterBiConsumers.put(
+				"liveUserId",
+				(BiConsumer<FaroUser, Long>)FaroUser::setLiveUserId);
+			attributeSetterBiConsumers.put(
+				"roleId", (BiConsumer<FaroUser, Long>)FaroUser::setRoleId);
+			attributeSetterBiConsumers.put(
+				"emailAddress",
+				(BiConsumer<FaroUser, String>)FaroUser::setEmailAddress);
+			attributeSetterBiConsumers.put(
+				"key", (BiConsumer<FaroUser, String>)FaroUser::setKey);
+			attributeSetterBiConsumers.put(
+				"status", (BiConsumer<FaroUser, Integer>)FaroUser::setStatus);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@Override
@@ -913,8 +935,9 @@ public class FaroUserModelImpl
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
-		Function<FaroUser, Object> function = _attributeGetterFunctions.get(
-			columnName);
+		Function<FaroUser, Object> function =
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(

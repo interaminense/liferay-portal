@@ -234,81 +234,103 @@ public class FaroChannelModelImpl
 	public Map<String, Function<FaroChannel, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<FaroChannel, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<FaroChannel, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<FaroChannel, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<FaroChannel, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<FaroChannel, Object>>();
-		Map<String, BiConsumer<FaroChannel, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<FaroChannel, ?>>();
+		private static final Map<String, Function<FaroChannel, Object>>
+			_attributeGetterFunctions;
 
-		attributeGetterFunctions.put(
-			"mvccVersion", FaroChannel::getMvccVersion);
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			(BiConsumer<FaroChannel, Long>)FaroChannel::setMvccVersion);
-		attributeGetterFunctions.put(
-			"faroChannelId", FaroChannel::getFaroChannelId);
-		attributeSetterBiConsumers.put(
-			"faroChannelId",
-			(BiConsumer<FaroChannel, Long>)FaroChannel::setFaroChannelId);
-		attributeGetterFunctions.put("groupId", FaroChannel::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId", (BiConsumer<FaroChannel, Long>)FaroChannel::setGroupId);
-		attributeGetterFunctions.put("companyId", FaroChannel::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId",
-			(BiConsumer<FaroChannel, Long>)FaroChannel::setCompanyId);
-		attributeGetterFunctions.put("createTime", FaroChannel::getCreateTime);
-		attributeSetterBiConsumers.put(
-			"createTime",
-			(BiConsumer<FaroChannel, Long>)FaroChannel::setCreateTime);
-		attributeGetterFunctions.put("userId", FaroChannel::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId", (BiConsumer<FaroChannel, Long>)FaroChannel::setUserId);
-		attributeGetterFunctions.put("userName", FaroChannel::getUserName);
-		attributeSetterBiConsumers.put(
-			"userName",
-			(BiConsumer<FaroChannel, String>)FaroChannel::setUserName);
-		attributeGetterFunctions.put(
-			"modifiedTime", FaroChannel::getModifiedTime);
-		attributeSetterBiConsumers.put(
-			"modifiedTime",
-			(BiConsumer<FaroChannel, Long>)FaroChannel::setModifiedTime);
-		attributeGetterFunctions.put("channelId", FaroChannel::getChannelId);
-		attributeSetterBiConsumers.put(
-			"channelId",
-			(BiConsumer<FaroChannel, String>)FaroChannel::setChannelId);
-		attributeGetterFunctions.put("name", FaroChannel::getName);
-		attributeSetterBiConsumers.put(
-			"name", (BiConsumer<FaroChannel, String>)FaroChannel::setName);
-		attributeGetterFunctions.put(
-			"permissionType", FaroChannel::getPermissionType);
-		attributeSetterBiConsumers.put(
-			"permissionType",
-			(BiConsumer<FaroChannel, Integer>)FaroChannel::setPermissionType);
-		attributeGetterFunctions.put(
-			"workspaceGroupId", FaroChannel::getWorkspaceGroupId);
-		attributeSetterBiConsumers.put(
-			"workspaceGroupId",
-			(BiConsumer<FaroChannel, Long>)FaroChannel::setWorkspaceGroupId);
+		static {
+			Map<String, Function<FaroChannel, Object>>
+				attributeGetterFunctions =
+					new LinkedHashMap<String, Function<FaroChannel, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put(
+				"mvccVersion", FaroChannel::getMvccVersion);
+			attributeGetterFunctions.put(
+				"faroChannelId", FaroChannel::getFaroChannelId);
+			attributeGetterFunctions.put("groupId", FaroChannel::getGroupId);
+			attributeGetterFunctions.put(
+				"companyId", FaroChannel::getCompanyId);
+			attributeGetterFunctions.put(
+				"createTime", FaroChannel::getCreateTime);
+			attributeGetterFunctions.put("userId", FaroChannel::getUserId);
+			attributeGetterFunctions.put("userName", FaroChannel::getUserName);
+			attributeGetterFunctions.put(
+				"modifiedTime", FaroChannel::getModifiedTime);
+			attributeGetterFunctions.put(
+				"channelId", FaroChannel::getChannelId);
+			attributeGetterFunctions.put("name", FaroChannel::getName);
+			attributeGetterFunctions.put(
+				"permissionType", FaroChannel::getPermissionType);
+			attributeGetterFunctions.put(
+				"workspaceGroupId", FaroChannel::getWorkspaceGroupId);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map<String, BiConsumer<FaroChannel, Object>>
+			_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<FaroChannel, ?>> attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<FaroChannel, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"mvccVersion",
+				(BiConsumer<FaroChannel, Long>)FaroChannel::setMvccVersion);
+			attributeSetterBiConsumers.put(
+				"faroChannelId",
+				(BiConsumer<FaroChannel, Long>)FaroChannel::setFaroChannelId);
+			attributeSetterBiConsumers.put(
+				"groupId",
+				(BiConsumer<FaroChannel, Long>)FaroChannel::setGroupId);
+			attributeSetterBiConsumers.put(
+				"companyId",
+				(BiConsumer<FaroChannel, Long>)FaroChannel::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"createTime",
+				(BiConsumer<FaroChannel, Long>)FaroChannel::setCreateTime);
+			attributeSetterBiConsumers.put(
+				"userId",
+				(BiConsumer<FaroChannel, Long>)FaroChannel::setUserId);
+			attributeSetterBiConsumers.put(
+				"userName",
+				(BiConsumer<FaroChannel, String>)FaroChannel::setUserName);
+			attributeSetterBiConsumers.put(
+				"modifiedTime",
+				(BiConsumer<FaroChannel, Long>)FaroChannel::setModifiedTime);
+			attributeSetterBiConsumers.put(
+				"channelId",
+				(BiConsumer<FaroChannel, String>)FaroChannel::setChannelId);
+			attributeSetterBiConsumers.put(
+				"name", (BiConsumer<FaroChannel, String>)FaroChannel::setName);
+			attributeSetterBiConsumers.put(
+				"permissionType",
+				(BiConsumer<FaroChannel, Integer>)
+					FaroChannel::setPermissionType);
+			attributeSetterBiConsumers.put(
+				"workspaceGroupId",
+				(BiConsumer<FaroChannel, Long>)
+					FaroChannel::setWorkspaceGroupId);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@Override
@@ -840,8 +862,9 @@ public class FaroChannelModelImpl
 	private long _workspaceGroupId;
 
 	public <T> T getColumnValue(String columnName) {
-		Function<FaroChannel, Object> function = _attributeGetterFunctions.get(
-			columnName);
+		Function<FaroChannel, Object> function =
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(
