@@ -1627,8 +1627,6 @@ public class ContactsEngineClientImpl
 
 			ArrayList<Object> objects = new ArrayList<>(terms.values());
 
-			objects.get(0);
-
 			values.add(objects.get(0));
 		}
 
