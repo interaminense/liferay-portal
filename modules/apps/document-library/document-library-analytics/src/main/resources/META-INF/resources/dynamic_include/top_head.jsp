@@ -58,16 +58,18 @@
 				sendAnalyticsEvent(event.target.parentNode);
 			}
 			else if (
+				(event.target.title &&
+					event.target.title.toLowerCase() === 'download') ||
 				event.target.dataset.action === 'download' ||
 				event.target.querySelector('.lexicon-icon-download') ||
 				event.target.classList.contains('lexicon-icon-download') ||
 				(event.target.parentNode &&
-					event.target.parentNode.classList.contains(
-						'lexicon-icon-download'
-					))
+					event.target.parentNode.title &&
+					event.target.parentNode.title.toLowerCase() === 'download') ||
+				event.target.parentNode.classList.contains('lexicon-icon-download')
 			) {
 				var selectedFiles = document.querySelectorAll(
-					'.portlet-document-library .entry-selector:checked'
+					'.form .custom-control-input:checked'
 				);
 
 				selectedFiles.forEach(({value}) => {
