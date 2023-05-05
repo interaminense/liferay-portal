@@ -117,10 +117,11 @@ public class MockContactsEngineClientImpl
 
 	@Override
 	public long getIndividualsCount(
-		FaroProject faroProject, boolean includeAnonymousUsers) {
+		FaroProject faroProject, boolean includeAnonymousUsers,
+		Date startDate) {
 
 		return contactsEngineClient.getIndividualsCount(
-			faroProject, includeAnonymousUsers);
+			faroProject, includeAnonymousUsers, startDate);
 	}
 
 	@Override
