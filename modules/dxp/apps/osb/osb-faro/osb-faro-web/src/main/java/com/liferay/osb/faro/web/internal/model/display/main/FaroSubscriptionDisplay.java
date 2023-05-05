@@ -37,31 +37,17 @@ import java.util.List;
 
 import org.apache.commons.lang3.time.DateUtils;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 /**
  * @author Matthew Kong
  */
 @SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"})
 public class FaroSubscriptionDisplay {
 
-	public static Date getLastAnniversaryDate(
-		Date createDate, String timeZoneId) {
-
+	public static Date getLastAnniversaryDate(Date createDate) {
 		Date lastAnniversaryDate = DateUtils.setYears(
 			createDate, DateUtil.getYear(new Date()));
-
-		ZoneId zoneId = ZoneId.of(timeZoneId);
-
-		Instant instant = lastAnniversaryDate.toInstant();
-
-		LocalDate localDate = instant.atZone(
-			zoneId
-		).toLocalDate();
-
-		instant = localDate.atStartOfDay(
-			zoneId
-		).toInstant();
-
-		lastAnniversaryDate = Date.from(instant);
 
 		if (DateUtil.compareTo(new Date(), lastAnniversaryDate) > 0) {
 			return lastAnniversaryDate;
@@ -187,11 +173,14 @@ public class FaroSubscriptionDisplay {
 			return;
 		}
 
-		_lastAnniversaryDate = getLastAnniversaryDate(
-			_startDate, faroProject.getTimeZoneId());
+		_lastAnniversaryDate = getLastAnniversaryDate(_startDate);
 
 		_individualsCount = contactsEngineClient.getIndividualsCount(
-			faroProject, false);
+			faroProject, false, _startDate);
+
+		_individualsCountSinceLastAnniversary =
+			contactsEngineClient.getIndividualsCount(
+				faroProject, false, _lastAnniversaryDate);
 
 		_individualsCountSinceLastAnniversary =
 			contactsEngineClient.getIndividualsCreatedSinceCount(
@@ -206,6 +195,11 @@ public class FaroSubscriptionDisplay {
 		_pageViewsCountSinceLastAnniversary = GetterUtil.getInteger(
 			cerebroEngineClient.getPageViews(
 				faroProject, _lastAnniversaryDate, new Date()));
+
+		_pageViewsCountSinceLastAnniversary = GetterUtil.getInteger(
+			cerebroEngineClient.getPageViews(
+				faroProject, Optional.ofNullable(_lastAnniversaryDate),
+				Optional.of(new Date())));
 
 		_pageViewsStatus = getStatus(_pageViewsCount, _pageViewsLimit);
 	}
