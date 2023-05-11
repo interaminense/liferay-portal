@@ -135,7 +135,7 @@ public class FaroProjectLocalServiceImpl
 
 		_faroChannelLocalService.deleteFaroChannels(groupId);
 		_faroPreferencesLocalService.deleteFaroPreferencesByGroupId(groupId);
-		_faroUserLocalService.deleteFaroUsers(groupId);
+		//_faroUserLocalService.deleteFaroUsers(groupId);
 
 		_groupLocalService.deleteGroup(groupId);
 
@@ -221,8 +221,8 @@ public class FaroProjectLocalServiceImpl
 	public void sendCreatedWorkspaceEmail(String weDeployKey) throws Exception {
 		FaroProject faroProject = fetchFaroProjectByWeDeployKey(weDeployKey);
 
-		FaroUser faroUser = _faroUserLocalService.fetchOwnerFaroUser(
-			faroProject.getGroupId());
+		FaroUser faroUser = null; //_faroUserLocalService.fetchOwnerFaroUser(
+			//faroProject.getGroupId());
 
 		if (faroUser == null) {
 			return;
@@ -350,8 +350,8 @@ public class FaroProjectLocalServiceImpl
 	private FaroProjectEmailDomainLocalService
 		_faroProjectEmailDomainLocalService;
 
-	@Reference
-	private FaroUserLocalService _faroUserLocalService;
+	//@Reference
+	//private FaroUserLocalService _faroUserLocalService;
 
 	@Reference
 	private GroupLocalService _groupLocalService;
