@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncBufferedWriter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Repository;
+import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -133,7 +134,7 @@ public class ContactsCSVHelper {
 	public void deleteFileEntry(long groupId, String dataSourceId)
 		throws Exception {
 
-		Repository repository = _portletFileRepositoryUtil.getPortletRepository(
+		Repository repository = _portletFileRepository.getPortletRepository(
 			groupId, ContactsConstants.SERVICE_NAME);
 
 		_dlFileEntryLocalService.deleteFileEntry(
@@ -330,7 +331,7 @@ public class ContactsCSVHelper {
 		}
 		else {
 			Repository repository =
-				_portletFileRepositoryUtil.addPortletRepository(
+				_portletFileRepository.addPortletRepository(
 					groupId, ContactsConstants.SERVICE_NAME, serviceContext);
 
 			dlFileEntry = _dlFileEntryLocalService.addFileEntry(
@@ -374,6 +375,6 @@ public class ContactsCSVHelper {
 	private DLFileVersionLocalService _dlFileVersionLocalService;
 
 	@Reference
-	private PortletFileRepositoryUtil _portletFileRepositoryUtil;
+	private PortletFileRepository _portletFileRepository;
 
 }
