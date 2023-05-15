@@ -17,6 +17,8 @@
 <%@ include file="/init.jsp" %>
 
 <%
+boolean addToCart = ParamUtil.getBoolean(request, "addToCart");
+
 CommerceChannel commerceChannel = commerceOrderContentDisplayContext.fetchCommerceChannel();
 %>
 
@@ -25,6 +27,13 @@ CommerceChannel commerceChannel = commerceOrderContentDisplayContext.fetchCommer
 	title='<%= LanguageUtil.format(locale, "select-x", "order-type") %>'
 >
 	<portlet:actionURL name="/commerce_open_order_content/edit_commerce_order" var="editCommerceOrderURL" />
+
+	<clay:alert
+		dismissible="<%= true %>"
+		displayType="info"
+		message='<%= LanguageUtil.get(request, "commerce-order-type-info") %>'
+		title='<%= LanguageUtil.get(request, "info") %>'
+	/>
 
 	<aui:form action="<%= editCommerceOrderURL %>" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "addOrder();" %>'>
 		<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.ADD %>" />
@@ -62,42 +71,59 @@ CommerceChannel commerceChannel = commerceOrderContentDisplayContext.fetchCommer
 			'#<portlet:namespace />commerceOrderTypeId'
 		).value;
 
-		var CartResource = ServiceProvider.default.DeliveryCartAPI('v1');
+		var isAddToCart = '<%= addToCart %>';
 
-		CartResource.createCartByChannelId(
-			'<%= commerceChannel.getCommerceChannelId() %>',
-			{
-				accountId:
-					'<%= commerceOrderContentDisplayContext.getCommerceAccountId() %>',
-				currencyCode: '<%= commerceChannel.getCommerceCurrencyCode() %>',
-				orderTypeId: orderTypeId,
-			}
-		)
-			.then((order) => {
-				Liferay.fire(
-					events.CURRENT_ORDER_UPDATED,
-					Object.assign({}, order)
-				);
+		if (isAddToCart === 'true') {
+			window.parent.Liferay.fire(events.ADD_ITEM_TO_CART, {orderTypeId});
 
-				var redirectURL = new Liferay.Util.PortletURL.createPortletURL(
-					'<%= editCommerceOrderRenderURL.toString() %>',
-					{
-						commerceOrderId: order.id,
-						p_auth: Liferay.authToken,
-						p_p_state: '<%= LiferayWindowState.MAXIMIZED.toString() %>',
-					}
-				);
-				window.parent.Liferay.fire(events.CLOSE_MODAL, {
-					redirectURL: redirectURL.toString(),
-					successNotification: {
-						showSuccessNotification: true,
-						message:
-							'<liferay-ui:message key="your-request-completed-successfully" />',
-					},
-				});
-			})
-			.catch((error) => {
-				return Promise.reject(error);
+			window.parent.Liferay.fire(events.CLOSE_MODAL, {
+				successNotification: {
+					showSuccessNotification: true,
+					message:
+						'<liferay-ui:message key="your-request-completed-successfully" />',
+				},
 			});
+		}
+		else {
+			var CartResource = ServiceProvider.default.DeliveryCartAPI('v1');
+
+			CartResource.createCartByChannelId(
+				'<%= commerceChannel.getCommerceChannelId() %>',
+				{
+					accountId:
+						'<%= commerceOrderContentDisplayContext.getCommerceAccountId() %>',
+					currencyCode:
+						'<%= commerceChannel.getCommerceCurrencyCode() %>',
+					orderTypeId: orderTypeId,
+				}
+			)
+				.then((order) => {
+					Liferay.fire(
+						events.CURRENT_ORDER_UPDATED,
+						Object.assign({}, order)
+					);
+
+					var redirectURL = new Liferay.Util.PortletURL.createPortletURL(
+						'<%= editCommerceOrderRenderURL.toString() %>',
+						{
+							commerceOrderId: order.id,
+							p_auth: Liferay.authToken,
+							p_p_state:
+								'<%= LiferayWindowState.MAXIMIZED.toString() %>',
+						}
+					);
+					window.parent.Liferay.fire(events.CLOSE_MODAL, {
+						redirectURL: redirectURL.toString(),
+						successNotification: {
+							showSuccessNotification: true,
+							message:
+								'<liferay-ui:message key="your-request-completed-successfully" />',
+						},
+					});
+				})
+				.catch((error) => {
+					return Promise.reject(error);
+				});
+		}
 	});
 </aui:script>

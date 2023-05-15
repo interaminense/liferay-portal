@@ -73,9 +73,11 @@ if (alignment.equals("full-width")) {
 			alignment: '<%= alignment %>',
 			iconOnly: <%= iconOnly %>,
 			inline: <%= inline %>,
-			namespace: '<%= namespace %>',
+			namespace: '<%= addToCartId %>',
 			size: '<%= size %>',
 		},
+		showOrderTypeModal: <%= showOrderTypeModal %>,
+		showOrderTypeModalURL: '<%= showOrderTypeModalURL %>',
 	};
 
 	<c:if test="<%= productSettingsModel != null %>">
