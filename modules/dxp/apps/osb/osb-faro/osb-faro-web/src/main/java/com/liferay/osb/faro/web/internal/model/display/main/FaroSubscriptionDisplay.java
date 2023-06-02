@@ -176,11 +176,11 @@ public class FaroSubscriptionDisplay {
 		_lastAnniversaryDate = getLastAnniversaryDate(_startDate);
 
 		_individualsCount = contactsEngineClient.getIndividualsCount(
-			faroProject, false, _startDate);
+			faroProject, false);
 
 		_individualsCountSinceLastAnniversary =
-			contactsEngineClient.getIndividualsCount(
-				faroProject, false, _lastAnniversaryDate);
+			contactsEngineClient.getIndividualsCreatedSinceCount(
+				faroProject, _lastAnniversaryDate);
 
 		_individualsCountSinceLastAnniversary =
 			contactsEngineClient.getIndividualsCreatedSinceCount(
