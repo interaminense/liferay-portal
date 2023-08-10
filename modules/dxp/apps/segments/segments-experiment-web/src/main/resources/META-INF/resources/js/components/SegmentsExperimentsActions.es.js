@@ -40,7 +40,11 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 	const dispatch = useContext(DispatchContext);
 
 	const {observer, onClose} = useModal({
-		onClose: () => dispatch(closeReviewAndRunExperiment()),
+		onClose: () => {
+			dispatch(closeReviewAndRunExperiment());
+
+			_removeSegmentExperimentActionParameter();
+		},
 	});
 	const {APIService} = useContext(SegmentsExperimentsContext);
 
@@ -49,7 +53,11 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 			{experiment.status.value === STATUS_DRAFT && (
 				<ClayButton
 					className="w-100"
-					onClick={() => dispatch(reviewAndRunExperiment())}
+					onClick={() => {
+						dispatch(reviewAndRunExperiment());
+
+						_removeSegmentExperimentActionParameter();
+					}}
 				>
 					{Liferay.Language.get('review-and-run-test')}
 				</ClayButton>
@@ -139,6 +147,14 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 			)}
 		</>
 	);
+
+	function _removeSegmentExperimentActionParameter() {
+		const urlSearchParams = new URLSearchParams(window.location.search);
+
+		urlSearchParams.delete('segmentExperimentAction');
+
+		window.history.replaceState(null, null, urlSearchParams.toString());
+	}
 
 	function _handleRunExperiment({confidenceLevel, splitVariantsMap}) {
 		const body = {

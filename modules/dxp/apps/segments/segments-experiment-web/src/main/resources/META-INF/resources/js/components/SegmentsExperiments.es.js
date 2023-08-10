@@ -11,10 +11,10 @@ import ClayLabel from '@clayui/label';
 import ClayTabs from '@clayui/tabs';
 import {openConfirmModal, sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import SegmentsExperimentsContext from '../context.es';
-import {archiveExperiment} from '../state/actions.es';
+import {archiveExperiment, reviewAndRunExperiment} from '../state/actions.es';
 import {DispatchContext, StateContext} from '../state/context.es';
 import {NO_EXPERIMENT_ILLUSTRATION_FILE_NAME} from '../util/contants.es';
 import {navigateToExperience} from '../util/navigation.es';
@@ -54,6 +54,22 @@ function SegmentsExperiments({
 	if (goalTarget && !isGoalTargetInDOM) {
 		onTargetChange('');
 	}
+
+	const urlSearchParams = new URLSearchParams(window.location.search);
+
+	const segmentExperimentAction = urlSearchParams.get(
+		'segmentExperimentAction'
+	);
+
+	/* if (segmentExperimentAction === 'delete') {
+		_handleDeleteActiveExperiment()
+	}*/
+
+	useEffect(() => {
+		if (segmentExperimentAction === 'reviewAndRun') {
+			dispatch(reviewAndRunExperiment());
+		}
+	}, [dispatch, segmentExperimentAction]);
 
 	if (Liferay.FeatureFlags['LRAC-14055']) {
 		return (
