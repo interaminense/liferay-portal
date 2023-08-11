@@ -37,3 +37,21 @@ export function navigateToExperience(
 
 	navigate(newUrl);
 }
+
+export function removeUrlParameter(param, baseUrl = window.location.href) {
+	const urlSearchParams = new URLSearchParams(baseUrl);
+
+	urlSearchParams.delete(param);
+
+	window.history.replaceState(
+		null,
+		null,
+		decodeURIComponent(urlSearchParams.toString())
+	);
+}
+
+export function getUrlParameter(param, baseUrl = window.location.search) {
+	const urlSearchParams = new URLSearchParams(baseUrl);
+
+	return urlSearchParams.get(param);
+}
