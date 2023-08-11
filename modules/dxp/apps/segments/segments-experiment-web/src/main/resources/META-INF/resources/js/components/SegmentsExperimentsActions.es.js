@@ -18,6 +18,8 @@ import {
 	runExperiment,
 	updateSegmentsExperimentStatus,
 } from '../state/actions.es';
+import {SEGMENT_EXPERIMENT_ACTION} from '../util/contants.es';
+import {removeUrlParameter} from '../util/navigation.es';
 import {
 	STATUS_COMPLETED,
 	STATUS_DRAFT,
@@ -40,7 +42,11 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 	const dispatch = useContext(DispatchContext);
 
 	const {observer, onClose} = useModal({
-		onClose: () => dispatch(closeReviewAndRunExperiment()),
+		onClose: () => {
+			dispatch(closeReviewAndRunExperiment());
+
+			removeUrlParameter(SEGMENT_EXPERIMENT_ACTION);
+		},
 	});
 	const {APIService} = useContext(SegmentsExperimentsContext);
 
@@ -49,7 +55,11 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 			{experiment.status.value === STATUS_DRAFT && (
 				<ClayButton
 					className="w-100"
-					onClick={() => dispatch(reviewAndRunExperiment())}
+					onClick={() => {
+						dispatch(reviewAndRunExperiment());
+
+						removeUrlParameter(SEGMENT_EXPERIMENT_ACTION);
+					}}
 				>
 					{Liferay.Language.get('review-and-run-test')}
 				</ClayButton>

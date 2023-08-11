@@ -8,16 +8,24 @@ import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
+import {useModal} from '@clayui/modal';
 import ClayTabs from '@clayui/tabs';
 import {openConfirmModal, sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import SegmentsExperimentsContext from '../context.es';
-import {archiveExperiment} from '../state/actions.es';
+import {archiveExperiment, reviewAndRunExperiment} from '../state/actions.es';
 import {DispatchContext, StateContext} from '../state/context.es';
-import {NO_EXPERIMENT_ILLUSTRATION_FILE_NAME} from '../util/contants.es';
-import {navigateToExperience} from '../util/navigation.es';
+import {
+	NO_EXPERIMENT_ILLUSTRATION_FILE_NAME,
+	SEGMENT_EXPERIMENT_ACTION,
+} from '../util/contants.es';
+import {
+	getUrlParameter,
+	navigateToExperience,
+	removeUrlParameter,
+} from '../util/navigation.es';
 import {
 	STATUS_COMPLETED,
 	STATUS_DRAFT,
@@ -26,6 +34,7 @@ import {
 } from '../util/statuses.es';
 import {openErrorToast, openSuccessToast} from '../util/toasts.es';
 import ClickGoalPicker from './ClickGoalPicker/ClickGoalPicker.es';
+import {DeleteModal} from './DeleteModal.es';
 import ExperimentsHistory from './ExperimentsHistory.es';
 import SegmentsExperimentsActions from './SegmentsExperimentsActions.es';
 import SegmentsExperimentsDetails from './SegmentsExperimentsDetails.es';
@@ -45,6 +54,7 @@ function SegmentsExperiments({
 }) {
 	const [activeTab, setActiveTab] = useState(TABS_STATES.ACTIVE);
 	const {experiment, experimentHistory} = useContext(StateContext);
+	const dispatch = useContext(DispatchContext);
 
 	const goalTarget = experiment?.goal?.target?.replace('#', '');
 	const isGoalTargetInDOM = document.getElementById(goalTarget);
@@ -54,6 +64,12 @@ function SegmentsExperiments({
 	if (goalTarget && !isGoalTargetInDOM) {
 		onTargetChange('');
 	}
+
+	useEffect(() => {
+		if (getUrlParameter(SEGMENT_EXPERIMENT_ACTION) === 'reviewAndRun') {
+			dispatch(reviewAndRunExperiment());
+		}
+	}, [dispatch]);
 
 	if (Liferay.FeatureFlags['LRAC-14055']) {
 		return (
@@ -133,27 +149,22 @@ function Experiments({
 	const [dropdown, setDropdown] = useState(false);
 	const {APIService, imagesPath} = useContext(SegmentsExperimentsContext);
 	const dispatch = useContext(DispatchContext);
-	const noExperimentIllustration = `${imagesPath}${NO_EXPERIMENT_ILLUSTRATION_FILE_NAME}`;
 	const {selectedExperienceId, variants} = useContext(StateContext);
+	const [deleteModalActive, setDeleteModalActive] = useState(false);
+
+	const {observer, onClose} = useModal({
+		onClose: () => {
+			removeUrlParameter(SEGMENT_EXPERIMENT_ACTION);
+
+			setDeleteModalActive(false);
+		},
+	});
+
+	const noExperimentIllustration = `${imagesPath}${NO_EXPERIMENT_ILLUSTRATION_FILE_NAME}`;
 	const winnerVariant = variants.find((variant) => variant.winner === true);
 
 	function _handleEditExperiment() {
 		onEditSegmentsExperiment();
-	}
-
-	function _handleDeleteActiveExperiment() {
-		openConfirmModal({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-delete-this'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					return onDeleteSegmentsExperiment(
-						experiment.segmentsExperimentId
-					);
-				}
-			},
-		});
 	}
 
 	function _handlePublishVariant(experienceId) {
@@ -187,6 +198,12 @@ function Experiments({
 			},
 		});
 	}
+
+	useEffect(() => {
+		if (getUrlParameter(SEGMENT_EXPERIMENT_ACTION) === 'delete') {
+			setDeleteModalActive(true);
+		}
+	}, []);
 
 	return (
 		<>
@@ -228,7 +245,9 @@ function Experiments({
 									</ClayDropDown.Item>
 
 									<ClayDropDown.Item
-										onClick={_handleDeleteActiveExperiment}
+										onClick={() =>
+											setDeleteModalActive(true)
+										}
 									>
 										<ClayIcon
 											className="c-mr-3 text-4"
@@ -337,6 +356,33 @@ function Experiments({
 						{Liferay.Language.get('create-test')}
 					</ClayButton>
 				</div>
+			)}
+
+			{deleteModalActive && (
+				<DeleteModal
+					modalObserver={observer}
+					onCancel={onClose}
+					onDelete={() => {
+						onDeleteSegmentsExperiment(
+							experiment.segmentsExperimentId
+						);
+
+						onClose();
+					}}
+					title={Liferay.Language.get('delete-test')}
+				>
+					<label>
+						{Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-this'
+						)}
+					</label>
+
+					<p className="small text-secondary">
+						{Liferay.Language.get(
+							'you-will-lose-all-data-relate-to-it.-you-will-not-be-able-to-undo-this-operation'
+						)}
+					</p>
+				</DeleteModal>
 			)}
 		</>
 	);

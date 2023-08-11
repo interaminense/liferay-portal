@@ -6,3 +6,5 @@
 export const NO_EXPERIMENT_ILLUSTRATION_FILE_NAME = '/no_experiment.svg';
 
 export const SUCCESS_ANIMATION_FILE_NAME = '/success.gif';
+
+export const SEGMENT_EXPERIMENT_ACTION = 'segmentExperimentAction';
