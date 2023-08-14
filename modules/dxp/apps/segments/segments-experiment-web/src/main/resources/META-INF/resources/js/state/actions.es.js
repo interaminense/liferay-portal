@@ -65,6 +65,13 @@ export function openCreationModal(payload) {
 	};
 }
 
+export function openDeletionModal(payload) {
+	return {
+		payload,
+		type: 'DELETE_EXPERIMENT',
+	};
+}
+
 export function openEditionModal(payload) {
 	return {
 		payload,

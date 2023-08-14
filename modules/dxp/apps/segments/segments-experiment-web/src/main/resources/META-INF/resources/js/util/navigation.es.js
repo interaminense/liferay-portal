@@ -42,14 +42,18 @@ export function navigateToExperience(
 export function getSegmentsExperimentAction() {
 	const url = new URL(window.location.href);
 	const urlSearchParams = new URLSearchParams(url.search);
-	const param = urlSearchParams.get(EXPERIMENT_ACTION_URL_KEY);
+	const segmentsExperimentAction = urlSearchParams.get(
+		EXPERIMENT_ACTION_URL_KEY
+	);
 
-	if (param) {
-		urlSearchParams.delete(EXPERIMENT_ACTION_URL_KEY);
-		url.search = urlSearchParams.toString();
-
-		window.history.replaceState(null, null, decodeURIComponent(url.href));
+	if (!segmentsExperimentAction) {
+		return null;
 	}
 
-	return param;
+	urlSearchParams.delete(EXPERIMENT_ACTION_URL_KEY);
+	url.search = urlSearchParams.toString();
+
+	window.history.replaceState(null, null, decodeURIComponent(url.href));
+
+	return segmentsExperimentAction;
 }
