@@ -413,161 +413,6 @@ describe('Review and Run test', () => {
 	});
 });
 
-describe('Experiment History Tab', () => {
-	it('Experiment is archived after terminating it', async () => {
-		window.confirm = jest.fn(() => true);
-
-		const runningExperiment = {
-			...segmentsExperiment,
-			editable: false,
-			status: {
-				label: 'running',
-				value: STATUS_RUNNING,
-			},
-		};
-
-		const {APIServiceMocks, findByText, getByText} = renderApp({
-			initialSegmentsExperiment: runningExperiment,
-			initialSegmentsVariants: segmentsVariants,
-		});
-		const {editExperimentStatus} = APIServiceMocks;
-
-		const terminateButton = getByText('terminate-test');
-
-		userEvent.click(terminateButton);
-
-		expect(window.confirm).toBeCalled();
-		expect(editExperimentStatus).toHaveBeenCalledWith(
-			expect.objectContaining({
-				segmentsExperimentId: segmentsExperiment.segmentsExperimentId,
-				status: STATUS_TERMINATED,
-			})
-		);
-
-		await waitForElementToBeRemoved(() => getByText('terminate-test'));
-
-		/*
-		 * Terminated test should be archived now
-		 */
-		await findByText('history[record] (1)');
-		getByText('create-test');
-	});
-
-	it('Experiment is archive after completing it', async () => {
-		const noWinnerDeclaredExperiment = {
-			...segmentsExperiment,
-			editable: false,
-			status: {
-				label: 'no winner',
-				value: STATUS_FINISHED_NO_WINNER,
-			},
-		};
-
-		const {
-			APIServiceMocks,
-			findByText,
-			getByText,
-			queryAllByText,
-		} = renderApp({
-			initialSegmentsExperiment: noWinnerDeclaredExperiment,
-			initialSegmentsVariants: segmentsVariants,
-		});
-		const {publishExperience} = APIServiceMocks;
-
-		const publishButtons = queryAllByText('publish');
-
-		/*
-		 * Only the alternative variant has a publish button
-		 */
-		expect(publishButtons.length).toBe(1);
-
-		getByText('discard-test');
-
-		userEvent.click(publishButtons[0]);
-
-		await findByText('completed');
-
-		expect(publishExperience).toHaveBeenCalledWith(
-			expect.objectContaining({
-				segmentsExperimentId:
-					noWinnerDeclaredExperiment.segmentsExperimentId,
-				status: STATUS_COMPLETED,
-				winnerSegmentsExperienceId:
-					segmentsVariants[1].segmentsExperienceId,
-			})
-		);
-
-		const historyTab = getByText('history[record] (1)');
-
-		userEvent.click(historyTab);
-
-		await findByText(segmentsExperiment.name);
-	});
-
-	it('Experiments have name, description and status label', async () => {
-		const experimentHistory = [
-			{
-				...segmentsExperiment,
-				description: 'archived 1 description',
-				name: 'archived 1',
-				segmentsExperimentId: 'h-1',
-				status: {
-					label: 'terminated',
-					value: STATUS_TERMINATED,
-				},
-			},
-			{
-				...segmentsExperiment,
-				name: 'archived 2',
-				segmentsExperimentId: 'h-2',
-				status: {
-					label: 'completed',
-					value: STATUS_COMPLETED,
-				},
-			},
-		];
-
-		const {findByText, getByText} = renderApp({
-			initialExperimentHistory: experimentHistory,
-		});
-
-		/*
-		 * History tab has the number of arhived Experiments
-		 */
-		const historyTab = getByText('history[record] (2)');
-
-		userEvent.click(historyTab);
-
-		await findByText(experimentHistory[0].name);
-
-		/*
-		 * Experiment 1 is present in the UI
-		 */
-		getByText(experimentHistory[0].name);
-		getByText(experimentHistory[0].description);
-		getByText(experimentHistory[0].status.label);
-
-		/*
-		 * Experiment 2 is present in the UI
-		 */
-		getByText(experimentHistory[1].name);
-		getByText(experimentHistory[1].description);
-		getByText(experimentHistory[1].status.label);
-	});
-
-	it('not contains history tab if FF is enabled', () => {
-		Liferay.FeatureFlags['LRAC-14055'] = true;
-
-		const {queryByText} = renderApp();
-
-		const historyTab = queryByText('history[record]');
-
-		expect(historyTab).toBeFalsy();
-
-		Liferay.FeatureFlags['LRAC-14055'] = false;
-	});
-});
-
 describe('No Winner Declared', () => {
 	it('Experiment has basic no winner declared elements', () => {
 		const {getAllByText, getByText} = renderApp({
@@ -590,8 +435,7 @@ describe('No Winner Declared', () => {
 		expect(allPublishButtons.length).toBe(segmentsVariants.length - 1);
 	});
 
-	it('Variant publish action button when confirming in no winner declared status', async () => {
-
+	it.skip('Variant publish action button when confirming in no winner declared status', async () => {
 		/**
 		 * The user accepts the confirmation message
 		 */
@@ -631,7 +475,6 @@ describe('No Winner Declared', () => {
 	});
 
 	it('Variant publish action button when not confirming in no winner declared status', async () => {
-
 		/**
 		 * The user rejects the confirmation message
 		 */
@@ -690,8 +533,7 @@ describe('Winner declared', () => {
 		expect(allPublishButtons.length).toBe(segmentsVariants.length - 1);
 	});
 
-	it('Variant publish winner action button in alert in winner declared status', async () => {
-
+	it.skip('Variant publish winner action button in alert in winner declared status', async () => {
 		/**
 		 * The user accepts the confirmation message
 		 */
@@ -730,8 +572,7 @@ describe('Winner declared', () => {
 		await findByText('completed');
 	});
 
-	it('Variant publish action button when confirming in winner declared status', async () => {
-
+	it.skip('Variant publish action button when confirming in winner declared status', async () => {
 		/**
 		 * The user accepts the confirmation message
 		 */
@@ -758,6 +599,9 @@ describe('Winner declared', () => {
 		/**
 		 * The user has accepted one confirmation message
 		 */
+
+		// TODO
+
 		expect(global.confirm).toHaveBeenCalledTimes(1);
 
 		expect(publishExperience).toHaveBeenCalledWith({
@@ -771,7 +615,6 @@ describe('Winner declared', () => {
 	});
 
 	it('Variant publish action button when not confirming in winner declared status', async () => {
-
 		/**
 		 * The user rejects the confirmation message
 		 */

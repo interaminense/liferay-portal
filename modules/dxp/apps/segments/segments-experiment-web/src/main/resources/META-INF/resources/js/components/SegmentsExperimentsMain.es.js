@@ -29,13 +29,11 @@ const useExperimentsData = (eventTriggered, fetchDataURL, isPanelStateOpen) => {
 			}
 			const {context, props} = await response.json();
 			setData({context, props});
-		}
-		catch (error) {
+		} catch (error) {
 			if (process.env.NODE_ENV === 'development') {
 				console.error(error);
 			}
-		}
-		finally {
+		} finally {
 			setLoading(false);
 		}
 	}, [fetchDataURL]);
@@ -69,8 +67,7 @@ const SegmentsExperimentsMain = ({
 
 	if (loading) {
 		return <ClayLoadingIndicator className="my-6" />;
-	}
-	else if (!context || !props) {
+	} else if (!context || !props) {
 		return null;
 	}
 
@@ -114,7 +111,6 @@ const SegmentsExperimentsMain = ({
 			}}
 		>
 			<SegmentsExperimentsSidebar
-				initialExperimentHistory={props.historySegmentsExperiments}
 				initialGoals={props.segmentsExperimentGoals}
 				initialSegmentsExperiment={props.segmentsExperiment}
 				initialSegmentsVariants={props.initialSegmentsVariants}

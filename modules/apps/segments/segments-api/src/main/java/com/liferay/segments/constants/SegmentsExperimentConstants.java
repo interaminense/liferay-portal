@@ -141,7 +141,7 @@ public class SegmentsExperimentConstants {
 
 		},
 		TERMINATED(
-			STATUS_TERMINATED, "TERMINATED", "terminated", true, false, false,
+			STATUS_TERMINATED, "TERMINATED", "terminated", true, false, true,
 			false, false);
 
 		public static int[] getExclusiveStatusValues() {

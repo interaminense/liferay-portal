@@ -12,15 +12,15 @@ import SegmentsExperimentsContext from '../context.es';
 import {
 	addSegmentsExperiment,
 	addVariant,
-	archiveExperiment,
 	closeCreationModal,
 	closeDeletionModal,
 	closeEditionModal,
-	deleteArchivedExperiment,
+	closeTerminateModal,
 	editSegmentsExperiment,
 	openCreationModal,
 	openDeletionModal,
 	openEditionModal,
+	openTerminateModal,
 	reviewAndRunExperiment,
 	reviewClickTargetElement,
 	updateSegmentsExperimentStatus,
@@ -42,18 +42,17 @@ import {
 	navigateToExperience,
 } from '../util/navigation.es';
 import {
-	STATUS_COMPLETED,
 	STATUS_DRAFT,
+	STATUS_RUNNING,
 	STATUS_TERMINATED,
 } from '../util/statuses.es';
 import {openErrorToast, openSuccessToast} from '../util/toasts.es';
-import {DeleteModal} from './DeleteModal.es';
+import {ConfirmModal} from './ConfirmModal';
 import SegmentsExperiments from './SegmentsExperiments.es';
 import SegmentsExperimentsModal from './SegmentsExperimentsModal.es';
 import UnsupportedSegmentsExperiments from './UnsupportedSegmentsExperiments.es';
 
 function SegmentsExperimentsSidebar({
-	initialExperimentHistory,
 	initialGoals,
 	initialSegmentsExperiment,
 	initialSegmentsVariants,
@@ -64,7 +63,6 @@ function SegmentsExperimentsSidebar({
 	const [state, dispatch] = useReducer(
 		reducer,
 		{
-			initialExperimentHistory,
 			initialSegmentsExperiment,
 			initialSegmentsVariants,
 			initialSelectedSegmentsExperienceId,
@@ -78,6 +76,7 @@ function SegmentsExperimentsSidebar({
 		deleteExperimentModal,
 		editExperimentModal,
 		experiment,
+		terminateExperimentModal,
 	} = state;
 
 	const {
@@ -98,25 +97,37 @@ function SegmentsExperimentsSidebar({
 	} = useModal({
 		onClose: () => dispatch(closeDeletionModal()),
 	});
+	const {
+		observer: terminateModalObserver,
+		onClose: onTerminateModalClose,
+	} = useModal({
+		onClose: () => dispatch(closeTerminateModal()),
+	});
 
 	useEffect(() => {
 		const segmentsExperimentAction = getSegmentsExperimentAction();
 
-		if (
-			!segmentsExperimentAction ||
-			!experiment ||
-			experiment.status.value !== STATUS_DRAFT
-		) {
+		if (!segmentsExperimentAction || !experiment) {
 			return;
 		}
 
-		if (segmentsExperimentAction === 'reviewAndRun') {
+		if (
+			experiment.status.value === STATUS_DRAFT &&
+			segmentsExperimentAction === 'reviewAndRun'
+		) {
 			dispatch(reviewAndRunExperiment());
-		}
-		else if (segmentsExperimentAction === 'delete') {
+		} else if (
+			experiment.status.value === STATUS_DRAFT &&
+			segmentsExperimentAction === 'delete'
+		) {
 			dispatch(openDeletionModal());
+		} else if (
+			experiment.status.value === STATUS_RUNNING &&
+			segmentsExperimentAction === 'terminate'
+		) {
+			dispatch(openTerminateModal());
 		}
-	}, [dispatch, experiment]);
+	}, [dispatch, experiment, terminateExperimentModal]);
 
 	return page.type === 'content' ? (
 		<DispatchContext.Provider value={dispatch}>
@@ -175,16 +186,17 @@ function SegmentsExperimentsSidebar({
 					)}
 
 					{deleteExperimentModal.active && (
-						<DeleteModal
+						<ConfirmModal
 							modalObserver={deletionModalObserver}
 							onCancel={onDeletionModalClose}
-							onDelete={() => {
+							onConfirm={() => {
 								_handleDeleteSegmentsExperiment(
 									experiment.segmentsExperimentId
 								);
 
 								onDeletionModalClose();
 							}}
+							submitTitle={Liferay.Language.get('delete')}
 							title={Liferay.Language.get('delete-test')}
 						>
 							<p className="font-weight-bold text-secondary">
@@ -198,7 +210,30 @@ function SegmentsExperimentsSidebar({
 									'you-will-lose-all-data-relate-to-it.-you-will-not-be-able-to-undo-this-operation'
 								)}
 							</p>
-						</DeleteModal>
+						</ConfirmModal>
+					)}
+
+					{terminateExperimentModal.active && (
+						<ConfirmModal
+							modalObserver={terminateModalObserver}
+							onCancel={onTerminateModalClose}
+							onConfirm={() => {
+								_handleEditSegmentExperimentStatus(
+									experiment,
+									STATUS_TERMINATED
+								);
+
+								onTerminateModalClose();
+							}}
+							submitTitle={Liferay.Language.get('terminate')}
+							title={Liferay.Language.get('terminate-test')}
+						>
+							<p className="font-weight-bold text-secondary">
+								{Liferay.Language.get(
+									'are-you-sure-you-want-to-terminate-this-test'
+								)}
+							</p>
+						</ConfirmModal>
 					)}
 				</div>
 			</StateContext.Provider>
@@ -207,7 +242,7 @@ function SegmentsExperimentsSidebar({
 		<UnsupportedSegmentsExperiments />
 	);
 
-	function _handleCreateSegmentsExperiment(_experienceId) {
+	function _handleCreateSegmentsExperiment() {
 		dispatch(openCreationModal());
 	}
 
@@ -225,9 +260,6 @@ function SegmentsExperimentsSidebar({
 					experiment.segmentsExperimentId === experimentId
 				) {
 					navigateToExperience(experiment.segmentsExperienceId);
-				}
-				else {
-					dispatch(deleteArchivedExperiment(experimentId));
 				}
 			})
 			.catch((_error) => {
@@ -316,24 +348,12 @@ function SegmentsExperimentsSidebar({
 			.then(function _successCallback(objectResponse) {
 				const {editable, status} = objectResponse.segmentsExperiment;
 
-				if (
-					status.value === STATUS_TERMINATED ||
-					status.value === STATUS_COMPLETED
-				) {
-					dispatch(
-						archiveExperiment({
-							status,
-						})
-					);
-				}
-				else {
-					dispatch(
-						updateSegmentsExperimentStatus({
-							editable,
-							status,
-						})
-					);
-				}
+				dispatch(
+					updateSegmentsExperimentStatus({
+						editable,
+						status,
+					})
+				);
 			})
 			.catch(function _errorCallback() {
 				openToast({
@@ -441,8 +461,6 @@ function SegmentsExperimentsSidebar({
 }
 
 SegmentsExperimentsSidebar.propTypes = {
-	initialExperimentHistory: PropTypes.arrayOf(SegmentsExperimentType)
-		.isRequired,
 	initialGoals: PropTypes.arrayOf(SegmentsExperimentGoal),
 	initialSegmentsExperiment: SegmentsExperimentType,
 	initialSegmentsVariants: PropTypes.arrayOf(SegmentsVariantType).isRequired,
