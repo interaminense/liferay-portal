@@ -180,7 +180,7 @@ public class SegmentsExperimentLocalServiceImpl
 		// Segments experiment
 
 		if (!force) {
-			_validateEditableStatus(segmentsExperiment.getStatus());
+			_validateDeletableStatus(segmentsExperiment.getStatus());
 		}
 
 		segmentsExperimentPersistence.remove(segmentsExperiment);
@@ -537,6 +537,17 @@ public class SegmentsExperimentLocalServiceImpl
 		}
 
 		throw new DuplicateSegmentsExperimentException();
+	}
+	
+	private void _validateDeletableStatus(int status) throws PortalException {
+		SegmentsExperimentConstants.Status statusObject =
+			SegmentsExperimentConstants.Status.valueOf(status);
+
+		if (!statusObject.isDeletable()) {
+			throw new LockedSegmentsExperimentException(
+				"Segments experiment is not deletable in status " +
+					statusObject);
+		}
 	}
 
 	private void _validateEditableStatus(int status) throws PortalException {
