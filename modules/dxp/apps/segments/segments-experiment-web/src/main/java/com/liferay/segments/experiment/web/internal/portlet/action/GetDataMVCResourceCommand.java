@@ -327,11 +327,6 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 				"p_l_mode", Constants.VIEW
 			).buildString()
 		).put(
-			"historySegmentsExperiments",
-			_getHistorySegmentsExperimentsJSONArray(
-				analyticsConfiguration, group.getGroupId(), locale,
-				layout.getPlid(), segmentsExperienceId)
-		).put(
 			"initialSegmentsVariants",
 			() -> {
 				JSONArray segmentsExperimentRelsJSONArray =
