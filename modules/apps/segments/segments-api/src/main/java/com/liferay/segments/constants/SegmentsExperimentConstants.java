@@ -80,7 +80,7 @@ public class SegmentsExperimentConstants {
 			false),
 		DELETING_ON_DXP_ONLY(
 			STATUS_DELETING_ON_DXP_ONLY, "DELETING_ON_DXP_ONLY",
-			"deleting-on-dxp-only", true),
+			"deleting-on-dxp-only", true, true),
 		DRAFT(STATUS_DRAFT, "DRAFT", "draft", true, true) {
 
 			@Override
@@ -141,7 +141,7 @@ public class SegmentsExperimentConstants {
 
 		},
 		TERMINATED(
-			STATUS_TERMINATED, "TERMINATED", "terminated", true, false, true,
+			STATUS_TERMINATED, "TERMINATED", "terminated", true, false, false,
 			false, false);
 
 		public static int[] getExclusiveStatusValues() {
