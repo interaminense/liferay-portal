@@ -119,8 +119,7 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 		}
 	}
 
-	private SegmentsExperiment _fetchSegmentsExperiment(
-			Layout layout, long segmentsExperienceId)
+	private SegmentsExperiment _fetchSegmentsExperiment(Layout layout, long segmentsExperienceId)
 		throws Exception {
 
 		return _segmentsExperimentService.fetchSegmentsExperiment(
@@ -363,9 +362,7 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 					"segmentsExperiment",
 					SegmentsExperimentUtil.toSegmentsExperimentJSONObject(
 						analyticsConfiguration, locale,
-						_fetchSegmentsExperiment(
-							layout,
-							segmentsExperience.getSegmentsExperienceId()))
+						_fetchSegmentsExperiment(layout, segmentsExperienceId))
 				))
 		).put(
 			"segmentsExperiment",
