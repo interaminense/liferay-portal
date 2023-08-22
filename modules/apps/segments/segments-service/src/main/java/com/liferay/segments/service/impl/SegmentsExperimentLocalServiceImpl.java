@@ -538,7 +538,7 @@ public class SegmentsExperimentLocalServiceImpl
 
 		throw new DuplicateSegmentsExperimentException();
 	}
-	
+
 	private void _validateDeletableStatus(int status) throws PortalException {
 		SegmentsExperimentConstants.Status statusObject =
 			SegmentsExperimentConstants.Status.valueOf(status);
