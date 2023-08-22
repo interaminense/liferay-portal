@@ -88,6 +88,20 @@ const ExperimentActions: React.FC<IExperimentActionsProps> = ({
 				}
 			]
 		);
+	} else if (status === 'RUNNING') {
+		actions.push(
+			...[
+				{
+					displayType: 'secondary',
+					label: Liferay.Language.get('terminate'),
+					redirectURL: getExperimentLink({
+						action: 'terminate',
+						id,
+						pageURL
+					})
+				}
+			]
+		);
 	}
 
 	return <BasePage.Header.Actions actions={actions} />;
