@@ -90,11 +90,11 @@ public class SegmentsExperimentLocalServiceImpl
 
 		int status = SegmentsExperimentConstants.STATUS_DRAFT;
 
+		_deleteSegmentsExperiment(serviceContext.getScopeGroupId(), plid);
+
 		_validate(
 			segmentsExperimentId, segmentsExperienceId, plid, name, goal,
 			status, status);
-
-		_deleteSegmentsExperiment(serviceContext.getScopeGroupId(), plid);
 
 		SegmentsExperiment segmentsExperiment =
 			segmentsExperimentPersistence.create(segmentsExperimentId);

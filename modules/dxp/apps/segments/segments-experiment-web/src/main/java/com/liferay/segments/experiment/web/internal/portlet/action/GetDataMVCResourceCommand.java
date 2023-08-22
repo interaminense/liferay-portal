@@ -119,13 +119,11 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 		}
 	}
 
-	private SegmentsExperiment _fetchSegmentsExperiment(
-			Layout layout, long segmentsExperienceId)
+	private SegmentsExperiment _fetchSegmentsExperiment(Layout layout)
 		throws Exception {
 
 		return _segmentsExperimentService.fetchSegmentsExperiment(
-			segmentsExperienceId, layout.getPlid(),
-			SegmentsExperimentConstants.Status.getExclusiveStatusValues());
+			layout.getGroupId(), layout.getPlid());
 	}
 
 	private String _getContentPageEditorPortletNamespace() {
@@ -312,7 +310,7 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 					_jsonFactory.createJSONArray();
 
 				SegmentsExperiment segmentsExperiment =
-					_fetchSegmentsExperiment(layout, segmentsExperienceId);
+					_fetchSegmentsExperiment(layout);
 
 				if (segmentsExperiment == null) {
 					return segmentsExperimentRelsJSONArray;
@@ -342,15 +340,13 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 					"segmentsExperiment",
 					SegmentsExperimentUtil.toSegmentsExperimentJSONObject(
 						analyticsConfiguration, locale,
-						_fetchSegmentsExperiment(
-							layout,
-							segmentsExperience.getSegmentsExperienceId()))
+						_fetchSegmentsExperiment(layout))
 				))
 		).put(
 			"segmentsExperiment",
 			SegmentsExperimentUtil.toSegmentsExperimentJSONObject(
 				analyticsConfiguration, locale,
-				_fetchSegmentsExperiment(layout, segmentsExperienceId))
+				_fetchSegmentsExperiment(layout))
 		).put(
 			"segmentsExperimentGoals",
 			JSONUtil.toJSONArray(
@@ -375,7 +371,7 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 			"winnerSegmentsVariantId",
 			() -> {
 				SegmentsExperiment segmentsExperiment =
-					_fetchSegmentsExperiment(layout, segmentsExperienceId);
+					_fetchSegmentsExperiment(layout);
 
 				if (segmentsExperiment == null) {
 					return StringPool.BLANK;
