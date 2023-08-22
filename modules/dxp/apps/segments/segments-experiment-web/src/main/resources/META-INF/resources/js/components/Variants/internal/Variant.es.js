@@ -23,7 +23,6 @@ function Variant({
 	name,
 	onVariantDeletion,
 	onVariantEdition,
-	onVariantPublish,
 	publishable,
 	segmentsExperienceId,
 	showSplit,
@@ -44,7 +43,11 @@ function Variant({
 	return (
 		<>
 			<ClayList.Item active={active} flex>
-				<ClayList.ItemField expand>
+				<ClayList.ItemField
+					className="mr-2 text-truncate"
+					expand={!publishable}
+					style={{width: 102}}
+				>
 					<ClayList.ItemTitle>
 						<ClayButton
 							className="lfr-portal-tooltip text-truncate"
@@ -75,6 +78,16 @@ function Variant({
 						</ClayButton>
 					</ClayList.ItemTitle>
 				</ClayList.ItemField>
+
+				{/* TODO: LRAC-14463 - Render lift for each variant */}
+
+				{/* {publishable && (
+					<ClayList.ItemField>
+						<ClayList.ItemTitle className="text-success">
+							{sub(Liferay.Language.get('x-lift'), [10])}
+						</ClayList.ItemTitle>
+					</ClayList.ItemField>
+				)} */}
 
 				{!control && editable && (
 					<>
@@ -134,7 +147,7 @@ function Variant({
 					</>
 				)}
 
-				{showSplit && (
+				{showSplit && !publishable && (
 					<ClayList.ItemField>
 						<span
 							aria-label={Liferay.Language.get('traffic-split')}
@@ -145,7 +158,9 @@ function Variant({
 					</ClayList.ItemField>
 				)}
 
-				{publishable && (
+				{/* TODO: LRAC-14070 Allow user to publish a winner */}
+
+				{/* {publishable && (
 					<ClayList.ItemField>
 						<ClayButton
 							displayType={winner ? 'primary' : 'secondary'}
@@ -157,7 +172,7 @@ function Variant({
 							{Liferay.Language.get('publish')}
 						</ClayButton>
 					</ClayList.ItemField>
-				)}
+				)} */}
 			</ClayList.Item>
 
 			{deleteModalActive && (
