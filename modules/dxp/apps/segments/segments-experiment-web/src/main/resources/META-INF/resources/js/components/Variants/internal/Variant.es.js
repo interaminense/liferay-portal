@@ -79,6 +79,16 @@ function Variant({
 					</ClayList.ItemTitle>
 				</ClayList.ItemField>
 
+				{/* TODO: LRAC-14463 - Render lift for each variant */}
+
+				{/* {publishable && (
+					<ClayList.ItemField>
+						<ClayList.ItemTitle className="text-success">
+							{sub(Liferay.Language.get('x-lift'), [10])}
+						</ClayList.ItemTitle>
+					</ClayList.ItemField>
+				)} */}
+
 				{!control && editable && (
 					<>
 						<ClayList.ItemField>

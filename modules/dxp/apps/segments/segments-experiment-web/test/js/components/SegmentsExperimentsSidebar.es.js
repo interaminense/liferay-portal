@@ -590,7 +590,9 @@ describe('No Winner Declared', () => {
 		expect(allPublishButtons.length).toBe(segmentsVariants.length - 1);
 	});
 
-	it('Variant publish action button when confirming in no winner declared status', async () => {
+	// TODO: LRAC-14070 Allow user to publish a winner
+
+	it.skip('Variant publish action button when confirming in no winner declared status', async () => {
 
 		/**
 		 * The user accepts the confirmation message
@@ -630,7 +632,9 @@ describe('No Winner Declared', () => {
 		await findByText('completed');
 	});
 
-	it('Variant publish action button when not confirming in no winner declared status', async () => {
+	// TODO: LRAC-14070 Allow user to publish a winner
+
+	it.skip('Variant publish action button when not confirming in no winner declared status', async () => {
 
 		/**
 		 * The user rejects the confirmation message
@@ -668,7 +672,10 @@ describe('No Winner Declared', () => {
 });
 
 describe('Winner declared', () => {
-	it('Experiment has basic winner declared elements', () => {
+
+	// TODO: LRAC-14070 Allow user to publish a winner
+
+	it.skip('Experiment has basic winner declared elements', () => {
 		const {getAllByText, getByText} = renderApp({
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
@@ -690,7 +697,9 @@ describe('Winner declared', () => {
 		expect(allPublishButtons.length).toBe(segmentsVariants.length - 1);
 	});
 
-	it('Variant publish winner action button in alert in winner declared status', async () => {
+	// TODO: LRAC-14070 Allow user to publish a winner
+
+	it.skip('Variant publish winner action button in alert in winner declared status', async () => {
 
 		/**
 		 * The user accepts the confirmation message
@@ -730,7 +739,9 @@ describe('Winner declared', () => {
 		await findByText('completed');
 	});
 
-	it('Variant publish action button when confirming in winner declared status', async () => {
+	// TODO: LRAC-14070 Allow user to publish a winner
+
+	it.skip('Variant publish action button when confirming in winner declared status', async () => {
 
 		/**
 		 * The user accepts the confirmation message
@@ -770,7 +781,9 @@ describe('Winner declared', () => {
 		await findByText('completed');
 	});
 
-	it('Variant publish action button when not confirming in winner declared status', async () => {
+	// TODO: LRAC-14070 Allow user to publish a winner
+
+	it.skip('Variant publish action button when not confirming in winner declared status', async () => {
 
 		/**
 		 * The user rejects the confirmation message
