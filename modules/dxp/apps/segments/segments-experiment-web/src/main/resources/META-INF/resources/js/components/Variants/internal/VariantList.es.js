@@ -29,6 +29,7 @@ function VariantList({
 					}
 					control={variant.control}
 					editable={editable}
+					improvement={variant.segmentsExperimentVariantImprovement}
 					key={variant.segmentsExperimentRelId}
 					name={variant.name}
 					onVariantDeletion={onVariantDeletion}

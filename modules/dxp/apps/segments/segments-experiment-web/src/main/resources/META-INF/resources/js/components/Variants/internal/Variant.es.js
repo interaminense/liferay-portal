@@ -8,6 +8,7 @@ import ClayDropDown from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
 import {useModal} from '@clayui/modal';
+import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useContext, useState} from 'react';
 
@@ -20,6 +21,7 @@ function Variant({
 	active,
 	control = false,
 	editable,
+	improvement,
 	name,
 	onVariantDeletion,
 	onVariantEdition,
@@ -79,15 +81,30 @@ function Variant({
 					</ClayList.ItemTitle>
 				</ClayList.ItemField>
 
-				{/* TODO: LRAC-14463 - Render lift for each variant */}
-
-				{/* {publishable && (
+				{publishable && (
 					<ClayList.ItemField>
-						<ClayList.ItemTitle className="text-success">
-							{sub(Liferay.Language.get('x-lift'), [10])}
-						</ClayList.ItemTitle>
+						{control ? (
+							<ClayList.ItemTitle>
+								{improvement}
+							</ClayList.ItemTitle>
+						) : (
+							<ClayList.ItemTitle
+								className={
+									improvement >= 0
+										? 'text-success'
+										: 'text-danger'
+								}
+							>
+								{sub(
+									improvement >= 0
+										? Liferay.Language.get('x-lift')
+										: Liferay.Language.get('x-loss'),
+									Number(Math.abs(improvement)).toFixed(2)
+								).toLowerCase()}
+							</ClayList.ItemTitle>
+						)}
 					</ClayList.ItemField>
-				)} */}
+				)}
 
 				{!control && editable && (
 					<>
