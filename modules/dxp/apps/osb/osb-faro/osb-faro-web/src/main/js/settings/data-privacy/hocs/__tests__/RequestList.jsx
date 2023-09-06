@@ -203,6 +203,30 @@ describe('RequestList', () => {
 		).toHaveTextContent('Download Expired');
 	});
 
+	it('should render a request row with button disabled if the request status is DONE', async () => {
+		const {container} = render(<DefaultComponent />);
+
+		await waitForLoadingToBeRemoved(container);
+
+		jest.runAllTimers();
+
+		selectAllAndToggle(container);
+
+		const rowElement = container.querySelector(
+			'.table > tbody > tr:nth-of-type(1)'
+		);
+
+		expect(
+			rowElement.querySelector('.row-inline-actions')
+		).toHaveTextContent('Download');
+		expect(rowElement.querySelector('.row-inline-actions a')).toHaveClass(
+			'disabled'
+		);
+		expect(
+			rowElement.querySelector('.row-inline-actions a')
+		).not.toHaveAttribute('href');
+	});
+
 	xit('should filter selected results by request type', async () => {
 		const {container} = render(<DefaultComponent />);
 
