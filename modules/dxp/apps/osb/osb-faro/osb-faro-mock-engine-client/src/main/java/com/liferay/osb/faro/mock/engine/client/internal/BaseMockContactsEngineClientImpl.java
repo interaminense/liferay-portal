@@ -420,11 +420,11 @@ public abstract class BaseMockContactsEngineClientImpl
 
 	@Override
 	public Results<Channel> getChannels(
-		FaroProject faroProject, int cur, int delta,
+		FaroProject faroProject, int cur, int delta, List<String> ids,
 		List<OrderByField> orderByFields) {
 
 		return contactsEngineClient.getChannels(
-			faroProject, cur, delta, orderByFields);
+			faroProject, cur, delta, ids, orderByFields);
 	}
 
 	@Override
