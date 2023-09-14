@@ -7,6 +7,7 @@ import ListComponent from 'shared/hoc/ListComponent';
 import Nav from 'shared/components/Nav';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import React from 'react';
+import RowActions from 'shared/components/RowActions';
 import TextTruncate from 'shared/components/TextTruncate';
 import URLConstants from 'shared/util/url-constants';
 import {
@@ -21,7 +22,6 @@ import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose, withCurrentUser} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {CREATE_TIME, createOrderIOMap} from 'shared/util/pagination';
-import {ENABLE_DELETE_PROPERTY_BUTTON, Sizes} from 'shared/util/constants';
 import {formatDateToTimeZone} from 'shared/util/date';
 import {FormikActions} from 'formik';
 import {getPluralMessage, sub} from 'shared/util/lang';
@@ -30,6 +30,7 @@ import {Link} from 'react-router-dom';
 import {RootState} from 'shared/store';
 import {Routes, toRoute} from 'shared/util/router';
 import {setBackURL} from 'shared/actions/settings';
+import {Sizes} from 'shared/util/constants';
 import {UNAUTHORIZED_ACCESS} from 'shared/util/request';
 import {updateDefaultChannelId} from 'shared/actions/preferences';
 import {useQueryPagination, useRequest} from 'shared/hooks';
@@ -128,7 +129,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 			ids.length
 		) as string;
 
-		open(modalTypes.DELETE_CONFIRMATION_MODAL, {
+		open(modalTypes.UNABLE_DELETE_PROPERTY_MODAL, {
 			children: (
 				<>
 					<p>
@@ -203,15 +204,49 @@ const ChannelList: React.FC<IChannelListProps> = ({
 	const handleDeleteChannel = () => {
 		const ids: string[] = selectedItems.keySeq().toArray();
 
+		// // selectedItems == vazio
+		// if (selectedItems.size === 0) {
+		// 	console.error('Nenhum item selecionado para exclusão');
+		// 	return;
+		// }
+
+		// const firstSelectedItem = selectedItems.first();
+
+		// // firstSelectedItem == válido?
+		// if (!firstSelectedItem) {
+		// 	console.error('Item selecionado inválido');
+		// 	return;
+		// }
+
 		const message: string = getPluralMessage(
 			selectedItems.first().name,
 			Liferay.Language.get('x-properties'),
 			ids.length
 		) as string;
 
-		open(modalTypes.DELETE_CHANNEL_MODAL, {
+		open(modalTypes.DELETE_CONFIRMATION_MODAL, {
 			channelIds: ids,
 			channelName: message,
+			children: (
+				<>
+					<p>
+						<strong>
+							{sub(
+								Liferay.Language.get(
+									'To delete Beryl Corp, copy the sentence below to confirm your intention to delete property.'
+								),
+								[message]
+							)}
+						</strong>
+					</p>
+
+					<p>
+						{Liferay.Language.get(
+							'This will result in the complete removal of this property’s historical events. You will not be able to undo this operation.'
+						)}
+					</p>
+				</>
+			),
 			groupId,
 			onClose: close,
 			onSubmit: () =>
@@ -333,23 +368,42 @@ const ChannelList: React.FC<IChannelListProps> = ({
 						{Liferay.Language.get('clear-data')}
 					</ClayButton>
 
-					{ENABLE_DELETE_PROPERTY_BUTTON && (
-						<ClayButton
-							borderless
-							className='button-root'
-							displayType='secondary'
-							onClick={handleDeleteChannel}
-							outline
-						>
-							{Liferay.Language.get('delete')}
-						</ClayButton>
-					)}
+					<ClayButton
+						borderless
+						className='button-root'
+						displayType='secondary'
+						onClick={handleDeleteChannel}
+						outline
+					>
+						{Liferay.Language.get('delete')}
+					</ClayButton>
 				</Nav>
 			);
 		}
 	};
 
 	const authorized: boolean = currentUser.isAdmin();
+
+	const renderRowActions = () => {
+		const commonActions = [
+			{
+				iconSymbol: 'magic',
+				label: Liferay.Language.get('clear-data'),
+				onClick: () => handleClearData()
+			},
+			{
+				iconSymbol: 'trash',
+				label: Liferay.Language.get('delete'),
+				onClick: () => handleDeleteChannel()
+			}
+		];
+
+		const actions = commonActions.map(({label}) => ({
+			label
+		}));
+
+		return <RowActions actions={actions} quickActions={commonActions} />;
+	};
 
 	return (
 		<BasePage
@@ -456,6 +510,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 					page={page}
 					query={query}
 					renderNav={authorized ? renderNav : null}
+					renderRowActions={renderRowActions}
 					rowIdentifier='id'
 					showCheckbox={authorized}
 					total={data?.total}

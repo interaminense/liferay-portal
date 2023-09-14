@@ -3,7 +3,7 @@ import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'settings/components/BasePage';
 import Card from 'shared/components/Card';
 import ClayButton from '@clayui/button';
-import Constants, {ENABLE_DELETE_PROPERTY_BUTTON} from 'shared/util/constants';
+import Constants from 'shared/util/constants';
 import EmailReports from '../components/EmailReports';
 import Form, {
 	validateMaxLength,
@@ -317,94 +317,87 @@ const View: React.FC<IViewProps> = ({
 								{Liferay.Language.get('clear-data')}
 							</ClayButton>
 
-							{ENABLE_DELETE_PROPERTY_BUTTON && (
-								<ClayButton
-									className='button-root'
-									displayType='secondary'
-									onClick={() =>
-										open(modalTypes.DELETE_CHANNEL_MODAL, {
-											channelIds: [id],
-											channelName: name,
-											groupId,
-											onClose: close,
-											onSubmit: () => {
-												API.channels
-													.delete({
-														groupId,
-														ids: [id]
-													})
-													.then(() => {
-														const deletedMessage = Liferay.Language.get(
-															'x-has-been-deleted'
-														);
+							<ClayButton
+								className='button-root'
+								displayType='secondary'
+								onClick={() =>
+									open(modalTypes.DELETE_CHANNEL_MODAL, {
+										channelIds: [id],
+										channelName: name,
+										groupId,
+										onClose: close,
+										onSubmit: () => {
+											API.channels
+												.delete({
+													groupId,
+													ids: [id]
+												})
+												.then(() => {
+													const deletedMessage = Liferay.Language.get(
+														'x-has-been-deleted'
+													);
 
-														close();
+													close();
 
-														history.push(
+													history.push(
+														toRoute(
+															Routes.SETTINGS_CHANNELS,
+															{
+																groupId,
+																id
+															}
+														)
+													);
+
+													addAlert({
+														alertType:
+															Alert.Types.Success,
+														message: sub(
+															deletedMessage,
+															[name]
+														) as string
+													});
+
+													if (
+														defaultChannelId === id
+													) {
+														updateDefaultChannelId({
+															defaultChannelId: null,
+															groupId
+														});
+
+														setBackURL(
 															toRoute(
-																Routes.SETTINGS_CHANNELS,
+																Routes.WORKSPACE_WITH_ID,
 																{
-																	groupId,
-																	id
+																	groupId
 																}
 															)
 														);
-
-														addAlert({
-															alertType:
-																Alert.Types
-																	.Success,
-															message: sub(
-																deletedMessage,
-																[name]
-															) as string
-														});
-
-														if (
-															defaultChannelId ===
-															id
-														) {
-															updateDefaultChannelId(
-																{
-																	defaultChannelId: null,
-																	groupId
-																}
-															);
-
-															setBackURL(
-																toRoute(
-																	Routes.WORKSPACE_WITH_ID,
-																	{
-																		groupId
-																	}
-																)
-															);
-														}
+													}
+												})
+												.catch(err =>
+													addAlert({
+														alertType:
+															Alert.Types.Error,
+														message:
+															err.message ===
+															UNAUTHORIZED_ACCESS
+																? Liferay.Language.get(
+																		'unauthorized-access'
+																  )
+																: Liferay.Language.get(
+																		'error'
+																  ),
+														timeout: false
 													})
-													.catch(err =>
-														addAlert({
-															alertType:
-																Alert.Types
-																	.Error,
-															message:
-																err.message ===
-																UNAUTHORIZED_ACCESS
-																	? Liferay.Language.get(
-																			'unauthorized-access'
-																	  )
-																	: Liferay.Language.get(
-																			'error'
-																	  ),
-															timeout: false
-														})
-													);
-											}
-										})
-									}
-								>
-									{Liferay.Language.get('delete')}
-								</ClayButton>
-							)}
+												);
+										}
+									})
+								}
+							>
+								{Liferay.Language.get('delete')}
+							</ClayButton>
 						</span>
 					)}
 				</div>
