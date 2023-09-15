@@ -384,25 +384,37 @@ const ChannelList: React.FC<IChannelListProps> = ({
 
 	const authorized: boolean = currentUser.isAdmin();
 
-	const renderRowActions = () => {
-		const commonActions = [
+	const renderRowActions = ({
+		data: {commerceChannelsCount, groupsCount, id, name}
+	}) => {
+		const actions = [
 			{
 				iconSymbol: 'magic',
 				label: Liferay.Language.get('clear-data'),
-				onClick: () => handleClearData()
+				onClick: () => handleClearData([id], name)
 			},
 			{
 				iconSymbol: 'trash',
 				label: Liferay.Language.get('delete'),
-				onClick: () => handleDeleteChannel()
+				onClick: () => {
+					if (!commerceChannelsCount && !groupsCount) {
+						handleDeleteChannel([id], name);
+					} else {
+						handleUnableToDeleteProperty();
+					}
+				}
 			}
 		];
 
-		const actions = commonActions.map(({label}) => ({
-			label
-		}));
-
-		return <RowActions actions={actions} quickActions={commonActions} />;
+		return (
+			<RowActions
+				actions={actions.map(({label, onClick}) => ({
+					label,
+					onClick
+				}))}
+				quickActions={actions}
+			/>
+		);
 	};
 
 	return (
@@ -442,17 +454,20 @@ const ChannelList: React.FC<IChannelListProps> = ({
 							label: Liferay.Language.get('property-name')
 						},
 						{
-							accessor: 'groupIdCount',
+							accessor: 'groupsCount',
+							className: 'text-right',
 							label: Liferay.Language.get('sites'),
 							sortable: false
 						},
 						{
-							accessor: 'commerceChannelIdCount',
+							accessor: 'commerceChannelsCount',
+							className: 'text-right',
 							label: Liferay.Language.get('channels'),
 							sortable: false
 						},
 						{
 							accessor: 'id',
+							className: 'text-right',
 							label: Liferay.Language.get('property-id'),
 							sortable: false
 						},
