@@ -115,8 +115,8 @@ const ChannelList: React.FC<IChannelListProps> = ({
 
 	const handleAddChannel = () => {
 		open(modalTypes.ADD_CHANNEL_MODAL, {
-			onCloseFn: close,
-			onSubmitFn: handleSubmit
+			onClose: close,
+			onSubmit: handleSubmit
 		});
 	};
 
