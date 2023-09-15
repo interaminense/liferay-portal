@@ -120,11 +120,15 @@ const ChannelList: React.FC<IChannelListProps> = ({
 		});
 	};
 
-	const handleClearData = () => {
-		const ids: string[] = selectedItems.keySeq().toArray();
+	const handleUnableToDeleteProperty = () => {
+		open(modalTypes.UNABLE_DELETE_PROPERTY_MODAL, {
+			onClose: close
+		});
+	};
 
+	const handleClearData = (ids: string[], name: string) => {
 		const message: string = getPluralMessage(
-			selectedItems.first().name,
+			name,
 			Liferay.Language.get('x-properties'),
 			ids.length
 		) as string;
@@ -201,39 +205,21 @@ const ChannelList: React.FC<IChannelListProps> = ({
 		});
 	};
 
-	const handleDeleteChannel = () => {
-		const ids: string[] = selectedItems.keySeq().toArray();
-
-		// // selectedItems == vazio
-		// if (selectedItems.size === 0) {
-		// 	console.error('Nenhum item selecionado para exclusão');
-		// 	return;
-		// }
-
-		// const firstSelectedItem = selectedItems.first();
-
-		// // firstSelectedItem == válido?
-		// if (!firstSelectedItem) {
-		// 	console.error('Item selecionado inválido');
-		// 	return;
-		// }
-
+	const handleDeleteChannel = (ids: string[], name: string) => {
 		const message: string = getPluralMessage(
-			selectedItems.first().name,
+			name,
 			Liferay.Language.get('x-properties'),
 			ids.length
 		) as string;
 
 		open(modalTypes.DELETE_CONFIRMATION_MODAL, {
-			channelIds: ids,
-			channelName: message,
 			children: (
 				<>
 					<p>
 						<strong>
 							{sub(
 								Liferay.Language.get(
-									'To delete Beryl Corp, copy the sentence below to confirm your intention to delete property.'
+									'to-delete-x,-copy-the-sentence-below-to-confirm-your-intention-to-delete-property'
 								),
 								[message]
 							)}
@@ -242,12 +228,15 @@ const ChannelList: React.FC<IChannelListProps> = ({
 
 					<p>
 						{Liferay.Language.get(
-							'This will result in the complete removal of this property’s historical events. You will not be able to undo this operation.'
+							'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
 						)}
 					</p>
 				</>
 			),
-			groupId,
+			deleteButtonLabel: Liferay.Language.get('delete'),
+			deleteConfirmationText: sub(Liferay.Language.get('delete-x'), [
+				message
+			]),
 			onClose: close,
 			onSubmit: () =>
 				API.channels
@@ -303,7 +292,8 @@ const ChannelList: React.FC<IChannelListProps> = ({
 									: Liferay.Language.get('error'),
 							timeout: false
 						})
-					)
+					),
+			title: sub(Liferay.Language.get('delete-x?'), [message])
 		});
 	};
 
@@ -362,7 +352,12 @@ const ChannelList: React.FC<IChannelListProps> = ({
 						borderless
 						className='button-root'
 						displayType='secondary'
-						onClick={handleClearData}
+						onClick={() =>
+							handleClearData(
+								selectedItems.keySeq().toArray(),
+								selectedItems.first().name
+							)
+						}
 						outline
 					>
 						{Liferay.Language.get('clear-data')}
@@ -372,7 +367,21 @@ const ChannelList: React.FC<IChannelListProps> = ({
 						borderless
 						className='button-root'
 						displayType='secondary'
-						onClick={handleDeleteChannel}
+						onClick={() => {
+							const ableToDeleteChannel = !selectedItems.some(
+								({commerceChannelsCount, groupsCount}) =>
+									commerceChannelsCount || groupsCount
+							);
+
+							if (ableToDeleteChannel) {
+								handleDeleteChannel(
+									selectedItems.keySeq().toArray(),
+									selectedItems.first().name
+								);
+							} else {
+								handleUnableToDeleteProperty();
+							}
+						}}
 						outline
 					>
 						{Liferay.Language.get('delete')}
