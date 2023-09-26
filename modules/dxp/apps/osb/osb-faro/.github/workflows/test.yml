@@ -1,0 +1,20 @@
+name: Run Tests
+
+on: [push, pull_request]  # Define quando a ação será acionada, por exemplo, em push e pull requests.
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Define a plataforma na qual a ação será executada.
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2  # Baixa o código do repositório.
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2  # Configura o ambiente Node.js.
+
+    - name: Install Dependencies
+      run: yarn  # Instala as dependências definidas no package.json.
+
+    - name: Run Tests
+      run: yarn test:dev  # Executa o comando de teste definido no package.json.
