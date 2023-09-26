@@ -71,6 +71,11 @@ packageRunWebpack {
 	outputs.dir "src/main/resources/META-INF/resources/dist"
 }
 
+packageRunTest {
+	println('testing...')
+}
+
 processResources {
+	dependsOn packageRunTest
 	dependsOn packageRunWebpack
 }
