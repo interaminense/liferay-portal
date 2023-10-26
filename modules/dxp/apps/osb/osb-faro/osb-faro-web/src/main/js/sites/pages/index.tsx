@@ -8,6 +8,7 @@ import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
+import {DownloadReport} from 'shared/components/download-report/DownloadReport';
 import {Routes, toRoute} from 'shared/util/router';
 import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
@@ -106,6 +107,15 @@ export const Dashboard: React.FC<IDashboardProps> = ({currentUser, router}) => {
 					routeParams={{channelId, groupId}}
 				/>
 			</BasePage.Header>
+
+			<BasePage.SubHeader>
+				<div className='d-flex justify-content-end w-100'>
+					<DownloadReport
+						subtitle={selectedChannelName}
+						title={Liferay.Language.get('sites-dashboard')}
+					/>
+				</div>
+			</BasePage.SubHeader>
 
 			<BasePage.Context.Provider
 				value={{
