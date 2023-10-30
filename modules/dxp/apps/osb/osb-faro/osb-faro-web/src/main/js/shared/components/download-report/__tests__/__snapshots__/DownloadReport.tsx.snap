@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DownloadReport renders component 1`] = `
+<div>
+  <button
+    class="text-secondary btn btn-sm btn-unstyled"
+    type="button"
+  >
+    <svg
+      class="lexicon-icon lexicon-icon-download mr-2"
+      role="presentation"
+    >
+      <use
+        xlink:href="#download"
+      />
+    </svg>
+    Download
+  </button>
+</div>
+`;
