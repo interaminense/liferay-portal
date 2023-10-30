@@ -10,10 +10,12 @@ import RouteNotFound from 'shared/components/RouteNotFound';
 import {AlertTypes} from 'shared/components/Alert';
 import {ChannelContext} from 'shared/context/channel';
 import {compose} from 'shared/hoc';
+import {DownloadReport} from 'shared/components/download-report/DownloadReport';
 import {getMatchedRoute, Routes, SEGMENTS, toRoute} from 'shared/util/router';
 import {PropTypes} from 'prop-types';
 import {Segment} from 'shared/util/records';
 import {SegmentStates, SegmentTypes} from 'shared/util/constants';
+import {sub} from 'shared/util/lang';
 import {Switch, withRouter} from 'react-router-dom';
 import {withSegment} from 'shared/hoc/WithSegment';
 
@@ -149,7 +151,7 @@ export class SegmentProfileRoutes extends React.Component {
 						breadcrumbs.getHome({
 							channelId,
 							groupId,
-							label: selectedChannel && selectedChannel.name
+							label: selectedChannel?.name
 						}),
 						breadcrumbs.getSegments({channelId, groupId}),
 						breadcrumbs.getEntityName({label: segment.name})
@@ -196,6 +198,23 @@ export class SegmentProfileRoutes extends React.Component {
 						routeParams={{channelId, groupId, id}}
 					/>
 				</BasePage.Header>
+
+				{getMatchedRoute(NAV_ITEMS) === Routes.CONTACTS_SEGMENT && (
+					<BasePage.SubHeader>
+						<div className='d-flex justify-content-end w-100'>
+							<DownloadReport
+								subtitle={selectedChannel?.name}
+								title={sub(
+									Liferay.Language.get('x-dashboard'),
+									[
+										segment.name ||
+											Liferay.Language.get('unknown')
+									]
+								)}
+							/>
+						</div>
+					</BasePage.SubHeader>
+				)}
 
 				<EmbeddedAlertList alerts={this.getAlerts()} />
 

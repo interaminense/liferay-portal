@@ -9,7 +9,7 @@ import RouteNotFound from 'shared/components/RouteNotFound';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
 import {DownloadReport} from 'shared/components/download-report/DownloadReport';
-import {Routes, toRoute} from 'shared/util/router';
+import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
 import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
@@ -75,8 +75,8 @@ export const Dashboard: React.FC<IDashboardProps> = ({currentUser, router}) => {
 	const {selectedChannel} = useChannelContext();
 
 	const authorized = currentUser.isAdmin();
-
 	const selectedChannelName = selectedChannel && selectedChannel.name;
+	const matchedRoute = getMatchedRoute(NAV_ITEMS);
 
 	return (
 		<BasePage
@@ -108,14 +108,17 @@ export const Dashboard: React.FC<IDashboardProps> = ({currentUser, router}) => {
 				/>
 			</BasePage.Header>
 
-			<BasePage.SubHeader>
-				<div className='d-flex justify-content-end w-100'>
-					<DownloadReport
-						subtitle={selectedChannelName}
-						title={Liferay.Language.get('sites-dashboard')}
-					/>
-				</div>
-			</BasePage.SubHeader>
+			{(matchedRoute === Routes.SITES ||
+				matchedRoute === Routes.SITES_TOUCHPOINTS) && (
+				<BasePage.SubHeader>
+					<div className='d-flex justify-content-end w-100'>
+						<DownloadReport
+							subtitle={selectedChannelName}
+							title={Liferay.Language.get('sites-dashboard')}
+						/>
+					</div>
+				</BasePage.SubHeader>
+			)}
 
 			<BasePage.Context.Provider
 				value={{
