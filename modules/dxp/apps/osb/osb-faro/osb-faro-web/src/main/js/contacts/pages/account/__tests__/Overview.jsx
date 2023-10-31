@@ -10,6 +10,8 @@ import {StaticRouter} from 'react-router';
 jest.unmock('react-dom');
 
 describe('AccountOverview', () => {
+	// AINDA FALHANDO
+
 	it('should render', () => {
 		const {container} = render(
 			<ApolloProvider client={client}>

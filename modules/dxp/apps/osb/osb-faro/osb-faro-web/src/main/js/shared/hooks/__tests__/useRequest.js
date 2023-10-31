@@ -4,6 +4,8 @@ import {renderHook} from '@testing-library/react-hooks';
 const mockRequest = jest.fn(() => Promise.resolve('passed'));
 const mockFailedRequest = jest.fn(() => Promise.reject('failed'));
 
+// AINDA TA FALHANDO (TODOS, Menos o ultimo)
+
 describe('withRequest', () => {
 	it('it should return a loading state until the the request completes', () => {
 		const {result} = renderHook(() =>

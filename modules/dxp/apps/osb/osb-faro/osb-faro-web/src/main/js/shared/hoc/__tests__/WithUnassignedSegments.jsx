@@ -47,6 +47,8 @@ describe('WithUnassignedSegments', () => {
 		expect(container.textContent).toBe('wrapped component text');
 	});
 
+	// AINDA TA FALHANDO
+
 	it('should trigger the unassigned segments modal if there are segments', () => {
 		render(<DefaultComponent />);
 

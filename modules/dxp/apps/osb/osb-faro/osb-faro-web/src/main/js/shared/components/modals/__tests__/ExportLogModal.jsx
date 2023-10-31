@@ -50,6 +50,8 @@ describe('ExportLogModal', () => {
 		expect(container).toMatchSnapshot();
 	});
 
+	// FALHANDO
+
 	it('should have a loading state when download is triggered', () => {
 		const {container} = render(
 			<ExportLogModal
@@ -62,6 +64,8 @@ describe('ExportLogModal', () => {
 
 		assertLoadingStatesForDownload(container);
 	});
+
+	// FALHANDO
 
 	it('should stop loading if the download failed', () => {
 		const {container} = render(

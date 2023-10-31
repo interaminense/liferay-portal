@@ -74,6 +74,8 @@ describe('ConnectDXP', () => {
 		expect(queryByText('Download').href).toMatch(/7-1-fix-pack-22/);
 	});
 
+	// AINDA TA FALHANDO
+
 	it('fires "setDxpConnected" when the token value changes', () => {
 		const spy = jest.fn();
 

@@ -4,6 +4,7 @@ import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import React from 'react';
 import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
+import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
@@ -22,10 +23,12 @@ const DefaultComponent = props => (
 );
 
 describe('AssociatedSegmentsCard', () => {
-	it('should render', () => {
+	it('should render', async () => {
 		const {container} = render(<DefaultComponent />);
 
 		jest.runAllTimers();
+
+		await waitForLoadingToBeRemoved(container);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -38,17 +41,23 @@ describe('AssociatedSegmentsCard', () => {
 		expect(container.querySelector('.overlay')).toBeTruthy();
 	});
 
-	it('should render with an error display', () => {
-		const {getByText} = render(
+	// SO FUNCIONA QUANDO RODADO ISOLADAMENTE
+
+	it('should render with an error display', async () => {
+		const {container, getByText} = render(
 			<DefaultComponent dataSourceFn={() => Promise.reject({})} />
 		);
 
 		jest.runAllTimers();
 
+		await waitForLoadingToBeRemoved(container);
+
 		expect(getByText('An unexpected error occurred.')).toBeTruthy();
 	});
 
-	it('should render with an no results display', () => {
+	// SO FUNCIONA QUANDO RODADO ISOLADAMENTE
+
+	it('should render with an no results display', async () => {
 		const {container} = render(
 			<DefaultComponent
 				dataSourceFn={() =>
@@ -59,6 +68,8 @@ describe('AssociatedSegmentsCard', () => {
 		);
 
 		jest.runAllTimers();
+
+		await waitForLoadingToBeRemoved(container);
 
 		expect(container).toMatchSnapshot();
 	});

@@ -22,6 +22,8 @@ describe('InterestPagesList', () => {
 		expect(container).toMatchSnapshot();
 	});
 
+	// CONTINUA FALHANDO
+
 	it('should render an activePages component', () => {
 		const {container} = render(
 			<StaticRouter>

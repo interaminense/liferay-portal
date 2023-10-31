@@ -27,6 +27,8 @@ describe('SegmentDistribution', () => {
 		expect(container).toMatchSnapshot();
 	});
 
+	// CONTINUA FALHANDO
+
 	it('should render a Chart component if loading is false', () => {
 		const {container} = render(
 			<Distribution
