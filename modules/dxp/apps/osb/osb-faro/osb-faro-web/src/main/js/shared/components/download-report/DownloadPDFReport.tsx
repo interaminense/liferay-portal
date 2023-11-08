@@ -94,7 +94,7 @@ export const CONTAINERS: {[key in Containers]: TContainer} = {
 	},
 	[Containers.VisitorsBehaviorCard]: {
 		label: Liferay.Language.get('visitors-behavior'),
-		layout: 2
+		layout: 1
 	},
 	[Containers.VisitorsByTimeCard]: {
 		label: Liferay.Language.get('visitors-by-day-and-time'),
@@ -179,17 +179,24 @@ const DownloadPDFReport: React.FC<IDownloadReport> = ({
 					onSubmit={() => {
 						setLoadingReport(true);
 
-						generateReport({
-							containers: filteredContainers,
-							subtitle,
-							title,
-							url
-						}).then(() => {
-							setContainers(
-								transformContainers(initialContainers)
-							);
-							setLoadingReport(false);
-						});
+						/**
+						 * Needs to have timeout with 1000ms to wait chart
+						 * animation be loaded before generate report
+						 */
+
+						setTimeout(() => {
+							generateReport({
+								containers: filteredContainers,
+								subtitle,
+								title,
+								url
+							}).then(() => {
+								setContainers(
+									transformContainers(initialContainers)
+								);
+								setLoadingReport(false);
+							});
+						}, 1000);
 					}}
 				>
 					<ClayForm.Group>

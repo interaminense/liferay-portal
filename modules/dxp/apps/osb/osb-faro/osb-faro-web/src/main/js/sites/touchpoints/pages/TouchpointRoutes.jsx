@@ -157,11 +157,13 @@ function TouchpointRoutes({className, router}) {
 							<Filter onChange={setFilters} router={router} />
 						)}
 
-						<DropdownRangeKey
-							legacy={false}
-							onChange={setPathRangeSelectors}
-							rangeSelectors={pathRangeSelectors}
-						/>
+						<div className='d-flex justify-content-end w-100'>
+							<DropdownRangeKey
+								legacy={false}
+								onChange={setPathRangeSelectors}
+								rangeSelectors={pathRangeSelectors}
+							/>
+						</div>
 					</BasePage.SubHeader>
 				)}
 
