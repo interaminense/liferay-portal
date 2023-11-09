@@ -1,7 +1,7 @@
 export default () => ({
 	__typename: 'PagePath',
 	canonicalUrl: 'https://www.liferay.com',
-	nextPagePathNodes: [
+	followingPagePathNodes: [
 		{
 			__typename: 'PagePathNode',
 			canonicalUrl: 'https://www.site1.com',
@@ -23,13 +23,13 @@ export default () => ({
 		{
 			__typename: 'PagePathNode',
 			canonicalUrl: null,
-			title: 'Other Pages',
+			title: 'others',
 			views: 500
 		},
 		{
 			__typename: 'PagePathNode',
 			canonicalUrl: null,
-			title: 'Drop Offs',
+			title: 'drop-offs',
 			views: 8000
 		}
 	],
@@ -55,13 +55,13 @@ export default () => ({
 		{
 			__typename: 'PagePathNode',
 			canonicalUrl: null,
-			title: 'Direct traffic',
+			title: 'direct',
 			views: 5000
 		},
 		{
 			__typename: 'PagePathNode',
 			canonicalUrl: null,
-			title: 'Other Referrals',
+			title: 'others',
 			views: 1000
 		}
 	],

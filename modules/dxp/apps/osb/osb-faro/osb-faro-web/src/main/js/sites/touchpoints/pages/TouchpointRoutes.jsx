@@ -32,7 +32,7 @@ const TouchpointOverviewPage = lazy(() =>
 	)
 );
 const TouchpointPathPage = lazy(() =>
-	import(/* webpackChunkName: "TouchpointPathPage" */ './TouchpointPathPage')
+	import(/* webpackChunkName: "TouchpointPathPage" */ './PagePath')
 );
 
 const NAV_ITEMS = [
