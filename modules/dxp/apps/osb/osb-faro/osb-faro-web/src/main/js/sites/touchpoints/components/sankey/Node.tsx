@@ -19,7 +19,7 @@ function truncateText(text: string, limit: number) {
 	return text;
 }
 
-function getRadius({payload}) {
+function getRadius(payload) {
 	if (payload.main) {
 		return 0;
 	}
@@ -81,7 +81,7 @@ export const Node = (props: any) => {
 						})}
 						fillOpacity='1'
 						height={height}
-						radius={getRadius({payload}) as number}
+						radius={getRadius(payload) as number}
 						width={width}
 						x={x}
 						y={y}

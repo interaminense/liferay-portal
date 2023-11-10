@@ -35,7 +35,7 @@ function getTitle(key: TitleKey, type: Type) {
 				: Liferay.Language.get('other-pages')
 	};
 
-	return langs[key] || key;
+	return langs[key] || decodeURIComponent(key);
 }
 
 function getColor(key: TitleKey) {
@@ -59,15 +59,22 @@ function formatData({pagePath}: {pagePath: pagePathNode}) {
 		type: Type,
 		totalViews: number
 	) =>
-		nodes?.map(({canonicalUrl, title, views}) => ({
-			color: getColor(title),
-			height: (views / totalViews) * MAIN_NODE_HEIGHT,
-			id: uuidv4(),
-			name: getTitle(title, type),
-			type,
-			url: canonicalUrl,
-			views
-		})) || [];
+		nodes?.map(({canonicalUrl, title, views}) => {
+			const height = (views / totalViews) * MAIN_NODE_HEIGHT;
+
+			return {
+				color: getColor(title),
+				height: isNaN(height) ? 0 : height,
+				id: uuidv4(),
+				name: getTitle(title, type),
+				type,
+				url: decodeURIComponent(canonicalUrl),
+
+				// TEMP: It should be fixed on backend side
+
+				views: views === -1 ? 1 : views
+			};
+		}) || [];
 
 	const totalViewsPreviousPage = calculateTotalViews(
 		pagePath.previousPagePathNodes
@@ -80,8 +87,9 @@ function formatData({pagePath}: {pagePath: pagePathNode}) {
 		height: MAIN_NODE_HEIGHT,
 		id: uuidv4(),
 		main: true,
-		name: pagePath.title,
-		url: pagePath.canonicalUrl
+		name: decodeURIComponent(pagePath.title),
+		url: decodeURIComponent(pagePath.canonicalUrl),
+		views: pagePath.views
 	};
 
 	const previousNodes = formatNodes(
@@ -110,14 +118,17 @@ function formatData({pagePath}: {pagePath: pagePathNode}) {
 	};
 }
 
-const PagePathCard = ({rangeSelectors}) => {
+const PagePathCard = ({pathRangeSelectors, selectedSegment}) => {
 	const {channelId, title, touchpoint} = useParams();
 	const {data, error, loading} = useQuery(PagePathQuery, {
 		variables: {
 			canonicalUrl: decodeURIComponent(touchpoint),
 			channelId,
-			title,
-			...getSafeRangeSelectors(rangeSelectors)
+			title: decodeURIComponent(title),
+			...(selectedSegment?.id && {
+				segmentId: parseInt(selectedSegment?.id)
+			}),
+			...getSafeRangeSelectors(pathRangeSelectors)
 		}
 	});
 
