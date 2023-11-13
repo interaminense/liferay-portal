@@ -4,6 +4,8 @@ import moment from 'moment';
 import {DEFAULT_DATE_FORMAT} from 'shared/util/date';
 import {TransformedContainer} from './DownloadPDFReport';
 
+const PRIMARY_COLOR = '#0B5FFF';
+
 export function formatDate(date) {
 	return moment(date).format(DEFAULT_DATE_FORMAT);
 }
@@ -65,7 +67,7 @@ export function generateReport({
 		doc.rect(0, 0, docWidth, headerHeight, 'F');
 
 		doc.setFont('Helvetica', 'normal');
-		doc.setTextColor('#6B6C7E');
+		doc.setTextColor(PRIMARY_COLOR);
 		doc.setFontSize(8);
 		doc.text('Analytics Cloud', paddingX, paddingY - 7);
 
@@ -88,7 +90,7 @@ export function generateReport({
 		}
 
 		doc.setFontSize(8);
-		doc.setTextColor('#0B5FFF');
+		doc.setTextColor(PRIMARY_COLOR);
 		doc.textWithLink(
 			Liferay.Language.get('access-workspace'),
 			docWidth - paddingX - 25,
