@@ -12,7 +12,6 @@ interface BaseCardIProps extends React.HTMLAttributes<HTMLElement> {
 	Header?: React.FC<BaseCardHeaderDefaultIProps>;
 	headerProps?: {[key: string]: any};
 	label: string;
-	legacyDropdownRangeKey: boolean;
 	minHeight?: number;
 	showInterval?: boolean;
 }
@@ -24,7 +23,6 @@ const BaseCard: React.FC<BaseCardIProps> = ({
 	headerProps = {},
 	id,
 	label,
-	legacyDropdownRangeKey = true,
 	minHeight,
 	showInterval = false
 }) => {
@@ -51,7 +49,6 @@ const BaseCard: React.FC<BaseCardIProps> = ({
 			<Header
 				{...otherProps}
 				label={label}
-				legacy={legacyDropdownRangeKey}
 				showInterval={showInterval}
 				{...headerProps}
 			/>

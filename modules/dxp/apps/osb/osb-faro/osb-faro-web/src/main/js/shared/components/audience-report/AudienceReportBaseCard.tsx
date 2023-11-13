@@ -18,7 +18,6 @@ function AudienceReportBaseCard({
 			className='analytics-audience-report-card'
 			id={Containers.AudienceCard}
 			label={Liferay.Language.get('audience')}
-			legacyDropdownRangeKey={false}
 			minHeight={536}
 		>
 			{({filters, rangeSelectors}) => (

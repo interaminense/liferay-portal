@@ -175,11 +175,6 @@ export default configs => WrappedComponent => {
 							showDropdownRangeKey
 						) && (
 							<DropdownRangeKey
-								legacy={get(
-									configs,
-									'legacyDropdownRangeKey',
-									true
-								)}
 								onChange={this.handleRangeSelectorsChange}
 								rangeKeys={rangeKeys}
 								rangeSelectors={rangeSelectors}

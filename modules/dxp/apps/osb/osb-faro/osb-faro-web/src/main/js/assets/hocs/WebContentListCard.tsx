@@ -60,7 +60,6 @@ const WebContentListCard: React.FC = () => {
 				]}
 				delta={delta}
 				entityLabel={Liferay.Language.get('web-content')}
-				legacyDropdownRangeKey={false}
 				noResultsRenderer={
 					<NoResultsDisplay
 						description={

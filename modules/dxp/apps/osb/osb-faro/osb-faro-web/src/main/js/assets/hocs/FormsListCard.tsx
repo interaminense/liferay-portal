@@ -62,7 +62,6 @@ const FormsListCard: React.FC = () => {
 				]}
 				delta={delta}
 				entityLabel={Liferay.Language.get('forms')}
-				legacyDropdownRangeKey={false}
 				noResultsRenderer={
 					<NoResultsDisplay
 						description={

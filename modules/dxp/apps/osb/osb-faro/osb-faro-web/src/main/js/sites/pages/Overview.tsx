@@ -47,7 +47,6 @@ const Overview: FC<IOverviewProps> = ({channelName}) => {
 							label: Liferay.Language.get('view-pages')
 						}}
 						label={Liferay.Language.get('top-pages')}
-						legacyDropdownRangeKey={false}
 					/>
 				</div>
 
@@ -56,7 +55,6 @@ const Overview: FC<IOverviewProps> = ({channelName}) => {
 						className='acquisitions-card-root table-tabs-root'
 						compositionBagName={CompositionTypes.Acquisitions}
 						label={Liferay.Language.get('acquisitions')}
-						legacyDropdownRangeKey={false}
 					/>
 				</div>
 			</div>
@@ -82,7 +80,6 @@ const Overview: FC<IOverviewProps> = ({channelName}) => {
 				<div className='col-xl-6'>
 					<LocationsCard
 						label={Liferay.Language.get('sessions-by-location')}
-						legacyDropdownRangeKey={false}
 						metricLabel={Liferay.Language.get('sessions')}
 					/>
 				</div>
@@ -90,7 +87,6 @@ const Overview: FC<IOverviewProps> = ({channelName}) => {
 				<div className='col-xl-6'>
 					<DevicesCard
 						label={Liferay.Language.get('session-technology')}
-						legacyDropdownRangeKey={false}
 						metricLabel={Liferay.Language.get('sessions')}
 					/>
 				</div>

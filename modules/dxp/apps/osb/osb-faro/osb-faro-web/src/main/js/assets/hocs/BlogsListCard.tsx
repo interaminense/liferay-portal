@@ -63,7 +63,6 @@ const BlogsListCard: React.FC = () => {
 				]}
 				delta={delta}
 				entityLabel={Liferay.Language.get('blogs')}
-				legacyDropdownRangeKey={false}
 				noResultsRenderer={
 					<NoResultsDisplay
 						description={

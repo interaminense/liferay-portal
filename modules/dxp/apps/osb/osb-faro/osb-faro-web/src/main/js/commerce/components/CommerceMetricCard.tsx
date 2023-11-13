@@ -99,12 +99,7 @@ export function CommerceMetricCard<TGraphQlData>({
 	const {currencyCode, trend, value} = getCurrency(result);
 
 	return (
-		<BaseCard
-			className='commerce-card-root'
-			label={label}
-			legacyDropdownRangeKey={false}
-			minHeight={298}
-		>
+		<BaseCard className='commerce-card-root' label={label} minHeight={298}>
 			{({rangeSelectors}) => {
 				setRangeSelectors(rangeSelectors);
 

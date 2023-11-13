@@ -81,7 +81,6 @@ const getTableWithData = useDB => {
 				metricsListColumns.exitRateMetric
 			];
 		},
-		legacyDropdownRangeKey: false,
 		rowIdentifier: ['assetId', 'assetTitle']
 	});
 

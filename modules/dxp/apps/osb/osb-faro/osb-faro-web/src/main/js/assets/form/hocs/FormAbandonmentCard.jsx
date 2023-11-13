@@ -31,13 +31,8 @@ const defaultProps = {
 	className: 'analytics-form-abandonment-card'
 };
 
-const FormAbandonmentCard = ({className, label, legacyDropdownRangeKey}) => (
-	<BaseCard
-		className={className}
-		label={label}
-		legacyDropdownRangeKey={legacyDropdownRangeKey}
-		minHeight={536}
-	>
+const FormAbandonmentCard = ({className, label}) => (
+	<BaseCard className={className} label={label} minHeight={536}>
 		{({filters, interval, rangeSelectors, router}) => (
 			<Card.Body>
 				<FormAbandonmentWithData

@@ -20,7 +20,6 @@ const withBaseResults = (withData, configs) => {
 		emptyPrimary = true,
 		emptyTitle,
 		getColumns,
-		legacyDropdownRangeKey = true,
 		rangeKeys,
 		rowIdentifier,
 		showDropdownRangeKey = true,
@@ -38,7 +37,6 @@ const withBaseResults = (withData, configs) => {
 		withSelection,
 		withToolbar({
 			disableSearch,
-			legacyDropdownRangeKey,
 			rangeKeys,
 			showDropdownRangeKey,
 			showFilterAndOrder

@@ -114,7 +114,6 @@ const VisitorsByTimeCard: React.FC<IVisitorsByTimeCardProps> = ({
 			className={className}
 			id={Containers.VisitorsByTimeCard}
 			label={label}
-			legacyDropdownRangeKey={false}
 		>
 			{({rangeSelectors}) => (
 				<Card.Body>

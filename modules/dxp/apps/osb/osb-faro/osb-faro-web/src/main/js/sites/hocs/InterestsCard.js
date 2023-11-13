@@ -73,7 +73,6 @@ const InterestsCard = () => {
 			className='interests-card-root'
 			id={Containers.InterestsCard}
 			label={Liferay.Language.get('interests')}
-			legacyDropdownRangeKey={false}
 			rangeKeys={rangeKeys}
 		>
 			{({rangeSelectors}) => (

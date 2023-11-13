@@ -94,7 +94,6 @@ interface IAssetCardProps extends React.HTMLAttributes<HTMLElement> {
 	assetId: string;
 	itemQuery: DocumentNode;
 	label: string;
-	legacyDropdownRangeKey: boolean;
 	onRemoveAsset: () => void;
 	panel: {
 		chartType: string;
@@ -110,7 +109,6 @@ const AssetCard: React.FC<IAssetCardProps> = ({
 	id,
 	itemQuery,
 	label,
-	legacyDropdownRangeKey,
 	onRemoveAsset,
 	panel
 }) => {
@@ -129,12 +127,7 @@ const AssetCard: React.FC<IAssetCardProps> = ({
 	);
 
 	return (
-		<BaseCard
-			className={className}
-			label={label}
-			legacyDropdownRangeKey={legacyDropdownRangeKey}
-			minHeight={536}
-		>
+		<BaseCard className={className} label={label} minHeight={536}>
 			{({rangeSelectors, router}) => (
 				<Card.Body>
 					<AssetComponent

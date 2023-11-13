@@ -93,20 +93,17 @@ interface ITopPagesCardProps extends React.HTMLAttributes<HTMLElement> {
 		href: string;
 	};
 	label: string;
-	legacyDropdownRangeKey?: boolean;
 }
 
 const TopPagesCard: React.FC<ITopPagesCardProps> = ({
 	className,
 	footer,
-	label,
-	legacyDropdownRangeKey
+	label
 }) => (
 	<CardWithRangeKey
 		className={className}
 		id={Containers.TopPagesCard}
 		label={label}
-		legacyDropdownRangeKey={legacyDropdownRangeKey}
 	>
 		{({rangeSelectors}) => (
 			<TopPagesCardWithData

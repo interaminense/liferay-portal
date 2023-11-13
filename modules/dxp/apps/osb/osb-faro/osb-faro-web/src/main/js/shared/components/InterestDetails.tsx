@@ -73,7 +73,6 @@ const TableWithData: React.FC<ITableWithDataProps> = withRangeKey(
 			metricsListColumns.entrancesMetric,
 			metricsListColumns.exitRateMetric
 		],
-		legacyDropdownRangeKey: false,
 		rangeKeys: [Yesterday, Last7Days, Last30Days, Last90Days],
 		rowIdentifier: 'assetId',
 		showDropdownRangeKey: true

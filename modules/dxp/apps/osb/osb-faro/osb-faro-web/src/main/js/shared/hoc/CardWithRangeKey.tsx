@@ -11,7 +11,6 @@ interface ICardWithRangeKeyProps
 		React.HTMLAttributes<HTMLElement> {
 	children: (val) => React.ReactNode;
 	label: string;
-	legacyDropdownRangeKey: boolean;
 	rangeKeys?: Array<RangeKeyTimeRanges>;
 }
 
@@ -21,7 +20,6 @@ const CardWithRangeKey = compose(withRangeKey)(
 		className,
 		id,
 		label,
-		legacyDropdownRangeKey = true,
 		onRangeSelectorsChange,
 		rangeKeys,
 		rangeSelectors,
@@ -32,7 +30,6 @@ const CardWithRangeKey = compose(withRangeKey)(
 				<Card.Title>{label}</Card.Title>
 
 				<DropdownRangeKey
-					legacy={legacyDropdownRangeKey}
 					onChange={onRangeSelectorsChange}
 					rangeKeys={rangeKeys}
 					rangeSelectors={rangeSelectors}

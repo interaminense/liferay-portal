@@ -54,19 +54,8 @@ const withLocationsCard = (
 		metricLabel: PropTypes.string
 	};
 
-	const LocationsCard = ({
-		className,
-		label,
-		legacyDropdownRangeKey,
-		metricLabel
-	}) => (
-		<BaseCard
-			className={className}
-			id={id}
-			label={label}
-			legacyDropdownRangeKey={legacyDropdownRangeKey}
-			minHeight={536}
-		>
+	const LocationsCard = ({className, label, metricLabel}) => (
+		<BaseCard className={className} id={id} label={label} minHeight={536}>
 			{({filters, interval, rangeSelectors, router}) => (
 				<Card.Body>
 					<LocationsGeoMap

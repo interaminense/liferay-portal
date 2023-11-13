@@ -51,12 +51,7 @@ const defaultProps = {
 };
 
 const AssetsListBaseCard = ({className, label}) => (
-	<BaseCard
-		className={className}
-		label={label}
-		legacyDropdownRangeKey={false}
-		minHeight={536}
-	>
+	<BaseCard className={className} label={label} minHeight={536}>
 		{({filters, rangeSelectors, router}) => (
 			<AssetsListWithData
 				filters={filters}

@@ -65,7 +65,6 @@ const SearchTermsCard = props => {
 			className='search-terms-card-root'
 			id={Containers.SearchTermsCard}
 			label={Liferay.Language.get('search-terms')}
-			legacyDropdownRangeKey={false}
 		>
 			{({rangeSelectors}) => (
 				<TableWithData

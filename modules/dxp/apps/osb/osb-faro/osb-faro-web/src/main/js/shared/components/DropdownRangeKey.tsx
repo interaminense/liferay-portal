@@ -11,25 +11,9 @@ import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {RangeSelectors} from 'shared/types';
 import {useHistory} from 'react-router-dom';
 
-const {
-	Last7Days,
-	Last24Hours,
-	Last28Days,
-	Last30Days,
-	Last90Days,
-	Yesterday
-} = RangeKeyTimeRanges;
+const {Last7Days, Last24Hours, Last30Days, Last90Days} = RangeKeyTimeRanges;
 
 const initialRangeKeys = [Last24Hours, Last7Days, Last30Days, Last90Days];
-
-const legacyRangeKeys = [
-	Last24Hours,
-	Yesterday,
-	Last7Days,
-	Last28Days,
-	Last30Days,
-	Last90Days
-];
 
 type Item = {
 	description?: string;
@@ -51,7 +35,6 @@ const DropdownRangeKey: React.FC<DropdownRangeKeyIProps> = ({
 	className,
 	disabled = false,
 	items,
-	legacy = true, // legacy can be removed once we convert all uses of DropdownRangeKey to include the new values.
 	onChange,
 	/**
 	 * When legacy props is true, rangeKeys will be ignored.
@@ -71,6 +54,8 @@ const DropdownRangeKey: React.FC<DropdownRangeKeyIProps> = ({
 	const [seeMore, setSeeMore] = useState(false);
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const history = useHistory();
+
+	// Listener to update cards when downloadReport is enabled
 
 	useEffect(() => {
 		const unlisten = history.listen(location => {
@@ -117,11 +102,7 @@ const DropdownRangeKey: React.FC<DropdownRangeKeyIProps> = ({
 	}, [showDatePicker]);
 
 	const filterItems = () => {
-		if (legacy) {
-			return items.filter(({value}) =>
-				legacyRangeKeys.includes(value as RangeKeyTimeRanges)
-			);
-		} else if (seeMore) {
+		if (seeMore) {
 			return items.filter(
 				item =>
 					!initialRangeKeys
@@ -233,36 +214,30 @@ const DropdownRangeKey: React.FC<DropdownRangeKeyIProps> = ({
 						);
 					})}
 
-					{!legacy && (
-						<>
-							{!seeMore && (
-								<ClayDropDown.Item
-									className='c-pointer'
-									key='SEE_MORE'
-									onClick={() => setSeeMore(true)}
-								>
-									{Liferay.Language.get(
-										'more-preset-periods'
-									)}
-								</ClayDropDown.Item>
-							)}
-
-							<ClayDropDown.Divider />
-
-							<ClayDropDown.Item
-								className={getCN('c-pointer', {
-									active: selectedItem.value === 'CUSTOM'
-								})}
-								key='CUSTOM'
-								onClick={() => {
-									setActive(false);
-									setShowDatePicker(true);
-								}}
-							>
-								<b>{Liferay.Language.get('custom-range')}</b>
-							</ClayDropDown.Item>
-						</>
+					{!seeMore && (
+						<ClayDropDown.Item
+							className='c-pointer'
+							key='SEE_MORE'
+							onClick={() => setSeeMore(true)}
+						>
+							{Liferay.Language.get('more-preset-periods')}
+						</ClayDropDown.Item>
 					)}
+
+					<ClayDropDown.Divider />
+
+					<ClayDropDown.Item
+						className={getCN('c-pointer', {
+							active: selectedItem.value === 'CUSTOM'
+						})}
+						key='CUSTOM'
+						onClick={() => {
+							setActive(false);
+							setShowDatePicker(true);
+						}}
+					>
+						<b>{Liferay.Language.get('custom-range')}</b>
+					</ClayDropDown.Item>
 				</ClayDropDown.ItemList>
 			)}
 		</ClayDropDown>

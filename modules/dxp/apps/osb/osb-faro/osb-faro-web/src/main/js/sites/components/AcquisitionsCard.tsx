@@ -70,20 +70,17 @@ const tabs = [
 interface IAcquisitionsCardProps extends React.HTMLAttributes<HTMLElement> {
 	compositionBagName: CompositionTypes;
 	label: string;
-	legacyDropdownRangeKey?: boolean;
 }
 
 const AcquisitionsCard: React.FC<IAcquisitionsCardProps> = ({
 	className,
 	compositionBagName,
-	label,
-	legacyDropdownRangeKey
+	label
 }) => (
 	<CardWithRangeKey
 		className={className}
 		id={Containers.AcquisitionsCard}
 		label={label}
-		legacyDropdownRangeKey={legacyDropdownRangeKey}
 	>
 		{({rangeSelectors}) => (
 			<AcquisitionsCardWithData

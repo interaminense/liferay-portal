@@ -16,7 +16,6 @@ const ActivitiesPage: React.FC<IActivitiesProps> = props => (
 			showRangeKey: false
 		}}
 		label={Liferay.Language.get('account-activities')}
-		legacyDropdownRangeKey={false}
 		showInterval={false}
 	>
 		{({interval, rangeSelectors}) => (

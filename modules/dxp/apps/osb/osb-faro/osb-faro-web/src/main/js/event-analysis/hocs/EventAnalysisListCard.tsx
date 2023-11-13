@@ -225,7 +225,6 @@ const EventAnalysisListCard: React.FC<PropsFromRedux> = ({
 				]}
 				delta={delta}
 				entityLabel={Liferay.Language.get('event-analysis')}
-				legacyDropdownRangeKey={false}
 				noResultsRenderer={
 					<NoResultsDisplay
 						description={

@@ -46,19 +46,16 @@ const TouchpointListWithData = compose(
 interface ITouchpointsListCardProps extends React.HTMLAttributes<HTMLElement> {
 	assetType: string;
 	label: string;
-	legacyDropdownRangeKey: boolean;
 }
 
 const TouchpointListWithBaseCard: React.FC<ITouchpointsListCardProps> = ({
 	assetType,
-	label,
-	legacyDropdownRangeKey
+	label
 }) => (
 	<BaseCard
 		className='analytics-touchpoints-list-card'
 		id={Containers.AssetAppearsOnCard}
 		label={label}
-		legacyDropdownRangeKey={legacyDropdownRangeKey}
 		minHeight={536}
 	>
 		{({filters, rangeSelectors, router}) => (

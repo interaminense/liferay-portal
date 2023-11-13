@@ -220,7 +220,6 @@ class CustomAssetsDashboardPage extends React.Component {
 							id={rowIndex}
 							itemQuery={getQuery(metric)}
 							label={title}
-							legacyDropdownRangeKey={false}
 							onRemoveAsset={this.handleDeleteReport}
 							panel={{chartType, metric}}
 							rangeSelectors={getRangeSelectorsFromQuery(

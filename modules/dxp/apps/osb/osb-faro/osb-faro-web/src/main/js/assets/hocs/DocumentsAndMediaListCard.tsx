@@ -63,7 +63,6 @@ const DocumentsAndMediaListCard: React.FC = () => {
 				]}
 				delta={delta}
 				entityLabel={Liferay.Language.get('documents-and-media')}
-				legacyDropdownRangeKey={false}
 				noResultsRenderer={
 					<NoResultsDisplay
 						description={

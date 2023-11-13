@@ -37,7 +37,6 @@ export interface ICommonMetricProps {
 
 export interface IGenericMetricBaseCardProps {
 	label: string;
-	legacyDropdownRangeKey?: boolean;
 	showIntervals?: boolean;
 }
 
@@ -62,7 +61,6 @@ interface IMetricBaseCardProps<TChartData>
 function MetricBaseCard<TChartData>({
 	chartDataMapFn = getMetricsChartData,
 	label,
-	legacyDropdownRangeKey = false,
 	id,
 	metrics,
 	queries,
@@ -101,7 +99,6 @@ function MetricBaseCard<TChartData>({
 					className='analytics-metrics-card'
 					id={id}
 					label={label}
-					legacyDropdownRangeKey={legacyDropdownRangeKey}
 					minHeight={605}
 					showInterval={showIntervals}
 				>

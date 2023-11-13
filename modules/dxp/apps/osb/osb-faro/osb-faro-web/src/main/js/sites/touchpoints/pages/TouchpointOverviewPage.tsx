@@ -38,14 +38,12 @@ const TouchpointOverviewPage = () => (
 			<div className='col-lg-6 col-md-12'>
 				<LocationsCard
 					label={Liferay.Language.get('views-by-location')}
-					legacyDropdownRangeKey={false}
 				/>
 			</div>
 
 			<div className='col-lg-6 col-md-12'>
 				<DevicesCard
 					label={Liferay.Language.get('views-by-technology')}
-					legacyDropdownRangeKey={false}
 				/>
 			</div>
 		</div>

@@ -15,7 +15,6 @@ const Overview = () => (
 			<div className='col-sm-12'>
 				<FormMetricCard
 					label={Liferay.Language.get('visitors-behavior')}
-					legacyDropdownRangeKey={false}
 				/>
 			</div>
 		</div>
@@ -40,7 +39,6 @@ const Overview = () => (
 			<div className='col-lg-6 col-md-12'>
 				<LocationsCard
 					label={Liferay.Language.get('submissions-by-location')}
-					legacyDropdownRangeKey={false}
 					metricLabel={Liferay.Language.get('submissions')}
 				/>
 			</div>
@@ -48,7 +46,6 @@ const Overview = () => (
 			<div className='col-lg-6 col-md-12'>
 				<DevicesCard
 					label={Liferay.Language.get('submissions-by-technology')}
-					legacyDropdownRangeKey={false}
 					metricLabel={Liferay.Language.get('submissions')}
 				/>
 			</div>
@@ -59,7 +56,6 @@ const Overview = () => (
 				<div className='col-sm-12'>
 					<FormAbandonmentCard
 						label={Liferay.Language.get('form-abandonment')}
-						legacyDropdownRangeKey={false}
 					/>
 				</div>
 			</div>
@@ -70,7 +66,6 @@ const Overview = () => (
 				<TouchpointsListCard
 					assetType='FORM'
 					label={Liferay.Language.get('asset-appears-on')}
-					legacyDropdownRangeKey={false}
 				/>
 			</div>
 		</div>

@@ -64,7 +64,6 @@ const TableWithData = withBaseResults(withData, {
 			route: Routes.CONTACTS_INDIVIDUAL
 		})
 	],
-	legacyDropdownRangeKey: false,
 	rowIdentifier: 'id'
 });
 
