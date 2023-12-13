@@ -19,7 +19,7 @@
 	var analyticsClientGroupIds = <%= (String)request.getAttribute(AnalyticsWebKeys.ANALYTICS_CLIENT_GROUP_IDS) %>;
 </script>
 
-<script data-senna-track="permanent" id="liferayAnalyticsScript" type="text/javascript">
+<script data-senna-track="permanent" id='<%= "liferayAnalyticsScript_" + themeDisplay.getLanguageId() %>' type="text/javascript">
 	(function (u, c, a, m, o, l) {
 		o = 'script';
 		l = document;
