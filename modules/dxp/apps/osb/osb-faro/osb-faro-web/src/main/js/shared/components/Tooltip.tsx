@@ -1,7 +1,7 @@
 import dom from 'metal-dom';
 import getCN from 'classnames';
 import React, {useEffect, useRef, useState} from 'react';
-import {Align} from 'metal-position';
+import {align, POSITIONS} from 'shared/util/align';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import {EventHandler} from 'metal-events';
 
@@ -16,23 +16,23 @@ const ALIGNMENTS = [
 	'bottom-left',
 	'left',
 	'top-left'
-];
+] as const;
+
+type Alignment = typeof ALIGNMENTS[number];
 
 const ALIGNMENTS_MAP = {
-	bottom: Align.Bottom,
-	'bottom-left': Align.BottomLeft,
-	'bottom-right': Align.BottomRight,
-	left: Align.Left,
-	right: Align.Right,
-	top: Align.Top,
-	'top-left': Align.TopLeft,
-	'top-right': Align.TopRight
+	bottom: POSITIONS.BottomCenter,
+	'bottom-left': POSITIONS.BottomLeft,
+	'bottom-right': POSITIONS.BottomRight,
+	left: POSITIONS.LeftCenter,
+	right: POSITIONS.RightCenter,
+	top: POSITIONS.TopCenter,
+	'top-left': POSITIONS.TopLeft,
+	'top-right': POSITIONS.TopRight
 };
 
-type Alignments = typeof ALIGNMENTS_MAP[keyof typeof ALIGNMENTS_MAP];
-
 interface ITooltipProps extends React.HTMLAttributes<HTMLDivElement> {
-	initialAlignment: Alignments;
+	initialAlignment: Alignment;
 	message: string;
 	target: HTMLElement;
 }
@@ -44,7 +44,7 @@ const Tooltip: React.FC<ITooltipProps> = ({
 	target,
 	...otherProps
 }) => {
-	const [alignment, setAlignment] = useState<Alignments>(initialAlignment);
+	const [alignment, setAlignment] = useState<Alignment>(initialAlignment);
 
 	const _elementRef = useRef();
 
@@ -73,11 +73,7 @@ const Tooltip: React.FC<ITooltipProps> = ({
 	const alignOverlay = () => {
 		const newAlignment =
 			ALIGNMENTS[
-				Align.align(
-					_elementRef.current,
-					target,
-					ALIGNMENTS_MAP[alignment]
-				)
+				align(_elementRef.current, target, ALIGNMENTS_MAP[alignment])
 			];
 
 		if (newAlignment !== alignment) {
@@ -104,7 +100,7 @@ const Tooltip: React.FC<ITooltipProps> = ({
 };
 
 const TooltipBase: React.FC = () => {
-	const [alignment, setAlignment] = useState<Alignments>(ALIGNMENTS_MAP.top);
+	const [alignment, setAlignment] = useState<Alignment>('top');
 	const [message, setMessage] = useState<string>('');
 	const [show, setShow] = useState<boolean>(false);
 	const [target, setTarget] = useState<HTMLElement>();
@@ -158,7 +154,7 @@ const TooltipBase: React.FC = () => {
 
 		_responseMessage = target.getAttribute('data-tooltip-response');
 
-		const align = target.getAttribute('data-tooltip-align');
+		const align = target.getAttribute('data-tooltip-align') as Alignment;
 
 		target.addEventListener('click', handleClick);
 
