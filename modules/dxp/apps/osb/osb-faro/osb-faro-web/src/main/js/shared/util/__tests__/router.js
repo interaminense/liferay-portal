@@ -1,15 +1,10 @@
 import {
 	ACCOUNTS,
 	buildRoutes,
-	getDataSourceType,
 	getMatchedRoute,
 	getRouteName,
-	getType,
 	INDIVIDUALS,
-	LIFERAY,
-	removePageParam,
 	removeUriQueryParam,
-	resetPaginationParams,
 	Routes,
 	SEGMENTS,
 	setUriFilterValues,
@@ -17,7 +12,7 @@ import {
 	setUriQueryValues,
 	toRoute
 } from '../router';
-import {DataSourceTypes, EntityTypes} from '../constants';
+import {EntityTypes} from '../constants';
 import {Map, Set} from 'immutable';
 
 describe('setUriFilterValues', () => {
@@ -51,17 +46,20 @@ describe('setUriQueryValues', () => {
 			'/?baz=qux&foo=bar'
 		);
 	});
-});
 
-describe('getType', () => {
-	it('should return type for a given route name', () => {
-		expect(getType(ACCOUNTS)).toBe(EntityTypes.Account);
+	it('should add multiple queries w/o passing any URL and return as a string', () => {
+		expect(setUriQueryValues({baz: 'qux', foo: 'bar'})).toBe(
+			'/?baz=qux&foo=bar'
+		);
 	});
-});
 
-describe('getDataSourceType', () => {
-	it('should return a data-source type for a given route name', () => {
-		expect(getDataSourceType(LIFERAY)).toBe(DataSourceTypes.Liferay);
+	it('should add multiple queries by just passing pathname and return as a string', () => {
+		expect(
+			setUriQueryValues(
+				{baz: 'qux', foo: 'bar'},
+				'/workspaces/123/456/sites/overview'
+			)
+		).toBe('/workspaces/123/456/sites/overview?baz=qux&foo=bar');
 	});
 });
 
@@ -86,20 +84,6 @@ describe('getRouteName', () => {
 	});
 });
 
-describe('removePageParam', () => {
-	it('should remove page query string', () => {
-		const url = 'http://www.liferay.com/';
-
-		expect(removePageParam(null, `${url}?page=3`)).toBe('/');
-	});
-
-	it('should remove page query string and set new path', () => {
-		const url = 'http://www.liferay.com/';
-
-		expect(removePageParam('/bar', `${url}foo?page=3`)).toBe('/bar');
-	});
-});
-
 describe('removeUriQueryParam', () => {
 	it('should remove uri query param', () => {
 		const href =
@@ -108,16 +92,6 @@ describe('removeUriQueryParam', () => {
 		const removeURI = removeUriQueryParam(href, name);
 
 		expect(removeURI).toEqual('/project/33551/touchpoints/');
-	});
-});
-
-describe('resetPaginationParams', () => {
-	it('should reset the pagination parameters to the default value', () => {
-		const url = 'http://www.liferay.com/';
-
-		expect(
-			resetPaginationParams(null, `${url}?page=3&orderBy=desc&query=test`)
-		).toBe('/?page=1&orderBy=asc&query=');
 	});
 });
 
@@ -132,6 +106,33 @@ describe('setUriFilterValues', () => {
 
 		expect(setUriFilterValues(mockFilterBy, url)).toBe(
 			'/?devices=desktop%2Cmobile&foo=bar'
+		);
+	});
+
+	it('should set the uri filter params w/o passing any URL', () => {
+		const mockFilterBy = new Map({
+			devices: new Set(['desktop', 'mobile']),
+			foo: new Set(['bar'])
+		});
+
+		expect(setUriFilterValues(mockFilterBy)).toBe(
+			'/?devices=desktop%2Cmobile&foo=bar'
+		);
+	});
+
+	it('should set the uri filter params by just passing pathname instead of url', () => {
+		const mockFilterBy = new Map({
+			devices: new Set(['desktop', 'mobile']),
+			foo: new Set(['bar'])
+		});
+
+		expect(
+			setUriFilterValues(
+				mockFilterBy,
+				'/workspaces/123/456/sites/overview'
+			)
+		).toBe(
+			'/workspaces/123/456/sites/overview?devices=desktop%2Cmobile&foo=bar'
 		);
 	});
 });

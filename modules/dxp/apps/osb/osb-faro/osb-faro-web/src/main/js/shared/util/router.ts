@@ -1,10 +1,7 @@
-import Constants, {DataSourceTypes, EntityTypes} from '../util/constants';
 import pathToRegexp from 'path-to-regexp';
-import Uri from 'metal-uri';
+import {EntityTypes} from '../util/constants';
 import {invert, isEmpty, isString, memoize} from 'lodash';
 import {matchPath} from 'react-router-dom';
-
-const {cur: defaultCur, orderDefault} = Constants.pagination;
 
 /* Resource Types */
 
@@ -377,11 +374,6 @@ const ROUTE_TO_TYPE_MAP = {
 	[SEGMENTS]: EntityTypes.IndividualsSegment
 };
 
-const PROVIDER_ROUTE_TO_TYPE_MAP = {
-	[CSV]: DataSourceTypes.Csv,
-	[LIFERAY]: DataSourceTypes.Liferay
-};
-
 const TYPE_TO_ROUTE_MAP = {
 	...invert(ROUTE_TO_TYPE_MAP)
 };
@@ -409,16 +401,8 @@ export const toAssetOverviewRoute = (assetType, routeParams, query) => {
 	return !isEmpty(query) ? setUriQueryValues(query, route) : route;
 };
 
-export function getType(routeName) {
-	return ROUTE_TO_TYPE_MAP[routeName];
-}
-
 export function getRouteName(type) {
 	return TYPE_TO_ROUTE_MAP[type];
-}
-
-export function getDataSourceType(routeName) {
-	return PROVIDER_ROUTE_TO_TYPE_MAP[routeName];
 }
 
 /**
@@ -449,32 +433,32 @@ export function getMatchedRoute(routes, pathname = location.pathname) {
  * @param {FilterBy} filterBy - A Map of active filters.
  * @param {string} href - The url with filter params added.
  */
-export function setUriFilterValues(filterBy, href = window.location.href) {
-	const uri = new Uri(href);
+export function setUriFilterValues(filterBy, href?: string) {
+	const url = new URL(normalizeHref(href));
 
 	filterBy.forEach((valueISet, key) => {
-		uri.setParameterValue(key, valueISet.filter(Boolean).toArray());
+		url.searchParams.set(key, valueISet.filter(Boolean).toArray());
 	});
 
-	return `${uri.getPathname()}${uri.getSearch()}`;
+	return `${url.pathname}${url.search}`;
 }
 
 export function setUriQueryValue(href, name, value) {
-	const uri = new Uri(href);
+	const url = new URL(normalizeHref(href));
 
-	uri.setParameterValue(name, value);
+	url.searchParams.set(name, value);
 
-	return `${uri.getPathname()}${uri.getSearch()}`;
+	return `${url.pathname}${url.search}`;
 }
 
-export function setUriQueryValues(values, href = window.location.href) {
-	const uri = new Uri(href);
+export function setUriQueryValues(values, href?: string) {
+	const url = new URL(normalizeHref(href));
 
 	for (const [name, value] of Object.entries(values)) {
-		uri.setParameterValue(name, value);
+		url.searchParams.set(name, value as string);
 	}
 
-	return `${uri.getPathname()}${uri.getSearch()}`;
+	return `${url.pathname}${url.search}`;
 }
 
 /**
@@ -483,42 +467,21 @@ export function setUriQueryValues(values, href = window.location.href) {
  * @param {string} names
  */
 export function removeUriQueryParam(href, ...names) {
-	const uri = new Uri(href);
+	const url = new URL(normalizeHref(href));
 
-	names.map(name => uri.removeParameter(name));
+	names.map(name => url.searchParams.delete(name));
 
-	return `${uri.getPathname()}${uri.getSearch()}`;
-}
-
-export function removePageParam(newPath, currentUrl = window.location.href) {
-	const uri = new Uri(currentUrl);
-
-	if (newPath) {
-		uri.setPathname(newPath);
-	}
-
-	uri.removeParameter('page');
-
-	return `${uri.getPathname()}${uri.getSearch()}`;
-}
-
-export function resetPaginationParams(
-	newPath,
-	currentUrl = window.location.href
-) {
-	const uri = new Uri(currentUrl);
-
-	if (newPath) {
-		uri.setPathname(newPath);
-	}
-
-	uri.setParameterValue('page', defaultCur);
-	uri.setParameterValue('orderBy', orderDefault);
-	uri.setParameterValue('query', '');
-
-	return `${uri.getPathname()}${uri.getSearch()}`;
+	return `${url.pathname}${url.search}`;
 }
 
 export function reloadPage() {
 	window.location.reload();
+}
+
+function normalizeHref(href = window.location.href) {
+	if (!href.startsWith('http://') && !href.startsWith('https://')) {
+		return window.location.origin + href;
+	}
+
+	return href;
 }
