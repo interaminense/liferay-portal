@@ -452,11 +452,19 @@ export function setUriQueryValue(href, name, value) {
 }
 
 export function setUriQueryValues(values, href?: string) {
+	// console.log({href, values, length: Object.entries(values).length});
 	const url = new URL(normalizeHref(href));
+	// console.log({url});
 
-	for (const [name, value] of Object.entries(values)) {
-		url.searchParams.set(name, value as string);
+	if (Object.entries(values).length) {
+		for (const [name, value] of Object.entries(values)) {
+			if (value) {
+				url.searchParams.set(name, value as string);
+			}
+		}
 	}
+
+	// console.log(`${url.pathname}${url.search}`);
 
 	return `${url.pathname}${url.search}`;
 }

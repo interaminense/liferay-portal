@@ -27,7 +27,7 @@ describe('SegmentProfileRoutes', () => {
 	});
 
 	it('should render', () => {
-		window.location = {pathname: '/'};
+		window.location = {origin: 'https://liferay.com', pathname: '/'};
 
 		const {container} = render(
 			<Provider store={mockStore()}>
