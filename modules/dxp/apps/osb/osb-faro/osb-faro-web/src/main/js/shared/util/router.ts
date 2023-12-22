@@ -313,20 +313,6 @@ export const Routes = buildRoutes({
 									SETTINGS_DEFINITIONS_SEARCH: '/search'
 								}
 							},
-							SETTINGS_RECOMMENDATIONS: {
-								path: '/recommendations',
-								routes: {
-									SETTINGS_RECOMMENDATION_MODEL_VIEW: {
-										path: '/:jobId([\\d]+)',
-										routes: {
-											SETTINGS_RECOMMENDATION_EDIT:
-												'/edit'
-										}
-									},
-									SETTINGS_RECOMMENDATIONS_CREATE_ITEM_SIMILARITY_MODEL:
-										'/create-item-similarity-model'
-								}
-							},
 							SETTINGS_SALESFORCE_ADD: `/data-source/${SALESFORCE}`,
 							SETTINGS_SALESFORCE_CONFIGURATION_STATUS: `/data-source/:id/${SALESFORCE}/configuration-status`,
 							SETTINGS_SALESFORCE_FIELD_MAPPING: {

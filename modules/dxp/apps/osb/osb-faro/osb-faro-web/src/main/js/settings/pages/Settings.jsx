@@ -4,7 +4,7 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import getCN from 'classnames';
 import Loading from 'shared/components/Loading';
-import React, {Fragment, lazy, Suspense} from 'react';
+import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {compose} from 'shared/hoc';
 import {connect} from 'react-redux';
@@ -79,31 +79,6 @@ const ChannelView = lazy(() =>
 	import(/* webpackChunkName: "ChannelView" */ '../channels/pages/View')
 );
 
-// Recommendations
-const RecommendationList = lazy(() =>
-	import(
-		/* webpackChunkName: "RecommendationList" */ '../recommendations/pages/Recommendations'
-	)
-);
-
-const RecommendationCreateItemSimilarity = lazy(() =>
-	import(
-		/* webpackChunkName: "RecommendationCreateItemSimilarity" */ '../recommendations/pages/CreateItemSimilarity'
-	)
-);
-
-const RecommendationEdit = lazy(() =>
-	import(
-		/* webpackChunkName: "RecommendationEdit" */ '../recommendations/pages/Edit'
-	)
-);
-
-const RecommendationView = lazy(() =>
-	import(
-		/* webpackChunkName: "RecommendationView" */ '../recommendations/pages/View'
-	)
-);
-
 // Other
 
 const UsageOverview = lazy(() =>
@@ -135,12 +110,11 @@ export class Settings extends React.Component {
 		pageDescription: PropTypes.node,
 		pageTitle: PropTypes.node,
 		passedChildren: PropTypes.node,
-		project: PropTypes.instanceOf(Project),
-		recommendationsEnabled: PropTypes.bool
+		project: PropTypes.instanceOf(Project)
 	};
 
 	getSidebarSections() {
-		const {currentUser, groupId, recommendationsEnabled} = this.props;
+		const {currentUser, groupId} = this.props;
 
 		return [
 			{
@@ -172,16 +146,8 @@ export class Settings extends React.Component {
 						url: toRoute(Routes.SETTINGS_DATA_SOURCE_LIST, {
 							groupId
 						})
-					},
-					recommendationsEnabled && {
-						icon: 'ac-star',
-						label: Liferay.Language.get('recommendations'),
-						route: Routes.SETTINGS_RECOMMENDATIONS,
-						url: toRoute(Routes.SETTINGS_RECOMMENDATIONS, {
-							groupId
-						})
 					}
-				].filter(Boolean),
+				],
 				label: Liferay.Language.get('workspace-data')
 			},
 			{
@@ -224,8 +190,7 @@ export class Settings extends React.Component {
 		const {
 			backURL,
 			groupId,
-			location: {pathname},
-			recommendationsEnabled
+			location: {pathname}
 		} = this.props;
 
 		return (
@@ -401,48 +366,6 @@ export class Settings extends React.Component {
 									path={Routes.SETTINGS_APIS}
 								/>
 
-								{recommendationsEnabled && (
-									<Fragment key='RECOMMENDATIONS'>
-										<BundleRouter
-											data={RecommendationList}
-											destructured={false}
-											exact
-											path={
-												Routes.SETTINGS_RECOMMENDATIONS
-											}
-										/>
-
-										<BundleRouter
-											data={
-												RecommendationCreateItemSimilarity
-											}
-											destructured={false}
-											exact
-											path={
-												Routes.SETTINGS_RECOMMENDATIONS_CREATE_ITEM_SIMILARITY_MODEL
-											}
-										/>
-
-										<BundleRouter
-											data={RecommendationEdit}
-											destructured={false}
-											exact
-											path={
-												Routes.SETTINGS_RECOMMENDATION_EDIT
-											}
-										/>
-
-										<BundleRouter
-											data={RecommendationView}
-											destructured={false}
-											exact
-											path={
-												Routes.SETTINGS_RECOMMENDATION_MODEL_VIEW
-											}
-										/>
-									</Fragment>
-								)}
-
 								<RouteNotFound />
 							</Switch>
 						</Suspense>
@@ -458,11 +381,7 @@ export default compose(
 	checkProjectState,
 	connect((store, {groupId}) => ({
 		backURL: store.getIn(['settings', 'backURL']),
-		project: store.getIn(['projects', groupId, 'data']),
-		recommendationsEnabled: store.getIn(
-			['projects', groupId, 'data', 'recommendationsEnabled'],
-			false
-		)
+		project: store.getIn(['projects', groupId, 'data'])
 	})),
 	withOnboarding
 )(Settings);

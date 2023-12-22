@@ -909,7 +909,6 @@ export function mockProject(seed = 1, data = {}) {
 		name: `project${seed}`,
 		ownerEmailAddress: `test${seed}@liferay.com`,
 		percentageComplete: 0,
-		recommendationsEnabled: true,
 		state: ProjectStates.Ready,
 		timeZone: new TimeZone(),
 		userId: seed,

@@ -12,7 +12,6 @@ Immutable.Record {
   "incidentReportEmailAddresses": Immutable.List [],
   "name": "",
   "ownerEmailAddress": "",
-  "recommendationsEnabled": false,
   "serverLocation": null,
   "state": null,
   "stateStartDate": null,

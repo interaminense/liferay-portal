@@ -15,10 +15,6 @@ import IndividualMetricsQuery from 'shared/queries/IndividualMetricsQuery';
 import OrganizationsQuery from 'segment/segment-editor/dynamic/queries/OrganizationsQuery';
 import PagePathQuery from 'shared/queries/PagePathQuery';
 import PreferenceQuery from 'settings/data-privacy/queries/PreferenceQuery';
-import RecommendationActivitiesQuery from 'settings/recommendations/queries/RecommendationActivitiesQuery';
-import RecommendationJobRunsQuery from 'settings/recommendations/queries/RecommendationJobRunsQuery';
-import RecommendationPageAssetsQuery from 'settings/recommendations/queries/RecommendationPageAssetsQuery';
-import RecommendationQuery from 'settings/recommendations/queries/RecommendationQuery';
 import SitesDashboardQuery from 'shared/queries/SitesDashboardQuery';
 import SitesTopPagesQuery from 'shared/queries/SitesTopPagesQuery';
 import SuppressedUsersListQuery from 'settings/data-privacy/queries/SuppressedUsersListQuery';
@@ -948,26 +944,6 @@ export function mockMetric(metrics = {}) {
 	};
 }
 
-export function mockRecommendationReq(item = {}, mockVariables = {}) {
-	return {
-		request: {
-			query: RecommendationQuery,
-			variables: {
-				jobId: '321',
-				...mockVariables
-			}
-		},
-		result: {
-			data: {
-				jobById: {
-					...item,
-					__typename: 'Job'
-				}
-			}
-		}
-	};
-}
-
 export function mockPagePathReq(data = []) {
 	return {
 		request: {
@@ -983,82 +959,6 @@ export function mockPagePathReq(data = []) {
 		},
 		result: {
 			data
-		}
-	};
-}
-
-export function mockRecommendationActivitiesReq(items, mockVariables = {}) {
-	return {
-		request: {
-			query: RecommendationActivitiesQuery,
-			variables: {
-				applicationId: 'Page',
-				eventContextPropertyFilters: [
-					{filter: '.*custom-assets', negate: false}
-				],
-				eventId: 'pageUnloaded',
-				rangeKey: '30',
-				size: 0,
-				start: 0,
-				...mockVariables
-			}
-		},
-		result: {
-			data: {
-				activities: {
-					__typename: 'ActivityBag',
-					activities: items,
-					total: items.length
-				}
-			}
-		}
-	};
-}
-
-export function mockRecommendationJobRunsReq(items, mockVariables = {}) {
-	return {
-		request: {
-			query: RecommendationJobRunsQuery,
-			variables: {
-				jobId: '321',
-				size: 5,
-				sort: {column: 'id', type: 'DESC'},
-				start: 0,
-				...mockVariables
-			}
-		},
-		result: {
-			data: {
-				jobRuns: {
-					__typename: 'JobRunBag',
-					jobRuns: items,
-					total: items.length
-				}
-			}
-		}
-	};
-}
-
-export function mockRecommendationPageAssetsReq(items, mockVariables = {}) {
-	return {
-		request: {
-			query: RecommendationPageAssetsQuery,
-			variables: {
-				propertyFilters: [{filter: '.*custom-assets', negate: false}],
-				size: 5,
-				sort: {column: 'title', type: 'DESC'},
-				start: 0,
-				...mockVariables
-			}
-		},
-		result: {
-			data: {
-				pageAssets: {
-					__typename: 'PageAssetBag',
-					pageAssets: items,
-					total: items.length
-				}
-			}
 		}
 	};
 }

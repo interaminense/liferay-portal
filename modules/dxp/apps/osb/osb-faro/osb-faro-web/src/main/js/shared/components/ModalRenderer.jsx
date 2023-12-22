@@ -19,10 +19,7 @@ import InputModal from './modals/InputModal';
 import InterestTopicModal from './modals/InterestTopicsModal';
 import InviteUsersModal from './modals/InviteUsersModal';
 import LoadingModal from './modals/LoadingModal';
-import ManuallyRetrainModelModal from './modals/ManuallyRetrainModelModal';
-import MatchingPagesModal from './modals/MatchingPagesModal';
 import NewRequestModal from './modals/NewRequestModal';
-import NewRuleModal from './modals/NewRuleModal';
 import OnboardingModal from './modals/onboarding-modal';
 import React from 'react';
 import SearchableEntitiesTableModal from './modals/SearchableEntitiesTableModal';
@@ -61,10 +58,7 @@ const COMPONENT_MAP = {
 	[modalTypes.INSERT_BLOCKED_KEYWORDS]: InterestTopicModal,
 	[modalTypes.INVITE_USERS_MODAL]: InviteUsersModal,
 	[modalTypes.LOADING_MODAL]: LoadingModal,
-	[modalTypes.MANUALLY_RETRAIN_MODEL_MODAL]: ManuallyRetrainModelModal,
-	[modalTypes.MATCHING_PAGES_MODAL]: MatchingPagesModal,
 	[modalTypes.NEW_REQUEST_MODAL]: NewRequestModal,
-	[modalTypes.NEW_RULE_MODAL]: NewRuleModal,
 	[modalTypes.ONBOARDING_MODAL]: OnboardingModal,
 	[modalTypes.UNASSIGNED_SEGMENTS_MODAL]: UnassignedSegmentsModal,
 	[modalTypes.SEARCHABLE_ENTITIES_TABLE_MODAL]: SearchableEntitiesTableModal,

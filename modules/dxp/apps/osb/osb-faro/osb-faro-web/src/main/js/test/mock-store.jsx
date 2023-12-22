@@ -95,7 +95,6 @@ export const mockStoreData = fromJS({
 		23: toRD(
 			new Project(
 				data.mockProject('23', {
-					recommendationsEnabled: true,
 					stateStartDate: 1531263666366
 				})
 			)

@@ -73,7 +73,6 @@ Immutable.Map {
         "incidentReportEmailAddresses": Immutable.List [],
         "name": "",
         "ownerEmailAddress": "",
-        "recommendationsEnabled": false,
         "serverLocation": null,
         "state": null,
         "stateStartDate": null,

@@ -28,7 +28,6 @@ export {default as withQuery} from './WithQuery';
 export {default as withQueryPagination} from './WithQueryPagination';
 export {default as withQueryRangeSelectors} from './WithQueryRangeSelectors';
 export {default as withRangeKey} from './WithRangeKey';
-export {default as withRecommendation} from './WithRecommendation';
 export {default as withRequest} from './WithRequest';
 export {default as withSegment} from './WithSegment';
 export {default as withSelectedPoint} from './WithSelectedPoint';
