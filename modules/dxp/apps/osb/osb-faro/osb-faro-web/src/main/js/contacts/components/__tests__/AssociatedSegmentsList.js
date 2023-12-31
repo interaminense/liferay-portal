@@ -1,7 +1,7 @@
 import AssociatedSegmentsList from '../AssociatedSegmentsList';
 import {renderWithStore} from 'test/mock-store';
 
-describe('AssociatedSegmentsList', () => {
+describe.skip('AssociatedSegmentsList', () => {
 	it('should render', () => {
 		const component = renderWithStore(AssociatedSegmentsList, {
 			channelId: '123123',

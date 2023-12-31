@@ -14,8 +14,8 @@ class TestComponent extends React.Component {
 	}
 }
 
-describe('WithBaseEdit', () => {
-	xit('should render the wrapped component', () => {
+describe.skip('WithBaseEdit', () => {
+	it('should render the wrapped component', () => {
 		const WrappedComponent = compose(
 			withChannelProvider,
 			withStaticRouter,

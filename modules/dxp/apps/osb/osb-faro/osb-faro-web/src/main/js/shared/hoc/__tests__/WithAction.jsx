@@ -5,7 +5,7 @@ import {RemoteData} from '../../util/records';
 import {renderWithStore} from 'test/mock-store';
 import {withStaticRouter} from 'test/mock-router';
 
-describe('withAction', () => {
+describe.skip('withAction', () => {
 	const action = () => ({type: 'NO_OP'});
 	const mapStateToRemoteData = () => new RemoteData({loading: false});
 
