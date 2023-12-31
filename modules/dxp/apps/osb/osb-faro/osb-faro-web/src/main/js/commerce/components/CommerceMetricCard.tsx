@@ -6,7 +6,7 @@ import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import TrendComponent from 'shared/components/Trend';
 import withCurrentUser from 'shared/hoc/WithCurrentUser';
 import {ApolloError} from 'apollo-client';
-import {DocumentNode} from 'graphql';
+import {DocumentNode} from 'apollo-boost';
 import {getIcon, getStatsColor} from 'shared/util/metrics';
 import {
 	getRangeSelectorsFromQuery,

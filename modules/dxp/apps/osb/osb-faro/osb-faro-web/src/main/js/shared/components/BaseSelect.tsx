@@ -6,7 +6,7 @@ import Loading from 'shared/components/Loading';
 import Overlay from './Overlay';
 import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {ARROW_DOWN, ARROW_UP, ENTER} from '../util/key-constants';
-import {DocumentNode} from 'graphql';
+import {DocumentNode} from 'apollo-boost';
 import {identity, noop} from 'lodash';
 import {useDebounce} from 'shared/hooks';
 import {useQuery} from '@apollo/react-hooks';
