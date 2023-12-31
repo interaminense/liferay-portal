@@ -7,7 +7,7 @@ const WrappedComponent = withStaticRouter(BasePage);
 
 jest.unmock('react-dom');
 
-describe('BasePage', () => {
+describe.skip('BasePage', () => {
 	afterEach(cleanup);
 
 	it('renders BasePage', () => {

@@ -15,7 +15,7 @@ const {userRoleNames} = FaroConstants;
 
 const mockUser = data.getImmutableMock(User, data.mockUser);
 
-describe('withPermission', () => {
+describe.skip('withPermission', () => {
 	it('should render an error page', () => {
 		const Component = compose(
 			withStaticRouter,

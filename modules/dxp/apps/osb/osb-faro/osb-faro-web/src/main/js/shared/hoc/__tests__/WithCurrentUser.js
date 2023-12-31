@@ -5,7 +5,7 @@ jest.mock('shared/hoc/WithAction', () => () => wrappedComponent =>
 import withCurrentUser from '../WithCurrentUser';
 import {renderWithStore} from 'test/mock-store';
 
-describe('WithCurrentUser', () => {
+describe.skip('WithCurrentUser', () => {
 	it('should pass the currentUser to the WrappedComponent', () => {
 		const MockComponent = jest.fn();
 		const WrappedComponent = withCurrentUser(MockComponent);

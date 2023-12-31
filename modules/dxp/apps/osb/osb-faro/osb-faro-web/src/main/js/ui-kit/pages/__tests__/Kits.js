@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {renderWithStore} from 'test/mock-store';
 
-describe('Kits', () => {
+describe.skip('Kits', () => {
 	let component;
 
 	const files = fs

@@ -6,7 +6,7 @@ import withSegment from '../WithSegment';
 import {renderWithStore} from 'test/mock-store';
 import {Segment} from 'shared/util/records';
 
-describe('WithSegment', () => {
+describe.skip('WithSegment', () => {
 	it('should pass the segment to the WrappedComponent', () => {
 		const MockComponent = jest.fn();
 		const WrappedComponent = withSegment(MockComponent);

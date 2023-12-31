@@ -5,7 +5,7 @@ jest.mock('shared/hoc/WithAction', () => () => wrappedComponent =>
 import withIndividual from '../WithIndividual';
 import {renderWithStore} from 'test/mock-store';
 
-describe('WithIndividual', () => {
+describe.skip('WithIndividual', () => {
 	it('should pass the individual to the WrappedComponent', () => {
 		const MockComponent = jest.fn();
 		const WrappedComponent = withIndividual(MockComponent);

@@ -28,7 +28,7 @@ describe.skip('SalesforceConfigurationStatus', () => {
 	});
 
 	// TODO: should be rewritten when new endpoint to replace connectionStatuses is added
-	xit('should render already configured items with the button text "pause" instead of "enable"', () => {
+	it('should render already configured items with the button text "pause" instead of "enable"', () => {
 		const component = renderWithStore(
 			SalesforceConfigurationStatus,
 			{
@@ -72,7 +72,7 @@ describe.skip('SalesforceConfigurationStatus', () => {
 	});
 
 	// TODO: should be rewritten when new endpoint to replace connectionStatuses is added
-	xit('should render as configuring items with a metric bar instead of a button', () => {
+	it('should render as configuring items with a metric bar instead of a button', () => {
 		const component = renderWithStore(
 			SalesforceConfigurationStatus,
 			{
