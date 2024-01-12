@@ -409,7 +409,10 @@ class Analytics {
 	}
 
 	_isTrackingDisabled() {
+		const isLiferayCookieEnabled = Liferay?.Util?.Cookie && Liferay?.Util?.Cookie?.get(Liferay?.Util?.Cookie?.TYPES.PERFORMANCE) === 'true'
+		
 		return (
+			!isLiferayCookieEnabled ||
 			ENV.ac_client_disable_tracking ||
 			navigator.doNotTrack === '1' ||
 			navigator.doNotTrack === 'yes'
@@ -472,7 +475,7 @@ class Analytics {
 			Liferay.Util.Cookie.set(
 				key,
 				data,
-				Liferay.Util.Cookie.TYPES.PERSONALIZATION,
+				Liferay.Util.Cookie.TYPES.PERFORMANCE,
 				{
 					expires,
 					secure: true,

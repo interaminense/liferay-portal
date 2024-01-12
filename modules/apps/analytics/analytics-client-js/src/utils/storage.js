@@ -12,10 +12,10 @@ const getItem = (key) => {
 	try {
 		let item;
 
-		if (Liferay && Liferay.Util && Liferay.Util.LocalStorage) {
+		if (Liferay?.Util?.LocalStorage) {
 			item = Liferay.Util.LocalStorage.getItem(
 				key,
-				Liferay.Util.LocalStorage.TYPES.PERSONALIZATION
+				Liferay.Util.LocalStorage.TYPES.PERFORMANCE
 			);
 		}
 		else {
@@ -35,11 +35,11 @@ const setItem = (key, value) => {
 	const Liferay = window.Liferay;
 
 	try {
-		if (Liferay && Liferay.Util && Liferay.Util.LocalStorage) {
+		if (Liferay?.Util?.LocalStorage) {
 			Liferay.Util.LocalStorage.setItem(
 				key,
 				JSON.stringify(value),
-				Liferay.Util.LocalStorage.TYPES.PERSONALIZATION
+				Liferay.Util.LocalStorage.TYPES.PERFORMANCE
 			);
 		}
 		else {
@@ -55,10 +55,10 @@ const removeItem = (key) => {
 	const Liferay = window.Liferay;
 
 	try {
-		if (Liferay && Liferay.Util && Liferay.Util.LocalStorage) {
+		if (Liferay?.Util?.LocalStorage) {
 			Liferay.Util.LocalStorage.removeItem(
 				key,
-				Liferay.Util.LocalStorage.TYPES.PERSONALIZATION
+				Liferay.Util.LocalStorage.TYPES.PERFORMANCE
 			);
 		}
 		else {

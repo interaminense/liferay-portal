@@ -66,6 +66,8 @@ export default function ({
 			);
 
 			setUserConfigCookie();
+
+			Liferay.fire('acceptCookies');
 		});
 
 		openCookieConsentModal = ({
@@ -110,6 +112,8 @@ export default function ({
 							setBannerVisibility(cookieBanner);
 
 							getOpener().Liferay.fire('closeModal');
+							
+							Liferay.fire('acceptCookies');
 						},
 					},
 					{
@@ -126,6 +130,8 @@ export default function ({
 							setBannerVisibility(cookieBanner);
 
 							getOpener().Liferay.fire('closeModal');
+							
+							Liferay.fire('acceptCookies');
 						},
 					},
 					{
@@ -143,6 +149,8 @@ export default function ({
 							setBannerVisibility(cookieBanner);
 
 							getOpener().Liferay.fire('closeModal');
+							
+							Liferay.fire('declineCookies');
 						},
 					},
 				],
@@ -169,6 +177,8 @@ export default function ({
 			);
 
 			setUserConfigCookie();
+
+			Liferay.fire('declineCookies')
 		});
 	}
 }

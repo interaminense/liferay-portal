@@ -10,7 +10,7 @@
 <meta content="<%= (String)request.getAttribute(AnalyticsWebKeys.ANALYTICS_CLIENT_READABLE_CONTENT) %>" name="data-analytics-readable-content" />
 
 <aui:script senna="temporary" type="text/javascript">
-	var runMiddlewares = function () {
+	var runMiddlewares = () => {
 		<liferay-util:dynamic-include key="/dynamic_include/top_head.jsp#analytics" />
 	};
 
@@ -40,42 +40,68 @@
 			return request;
 		};
 
-		Analytics.create(config, [dxpMiddleware]);
-
-		if (themeDisplay.isSignedIn()) {
-			Analytics.setIdentity({
-				email: themeDisplay.getUserEmailAddress(),
-				name: themeDisplay.getUserName(),
-			});
+		function <portlet:namespace />startTracking() {
+			Analytics.create(config, [dxpMiddleware]);
+	
+			if (themeDisplay.isSignedIn()) {
+				Analytics.setIdentity({
+					email: themeDisplay.getUserEmailAddress(),
+					name: themeDisplay.getUserName(),
+				});
+			}
+		
+			runMiddlewares();
+		
+			Analytics.send('pageViewed', 'Page');
 		}
+		
+		Liferay.on('acceptCookies', () => {
+			<portlet:namespace />startTracking();
+		})
 
-		runMiddlewares();
-
-		Analytics.send('pageViewed', 'Page');
-
+		Liferay.on('declineCookies', () => {
+			if (window.Analytics) {
+				Analytics.dispose();
+			}
+		})
+		
+		<portlet:namespace />startTracking();
+	
 		<c:if test="<%= GetterUtil.getBoolean(PropsUtil.get(PropsKeys.JAVASCRIPT_SINGLE_PAGE_APPLICATION_ENABLED)) %>">
 			Liferay.on('endNavigate', (event) => {
-				Analytics.dispose();
+				function <portlet:namespace />startTrackingSPA() {
+					Analytics.dispose();
 
-				var groupId = themeDisplay.getScopeGroupIdOrLiveGroupId();
-
-				if (
-					!themeDisplay.isControlPanel() &&
-					analyticsClientGroupIds.indexOf(groupId) >= 0
-				) {
-					Analytics.create(config, [dxpMiddleware]);
-
-					if (themeDisplay.isSignedIn()) {
-						Analytics.setIdentity({
-							email: themeDisplay.getUserEmailAddress(),
-							name: themeDisplay.getUserName(),
-						});
+					const groupId = themeDisplay.getScopeGroupIdOrLiveGroupId();
+		
+					if (
+						!themeDisplay.isControlPanel() &&
+						analyticsClientGroupIds.indexOf(groupId) >= 0
+					) {
+						Analytics.create(config, [dxpMiddleware]);
+		
+						if (themeDisplay.isSignedIn()) {
+							Analytics.setIdentity({
+								email: themeDisplay.getUserEmailAddress(),
+								name: themeDisplay.getUserName(),
+							});
+						}
+		
+						runMiddlewares();
+		
+						Analytics.send('pageViewed', 'Page', {page: event.path});
 					}
-
-					runMiddlewares();
-
-					Analytics.send('pageViewed', 'Page', {page: event.path});
 				}
+
+				Liferay.on('acceptCookies', () => {
+					<portlet:namespace />startTrackingSPA();
+				})
+
+				Liferay.on('declineCookies', () => {
+					Analytics.dispose();
+				})
+
+				<portlet:namespace />startTrackingSPA();
 			});
 		</c:if>
 	});
