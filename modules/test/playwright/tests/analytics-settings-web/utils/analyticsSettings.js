@@ -3,8 +3,17 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import { loginDXP } from "../../../utils/login";
-import { expect } from "@playwright/test";
+import {expect} from '@playwright/test';
+
+import {loginDXP} from '../../../utils/login';
+
+export async function acceptsCookiesBanner(page) {
+	const cookiesBannerButton = page.getByRole('button', {name: 'Accept All'});
+
+	if (cookiesBannerButton.isVisible()) {
+		await cookiesBannerButton.click();
+	}
+}
 
 export async function connectToAnalyticsCloud(page) {
     await page.getByTestId('input-token', { name: 'input-token' }).click();
@@ -60,10 +69,12 @@ export async function syncAllContacts(page) {
     await page.getByRole('button', { name: 'Next' }).click();
 }
 
-export async function syncSite(channelIndex, page, siteIndex) {
-    await expect(page.getByRole('heading', { name: 'Property Assignment' })).toBeVisible({
-        timeout: 100 * 1000,
-    });
+export async function syncSite(page) {
+	await expect(
+		page.getByRole('heading', {name: 'Property Assignment'})
+	).toBeVisible({
+		timeout: 100 * 1000,
+	});
 
     // Known issue. See https://liferay.atlassian.net/browse/LRAC-13481
 
