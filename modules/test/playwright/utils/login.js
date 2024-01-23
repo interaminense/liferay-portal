@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import { expect } from '@playwright/test';
-import { faroConfig } from '../tests/osb-faro-web/faro.config';
-import { liferayConfig } from '../liferay.config';
+import {expect} from '@playwright/test';
+
+import {liferayConfig} from '../liferay.config';
+import {faroConfig} from '../tests/osb-faro-web/faro.config';
 
 export async function loginAnalyticsCloud(page) {
 	await page.goto(faroConfig.environment.baseUrl);
@@ -32,13 +33,15 @@ export async function loginAnalyticsCloud(page) {
 		timeout: 100 * 1000,
 	});
 
-	await page.context().storageState({ path: 'tmp/osb-faro-web/.auth/user.json' });
+	await page
+		.context()
+		.storageState({path: 'tmp/osb-faro-web/.auth/user.json'});
 }
 
 export async function loginDXP(page) {
 	await page.goto(liferayConfig.environment.baseUrl);
 
-	await page.getByRole('button', { name: 'Sign In' }).click();
+	await page.getByRole('button', {name: 'Sign In'}).click();
 
 	await page.getByLabel('Email Address').fill(liferayConfig.user.login);
 	await page.getByLabel('Password').fill(liferayConfig.user.password);
@@ -46,12 +49,12 @@ export async function loginDXP(page) {
 
 	await page
 		.getByLabel('Sign In- Loading')
-		.getByRole('button', { name: 'Sign In' })
+		.getByRole('button', {name: 'Sign In'})
 		.click();
 
 	await expect(page.getByLabel('Open Applications MenuCtrl+')).toBeVisible({
 		timeout: 100 * 1000,
 	});
 
-	await page.context().storageState({ path: 'tmp/.auth/user.json' });
+	await page.context().storageState({path: 'tmp/.auth/user.json'});
 }

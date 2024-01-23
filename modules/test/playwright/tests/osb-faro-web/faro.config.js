@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import { liferayConfig } from "../../liferay.config";
+import {liferayConfig} from '../../liferay.config';
 
 const faroConfig = {
 	environment: {
@@ -12,7 +12,7 @@ const faroConfig = {
 			: 'http://localhost:8080',
 		enabled: process.env.FARO_ANALYTICS_CLOUD_ENABLED
 			? process.env.FARO_ANALYTICS_CLOUD_ENABLED
-			: false
+			: false,
 	},
 	user: {
 		login: process.env.FARO_USER_LOGIN || liferayConfig.user.login,
@@ -20,4 +20,4 @@ const faroConfig = {
 	},
 };
 
-export { faroConfig };
+export {faroConfig};

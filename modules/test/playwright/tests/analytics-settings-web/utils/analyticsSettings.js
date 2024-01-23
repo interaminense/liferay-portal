@@ -16,57 +16,64 @@ export async function acceptsCookiesBanner(page) {
 }
 
 export async function connectToAnalyticsCloud(page) {
-    await page.getByTestId('input-token', { name: 'input-token' }).click();
+	await page.getByTestId('input-token', {name: 'input-token'}).click();
 
-    await page.keyboard.press("Control+V");
+	await page.keyboard.press('Control+V');
 
-    await page.getByRole('button', { name: 'Connect' }).click();
+	await page.getByRole('button', {name: 'Connect'}).click();
 }
 
 export async function disconnectFromAnalyticsCloud(page) {
-    const disconnectButton = page.getByRole('button', { name: 'Disconnect' });
+	const disconnectButton = page.getByRole('button', {name: 'Disconnect'});
 
-    if (await disconnectButton.isVisible()) {
-        await disconnectButton.click();
+	if (await disconnectButton.isVisible()) {
+		await disconnectButton.click();
 
-        const diconnectConfirmationModal = page.getByLabel('Disconnecting Data Source');
+		const diconnectConfirmationModal = page.getByLabel(
+			'Disconnecting Data Source'
+		);
 
-        const diconnectConfirmationButton = diconnectConfirmationModal.getByRole('button', { name: 'Disconnect' });
+		const diconnectConfirmationButton =
+			diconnectConfirmationModal.getByRole('button', {
+				name: 'Disconnect',
+			});
 
-        await diconnectConfirmationButton.click();
-    }
+		await diconnectConfirmationButton.click();
+	}
 }
 
 export async function goToAnalyticsCloudInstanceSettings(page) {
-    await loginDXP(page);
+	await loginDXP(page);
 
-    await page.getByLabel('Open Applications MenuCtrl+Alt+A').click();
+	await page.getByLabel('Open Applications MenuCtrl+Alt+A').click();
 
-    await page.getByRole('tab', { name: 'Control Panel' }).click();
+	await page.getByRole('tab', {name: 'Control Panel'}).click();
 
-    await page.getByRole('menuitem', { name: 'Instance Settings' }).click();
+	await page.getByRole('menuitem', {name: 'Instance Settings'}).click();
 
-    await page.getByRole('link', { name: 'Analytics Cloud' }).click();
+	await page.getByRole('link', {name: 'Analytics Cloud'}).click();
 
-    await expect(page.getByText('Analytics Cloud Token')).toBeVisible({
-        timeout: 100 * 1000,
-    });
+	await expect(page.getByText('Analytics Cloud Token')).toBeVisible({
+		timeout: 100 * 1000,
+	});
 }
 
 export async function syncAllContacts(page) {
-    const wizard = page.getByTestId('VIEW_WIZARD_MODE');
+	const wizard = page.getByTestId('VIEW_WIZARD_MODE');
 
-    await expect(wizard.getByText('Sync People')).toBeVisible({
-        timeout: 100 * 1000,
-    });
+	await expect(wizard.getByText('Sync People')).toBeVisible({
+		timeout: 100 * 1000,
+	});
 
-    const syncContactsButton = page.getByTestId('sync-all-contacts-and-accounts__false')
+	const syncContactsButton = page.getByTestId(
+		'sync-all-contacts-and-accounts__false'
+	);
 
-    if (await syncContactsButton.isVisible()) {
-        await syncContactsButton.click();
-    }
+	if (await syncContactsButton.isVisible()) {
+		await syncContactsButton.click();
+	}
 
-    await page.getByRole('button', { name: 'Next' }).click();
+	await page.getByRole('button', {name: 'Next'}).click();
 }
 
 export async function syncSite(page) {
@@ -76,29 +83,39 @@ export async function syncSite(page) {
 		timeout: 100 * 1000,
 	});
 
-    // Known issue. See https://liferay.atlassian.net/browse/LRAC-13481
+	// Known issue. See https://liferay.atlassian.net/browse/LRAC-13481
 
-    const tryAgainButton = page.getByRole('button', { name: 'Try Again' })
+	const tryAgainButton = page.getByRole('button', {name: 'Try Again'});
 
-    if (await tryAgainButton.isVisible()) {
-        await page.getByRole('button', { name: 'Previous' }).click();
+	if (await tryAgainButton.isVisible()) {
+		await page.getByRole('button', {name: 'Previous'}).click();
 
-        await page.getByRole('button', { name: 'Next' }).click();
-    }
+		await page.getByRole('button', {name: 'Next'}).click();
+	}
 
-    const wizard = page.getByTestId('VIEW_WIZARD_MODE');
+	const wizard = page.getByTestId('VIEW_WIZARD_MODE');
 
-    await expect(wizard.getByText('Available Properties')).toBeVisible({
-        timeout: 100 * 1000,
-    });
+	await expect(wizard.getByText('Available Properties')).toBeVisible({
+		timeout: 100 * 1000,
+	});
 
-    await page.locator('table tbody tr').nth(channelIndex).getByRole('button', { name: 'Assign' }).click();
+	await page
+		.getByTestId('Liferay DXP')
+		.getByRole('button', {name: 'Assign'})
+		.click();
 
-    await page.getByRole('tab', { name: 'Sites' }).click();
+	await page.getByRole('tab', {name: 'Sites'}).click();
 
-    await page.getByTestId('1').locator('table tbody tr').nth(siteIndex).getByLabel('').check();
+	await page
+		.getByTestId('1')
+		.getByTestId('Liferay DXP')
+		.getByLabel('')
+		.check();
 
-    await page.locator('.modal-footer').getByRole('button', { name: 'Assign' }).click();
+	await page
+		.getByLabel('Assign to Liferay DXP')
+		.getByRole('button', {name: 'Assign'})
+		.click();
 
-    await page.getByRole('button', { name: 'Next' }).click();
+	await page.getByRole('button', {name: 'Next'}).click();
 }

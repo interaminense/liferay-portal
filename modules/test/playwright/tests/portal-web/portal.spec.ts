@@ -5,7 +5,7 @@
 
 import {expect, test} from '@playwright/test';
 
-import { liferayConfig } from '../../liferay.config';
+import {liferayConfig} from '../../liferay.config';
 
 test('title is Home - Liferay DXP', async ({page}) => {
 	await page.goto(liferayConfig.environment.baseUrl);
