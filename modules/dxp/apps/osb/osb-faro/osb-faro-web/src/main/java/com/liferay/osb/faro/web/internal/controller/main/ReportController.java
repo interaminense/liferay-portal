@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -26,10 +27,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -121,8 +122,8 @@ public class ReportController extends BaseFaroController {
 					Validator.isBlank(toDateString)) {
 
 					return _reportControllerResponseFactory.create(
-						"\"fromDate\" and \"toDate\" query parameters are " +
-							"mandatory and must be ISO 8601 compliant " +
+						"The \"fromDate\" and \"toDate\" query parameters " +
+							"are mandatory and must be ISO 8601 compliant " +
 								_ISO_8601_DATE_FORMAT,
 						Response.Status.BAD_REQUEST);
 				}
@@ -147,8 +148,7 @@ public class ReportController extends BaseFaroController {
 
 				if (fromLocalDateTime.isAfter(toLocalDateTime)) {
 					return _reportControllerResponseFactory.create(
-						"Wrong range date. \"fromDate\" cannot be after " +
-							"\"toDate\"",
+						"The \"fromDate\" cannot be after \"toDate\"",
 						Response.Status.BAD_REQUEST);
 				}
 
@@ -189,7 +189,7 @@ public class ReportController extends BaseFaroController {
 			outputStream.flush();
 		};
 
-		String fileName;
+		String fileName = null;
 
 		if (StringUtil.equals(type, "individual") &&
 			Validator.isNotNull(assetTitle) && Validator.isNotNull(assetType)) {
@@ -237,17 +237,8 @@ public class ReportController extends BaseFaroController {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ReportController.class);
 
-	private static final List<String> _csvExportTypes =
-		new ArrayList<String>() {
-			{
-				add("blog");
-				add("document");
-				add("form");
-				add("individual");
-				add("journal");
-				add("page");
-			}
-		};
+	private static final Set<String> _csvExportTypes = SetUtil.fromArray(
+		"blog", "document", "form", "individual", "journal", "page");
 	private static final DateTimeFormatter _dateDateTimeFormatter =
 		DateTimeFormatter.ofPattern(_ISO_8601_DATE_FORMAT);
 	private static final DateTimeFormatter _dateTimeDateTimeFormatter =

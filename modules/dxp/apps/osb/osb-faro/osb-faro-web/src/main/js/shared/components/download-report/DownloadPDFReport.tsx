@@ -107,7 +107,7 @@ export const CONTAINERS: {[key in Containers]: TContainer} = {
 	},
 	[Containers.SiteActivityCard]: {
 		label: Liferay.Language.get('site-activity'),
-		layout: 2
+		layout: 1
 	},
 	[Containers.SubmissionsByLocationCard]: {
 		label: Liferay.Language.get('submissions-by-location'),
@@ -166,7 +166,7 @@ type ContainerList = {
 	[key in Containers]: TransformedContainer;
 };
 
-const transformContainers = (containers: Containers[]): ContainerList =>
+export const formatContainers = (containers: Containers[]): ContainerList =>
 	containers.reduce((acc, id) => {
 		acc[id] = {
 			...CONTAINERS[id],
@@ -185,10 +185,10 @@ const DownloadPDFReport: React.FC<IDownloadReport> = ({
 	title,
 	url
 }) => {
-	const [loadingReport, setLoadingReport] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const {observer, onOpenChange, open} = useModal();
 	const [containers, setContainers] = useState<ContainerList>(() =>
-		transformContainers(initialContainers)
+		formatContainers(initialContainers)
 	);
 
 	const filteredContainers = useMemo(
@@ -200,7 +200,7 @@ const DownloadPDFReport: React.FC<IDownloadReport> = ({
 		<div className='download-report'>
 			<DownloadReportButton
 				disabled={disabled}
-				loading={loadingReport}
+				loading={loading}
 				onClick={() => onOpenChange(true)}
 			/>
 
@@ -224,7 +224,7 @@ const DownloadPDFReport: React.FC<IDownloadReport> = ({
 					observer={observer}
 					onClose={() => onOpenChange(false)}
 					onSubmit={() => {
-						setLoadingReport(true);
+						setLoading(true);
 
 						/**
 						 * It is necessary to have timeout of 1000ms to wait chart
@@ -239,9 +239,9 @@ const DownloadPDFReport: React.FC<IDownloadReport> = ({
 								url
 							}).then(() => {
 								setContainers(
-									transformContainers(initialContainers)
+									formatContainers(initialContainers)
 								);
-								setLoadingReport(false);
+								setLoading(false);
 							});
 						}, 1000);
 					}}

@@ -2,8 +2,6 @@
 
 @import 'atlas';
 
-@import '~clay-charts-shared/src/scss/main.scss';
-
 @import 'variables';
 
 @import 'mixins';
@@ -90,7 +88,6 @@
 @import 'event_analysis_editor';
 @import 'event_analysis_breakdown';
 @import 'event_analysis_toolbar';
-@import 'export_log_modal';
 @import 'file_drop_target';
 @import 'filter';
 @import 'footer';
@@ -154,6 +151,7 @@
 @import 'relative_metric_bar';
 @import 'request_list';
 @import 'rule_item';
+@import 'sankey';
 @import 'scrollable_section';
 @import 'search_card';
 @import 'search_input_list';
@@ -205,7 +203,6 @@
 @import 'training_items_card';
 @import 'transitions';
 @import 'trend';
-@import 'trendline';
 @import 'type_trend';
 @import 'ui-kit/colors';
 @import 'ui-kit/item';

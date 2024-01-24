@@ -86,7 +86,7 @@ const ExperimentOverviewContent = ({status}) => {
 	}
 
 	const {data, error, loading} = useQuery(Query, {
-		fetchPolicy: 'no-cache',
+		fetchPolicy: 'network-only',
 		variables: {experimentId: id}
 	});
 

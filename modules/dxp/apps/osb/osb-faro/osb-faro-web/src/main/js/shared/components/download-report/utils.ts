@@ -36,12 +36,7 @@ export function generateReport({
 	const docWidth = doc.internal.pageSize.getWidth();
 	const docHeight = doc.internal.pageSize.getHeight();
 	const padding = 2;
-
-	let containerY = headerHeight + 2;
-	let containerHeight = 0;
-
 	const containerArr = [];
-
 	const promises: Promise<void>[] = [];
 
 	containers.map(({id, layout}) => {
@@ -54,7 +49,8 @@ export function generateReport({
 		}
 
 		const promise = html2canvas(containerElement, {
-			backgroundColor: '#F1F2F5'
+			backgroundColor: '#F1F2F5',
+			logging: false
 		}).then(canvas => {
 			const imageData = canvas.toDataURL('image/jpeg', 1.0);
 
@@ -107,16 +103,34 @@ export function generateReport({
 
 		// Generate PDF containers
 
-		containerArr.forEach(({containerElement, imageData, layout}) => {
-			const containerWidth = (docWidth - padding * 2) / layout;
-			const containerX = (docWidth - containerWidth) / padding;
+		let containerY = headerHeight + 2;
+		let previousLayout = null;
+		let previousContainerY = containerY;
+		let previousContainerX = padding;
 
-			containerHeight = Math.round(
+		containerArr.forEach(({containerElement, imageData, layout}) => {
+			const containerWidth = (docWidth - (layout + 1) * padding) / layout;
+			const containerHeight = Math.round(
 				(containerElement.clientHeight * containerWidth) /
 					containerElement.clientWidth
 			);
 
+			let containerX = padding;
+
+			if (previousLayout && previousLayout !== 1 && layout !== 1) {
+				if (previousContainerX + containerWidth <= docWidth) {
+					containerX = previousContainerX;
+					containerY = previousContainerY;
+				} else {
+					previousContainerX = padding;
+				}
+			} else {
+				previousContainerX = padding;
+			}
+
 			if (containerY + containerHeight > docHeight) {
+				containerY = padding;
+
 				doc.addPage();
 
 				doc.setFillColor(241, 242, 245);
@@ -126,12 +140,10 @@ export function generateReport({
 					imageData,
 					'JPEG',
 					containerX,
-					padding,
+					containerY,
 					containerWidth,
 					containerHeight
 				);
-
-				containerY = padding;
 			} else {
 				doc.addImage(
 					imageData,
@@ -143,7 +155,10 @@ export function generateReport({
 				);
 			}
 
+			previousContainerX = previousContainerX + containerWidth + padding;
+			previousContainerY = containerY;
 			containerY = containerY + containerHeight + padding;
+			previousLayout = layout;
 		});
 
 		doc.save(docName);

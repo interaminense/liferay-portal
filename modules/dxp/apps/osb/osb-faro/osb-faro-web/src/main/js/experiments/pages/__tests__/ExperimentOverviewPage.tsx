@@ -44,24 +44,6 @@ const WrappedComponent = ({mocks}) => (
 );
 
 describe('ExperimentOverviewPage', () => {
-	const {ResizeObserver} = window;
-
-	beforeEach(() => {
-		delete window.ResizeObserver;
-
-		window.ResizeObserver = jest.fn().mockImplementation(() => ({
-			disconnect: jest.fn(),
-			observe: jest.fn(),
-			unobserve: jest.fn()
-		}));
-	});
-
-	afterEach(() => {
-		window.ResizeObserver = ResizeObserver;
-
-		jest.restoreAllMocks();
-	});
-
 	it('renders review and delete button in the DRAFT status', async () => {
 		const {container, findByRole} = render(
 			<WrappedComponent
@@ -381,6 +363,8 @@ describe('ExperimentOverviewPage', () => {
 			/>
 		);
 
+		jest.runAllTimers();
+
 		await waitForLoadingToBeRemoved(container);
 
 		expect(await findByText(/published/i)).toBeInTheDocument();
@@ -400,8 +384,50 @@ describe('ExperimentOverviewPage', () => {
 			/>
 		);
 
+		jest.runAllTimers();
+
 		await waitForLoadingToBeRemoved(container);
 
 		expect(await findByText(/published/i)).toBeInTheDocument();
+	});
+
+	it('renders test sessions card when test type is AB', async () => {
+		const {container, queryByText} = render(
+			<WrappedComponent
+				mocks={[
+					mockExperimentStatusReq({status: 'RUNNING'}),
+					mockExperimentReq({
+						status: 'RUNNING',
+						type: 'AB'
+					})
+				]}
+			/>
+		);
+
+		await waitForLoadingToBeRemoved(container);
+
+		expect(queryByText('Test Sessions')).toBeInTheDocument();
+
+		expect(queryByText('Test Traffic')).toBeNull();
+	});
+
+	it('renders test traffic card when test type is MAB', async () => {
+		const {container, queryByText} = render(
+			<WrappedComponent
+				mocks={[
+					mockExperimentStatusReq({status: 'RUNNING'}),
+					mockExperimentReq({
+						status: 'RUNNING',
+						type: 'MAB'
+					})
+				]}
+			/>
+		);
+
+		await waitForLoadingToBeRemoved(container);
+
+		expect(queryByText('Test Traffic')).toBeInTheDocument();
+
+		expect(queryByText('Test Sessions')).toBeNull();
 	});
 });
