@@ -9,10 +9,12 @@ import EventAttributeValuesQuery from 'event-analysis/queries/EventAttributeValu
 import EventDefinitionQuery from 'event-analysis/queries/EventDefinitionQuery';
 import EventDefinitionsQuery from 'event-analysis/queries/EventDefinitionsQuery';
 import EventMetricQuery from 'shared/queries/EventMetricQuery';
+import getInterestsQuery from 'contacts/queries/InterestsQuery';
 import IndividualInterestsQuery from 'shared/queries/IndividualInterestsQuery';
 import IndividualMetricsQuery from 'shared/queries/IndividualMetricsQuery';
 import OrganizationsQuery from 'segment/segment-editor/dynamic/queries/OrganizationsQuery';
-import PreferenceQuery from 'settings/data-privacy/queries/PreferenceQuery';
+import PagePathQuery from 'shared/queries/PagePathQuery';
+import PreferenceQuery from 'shared/queries/PreferenceQuery';
 import RecommendationActivitiesQuery from 'settings/recommendations/queries/RecommendationActivitiesQuery';
 import RecommendationJobRunsQuery from 'settings/recommendations/queries/RecommendationJobRunsQuery';
 import RecommendationPageAssetsQuery from 'settings/recommendations/queries/RecommendationPageAssetsQuery';
@@ -21,7 +23,6 @@ import SitesDashboardQuery from 'shared/queries/SitesDashboardQuery';
 import SitesTopPagesQuery from 'shared/queries/SitesTopPagesQuery';
 import SuppressedUsersListQuery from 'settings/data-privacy/queries/SuppressedUsersListQuery';
 import TimeRangeQuery from 'shared/queries/TimeRangeQuery';
-import TouchpointPathQuery from 'shared/queries/TouchpointPathQuery';
 import TouchpointsQuery from 'shared/queries/TouchpointsQuery';
 import UserSessionQuery from 'shared/queries/UserSessionQuery';
 import {
@@ -29,6 +30,13 @@ import {
 	DataTypes,
 	DateGroupings
 } from 'event-analysis/utils/types';
+import {
+	CompositionTypes,
+	DATA_RETENTION_PERIOD_KEY,
+	OrderByDirections,
+	RangeKeyTimeRanges,
+	THIRTEEN_MONTHS
+} from 'shared/util/constants';
 import {COUNT, NAME} from 'shared/util/pagination';
 import {
 	EventAnalysisListQuery,
@@ -43,7 +51,10 @@ import {
 import {getSafeRangeSelectors} from 'shared/util/util';
 import {INTERVAL_KEY_MAP} from 'shared/util/time';
 import {isArray, mapValues, range} from 'lodash';
-import {OrderByDirections, RangeKeyTimeRanges} from 'shared/util/constants';
+import {
+	SitesMetricQuery,
+	SitesTabsQuery
+} from 'shared/components/metric-card/queries';
 
 const METRIC_TYPENAME_MAP = {
 	histogram: 'HistogramMetric',
@@ -83,7 +94,9 @@ export function mockExperimentDraftReq() {
 export function mockExperimentReq({
 	publishable = false,
 	publishedDXPVariantId = null,
-	status
+	status = 'RUNNING',
+	type = 'AB',
+	...experiment
 } = {}) {
 	return {
 		request: {
@@ -231,8 +244,9 @@ export function mockExperimentReq({
 					],
 					startedDate: '2020-09-30T12:00:00.000Z',
 					status,
-					type: 'AB',
-					winnerDXPVariantId: null
+					type,
+					winnerDXPVariantId: null,
+					...experiment
 				}
 			}
 		}
@@ -382,6 +396,340 @@ export function mockAcquisitionsReq() {
 	};
 }
 
+export function mockSitesMetricReq(metricName, {rangeKey}) {
+	return {
+		request: {
+			query: SitesMetricQuery(metricName),
+			variables: {
+				channelId: '456',
+				devices: 'Any',
+				interval: 'D',
+				location: 'Any',
+				rangeEnd: '',
+				rangeKey,
+				rangeStart: ''
+			}
+		},
+		result: {
+			data: {
+				site: {
+					__typename: 'SiteMetric',
+					anonymousVisitorsMetric: {
+						__typename: 'Metric',
+						histogram: {
+							__typename: 'HistogramMetricBag',
+							asymmetricComparison: false,
+							metrics: [
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T18:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T18:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T18:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T19:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T19:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T19:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T20:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T20:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T20:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T21:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T21:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T21:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T22:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T22:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T22:00'
+								}
+							],
+							total: 5
+						},
+						previousValue: null,
+						trend: {
+							__typename: 'Trend',
+							percentage: null,
+							trendClassification: 'NEUTRAL'
+						},
+						value: 0
+					},
+					knownVisitorsMetric: {
+						__typename: 'Metric',
+						histogram: {
+							__typename: 'HistogramMetricBag',
+							asymmetricComparison: false,
+							metrics: [
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T18:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T18:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T18:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T19:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T19:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T19:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T20:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T20:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T20:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T21:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T21:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T21:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T22:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T22:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T22:00'
+								}
+							],
+							total: 5
+						},
+						previousValue: null,
+						trend: {
+							__typename: 'Trend',
+							percentage: null,
+							trendClassification: 'NEUTRAL'
+						},
+						value: 1
+					},
+					visitorsMetric: {
+						__typename: 'Metric',
+						histogram: {
+							__typename: 'HistogramMetricBag',
+							asymmetricComparison: false,
+							metrics: [
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T18:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T18:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T18:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T19:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T19:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T19:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T20:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T20:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T20:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T21:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T21:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T21:00'
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2024-01-17T22:00',
+									previousValue: 0,
+									previousValueKey: '2024-01-16T22:00',
+									trend: {
+										__typename: 'Trend',
+										percentage: null,
+										trendClassification: 'NEUTRAL'
+									},
+									value: 0,
+									valueKey: '2024-01-17T22:00'
+								}
+							],
+							total: 5
+						},
+						previousValue: null,
+						trend: {
+							__typename: 'Trend',
+							percentage: null,
+							trendClassification: 'NEUTRAL'
+						},
+						value: 1
+					}
+				}
+			}
+		}
+	};
+}
+
+export function mockSitesTabsReq({rangeKey}) {
+	return {
+		request: {
+			query: SitesTabsQuery,
+			variables: {
+				channelId: '456',
+				devices: 'Any',
+				interval: 'D',
+				location: 'Any',
+				rangeEnd: '',
+				rangeKey,
+				rangeStart: ''
+			}
+		},
+		result: {
+			data: {
+				site: {
+					__typename: 'SiteMetric',
+					bounceRateMetric: {
+						__typename: 'Metric',
+						previousValue: null,
+						trend: {
+							__typename: 'Trend',
+							percentage: null,
+							trendClassification: 'NEUTRAL'
+						},
+						value: 0
+					},
+					sessionDurationMetric: {
+						__typename: 'Metric',
+						previousValue: null,
+						trend: {
+							__typename: 'Trend',
+							percentage: null,
+							trendClassification: 'NEUTRAL'
+						},
+						value: 25184
+					},
+					sessionsPerVisitorMetric: {
+						__typename: 'Metric',
+						previousValue: null,
+						trend: {
+							__typename: 'Trend',
+							percentage: null,
+							trendClassification: 'NEUTRAL'
+						},
+						value: 1
+					},
+					visitorsMetric: {
+						__typename: 'Metric',
+						previousValue: null,
+						trend: {
+							__typename: 'Trend',
+							percentage: null,
+							trendClassification: 'NEUTRAL'
+						},
+						value: 1
+					}
+				}
+			}
+		}
+	};
+}
+
 export function mockSitesTopPagesReq() {
 	return {
 		request: {
@@ -440,6 +788,42 @@ export function mockSitesTopPagesReq() {
 						}
 					],
 					total: 2
+				}
+			}
+		}
+	};
+}
+
+export function mockInterestsReq() {
+	return {
+		request: {
+			query: getInterestsQuery(CompositionTypes.AccountInterests),
+			variables: {
+				active: true,
+				channelId: '123',
+				id: 'test',
+				size: 5,
+				sort: {
+					column: 'count',
+					type: 'DESC'
+				},
+				start: 0
+			}
+		},
+		result: {
+			data: {
+				accountInterests: {
+					__typename: 'CompositionBag',
+					compositions: [
+						{
+							__typename: 'CompositionItem',
+							count: 10,
+							name: 'composition 01'
+						}
+					],
+					maxCount: 0,
+					total: 0,
+					totalCount: 0
 				}
 			}
 		}
@@ -924,6 +1308,25 @@ export function mockRecommendationReq(item = {}, mockVariables = {}) {
 	};
 }
 
+export function mockPagePathReq(data = []) {
+	return {
+		request: {
+			query: PagePathQuery,
+			variables: {
+				canonicalUrl: 'https://liferay.com/home',
+				channelId: '123',
+				rangeEnd: null,
+				rangeKey: 30,
+				rangeStart: null,
+				title: 'Liferay DXP - Home'
+			}
+		},
+		result: {
+			data
+		}
+	};
+}
+
 export function mockRecommendationActivitiesReq(items, mockVariables = {}) {
 	return {
 		request: {
@@ -1068,6 +1471,26 @@ export function mockEventAttributeValues() {
 	};
 }
 
+export function mockPreferenceReq(value = THIRTEEN_MONTHS) {
+	return {
+		request: {
+			query: PreferenceQuery,
+			variables: {
+				key: DATA_RETENTION_PERIOD_KEY
+			}
+		},
+		result: {
+			data: {
+				preference: {
+					__typename: 'Preference',
+					key: DATA_RETENTION_PERIOD_KEY,
+					value
+				}
+			}
+		}
+	};
+}
+
 export function mockTimeRangeReq() {
 	return {
 		request: {
@@ -1119,30 +1542,6 @@ export function mockTimeRangeReq() {
 						startDate: '2020-04-08T00:00'
 					}
 				]
-			}
-		}
-	};
-}
-
-export function mockTouchpointsPath(page, variables) {
-	return {
-		request: {
-			query: TouchpointPathQuery,
-			variables: {
-				channelId: '123',
-				devices: 'Any',
-				location: 'Any',
-				rangeEnd: null,
-				rangeKey: 30,
-				rangeStart: null,
-				title: '',
-				touchpoint: '',
-				...variables
-			}
-		},
-		result: {
-			data: {
-				page
 			}
 		}
 	};

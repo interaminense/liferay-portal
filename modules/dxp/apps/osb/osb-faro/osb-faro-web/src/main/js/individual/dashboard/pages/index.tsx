@@ -11,7 +11,7 @@ import {DownloadIndividualReportModal} from 'shared/components/download-report/D
 import {getMatchedRoute, Routes} from 'shared/util/router';
 import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
-import {useDataSource} from 'shared/hooks/useDataSource';
+import {useDataSource} from 'shared/hooks';
 
 const Distribution = lazy(
 	() =>
@@ -121,7 +121,6 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
 					</div>
 				</BasePage.SubHeader>
 			)}
-
 			{matchedRoute === Routes.CONTACTS_INDIVIDUALS_KNOWN_INDIVIDUALS && (
 				<BasePage.SubHeader>
 					<div className='d-flex justify-content-end w-100'>

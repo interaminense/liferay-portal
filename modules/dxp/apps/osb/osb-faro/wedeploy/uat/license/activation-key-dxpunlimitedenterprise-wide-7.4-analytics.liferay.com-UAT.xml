@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<license>
+	<account-name>analytics.liferay.com</account-name>
+	<owner>analytics.liferay.com</owner>
+	<description>Analytics Cloud UAT Key</description>
+	<product-name>DXP Unlimited Enterprise-Wide</product-name>
+	<product-version>7.4</product-version>
+	<license-name>DXP Unlimited Enterprise-Wide</license-name>
+	<license-type>enterprise</license-type>
+	<license-version>6</license-version>
+	<start-date>Monday, May 1, 2023 12:00:00 AM GMT</start-date>
+	<expiration-date>Friday, February 27, 2026 12:00:00 AM GMT</expiration-date>
+	<instance-size>Sizing 1</instance-size>
+	<key>7c54e8088711479f71cb5c15104e85ffa7ffaeb7ecc124fa495f49fff0bac4db0b5d30d55ea54de722adf6fcbaa07c4ca24534a2ed0850fc18acd190a7b705d81ea3fd16efa7b43ca9ff0f7bda4957ccaf6cc56d8384830f89ae8ade6dec57c2172f8f593171511ddec091f4d9f435857c7e30d4e03fe74afba7701b2979134cc2cb6f9b</key>
+</license>

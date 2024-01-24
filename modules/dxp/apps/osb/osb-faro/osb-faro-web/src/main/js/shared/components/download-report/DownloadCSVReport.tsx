@@ -1,6 +1,6 @@
 import React from 'react';
 import {DownloadReportButton} from './DownloadReportButton';
-import {DownloadReportModal} from './DownloadReportModal';
+import {DownloadReportModal, ReportType} from './DownloadReportModal';
 import {sub} from 'shared/util/lang';
 import {toLocale} from 'shared/util/numbers';
 import {useDownloadCSV} from './utils';
@@ -10,6 +10,7 @@ export interface IDownloadReport {
 	assetId?: string;
 	assetType?: string;
 	disabled: boolean;
+	infoMessage: string;
 	type: string;
 }
 
@@ -17,6 +18,7 @@ const DownloadCSVReport: React.FC<IDownloadReport> = ({
 	assetId,
 	assetType,
 	disabled,
+	infoMessage,
 	type
 }) => {
 	const {onClick} = useDownloadCSV({assetId, assetType, type});
@@ -47,16 +49,12 @@ const DownloadCSVReport: React.FC<IDownloadReport> = ({
 							[toLocale(10000)]
 						) as string
 					}
-					infoMessage={Liferay.Language.get(
-						'the-individuals-list-will-be-downloaded-respecting-the-current-ordering,-filter,-and-search-results.-please-verify-if-the-desired-changes-are-applied'
-					)}
+					infoMessage={infoMessage}
 					observer={observer}
 					onClose={() => onOpenChange(false)}
-					onSubmit={dateRange => {
-						onClick(dateRange);
-					}}
+					onSubmit={onClick}
 					requiredDateRange
-					type='CSV'
+					type={ReportType.CSV}
 				/>
 			)}
 		</div>

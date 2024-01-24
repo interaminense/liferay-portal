@@ -1,4 +1,3 @@
-import fetch from './fetch';
 import ValidationError from 'shared/util/ValidationError';
 import {forEach, get, keys, mapValues} from 'lodash';
 import {reloadPage} from 'shared/util/router';
@@ -73,7 +72,7 @@ export default request => {
 		path
 	} = request;
 
-	const requestURL = `${baseURL}/${path}`;
+	let requestURL = `${baseURL}/${path}`;
 
 	// Remove undefined values from object authData
 
@@ -89,18 +88,18 @@ export default request => {
 	const config = {method};
 
 	if (method === 'GET') {
-		config.data = authData;
+		requestURL = `${requestURL}?${new URLSearchParams(authData)}`;
 	} else {
 		config.body = getFormData(authData);
 	}
 
-	return fetch(requestURL, config).then(({response, status}) => {
+	return fetch(requestURL, config).then(async response => {
+		const status = response.status;
+
 		if (status === 204) {
 			return {};
 		} else if (status === 400 || status === 500) {
-			const {field, localizedMessage, messageKey} = parseFromJSON(
-				response
-			);
+			const {field, localizedMessage, messageKey} = await response.json();
 
 			if (field) {
 				throw new ValidationError(field, localizedMessage);
@@ -120,9 +119,9 @@ export default request => {
 		} else if (status >= 300) {
 			throw new Error('Request error');
 		} else if (contentType === 'json') {
-			return JSON.parse(response);
+			return response.json();
 		} else {
-			return response;
+			return response.text();
 		}
 	});
 };

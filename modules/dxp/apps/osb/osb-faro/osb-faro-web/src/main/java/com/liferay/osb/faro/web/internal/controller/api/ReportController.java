@@ -144,13 +144,13 @@ public class ReportController extends BaseFaroController {
 			Response.ResponseBuilder responseBuilder = Response.status(
 				Response.Status.BAD_REQUEST);
 
+			String description = "";
+
 			JSONObject jsonObject = _jsonFactory.createJSONObject(
 				invalidFilterException.getMessage());
 
-			String description = "";
-
-			JSONObject errorAttributesJSONObject =
-				jsonObject.getJSONObject("errorAttributes");
+			JSONObject errorAttributesJSONObject = jsonObject.getJSONObject(
+				"errorAttributes");
 
 			if (errorAttributesJSONObject != null) {
 				description = errorAttributesJSONObject.getString(
@@ -207,12 +207,6 @@ public class ReportController extends BaseFaroController {
 
 	private Map<String, String> _createHeaders(URI baseURI) {
 		return HashMapBuilder.put(
-			"X-Forwarded-Host", baseURI.getHost()
-		).put(
-			"X-Forwarded-Port", String.valueOf(baseURI.getPort())
-		).put(
-			"X-Forwarded-Proto", baseURI.getScheme()
-		).put(
 			"X-Liferay-Origin-Forwarded-Host", baseURI.getHost()
 		).put(
 			"X-Liferay-Origin-Forwarded-Port", String.valueOf(baseURI.getPort())
