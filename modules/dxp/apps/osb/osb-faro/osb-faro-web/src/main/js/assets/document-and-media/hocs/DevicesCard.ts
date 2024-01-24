@@ -28,7 +28,7 @@ const BROWSER_DEVICE_QUERY = gql`
 			rangeKey: $rangeKey
 			rangeStart: $rangeStart
 			title: $title
-		) {
+		) @client {
 			assetId
 			assetTitle
 			downloadsMetric {
@@ -52,7 +52,11 @@ const BROWSER_DEVICE_QUERY = gql`
 const withDocumentsAndMediaDevices = () =>
 	graphql(
 		BROWSER_DEVICE_QUERY,
-		getDevicesMapper(result => result.document.downloadsMetric)
+		getDevicesMapper(result => {
+			console.log(result.document);
+
+			return result.document.downloadsMetric;
+		})
 	);
 
 export default withDevicesCard(withDocumentsAndMediaDevices, {

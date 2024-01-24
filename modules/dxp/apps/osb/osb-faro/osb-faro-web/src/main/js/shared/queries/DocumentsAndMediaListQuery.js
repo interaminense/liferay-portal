@@ -20,7 +20,7 @@ export default gql`
 			size: $size
 			sort: $sort
 			start: $start
-		) {
+		) @client {
 			assetMetrics {
 				... on DocumentMetric {
 					assetId

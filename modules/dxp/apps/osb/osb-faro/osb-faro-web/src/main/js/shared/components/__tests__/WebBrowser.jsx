@@ -1,5 +1,5 @@
 import React from 'react';
-import WebBrowser from '../WebBrowser';
+import {WebBrowser} from '../WebBrowser';
 import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');

@@ -1,74 +1,59 @@
-import getCN from 'classnames';
 import React from 'react';
-import {Alignments, Weights} from './types';
+import {Alignments} from './types';
+import {Text} from '@clayui/core';
+import {WeightFont} from '@clayui/core/lib/typography/Text';
 
-const CLASSNAME = 'analytics-tooltip-chart';
-
-const Body: React.FC<React.HTMLAttributes<HTMLElement>> = ({
-	children,
-	className
-}) => (
-	<tbody className={getCN(`${CLASSNAME}-body`, className)}>{children}</tbody>
+const Body = ({children}) => (
+	<tbody className='analytics-tooltip-chart__body'>{children}</tbody>
 );
 
 interface IColumnProps extends React.HTMLAttributes<HTMLTableCellElement> {
 	align?: Alignments;
-	colSpan?: number;
-	truncated?: boolean;
-	weight?: Weights;
+	weight?: WeightFont;
 }
 
 const Column: React.FC<IColumnProps> = ({
 	align = Alignments.Left,
 	children,
-	className,
-	truncated = false,
-	weight = Weights.Normal,
-	...otherProps
+	weight = 'normal'
 }) => (
-	<td {...otherProps}>
-		<div
-			className={getCN(
-				`${CLASSNAME}-content`,
-				`${CLASSNAME}-column`,
-				className,
-				{
-					[`text-${align}`]: align,
-					[`font-weight-${weight}`]: weight
-				}
-			)}
-		>
-			{truncated ? (
-				<div className={`${CLASSNAME}-truncated`}>{children}</div>
-			) : (
-				children
-			)}
+	<td className='analytics-tooltip-chart__column'>
+		<div className={`text-${align}`}>
+			<Text size={2} weight={weight}>
+				{children}
+			</Text>
 		</div>
 	</td>
 );
 
-const Header: React.FC<React.HTMLAttributes<HTMLElement>> = ({
+const HeaderColumn: React.FC<IColumnProps> = ({
+	align = Alignments.Left,
 	children,
-	className
+	weight = 'semi-bold'
 }) => (
-	<thead className={getCN(`${CLASSNAME}-header`, className)}>
-		{children}
-	</thead>
+	<th className='analytics-tooltip-chart__column'>
+		<div className={`text-${align}`}>
+			<Text size={3} weight={weight}>
+				{children}
+			</Text>
+		</div>
+	</th>
 );
 
-const Row: React.FC<React.HTMLAttributes<HTMLElement>> = ({
-	children,
-	className
-}) => <tr className={getCN(`${CLASSNAME}-row`, className)}>{children}</tr>;
+const Header = ({children}) => (
+	<thead className='analytics-tooltip-chart__header'>{children}</thead>
+);
 
-const TooltipTemplate: React.FC<React.HTMLAttributes<HTMLElement>> = ({
-	children,
-	className
-}) => <table className={getCN(CLASSNAME, className)}>{children}</table>;
+const Row = ({children}) => <tr>{children}</tr>;
 
-export default Object.assign(TooltipTemplate, {
-	Body,
-	Column,
-	Header,
-	Row
-});
+export const TooltipTemplate = ({children}) => (
+	<div className='analytics-tooltip-chart'>
+		<table>{children}</table>
+	</div>
+);
+
+TooltipTemplate.Body = Body;
+TooltipTemplate.HeaderColumn = HeaderColumn;
+TooltipTemplate.Column = Column;
+TooltipTemplate.Header = Header;
+TooltipTemplate.Row = Row;

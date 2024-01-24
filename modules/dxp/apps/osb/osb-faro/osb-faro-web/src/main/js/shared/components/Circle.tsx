@@ -13,7 +13,7 @@ const Circle: React.FC<ICircleProps> = ({
 	size = 8
 }) => (
 	<span
-		className={getCN('circle', className)}
+		className={getCN('circle d-inline-block', className)}
 		style={{
 			backgroundColor: color,
 			height: `${size}px`,

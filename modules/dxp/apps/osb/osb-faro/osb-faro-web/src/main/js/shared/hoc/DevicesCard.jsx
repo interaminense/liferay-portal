@@ -1,9 +1,9 @@
 import BaseCard from 'shared/components/base-card';
 import Card from 'shared/components/Card';
 import CardTabs from 'shared/components/CardTabs';
-import OperatingSystem from 'shared/components/OperatingSystem';
+import {OperatingSystem} from 'shared/components/OperatingSystem';
 import React, {useCallback, useState} from 'react';
-import WebBrowser from 'shared/components/WebBrowser';
+import {WebBrowser} from 'shared/components/WebBrowser';
 import {compose} from 'redux';
 import {HOC_CARD_PROPTYPES} from 'shared/util/proptypes';
 import {PropTypes} from 'prop-types';

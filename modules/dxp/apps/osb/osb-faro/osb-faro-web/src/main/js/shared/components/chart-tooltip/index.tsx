@@ -1,42 +1,23 @@
 import Circle from 'shared/components/Circle';
 import React from 'react';
-import TooltipTemplate from './TooltipTemplate';
+import {TooltipTemplate} from './TooltipTemplate';
 import {Alignments, Column, Weights} from './types';
 
 export interface IChartTooltipProps extends React.HTMLAttributes<HTMLElement> {
 	header?: {
-		className?: string;
 		columns: Column[];
 	}[];
 	rows?: {
-		className?: string;
 		columns: Column[];
 	}[];
 }
 
-const ChartTooltip: React.FC<IChartTooltipProps> = ({
-	className,
-	header,
-	rows
-}) => {
-	const renderColumn = (
-		columns: Column[],
-		className?: string,
-		index: number = 0
-	) => (
-		<TooltipTemplate.Row className={className} key={`rows-${index}`}>
+const ChartTooltip: React.FC<IChartTooltipProps> = ({header, rows}) => {
+	const renderColumn = (columns: Column[], index: number = 0) => (
+		<TooltipTemplate.Row key={`rows-${index}`}>
 			{columns.map(
 				(
-					{
-						align,
-						className,
-						color,
-						colspan,
-						label,
-						truncated,
-						weight,
-						width
-					},
+					{align, color, colspan, label, truncated, weight, width},
 					index
 				) => {
 					const labelValue =
@@ -45,7 +26,6 @@ const ChartTooltip: React.FC<IChartTooltipProps> = ({
 					return (
 						<TooltipTemplate.Column
 							align={align}
-							className={className}
 							colSpan={colspan}
 							key={`column-${index}`}
 							style={width && {minWidth: `${width}px`}}
@@ -63,19 +43,19 @@ const ChartTooltip: React.FC<IChartTooltipProps> = ({
 	);
 
 	return (
-		<TooltipTemplate className={className}>
+		<TooltipTemplate>
 			{!!header && (
 				<TooltipTemplate.Header>
-					{header.map(({className, columns}, index) =>
-						renderColumn(columns, className, index)
+					{header.map(({columns}, index) =>
+						renderColumn(columns, index)
 					)}
 				</TooltipTemplate.Header>
 			)}
 
 			{!!rows && (
 				<TooltipTemplate.Body>
-					{rows.map(({className, columns}, index) =>
-						renderColumn(columns, className, index)
+					{rows.map(({columns}, index) =>
+						renderColumn(columns, index)
 					)}
 				</TooltipTemplate.Body>
 			)}
@@ -84,4 +64,5 @@ const ChartTooltip: React.FC<IChartTooltipProps> = ({
 };
 
 export default ChartTooltip;
+
 export {Alignments, Weights};

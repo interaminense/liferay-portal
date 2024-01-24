@@ -28,7 +28,7 @@ export default gql`
 			rangeKey: $rangeKey
 			rangeStart: $rangeStart
 			title: $title
-		) {
+		) @client {
 			assetId
 			assetTitle
 			commentsMetric {

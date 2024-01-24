@@ -1,68 +1,96 @@
-$c: '.analytics-tooltip-chart';
+.analytics-tooltip-chart {
+	background-color: white;
+	border-radius: 0.25rem;
+	box-shadow: 0 1px 15px -2px rgba(0, 0, 0, 0.2);
+	padding: 8px 16px;
 
-#{$c} {
-	border-collapse: collapse;
-	display: none;
-	font-family: $font-family;
-	margin: 12px;
+	&__header {
+		color: $main;
+		border-bottom: 1px solid #f2f2f2;
 
-	#{$c}-column {
-		line-height: initial;
-		padding: 0;
-		padding-bottom: 0.5rem;
-	}
-
-	#{$c}-body #{$c}-content {
-		min-height: 18px;
-		position: relative;
-		width: 100%;
-	}
-
-	#{$c}-truncated {
-		@extend .text-truncate;
-		position: absolute;
-		width: 100%;
-	}
-
-	#{$c}-header {
-		box-shadow: 0 1px 0 0 $mainLighten74;
-
-		#{$c}-column {
-			font-weight: $fontWeightSemiBold;
+		tr:last-child th > div {
+			margin-bottom: 6px;
 		}
 	}
 
-	#{$c}-body {
-		#{$c}-row {
-			color: $secondary;
+	&__body {
+		color: $secondary;
 
-			&:first-child #{$c}-column {
-				padding-top: 0.5rem;
-			}
-
-			&:last-child #{$c}-column {
-				padding-bottom: 0;
-			}
+		tr:first-child td > div {
+			margin-top: 6px;
 		}
 	}
 
-	svg > path {
-		fill: currentColor;
-	}
-
-	.text-left {
-		align-items: center;
-		display: flex;
-		justify-content: flex-start;
-	}
-
-	.text-right {
-		align-items: center;
-		display: flex;
-		justify-content: flex-end;
-	}
-
-	.circle {
-		display: inline-flex;
+	&__column {
+		padding: 2px 4px;
 	}
 }
+
+// $c: '.analytics-tooltip-chart';
+
+// #{$c} {
+// 	border-collapse: collapse;
+// 	// display: none;
+// 	font-family: $font-family;
+// 	margin: 12px;
+
+// 	#{$c}-column {
+// 		line-height: initial;
+// 		padding: 0;
+// 		padding-bottom: 0.5rem;
+// 	}
+
+// 	#{$c}-body #{$c}-content {
+// 		min-height: 18px;
+// 		position: relative;
+// 		width: 100%;
+// 	}
+
+// 	#{$c}-truncated {
+// 		@extend .text-truncate;
+// 		position: absolute;
+// 		width: 100%;
+// 	}
+
+// 	#{$c}-header {
+// 		box-shadow: 0 1px 0 0 $mainLighten74;
+
+// 		#{$c}-column {
+// 			font-weight: $fontWeightSemiBold;
+// 		}
+// 	}
+
+// 	#{$c}-body {
+// 		#{$c}-row {
+// 			color: $secondary;
+
+// 			&:first-child #{$c}-column {
+// 				padding-top: 0.5rem;
+// 			}
+
+// 			&:last-child #{$c}-column {
+// 				padding-bottom: 0;
+// 			}
+// 		}
+// 	}
+
+// 	svg > path {
+// 		fill: currentColor;
+// 	}
+
+// 	.text-left {
+// 		align-items: center;
+// 		display: flex;
+// 		justify-content: flex-start;
+// 	}
+
+// 	.text-right {
+// 		align-items: center;
+// 		display: flex;
+// 		justify-content: flex-end;
+// 	}
+
+// 	.circle {
+// 		display: inline-flex;
+// 	}
+// }

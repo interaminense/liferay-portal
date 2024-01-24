@@ -17,7 +17,7 @@ const Overview = () => (
 			</div>
 		</div>
 
-		<div className='row'>
+		{/* <div className='row'>
 			<div className='col-sm-12'>
 				<AudienceReportCard
 					knownIndividualsTitle={Liferay.Language.get(
@@ -31,7 +31,7 @@ const Overview = () => (
 					uniqueVisitorsTitle={Liferay.Language.get('downloads')}
 				/>
 			</div>
-		</div>
+		</div> */}
 
 		<div className='row'>
 			<div className='col-lg-6 col-md-12'>
@@ -51,7 +51,7 @@ const Overview = () => (
 			</div>
 		</div>
 
-		<div className='row'>
+		{/* <div className='row'>
 			<div className='col-sm-12'>
 				<TouchpointsListCard
 					assetType='DOCUMENT'
@@ -59,7 +59,7 @@ const Overview = () => (
 					legacyDropdownRangeKey={false}
 				/>
 			</div>
-		</div>
+		</div> */}
 	</>
 );
 
