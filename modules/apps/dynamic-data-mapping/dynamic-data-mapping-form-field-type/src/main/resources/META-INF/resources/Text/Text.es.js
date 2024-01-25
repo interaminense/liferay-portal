@@ -95,6 +95,17 @@ const Text = ({
 		editingLanguageId
 	);
 
+	const [blurValue, setBlurValue] = useState(value);
+
+	useEffect(() => {
+		if (
+			(!initialValue && blurValue) ||
+			(value !== initialValue && blurValue)
+		) {
+			setValue(blurValue);
+		}
+	}, [initialValue, value]);
+
 	const inputRef = useRef(null);
 
 	const prevEditingLanguageId = usePrevious(editingLanguageId);
@@ -136,22 +147,6 @@ const Text = ({
 		shouldUpdateValue,
 	]);
 
-	const handleChangeInput = (event) => {
-		const {value} = event.target;
-
-		if (normalizeField) {
-			event.target.value = normalizeFieldName(value);
-		}
-		else if (invalidCharacters) {
-			const regex = new RegExp(invalidCharacters, 'g');
-
-			event.target.value = value.replace(regex, '');
-		}
-
-		onChange(event);
-		setValue(event.target.value);
-	};
-
 	return (
 		<>
 			<ClayTooltipProvider autoAlign>
@@ -169,11 +164,37 @@ const Text = ({
 						maxLength={showCounter ? '' : maxLength}
 						name={name}
 						onBlur={(event) => {
+							console.log(event, 'blur');
+
+							setBlurValue(event.target.value);
+
 							onBlur(event);
-							handleChangeInput(event);
 						}}
-						onChange={handleChangeInput}
-						onFocus={onFocus}
+						onChange={(event) => {
+							const {value} = event.target;
+
+							if (normalizeField) {
+								event.target.value = normalizeFieldName(value);
+							} else if (invalidCharacters) {
+								const regex = new RegExp(
+									invalidCharacters,
+									'g'
+								);
+
+								event.target.value = value.replace(regex, '');
+							}
+
+							onChange(event);
+							setValue(event.target.value);
+						}}
+						onInput={(event) => {
+							console.log(event);
+						}}
+						onFocus={(event) => {
+							console.log(event, 'focus');
+
+							onFocus(event);
+						}}
 						onKeyDown={onKeyDown}
 						placeholder={placeholder}
 						ref={inputRef}
@@ -320,8 +341,7 @@ const Autocomplete = ({
 
 		if (direction) {
 			nextElement = focusabledElements[targetIndex - 1];
-		}
-		else {
+		} else {
 			nextElement = focusabledElements[targetIndex + 1];
 		}
 
@@ -329,8 +349,7 @@ const Autocomplete = ({
 			event.preventDefault();
 			event.stopPropagation();
 			nextElement.focus();
-		}
-		else if (targetIndex === 0 && direction) {
+		} else if (targetIndex === 0 && direction) {
 			event.preventDefault();
 			event.stopPropagation();
 			inputRef.current.focus();
