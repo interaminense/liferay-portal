@@ -26,10 +26,48 @@ const PLAN_LEVEL_MAP = {
 	[PLANS.enterprise.name]: 2
 };
 
-const getPlans = ({name}) =>
-	sortBy(PLANS, plan => PLAN_LEVEL_MAP[plan.name])
-		.filter(plan => PLAN_LEVEL_MAP[plan.name] >= PLAN_LEVEL_MAP[name])
-		.reverse();
+const LXC_PLAN_LEVEL_MAP = {
+	[PLANS.lxcPro.name]: 0,
+	[PLANS.lxcBusiness.name]: 1,
+	[PLANS.lxcEnterprise.name]: 2
+};
+
+function isLxcPlan(name) {
+	if (
+		name === PLANS.lxcPro.name ||
+		name === PLANS.lxcBusiness.name ||
+		name === PLANS.lxcEnterprise.name
+	) {
+		return true;
+	}
+
+	return false;
+}
+
+function sortPlans(name) {
+	return plan =>
+		isLxcPlan(name)
+			? LXC_PLAN_LEVEL_MAP[plan.name]
+			: PLAN_LEVEL_MAP[plan.name];
+}
+
+function filterPlans(name) {
+	if (isLxcPlan(name)) {
+		return plan =>
+			LXC_PLAN_LEVEL_MAP[plan.name] >= LXC_PLAN_LEVEL_MAP[name];
+	}
+
+	return plan => PLAN_LEVEL_MAP[plan.name] >= PLAN_LEVEL_MAP[name];
+}
+
+const getPlans = ({name}) => {
+	console.log(
+		'sortPlans(name)',
+		sortBy(PLANS, sortPlans(name)).filter(filterPlans(name))
+	);
+
+	return sortBy(PLANS, sortPlans(name)).filter(filterPlans(name)).reverse();
+};
 
 const getAlertContent = (alertStatusCode, currentUser) => {
 	const admin = currentUser.isAdmin();
@@ -120,9 +158,11 @@ export class UsageOverview extends React.Component {
 		const currentPlan = formatPlanData(faroSubscription);
 		const timeZoneId = timeZone.get('timeZoneId');
 
-		const showAddonPanels =
-			PLAN_LEVEL_MAP[currentPlan.name] >=
-			PLAN_LEVEL_MAP[PLANS.business.name];
+		const showAddonPanels = isLxcPlan(currentPlan.name)
+			? LXC_PLAN_LEVEL_MAP[currentPlan.name] >=
+			  LXC_PLAN_LEVEL_MAP[PLANS.business.name]
+			: PLAN_LEVEL_MAP[currentPlan.name] >=
+			  PLAN_LEVEL_MAP[PLANS.business.name];
 
 		const planType =
 			PLAN_TYPES[currentPlan.name] || PLAN_TYPES[PLANS.basic.name];

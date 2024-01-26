@@ -79,9 +79,82 @@ export function fetchMany() {
 }
 
 export function fetch({groupId}) {
-	return sendRequest({
-		method: 'GET',
-		path: `main/project/${groupId}`
+	// return sendRequest({
+	// 	method: 'GET',
+	// 	path: `main/project/${groupId}`
+	// });
+
+	return Promise.resolve({
+		accountKey: 'Liferay Demo',
+		accountName: 'Liferay Demo',
+		corpProjectName: 'Liferay Demo',
+		corpProjectUuid: 'FARO-DEV-liferay',
+		faroSubscription: {
+			active: false,
+			addOns: [
+				{
+					name: 'Liferay Analytics Cloud Enterprise Contacts',
+					quantity: 2
+				},
+				{
+					name: 'Liferay Analytics Cloud Enterprise Tracked Pages',
+					quantity: 3
+				}
+			],
+			endDate: 2000000000000,
+			individualsCount: 0,
+			individualsCountSinceLastAnniversary: 0,
+			individualsLimit: 110000,
+			individualsStatus: 0,
+			lastAnniversaryDate: 1704096000000,
+			name: 'LXC Pro',
+			pageViewsCount: 0,
+			pageViewsCountSinceLastAnniversary: 0,
+			pageViewsLimit: 75000000,
+			pageViewsStatus: 0,
+			startDate: 1546329600000
+		},
+		friendlyURL: '',
+		groupId: 32120,
+		incidentReportEmailAddresses: [],
+		name: 'FARO-DEV-liferay',
+		ownerEmailAddress: 'test@liferay.com',
+		recommendationsEnabled: false,
+		serverLocation: 'us-west1-ac4-c1',
+		state: 'READY',
+		stateEndDate: null,
+		stateStartDate: null,
+		timeZone: {
+			country: 'UTC',
+			displayTimeZone: 'UTC Coordinated Universal Time (UTC)',
+			timeZoneId: 'UTC'
+		},
+		userId: 20122,
+		faroSubscriptionDisplay: {
+			active: false,
+			addOns: [
+				{
+					name: 'Liferay Analytics Cloud Enterprise Contacts',
+					quantity: 2
+				},
+				{
+					name: 'Liferay Analytics Cloud Enterprise Tracked Pages',
+					quantity: 3
+				}
+			],
+			endDate: 2000000000000,
+			individualsCount: 0,
+			individualsCountSinceLastAnniversary: 0,
+			individualsLimit: 110000,
+			individualsStatus: 0,
+			lastAnniversaryDate: 1704096000000,
+			name: 'LXC Pro',
+			pageViewsCount: 0,
+			pageViewsCountSinceLastAnniversary: 0,
+			pageViewsLimit: 75000000,
+			pageViewsStatus: 0,
+			startDate: 1546329600000
+		}
 	});
 }
 
