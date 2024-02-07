@@ -274,6 +274,7 @@ const NewRequestModal: React.FC<INewRequestModalProps> = ({
 										<Form.RadioGroup.Subsection>
 											<Input.Group>
 												<ClayMultiSelect
+													allowsCustomLabel={false}
 													disabled={
 														values.subjectIdType ===
 														SubjectIdType.ByFile
