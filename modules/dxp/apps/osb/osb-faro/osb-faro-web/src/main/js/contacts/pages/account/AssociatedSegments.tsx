@@ -11,7 +11,7 @@ import {
 } from 'shared/util/pagination';
 import {EntityTypes, Sizes} from 'shared/util/constants';
 import {RootState} from 'shared/store';
-import {useQueryPagination} from 'shared/hooks';
+import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 
 const fetchAssociatedSegments = ({
 	delta,

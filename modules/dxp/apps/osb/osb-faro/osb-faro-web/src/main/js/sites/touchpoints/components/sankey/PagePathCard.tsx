@@ -13,7 +13,7 @@ import {SANKEY_WIDTH, SECONDARY_NODE_COLOR} from './utils';
 import {TitleKey, Type} from './types';
 import {useParams} from 'react-router-dom';
 import {useQuery} from '@apollo/react-hooks';
-import {useResize} from 'shared/hooks';
+import {useResize} from 'shared/hooks/useResize';
 import {v4 as uuidv4} from 'uuid';
 
 type pagePathNode = {
