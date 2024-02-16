@@ -19,17 +19,9 @@ jest.mock('shared/hooks/useTimeZone', () => ({
 describe('subscriptions', () => {
 	describe('getPlanAddOns', () => {
 		it('should return the correct plan addons', () => {
-			const planAddOns = getPlanAddOns(
-				formatPlanData(
-					fromJS(
-						mockSubscription({
-							individualsCount: 5000,
-							name: 'Liferay Analytics Cloud Enterprise',
-							pageViewsCount: 5000000
-						})
-					)
-				)
-			);
+			const planAddOns = getPlanAddOns({
+				name: 'Liferay Analytics Cloud Enterprise'
+			});
 
 			expect(planAddOns).toEqual({
 				individuals: '10,000',
@@ -38,17 +30,9 @@ describe('subscriptions', () => {
 		});
 
 		it('should not have addons for LXC customers', () => {
-			const planAddOns = getPlanAddOns(
-				formatPlanData(
-					fromJS(
-						mockSubscription({
-							individualsCount: 5000,
-							name: 'LXC Subscription - Engage Site',
-							pageViewsCount: 5000000
-						})
-					)
-				)
-			);
+			const planAddOns = getPlanAddOns({
+				name: 'LXC Subscription - Engage Site'
+			});
 
 			expect(planAddOns).toEqual({});
 		});
