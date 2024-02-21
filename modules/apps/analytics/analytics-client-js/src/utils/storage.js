@@ -5,24 +5,44 @@
 
 import ProcessLock from 'browser-tabs-lock';
 
+const getCookieFromDocument = (key) => {
+	const name = key + '=';
+	const decodedCookie = decodeURIComponent(document.cookie);
+	const cookieArray = decodedCookie.split(';');
+
+	for (let i = 0; i < cookieArray.length; i++) {
+		let cookie = cookieArray[i];
+
+		while (cookie.charAt(0) === ' ') {
+			cookie = cookie.substring(1);
+		}
+
+		if (cookie.indexOf(name) === 0) {
+			const jsonStr = cookie.substring(name.length, cookie.length);
+
+			return JSON.parse(jsonStr);
+		}
+	}
+
+	return null;
+};
+
 const getItem = (key) => {
 	const Liferay = window.Liferay;
 	let data;
 
 	try {
-		let item;
-
-		if (Liferay && Liferay.Util && Liferay.Util.LocalStorage) {
-			item = Liferay.Util.LocalStorage.getItem(
+		if (Liferay?.Util?.Cookie) {
+			const cookie = Liferay.Util.Cookie.get(
 				key,
-				Liferay.Util.LocalStorage.TYPES.PERSONALIZATION
+				Liferay.Util.Cookie.TYPES.PERFORMANCE
 			);
+
+			data = JSON.parse(decodeURIComponent(cookie));
 		}
 		else {
-			item = localStorage.getItem(key);
+			data = getCookieFromDocument(key);
 		}
-
-		data = JSON.parse(item);
 	}
 	catch (error) {
 		return;
@@ -31,19 +51,29 @@ const getItem = (key) => {
 	return data;
 };
 
-const setItem = (key, value) => {
+const setItem = (key, value, encode = true) => {
 	const Liferay = window.Liferay;
+	const expires = new Date();
+
+	expires.setDate(expires.getDate() + 365);
 
 	try {
-		if (Liferay && Liferay.Util && Liferay.Util.LocalStorage) {
-			Liferay.Util.LocalStorage.setItem(
+		const jsonStr = JSON.stringify(value);
+		const data = encode ? encodeURIComponent(jsonStr) : jsonStr;
+
+		if (Liferay?.Util?.Cookie) {
+			Liferay.Util.Cookie.set(
 				key,
-				JSON.stringify(value),
-				Liferay.Util.LocalStorage.TYPES.PERSONALIZATION
+				data,
+				Liferay.Util.Cookie.TYPES.PERFORMANCE,
+				{
+					expires,
+					secure: true,
+				}
 			);
 		}
 		else {
-			localStorage.setItem(key, JSON.stringify(value));
+			document.cookie = `${key}=${data}; expires=${expires.toUTCString()}; path=/; Secure`;
 		}
 	}
 	catch (error) {
@@ -55,14 +85,18 @@ const removeItem = (key) => {
 	const Liferay = window.Liferay;
 
 	try {
-		if (Liferay && Liferay.Util && Liferay.Util.LocalStorage) {
-			Liferay.Util.LocalStorage.removeItem(
+		if (Liferay?.Util?.Cookie) {
+			Liferay.Util.Cookie.remove(
 				key,
-				Liferay.Util.LocalStorage.TYPES.PERSONALIZATION
+				Liferay.Util.Cookie.TYPES.PERFORMANCE
 			);
 		}
 		else {
-			localStorage.removeItem(key);
+			const expirationDate = new Date();
+
+			expirationDate.setFullYear(expirationDate.getFullYear() - 1);
+
+			document.cookie = `${key}=; expires=${expirationDate.toUTCString()}; path=/;`;
 		}
 	}
 	catch (error) {
@@ -94,7 +128,7 @@ const getStorageSizeInKb = (val) => {
 const verifyStorageLimitForKey = (storageKey, limit) => {
 	const storedValue = getItem(storageKey);
 
-	if (!storedValue.length) {
+	if (!storedValue?.length) {
 		return Promise.resolve();
 	}
 

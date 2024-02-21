@@ -314,7 +314,7 @@ class Analytics {
 		const userId = getItem(STORAGE_KEY_USER_ID);
 
 		if (userId) {
-			this._setCookie(STORAGE_KEY_USER_ID, userId);
+			setItem(STORAGE_KEY_USER_ID, userId, false);
 		}
 	}
 
@@ -400,8 +400,7 @@ class Analytics {
 	_generateUserId() {
 		const userId = uuidv4();
 
-		setItem(STORAGE_KEY_USER_ID, userId);
-		this._setCookie(STORAGE_KEY_USER_ID, userId);
+		setItem(STORAGE_KEY_USER_ID, userId, false);
 
 		removeItem(STORAGE_KEY_IDENTITY);
 
@@ -440,8 +439,8 @@ class Analytics {
 		) {
 			const {emailAddressHashed} = identity;
 
-			setItem(STORAGE_KEY_CHANNEL_ID, channelId);
-			setItem(STORAGE_KEY_IDENTITY, identityHash);
+			setItem(STORAGE_KEY_CHANNEL_ID, channelId, false);
+			setItem(STORAGE_KEY_IDENTITY, identityHash, false);
 
 			instance[STORAGE_KEY_MESSAGE_IDENTITY].addItem({
 				channelId,
@@ -451,39 +450,6 @@ class Analytics {
 				userId,
 			});
 		}
-	}
-
-	/**
-	 * Sets a browser cookie
-	 * @protected
-	 */
-	_setCookie(key, data) {
-		const Liferay = window.Liferay;
-		const expires = new Date();
-
-		expires.setDate(expires.getDate() + 365);
-
-		// Checks if the client is being loaded with the Liferay global
-		// variable and if there is a Cookie method because the client
-		// is Liferay Portal agnostic and may have versions that do not
-		// yet have the Cookie method.
-
-		if (Liferay?.Util?.Cookie) {
-			Liferay.Util.Cookie.set(
-				key,
-				data,
-				Liferay.Util.Cookie.TYPES.PERSONALIZATION,
-				{
-					expires,
-					secure: true,
-				}
-			);
-		}
-		else {
-			document.cookie = `${key}=${data}; expires=${expires.toUTCString()}; path=/; Secure`;
-		}
-
-		return;
 	}
 
 	/**
