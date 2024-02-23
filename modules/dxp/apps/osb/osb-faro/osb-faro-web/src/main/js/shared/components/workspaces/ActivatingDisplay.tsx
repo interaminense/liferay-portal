@@ -3,9 +3,6 @@ import React from 'react';
 import Sheet from 'shared/components/Sheet';
 import URLConstants from 'shared/util/url-constants';
 import WorkspacesBasePage from 'shared/components/workspaces/BasePage';
-import {fetchProject} from 'shared/actions/projects';
-import {ProjectStates} from 'shared/util/constants';
-import {withPolling} from 'shared/hoc';
 
 const ActivatingDisplay = () => (
 	<WorkspacesBasePage title={Liferay.Language.get('activating-workspace')}>
@@ -45,7 +42,4 @@ const ActivatingDisplay = () => (
 	</WorkspacesBasePage>
 );
 
-export default withPolling(
-	fetchProject,
-	({state}) => state !== ProjectStates.Activating
-)(ActivatingDisplay);
+export default ActivatingDisplay;

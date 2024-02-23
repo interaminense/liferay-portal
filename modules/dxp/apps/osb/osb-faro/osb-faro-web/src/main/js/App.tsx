@@ -26,12 +26,13 @@ import {
 } from 'react-router-dom';
 import {OnboardingContext} from 'shared/context/onboarding';
 import {PROD_MODE, spritemap} from 'shared/util/constants';
-import {Provider, useSelector} from 'react-redux';
+import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';
 import {saveState} from 'shared/store/local-storage';
 import {setBackURL} from 'shared/actions/settings';
 import {throttle} from 'lodash';
 import {useFetchCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useProject} from 'shared/hooks/useProject';
 
 // Workspaces
 
@@ -82,9 +83,7 @@ const RoutesContainer = ({children}) => {
 
 	const {data: currentUser, loading} = useFetchCurrentUser(groupId);
 
-	const project = useSelector<any, any>(state =>
-		state.getIn(['projects', groupId, 'data'])
-	);
+	const project = useProject(groupId);
 
 	const pendoFn =
 		pendo && pendo.isReady && pendo.isReady()

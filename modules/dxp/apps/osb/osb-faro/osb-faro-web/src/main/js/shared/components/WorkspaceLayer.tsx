@@ -1,4 +1,5 @@
 import BundleRouter from 'route-middleware/BundleRouter';
+import HelpWidget from './HelpWidget';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useEffect} from 'react';
 import RouteNotFound from './RouteNotFound';
@@ -6,12 +7,11 @@ import {close, open} from 'shared/actions/modals';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {matchPath} from 'react-router';
-import {Project} from 'shared/util/records';
-import {RootState} from 'shared/store';
 import {Routes} from 'shared/util/router';
-import {Switch} from 'react-router-dom';
+import {Switch, useLocation} from 'react-router-dom';
+import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useFetchProject} from 'shared/hooks/useProject';
 import {useModalNotifications} from 'shared/hooks/useModalNotifications';
-import {withHelpWidget} from 'shared/hoc';
 
 // App Routes with Sidebar
 const AppSidebarRoutes = lazy(
@@ -26,42 +26,22 @@ const Settings = lazy(
 	() => import(/* webpackChunkName: "Settings" */ 'settings/pages/Settings')
 );
 
-const connector = connect(
-	(store: RootState, {location: {pathname}}: {location: Location}) => {
-		const path = matchPath<any>(pathname, {
-			path: Routes.WORKSPACE_WITH_ID
-		});
+const WorkspaceLayer = ({close, open}) => {
+	const location = useLocation();
+	const path = matchPath<any>(location.pathname, {
+		path: Routes.WORKSPACE_WITH_ID
+	});
+	const groupId = path?.params?.groupId ?? '0';
+	const {currentUserId} = useCurrentUser();
+	const {data: project, loading} = useFetchProject();
 
-		const groupId = path?.params?.groupId ?? '0';
-
-		const project =
-			store.getIn(['projects', groupId, 'data'], new Project()) ||
-			new Project();
-
-		const faroSubscriptionIMap = project.get('faroSubscription');
-
-		return {
-			currentUserId: String(store.getIn(['currentUser', 'data'])),
-			groupId,
-			serverLocation: project.get('serverLocation'),
-			subscriptionName: faroSubscriptionIMap.get('name'),
-			workspaceName: project.get('name')
-		};
-	},
-	{close, open}
-);
-
-const WorkspaceLayer = ({
-	close,
-	currentUserId,
-	groupId,
-	open,
-	serverLocation,
-	subscriptionName,
-	workspaceName
-}) => {
 	useEffect(() => {
-		if (groupId !== '0' && workspaceName) {
+		if (groupId !== '0' && project) {
+			const faroSubscriptionIMap = project.get('faroSubscription');
+			const serverLocation = project.get('serverLocation');
+			const subscriptionName = faroSubscriptionIMap.get('name');
+			const workspaceName = project.get('name');
+
 			analytics?.track(
 				'User accessed workspace',
 				{
@@ -74,21 +54,32 @@ const WorkspaceLayer = ({
 				{ip: '0'}
 			);
 		}
-	}, [groupId, workspaceName]);
+	}, [groupId, project]);
 
 	useModalNotifications(close, groupId, open);
 
+	if (loading) {
+		return <Loading />;
+	}
+
 	return (
-		<Suspense fallback={<Loading />}>
-			<Switch>
-				<BundleRouter data={Settings} path={Routes.SETTINGS} />
+		<>
+			<Suspense fallback={<Loading />}>
+				<Switch>
+					<BundleRouter data={Settings} path={Routes.SETTINGS} />
 
-				<BundleRouter data={AppSidebarRoutes} path={Routes.CHANNEL} />
+					<BundleRouter
+						data={AppSidebarRoutes}
+						path={Routes.CHANNEL}
+					/>
 
-				<RouteNotFound />
-			</Switch>
-		</Suspense>
+					<RouteNotFound />
+				</Switch>
+			</Suspense>
+
+			<HelpWidget groupId={groupId} project={project} />
+		</>
 	);
 };
 
-export default compose<any>(connector, withHelpWidget)(WorkspaceLayer);
+export default compose<any>(connect(null, {close, open}))(WorkspaceLayer);

@@ -10,7 +10,7 @@ import {Project} from 'shared/util/records';
 import {Routes, toRoute} from 'shared/util/router';
 import {updateProject} from 'shared/actions/projects';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {withProject} from 'shared/hoc/WithProject';
+import {useProject} from 'shared/hooks/useProject';
 
 type History = {
 	push: (path: string) => void;
@@ -37,10 +37,10 @@ export const Workspace: React.FC<IWorkspaceProps> = ({
 	emailAddressDomains,
 	groupId,
 	history,
-	project,
 	updateProject
 }) => {
 	const currentUser = useCurrentUser();
+	const project = useProject();
 
 	const handleSubmit = ({
 		emailAddressDomains,
@@ -93,6 +93,7 @@ export const Workspace: React.FC<IWorkspaceProps> = ({
 			)}
 			pageTitle={Liferay.Language.get('workspace-settings')}
 		>
+			{/** @ts-ignore */}
 			<AddWorkspaceForm
 				className='add-workspace-root col-lg-7 pl-0'
 				disabled={!currentUser.isAdmin()}
@@ -108,7 +109,6 @@ export const Workspace: React.FC<IWorkspaceProps> = ({
 export default compose(
 	connector,
 	withHistory,
-	withProject(true),
 	withQuery(
 		({groupId}) =>
 			API.projects.fetchEmailAddressDomains({

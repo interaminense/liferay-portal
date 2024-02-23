@@ -1,10 +1,11 @@
+import Card from 'shared/components/Card';
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import getCN from 'classnames';
 import React from 'react';
-import Sheet from 'shared/components/Sheet';
 import WorkspacesBasePage from 'shared/components/workspaces/BasePage';
 import {Routes} from 'shared/util/router';
+import {Text} from '@clayui/core';
 
 const WorkspaceNotFound: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 	className
@@ -12,23 +13,36 @@ const WorkspaceNotFound: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 	<WorkspacesBasePage
 		className={getCN('workspace-not-found-root text-center', className)}
 	>
-		<Sheet>
-			<Sheet.Header>
-				<Sheet.Section className='title'>
-					<ClayIcon
-						className='icon-root text-danger'
-						symbol='exclamation-circle'
-					/>{' '}
-					{Liferay.Language.get('workspace-error')}
-				</Sheet.Section>
-				<Sheet.Section className='description'>
-					{`${Liferay.Language.get(
-						'either-this-workspace-doesnt-exist-or-you-dont-have-access-to-it'
-					)} ${Liferay.Language.get(
-						'make-sure-youve-typed-the-correct-workspace-url-or-check-with-the-workspace-administrator-for-access'
-					)}`}
-				</Sheet.Section>
-				<Sheet.Section>
+		<Card>
+			<Card.Body>
+				<div className='mb-3'>
+					<Text size={8} weight='bold'>
+						<ClayIcon
+							className='icon-root text-danger mr-2'
+							symbol='exclamation-circle'
+						/>
+
+						{Liferay.Language.get('workspace-error')}
+					</Text>
+				</div>
+
+				<div className='mb-3 mx-6'>
+					<Text>
+						{Liferay.Language.get(
+							'either-this-workspace-doesnt-exist-or-you-dont-have-access-to-it'
+						)}
+					</Text>
+
+					<br />
+
+					<Text>
+						{Liferay.Language.get(
+							'make-sure-youve-typed-the-correct-workspace-url-or-check-with-the-workspace-administrator-for-access'
+						)}
+					</Text>
+				</div>
+
+				<div className='d-flex justify-content-center'>
 					<ClayLink
 						button
 						className='button-root'
@@ -37,9 +51,9 @@ const WorkspaceNotFound: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 					>
 						{Liferay.Language.get('go-back-to-your-workspaces')}
 					</ClayLink>
-				</Sheet.Section>
-			</Sheet.Header>
-		</Sheet>
+				</div>
+			</Card.Body>
+		</Card>
 	</WorkspacesBasePage>
 );
 

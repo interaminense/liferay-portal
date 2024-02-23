@@ -1,11 +1,10 @@
 import AddWorkspaceForm from 'shared/components/workspaces/AddWorkspaceForm';
-import autobind from 'autobind-decorator';
 import getCN from 'classnames';
-import React from 'react';
+import React, {useState} from 'react';
 import WorkspacesBasePage from 'shared/components/workspaces/BasePage';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
-import {compose, optional, redirectIf, withProject} from 'shared/hoc';
+import {compose, redirectIf} from 'shared/hoc';
 import {
 	configureProject,
 	createProject,
@@ -13,10 +12,9 @@ import {
 } from 'shared/actions/projects';
 import {connect} from 'react-redux';
 import {DataSourceStates} from 'shared/util/constants';
-import {Project} from '../util/records';
-import {PropTypes} from 'prop-types';
 import {Redirect} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
+import {useProject} from 'shared/hooks/useProject';
 
 export const routingFn = ({project}) => {
 	if (
@@ -30,35 +28,27 @@ export const routingFn = ({project}) => {
 	}
 };
 
-export class AddWorkspace extends React.Component {
-	state = {
-		redirectToWorkspace: false
-	};
+export const AddWorkspace = ({
+	addAlert,
+	className,
+	configureProject,
+	corpProjectUuid,
+	createProject,
+	createTrialProject,
+	project
+}) => {
+	const [redirectToWorkspace, setRedirectToWorkspace] = useState(false);
+	const [friendlyURL, setFriendlyURL] = useState('');
 
-	static propTypes = {
-		addAlert: PropTypes.func,
-		createProject: PropTypes.func,
-		history: PropTypes.object.isRequired,
-		project: PropTypes.instanceOf(Project)
-	};
-
-	@autobind
-	handleSubmit({
+	const handleSubmit = ({
 		emailAddressDomains,
 		friendlyURL,
 		incidentReportEmailAddresses,
 		name,
 		serverLocation,
 		timeZoneId
-	}) {
-		const {
-			addAlert,
-			configureProject,
-			corpProjectUuid,
-			createProject,
-			createTrialProject,
-			project: {groupId, state} = {}
-		} = this.props;
+	}) => {
+		const project = useProject();
 
 		const params = {
 			emailAddressDomains,
@@ -66,13 +56,13 @@ export class AddWorkspace extends React.Component {
 			incidentReportEmailAddresses,
 			name,
 			timeZoneId,
-			...(state === DataSourceStates.Unconfigured
-				? {groupId}
+			...(project.state === DataSourceStates.Unconfigured
+				? {groupId: project.groupId}
 				: {corpProjectUuid, serverLocation})
 		};
 
 		const createFn =
-			state === DataSourceStates.Unconfigured
+			project.state === DataSourceStates.Unconfigured
 				? configureProject
 				: corpProjectUuid
 				? createProject
@@ -91,12 +81,10 @@ export class AddWorkspace extends React.Component {
 					{ip: '0'}
 				);
 
-				this.setState({
-					friendlyURL: friendlyURL
-						? friendlyURL.replace('/', '')
-						: groupId,
-					redirectToWorkspace: true
-				});
+				setRedirectToWorkspace(true);
+				setFriendlyURL(
+					friendlyURL ? friendlyURL.replace('/', '') : groupId
+				);
 
 				addAlert({
 					alertType: Alert.Types.Success,
@@ -114,39 +102,33 @@ export class AddWorkspace extends React.Component {
 
 				return Promise.reject(error);
 			});
-	}
+	};
 
-	render() {
-		const {
-			props: {className, project},
-			state: {friendlyURL, redirectToWorkspace}
-		} = this;
-
-		return (
-			<div
-				className={getCN('add-workspace-root', className)}
-				key='AddWorkspace'
-			>
-				{redirectToWorkspace ? (
-					<Redirect
-						to={toRoute(Routes.WORKSPACE_WITH_ID, {
-							groupId: friendlyURL
-						})}
+	return (
+		<div
+			className={getCN('add-workspace-root', className)}
+			key='AddWorkspace'
+		>
+			{redirectToWorkspace ? (
+				<Redirect
+					to={toRoute(Routes.WORKSPACE_WITH_ID, {
+						groupId: friendlyURL
+					})}
+				/>
+			) : (
+				<WorkspacesBasePage
+					title={Liferay.Language.get('create-workspace')}
+				>
+					{/** @ts-ignore */}
+					<AddWorkspaceForm
+						onSubmit={handleSubmit}
+						project={project}
 					/>
-				) : (
-					<WorkspacesBasePage
-						title={Liferay.Language.get('create-workspace')}
-					>
-						<AddWorkspaceForm
-							onSubmit={this.handleSubmit}
-							project={project}
-						/>
-					</WorkspacesBasePage>
-				)}
-			</div>
-		);
-	}
-}
+				</WorkspacesBasePage>
+			)}
+		</div>
+	);
+};
 
 export default compose(
 	connect(null, {
@@ -155,6 +137,5 @@ export default compose(
 		createProject,
 		createTrialProject
 	}),
-	optional(withProject, {idPropName: 'corpProjectUuid'}),
 	redirectIf(routingFn)
 )(AddWorkspace);

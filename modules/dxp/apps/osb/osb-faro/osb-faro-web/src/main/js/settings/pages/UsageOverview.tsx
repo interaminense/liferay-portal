@@ -5,7 +5,6 @@ import ClayLayout from '@clayui/layout';
 import moment from 'moment';
 import React, {useState} from 'react';
 import {AlertTypes} from 'shared/components/Alert';
-import {compose, withProject} from 'shared/hoc';
 import {CUSTOM_DATE_FORMAT, formatDateToTimeZone} from 'shared/util/date';
 import {
 	formatPlanData,
@@ -21,6 +20,7 @@ import {SubscriptionStatuses} from 'shared/util/constants';
 import {Text} from '@clayui/core';
 import {UsageMetric} from '../components/usage-overview/UsageMetric';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useProject} from 'shared/hooks/useProject';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const subscriptionStatuses = admin => ({
@@ -66,9 +66,10 @@ const getAlertStatusCode = currentPlan => {
 	return null;
 };
 
-export const UsageOverview = ({groupId, project}) => {
+export const UsageOverview = ({groupId}) => {
 	const [showAlert, setShowAlert] = useState(true);
 	const currentUser = useCurrentUser();
+	const project = useProject();
 
 	const admin = currentUser.isAdmin();
 	const currentPlan = formatPlanData(project.faroSubscription);
@@ -192,4 +193,4 @@ export const UsageOverview = ({groupId, project}) => {
 	);
 };
 
-export default compose(withProject)(UsageOverview);
+export default UsageOverview;

@@ -4,7 +4,6 @@ import StepList from './StepList';
 import WorkspacesBasePage from './BasePage';
 import {Link} from 'react-router-dom';
 import {ProjectStates} from 'shared/util/constants';
-import {PropTypes} from 'prop-types';
 
 export const NO_ACCOUNT = 'noAccount';
 export const NO_SUBSCRIPTION = 'noSubscription';
@@ -83,28 +82,18 @@ const TITLE_MAP = {
 	)
 };
 
-export default class WorkspacesErrorDisplay extends React.Component {
-	static defaultProps = {
-		errorType: NO_SUBSCRIPTION
-	};
+const WorkspacesErrorDisplay = ({className, errorType = NO_SUBSCRIPTION}) => {
+	const stepListProps = STEP_LIST_MAP[errorType];
 
-	static propTypes = {
-		errorType: PropTypes.string
-	};
+	return (
+		<WorkspacesBasePage
+			className={getCN('workspaces-error-display-root', {className})}
+			details={DETAILS_MAP[errorType]}
+			title={TITLE_MAP[errorType]}
+		>
+			{stepListProps && <StepList {...stepListProps} />}
+		</WorkspacesBasePage>
+	);
+};
 
-	render() {
-		const {className, errorType} = this.props;
-
-		const stepListProps = STEP_LIST_MAP[errorType];
-
-		return (
-			<WorkspacesBasePage
-				className={getCN('workspaces-error-display-root', {className})}
-				details={DETAILS_MAP[errorType]}
-				title={TITLE_MAP[errorType]}
-			>
-				{stepListProps && <StepList {...stepListProps} />}
-			</WorkspacesBasePage>
-		);
-	}
-}
+export default WorkspacesErrorDisplay;

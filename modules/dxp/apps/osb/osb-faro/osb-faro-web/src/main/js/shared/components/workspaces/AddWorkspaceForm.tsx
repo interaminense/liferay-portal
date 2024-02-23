@@ -265,24 +265,6 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 											)
 										)}
 									</Form.Select>
-
-									{/* <p class="extra-instruction text-secondary">
-											{sub(
-												Liferay.Language.get(
-													'cant-find-the-right-server?-send-us-a-x'
-												),
-												[
-													// TODO: This should in the future direct to a
-													// suggestion form in the app
-													<ClayLink href="#1" key="suggestion">
-														{Liferay.Language.get(
-															'suggestion-fragment'
-														)}
-													</ClayLink>
-												],
-												false
-											)}
-									</p> */}
 								</Sheet.Section>
 
 								<Sheet.Section>

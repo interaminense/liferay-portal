@@ -1,12 +1,11 @@
 import ActivatingDisplay from 'shared/components/workspaces/ActivatingDisplay';
 import React from 'react';
 import SuccessDisplay from 'shared/components/workspaces/SuccessDisplay';
-import withAction from './WithAction';
 import WorkspaceNotFound from 'shared/pages/WorkspaceNotFound';
 import WorkspacesErrorDisplay from 'shared/components/workspaces/ErrorDisplay';
 import {compose} from 'redux';
-import {fetchProject} from '../actions/projects';
 import {ProjectStates} from 'shared/util/constants';
+import {useProject} from 'shared/hooks/useProject';
 
 /**
  * HOC for conditionally rendering SettingUpWorkspace.
@@ -14,15 +13,13 @@ import {ProjectStates} from 'shared/util/constants';
  * @returns {Function} - The new component
  */
 export default compose(
-	withAction(
-		({groupId}) => fetchProject({groupId}),
-		(state, {groupId}) => state.getIn(['projects', groupId]),
-		{
-			propName: 'project',
-			renderErrorPage: props => <WorkspaceNotFound {...props} />
+	WrappedComponent => ({className, groupId, ...otherProps}) => {
+		const project = useProject();
+
+		if (!project) {
+			return <WorkspaceNotFound />;
 		}
-	),
-	WrappedComponent => ({className, groupId, project, ...otherProps}) => {
+
 		switch (project.state) {
 			case ProjectStates.Ready:
 			case ProjectStates.Scheduled:
@@ -45,7 +42,7 @@ export default compose(
 				);
 
 			case ProjectStates.Activating:
-				return <ActivatingDisplay groupId={project.groupId} />;
+				return <ActivatingDisplay />;
 
 			default:
 				return (
