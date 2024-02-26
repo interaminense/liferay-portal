@@ -18,8 +18,7 @@ import {
 	withSelectionProvider
 } from 'shared/context/selection';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {CREATE_TIME, createOrderIOMap} from 'shared/util/pagination';
@@ -27,7 +26,7 @@ import {formatDateToTimeZone} from 'shared/util/date';
 import {FormikActions} from 'formik';
 import {getPluralMessage, sub} from 'shared/util/lang';
 import {IPagination} from 'shared/types';
-import {Link} from 'react-router-dom';
+import {Link, useHistory, useParams} from 'react-router-dom';
 import {RootState} from 'shared/store';
 import {Routes, toRoute} from 'shared/util/router';
 import {setBackURL} from 'shared/actions/settings';
@@ -35,6 +34,7 @@ import {Sizes} from 'shared/util/constants';
 import {UNAUTHORIZED_ACCESS} from 'shared/util/request';
 import {updateDefaultChannelId} from 'shared/actions/preferences';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useModal} from 'shared/hooks/useModal';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useRequest} from 'shared/hooks/useRequest';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
@@ -67,34 +67,25 @@ const connector = connect(
 			'data'
 		])
 	}),
-	{addAlert, close, open, setBackURL, updateDefaultChannelId}
+	{addAlert, setBackURL, updateDefaultChannelId}
 );
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface IChannelListProps extends IPagination, PropsFromRedux {
-	groupId: string;
-	history: {
-		push: (href: string) => void;
-	};
-}
+interface IChannelListProps extends IPagination, PropsFromRedux {}
 
 const ChannelList: React.FC<IChannelListProps> = ({
 	addAlert,
-	close,
 	defaultChannelId,
-	groupId,
-	history,
-	open,
 	setBackURL,
 	updateDefaultChannelId
 }) => {
+	const {groupId} = useParams();
+	const {close, open} = useModal();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
-
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(CREATE_TIME)
 	});
-
 	const {data, error, loading, refetch: refetchChannels} = useRequest({
 		dataSourceFn: API.channels.search,
 		variables: {
@@ -105,20 +96,19 @@ const ChannelList: React.FC<IChannelListProps> = ({
 			query
 		}
 	});
-
 	const currentUser = useCurrentUser();
-
 	const {timeZoneId} = useTimeZone();
+	const history = useHistory();
 
 	const handleAddChannel = () => {
-		open(modalTypes.ADD_CHANNEL_MODAL, {
+		open(Modal.modalTypes.ADD_CHANNEL_MODAL, {
 			onClose: close,
 			onSubmit: handleSubmit
 		});
 	};
 
 	const handleUnableToDeleteProperty = () => {
-		open(modalTypes.UNABLE_DELETE_PROPERTY_MODAL, {
+		open(Modal.modalTypes.UNABLE_DELETE_PROPERTY_MODAL, {
 			onClose: close
 		});
 	};
@@ -130,7 +120,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 			ids.length
 		) as string;
 
-		open(modalTypes.DELETE_CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.DELETE_CONFIRMATION_MODAL, {
 			children: (
 				<>
 					<p>
@@ -209,7 +199,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 			ids.length
 		) as string;
 
-		open(modalTypes.DELETE_CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.DELETE_CONFIRMATION_MODAL, {
 			children: (
 				<>
 					<p>

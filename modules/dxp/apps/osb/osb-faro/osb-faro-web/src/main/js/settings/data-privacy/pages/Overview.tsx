@@ -5,9 +5,6 @@ import ClayLink from '@clayui/link';
 import PreferenceMutation from '../queries/PreferenceMutation';
 import PreferenceQuery from 'shared/queries/PreferenceQuery';
 import React from 'react';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {compose} from 'redux';
-import {connect} from 'react-redux';
 import {
 	convertMillisecondsToDays,
 	convertMillisecondsToMonths
@@ -21,11 +18,14 @@ import {
 	TWO_DAYS
 } from 'shared/util/constants';
 import {get} from 'lodash';
+import {Modal} from 'shared/types/Modal';
 import {Option, Picker} from '@clayui/core';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router-dom';
 
 let RETENTION_OPTIONS = [SEVEN_MONTHS, THIRTEEN_MONTHS];
 
@@ -57,14 +57,10 @@ const fetchDownload = ({fromDate, groupId, toDate, type}) =>
 		throw new Error('Request Error');
 	});
 
-interface IOverviewProps {
-	close: () => void;
-	groupId: string;
-	open: (modalType: string, options: object) => void;
-}
-
-export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
+export const Overview = () => {
 	const [updatePreference] = useMutation(PreferenceMutation);
+	const {close, open} = useModal();
+	const {groupId} = useParams();
 
 	const {data} = useQuery(PreferenceQuery, {
 		variables: {key: DATA_RETENTION_PERIOD_KEY}
@@ -98,7 +94,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 			});
 
 		if (curVal > newVal) {
-			open(modalTypes.CONFIRMATION_MODAL, {
+			open(Modal.modalTypes.CONFIRMATION_MODAL, {
 				message: (
 					<div>
 						<p className='text-secondary'>
@@ -134,7 +130,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 	};
 
 	const handleOpenRequestModal = () =>
-		open(modalTypes.EXPORT_LOG_MODAL, {
+		open(Modal.modalTypes.EXPORT_LOG_MODAL, {
 			description: Liferay.Language.get(
 				'select-a-date-range-to-export-your-request-log.-your-download-may-take-a-couple-minutes-to-process'
 			),
@@ -152,7 +148,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 		});
 
 	const handleOpenSuppressionModal = () =>
-		open(modalTypes.EXPORT_LOG_MODAL, {
+		open(Modal.modalTypes.EXPORT_LOG_MODAL, {
 			description: Liferay.Language.get(
 				'select-a-date-range-to-export-your-suppression-list.-your-download-may-take-a-couple-minutes-to-process'
 			),
@@ -315,4 +311,4 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 	);
 };
 
-export default compose<any>(connect(null, {close, open}))(Overview);
+export default Overview;

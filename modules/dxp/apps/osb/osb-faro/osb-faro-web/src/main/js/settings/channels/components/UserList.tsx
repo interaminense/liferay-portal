@@ -10,8 +10,7 @@ import RowActions from 'shared/components/RowActions';
 import Table from 'shared/components/table';
 import {ActionTypes} from 'shared/context/selection';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose, withPaginationBar, withToolbar} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {createOrderIOMap, NAME} from 'shared/util/pagination';
@@ -19,13 +18,15 @@ import {get} from 'lodash';
 import {getPluralMessage} from 'shared/util/lang';
 import {IPaginationUnsorted} from 'shared/types';
 import {OrderedMap} from 'immutable';
-import {RootState} from 'shared/store';
 import {SelectionProvider} from 'shared/context/selection';
 import {Sizes} from 'shared/util/constants';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {User} from 'shared/util/records';
 import {useRequest} from 'shared/hooks/useRequest';
 import {usersListColumns} from 'shared/util/table-columns';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 import {withEmpty} from 'cerebro-shared/hocs/utils';
 
 const ListComponent = compose<any>(
@@ -69,18 +70,7 @@ const UserListNav: React.FC<{
 		</Nav.Item>
 	</Nav>
 );
-const connector = connect(
-	(store: RootState, {groupId}: {groupId: string}) => ({
-		timeZoneId: store.getIn([
-			'projects',
-			groupId,
-			'data',
-			'timeZone',
-			'timeZoneId'
-		])
-	}),
-	{addAlert, close, open}
-);
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -94,14 +84,13 @@ interface IUserListProps extends PropsFromRedux, IPaginationUnsorted {
 const UserList: React.FC<IUserListProps> = ({
 	addAlert,
 	authorized,
-	close,
-	groupId,
 	id,
-	open,
 	propertyName,
-	timeZoneId,
 	...otherProps
 }) => {
+	const {close, open} = useModal();
+	const {groupId} = useParams();
+	const {timeZoneId} = useTimeZone();
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME)
 	});
@@ -131,7 +120,7 @@ const UserList: React.FC<IUserListProps> = ({
 
 		const userIds = users.map(({userId}) => userId);
 
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			closeAfterSubmit: false,
 			message: (
 				<div className='text-secondary'>
@@ -210,7 +199,7 @@ const UserList: React.FC<IUserListProps> = ({
 	};
 
 	const handleAddUserModal = () => {
-		open(modalTypes.SEARCHABLE_TABLE_MODAL, {
+		open(Modal.modalTypes.SEARCHABLE_TABLE_MODAL, {
 			columns: [
 				usersListColumns.nameEmailAddress,
 				usersListColumns.getLastLoginDate(timeZoneId)
@@ -297,7 +286,7 @@ const UserList: React.FC<IUserListProps> = ({
 	};
 
 	const handleNoUsersInPropertyModal = () => {
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			closeAfterSubmit: false,
 			message: (
 				<div className='text-secondary'>

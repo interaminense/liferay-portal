@@ -4,17 +4,18 @@ import ListComponent from 'shared/hoc/ListComponent';
 import React from 'react';
 import RequestActionsRenderer from 'settings/components/user-list/RequestActionsRenderer';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose, withAdminPermission} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {createOrderIOMap, EMAIL_ADDRESS, NAME} from 'shared/util/pagination';
 import {sub} from 'shared/util/lang';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useRequest} from 'shared/hooks/useRequest';
 import {UserStatuses} from 'shared/util/constants';
 
-const connector = connect(null, {addAlert, close, open});
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -23,12 +24,9 @@ interface IUserRequestProps extends PropsFromRedux {
 	onSetUserRequest: (userRequest: number) => void;
 }
 
-const UserRequest: React.FC<IUserRequestProps> = ({
-	close,
-	groupId,
-	onSetUserRequest,
-	open
-}) => {
+const UserRequest: React.FC<IUserRequestProps> = ({onSetUserRequest}) => {
+	const {close, open} = useModal();
+	const {groupId} = useParams();
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME)
 	});
@@ -53,7 +51,7 @@ const UserRequest: React.FC<IUserRequestProps> = ({
 	});
 
 	const onAccept = ({emailAddress, id}) => {
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: sub(
 				Liferay.Language.get('are-you-sure-you-want-to-accept-x'),
 				[<b key='acceptCount'>{emailAddress}</b>],
@@ -83,7 +81,7 @@ const UserRequest: React.FC<IUserRequestProps> = ({
 	};
 
 	const onDecline = ({emailAddress, id}) => {
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: sub(
 				Liferay.Language.get('are-you-sure-you-want-to-decline-x'),
 				[<b key='declineCount'>{emailAddress}</b>],

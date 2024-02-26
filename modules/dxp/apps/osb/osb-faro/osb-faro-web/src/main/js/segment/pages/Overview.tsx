@@ -4,40 +4,23 @@ import DistributionCard from 'contacts/hoc/segment/DistributionCard';
 import InterestsCard from 'contacts/hoc/segment/InterestsCard';
 import React, {useCallback, useEffect, useRef} from 'react';
 import SegmentProfileCard from 'segment/components/ProfileCard';
-import {connect, ConnectedProps} from 'react-redux';
 import {debounce} from 'lodash';
-import {RootState} from 'shared/store';
 import {Segment} from 'shared/util/records';
 import {SegmentTypes} from 'shared/util/constants';
+import {useParams} from 'react-router-dom';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const HEADER_MARGIN = 16;
-const connector = connect((store: RootState, {groupId}: {groupId: string}) => ({
-	timeZoneId: store.getIn([
-		'projects',
-		groupId,
-		'data',
-		'timeZone',
-		'timeZoneId'
-	])
-}));
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IOverviewProps extends PropsFromRedux {
-	channelId: string;
-	groupId: string;
+interface IOverviewProps {
 	id: string;
 	segment: Segment;
 	tabId?: string;
 }
 
-const Overview: React.FC<IOverviewProps> = ({
-	channelId,
-	groupId,
-	id,
-	segment,
-	timeZoneId
-}) => {
+const Overview: React.FC<IOverviewProps> = ({id, segment}) => {
+	const {channelId, groupId} = useParams();
+	const {timeZoneId} = useTimeZone();
 	const _sideColumnRef = useRef<any>();
 
 	const updateHeaderVisible = useCallback(
@@ -115,4 +98,4 @@ const Overview: React.FC<IOverviewProps> = ({
 	);
 };
 
-export default connector(Overview);
+export default Overview;

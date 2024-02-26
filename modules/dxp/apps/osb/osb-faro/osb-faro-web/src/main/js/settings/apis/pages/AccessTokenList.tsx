@@ -14,16 +14,17 @@ import TokenCell from '../components/TokenCell';
 import URLConstants from 'shared/util/url-constants';
 import {AccessToken} from '../types';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
+import {Alert, Modal} from 'shared/types';
 import {ApisPath} from 'shared/util/url-constants';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'redux';
 import {connect, ConnectedProps} from 'react-redux';
 import {CUSTOM_DATE_FORMAT} from 'shared/util/date';
 import {ENABLE_LAST_ACCESS_DATE, ExpirationPeriod} from 'shared/util/constants';
 import {formatDateToTimeZone, getDateNow} from 'shared/util/date';
-import {RootState} from 'shared/store';
 import {sub} from 'shared/util/lang';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 import {
 	withAdminPermission,
 	withError,
@@ -42,28 +43,19 @@ const isIndefinite = ({createDate, expirationDate}) =>
 	getTimestamp(expirationDate) - getTimestamp(createDate) ===
 	Number(ExpirationPeriod.Indefinite);
 
-const connector = connect(
-	(store: RootState, {groupId}: {groupId: string}) => ({
-		timeZoneId: store.getIn([
-			'projects',
-			groupId,
-			'data',
-			'timeZone',
-			'timeZoneId'
-		])
-	}),
-	{addAlert, close, open}
-);
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const TokenList: React.FC<
-	{
-		groupId: string;
-		refetch: () => Promise<any>;
-		tokens: AccessToken[];
-	} & PropsFromRedux
-> = ({addAlert, close, groupId, open, refetch, timeZoneId, tokens}) => {
+interface ITokenListProps extends PropsFromRedux {
+	refetch: () => Promise<any>;
+	tokens: AccessToken[];
+}
+
+const TokenList: React.FC<ITokenListProps> = ({addAlert, refetch, tokens}) => {
+	const {close, open} = useModal();
+	const {groupId} = useParams();
+	const {timeZoneId} = useTimeZone();
 	const [loading, setLoading] = useState(false);
 	const [onCloseAlert, setOnCloseAlert] = useState(false);
 
@@ -205,7 +197,8 @@ const TokenList: React.FC<
 										displayType='secondary'
 										onClick={() => {
 											open(
-												modalTypes.CONFIRMATION_MODAL,
+												Modal.modalTypes
+													.CONFIRMATION_MODAL,
 												{
 													message: (
 														<div className='text-secondary'>

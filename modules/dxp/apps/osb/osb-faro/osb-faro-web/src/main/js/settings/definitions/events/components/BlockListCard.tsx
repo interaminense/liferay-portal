@@ -18,16 +18,15 @@ import React from 'react';
 import RowActions from 'shared/components/RowActions';
 import URLConstants from 'shared/util/url-constants';
 import {addAlert, removeAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
+import {Alert, Modal} from 'shared/types';
 import {
 	BlockCustomEventDefinitionsData,
 	BlockCustomEventDefinitionsVariables,
 	UnblockCustomEventDefinitions
 } from 'event-analysis/queries/CustomEventDefinitions';
 import {BlockedCustomEvent} from 'event-analysis/utils/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'redux';
-import {connect, ConnectedProps} from 'react-redux';
+import {connect} from 'react-redux';
 import {
 	createOrderIOMap,
 	getSortFromOrderIOMap,
@@ -37,51 +36,28 @@ import {eventListColumns} from 'shared/util/table-columns';
 import {get} from 'lodash';
 import {LIMIT_REACHED_ALERT_ID} from './constants';
 import {OrderedMap} from 'immutable';
-import {RootState} from 'shared/store';
 import {Routes, setUriQueryValues, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useHistory, useParams} from 'react-router-dom';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {
 	useSelectionContext,
 	withSelectionProvider
 } from 'shared/context/selection';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const EVENT_LIMIT_REACHED = /Processing request will exceed custom event definition limit/;
 
-const connector = connect(
-	(store: RootState, {groupId}: {groupId: string}) => ({
-		timeZoneId: store.getIn([
-			'projects',
-			groupId,
-			'data',
-			'timeZone',
-			'timeZoneId'
-		])
-	}),
-	{addAlert, close, open, removeAlert}
-);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IBlockListCardProps extends PropsFromRedux {
-	groupId: string;
-	history: {push: (url: string) => void};
-	timeZoneId: string;
-}
-
-const BlockListCard: React.FC<IBlockListCardProps> = ({
-	addAlert,
-	close,
-	groupId,
-	history,
-	open,
-	removeAlert,
-	timeZoneId
-}) => {
+const BlockListCard = ({addAlert, removeAlert}) => {
+	const {groupId} = useParams();
+	const {timeZoneId} = useTimeZone();
+	const history = useHistory();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
+	const {close, open} = useModal();
 
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME)
@@ -152,7 +128,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 
 		const visibleEventsCount = visibleEvents.length;
 
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: (
 				<p className='text-secondary'>
 					{Liferay.Language.get(
@@ -504,4 +480,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 	);
 };
 
-export default compose<any>(withSelectionProvider, connector)(BlockListCard);
+export default compose<any>(
+	withSelectionProvider,
+	connect(null, {addAlert, removeAlert})
+)(BlockListCard);

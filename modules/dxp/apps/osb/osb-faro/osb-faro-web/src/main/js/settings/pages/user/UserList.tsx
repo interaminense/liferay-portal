@@ -13,8 +13,7 @@ import {
 	withSelectionProvider
 } from 'shared/context/selection';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {
@@ -26,6 +25,9 @@ import {
 } from 'shared/util/pagination';
 import {getDisplayRole, getPluralMessage, sub} from 'shared/util/lang';
 import {UNAUTHORIZED_ACCESS} from 'shared/util/request';
+import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {User} from 'shared/util/records';
 import {useRequest} from 'shared/hooks/useRequest';
@@ -38,22 +40,16 @@ const userRoleOptions = [UserRoleNames.Member, UserRoleNames.Administrator].map(
 	})
 );
 
-const connector = connect(null, {addAlert, close, open});
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface IUserListProps extends PropsFromRedux {
-	currentUser: User;
-	groupId: string;
-}
+interface IUserListProps extends PropsFromRedux {}
 
-const UserList: React.FC<IUserListProps> = ({
-	addAlert,
-	close,
-	currentUser,
-	groupId,
-	open
-}) => {
+const UserList: React.FC<IUserListProps> = ({addAlert}) => {
+	const {close, open} = useModal();
+	const currentUser = useCurrentUser();
+	const {groupId} = useParams();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
 
 	const {delta, filterBy, orderIOMap, page, query} = useQueryPagination({
@@ -73,7 +69,7 @@ const UserList: React.FC<IUserListProps> = ({
 	});
 
 	const handleActions = () => {
-		open(modalTypes.BATCH_ACTION_MODAL, {
+		open(Modal.modalTypes.BATCH_ACTION_MODAL, {
 			actionOptions: {
 				actionCountString: Liferay.Language.get(
 					'changing-permissions-for-x-users'
@@ -117,14 +113,14 @@ const UserList: React.FC<IUserListProps> = ({
 	};
 
 	const handleInviteModal = () => {
-		open(modalTypes.INVITE_USERS_MODAL, {
+		open(Modal.modalTypes.INVITE_USERS_MODAL, {
 			onClose: close,
 			onSubmit: handleUserInvite
 		});
 	};
 
 	const handleUserDelete = (ids: string[]) => {
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: getPluralMessage(
 				Liferay.Language.get('are-you-sure-you-want-to-delete-x-user'),
 				Liferay.Language.get('are-you-sure-you-want-to-delete-x-users'),

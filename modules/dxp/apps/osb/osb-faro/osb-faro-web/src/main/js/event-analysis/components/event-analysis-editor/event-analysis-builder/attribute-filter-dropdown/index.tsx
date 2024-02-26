@@ -16,19 +16,15 @@ import {
 	AttributeTypes,
 	Filter
 } from 'event-analysis/utils/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {connect, ConnectedProps} from 'react-redux';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import {DISPLAY_NAME} from 'shared/util/pagination';
+import {Modal} from 'shared/types/Modal';
 import {OrderByDirections} from 'shared/util/constants';
 import {SafeResults} from 'shared/hoc/util';
+import {useModal} from 'shared/hooks/useModal';
 import {useQuery} from '@apollo/react-hooks';
 
-const connector = connect(null, {close, open});
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IAttributeFilterDropdownProps extends PropsFromRedux {
+interface IAttributeFilterDropdownProps {
 	alignmentPosition?: typeof Align[keyof typeof Align];
 	attribute?: Attribute;
 	disabledIds?: string[];
@@ -41,11 +37,9 @@ interface IAttributeFilterDropdownProps extends PropsFromRedux {
 const AttributeFilterDropdown: React.FC<IAttributeFilterDropdownProps> = ({
 	alignmentPosition = Align.RightTop,
 	attribute,
-	close,
 	disabledIds,
 	eventId,
 	filter,
-	open,
 	trigger,
 	uneditableIds
 }) => {
@@ -57,6 +51,7 @@ const AttributeFilterDropdown: React.FC<IAttributeFilterDropdownProps> = ({
 	const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(
 		filter ? attribute : null
 	);
+	const {close, open} = useModal();
 
 	const result = useQuery<
 		EventAttributeDefinitionsData,
@@ -167,7 +162,8 @@ const AttributeFilterDropdown: React.FC<IAttributeFilterDropdownProps> = ({
 													attribute: Attribute
 												) => {
 													open(
-														modalTypes.EDIT_ATTRIBUTE_EVENT_MODAL,
+														Modal.modalTypes
+															.EDIT_ATTRIBUTE_EVENT_MODAL,
 														{
 															id: attribute.id,
 															mutation: UPDATE_EVENT_ATTRIBUTE_DEFINITION,
@@ -222,7 +218,8 @@ const AttributeFilterDropdown: React.FC<IAttributeFilterDropdownProps> = ({
 											? null
 											: () => {
 													open(
-														modalTypes.EDIT_ATTRIBUTE_EVENT_MODAL,
+														Modal.modalTypes
+															.EDIT_ATTRIBUTE_EVENT_MODAL,
 														{
 															id:
 																selectedAttribute.id,
@@ -246,4 +243,4 @@ const AttributeFilterDropdown: React.FC<IAttributeFilterDropdownProps> = ({
 	);
 };
 
-export default connector(AttributeFilterDropdown);
+export default AttributeFilterDropdown;

@@ -4,55 +4,12 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import React from 'react';
 import URLConstants from 'shared/util/url-constants';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {connect} from 'react-redux';
 import {Modal} from 'shared/types';
 import {PLANS} from 'shared/util/subscriptions';
+import {useModal} from 'shared/hooks/useModal';
 
-const getDropdownItems = ({
-	close,
-	groupId,
-	open,
-	showModal
-}: {
-	close: Modal.close;
-	groupId: string;
-	open: Modal.open;
-	showModal: boolean;
-}): {href?: string; label: string; onClick?: () => void; target?: string}[] => [
-	showModal
-		? {
-				label: Liferay.Language.get('report-an-issue'),
-				onClick: () => {
-					open(modalTypes.HELP_WIDGET_MODAL, {
-						groupId,
-						onClose: close
-					});
-				}
-		  }
-		: {
-				href: URLConstants.TicketPageLink,
-				label: Liferay.Language.get('report-an-issue'),
-				onClick: () => {
-					analytics.track('Clicked Paid Tier Ticket Link', {
-						currentUrl: window.location.href
-					});
-				},
-				target: '_blank'
-		  },
-	{
-		href: URLConstants.DocumentationLink,
-		label: Liferay.Language.get('help-center'),
-		onClick: () => {
-			analytics.track('Clicked Help Center Link', {
-				currentUrl: window.location.href
-			});
-		},
-		target: '_blank'
-	}
-];
-
-const HelpWidget = ({close, groupId, open, project}) => {
+const HelpWidget = ({groupId, project}) => {
+	const {close, open} = useModal();
 	const basicTier = project.faroSubscription.get('name') === PLANS.basic.name;
 
 	return (
@@ -77,35 +34,57 @@ const HelpWidget = ({close, groupId, open, project}) => {
 					</ClayButton>
 				}
 			>
-				{getDropdownItems({
-					close,
-					groupId,
-					open,
-					showModal: basicTier
-				}).map(({href, label, onClick, target}, index) => (
-					<ClayDropDown.Item key={index}>
-						{href ? (
-							<ClayLink
-								className='btn btn-unstyled w-100'
-								href={href}
-								onClick={onClick}
-								target={target}
-							>
-								{label}
-							</ClayLink>
-						) : (
-							<ClayButton
-								displayType='unstyled'
-								onClick={onClick}
-							>
-								{label}
-							</ClayButton>
-						)}
+				{basicTier ? (
+					<ClayDropDown.Item>
+						<ClayButton
+							displayType='unstyled'
+							onClick={() => {
+								open(Modal.modalTypes.HELP_WIDGET_MODAL, {
+									groupId,
+									onClose: close
+								});
+							}}
+						>
+							{Liferay.Language.get('report-an-issue')}
+						</ClayButton>
 					</ClayDropDown.Item>
-				))}
+				) : (
+					<ClayDropDown.Item>
+						<ClayLink
+							className='btn btn-unstyled w-100'
+							href={URLConstants.TicketPageLink}
+							onClick={() => {
+								analytics.track(
+									'Clicked Paid Tier Ticket Link',
+									{
+										currentUrl: window.location.href
+									}
+								);
+							}}
+							target='_blank'
+						>
+							{Liferay.Language.get('report-an-issue')}
+						</ClayLink>
+					</ClayDropDown.Item>
+				)}
+
+				<ClayDropDown.Item>
+					<ClayLink
+						className='btn btn-unstyled w-100'
+						href={URLConstants.DocumentationLink}
+						onClick={() => {
+							analytics.track('Clicked Help Center Link', {
+								currentUrl: window.location.href
+							});
+						}}
+						target='_blank'
+					>
+						{Liferay.Language.get('help-center')}
+					</ClayLink>
+				</ClayDropDown.Item>
 			</ClayDropDown>
 		</div>
 	);
 };
 
-export default connect(null, {close, open})(HelpWidget);
+export default HelpWidget;

@@ -5,10 +5,10 @@ import getCN from 'classnames';
 import Loading, {Align} from 'shared/components/Loading';
 import React, {useEffect, useState} from 'react';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {connect, ConnectedProps} from 'react-redux';
 import {sub} from 'shared/util/lang';
+import {useModal} from 'shared/hooks/useModal';
 import {useParams} from 'react-router-dom';
 
 export enum Frequency {
@@ -30,9 +30,7 @@ interface IEmailReportsProps
 }
 
 const connector = connect(null, {
-	addAlert,
-	close,
-	open
+	addAlert
 });
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -41,11 +39,10 @@ const EmailReports: React.FC<IEmailReportsProps> = ({
 	addAlert,
 	channelId,
 	className,
-	close,
-	open,
 	sitesSynced = false
 }) => {
 	const {groupId} = useParams();
+	const {close, open} = useModal();
 	const [report, setReport] = useState<Report | null>(null);
 
 	useEffect(() => {
@@ -118,7 +115,7 @@ const EmailReports: React.FC<IEmailReportsProps> = ({
 							return;
 						}
 
-						open(modalTypes.EDIT_EMAIL_REPORTS, {
+						open(Modal.modalTypes.EDIT_EMAIL_REPORTS, {
 							onCancel: close,
 							onSave: handleSaveReport,
 							report

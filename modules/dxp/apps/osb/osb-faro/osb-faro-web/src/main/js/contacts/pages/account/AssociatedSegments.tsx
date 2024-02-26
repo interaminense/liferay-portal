@@ -4,15 +4,15 @@ import ClayLink from '@clayui/link';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import React, {useState} from 'react';
 import URLConstants from 'shared/util/url-constants';
-import {connect, ConnectedProps} from 'react-redux';
 import {
 	createOrderIOMap,
 	getDefaultSortOrder,
 	NAME
 } from 'shared/util/pagination';
 import {EntityTypes, Sizes} from 'shared/util/constants';
-import {RootState} from 'shared/store';
+import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const fetchAssociatedSegments = ({
 	delta,
@@ -34,31 +34,13 @@ const fetchAssociatedSegments = ({
 		...otherParams
 	});
 
-const connector = connect((store: RootState, {groupId}: {groupId: string}) => ({
-	timeZoneId: store.getIn([
-		'projects',
-		groupId,
-		'data',
-		'timeZone',
-		'timeZoneId'
-	])
-}));
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IAssociatedSegmentsProps extends PropsFromRedux {
-	channelId: string;
-	groupId: string;
+interface IAssociatedSegmentsProps {
 	id: string;
-	timeZoneId: string;
 }
 
-const AssociatedSegments: React.FC<IAssociatedSegmentsProps> = ({
-	channelId,
-	groupId,
-	id,
-	timeZoneId
-}) => {
+const AssociatedSegments: React.FC<IAssociatedSegmentsProps> = ({id}) => {
+	const {channelId, groupId} = useParams();
+	const {timeZoneId} = useTimeZone();
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME, getDefaultSortOrder(NAME))
 	});
@@ -118,4 +100,4 @@ const AssociatedSegments: React.FC<IAssociatedSegmentsProps> = ({
 	);
 };
 
-export default connector(AssociatedSegments);
+export default AssociatedSegments;

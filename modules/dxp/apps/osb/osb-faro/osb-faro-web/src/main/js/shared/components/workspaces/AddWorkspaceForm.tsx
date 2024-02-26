@@ -15,13 +15,12 @@ import Sheet from 'shared/components/Sheet';
 import TimeZonePicker from '../form/TimeZonePicker';
 import URLConstants from 'shared/util/url-constants';
 import {BasePageContext} from './BasePage';
-import {close, open} from 'shared/actions/modals';
-import {connect} from 'react-redux';
 import {Formik} from 'formik';
 import {Modal} from 'shared/types';
 import {Project, TimeZone} from 'shared/util/records';
 import {sequence} from 'shared/util/promise';
 import {sub} from 'shared/util/lang';
+import {useModal} from 'shared/hooks/useModal';
 import {
 	validateEmail,
 	validateEmailArr,
@@ -65,25 +64,22 @@ const getDefaultServerLocation = (): string => {
 };
 
 interface IAddWorkspaceFormProps extends React.HTMLAttributes<HTMLElement> {
-	close: Modal.close;
 	disabled: boolean;
 	editing: boolean;
 	emailAddressDomains: string[];
 	onSubmit: (values) => Promise<any>;
-	open: Modal.open;
 	project?: Project;
 }
 
 const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 	className,
-	close,
 	disabled = false,
 	editing = false,
 	emailAddressDomains,
 	onSubmit,
-	open,
 	project
 }) => {
+	const {close, open} = useModal();
 	const {currentUser} = useContext(BasePageContext);
 
 	const formRef = useRef<Formik>();
@@ -534,4 +530,4 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 	);
 };
 
-export default connect(null, {close, open})(AddWorkspaceForm);
+export default AddWorkspaceForm;

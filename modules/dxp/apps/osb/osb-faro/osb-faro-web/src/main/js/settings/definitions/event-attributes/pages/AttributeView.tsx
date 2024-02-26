@@ -12,42 +12,36 @@ import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import Table from 'shared/components/table';
 import URLConstants from 'shared/util/url-constants';
 import {Attribute} from 'event-analysis/utils/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {connect} from 'react-redux';
 import {DateCell} from 'shared/components/table/cell-components';
 import {getDefinitions, getEventAttributes} from 'shared/util/breadcrumbs';
 import {getSafeDisplayValue} from 'shared/util/util';
 import {HasModal, Modal} from 'shared/types';
 import {SafeResults} from 'shared/hoc/util';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 import {useQuery} from '@apollo/react-hooks';
 
 interface IAttributeViewProps
 	extends React.HTMLAttributes<HTMLElement>,
 		HasModal {
 	attributeId: string;
-	close: Modal.close;
-	groupId: string;
-	open: Modal.open;
 }
 
-const AttributeView: React.FC<IAttributeViewProps> = ({
-	attributeId,
-	close,
-	groupId,
-	open
-}) => {
+const AttributeView: React.FC<IAttributeViewProps> = ({attributeId}) => {
 	const result = useQuery<
 		EventAttributeDefinitionData,
 		EventAttributeDefinitionVariables
 	>(EVENT_ATTRIBUTE_DEFINITION_WITH_RECENT_VALUES_QUERY, {
 		variables: {id: attributeId}
 	});
+	const {close, open} = useModal();
+	const {groupId} = useParams();
 
 	const viewAttributePageActions = [
 		{
 			label: Liferay.Language.get('edit'),
 			onClick: () =>
-				open(modalTypes.EDIT_ATTRIBUTE_EVENT_MODAL, {
+				open(Modal.modalTypes.EDIT_ATTRIBUTE_EVENT_MODAL, {
 					id: attributeId,
 					mutation: UPDATE_EVENT_ATTRIBUTE_DEFINITION,
 					onClose: close,
@@ -164,4 +158,4 @@ const AttributeView: React.FC<IAttributeViewProps> = ({
 	);
 };
 
-export default connect(null, {close, open})(AttributeView);
+export default AttributeView;

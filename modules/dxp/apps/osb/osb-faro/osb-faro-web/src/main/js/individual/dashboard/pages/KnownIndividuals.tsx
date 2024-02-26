@@ -23,8 +23,7 @@ import {
 	NAME
 } from 'shared/util/pagination';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {EntityTypes, SegmentTypes, Sizes} from 'shared/util/constants';
@@ -33,37 +32,31 @@ import {isNil} from 'lodash';
 import {List} from 'immutable';
 import {OrderByDirections} from 'shared/util/constants';
 import {Routes, toRoute} from 'shared/util/router';
-import {Segment, User} from 'shared/util/records';
+import {Segment} from 'shared/util/records';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
+import {useModal} from 'shared/hooks/useModal';
 import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useRequest} from 'shared/hooks/useRequest';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
-const connector = connect(null, {addAlert, close, open});
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IKnownIndividualsProps
 	extends React.HTMLAttributes<HTMLDivElement>,
-		PropsFromRedux {
-	currentUser: User;
-}
+		PropsFromRedux {}
 
-const KnownIndividuals: React.FC<IKnownIndividualsProps> = ({
-	addAlert,
-	close,
-	open
-}) => {
+const KnownIndividuals: React.FC<IKnownIndividualsProps> = ({addAlert}) => {
 	const {channelId, groupId} = useParams();
+	const {close, open} = useModal();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
-
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME)
 	});
-
 	const {data: dataSourceData, loading: dataSourceLoading} = useRequest({
 		dataSourceFn: API.dataSource.search,
 		variables: {
@@ -71,13 +64,9 @@ const KnownIndividuals: React.FC<IKnownIndividualsProps> = ({
 			groupId
 		}
 	});
-
 	const dataSourceStates = useDataSource();
-
 	const currentUser = useCurrentUser();
-
 	const authorized = currentUser.isAdmin();
-
 	const {timeZoneId} = useTimeZone();
 
 	const addToSegment = (
@@ -129,7 +118,7 @@ const KnownIndividuals: React.FC<IKnownIndividualsProps> = ({
 		});
 
 	const handleAddIndividualsToSegmentModal = (idsArray: string[]) => () =>
-		open(modalTypes.SELECT_ITEMS_MODAL, {
+		open(Modal.modalTypes.SELECT_ITEMS_MODAL, {
 			countLabel: Liferay.Language.get('x-segments'),
 			dataSourceFn: getStaticIndividualSegments,
 			entityType: EntityTypes.IndividualsSegment,

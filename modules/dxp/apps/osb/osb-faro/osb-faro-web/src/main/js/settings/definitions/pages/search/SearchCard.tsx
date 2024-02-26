@@ -11,13 +11,14 @@ import PreferenceQuery from 'shared/queries/PreferenceQuery';
 import React, {useRef} from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert, Modal} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {compose, withHistory} from 'shared/hoc';
+import {compose} from 'shared/hoc';
 import {connect} from 'react-redux';
 import {FieldArray, Formik, FormikTouched, FormikValues} from 'formik';
 import {Routes, toRoute} from 'shared/util/router';
 import {sequence} from 'shared/util/promise';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useHistory, useParams} from 'react-router-dom';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {WrapSafeResults} from 'shared/hoc/util';
 
@@ -26,12 +27,6 @@ const SEARCH_QUERY_STRINGS_KEY = 'search-query-strings';
 
 interface ISearchCardProps {
 	addAlert: Alert.AddAlert;
-	close: Modal.close;
-	groupId: string;
-	history: {
-		push: (path: string) => void;
-	};
-	open: Modal.open;
 }
 
 const renderAddButton = (
@@ -63,13 +58,10 @@ const renderAddButton = (
 const removeSpecialCharacters = (originalValue: string): string =>
 	originalValue.split('=')[0].replace(/[^\w\s]/gi, '');
 
-export const SearchCard: React.FC<ISearchCardProps> = ({
-	addAlert,
-	close,
-	groupId,
-	history,
-	open
-}) => {
+export const SearchCard: React.FC<ISearchCardProps> = ({addAlert}) => {
+	const {close, open} = useModal();
+	const {groupId} = useParams();
+	const history = useHistory();
 	const currentUser = useCurrentUser();
 	const {data: searchQueryStringsData, error, loading} = useQuery(
 		PreferenceQuery,
@@ -78,9 +70,7 @@ export const SearchCard: React.FC<ISearchCardProps> = ({
 			variables: {key: SEARCH_QUERY_STRINGS_KEY}
 		}
 	);
-
 	const [updatePreference] = useMutation(PreferenceMutation);
-
 	const _formRef = useRef<Formik>();
 
 	const authorized = currentUser.isAdmin();
@@ -127,7 +117,7 @@ export const SearchCard: React.FC<ISearchCardProps> = ({
 
 	const handleCancel = (touchedFields: FormikTouched<FormikValues>): void => {
 		Object.keys(touchedFields).length > 0
-			? open(modalTypes.CONFIRMATION_MODAL, {
+			? open(Modal.modalTypes.CONFIRMATION_MODAL, {
 					cancelMessage: Liferay.Language.get('cancel'),
 					message: Liferay.Language.get(
 						'edits-made-to-search-queries-have-not-been-saved-do-you-want-to-exit-without-saving'
@@ -324,7 +314,4 @@ export const SearchCard: React.FC<ISearchCardProps> = ({
 	);
 };
 
-export default compose<any>(
-	withHistory,
-	connect(null, {addAlert, close, open})
-)(SearchCard);
+export default compose<any>(connect(null, {addAlert}))(SearchCard);

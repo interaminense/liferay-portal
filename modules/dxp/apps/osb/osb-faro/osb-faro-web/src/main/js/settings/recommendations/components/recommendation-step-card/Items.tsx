@@ -6,24 +6,28 @@ import React, {useEffect} from 'react';
 import RecommendationPageAssetsQuery from '../../queries/RecommendationPageAssetsQuery';
 import RuleItem from '../RuleItem';
 import Table from 'shared/components/table';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {connect} from 'react-redux';
 import {FieldArray} from 'formik';
 import {Filter, getPropertiesFromItems} from '../../utils/utils';
 import {get} from 'lodash';
 import {Modal} from 'shared/types';
 import {useLazyQuery, useQuery} from '@apollo/react-hooks';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 
 const {
 	pagination: {orderDescending}
 } = Constants;
 
-const CountCell: React.FC<{
+interface ICountCellProps {
 	className: string;
 	data: Filter;
-	close: Modal.close;
-	open: Modal.open;
-}> = ({className, close, data: {name, value}, open}) => {
+}
+
+const CountCell: React.FC<ICountCellProps> = ({
+	className,
+	data: {name, value}
+}) => {
+	const {close, open} = useModal();
 	const {data, loading} = useQuery(RecommendationPageAssetsQuery, {
 		variables: {
 			propertyFilters: [
@@ -55,7 +59,7 @@ const CountCell: React.FC<{
 				className='button-root matching-pages-modal-button'
 				displayType='unstyled'
 				onClick={() => {
-					open(modalTypes.MATCHING_PAGES_MODAL, {
+					open(Modal.modalTypes.MATCHING_PAGES_MODAL, {
 						itemFilters: [{name, value}],
 						onClose: close
 					});
@@ -77,13 +81,12 @@ const RuleCell: React.FC<{
 );
 
 interface IItemsProps {
-	close: Modal.close;
-	groupId: string;
 	itemFilters: Filter[];
-	open: Modal.open;
 }
 
-const Items: React.FC<IItemsProps> = ({close, groupId, itemFilters, open}) => {
+const Items: React.FC<IItemsProps> = ({itemFilters}) => {
+	const {close, open} = useModal();
+	const {groupId} = useParams();
 	const [
 		getPageAssetsTotal,
 		{data, loading: pagesTotalLoading}
@@ -118,7 +121,7 @@ const Items: React.FC<IItemsProps> = ({close, groupId, itemFilters, open}) => {
 					className='button-root matching-pages-modal-button'
 					displayType='unstyled'
 					onClick={() => {
-						open(modalTypes.MATCHING_PAGES_MODAL, {
+						open(Modal.modalTypes.MATCHING_PAGES_MODAL, {
 							itemFilters,
 							onClose: close,
 							useNegateValue: true
@@ -150,7 +153,7 @@ const Items: React.FC<IItemsProps> = ({close, groupId, itemFilters, open}) => {
 							onClick={() => {
 								// Maybe add a toast alert to inform the user that this already exists therefore it was not added
 
-								open(modalTypes.NEW_RULE_MODAL, {
+								open(Modal.modalTypes.NEW_RULE_MODAL, {
 									groupId,
 									onClose: close,
 									onSubmit: filter => {
@@ -247,4 +250,4 @@ const Items: React.FC<IItemsProps> = ({close, groupId, itemFilters, open}) => {
 	);
 };
 
-export default connect(null, {close, open})(Items);
+export default Items;

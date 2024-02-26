@@ -3,8 +3,8 @@ import BaseDataSourcePage from '../BasePage';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
-import {DataSource, User} from 'shared/util/records';
-import {DataSourceStates, UserRoleNames} from 'shared/util/constants';
+import {DataSource} from 'shared/util/records';
+import {DataSourceStates} from 'shared/util/constants';
 import {Provider} from 'react-redux';
 import {StaticRouter} from 'react-router-dom';
 
@@ -18,12 +18,10 @@ describe('BaseDataSourcePage', () => {
 			<StaticRouter>
 				<Provider store={mockStore()}>
 					<BaseDataSourcePage
-						currentUser={data.getImmutableMock(User, data.mockUser)}
 						dataSource={data.getImmutableMock(
 							DataSource,
 							data.mockLiferayDataSource
 						)}
-						groupId='23'
 						id='test'
 					/>
 				</Provider>
@@ -40,12 +38,10 @@ describe('BaseDataSourcePage', () => {
 			<StaticRouter>
 				<Provider store={mockStore()}>
 					<BaseDataSourcePage
-						currentUser={data.getImmutableMock(User, data.mockUser)}
 						dataSource={data.getImmutableMock(
 							DataSource,
 							data.mockLiferayDataSource
 						)}
-						groupId='23'
 						id='test'
 						showDelete
 					/>
@@ -61,19 +57,10 @@ describe('BaseDataSourcePage', () => {
 			<StaticRouter>
 				<Provider store={mockStore()}>
 					<BaseDataSourcePage
-						currentUser={data.getImmutableMock(
-							User,
-							data.mockUser,
-							'23',
-							{
-								roleName: UserRoleNames.Member
-							}
-						)}
 						dataSource={data.getImmutableMock(
 							DataSource,
 							data.mockLiferayDataSource
 						)}
-						groupId='23'
 						id='test'
 						showDelete
 					/>
@@ -89,21 +76,12 @@ describe('BaseDataSourcePage', () => {
 			<StaticRouter>
 				<Provider store={mockStore()}>
 					<BaseDataSourcePage
-						currentUser={data.getImmutableMock(
-							User,
-							data.mockUser,
-							'23',
-							{
-								roleName: UserRoleNames.Member
-							}
-						)}
 						dataSource={data.getImmutableMock(
 							DataSource,
 							data.mockSalesforceDataSource,
 							'test',
 							{state: DataSourceStates.UndefinedError}
 						)}
-						groupId='23'
 						id='test'
 						showDelete
 					/>
@@ -118,11 +96,7 @@ describe('BaseDataSourcePage', () => {
 		const {queryByText} = render(
 			<StaticRouter>
 				<Provider store={mockStore()}>
-					<BaseDataSourcePage
-						currentUser={data.getImmutableMock(User, data.mockUser)}
-						groupId='23'
-						id='test'
-					/>
+					<BaseDataSourcePage id='test' />
 				</Provider>
 			</StaticRouter>
 		);

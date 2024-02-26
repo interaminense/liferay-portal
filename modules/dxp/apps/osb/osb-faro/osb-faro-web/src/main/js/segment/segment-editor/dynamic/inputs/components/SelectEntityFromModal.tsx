@@ -2,19 +2,14 @@ import Form from 'shared/components/form';
 import getCN from 'classnames';
 import Input from 'shared/components/Input';
 import React from 'react';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {Columns} from 'shared/types';
-import {connect, ConnectedProps} from 'react-redux';
+import {Columns, Modal} from 'shared/types';
 import {createOrderIOMap, NAME} from 'shared/util/pagination';
 import {detailsListColumns} from 'shared/util/table-columns';
 import {OrderedMap} from 'immutable';
 import {OrderParams} from 'shared/util/records';
+import {useModal} from 'shared/hooks/useModal';
 
-const connector = connect(null, {close, open});
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface ISelectEntityFromModalProps extends PropsFromRedux {
+interface ISelectEntityFromModalProps {
 	columns: Columns;
 	dataSourceFn?: (params: {[key: string]: any}) => Promise<any>;
 	entity: {dataSourceName?: string; [key: string]: any};
@@ -33,7 +28,6 @@ interface ISelectEntityFromModalProps extends PropsFromRedux {
 }
 
 const SelectEntityFromModal: React.FC<ISelectEntityFromModalProps> = ({
-	close,
 	columns,
 	dataSourceFn,
 	entity,
@@ -43,17 +37,18 @@ const SelectEntityFromModal: React.FC<ISelectEntityFromModalProps> = ({
 	initialDelta = 10,
 	initialOrderIOMap = createOrderIOMap(NAME),
 	onSubmit,
-	open,
 	renderEntity,
 	submitMessage = Liferay.Language.get('add'),
 	title,
 	...otherProps
 }) => {
+	const {close, open} = useModal();
+
 	const handleModal = () => {
 		const dataSourceOptions = graphqlProps || {dataSourceFn};
 		const modalType = graphqlProps
-			? modalTypes.SEARCHABLE_TABLE_MODAL_GRAPHQL
-			: modalTypes.SEARCHABLE_TABLE_MODAL;
+			? Modal.modalTypes.SEARCHABLE_TABLE_MODAL_GRAPHQL
+			: Modal.modalTypes.SEARCHABLE_TABLE_MODAL;
 
 		open(modalType, {
 			...dataSourceOptions,
@@ -112,4 +107,4 @@ const SelectEntityFromModal: React.FC<ISelectEntityFromModalProps> = ({
 	);
 };
 
-export default connector(SelectEntityFromModal);
+export default SelectEntityFromModal;

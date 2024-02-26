@@ -13,8 +13,7 @@ import React from 'react';
 import RequestListQuery from '../queries/RequestListQuery';
 import URLConstants from 'shared/util/url-constants';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {
@@ -42,15 +41,16 @@ import {
 	toRoute,
 	TYPES
 } from 'shared/util/router';
+import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useHistory, useParams} from 'react-router-dom';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
-import {User} from 'shared/util/records';
 import {
 	useSelectionContext,
 	withSelectionProvider
 } from 'shared/context/selection';
-import {withHistory} from 'shared/hoc';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const {
 	pagination: {cur: defaultPage}
@@ -197,30 +197,19 @@ const getFilterOptionType = (filterKey: string): FilterInputType =>
 
 interface IRequestListProps {
 	addAlert: Alert.AddAlert;
-	close: () => void;
-	currentUser: User;
-	history: {
-		push: (href: string) => void;
-	};
-	open: (modalType: string, options: object) => void;
-	timeZoneId: string;
 }
 
-const RequestList: React.FC<IRequestListProps> = ({
-	addAlert,
-	close,
-	currentUser,
-	history,
-	open,
-	timeZoneId
-}) => {
+const RequestList: React.FC<IRequestListProps> = ({addAlert}) => {
+	const history = useHistory();
+	const currentUser = useCurrentUser();
 	const {delta, filterBy, orderIOMap, page, query} = useQueryPagination({
 		filterFields: [STATUSES, TYPES, PERIOD],
 		initialOrderIOMap: createOrderIOMap(CREATE_DATE)
 	});
+	const {close, open} = useModal();
 	const {groupId} = useParams();
-
 	const {selectedItems} = useSelectionContext();
+	const {timeZoneId} = useTimeZone();
 
 	const authorized = currentUser.isAdmin();
 
@@ -249,7 +238,7 @@ const RequestList: React.FC<IRequestListProps> = ({
 	const [addDataControlTask] = useMutation(DataControlRequest);
 
 	const handleOpenNewRequestModal = () => {
-		open(modalTypes.NEW_REQUEST_MODAL, {
+		open(Modal.modalTypes.NEW_REQUEST_MODAL, {
 			groupId,
 			onClose: close,
 			onSubmit: ({
@@ -508,6 +497,5 @@ const RequestList: React.FC<IRequestListProps> = ({
 
 export default compose<any>(
 	withSelectionProvider,
-	connect(null, {addAlert, close, open}),
-	withHistory
+	connect(null, {addAlert})
 )(RequestList);

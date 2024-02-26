@@ -18,19 +18,15 @@ import {
 	DataTypes
 } from 'event-analysis/utils/types';
 import {BREAKDOWN_FNS_MAP} from 'event-analysis/utils/utils';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {connect, ConnectedProps} from 'react-redux';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import {DISPLAY_NAME} from 'shared/util/pagination';
+import {Modal} from 'shared/types/Modal';
 import {OrderByDirections} from 'shared/util/constants';
 import {SafeResults} from 'shared/hoc/util';
+import {useModal} from 'shared/hooks/useModal';
 import {useQuery} from '@apollo/react-hooks';
 
-const connector = connect(null, {close, open});
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IAttributeBreakdownDropdownProps extends PropsFromRedux {
+interface IAttributeBreakdownDropdownProps {
 	alignmentPosition?: typeof Align[keyof typeof Align];
 	attribute?: Attribute;
 	breakdown?: Breakdown;
@@ -45,11 +41,9 @@ const AttributeBreakdownDropdown: React.FC<IAttributeBreakdownDropdownProps> = (
 	alignmentPosition = Align.RightTop,
 	attribute,
 	breakdown,
-	close,
 	disabledIds,
 	eventId,
 	onAttributeSelect,
-	open,
 	trigger,
 	uneditableIds
 }) => {
@@ -61,6 +55,7 @@ const AttributeBreakdownDropdown: React.FC<IAttributeBreakdownDropdownProps> = (
 	const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(
 		breakdown ? attribute : null
 	);
+	const {close, open} = useModal();
 
 	const result = useQuery<
 		EventAttributeDefinitionsData,
@@ -174,7 +169,8 @@ const AttributeBreakdownDropdown: React.FC<IAttributeBreakdownDropdownProps> = (
 													attribute: Attribute
 												) => {
 													open(
-														modalTypes.EDIT_ATTRIBUTE_EVENT_MODAL,
+														Modal.modalTypes
+															.EDIT_ATTRIBUTE_EVENT_MODAL,
 														{
 															id: attribute.id,
 															mutation: UPDATE_EVENT_ATTRIBUTE_DEFINITION,
@@ -255,7 +251,8 @@ const AttributeBreakdownDropdown: React.FC<IAttributeBreakdownDropdownProps> = (
 											? null
 											: () => {
 													open(
-														modalTypes.EDIT_ATTRIBUTE_EVENT_MODAL,
+														Modal.modalTypes
+															.EDIT_ATTRIBUTE_EVENT_MODAL,
 														{
 															id:
 																selectedAttribute.id,
@@ -279,4 +276,4 @@ const AttributeBreakdownDropdown: React.FC<IAttributeBreakdownDropdownProps> = (
 	);
 };
 
-export default connector(AttributeBreakdownDropdown);
+export default AttributeBreakdownDropdown;

@@ -4,14 +4,15 @@ import {
 	ActionType,
 	useUnassignedSegmentsContext
 } from 'shared/context/unassignedSegments';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {connect, ConnectedProps} from 'react-redux';
 import {
 	fetchUpgradeModalSeen,
 	updateUpgradeModalSeen
 } from 'shared/actions/preferences';
+import {Modal} from 'shared/types/Modal';
 import {RootState} from 'shared/store';
 import {useChannelContext} from 'shared/context/channel';
+import {useModal} from 'shared/hooks/useModal';
 import {useRequest} from 'shared/hooks/useRequest';
 
 const connector = connect(
@@ -36,14 +37,13 @@ const withUnassignedSegments = (
 	}>
 ) => {
 	const UnassignedSegments: React.FC<IUnassignedSegmentsProps> = ({
-		close,
 		fetchUpgradeModalSeen,
 		groupId,
-		open,
 		updateUpgradeModalSeen,
 		upgradeModalSeen,
 		...otherProps
 	}) => {
+		const {close, open} = useModal();
 		const {unassignedSegmentsDispatch} = useUnassignedSegmentsContext();
 
 		const {channels} = useChannelContext();
@@ -76,7 +76,7 @@ const withUnassignedSegments = (
 					!!channels.length
 				) {
 					open(
-						modalTypes.UNASSIGNED_SEGMENTS_MODAL,
+						Modal.modalTypes.UNASSIGNED_SEGMENTS_MODAL,
 						{
 							groupId,
 							onClose: () => {

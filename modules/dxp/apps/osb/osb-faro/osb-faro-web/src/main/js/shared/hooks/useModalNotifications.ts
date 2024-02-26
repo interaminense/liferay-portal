@@ -4,8 +4,8 @@ import Notification, {
 	NotificationTypes
 } from 'shared/util/records/Notification';
 import {Modal} from 'shared/types';
-import {modalTypes} from 'shared/actions/modals';
 import {useEffect} from 'react';
+import {useModal} from './useModal';
 
 interface IModalNotificationRenderProps {
 	close: Modal.close;
@@ -33,17 +33,14 @@ const modalNotificationStrategies = new Map<string, Function>([
 		NotificationSubtypes.TimeZoneAdmin,
 		(params: IModalNotificationRenderProps) =>
 			renderTimeZoneAdminModal(
-				modalTypes.TIME_ZONE_SELECTION_MODAL,
+				Modal.modalTypes.TIME_ZONE_SELECTION_MODAL,
 				params
 			)
 	]
 ]);
 
-export function useModalNotifications(
-	close: Modal.close,
-	groupId: string,
-	open: Modal.open
-): void {
+export function useModalNotifications(groupId: string): void {
+	const {close, open} = useModal();
 	const handleRender = (notificationList: Array<Notification>): void => {
 		const notificationToRender = notificationList.pop();
 

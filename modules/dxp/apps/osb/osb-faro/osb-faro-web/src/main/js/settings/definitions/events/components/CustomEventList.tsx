@@ -20,13 +20,12 @@ import React from 'react';
 import RowActions from 'shared/components/RowActions';
 import URLConstants from 'shared/util/url-constants';
 import {addAlert, removeAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
+import {Alert, Modal} from 'shared/types';
 import {
 	BlockCustomEventDefinitions,
 	BlockCustomEventDefinitionsData,
 	BlockCustomEventDefinitionsVariables
 } from 'event-analysis/queries/CustomEventDefinitions';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'redux';
 import {connect, ConnectedProps} from 'react-redux';
 import {
@@ -44,6 +43,8 @@ import {Routes, setUriQueryValues, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useHistory, useParams} from 'react-router-dom';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {
@@ -51,29 +52,23 @@ import {
 	withSelectionProvider
 } from 'shared/context/selection';
 
-const connector = connect(null, {addAlert, close, open, removeAlert});
+const connector = connect(null, {addAlert, removeAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface ICustomEventListProps extends PropsFromRedux {
-	groupId: string;
-	history: {push: (url: string) => void};
-}
+interface ICustomEventListProps extends PropsFromRedux {}
 
 const CustomEventList: React.FC<ICustomEventListProps> = ({
 	addAlert,
-	close,
-	groupId,
-	history,
-	open,
 	removeAlert
 }) => {
 	const {selectedItems, selectionDispatch} = useSelectionContext();
-
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME)
 	});
-
+	const history = useHistory();
+	const {close, open} = useModal();
+	const {groupId} = useParams();
 	const {data, error, loading, refetch} = useQuery<
 		EventDefinitionsData,
 		EventDefinitionsVariables
@@ -140,7 +135,7 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 	const handleBlockEvents = (events: Event[] = []) => {
 		const eventsCount = events.length;
 
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: (
 				<p className='text-secondary'>
 					{eventsCount > 1
@@ -241,7 +236,7 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 
 		const visibleEventsCount = visibleEvents.length;
 
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: (
 				<p className='text-secondary'>
 					{Liferay.Language.get(

@@ -15,7 +15,7 @@ import {ApolloProvider as ApolloProviderHooks} from '@apollo/react-hooks';
 import {ClayIconSpriteContext} from '@clayui/icon';
 import {ClayLinkContext} from '@clayui/link';
 import {ClayTooltipProvider} from '@clayui/tooltip';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {close, open} from 'shared/hooks/useModal';
 import {
 	Link,
 	matchPath,
@@ -24,6 +24,7 @@ import {
 	Switch,
 	useLocation
 } from 'react-router-dom';
+import {Modal} from 'shared/types/Modal';
 import {OnboardingContext} from 'shared/context/onboarding';
 import {PROD_MODE, spritemap} from 'shared/util/constants';
 import {Provider} from 'react-redux';
@@ -194,7 +195,7 @@ const App = () => {
 
 	const handleUserConfirmation = (message, callback) => {
 		store.dispatch(
-			open(modalTypes.CONFIRMATION_MODAL, {
+			open(Modal.modalTypes.CONFIRMATION_MODAL, {
 				cancelMessage: Liferay.Language.get('stay-on-page'),
 				message,
 				modalVariant: 'modal-warning',

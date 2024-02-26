@@ -9,12 +9,11 @@ import EVENT_DEFINITIONS_QUERY, {
 } from 'event-analysis/queries/EventDefinitionsQuery';
 import React, {useState} from 'react';
 import {Align} from '@clayui/drop-down';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {connect} from 'react-redux';
 import {DISPLAY_NAME} from 'shared/util/pagination';
 import {Event, EventTypes} from 'event-analysis/utils/types';
 import {Modal} from 'shared/types';
 import {SafeResults} from 'shared/hoc/util';
+import {useModal} from 'shared/hooks/useModal';
 import {useQuery} from '@apollo/react-hooks';
 
 const {
@@ -23,23 +22,20 @@ const {
 
 interface IAnalysisDropdownProps {
 	alignmentPosition?: typeof Align[keyof typeof Align];
-	close: Modal.close;
 	eventId?: string;
 	onEventChange: (event: Event) => void;
-	open: Modal.open;
 	trigger: React.ReactElement;
 }
 
 const AnalysisDropdown: React.FC<IAnalysisDropdownProps> = ({
 	alignmentPosition = Align.RightTop,
-	close,
 	eventId,
 	onEventChange,
-	open,
 	trigger
 }) => {
 	const [query, setQuery] = useState('');
 	const [eventType, setEventType] = useState<EventTypes>(EventTypes.All);
+	const {close, open} = useModal();
 
 	const result = useQuery<EventDefinitionsData | EventDefinitionsVariables>(
 		EVENT_DEFINITIONS_QUERY,
@@ -96,7 +92,8 @@ const AnalysisDropdown: React.FC<IAnalysisDropdownProps> = ({
 								items={eventDefinitions}
 								onEditClick={(event: Event) => {
 									open(
-										modalTypes.EDIT_ATTRIBUTE_EVENT_MODAL,
+										Modal.modalTypes
+											.EDIT_ATTRIBUTE_EVENT_MODAL,
 										{
 											id: event.id,
 											mutation: UPDATE_EVENT_DEFINITION,
@@ -133,4 +130,4 @@ const AnalysisDropdown: React.FC<IAnalysisDropdownProps> = ({
 	);
 };
 
-export default connect(null, {close, open})(AnalysisDropdown);
+export default AnalysisDropdown;

@@ -5,7 +5,6 @@ import Loading, {Align} from 'shared/components/Loading';
 import Modal from 'shared/components/modal';
 import React, {useRef, useState} from 'react';
 import TimeZonePicker from 'shared/components/form/TimeZonePicker';
-import {connect, ConnectedProps} from 'react-redux';
 import {
 	formatDateToTimeZone,
 	formatUTCDate,
@@ -13,31 +12,22 @@ import {
 } from 'shared/util/date';
 import {Formik} from 'formik';
 import {Modal as ModalType} from 'shared/types';
-import {RootState} from 'shared/store';
-import {TimeZone} from 'shared/util/records';
+import {useParams} from 'react-router-dom';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const FORMAT_LT = 'LT';
 
-const connector = connect((store: RootState, {groupId}: {groupId: string}) => ({
-	timeZone: new TimeZone(
-		store.getIn(['projects', groupId, 'data', 'timeZone'])
-	)
-}));
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface ITimeZoneSelectionModal extends PropsFromRedux {
-	groupId: string;
+interface ITimeZoneSelectionModal {
 	notificationId: string;
 	onClose: ModalType.close;
 }
 
 const TimeZoneSelectionModal: React.FC<ITimeZoneSelectionModal> = ({
-	groupId,
 	notificationId,
-	onClose,
-	timeZone
+	onClose
 }) => {
+	const timeZone = useTimeZone();
+	const {groupId} = useParams();
 	const _formRef = useRef<Formik>();
 	const [currentTime, setCurrentTime] = useState(
 		formatUTCDate(getDateNow(), FORMAT_LT)
@@ -150,4 +140,4 @@ const TimeZoneSelectionModal: React.FC<ITimeZoneSelectionModal> = ({
 	);
 };
 
-export default connector(TimeZoneSelectionModal);
+export default TimeZoneSelectionModal;

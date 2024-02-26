@@ -1,8 +1,8 @@
+import ConfigureCSV from './ConfigureCSV';
 import omitDefinedProps from 'shared/util/omitDefinedProps';
 import React from 'react';
 import Salesforce from './Salesforce';
 import {compose, withAdminPermission, withDataSource} from 'shared/hoc';
-import {ConfigureCSV} from './ConfigureCSV';
 import {DataSource} from 'shared/util/records';
 import {DataSourceTypes} from 'shared/util/constants';
 import {PropTypes} from 'prop-types';

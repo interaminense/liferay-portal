@@ -1,15 +1,12 @@
 import ClayButton from '@clayui/button';
 import ClayLink from '@clayui/link';
 import EmptyState from 'shared/components/workspaces/EmptyState';
-import getCN from 'classnames';
 import JoinableWorkspacesWrapper from 'shared/components/workspaces/JoinableWorkspacesWrapper';
 import Loading from 'shared/components/Loading';
 import React from 'react';
 import WorkspaceList from 'shared/components/workspaces/workspace-list';
 import WorkspacesBasePage from 'shared/components/workspaces/BasePage';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {compose} from 'shared/hoc';
-import {connect} from 'react-redux';
+import {Modal} from 'shared/types/Modal';
 import {PLANS} from 'shared/util/subscriptions';
 import {PROD_MODE} from 'shared/util/constants';
 import {Routes, toRoute} from 'shared/util/router';
@@ -17,6 +14,7 @@ import {
 	useFetchJoinableProjects,
 	useFetchProjects
 } from 'shared/hooks/useProjects';
+import {useModal} from 'shared/hooks/useModal';
 
 export const routingFn = ({projects}) => {
 	if (projects.length === 1 && !projects[0].groupId) {
@@ -29,16 +27,16 @@ export const routingFn = ({projects}) => {
 };
 
 const WorkspacesContent = ({
-	close,
 	joinableProjects,
 	loading,
 	loadingJoinableProjects,
-	open,
 	projects
 }) => {
 	if (loading) {
 		return <Loading spacer />;
 	}
+
+	const {close, open} = useModal();
 
 	const filteredProjects = projects.filter(
 		({faroSubscription, groupId}) =>
@@ -80,7 +78,7 @@ const WorkspacesContent = ({
 					className='button-root mr-2'
 					displayType='primary'
 					onClick={() =>
-						open(modalTypes.CONTACT_SALES_MODAL, {
+						open(Modal.modalTypes.CONTACT_SALES_MODAL, {
 							onClose: close
 						})
 					}
@@ -105,7 +103,7 @@ const WorkspacesContent = ({
 	);
 };
 
-const Workspaces = ({className, close, open}) => {
+const Workspaces: any = () => {
 	const {data: projects, loading} = useFetchProjects();
 	const {
 		data: joinableProjects,
@@ -145,14 +143,12 @@ const Workspaces = ({className, close, open}) => {
 	routingFn({projects});
 
 	return (
-		<div className={getCN('workspaces-root', className)} key='Workspaces'>
+		<div className='workspaces-root' key='Workspaces'>
 			<WorkspacesBasePage details={handleDetails()} title={handleTitle()}>
 				<WorkspacesContent
-					close={close}
 					joinableProjects={joinableProjects}
 					loading={loading}
 					loadingJoinableProjects={loadingJoinableProjects}
-					open={open}
 					projects={projects}
 				/>
 			</WorkspacesBasePage>
@@ -160,6 +156,4 @@ const Workspaces = ({className, close, open}) => {
 	);
 };
 
-export {Workspaces};
-
-export default compose<any>(connect(null, {close, open}))(Workspaces);
+export default Workspaces;

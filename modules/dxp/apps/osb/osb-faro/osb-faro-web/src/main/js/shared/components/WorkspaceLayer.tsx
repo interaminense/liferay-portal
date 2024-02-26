@@ -3,9 +3,6 @@ import HelpWidget from './HelpWidget';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useEffect} from 'react';
 import RouteNotFound from './RouteNotFound';
-import {close, open} from 'shared/actions/modals';
-import {compose} from 'redux';
-import {connect} from 'react-redux';
 import {matchPath} from 'react-router';
 import {Routes} from 'shared/util/router';
 import {Switch, useLocation} from 'react-router-dom';
@@ -26,13 +23,13 @@ const Settings = lazy(
 	() => import(/* webpackChunkName: "Settings" */ 'settings/pages/Settings')
 );
 
-const WorkspaceLayer = ({close, open}) => {
+const WorkspaceLayer = () => {
 	const location = useLocation();
 	const path = matchPath<any>(location.pathname, {
 		path: Routes.WORKSPACE_WITH_ID
 	});
 	const groupId = path?.params?.groupId ?? '0';
-	const {currentUserId} = useCurrentUser();
+	const {userId} = useCurrentUser();
 	const {data: project, loading} = useFetchProject();
 
 	useEffect(() => {
@@ -48,7 +45,7 @@ const WorkspaceLayer = ({close, open}) => {
 					groupId,
 					serverLocation,
 					subscriptionName,
-					userId: currentUserId,
+					userId,
 					workspaceName
 				},
 				{ip: '0'}
@@ -56,7 +53,7 @@ const WorkspaceLayer = ({close, open}) => {
 		}
 	}, [groupId, project]);
 
-	useModalNotifications(close, groupId, open);
+	useModalNotifications(groupId);
 
 	if (loading) {
 		return <Loading />;
@@ -82,4 +79,4 @@ const WorkspaceLayer = ({close, open}) => {
 	);
 };
 
-export default compose<any>(connect(null, {close, open}))(WorkspaceLayer);
+export default WorkspaceLayer;

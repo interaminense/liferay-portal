@@ -79,7 +79,6 @@ export default class BaseTabsPage extends React.Component {
 			<BaseDataSourcePage
 				{...omitDefinedProps(otherProps, BaseTabsPage.propTypes)}
 				dataSource={dataSource}
-				groupId={groupId}
 				id={id}
 			>
 				<Sheet className='data-source-base-tabs-root' pageDisplay>

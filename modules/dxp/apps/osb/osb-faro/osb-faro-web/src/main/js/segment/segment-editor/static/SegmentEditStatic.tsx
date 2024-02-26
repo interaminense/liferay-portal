@@ -11,16 +11,17 @@ import {
 	withSelectionProvider
 } from 'shared/context/selection';
 import {Changeset} from 'shared/util/records';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'redux';
-import {connect, ConnectedProps} from 'react-redux';
 import {createOrderIOMap, NAME} from 'shared/util/pagination';
 import {individualsListColumns} from 'shared/util/table-columns';
 import {Map, OrderedMap} from 'immutable';
-import {RootState} from 'shared/store';
+import {Modal} from 'shared/types/Modal';
 import {sub} from 'shared/util/lang';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 import {useRequest} from 'shared/hooks/useRequest';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const ORDER_BY_OPTIONS = [
 	{
@@ -33,27 +34,10 @@ const ORDER_BY_OPTIONS = [
 	}
 ];
 
-const connector = connect(
-	(store: RootState, {groupId}: {groupId: string}) => ({
-		timeZoneId: store.getIn([
-			'projects',
-			groupId,
-			'data',
-			'timeZone',
-			'timeZoneId'
-		])
-	}),
-	{close, open}
-);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface ISegmentEditStaticProps extends PropsFromRedux {
+interface ISegmentEditStaticProps {
 	changeset: typeof Changeset;
-	channelId: string;
 	className: string;
 	entityLabel: string;
-	groupId: string;
 	id: string;
 	membershipCount: number;
 	onChange: (changeset: typeof Changeset) => void;
@@ -61,19 +45,17 @@ interface ISegmentEditStaticProps extends PropsFromRedux {
 
 const SegmentEditStatic: React.FC<ISegmentEditStaticProps> = ({
 	changeset,
-	channelId,
 	className,
-	close,
 	entityLabel,
-	groupId,
 	id,
 	membershipCount,
 	onChange,
-	open,
-	timeZoneId,
 	...otherProps
 }) => {
+	const {channelId, groupId} = useParams();
+	const {timeZoneId} = useTimeZone();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
+	const {close, open} = useModal();
 
 	const {
 		delta,
@@ -135,7 +117,7 @@ const SegmentEditStatic: React.FC<ISegmentEditStaticProps> = ({
 			analytics.track('Static Segment Creation - Clicked Add Members');
 		}
 
-		open(modalTypes.SEARCHABLE_TABLE_MODAL, {
+		open(Modal.modalTypes.SEARCHABLE_TABLE_MODAL, {
 			checkDisabled: isCurrentMember,
 			columns: getColumns(),
 			dataSourceFn: getIndividuals,
@@ -317,4 +299,4 @@ const SegmentEditStatic: React.FC<ISegmentEditStaticProps> = ({
 	);
 };
 
-export default compose(connector, withSelectionProvider)(SegmentEditStatic);
+export default compose(withSelectionProvider)(SegmentEditStatic);

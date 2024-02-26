@@ -147,10 +147,8 @@ export default class BaseFieldMappingView extends React.Component {
 
 	render() {
 		const {
-			currentUser,
 			dataSource,
 			details,
-			groupId,
 			id,
 			pageTitle,
 			title,
@@ -164,9 +162,7 @@ export default class BaseFieldMappingView extends React.Component {
 					BaseFieldMappingView.propTypes
 				)}
 				className='base-field-mapping-view-root'
-				currentUser={currentUser}
 				dataSource={dataSource}
-				groupId={groupId}
 				id={id}
 				pageTitle={pageTitle}
 			>

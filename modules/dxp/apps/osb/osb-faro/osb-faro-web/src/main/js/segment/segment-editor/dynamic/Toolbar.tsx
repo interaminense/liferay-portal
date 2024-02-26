@@ -10,7 +10,7 @@ import Loading from 'shared/components/Loading';
 import React from 'react';
 import TitleEditor from 'shared/components/TitleEditor';
 import {autoCancel, hasRequest} from 'shared/util/request-decorator';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {close, open} from 'shared/hooks/useModal';
 import {connect} from 'react-redux';
 import {createOrderIOMap, NAME} from 'shared/util/pagination';
 import {Criteria} from './utils/types';
@@ -119,7 +119,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
 	handlePreviewClick() {
 		const {close, open} = this.props;
 
-		open(modalTypes.SEARCHABLE_ENTITIES_TABLE_MODAL, {
+		open(Modal.modalTypes.SEARCHABLE_ENTITIES_TABLE_MODAL, {
 			columns: [individualsListColumns.name],
 			dataSourceFn: this.fetchMembers,
 			entityLabel: Liferay.Language.get('individuals'),

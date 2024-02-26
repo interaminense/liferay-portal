@@ -1,12 +1,12 @@
 import React, {useContext, useEffect} from 'react';
 import SitesDashboardQuery from 'shared/queries/SitesDashboardQuery';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'redux';
-import {connect} from 'react-redux';
 import {graphql} from '@apollo/react-hoc';
 import {isArray} from 'lodash';
+import {Modal} from 'shared/types/Modal';
 import {OnboardingContext} from 'shared/context/onboarding';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useModal} from 'shared/hooks/useModal';
 import {User} from 'shared/util/records';
 
 const withOnboarding = (
@@ -16,9 +16,9 @@ const withOnboarding = (
 	}>
 ) =>
 	compose<any>(
-		connect(null, {close, open}),
 		graphql(SitesDashboardQuery, {options: {variables: {type: null}}})
-	)(({close, data, groupId, open, ...otherProps}) => {
+	)(({data, groupId, ...otherProps}) => {
+		const {close, open} = useModal();
 		const {onboardingTriggered, setOnboardingTriggered} = useContext(
 			OnboardingContext
 		);
@@ -32,7 +32,7 @@ const withOnboarding = (
 					!loading && isArray(dataSources) && !dataSources.length;
 
 				if (triggerCondition) {
-					open(modalTypes.ONBOARDING_MODAL, {
+					open(Modal.modalTypes.ONBOARDING_MODAL, {
 						groupId,
 						onClose: close
 					});

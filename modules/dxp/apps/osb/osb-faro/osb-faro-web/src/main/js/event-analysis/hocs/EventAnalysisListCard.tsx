@@ -9,8 +9,7 @@ import React from 'react';
 import RowActions from 'shared/components/RowActions';
 import URLConstants from 'shared/util/url-constants';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {
@@ -33,6 +32,7 @@ import {mapListResultsToProps} from 'shared/util/mappers';
 import {NameCell} from 'shared/components/table/cell-components';
 import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
@@ -42,31 +42,24 @@ import {
 	withSelectionProvider
 } from 'shared/context/selection';
 
-const connector = connect(null, {addAlert, close, open});
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const EventAnalysisListCard: React.FC<PropsFromRedux> = ({
-	addAlert,
-	close,
-	open
-}) => {
+const EventAnalysisListCard: React.FC<PropsFromRedux> = ({addAlert}) => {
+	const {close, open} = useModal();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
-
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME)
 	});
-
 	const {channelId, groupId} = useParams();
 	const rangeSelectors = useQueryRangeSelectors();
-
 	const {keywords, size, sort} = getGraphQLVariablesFromPagination({
 		delta,
 		orderIOMap,
 		page,
 		query
 	});
-
 	const response = useQuery<
 		EventAnalysisListData,
 		EventAnalysisListVariables
@@ -80,7 +73,6 @@ const EventAnalysisListCard: React.FC<PropsFromRedux> = ({
 			sort
 		}
 	});
-
 	const [deleteEventAnalysis] = useMutation<
 		DeleteEventAnalysisData,
 		DeleteEventAnalysisVariables
@@ -146,7 +138,7 @@ const EventAnalysisListCard: React.FC<PropsFromRedux> = ({
 				});
 		};
 
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message,
 			modalVariant: 'modal-warning',
 			onClose: close,

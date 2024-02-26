@@ -19,10 +19,9 @@ import {
 	withSelectionProvider
 } from 'shared/context/selection';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert, Router} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose} from 'redux';
-import {connect, ConnectedProps} from 'react-redux';
+import {connect} from 'react-redux';
 import {
 	createOrderIOMap,
 	getSortFromOrderIOMap,
@@ -40,48 +39,24 @@ import {
 } from '../utils/utils';
 import {NameCell} from 'shared/components/table/cell-components';
 import {RECOMMENDATION_DELETE_MUTATION} from '../queries/RecommendationMutation';
-import {RootState} from 'shared/store';
 import {Routes, setUriQueryValues, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useHistory, useParams} from 'react-router-dom';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const {
 	pagination: {cur: defaultPage}
 } = Constants;
 
-const connector = connect(
-	(store: RootState, {groupId}: {groupId: string}) => ({
-		timeZoneId: store.getIn([
-			'projects',
-			groupId,
-			'data',
-			'timeZone',
-			'timeZoneId'
-		])
-	}),
-	{addAlert, close, open}
-);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IRecommendationListProps extends PropsFromRedux {
-	groupId: string;
-	history: {
-		push: (value: string) => void;
-	};
-	router: Router;
-}
-
-const RecommendationList: React.FC<IRecommendationListProps> = ({
-	addAlert,
-	close,
-	groupId,
-	history,
-	open,
-	timeZoneId
-}: IRecommendationListProps) => {
+const RecommendationList = ({addAlert}) => {
+	const {groupId} = useParams();
+	const {timeZoneId} = useTimeZone();
+	const history = useHistory();
+	const {close, open} = useModal();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
 
 	const {delta, orderIOMap, page, query} = useQueryPagination({
@@ -187,7 +162,7 @@ const RecommendationList: React.FC<IRecommendationListProps> = ({
 								className='button-root'
 								displayType='secondary'
 								onClick={() => {
-									open(modalTypes.CONFIRMATION_MODAL, {
+									open(Modal.modalTypes.CONFIRMATION_MODAL, {
 										message: (
 											<div>
 												<h4 className='text-secondary'>
@@ -352,5 +327,5 @@ const RecommendationList: React.FC<IRecommendationListProps> = ({
 
 export default compose<any>(
 	withSelectionProvider,
-	connector
+	connect(null, {addAlert})
 )(RecommendationList);

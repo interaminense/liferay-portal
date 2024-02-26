@@ -15,8 +15,7 @@ import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import React from 'react';
 import RowActions from 'shared/components/RowActions';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose} from 'redux';
 import {connect, ConnectedProps} from 'react-redux';
 import {
@@ -31,27 +30,24 @@ import {OrderedMap} from 'immutable';
 import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {
 	useSelectionContext,
 	withSelectionProvider
 } from 'shared/context/selection';
 
-const connector = connect(null, {addAlert, close, open});
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface IEventListProps extends PropsFromRedux {
-	groupId: string;
-}
+interface IEventListProps extends PropsFromRedux {}
 
-const EventList: React.FC<IEventListProps> = ({
-	addAlert,
-	close,
-	groupId,
-	open
-}) => {
+const EventList: React.FC<IEventListProps> = ({addAlert}) => {
+	const {close, open} = useModal();
+	const {groupId} = useParams();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
 
 	const {delta, orderIOMap, page, query} = useQueryPagination({
@@ -119,7 +115,7 @@ const EventList: React.FC<IEventListProps> = ({
 
 		const visibleEventsCount = visibleEvents.length;
 
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: (
 				<p className='text-secondary'>
 					{Liferay.Language.get(

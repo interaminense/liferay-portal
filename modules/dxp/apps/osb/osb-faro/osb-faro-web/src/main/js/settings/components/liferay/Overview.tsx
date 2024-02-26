@@ -11,8 +11,8 @@ import Label from 'shared/components/Label';
 import React from 'react';
 import Sheet from 'shared/components/Sheet';
 import {addAlert} from '../../../shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
+import {close, open} from 'shared/hooks/useModal';
 import {connect, ConnectedProps} from 'react-redux';
 import {DataSource, User} from 'shared/util/records';
 import {DataSourceStates} from 'shared/util/constants';
@@ -86,7 +86,7 @@ class LiferayOverview extends React.Component<ILiferayOverviewProps> {
 			open
 		} = this.props;
 
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: (
 				<>
 					<p className='text-secondary'>
@@ -141,7 +141,7 @@ class LiferayOverview extends React.Component<ILiferayOverviewProps> {
 	handleReconnectClick() {
 		const {close, fetchDataSource, groupId, id, open} = this.props;
 
-		open(modalTypes.CONNECT_DXP_MODAL, {
+		open(Modal.modalTypes.CONNECT_DXP_MODAL, {
 			groupId,
 			id,
 			onClose: () => {

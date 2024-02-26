@@ -11,9 +11,8 @@ import {
 	UnassignedSegmentsContext
 } from 'shared/context/unassignedSegments';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert, FilterByType} from 'shared/types';
+import {Alert, FilterByType, Modal} from 'shared/types';
 import {ALERT_CONFIG_MAP, AlertTypes} from 'shared/components/Alert';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {createOrderIOMap} from 'shared/util/pagination';
@@ -22,7 +21,7 @@ import {
 	NAME,
 	paginationDefaults
 } from 'shared/util/pagination';
-import {Link} from 'react-router-dom';
+import {Link, useHistory, useParams} from 'react-router-dom';
 import {OrderedMap} from 'immutable';
 import {OrderParams} from 'shared/util/records';
 import {
@@ -37,6 +36,7 @@ import {SegmentStates, SegmentTypes, Sizes} from 'shared/util/constants';
 import {setUriQueryValues} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useModal} from 'shared/hooks/useModal';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
@@ -77,24 +77,16 @@ function fetchDisabledSegments(
 	});
 }
 
-const connector = connect(null, {addAlert, close, open});
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface IListProps extends PropsFromRedux {
-	channelId: string;
-	groupId: string;
-	history: any;
-}
+interface IListProps extends PropsFromRedux {}
 
-export const List: React.FC<IListProps> = ({
-	addAlert,
-	channelId,
-	close,
-	groupId,
-	history,
-	open
-}) => {
+export const List: React.FC<IListProps> = ({addAlert}) => {
+	const {close, open} = useModal();
+	const history = useHistory();
+	const {channelId, groupId} = useParams();
 	const {timeZoneId} = useTimeZone();
 	const currentUser = useCurrentUser();
 	const _tableRef = useRef<HTMLDivElement & SearchableEntityTable>();
@@ -177,7 +169,7 @@ export const List: React.FC<IListProps> = ({
 	const handleUnassignedSegmentsAlert = () => {
 		const openModal = () => {
 			open(
-				modalTypes.UNASSIGNED_SEGMENTS_MODAL,
+				Modal.modalTypes.UNASSIGNED_SEGMENTS_MODAL,
 				{
 					groupId,
 					onClose: close
@@ -211,7 +203,7 @@ export const List: React.FC<IListProps> = ({
 	};
 
 	const handleDeleteSegment = ({id, items, name}) => {
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: (
 				<div>
 					<h4 className='text-secondary'>

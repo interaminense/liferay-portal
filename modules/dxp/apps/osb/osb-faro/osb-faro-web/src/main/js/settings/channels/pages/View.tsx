@@ -18,8 +18,7 @@ import SyncedStripe from '../components/SyncedStripe';
 import TitleEditor from 'shared/components/TitleEditor';
 import UserList from '../components/UserList';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert, IPaginationUnsorted} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, IPaginationUnsorted, Modal} from 'shared/types';
 import {compose} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from 'shared/store';
@@ -31,6 +30,8 @@ import {sub} from 'shared/util/lang';
 import {UNAUTHORIZED_ACCESS} from 'shared/util/request';
 import {updateDefaultChannelId} from 'shared/actions/preferences';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useHistory, useParams} from 'react-router-dom';
+import {useModal} from 'shared/hooks/useModal';
 import {useRequest} from 'shared/hooks/useRequest';
 
 const {channelPermissionTypes} = Constants;
@@ -93,7 +94,7 @@ const connector = connect(
 			'data'
 		])
 	}),
-	{addAlert, close, open, setBackURL, updateDefaultChannelId}
+	{addAlert, setBackURL, updateDefaultChannelId}
 );
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -113,17 +114,16 @@ interface IViewProps
 const View: React.FC<IViewProps> = ({
 	addAlert,
 	channel,
-	close,
 	defaultChannelId,
-	groupId,
-	history,
 	id,
-	open,
 	setBackURL,
 	updateDefaultChannelId,
 	...otherProps
 }) => {
 	const currentUser = useCurrentUser();
+	const {close, open} = useModal();
+	const history = useHistory();
+	const {groupId} = useParams();
 
 	useEffect(() => {
 		const {createTime, id, name} = channel;
@@ -162,7 +162,7 @@ const View: React.FC<IViewProps> = ({
 	const authorized = currentUser.isAdmin();
 
 	const handleUnableToDeleteProperty = () => {
-		open(modalTypes.UNABLE_DELETE_PROPERTY_MODAL, {
+		open(Modal.modalTypes.UNABLE_DELETE_PROPERTY_MODAL, {
 			onClose: close
 		});
 	};
@@ -250,81 +250,87 @@ const View: React.FC<IViewProps> = ({
 								data-testid='clear-data'
 								displayType='secondary'
 								onClick={() =>
-									open(modalTypes.DELETE_CONFIRMATION_MODAL, {
-										children: (
-											<>
-												<p>
-													<strong>
-														{sub(
-															Liferay.Language.get(
-																'to-clear-data-from-x,-copy-the-sentence-below-to-confirm-your-intention-to-clear-data-from-this-property'
-															),
-															[name]
+									open(
+										Modal.modalTypes
+											.DELETE_CONFIRMATION_MODAL,
+										{
+											children: (
+												<>
+													<p>
+														<strong>
+															{sub(
+																Liferay.Language.get(
+																	'to-clear-data-from-x,-copy-the-sentence-below-to-confirm-your-intention-to-clear-data-from-this-property'
+																),
+																[name]
+															)}
+														</strong>
+													</p>
+
+													<p>
+														{Liferay.Language.get(
+															'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
 														)}
-													</strong>
-												</p>
-
-												<p>
-													{Liferay.Language.get(
-														'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
-													)}
-												</p>
-											</>
-										),
-										deleteButtonLabel: Liferay.Language.get(
-											'clear-data'
-										),
-										deleteConfirmationText: sub(
-											Liferay.Language.get('clear-x'),
-											[name]
-										),
-										onClose: close,
-										onSubmit: () => {
-											API.channels
-												.clear({
-													groupId,
-													ids: [id]
-												})
-												.then(() => {
-													const clearedMessage = Liferay.Language.get(
-														'data-from-x-has-been-cleared'
-													);
-
-													addAlert({
-														alertType:
-															Alert.Types.Success,
-														message: sub(
-															clearedMessage,
-															[name]
-														) as string
-													});
-
-													close();
-												})
-												.catch(err =>
-													addAlert({
-														alertType:
-															Alert.Types.Error,
-														message:
-															err.message ===
-															UNAUTHORIZED_ACCESS
-																? Liferay.Language.get(
-																		'unauthorized-access'
-																  )
-																: Liferay.Language.get(
-																		'error'
-																  ),
-														timeout: false
-													})
-												);
-										},
-										title: sub(
-											Liferay.Language.get(
-												'clear-x-data?'
+													</p>
+												</>
 											),
-											[name]
-										)
-									})
+											deleteButtonLabel: Liferay.Language.get(
+												'clear-data'
+											),
+											deleteConfirmationText: sub(
+												Liferay.Language.get('clear-x'),
+												[name]
+											),
+											onClose: close,
+											onSubmit: () => {
+												API.channels
+													.clear({
+														groupId,
+														ids: [id]
+													})
+													.then(() => {
+														const clearedMessage = Liferay.Language.get(
+															'data-from-x-has-been-cleared'
+														);
+
+														addAlert({
+															alertType:
+																Alert.Types
+																	.Success,
+															message: sub(
+																clearedMessage,
+																[name]
+															) as string
+														});
+
+														close();
+													})
+													.catch(err =>
+														addAlert({
+															alertType:
+																Alert.Types
+																	.Error,
+															message:
+																err.message ===
+																UNAUTHORIZED_ACCESS
+																	? Liferay.Language.get(
+																			'unauthorized-access'
+																	  )
+																	: Liferay.Language.get(
+																			'error'
+																	  ),
+															timeout: false
+														})
+													);
+											},
+											title: sub(
+												Liferay.Language.get(
+													'clear-x-data?'
+												),
+												[name]
+											)
+										}
+									)
 								}
 							>
 								{Liferay.Language.get('clear-data')}
@@ -344,107 +350,120 @@ const View: React.FC<IViewProps> = ({
 										return;
 									}
 
-									open(modalTypes.DELETE_CONFIRMATION_MODAL, {
-										children: (
-											<>
-												<p>
-													<strong>
-														{sub(
-															Liferay.Language.get(
-																'to-delete-x,-copy-the-sentence-below-to-confirm-your-intention-to-delete-property'
-															),
-															[name]
+									open(
+										Modal.modalTypes
+											.DELETE_CONFIRMATION_MODAL,
+										{
+											children: (
+												<>
+													<p>
+														<strong>
+															{sub(
+																Liferay.Language.get(
+																	'to-delete-x,-copy-the-sentence-below-to-confirm-your-intention-to-delete-property'
+																),
+																[name]
+															)}
+														</strong>
+													</p>
+
+													<p>
+														{Liferay.Language.get(
+															'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
 														)}
-													</strong>
-												</p>
+													</p>
+												</>
+											),
+											deleteButtonLabel: Liferay.Language.get(
+												'delete'
+											),
+											deleteConfirmationText: sub(
+												Liferay.Language.get(
+													'delete-x'
+												),
+												[name]
+											),
+											onClose: close,
+											onSubmit: () => {
+												API.channels
+													.delete({
+														groupId,
+														ids: [id]
+													})
+													.then(() => {
+														const deletedMessage = Liferay.Language.get(
+															'x-has-been-deleted'
+														);
 
-												<p>
-													{Liferay.Language.get(
-														'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
-													)}
-												</p>
-											</>
-										),
-										deleteButtonLabel: Liferay.Language.get(
-											'delete'
-										),
-										deleteConfirmationText: sub(
-											Liferay.Language.get('delete-x'),
-											[name]
-										),
-										onClose: close,
-										onSubmit: () => {
-											API.channels
-												.delete({
-													groupId,
-													ids: [id]
-												})
-												.then(() => {
-													const deletedMessage = Liferay.Language.get(
-														'x-has-been-deleted'
-													);
+														close();
 
-													close();
-
-													history.push(
-														toRoute(
-															Routes.SETTINGS_CHANNELS,
-															{
-																groupId,
-																id
-															}
-														)
-													);
-
-													addAlert({
-														alertType:
-															Alert.Types.Success,
-														message: sub(
-															deletedMessage,
-															[name]
-														) as string
-													});
-
-													if (
-														defaultChannelId === id
-													) {
-														updateDefaultChannelId({
-															defaultChannelId: null,
-															groupId
-														});
-
-														setBackURL(
+														history.push(
 															toRoute(
-																Routes.WORKSPACE_WITH_ID,
+																Routes.SETTINGS_CHANNELS,
 																{
-																	groupId
+																	groupId,
+																	id
 																}
 															)
 														);
-													}
-												})
-												.catch(err =>
-													addAlert({
-														alertType:
-															Alert.Types.Error,
-														message:
-															err.message ===
-															UNAUTHORIZED_ACCESS
-																? Liferay.Language.get(
-																		'unauthorized-access'
-																  )
-																: Liferay.Language.get(
-																		'error'
-																  ),
-														timeout: false
+
+														addAlert({
+															alertType:
+																Alert.Types
+																	.Success,
+															message: sub(
+																deletedMessage,
+																[name]
+															) as string
+														});
+
+														if (
+															defaultChannelId ===
+															id
+														) {
+															updateDefaultChannelId(
+																{
+																	defaultChannelId: null,
+																	groupId
+																}
+															);
+
+															setBackURL(
+																toRoute(
+																	Routes.WORKSPACE_WITH_ID,
+																	{
+																		groupId
+																	}
+																)
+															);
+														}
 													})
-												);
-										},
-										title: sub(
-											Liferay.Language.get('delete-x?'),
-											[name]
-										)
-									});
+													.catch(err =>
+														addAlert({
+															alertType:
+																Alert.Types
+																	.Error,
+															message:
+																err.message ===
+																UNAUTHORIZED_ACCESS
+																	? Liferay.Language.get(
+																			'unauthorized-access'
+																	  )
+																	: Liferay.Language.get(
+																			'error'
+																	  ),
+															timeout: false
+														})
+													);
+											},
+											title: sub(
+												Liferay.Language.get(
+													'delete-x?'
+												),
+												[name]
+											)
+										}
+									);
 								}}
 							>
 								{Liferay.Language.get('delete')}
@@ -468,7 +487,7 @@ const View: React.FC<IViewProps> = ({
 						name='permissionType'
 						onChange={val => {
 							if (val === channelPermissionTypes.selectUsers) {
-								open(modalTypes.CONFIRMATION_MODAL, {
+								open(Modal.modalTypes.CONFIRMATION_MODAL, {
 									message: (
 										<div className='text-secondary'>
 											{Liferay.Language.get(

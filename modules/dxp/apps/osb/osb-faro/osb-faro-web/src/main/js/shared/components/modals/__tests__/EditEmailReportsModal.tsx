@@ -2,7 +2,7 @@ import EditEmailReportsModal from '../EditEmailReportsModal';
 import React from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
-import {close} from 'shared/actions/modals';
+import {close} from 'shared/hooks/useModal';
 import {fireEvent, render} from '@testing-library/react';
 import {Frequency} from 'settings/channels/components/EmailReports';
 

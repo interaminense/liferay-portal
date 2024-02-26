@@ -6,7 +6,7 @@ import Form from 'shared/components/form';
 import NavigationWarning from 'shared/components/NavigationWarning';
 import React, {useContext, useMemo, useState} from 'react';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert, RangeSelectors} from 'shared/types';
+import {Alert, Modal, RangeSelectors} from 'shared/types';
 import {AttributesContext} from '../components/event-analysis-editor/context/attributes';
 import {
 	Breakdowns,
@@ -14,7 +14,6 @@ import {
 	Event,
 	Filters
 } from 'event-analysis/utils/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose, withRangeKey} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {
@@ -29,6 +28,7 @@ import {omit} from 'lodash';
 import {Routes, toRoute} from 'shared/util/router';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useHistory, useParams} from 'react-router-dom';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation} from '@apollo/react-hooks';
 import {WithRangeKeyProps} from 'shared/hoc/WithRangeKey';
 
@@ -73,13 +73,12 @@ interface IBaseEventAnalysisPageProps
 
 const BaseEventAnalysisPage: React.FC<IBaseEventAnalysisPageProps> = ({
 	addAlert,
-	close,
 	compareToPrevious: initialCompareToPrevious = false,
 	event: initialEvent = null,
 	name: initialName = '',
-	open,
 	rangeSelectors: initialRangeSelectors
 }) => {
+	const {close, open} = useModal();
 	const history = useHistory();
 	const {channelId, groupId, id: eventAnalysisId = null} = useParams();
 
@@ -114,7 +113,7 @@ const BaseEventAnalysisPage: React.FC<IBaseEventAnalysisPageProps> = ({
 
 	const handleSubmit = ({name}, {setSubmitting}) => {
 		open(
-			modalTypes.LOADING_MODAL,
+			Modal.modalTypes.LOADING_MODAL,
 			{
 				message: Liferay.Language.get('this-will-only-take-a-moment'),
 				title: eventAnalysisId

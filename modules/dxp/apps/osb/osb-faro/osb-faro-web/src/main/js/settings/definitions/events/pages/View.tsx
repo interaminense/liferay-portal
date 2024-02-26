@@ -6,22 +6,22 @@ import EVENT_DEFINITION_QUERY, {
 } from 'event-analysis/queries/EventDefinitionQuery';
 import EventDetailsCard from '../components/EventDetailsCard';
 import React from 'react';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {connect} from 'react-redux';
 import {Event} from 'event-analysis/utils/types';
 import {getDefinitions, getEvents} from 'shared/util/breadcrumbs';
-import {HasModal, Modal} from 'shared/types';
+import {Modal} from 'shared/types/Modal';
 import {SafeResults} from 'shared/hoc/util';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 import {useQuery} from '@apollo/react-hooks';
 
-interface IViewProps extends React.HTMLAttributes<HTMLElement>, HasModal {
-	close: Modal.close;
+interface IViewProps {
 	eventId: string;
-	groupId: string;
-	open: Modal.open;
 }
 
-const View: React.FC<IViewProps> = ({close, eventId, groupId, open}) => {
+const View: React.FC<IViewProps> = ({eventId}) => {
+	const {close, open} = useModal();
+	const {groupId} = useParams();
+
 	const result = useQuery<EventDefinitionData, EventDefinitionVariables>(
 		EVENT_DEFINITION_QUERY,
 		{
@@ -33,7 +33,7 @@ const View: React.FC<IViewProps> = ({close, eventId, groupId, open}) => {
 		{
 			label: Liferay.Language.get('edit'),
 			onClick: () =>
-				open(modalTypes.EDIT_ATTRIBUTE_EVENT_MODAL, {
+				open(Modal.modalTypes.EDIT_ATTRIBUTE_EVENT_MODAL, {
 					id: eventId,
 					mutation: UPDATE_EVENT_DEFINITION,
 					onClose: close,
@@ -79,4 +79,4 @@ const View: React.FC<IViewProps> = ({close, eventId, groupId, open}) => {
 	);
 };
 
-export default connect(null, {close, open})(View);
+export default View;

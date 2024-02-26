@@ -3,57 +3,55 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import getCN from 'classnames';
 import React from 'react';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {connect} from 'react-redux';
-import {DisplayType} from 'shared/types';
+import {DisplayType, Modal} from 'shared/types';
 import {PROD_MODE} from 'shared/util/constants';
 import {Routes, toRoute} from 'shared/util/router';
+import {useModal} from 'shared/hooks/useModal';
 
-interface IEmptyStateProps extends React.HTMLAttributes<HTMLElement> {
-	close: () => void;
-	open: (string, object) => void;
-}
+interface IEmptyStateProps extends React.HTMLAttributes<HTMLElement> {}
 
-const EmptyState: React.FC<IEmptyStateProps> = ({
-	className,
-	close,
-	open,
-	...otherProps
-}) => (
-	<div className={getCN('empty-container row', className)} {...otherProps}>
-		<div className={PROD_MODE ? 'col-xl-12' : 'col-xl-6'}>
-			<CardEmpty
-				buttonProps={{
-					displayType: 'primary',
-					label: Liferay.Language.get('contact-sales'),
-					onClick: () =>
-						open(modalTypes.CONTACT_SALES_MODAL, {
-							onClose: close
-						})
-				}}
-				description={Liferay.Language.get(
-					'do-more-with-our-business-&-enterprise-plans'
-				)}
-				icon='ac-integration'
-			/>
-		</div>
+const EmptyState: React.FC<IEmptyStateProps> = ({className, ...otherProps}) => {
+	const {close, open} = useModal();
 
-		{!PROD_MODE && (
-			<div className='col-xl-6'>
+	return (
+		<div
+			className={getCN('empty-container row', className)}
+			{...otherProps}
+		>
+			<div className={PROD_MODE ? 'col-xl-12' : 'col-xl-6'}>
 				<CardEmpty
 					buttonProps={{
-						href: toRoute(Routes.WORKSPACE_ADD_TRIAL),
-						label: Liferay.Language.get('start-free-trial')
+						displayType: 'primary',
+						label: Liferay.Language.get('contact-sales'),
+						onClick: () =>
+							open(Modal.modalTypes.CONTACT_SALES_MODAL, {
+								onClose: close
+							})
 					}}
 					description={Liferay.Language.get(
-						'90-day-full-feature-trial'
+						'do-more-with-our-business-&-enterprise-plans'
 					)}
-					icon='ac-page-analytics'
+					icon='ac-integration'
 				/>
 			</div>
-		)}
-	</div>
-);
+
+			{!PROD_MODE && (
+				<div className='col-xl-6'>
+					<CardEmpty
+						buttonProps={{
+							href: toRoute(Routes.WORKSPACE_ADD_TRIAL),
+							label: Liferay.Language.get('start-free-trial')
+						}}
+						description={Liferay.Language.get(
+							'90-day-full-feature-trial'
+						)}
+						icon='ac-page-analytics'
+					/>
+				</div>
+			)}
+		</div>
+	);
+};
 
 interface ICardItemProps extends React.HTMLAttributes<HTMLElement> {
 	buttonProps: {
@@ -100,4 +98,4 @@ export const CardEmpty: React.FC<ICardItemProps> = ({
 	);
 };
 
-export default connect(null, {close, open})(EmptyState);
+export default EmptyState;

@@ -2,6 +2,7 @@ import * as data from 'test/data';
 import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import Workspaces, {routingFn} from '../Workspaces';
 import {ApolloProvider} from '@apollo/react-components';
 import {BrowserRouter} from 'react-router-dom';
 import {cleanup, render} from '@testing-library/react';
@@ -10,7 +11,6 @@ import {noop} from 'lodash';
 import {Project} from 'shared/util/records';
 import {Provider} from 'react-redux';
 import {Routes, toRoute} from 'shared/util/router';
-import {routingFn, Workspaces} from '../Workspaces';
 
 const corpProjectUuid = 'corpProjectUuid24';
 

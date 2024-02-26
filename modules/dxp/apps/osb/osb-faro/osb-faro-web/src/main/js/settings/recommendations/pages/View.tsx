@@ -6,8 +6,7 @@ import RecommendationJobRunsQuery from '../queries/RecommendationJobRunsQuery';
 import TrainingItemsCard from '../components/TrainingItemsCard';
 import withRecommendation from 'shared/hoc/WithRecommendation';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose} from 'redux';
 import {connect, ConnectedProps} from 'react-redux';
 import {Filter, Job} from '../utils/utils';
@@ -21,29 +20,28 @@ import {
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useHistory, useParams} from 'react-router-dom';
+import {useModal} from 'shared/hooks/useModal';
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {useParams} from 'react-router-dom';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
-import {withHistory} from 'shared/hoc';
 
 const {
 	pagination: {orderDescending}
 } = Constants;
-const connector = connect(null, {addAlert, close, open});
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IViewProps extends PropsFromRedux {
-	history: {
-		push: (value: string) => void;
-	};
 	job: Job;
 }
 
-const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
+const View: React.FC<IViewProps> = ({addAlert, job}) => {
 	const {groupId, jobId} = useParams();
 	const {timeZoneId} = useTimeZone();
 	const currentUser = useCurrentUser();
+	const {close, open} = useModal();
+	const history = useHistory();
 
 	const {data: jobRuns, loading} = useQuery(RecommendationJobRunsQuery, {
 		variables: {
@@ -97,7 +95,8 @@ const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
 										label: Liferay.Language.get('retrain'),
 										onClick: () => {
 											open(
-												modalTypes.MANUALLY_RETRAIN_MODEL_MODAL,
+												Modal.modalTypes
+													.MANUALLY_RETRAIN_MODEL_MODAL,
 												{
 													job,
 													onClose: close,
@@ -164,7 +163,8 @@ const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
 										label: Liferay.Language.get('delete'),
 										onClick: () => {
 											open(
-												modalTypes.CONFIRMATION_MODAL,
+												Modal.modalTypes
+													.CONFIRMATION_MODAL,
 												{
 													message: (
 														<div>
@@ -268,4 +268,4 @@ const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
 	);
 };
 
-export default compose<any>(withRecommendation, withHistory, connector)(View);
+export default compose<any>(withRecommendation, connector)(View);

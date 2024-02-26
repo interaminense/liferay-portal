@@ -9,17 +9,16 @@ import SearchableEntityTable from 'shared/components/SearchableEntityTable';
 import URLConstants from 'shared/util/url-constants';
 import withStatefulPagination from 'shared/hoc/StatefulPagination';
 import {applyTimeZone} from 'shared/util/date';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {compose} from 'shared/hoc';
-import {connect, ConnectedProps} from 'react-redux';
 import {createOrderIOMap} from 'shared/util/pagination';
 import {getDefinitions} from 'shared/util/breadcrumbs';
+import {Modal} from 'shared/types/Modal';
 import {omit} from 'lodash';
 import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {User} from 'shared/util/records';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const SearchableEntityTableHOC = withStatefulPagination(
@@ -30,27 +29,14 @@ const SearchableEntityTableHOC = withStatefulPagination(
 	props => omit(props, 'onSearchValueChange')
 );
 
-const connector = connect(null, {close, open});
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IIndividualAttributesProps
-	extends PropsFromRedux,
-		React.HTMLAttributes<HTMLElement> {
-	currentUser: User;
-	groupId: string;
-}
-
-const IndividualAttributes: React.FC<IIndividualAttributesProps> = ({
-	close,
-	groupId,
-	open
-}) => {
+const IndividualAttributes = () => {
 	const currentUser = useCurrentUser();
 	const {timeZoneId} = useTimeZone();
+	const {groupId} = useParams();
+	const {close, open} = useModal();
 
 	const openModal = ({dataSources, fieldName}) => () => {
-		open(modalTypes.INDIVIDUAL_ATTRIBUTES_MODAL, {
+		open(Modal.modalTypes.INDIVIDUAL_ATTRIBUTES_MODAL, {
 			dataSources,
 			fieldName,
 			onClose: close
@@ -182,4 +168,4 @@ const IndividualAttributes: React.FC<IIndividualAttributesProps> = ({
 	);
 };
 
-export default compose<any>(connector)(IndividualAttributes);
+export default IndividualAttributes;

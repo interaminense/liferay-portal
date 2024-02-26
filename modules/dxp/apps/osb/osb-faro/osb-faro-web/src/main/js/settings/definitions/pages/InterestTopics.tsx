@@ -17,8 +17,7 @@ import {
 	withSelectionProvider
 } from 'shared/context/selection';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {Alert, Modal} from 'shared/types';
 import {compose} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {CREATE_DATE, createOrderIOMap, KEYWORD} from 'shared/util/pagination';
@@ -30,13 +29,15 @@ import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {UNAUTHORIZED_ACCESS} from 'shared/util/request';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useRequest} from 'shared/hooks/useRequest';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const INITIAL_PAGE = 1;
 
-const connector = connect(null, {addAlert, close, open});
+const connector = connect(null, {addAlert});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -44,12 +45,9 @@ interface IInterestTopicsProps extends PropsFromRedux {
 	groupId: string;
 }
 
-const InterestTopics: React.FC<IInterestTopicsProps> = ({
-	addAlert,
-	close,
-	groupId,
-	open
-}) => {
+const InterestTopics: React.FC<IInterestTopicsProps> = ({addAlert}) => {
+	const {close, open} = useModal();
+	const {groupId} = useParams();
 	const currentUser = useCurrentUser();
 	const {timeZoneId} = useTimeZone();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
@@ -70,7 +68,7 @@ const InterestTopics: React.FC<IInterestTopicsProps> = ({
 	});
 
 	const handleInsertModal = () => {
-		open(modalTypes.INSERT_BLOCKED_KEYWORDS, {
+		open(Modal.modalTypes.INSERT_BLOCKED_KEYWORDS, {
 			onClose: close,
 			onSubmit: handleAddKeywords
 		});
@@ -135,7 +133,7 @@ const InterestTopics: React.FC<IInterestTopicsProps> = ({
 	};
 
 	const handleDeleteKeyword = (ids: string[]) => () => {
-		open(modalTypes.CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.CONFIRMATION_MODAL, {
 			message: sub(
 				Liferay.Language.get(
 					'are-you-sure-you-want-to-delete-x-keywords'

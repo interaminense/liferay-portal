@@ -1,17 +1,18 @@
-import * as actions from '../modals';
+import {close, closeAll, open} from '../useModal';
 import {isFSA} from 'flux-standard-action';
+import {Modal} from 'sared/types/Modal';
 
 describe('Modal Actions', () => {
 	describe('open', () => {
 		it('should return an action', () => {
-			const action = actions.open();
+			const action = open();
 
 			expect(isFSA(action)).toBe(true);
-			expect(action.type).toBe(actions.actionTypes.OPEN_MODAL);
+			expect(action.type).toBe(Modal.actionTypes.OPEN_MODAL);
 		});
 
 		it('should contain modal type and props', () => {
-			const action = actions.open('Foo', {hidden: true});
+			const action = open('Foo', {hidden: true});
 
 			expect(action.payload.props.hidden).toBe(true);
 			expect(action.payload.type).toBe('Foo');
@@ -20,19 +21,19 @@ describe('Modal Actions', () => {
 
 	describe('close', () => {
 		it('should return an action', () => {
-			const action = actions.close();
+			const action = close();
 
 			expect(isFSA(action)).toBe(true);
-			expect(action.type).toBe(actions.actionTypes.CLOSE_MODAL);
+			expect(action.type).toBe(Modal.actionTypes.CLOSE_MODAL);
 		});
 	});
 
 	describe('closeAll', () => {
 		it('should return an action', () => {
-			const action = actions.closeAll();
+			const action = closeAll();
 
 			expect(isFSA(action)).toBe(true);
-			expect(action.type).toBe(actions.actionTypes.CLOSE_ALL_MODALS);
+			expect(action.type).toBe(Modal.actionTypes.CLOSE_ALL_MODALS);
 		});
 	});
 });

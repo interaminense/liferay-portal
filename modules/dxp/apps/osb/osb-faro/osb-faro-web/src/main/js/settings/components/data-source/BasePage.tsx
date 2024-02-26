@@ -4,10 +4,9 @@ import getCN from 'classnames';
 import React from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert, Modal} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {DataSource, User} from 'shared/util/records';
+import {DataSource} from 'shared/util/records';
 import {deleteDataSource} from 'shared/actions/data-sources';
 import {ENABLE_DELETE_DATA_SOURCE_BUTTON} from 'shared/util/constants';
 import {
@@ -17,7 +16,9 @@ import {
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {truncate} from 'lodash';
-import {withHistory} from 'shared/hoc';
+import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useHistory, useParams} from 'react-router-dom';
+import {useModal} from 'shared/hooks/useModal';
 
 const getPageDescription = dataSource =>
 	dataSource
@@ -29,8 +30,6 @@ const getPageDescription = dataSource =>
 
 interface IBaseDataSourcePageProps extends React.HTMLAttributes<HTMLElement> {
 	addAlert: Alert.AddAlert;
-	close: Modal.close;
-	currentUser: User;
 	documentTitle: string;
 	dataSource: DataSource;
 	deleteDataSource: ({
@@ -40,12 +39,7 @@ interface IBaseDataSourcePageProps extends React.HTMLAttributes<HTMLElement> {
 		groupId: string;
 		id: string;
 	}) => Promise<void>;
-	groupId: string;
-	history: {
-		push: (path: string) => void;
-	};
 	id: string;
-	open: Modal.open;
 	pageDescription: string;
 	pageTitle: React.ReactNode;
 	passedChildren: React.ReactNode;
@@ -55,25 +49,24 @@ interface IBaseDataSourcePageProps extends React.HTMLAttributes<HTMLElement> {
 const BaseDataSourcePage: React.FC<IBaseDataSourcePageProps> = ({
 	addAlert,
 	className = '',
-	close,
-	currentUser,
 	dataSource,
 	deleteDataSource,
 	documentTitle = Liferay.Language.get('configure-data-source'),
-	groupId,
-	history,
 	id,
-	open,
 	pageDescription,
 	pageTitle = Liferay.Language.get('configure-data-source'),
 	passedChildren,
 	showDelete = false,
 	...otherProps
 }) => {
+	const {close, open} = useModal();
+	const currentUser = useCurrentUser();
+	const {groupId} = useParams();
+	const history = useHistory();
 	const name = dataSource ? dataSource.name : '';
 
 	const handleDeleteClick = () => {
-		open(modalTypes.DELETE_CONFIRMATION_MODAL, {
+		open(Modal.modalTypes.DELETE_CONFIRMATION_MODAL, {
 			children: (
 				<p>
 					<strong>
@@ -171,6 +164,5 @@ const getOwnChildren = (store, ownProps) => ({
 });
 
 export default compose<any>(
-	withHistory,
-	connect(getOwnChildren, {addAlert, close, deleteDataSource, open})
+	connect(getOwnChildren, {addAlert, deleteDataSource})
 )(BaseDataSourcePage);

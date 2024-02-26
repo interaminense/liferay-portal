@@ -3,28 +3,18 @@ import BasePage from 'settings/components/BasePage';
 import getCN from 'classnames';
 import React from 'react';
 import SelectDataSource from '../components/SelectDataSource';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose, withAdminPermission} from 'shared/hoc';
-import {connect} from 'react-redux';
 import {ENABLE_CSVFILE} from 'shared/util/constants';
 import {ENABLE_SALESFORCE} from 'shared/util/constants';
+import {Modal} from 'shared/types/Modal';
 import {Routes, toRoute} from 'shared/util/router';
+import {useModal} from 'shared/hooks/useModal';
+import {useParams} from 'react-router-dom';
 
-interface IAddDataSourceProps extends React.HTMLAttributes<HTMLDivElement> {
-	close: () => void;
-	groupId: string;
-	open: (
-		modalType: string,
-		{groupId, onClose}: {groupId: string; onClose: () => void}
-	) => void;
-}
+export const AddDataSource = ({className}) => {
+	const {close, open} = useModal();
+	const {groupId} = useParams();
 
-export const AddDataSource: React.FC<IAddDataSourceProps> = ({
-	className,
-	close,
-	groupId,
-	open
-}) => {
 	const getDataSourceSections = () => [
 		{
 			dataSources: [
@@ -41,7 +31,7 @@ export const AddDataSource: React.FC<IAddDataSourceProps> = ({
 							}
 						);
 
-						open(modalTypes.CONNECT_DXP_MODAL, {
+						open(Modal.modalTypes.CONNECT_DXP_MODAL, {
 							groupId,
 							onClose: close
 						});
@@ -96,7 +86,4 @@ export const AddDataSource: React.FC<IAddDataSourceProps> = ({
 	);
 };
 
-export default compose(
-	withAdminPermission,
-	connect(null, {close, open})
-)(AddDataSource);
+export default compose(withAdminPermission)(AddDataSource);

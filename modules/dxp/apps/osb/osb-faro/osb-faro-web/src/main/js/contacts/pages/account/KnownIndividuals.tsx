@@ -12,11 +12,11 @@ import {
 	LAST_ACTIVITY_DATE,
 	NAME
 } from 'shared/util/pagination';
-import {connect, ConnectedProps} from 'react-redux';
 import {individualsListColumns} from 'shared/util/table-columns';
-import {RootState} from 'shared/store';
 import {Sizes} from 'shared/util/constants';
+import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const fetchIndividuals = ({id, ...otherParams}) =>
 	API.individuals.search({
@@ -24,31 +24,16 @@ const fetchIndividuals = ({id, ...otherParams}) =>
 		accountId: id
 	});
 
-const connector = connect((store: RootState, {groupId}: {groupId: string}) => ({
-	timeZoneId: store.getIn([
-		'projects',
-		groupId,
-		'data',
-		'timeZone',
-		'timeZoneId'
-	])
-}));
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IKnownIndividualsProps extends PropsFromRedux {
+interface IKnownIndividualsProps {
 	channelId: string;
 	groupId: string;
 	id: string;
 	timeZoneId: string;
 }
 
-const KnownIndividuals: React.FC<IKnownIndividualsProps> = ({
-	channelId,
-	groupId,
-	id,
-	timeZoneId
-}) => {
+const KnownIndividuals: React.FC<IKnownIndividualsProps> = ({id}) => {
+	const {channelId, groupId} = useParams();
+	const {timeZoneId} = useTimeZone();
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME)
 	});
@@ -129,4 +114,4 @@ const KnownIndividuals: React.FC<IKnownIndividualsProps> = ({
 	);
 };
 
-export default connector(KnownIndividuals);
+export default KnownIndividuals;

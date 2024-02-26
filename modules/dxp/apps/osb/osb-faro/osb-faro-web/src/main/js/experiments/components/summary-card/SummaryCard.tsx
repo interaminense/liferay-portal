@@ -6,8 +6,7 @@ import {SummaryNoWinnerCard} from './SummaryNoWinnerCard';
 import {SummaryRunningCard} from './SummaryRunningCard';
 import {SummaryTerminatedCard} from './SummaryTerminatedCard';
 import {SummaryWinnerCard} from './SummaryWinnerCard';
-import {useParams} from 'react-router-dom';
-import {useStore} from 'react-redux';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const Component = {
 	[Status.Completed]: SummaryCompletedCard,
@@ -19,11 +18,7 @@ const Component = {
 };
 
 export const SummaryCard = ({experiment}) => {
-	const {groupId} = useParams();
-	const store = useStore();
-	const timeZoneId = store
-		.getState()
-		.getIn(['projects', groupId, 'data', 'timeZone', 'timeZoneId']);
+	const {timeZoneId} = useTimeZone();
 	const SummaryComponent = Component[experiment.status.toLowerCase()];
 
 	return <SummaryComponent experiment={experiment} timeZoneId={timeZoneId} />;
