@@ -27,16 +27,16 @@ const PLAN_LEVEL_MAP = {
 };
 
 const LXC_PLAN_LEVEL_MAP = {
-	[PLANS.lxcPro.name]: 0,
-	[PLANS.lxcBusiness.name]: 1,
-	[PLANS.lxcEnterprise.name]: 2
+	[PLANS.lxcPro?.name]: 0,
+	[PLANS.lxcBusiness?.name]: 1,
+	[PLANS.lxcEnterprise?.name]: 2
 };
 
 function isLxcPlan(name) {
 	if (
-		name === PLANS.lxcBusiness.name ||
-		name === PLANS.lxcEnterprise.name ||
-		name === PLANS.lxcPro.name
+		name === PLANS.lxcBusiness?.name ||
+		name === PLANS.lxcEnterprise?.name ||
+		name === PLANS.lxcPro?.name
 	) {
 		return true;
 	}
