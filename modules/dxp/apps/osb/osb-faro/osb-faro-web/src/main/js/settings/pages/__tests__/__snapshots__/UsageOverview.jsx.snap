@@ -469,7 +469,7 @@ exports[`UsageOverview should render 1`] = `
                 <span
                   class="text-3 text-secondary"
                 >
-                  Users synced to Analytics Cloud that are active and logged in on DXP since Jul 08, 2018.
+                  Active logged-in users on your DXP instance tracked by Analytics Cloud since Jul 08, 2018.
                 </span>
                 <div
                   class="mt-3"
@@ -495,7 +495,7 @@ exports[`UsageOverview should render 1`] = `
                   <span
                     class="text-3 text-secondary"
                   >
-                    102,943 Known Individuals are available.
+                    102,943 known individuals are available.
                   </span>
                   <div
                     class="mt-4"
@@ -527,7 +527,7 @@ exports[`UsageOverview should render 1`] = `
               <span
                 class="text-3 text-secondary"
               >
-                Non-unique visits to any of the pages synced to Analytics Cloud since Jul 08, 2018.
+                Total page views tracked by Analytics Cloud since Jul 08, 2018.
               </span>
               <div
                 class="mt-3"
@@ -553,7 +553,7 @@ exports[`UsageOverview should render 1`] = `
                 <span
                   class="text-3 text-secondary"
                 >
-                  6,899,977 Page Views are available.
+                  6,899,977 page views are available.
                 </span>
               </div>
             </div>

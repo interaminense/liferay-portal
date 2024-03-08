@@ -93,12 +93,12 @@ describe('UsageOverview', () => {
 
 		expect(
 			getByText(
-				'Users synced to Analytics Cloud that are active and logged in on DXP since Jul 08, 2018.'
+				'Active logged-in users on your DXP instance tracked by Analytics Cloud since Jul 08, 2018.'
 			)
 		).toBeInTheDocument();
 
 		expect(
-			getByText('104,000 Known Individuals are available.')
+			getByText('104,000 known individuals are available.')
 		).toBeInTheDocument();
 
 		expect(getByText('1,000 of 105,000 - 1% used.')).toBeInTheDocument();
@@ -144,7 +144,7 @@ describe('UsageOverview', () => {
 
 		expect(
 			getByText(
-				'Non-unique visits to any of the pages synced to Analytics Cloud since Jul 08, 2018.'
+				'Active logged-in users on your DXP instance tracked by Analytics Cloud since Jul 08, 2018.'
 			)
 		).toBeInTheDocument();
 
@@ -153,7 +153,7 @@ describe('UsageOverview', () => {
 		).toBeInTheDocument();
 
 		expect(
-			getByText('6,888,877 Page Views are available.')
+			getByText('6,888,877 page views are available.')
 		).toBeInTheDocument();
 	});
 
