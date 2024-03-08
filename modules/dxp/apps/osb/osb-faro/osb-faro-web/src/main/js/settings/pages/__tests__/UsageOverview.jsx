@@ -93,15 +93,17 @@ describe('UsageOverview', () => {
 
 		expect(
 			getByText(
-				'Users synced to Analytics Cloud that are active and logged in on DXP since Jul 08, 2018.'
+				'Active users logged on your DXP instance have been tracked by Analytics Cloud since Jul 08, 2018.'
 			)
 		).toBeInTheDocument();
 
 		expect(
-			getByText('104,000 Known Individuals are available.')
+			getByText('104,000 known individuals are available.')
 		).toBeInTheDocument();
 
-		expect(getByText('1,000 of 105,000 - 1% used.')).toBeInTheDocument();
+		expect(
+			getByText('1,000 of 105,000 - 1% known individual was used.')
+		).toBeInTheDocument();
 	});
 
 	it('should display the limit of INDIVIDUALS and PAGE VIEWS. Also, it should render a warning if INDIVIDUALS is over the limit. Also, it should render the current plan name.', () => {
@@ -144,16 +146,16 @@ describe('UsageOverview', () => {
 
 		expect(
 			getByText(
-				'Non-unique visits to any of the pages synced to Analytics Cloud since Jul 08, 2018.'
+				'Active users logged on your DXP instance have been tracked by Analytics Cloud since Jul 08, 2018.'
 			)
 		).toBeInTheDocument();
 
 		expect(
-			getByText('111,123 of 7,000,000 - 1.6% used.')
+			getByText('111,123 of 7,000,000 - 1.6% page views were used.')
 		).toBeInTheDocument();
 
 		expect(
-			getByText('6,888,877 Page Views are available.')
+			getByText('6,888,877 page views are available.')
 		).toBeInTheDocument();
 	});
 
