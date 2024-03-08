@@ -23,7 +23,7 @@ export const KnownIndividualsSession = ({currentPlan}) => {
 				description={
 					sub(
 						Liferay.Language.get(
-							'users-synced-to-analytics-cloud-that-are-active-and-logged-in-on-dxp-since-x'
+							'active-users-logged-on-your-dxp-instance-have-been-tracked-by-analytics-cloud-since-x'
 						),
 						[
 							formatDateToTimeZone(
@@ -46,12 +46,25 @@ export const KnownIndividualsSession = ({currentPlan}) => {
 						}
 					}}
 					legendText={sub(
-						Liferay.Language.get(
-							'x-known-individuals-are-available'
-						),
+						available === 1
+							? Liferay.Language.get(
+									'1-known-individual-is-available'
+							  )
+							: Liferay.Language.get(
+									'x-known-individuals-are-available'
+							  ),
 						[(available > 0 ? available : 0).toLocaleString()]
 					)}
 					limit={limit}
+					percentageText={percentage =>
+						Number(percentage) === 1
+							? Liferay.Language.get(
+									'1-known-individual-was-used'
+							  )
+							: Liferay.Language.get(
+									'x-known-individuals-were-used'
+							  )
+					}
 				/>
 
 				<div className='mt-4'>

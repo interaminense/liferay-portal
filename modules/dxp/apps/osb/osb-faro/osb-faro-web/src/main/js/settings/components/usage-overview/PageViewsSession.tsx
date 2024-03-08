@@ -18,7 +18,7 @@ export const PageViewsSession = ({currentPlan}) => {
 			description={
 				sub(
 					Liferay.Language.get(
-						'non-unique-visits-to-any-of-the-pages-synced-to-analytics-cloud-since-x'
+						'total-page-views-have-been-tracked-by-analytics-cloud-since-x'
 					),
 					[
 						formatDateToTimeZone(
@@ -45,6 +45,11 @@ export const PageViewsSession = ({currentPlan}) => {
 					[(available > 0 ? available : 0).toLocaleString()]
 				)}
 				limit={limit}
+				percentageText={percentage =>
+					Number(percentage) === 1
+						? Liferay.Language.get('1-page-view-was-used')
+						: Liferay.Language.get('x-page-views-were-used')
+				}
 			/>
 		</UsageMetric>
 	);
