@@ -18,7 +18,7 @@ export const PageViewsSession = ({currentPlan}) => {
 			description={
 				sub(
 					Liferay.Language.get(
-						'non-unique-visits-to-any-of-the-pages-synced-to-analytics-cloud-since-x'
+						'total-page-views-tracked-by-analytics-cloud-since-x'
 					),
 					[
 						formatDateToTimeZone(

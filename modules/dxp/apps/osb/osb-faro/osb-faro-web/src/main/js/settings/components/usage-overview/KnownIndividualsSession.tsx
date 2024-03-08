@@ -23,7 +23,7 @@ export const KnownIndividualsSession = ({currentPlan}) => {
 				description={
 					sub(
 						Liferay.Language.get(
-							'users-synced-to-analytics-cloud-that-are-active-and-logged-in-on-dxp-since-x'
+							'active-logged-in-users-on-your-dxp-instance-tracked-by-analytics-cloud-since-x'
 						),
 						[
 							formatDateToTimeZone(
