@@ -373,10 +373,14 @@ class Analytics {
 	_getUserId() {
 		const {emailAddressHashed} = this.config.identity;
 		const previousEmailAddressHashed = getItemFromCookiesOrLocalStorage(
-			STORAGE_KEY_PREV_EMAIL_ADDRESS_HASHED
+			STORAGE_KEY_PREV_EMAIL_ADDRESS_HASHED,
+			false
 		);
 
-		let userId = getItemFromCookiesOrLocalStorage(STORAGE_KEY_USER_ID);
+		let userId = getItemFromCookiesOrLocalStorage(
+			STORAGE_KEY_USER_ID,
+			false
+		);
 
 		if (!userId) {
 			userId = this._generateUserId();
@@ -441,10 +445,12 @@ class Analytics {
 		);
 
 		const storedIdentityHash = getItemFromCookiesOrLocalStorage(
-			STORAGE_KEY_IDENTITY
+			STORAGE_KEY_IDENTITY,
+			false
 		);
 		const storedChannelId = getItemFromCookiesOrLocalStorage(
-			STORAGE_KEY_CHANNEL_ID
+			STORAGE_KEY_CHANNEL_ID,
+			false
 		);
 
 		if (

@@ -184,14 +184,16 @@ const verifyStorageLimitForKey = (storageKey, limit) => {
  * @param {String} key
  * @returns {String | undefined}
  */
-const getItemFromCookiesOrLocalStorage = (key) => {
+const getItemFromCookiesOrLocalStorage = (key, encode = true) => {
 	let item = getItem(key);
 
 	if (!item) {
 		const itemFromLocalStorage = getItemFromLocalStorage(key);
 
 		if (itemFromLocalStorage) {
-			setItem(key, itemFromLocalStorage);
+			localStorage.removeItem(key);
+
+			setItem(key, itemFromLocalStorage, encode);
 
 			item = itemFromLocalStorage;
 		}
