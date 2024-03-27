@@ -6,9 +6,10 @@ import {fromJS} from 'immutable';
 import {Project} from 'shared/util/records';
 import {Provider} from 'react-redux';
 import {StaticRouter} from 'react-router';
-import {SubscriptionStatuses} from 'shared/util/constants';
+import {SubscriptionStatuses, UserRoleNames} from 'shared/util/constants';
 import {UsageOverview} from '../UsageOverview';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {User} from 'shared/util/records';
 
 jest.unmock('react-dom');
 
