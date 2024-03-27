@@ -9,10 +9,10 @@ import {Text} from '@clayui/core';
 import {toThousands} from 'shared/util/numbers';
 import {UsageMetric} from './UsageMetric';
 import {UsageMetricBarChart} from './UsageMetricBarChart';
-import {useTimeZoneId} from 'shared/hooks';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 export const KnownIndividualsSession = ({currentPlan}) => {
-	const timeZoneId = useTimeZoneId();
+	const {timeZoneId} = useTimeZone();
 	const {count, limit, status} = currentPlan.metrics.get('individuals');
 	const syncedIndividualsCount =
 		currentPlan.metrics.get('syncedIndividualsCount') ?? 0;

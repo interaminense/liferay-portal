@@ -6,10 +6,10 @@ import {CUSTOM_DATE_FORMAT, formatDateToTimeZone} from 'shared/util/date';
 import {STATUS_DISPLAY_MAP} from 'shared/util/subscriptions';
 import {sub} from 'shared/util/lang';
 import {UsageMetric} from './UsageMetric';
-import {useTimeZoneId} from 'shared/hooks';
+import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 export const PageViewsSession = ({currentPlan}) => {
-	const timeZoneId = useTimeZoneId();
+	const {timeZoneId} = useTimeZone();
 	const {count, limit, status} = currentPlan.metrics.get('pageViews');
 	const available = limit - count;
 
