@@ -6,6 +6,7 @@
 import {expect} from '@playwright/test';
 
 import {liferayConfig} from '../../../liferay.config';
+import {HomePage} from '../../../pages/portal-web/HomePage';
 
 export async function acceptsCookiesBanner(page) {
 	const cookiesBannerButton = page.getByRole('button', {name: 'Accept All'});
@@ -45,7 +46,9 @@ export async function disconnectFromAnalyticsCloud(page) {
 export async function goToAnalyticsCloudInstanceSettings(page) {
 	await page.goto(liferayConfig.environment.baseUrl);
 
-	await page.getByLabel('Open Applications MenuCtrl+Alt+A').click();
+	const homepage = new HomePage(page);
+
+	await homepage.openApplicationMenu();
 
 	await page.getByRole('tab', {name: 'Control Panel'}).click();
 
@@ -73,7 +76,7 @@ export async function syncAllContacts(page) {
 		await syncContactsButton.click();
 	}
 
-	await page.getByRole('button', {name: 'Next'}).click();
+	await page.getByRole('button', {exact: true, name: 'Next'}).click();
 }
 
 export async function syncSite(page) {
@@ -90,7 +93,7 @@ export async function syncSite(page) {
 	if (await tryAgainButton.isVisible()) {
 		await page.getByRole('button', {name: 'Previous'}).click();
 
-		await page.getByRole('button', {name: 'Next'}).click();
+		await page.getByRole('button', {exact: true, name: 'Next'}).click();
 	}
 
 	const wizard = page.getByTestId('VIEW_WIZARD_MODE');
@@ -100,26 +103,22 @@ export async function syncSite(page) {
 	});
 
 	await page
-		.getByTestId('Liferay DXP')
+		.getByTestId('Liferay')
 		.getByRole('button', {name: 'Assign'})
 		.click();
 
 	await page.getByRole('tab', {name: 'Sites'}).click();
 
-	await page
-		.getByTestId('1')
-		.getByTestId('Liferay DXP')
-		.getByLabel('')
-		.check();
+	await page.getByTestId('1').getByTestId('Liferay').getByLabel('').check();
 
 	await page
-		.getByLabel('Assign to Liferay DXP')
+		.getByLabel('Assign to Liferay')
 		.getByRole('button', {name: 'Assign'})
 		.click();
 
-	await expect(page.getByLabel('Assign to Liferay DXP')).toBeHidden({
+	await expect(page.getByLabel('Assign to Liferay')).toBeHidden({
 		timeout: 100 * 1000,
 	});
 
-	await page.getByRole('button', {name: 'Next'}).click();
+	await page.getByRole('button', {exact: true, name: 'Next'}).click();
 }
