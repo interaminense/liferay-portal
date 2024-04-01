@@ -21,6 +21,47 @@
 	var analyticsFeatureFlagEnabled = <%= FeatureFlagManagerUtil.isEnabled("LPD-10588") %>;
 
 	var cookieManagers = {
+		'cookie.onetrust': {
+			enabled: () => {
+				if (!window.OneTrustStub) {
+					return Promise.resolve(false);
+				}
+
+				return new Promise((resolve, reject) => {
+					var startTime = Date.now();
+
+					var checkObject = () => {
+						if (window['OneTrust']) {
+							resolve(window['OneTrust']);
+						}
+						else if (Date.now() - startTime >= 5000) {
+							reject();
+						}
+						else {
+							setTimeout(checkObject, 100);
+						}
+					};
+
+					checkObject();
+				})
+					.then(() => {
+						return Promise.resolve(true);
+					})
+					.catch(() => {
+						return Promise.resolve(false);
+					});
+			},
+			checkConsent: () => {
+				var OptanonActiveGroups = window.OptanonActiveGroups;
+
+				return OptanonActiveGroups && OptanonActiveGroups.includes('C0002');
+			},
+			onConsentChange: (callbackFn) => {
+				var OneTrust = window.OneTrust;
+
+				OneTrust.OnConsentChanged(callbackFn);
+			},
+		},
 		'cookie.liferay': {
 			actions: {
 				getItem: (key) => {
@@ -89,58 +130,21 @@
 			checkConsent: () => {
 				var performanceCookieEnabled = Liferay.Util.Cookie.get(
 					Liferay.Util.Cookie.TYPES.PERFORMANCE
-				);
+				)
+
+				if (!analyticsCookiesConsentMode && typeof performanceCookieEnabled === 'undefined') {
+					return true;
+				};
 
 				return performanceCookieEnabled === 'true';
 			},
 			enabled: () => {
 				return Promise.resolve(
-					analyticsFeatureFlagEnabled && analyticsCookiesConsentMode
+					analyticsFeatureFlagEnabled
 				);
 			},
 			onConsentChange: (callbackFn) => {
 				Liferay.on('cookieBannerSetCookie', callbackFn);
-			},
-		},
-		'cookie.onetrust': {
-			enabled: () => {
-				if (!window.OneTrustStub) {
-					return Promise.resolve(false);
-				}
-
-				return new Promise((resolve, reject) => {
-					var startTime = Date.now();
-
-					var checkObject = () => {
-						if (window['OneTrust']) {
-							resolve(window['OneTrust']);
-						}
-						else if (Date.now() - startTime >= 5000) {
-							reject();
-						}
-						else {
-							setTimeout(checkObject, 100);
-						}
-					};
-
-					checkObject();
-				})
-					.then(() => {
-						return Promise.resolve(true);
-					})
-					.catch(() => {
-						return Promise.resolve(false);
-					});
-			},
-			checkConsent: () => {
-				var OptanonActiveGroups = window.OptanonActiveGroups;
-
-				return OptanonActiveGroups && OptanonActiveGroups.includes('C0002');
-			},
-			onConsentChange: (callbackFn) => {
-				var OneTrust = window.OneTrust;
-
-				OneTrust.OnConsentChanged(callbackFn);
 			},
 		},
 	};
