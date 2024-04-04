@@ -24,10 +24,6 @@ export const useFetchCurrentUser = (initialGroupId: string = '0') => {
 		dispatch(fetchCurrentUser(groupId));
 	}, [initialGroupId]);
 
-	if (error) {
-		throw new Error('Error on fetchCurrentUser');
-	}
-
 	return {
 		data,
 		error,
@@ -46,5 +42,13 @@ export const useCurrentUser = (): User => {
 		state.getIn(['users', currentUserId, 'data'])
 	);
 
-	return data;
+	const newUser = new User({
+		emailAddress: '',
+		id: '',
+		name: '',
+		roleName: '',
+		status: 1
+	});
+
+	return data || newUser;
 };
