@@ -6,9 +6,13 @@
 import {STORAGE_KEY_CONTEXTS} from './constants';
 import {convertMapToArr} from './map';
 import {getItem, setItem} from './storage';
+import {
+	getItem as getItemFromCookie,
+	setItem as setItemFromCookie,
+} from './storage-cookie';
 
 const getContexts = (contextStorageKey = STORAGE_KEY_CONTEXTS) => {
-	const storedContextKvArr = getItem(contextStorageKey);
+	const storedContextKvArr = getItemFromCookie(contextStorageKey);
 
 	const storedContexts = new Map();
 
@@ -22,7 +26,7 @@ const getContexts = (contextStorageKey = STORAGE_KEY_CONTEXTS) => {
 };
 
 const setContexts = (contextsMap, contextStorageKey = STORAGE_KEY_CONTEXTS) => {
-	setItem(contextStorageKey, convertMapToArr(contextsMap));
+	setItemFromCookie(contextStorageKey, convertMapToArr(contextsMap));
 };
 
 export {getContexts, setContexts};

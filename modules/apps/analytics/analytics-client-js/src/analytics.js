@@ -29,12 +29,12 @@ import {
 import {getContexts, setContexts} from './utils/contexts';
 import {normalizeEvent} from './utils/events';
 import hash from './utils/hash';
+import {getItem, removeItem, setItem} from './utils/storage';
 import {
-	getItem,
-	getItemFromCookiesOrLocalStorage,
-	removeItem,
-	setItem,
-} from './utils/storage';
+	getItem as getItemFromCookie,
+	removeItem as removeItemFromCookie,
+	setItem as setItemFromCookie,
+} from './utils/storage-cookie';
 import {upgradeStorage} from './utils/storage_version';
 import {isValidEvent} from './utils/validators';
 
@@ -50,7 +50,6 @@ let instance;
  * and flushes it to the defined endpoint at regular intervals.
  */
 class Analytics {
-
 	/**
 	 * Returns an Analytics instance and triggers the automatic flush loop
 	 * @param {Object} config object to instantiate the Analytics tool
@@ -75,10 +74,6 @@ class Analytics {
 		});
 
 		instance.version = ANALYTICS_CLIENT_VERSION;
-
-		//  Instanciates 3rd party cookie manager
-
-		ENV.Analytics.getCookieManager = () => config.cookieManager;
 
 		// Register initial middlewares
 
@@ -129,10 +124,6 @@ class Analytics {
 		ENV.Analytics = self;
 		ENV.Analytics.create = Analytics.create;
 		ENV.Analytics.dispose = Analytics.dispose;
-
-		// It needs to instanciate after new Analytics instance
-
-		ENV.Analytics.getCookieManager = () => config.cookieManager;
 
 		let email = '';
 		let name = '';
@@ -324,10 +315,10 @@ class Analytics {
 	}
 
 	_ensureIntegrity() {
-		const userId = getItem(STORAGE_KEY_USER_ID);
+		const userId = getItemFromCookie(STORAGE_KEY_USER_ID);
 
 		if (userId) {
-			setItem(STORAGE_KEY_USER_ID, userId, false);
+			setItemFromCookie(STORAGE_KEY_USER_ID, userId);
 		}
 	}
 
@@ -379,15 +370,11 @@ class Analytics {
 	 * @returns {Promise} A promise resolved with the stored or generated userId
 	 */
 	_getUserId() {
-		const {emailAddressHashed} = this.config.identity;
-		const previousEmailAddressHashed = getItemFromCookiesOrLocalStorage(
-			STORAGE_KEY_PREV_EMAIL_ADDRESS_HASHED,
-			false
-		);
+		let userId = getItemFromCookie(STORAGE_KEY_USER_ID);
 
-		let userId = getItemFromCookiesOrLocalStorage(
-			STORAGE_KEY_USER_ID,
-			false
+		const {emailAddressHashed} = this.config.identity;
+		const previousEmailAddressHashed = getItemFromCookie(
+			STORAGE_KEY_PREV_EMAIL_ADDRESS_HASHED
 		);
 
 		if (!userId) {
@@ -402,10 +389,9 @@ class Analytics {
 				userId = this._generateUserId();
 			}
 
-			setItem(
+			setItemFromCookie(
 				STORAGE_KEY_PREV_EMAIL_ADDRESS_HASHED,
-				emailAddressHashed,
-				false
+				emailAddressHashed
 			);
 		}
 
@@ -421,9 +407,9 @@ class Analytics {
 	_generateUserId() {
 		const userId = uuidv4();
 
-		setItem(STORAGE_KEY_USER_ID, userId, false);
+		setItemFromCookie(STORAGE_KEY_USER_ID, userId);
 
-		removeItem(STORAGE_KEY_IDENTITY);
+		removeItemFromCookie(STORAGE_KEY_IDENTITY);
 
 		return userId;
 	}
@@ -451,15 +437,8 @@ class Analytics {
 			identity,
 			userId
 		);
-
-		const storedIdentityHash = getItemFromCookiesOrLocalStorage(
-			STORAGE_KEY_IDENTITY,
-			false
-		);
-		const storedChannelId = getItemFromCookiesOrLocalStorage(
-			STORAGE_KEY_CHANNEL_ID,
-			false
-		);
+		const storedIdentityHash = getItemFromCookie(STORAGE_KEY_IDENTITY);
+		const storedChannelId = getItemFromCookie(STORAGE_KEY_CHANNEL_ID);
 
 		if (
 			identityHash !== storedIdentityHash ||
@@ -467,8 +446,8 @@ class Analytics {
 		) {
 			const {emailAddressHashed} = identity;
 
-			setItem(STORAGE_KEY_CHANNEL_ID, channelId, false);
-			setItem(STORAGE_KEY_IDENTITY, identityHash, false);
+			setItemFromCookie(STORAGE_KEY_CHANNEL_ID, channelId);
+			setItemFromCookie(STORAGE_KEY_IDENTITY, identityHash);
 
 			instance[STORAGE_KEY_MESSAGE_IDENTITY].addItem({
 				channelId,
@@ -478,6 +457,38 @@ class Analytics {
 				userId,
 			});
 		}
+	}
+
+	/**
+	 * Sets a browser cookie
+	 * @protected
+	 */
+	_setCookie(key, data) {
+		const Liferay = window.Liferay;
+		const expires = new Date();
+
+		expires.setDate(expires.getDate() + 365);
+
+		// Checks if the client is being loaded with the Liferay global
+		// variable and if there is a Cookie method because the client
+		// is Liferay Portal agnostic and may have versions that do not
+		// yet have the Cookie method.
+
+		if (Liferay?.Util?.Cookie) {
+			Liferay.Util.Cookie.set(
+				key,
+				data,
+				Liferay.Util.Cookie.TYPES.PERSONALIZATION,
+				{
+					expires,
+					secure: true,
+				}
+			);
+		} else {
+			document.cookie = `${key}=${data}; expires=${expires.toUTCString()}; path=/; Secure`;
+		}
+
+		return;
 	}
 
 	/**
@@ -523,11 +534,10 @@ class Analytics {
 	}
 }
 
-// Exposes Analytics to the global scope
+// Exposes Analytics.create to the global scope
 
 ENV.Analytics = {
 	create: Analytics.create,
-	getCookieManager: Analytics.getCookieManager,
 };
 
 export {Analytics};

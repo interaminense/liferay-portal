@@ -6,6 +6,10 @@
 import {STORAGE_KEY_CONTEXTS, STORAGE_KEY_STORAGE_VERSION} from './constants';
 import {setContexts} from './contexts';
 import {getItem, setItem} from './storage';
+import {
+	getItem as getItemFromCookie,
+	setItem as setItemFromCookie,
+} from './storage-cookie';
 
 export const AC_CLIENT_STORAGE_VERSION = 1.0;
 
@@ -13,7 +17,7 @@ const upgradeStorageSteps = [
 	[
 		1.0,
 		() => {
-			const storedContextKvArr = getItem(STORAGE_KEY_CONTEXTS);
+			const storedContextKvArr = getItemFromCookie(STORAGE_KEY_CONTEXTS);
 
 			if (storedContextKvArr && !Array.isArray(storedContextKvArr[0])) {
 				const storedContexts = new Map();
@@ -25,13 +29,13 @@ const upgradeStorageSteps = [
 ];
 
 function getStorageVersion() {
-	const storageVersion = getItem(STORAGE_KEY_STORAGE_VERSION);
+	const storageVersion = getItemFromCookie(STORAGE_KEY_STORAGE_VERSION);
 
 	return storageVersion ? parseFloat(storageVersion) : 0;
 }
 
 function setStorageVersion(version = AC_CLIENT_STORAGE_VERSION) {
-	return setItem(STORAGE_KEY_STORAGE_VERSION, version.toString(), false);
+	return setItemFromCookie(STORAGE_KEY_STORAGE_VERSION, version.toString());
 }
 
 function upgradeStorage() {

@@ -99,8 +99,7 @@ class BaseQueue {
 			this.analyticsInstance._disposeInternal();
 
 			return false;
-		}
-		else {
+		} else {
 			return true;
 		}
 	}
