@@ -27,6 +27,7 @@ import {
 	VALIDATION_CONTEXT_VALUE_MAXIMUM_LENGTH,
 } from './utils/constants';
 import {getContexts, setContexts} from './utils/contexts';
+import {removeCookiesFromUserBrowser} from './utils/cookies';
 import {normalizeEvent} from './utils/events';
 import hash from './utils/hash';
 import {getItem, removeItem, setItem} from './utils/storage';
@@ -45,7 +46,6 @@ let instance;
  * and flushes it to the defined endpoint at regular intervals.
  */
 class Analytics {
-
 	/**
 	 * Returns an Analytics instance and triggers the automatic flush loop
 	 * @param {Object} config object to instantiate the Analytics tool
@@ -70,6 +70,8 @@ class Analytics {
 		});
 
 		instance.version = ANALYTICS_CLIENT_VERSION;
+
+		removeCookiesFromUserBrowser();
 
 		// Register initial middlewares
 
@@ -478,8 +480,7 @@ class Analytics {
 					secure: true,
 				}
 			);
-		}
-		else {
+		} else {
 			document.cookie = `${key}=${data}; expires=${expires.toUTCString()}; path=/; Secure`;
 		}
 
