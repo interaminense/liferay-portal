@@ -10,12 +10,12 @@ import TextTruncate from 'shared/components/TextTruncate';
 import URLConstants from 'shared/util/url-constants';
 import {AssetTypes} from 'shared/util/constants';
 import {ClayPaginationBarWithBasicItems} from '@clayui/pagination-bar';
+import {Containers} from 'shared/components/download-report/DownloadPDFReport';
 import {getSafeRangeSelectors} from 'shared/util/util';
 import {getUrl} from 'shared/util/urls';
 import {Link, useParams} from 'react-router-dom';
 import {metricsListColumns} from 'shared/util/table-columns';
 import {pickBy} from 'lodash';
-import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {Routes} from 'shared/util/router';
 import {useQuery} from '@apollo/react-hooks';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
@@ -39,10 +39,10 @@ export const AssetAppearsOnCard: React.FC<IAssetAppearsOnCardProps> = ({
 	assetType
 }) => (
 	<BaseCard
+		id={Containers.AssetAppearsOnCard}
 		label={Liferay.Language.get('asset-appears-on')}
 		legacyDropdownRangeKey={false}
 		minHeight={536}
-		reportContainer={ReportContainer.AssetAppearsOnCard}
 	>
 		{({rangeSelectors}) => (
 			<AssetAppearsOnStateRenderer
