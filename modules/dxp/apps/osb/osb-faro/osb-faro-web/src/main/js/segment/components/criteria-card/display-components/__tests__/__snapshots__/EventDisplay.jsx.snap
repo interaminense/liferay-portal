@@ -26,6 +26,11 @@ exports[`EventDisplay renders 1`] = `
     since
   </span>
   <span>
+    <strong>
+      Last 24 hours
+    </strong>
+  </span>
+  <span>
     Last 24 hours
   </span>
   <span>
