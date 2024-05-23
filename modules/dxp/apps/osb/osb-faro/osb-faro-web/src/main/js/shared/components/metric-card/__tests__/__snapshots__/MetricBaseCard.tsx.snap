@@ -554,12 +554,16 @@ exports[`MetricBaseCard renders component 1`] = `
                       class="recharts-legend-item-text"
                       style="color: rgb(75, 155, 255);"
                     >
-                      Known Visitors:
-                      <b
-                        class="ml-1"
+                      <span
+                        class="legend-text-color"
                       >
-                        1
-                      </b>
+                        Known Visitors
+                        <b
+                          class="ml-1"
+                        >
+                          1
+                        </b>
+                      </span>
                     </span>
                   </li>
                   <li
@@ -588,12 +592,16 @@ exports[`MetricBaseCard renders component 1`] = `
                       class="recharts-legend-item-text"
                       style="color: rgb(255, 180, 110);"
                     >
-                      Anonymous Visitors:
-                      <b
-                        class="ml-1"
+                      <span
+                        class="legend-text-color"
                       >
-                        0
-                      </b>
+                        Anonymous Visitors
+                        <b
+                          class="ml-1"
+                        >
+                          0
+                        </b>
+                      </span>
                     </span>
                   </li>
                 </ul>
