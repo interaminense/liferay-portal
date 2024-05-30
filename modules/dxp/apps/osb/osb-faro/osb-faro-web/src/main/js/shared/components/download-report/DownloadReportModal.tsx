@@ -17,7 +17,6 @@ import {MomentDateRange} from '../DateRangeInput';
 import {pickBy} from 'lodash';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {removeUriQueryParam, setUriQueryValues} from 'shared/util/router';
-import {spritemap} from 'shared/util/constants';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {useRetentionPeriod} from 'shared/hooks/useRetentionPeriod';
@@ -152,7 +151,6 @@ export const DownloadReportModal: React.FC<IDownloadReportModal> = ({
 					{openAlert && (
 						<ClayAlert
 							onClose={() => setOpenAlert(false)}
-							spritemap={spritemap}
 							title={Liferay.Language.get('info')}
 						>
 							{infoMessage}
