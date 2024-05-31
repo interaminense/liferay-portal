@@ -59,6 +59,10 @@ node {
 	yarnVersion = "1.22.19"
 }
 
+packageRunTestDev {
+	dependsOn ":dxp:apps:osb:osb-faro:yarnInstall"
+}
+
 packageRunWebpack {
 	if (project.hasProperty("faroEnvironmentName")) {
 		environment "FARO_ENVIRONMENT_NAME", faroEnvironmentName
