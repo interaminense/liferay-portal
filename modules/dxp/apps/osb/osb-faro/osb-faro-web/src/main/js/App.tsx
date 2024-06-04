@@ -223,10 +223,14 @@ const App = () => {
 						<ClayLinkContext.Provider
 							value={({
 								children,
-								externalLink,
+								externalLink = false,
 								href,
 								...otherProps
-							}: any) => {
+							}: {
+								children: React.ReactNode;
+								externalLink?: boolean;
+								href?: string;
+							}) => {
 								if (href?.startsWith('http') || externalLink) {
 									return (
 										<a {...otherProps} href={href}>
@@ -236,7 +240,7 @@ const App = () => {
 								}
 
 								return (
-									<Link {...otherProps} to={href}>
+									<Link {...otherProps} to={href || ''}>
 										{children}
 									</Link>
 								);
