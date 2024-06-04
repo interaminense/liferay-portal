@@ -10,8 +10,8 @@ import {dataApiHelpersTest} from '../../fixtures/dataApiHelpersTest';
 import {loginAnalyticsCloudTest} from '../../fixtures/loginAnalyticsCloudTest';
 import {loginTest} from '../../fixtures/loginTest';
 import {liferayConfig} from '../../liferay.config';
-import {syncAnalyticsCloud} from '../analytics-settings-web/utils/analyticsSettings';
 import getRandomString from '../../utils/getRandomString';
+import {syncAnalyticsCloud} from '../analytics-settings-web/utils/analyticsSettings';
 import {faroConfig} from './faro.config';
 
 export const test = mergeTests(
@@ -35,15 +35,19 @@ test('check if updated custom event displayName is shown on segment criteria car
 
 	await page.evaluate(
 		({customEventName}) => {
-			//@ts-ignore
+
+			// @ts-ignore
+
 			if (window.Analytics) {
-				//@ts-ignore
+
+				// @ts-ignore
+
 				window.Analytics.track(customEventName, {
+					propBool: true,
 					propDate: '2024-05-20T01:00:00.000',
 					propDuration: 66840000,
 					propNum: 18,
 					propString: 'test',
-					propBool: true,
 				});
 			}
 		},
