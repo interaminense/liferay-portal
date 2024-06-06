@@ -20,6 +20,7 @@ import {CustomValue} from 'shared/util/records';
 import {fromJS, Map} from 'immutable';
 import {generateGroupId, generateRowId, isCriterionGroup} from './utils';
 import {get, invert, isFinite, isNull, isString, isUndefined} from 'lodash';
+import {getPropertyValue, setPropertyValue} from './custom-inputs';
 import {filter as oDataFilterFn} from 'odata-v4-parser';
 
 const OPERATORS = {
@@ -105,6 +106,10 @@ const FARO_SPECIAL_CHARS = {
 	dollar: {
 		encoded: '_FARO_DOLLAR_',
 		raw: '$'
+	},
+	doubleQuote: {
+		encoded: '_FARO_DOUBLE_QUOTE_',
+		raw: '"'
 	},
 	greaterThan: {
 		encoded: '_FARO_GREATER_THAN_',
@@ -523,9 +528,10 @@ const skipGroup = ({oDataASTNode, prevConjunction}: Context): Context => ({
  * oDataV4Parser can't handle between.
  */
 export const convertBetweenToSubstring = (queryString: string): string =>
-	queryString
-		.replace(/between(?=\([\w-:]+,('[\w-:]+',?){2}\))/g, 'substring')
-		.replaceAll('"', '');
+	queryString.replace(
+		/between(?=\([\w-:]+,('[\w-:]+',?){2}\))/g,
+		'substring'
+	);
 
 /**
  * Converts an OData filter query string to an object that can be used by the
@@ -539,24 +545,49 @@ const translateQueryToCriteria = (queryString: string): Criteria => {
 			throw new Error('queryString is ()');
 		}
 
-		const oDataASTNode = JSON.parse(
-			decodeSpecialCharacters(
-				JSON.stringify(
-					oDataFilterFn(
-						convertBetweenToSubstring(
-							encodeSpecialCharacters(
-								trimSpacesBeforeParams(queryString)
-							)
-						)
-					)
-				)
-			)
-		);
-		const criteriaArray = toCriteria({oDataASTNode});
+		const trim = trimSpacesBeforeParams(queryString);
+		const encoded = encodeSpecialCharacters(trim);
+		const convert = convertBetweenToSubstring(encoded);
+		const filter = oDataFilterFn(convert);
+		const criteriaArray = toCriteria({oDataASTNode: filter});
 
 		criteria = isCriterionGroup(criteriaArray[0])
 			? criteriaArray[0]
 			: wrapInCriteriaGroup(criteriaArray);
+
+		criteria = {
+			...criteria,
+			items: criteria.items.map(criteria => {
+				function getValue(value) {
+					if (typeof value === 'string') {
+						return decodeSpecialCharacters(value);
+					}
+
+					if (value?._map) {
+						const decodeValue = setPropertyValue(
+							value,
+							'value',
+							0,
+							decodeSpecialCharacters(
+								getPropertyValue(value, 'value', 0)
+							)
+						);
+
+						return decodeValue;
+					}
+
+					return value;
+				}
+
+				return {
+					...criteria,
+					propertyName:
+						criteria.propertyName &&
+						decodeSpecialCharacters(criteria.propertyName),
+					value: getValue(criteria.value)
+				};
+			})
+		};
 	} catch (e) {
 		criteria = null;
 	}
