@@ -76,3 +76,5 @@ packageRunWebpack {
 processResources {
 	dependsOn packageRunWebpack
 }
+
+apply from: rootProject.file("build-osb-faro-web.gradle")
