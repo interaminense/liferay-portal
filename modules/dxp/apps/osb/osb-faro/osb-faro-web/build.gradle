@@ -1,3 +1,10 @@
+import com.liferay.gradle.plugins.node.task.PackageRunTask
+import com.liferay.gradle.plugins.node.task.YarnInstallTask
+
+task osbFaroWebPackageRunTest(type: PackageRunTask)
+task osbFaroWebPackageRunWebpack(type: PackageRunTask)
+task osbFaroWebYarnInstall(type: YarnInstallTask)
+
 dependencies {
 	compileInclude group: "com.fasterxml.jackson.jaxrs", name: "jackson-jaxrs-base", version: "2.11.4"
 	compileInclude group: "com.fasterxml.jackson.jaxrs", name: "jackson-jaxrs-json-provider", version: "2.11.4"
@@ -59,6 +66,30 @@ node {
 	yarnVersion = "1.22.19"
 }
 
+osbFaroWebPackageRunTest {
+	dependsOn osbFaroWebPackageRunWebpack
+
+	scriptFile = osbFaroWebYarnInstall.scriptFile
+	scriptName = "test"
+	workingDir = projectDir
+}
+
+osbFaroWebPackageRunWebpack {
+	dependsOn osbFaroWebYarnInstall
+
+	scriptFile = osbFaroWebYarnInstall.scriptFile
+	scriptName = "webpack"
+	workingDir = projectDir
+}
+
+osbFaroWebYarnInstall {
+	doLast {
+		delete ".yarnrc"
+	}
+
+	workingDir = projectDir
+}
+
 packageRunWebpack {
 	if (project.hasProperty("faroEnvironmentName")) {
 		environment "FARO_ENVIRONMENT_NAME", faroEnvironmentName
@@ -76,5 +107,3 @@ packageRunWebpack {
 processResources {
 	dependsOn packageRunWebpack
 }
-
-apply from: rootProject.file("build-osb-faro-web.gradle")
