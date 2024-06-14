@@ -1,4 +1,5 @@
 import withSegment from '../WithSegment';
+import {cleanup} from '@testing-library/react';
 import {renderWithStore} from 'test/mock-store';
 import {Segment} from 'shared/util/records';
 
@@ -9,6 +10,8 @@ jest.mock('shared/hoc/WithAction', () => () => wrappedComponent =>
 );
 
 describe('WithSegment', () => {
+	afterEach(cleanup);
+
 	it('should pass the segment to the WrappedComponent', () => {
 		let result = null;
 

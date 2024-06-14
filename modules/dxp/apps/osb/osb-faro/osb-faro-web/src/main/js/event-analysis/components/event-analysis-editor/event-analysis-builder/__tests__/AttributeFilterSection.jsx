@@ -3,16 +3,18 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
 import {AttributeFilterSection} from '../AttributeFilterSection';
+import {cleanup, render} from '@testing-library/react';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 
 jest.unmock('react-dom');
 
 describe('AttributeFilterSection', () => {
+	afterEach(cleanup);
+
 	const WrappedComponent = props => (
 		<MemoryRouter initialEntries={['/workspace/23/event-analysis']}>
 			<Route path={Routes.EVENT_ANALYSIS}>

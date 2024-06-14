@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {mapPropsToOptions, mapResultToProps} from '../form-abandonment-query';
 
 const router = {
@@ -189,6 +190,8 @@ const data = {
 };
 
 describe('FormAbandonmentQuery mapper', () => {
+	afterEach(cleanup);
+
 	it('should extract items from result', () => {
 		const props = mapResultToProps({data});
 

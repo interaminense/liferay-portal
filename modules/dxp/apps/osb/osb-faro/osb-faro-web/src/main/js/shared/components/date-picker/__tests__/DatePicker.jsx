@@ -2,11 +2,13 @@ import DatePicker from '../index';
 import mockCurrentDate from 'test/mock-date';
 import moment from 'moment';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('DatePicker', () => {
+	afterEach(cleanup);
+
 	let currentDate;
 
 	afterEach(() => {

@@ -1,8 +1,13 @@
 import * as time from '../time';
+import {cleanup} from '@testing-library/react';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 
 describe('time', () => {
+	afterEach(cleanup);
+
 	describe('formatDuration', () => {
+		afterEach(cleanup);
+
 		it.each`
 			milliseconds | unit                      | retVal
 			${3600000}   | ${time.TimeUnits.Seconds} | ${3600}
@@ -14,6 +19,8 @@ describe('time', () => {
 	});
 
 	describe('hasRemainder', () => {
+		afterEach(cleanup);
+
 		it.each`
 			milliseconds | unit                      | retVal
 			${3600000}   | ${time.TimeUnits.Seconds} | ${false}
@@ -31,6 +38,8 @@ describe('time', () => {
 	});
 
 	describe('isHourlyRangeKey', () => {
+		afterEach(cleanup);
+
 		it('should return true if the rangeKey is hourly', () => {
 			expect(time.isHourlyRangeKey(RangeKeyTimeRanges.Yesterday)).toBe(
 				true
@@ -48,6 +57,8 @@ describe('time', () => {
 	});
 
 	describe('isMonthlyRangeKey', () => {
+		afterEach(cleanup);
+
 		it('should return true if the rangeKey is monthly', () => {
 			expect(time.isMonthlyRangeKey(RangeKeyTimeRanges.Last28Days)).toBe(
 				true
@@ -71,6 +82,8 @@ describe('time', () => {
 	});
 
 	describe('getMilliseconds', () => {
+		afterEach(cleanup);
+
 		it.each`
 			duration | unit                      | retVal
 			${3600}  | ${time.TimeUnits.Seconds} | ${3600000}
@@ -82,6 +95,8 @@ describe('time', () => {
 	});
 
 	describe('getMillisecondsFromTime', () => {
+		afterEach(cleanup);
+
 		it.each`
 			value         | retVal
 			${'01:00:00'} | ${3600000}
@@ -93,6 +108,8 @@ describe('time', () => {
 	});
 
 	describe('getLargestNaturalUnit', () => {
+		afterEach(cleanup);
+
 		it.each`
 			milliseconds | unit                      | retVal
 			${16000}     | ${time.TimeUnits.Hours}   | ${time.TimeUnits.Seconds}
@@ -115,6 +132,8 @@ describe('time', () => {
 	});
 
 	describe('getUnitLabel', () => {
+		afterEach(cleanup);
+
 		it.each`
 			unit                      | label
 			${time.TimeUnits.Seconds} | ${time.UNIT_LABELS[0]}
@@ -126,6 +145,8 @@ describe('time', () => {
 	});
 
 	describe('getRemainder', () => {
+		afterEach(cleanup);
+
 		it.each`
 			milliseconds | unit                      | retVal
 			${3600000}   | ${time.TimeUnits.Seconds} | ${0}
@@ -143,6 +164,8 @@ describe('time', () => {
 	});
 
 	describe('formatTime', () => {
+		afterEach(cleanup);
+
 		it.each`
 			milliseconds  | retVal
 			${3600000}    | ${'01:00:00'}

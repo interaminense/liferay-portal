@@ -3,10 +3,10 @@ import * as data from 'test/data';
 import BaseFieldMappingView from '../BaseFieldMappingView';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {DataSource, User} from 'shared/util/records';
 import {FieldContexts} from 'shared/util/constants';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -31,6 +31,8 @@ const WrappedComponent = props => (
 );
 
 describe('BaseFieldMappingView', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(<WrappedComponent />);
 

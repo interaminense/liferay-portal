@@ -3,8 +3,8 @@ import HeaderDefault from '../HeaderDefault';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-hooks';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {createMemoryHistory} from 'history';
-import {fireEvent, render} from '@testing-library/react';
 import {INTERVAL_KEY_MAP} from 'shared/util/time';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
@@ -32,6 +32,8 @@ const DefaultComponent = props => {
 };
 
 describe('HeaderDefault', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<DefaultComponent />);
 

@@ -1,6 +1,9 @@
 import {Account, EntityLayout, Individual, Project, Segment} from '../index';
+import {cleanup} from '@testing-library/react';
 
 describe('Records', () => {
+	afterEach(cleanup);
+
 	it('should return an Account Record', () => {
 		expect(new Account()).toMatchSnapshot();
 	});

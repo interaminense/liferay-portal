@@ -1,6 +1,9 @@
 import findDeadRoutes from '../findDeadRoutes';
+import {cleanup} from '@testing-library/react';
 
 describe('findDeadRoutes', () => {
+	afterEach(cleanup);
+
 	it('should return dead routes', () => {
 		const routes = [
 			'foo/:id',

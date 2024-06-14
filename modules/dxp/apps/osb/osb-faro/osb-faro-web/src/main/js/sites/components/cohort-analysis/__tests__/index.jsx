@@ -1,11 +1,13 @@
 import CohortAnalysis from '../index';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {DAY, VISITORS} from '../utils';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('CohortAnalysis', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const mockData = {
 			visitors: {

@@ -3,10 +3,10 @@ import List from '../List';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ChannelContext} from 'shared/context/channel';
+import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {mockChannelContext} from 'test/mock-channel-context';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {UnassignedSegmentsContext} from 'shared/context/unassignedSegments';
 import {User} from 'shared/util/records';
@@ -49,6 +49,8 @@ const DefaultComponent = ({queryString = '', ...otherProps}) => (
 );
 
 describe('List', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(<DefaultComponent />);
 

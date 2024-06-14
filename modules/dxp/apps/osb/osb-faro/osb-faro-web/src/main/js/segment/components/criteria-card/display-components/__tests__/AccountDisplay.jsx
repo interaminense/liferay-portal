@@ -1,6 +1,7 @@
 import * as data from 'test/data';
 import AccountDisplay from '../AccountDisplay';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {
 	CustomFunctionOperators,
 	PropertyTypes,
@@ -8,11 +9,12 @@ import {
 } from 'segment/segment-editor/dynamic/utils/constants';
 import {List, Map} from 'immutable';
 import {Property} from 'shared/util/records';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('AccountDisplay', () => {
+	afterEach(cleanup);
+
 	const propertyName = 'organization/description/value';
 
 	const mockCriterion = {

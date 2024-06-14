@@ -1,7 +1,7 @@
 import getCN from 'classnames';
 import React from 'react';
 import RowActions from '../RowActions';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -12,6 +12,8 @@ const WrappedComponent = props => (
 );
 
 describe('RowActions', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<WrappedComponent actions={[{label: 'foo'}]} />

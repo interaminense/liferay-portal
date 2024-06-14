@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 jest.unmock('clay-charts');
 
 import {
@@ -12,6 +13,8 @@ import {
 } from '../numbers';
 
 describe('toLocale', () => {
+	afterEach(cleanup);
+
 	it('should be return the number to locale', () => {
 		expect(toLocale(0.3)).toEqual('0.3');
 		expect(toLocale(0.123456)).toEqual('0.123456');
@@ -20,6 +23,8 @@ describe('toLocale', () => {
 });
 
 describe('toThousands', () => {
+	afterEach(cleanup);
+
 	it('should return the number truncate', () => {
 		expect(toThousands(0.1)).toEqual('0.1');
 		expect(toThousands(1.4)).toEqual('1.4');
@@ -67,6 +72,8 @@ describe('toThousands', () => {
 });
 
 describe('toFixedPoint', () => {
+	afterEach(cleanup);
+
 	it('should return the same number if the number is less than 999', () => {
 		expect(toFixedPoint(10)).toEqual('10');
 		expect(toFixedPoint(100)).toEqual('100');
@@ -88,6 +95,8 @@ describe('toFixedPoint', () => {
 });
 
 describe('toRounded', () => {
+	afterEach(cleanup);
+
 	it('should return the rounded without decimal', () => {
 		expect(toRounded(20.567, 0)).toEqual('21');
 		expect(toRounded(1.123, 0)).toEqual('1');
@@ -109,6 +118,8 @@ describe('toRounded', () => {
 });
 
 describe('toInt', () => {
+	afterEach(cleanup);
+
 	it('should be return the int', () => {
 		const number = toInt('1000');
 
@@ -117,6 +128,8 @@ describe('toInt', () => {
 });
 
 describe('toDuration', () => {
+	afterEach(cleanup);
+
 	it('should return the time formatted', () => {
 		const number = toDuration(1000, undefined, 'seconds');
 
@@ -137,6 +150,8 @@ describe('toDuration', () => {
 });
 
 describe('getFinitePercent', () => {
+	afterEach(cleanup);
+
 	it.each`
 		curVal | totalVal | expected
 		${0}   | ${0}     | ${null}
@@ -154,6 +169,8 @@ describe('getFinitePercent', () => {
 });
 
 describe('undoThousands', () => {
+	afterEach(cleanup);
+
 	it('should return a number aproximation for a formatted number', () => {
 		expect(undoThousands('145')).toEqual(145);
 		expect(undoThousands('23.5B')).toEqual(23500000000);

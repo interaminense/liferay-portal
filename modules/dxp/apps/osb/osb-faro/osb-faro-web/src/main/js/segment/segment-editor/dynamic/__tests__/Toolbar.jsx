@@ -10,6 +10,8 @@ import {waitForLoadingToBeRemoved} from 'test/helpers';
 jest.unmock('react-dom');
 
 describe('Toolbar', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		jest.clearAllMocks();
 

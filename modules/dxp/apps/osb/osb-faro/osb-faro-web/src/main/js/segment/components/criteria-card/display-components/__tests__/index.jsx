@@ -1,14 +1,16 @@
 import * as data from 'test/data';
 import DisplayComponent from '../index';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {List, Map} from 'immutable';
 import {Property} from 'shared/util/records';
 import {RelationalOperators} from 'segment/segment-editor/dynamic/utils/constants';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('DisplayComponent', () => {
+	afterEach(cleanup);
+
 	it.each`
 		propertyKey     | entityName
 		${'account'}    | ${'Account'}

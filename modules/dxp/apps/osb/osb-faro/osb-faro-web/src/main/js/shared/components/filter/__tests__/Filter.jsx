@@ -1,6 +1,6 @@
 import Filter from '..';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {noop} from 'lodash';
 
 jest.unmock('react-dom');
@@ -94,6 +94,8 @@ const MOCK_ITEMS = [
 ];
 
 describe('Filter', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<Filter items={MOCK_ITEMS} />);
 

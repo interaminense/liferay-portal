@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	createLiferayDataSource,
 	createSalesforceDataSource,
@@ -10,7 +11,11 @@ import {
 import {isFSA} from 'flux-standard-action';
 
 describe('DataSources', () => {
+	afterEach(cleanup);
+
 	describe('createLiferayDataSource', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = createLiferayDataSource({});
 
@@ -20,6 +25,8 @@ describe('DataSources', () => {
 	});
 
 	describe('createSalesforceDataSource', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = createSalesforceDataSource({});
 
@@ -29,6 +36,8 @@ describe('DataSources', () => {
 	});
 
 	describe('deleteDataSource', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = deleteDataSource({});
 
@@ -38,6 +47,8 @@ describe('DataSources', () => {
 	});
 
 	describe('fetchDataSource', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = fetchDataSource({});
 
@@ -47,6 +58,8 @@ describe('DataSources', () => {
 	});
 
 	describe('updateCSVDataSource', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = updateCSVDataSource({});
 
@@ -56,6 +69,8 @@ describe('DataSources', () => {
 	});
 
 	describe('updateLiferayDataSource', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = updateLiferayDataSource({});
 
@@ -65,6 +80,8 @@ describe('DataSources', () => {
 	});
 
 	describe('updateSalesforceDataSource', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = updateSalesforceDataSource({});
 

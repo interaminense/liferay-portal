@@ -1,4 +1,5 @@
 import getMetricsMapper from '../metrics';
+import {cleanup} from '@testing-library/react';
 import {createOrderIOMap} from 'shared/util/pagination';
 import {getSafeRangeSelectors} from 'shared/util/util';
 
@@ -49,7 +50,11 @@ const mockProps = {
 };
 
 describe('metrics', () => {
+	afterEach(cleanup);
+
 	describe('getMetricsMapper', () => {
+		afterEach(cleanup);
+
 		it('mapPropsToOptions', () => {
 			const mapper = getMetricsMapper(result => ({
 				items: result.pages.assetMetrics,

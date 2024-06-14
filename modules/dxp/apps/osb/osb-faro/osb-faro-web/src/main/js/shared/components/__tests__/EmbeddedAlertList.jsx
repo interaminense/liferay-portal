@@ -1,11 +1,13 @@
 import EmbeddedAlertList from '../EmbeddedAlertList';
 import React from 'react';
 import {AlertTypes} from '../Alert';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('EmbeddedAlertList', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<EmbeddedAlertList

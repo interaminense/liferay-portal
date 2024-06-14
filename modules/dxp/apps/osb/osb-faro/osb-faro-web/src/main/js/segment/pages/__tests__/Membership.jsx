@@ -2,8 +2,8 @@ import * as data from 'test/data';
 import Membership, {MembershipChart} from '../Membership';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {Segment} from 'shared/util/records';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
@@ -20,6 +20,8 @@ const defaultProps = {
 };
 
 describe('Membership', () => {
+	afterEach(cleanup);
+
 	const WrappedComponent = props => (
 		<Provider store={mockStore()}>
 			<StaticRouter>
@@ -40,6 +42,8 @@ describe('Membership', () => {
 });
 
 describe('MembershipChart', () => {
+	afterEach(cleanup);
+
 	const WrappedComponent = props => (
 		<StaticRouter>
 			<MembershipChart {...defaultProps} {...props} />

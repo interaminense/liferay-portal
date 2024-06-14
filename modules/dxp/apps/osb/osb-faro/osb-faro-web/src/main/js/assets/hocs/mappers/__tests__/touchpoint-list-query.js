@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {mapPropsToOptions, mapResultToProps} from '../touchpoint-list-query';
 
 const context = {
@@ -63,6 +64,8 @@ const data = {
 };
 
 describe('TouchpointsListQuery Mappers', () => {
+	afterEach(cleanup);
+
 	it('should extract items from result', () => {
 		const props = mapResultToProps({data}, context);
 

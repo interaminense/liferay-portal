@@ -1,10 +1,12 @@
 import React from 'react';
 import StringMatchInput from '../StringMatchInput';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('StringMatchInput', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<StringMatchInput

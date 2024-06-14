@@ -1,11 +1,13 @@
 import CSVPreviewModal from '../CSVPreviewModal';
 import React from 'react';
+import {cleanup, render, waitFor} from '@testing-library/react';
 import {noop} from 'lodash';
-import {render, waitFor} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('CSVPreviewModal', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<CSVPreviewModal

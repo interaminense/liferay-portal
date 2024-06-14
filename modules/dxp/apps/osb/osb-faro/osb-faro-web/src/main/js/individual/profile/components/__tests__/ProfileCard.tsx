@@ -1,7 +1,7 @@
 import IndividualProfileCard from '../ProfileCard';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {Individual} from 'shared/util/records';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/react-testing';
@@ -35,6 +35,8 @@ const inputValue = 'add to cart';
 const searchKeyword = {keywords: inputValue};
 
 describe('IndividualProfileCard', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<DefaultComponent>

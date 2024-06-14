@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	fetchDistribution,
 	fetchIndividualsDistribution
@@ -5,7 +6,11 @@ import {
 import {isFSA} from 'flux-standard-action';
 
 describe('Distribution', () => {
+	afterEach(cleanup);
+
 	describe('fetchDistribution', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = fetchDistribution({});
 
@@ -15,6 +20,8 @@ describe('Distribution', () => {
 	});
 
 	describe('fetchIndividualsDistribution', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = fetchIndividualsDistribution({});
 

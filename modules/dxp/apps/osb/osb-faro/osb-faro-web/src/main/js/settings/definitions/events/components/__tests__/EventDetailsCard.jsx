@@ -2,7 +2,7 @@ import * as data from 'test/data';
 import EventDetailsCard from '../EventDetailsCard';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
 import {range} from 'lodash';
 import {StaticRouter} from 'react-router';
@@ -10,6 +10,8 @@ import {StaticRouter} from 'react-router';
 jest.unmock('react-dom');
 
 describe('EventDetailsCard', () => {
+	afterEach(cleanup);
+
 	const eventAttributes = range(5).map(i =>
 		data.mockEventAttributeDefinition(i)
 	);

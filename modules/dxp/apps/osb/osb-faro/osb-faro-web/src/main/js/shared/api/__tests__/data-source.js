@@ -1,6 +1,7 @@
+import sendRequest from 'shared/util/request';
 jest.mock('shared/util/request');
 
-import sendRequest from 'shared/util/request';
+import {cleanup} from '@testing-library/react';
 import {createLiferay, updateLiferay} from '../data-source';
 
 const commonLiferayArgs = {
@@ -14,7 +15,11 @@ const commonLiferayArgs = {
 };
 
 describe('Data Source API', () => {
+	afterEach(cleanup);
+
 	describe('Liferay Data Sources', () => {
+		afterEach(cleanup);
+
 		it('should be called with data to CREATE to a liferay data source', () => {
 			createLiferay({...commonLiferayArgs, groupId: '23'});
 

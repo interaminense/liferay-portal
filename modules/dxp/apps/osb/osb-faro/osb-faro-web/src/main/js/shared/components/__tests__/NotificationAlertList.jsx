@@ -3,7 +3,7 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import NotificationAlertList from '../NotificationAlertList';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
 import {range} from 'lodash';
 import {StaticRouter} from 'react-router';
@@ -24,6 +24,8 @@ const defaultProps = {
 };
 
 describe('NotificationAlertList', () => {
+	afterEach(cleanup);
+
 	API.notifications.fetchNotifications.mockReturnValue(
 		Promise.resolve(range(1).map(i => data.mockNotification(i)))
 	);

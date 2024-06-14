@@ -7,6 +7,8 @@ import {Segment} from 'shared/util/records';
 jest.unmock('react-dom');
 
 describe('CriteriaCard', () => {
+	afterEach(cleanup);
+
 	const innerHeight = window.innerHeight;
 
 	afterEach(() => {

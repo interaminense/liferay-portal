@@ -1,12 +1,14 @@
 import AccountNames from '../AccountNames';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 const tableRow = document.createElement('tr');
 
 describe('AccountNames', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<AccountNames

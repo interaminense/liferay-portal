@@ -2,9 +2,9 @@ import * as data from 'test/data';
 import LiferayDataSourceOld from '../LiferayOld';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {DataSource} from 'shared/util/records';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {Routes, toRoute} from 'shared/util/router';
 import {StaticRouter} from 'react-router';
 
@@ -17,6 +17,8 @@ const defaultProps = {
 };
 
 describe('LiferayDataSourceOld', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>

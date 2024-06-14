@@ -1,6 +1,7 @@
+import moment from 'moment';
 jest.unmock('clay-charts');
 
-import moment from 'moment';
+import {cleanup} from '@testing-library/react';
 import {
 	dateRangeFormatter,
 	formatTooltipDate,
@@ -23,6 +24,8 @@ const mockDate = moment.utc('2019-01-02').valueOf();
 const mockDateKeysIMap = new Map([[mockDate, [mockDate]]]);
 
 describe('dateRangeFormatter', () => {
+	afterEach(cleanup);
+
 	it('should render a range of dates with different start and ending months', () => {
 		expect(
 			dateRangeFormatter(mockDate, moment.utc('2019-02-02').valueOf())
@@ -37,6 +40,8 @@ describe('dateRangeFormatter', () => {
 });
 
 describe('formatTooltipDate', () => {
+	afterEach(cleanup);
+
 	it('should return the hours for last 24 hours', () => {
 		const date = getDate('2018-08-07');
 
@@ -87,6 +92,8 @@ describe('formatTooltipDate', () => {
 });
 
 describe('formatXAxisDate', () => {
+	afterEach(cleanup);
+
 	it('should render an x-axis label in a day month format by default', () => {
 		expect(
 			formatXAxisDate(
@@ -122,6 +129,8 @@ describe('formatXAxisDate', () => {
 });
 
 describe('getDateTitle', () => {
+	afterEach(cleanup);
+
 	it('should return a date display string', () => {
 		expect(getDateTitle([getDate('2019-01-01')])).toEqual('2019 Jan 1');
 	});
@@ -148,6 +157,8 @@ describe('getDateTitle', () => {
 });
 
 describe('getIntervals', () => {
+	afterEach(cleanup);
+
 	const currentDate = getDate('2020-06-12'); // Friday
 	const dates = [];
 
@@ -445,6 +456,8 @@ describe('getIntervals', () => {
 });
 
 describe('getLocationsData', () => {
+	afterEach(cleanup);
+
 	const locationsData = getLocationsData([
 		{value: 200},
 		{value: 400},
@@ -504,6 +517,8 @@ describe('getLocationsData', () => {
 });
 
 describe('getAxisMeasures', () => {
+	afterEach(cleanup);
+
 	it('should be return the axis intervals, maxValue and interval value', () => {
 		expect(getAxisMeasures(0.7)).toEqual({
 			intervalCount: 4,
@@ -569,6 +584,8 @@ describe('getAxisMeasures', () => {
 });
 
 describe('getAxisMeasuresFromData', () => {
+	afterEach(cleanup);
+
 	it('should be return the max value from a data', () => {
 		expect(
 			getAxisMeasuresFromData([
@@ -585,6 +602,8 @@ describe('getAxisMeasuresFromData', () => {
 });
 
 describe('getAxisFormatter', () => {
+	afterEach(cleanup);
+
 	it('should be return the value to percentage', () => {
 		expect(getAxisFormatter('percentage')(1)).toEqual('100%');
 	});
@@ -599,6 +618,8 @@ describe('getAxisFormatter', () => {
 });
 
 describe('getDataFormatter', () => {
+	afterEach(cleanup);
+
 	it('should be return the value to any', () => {
 		expect(getDataFormatter()([1, 100, 1000, 10000])).toEqual([
 			1,
@@ -647,6 +668,8 @@ describe('getDataFormatter', () => {
 });
 
 describe('getMetricFormatter', () => {
+	afterEach(cleanup);
+
 	it('shold be return the metric formatter', () => {
 		expect(getMetricFormatter('number')(1)).toEqual('1');
 		expect(getMetricFormatter('percentage')(1)).toEqual('100%');

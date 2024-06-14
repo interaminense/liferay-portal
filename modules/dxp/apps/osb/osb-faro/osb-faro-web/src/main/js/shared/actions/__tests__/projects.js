@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	configureProject,
 	createProject,
@@ -10,7 +11,11 @@ import {
 import {isFSA} from 'flux-standard-action';
 
 describe('Projects Actions', () => {
+	afterEach(cleanup);
+
 	describe('createProject', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = createProject();
 
@@ -20,6 +25,8 @@ describe('Projects Actions', () => {
 	});
 
 	describe('configureProject', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = configureProject({
 				emailAddressDomains: [],
@@ -34,6 +41,8 @@ describe('Projects Actions', () => {
 	});
 
 	describe('createTrialProject', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = createTrialProject();
 
@@ -43,6 +52,8 @@ describe('Projects Actions', () => {
 	});
 
 	describe('fetchProject', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = fetchProject({groupId: '23'});
 
@@ -52,6 +63,8 @@ describe('Projects Actions', () => {
 	});
 
 	describe('fetchProjects', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = fetchProjects();
 
@@ -61,6 +74,8 @@ describe('Projects Actions', () => {
 	});
 
 	describe('fetchProjectViaCorpProjectUuid', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = fetchProjectViaCorpProjectUuid({
 				corpProjectUuid: '23-44'
@@ -72,6 +87,8 @@ describe('Projects Actions', () => {
 	});
 
 	describe('updateProject', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = updateProject({
 				emailAddressDomains: [],

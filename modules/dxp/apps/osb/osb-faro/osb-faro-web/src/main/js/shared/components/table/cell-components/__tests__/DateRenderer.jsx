@@ -1,12 +1,14 @@
 import DateRenderer from '../DateRenderer';
 import moment from 'moment';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {getTimestamp} from 'test/data';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('DateRenderer', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<DateRenderer

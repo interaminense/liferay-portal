@@ -1,6 +1,6 @@
 import React from 'react';
 import Thumbs from '../Thumbs';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 const items = [
 	{
@@ -31,6 +31,8 @@ const defaultProps = {
 jest.unmock('react-dom');
 
 describe('AddReport', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<Thumbs {...defaultProps} />);
 

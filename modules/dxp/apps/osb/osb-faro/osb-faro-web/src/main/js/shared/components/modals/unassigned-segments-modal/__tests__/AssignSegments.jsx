@@ -36,6 +36,8 @@ const DefaultComponent = props => (
 );
 
 describe('AssignSegments', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		cleanup();
 		jest.useRealTimers();

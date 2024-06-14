@@ -1,13 +1,15 @@
 import Interests, {ContributionsCell} from '../Interests';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
-import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('Interests', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<MemoryRouter
@@ -30,6 +32,8 @@ describe('Interests', () => {
 });
 
 describe('ContributionsCell', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<ContributionsCell data={{relatedPagesCount: 8}} />

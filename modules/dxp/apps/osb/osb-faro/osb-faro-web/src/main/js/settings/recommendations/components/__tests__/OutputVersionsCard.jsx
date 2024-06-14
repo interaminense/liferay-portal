@@ -1,15 +1,17 @@
 import * as data from 'test/data';
 import OutputVersionsCard from '../OutputVersionsCard';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {JobRunFrequencies, JobRunStatuses} from 'shared/util/constants';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockRecommendationJobRunsReq} from 'test/graphql-data';
-import {render} from '@testing-library/react';
 import {waitForLoading} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('OutputVersionsCard', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<MockedProvider

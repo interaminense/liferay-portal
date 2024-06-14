@@ -2,7 +2,7 @@ import * as data from 'test/data';
 import AssociatedSegmentsCard from '../AssociatedSegmentsCard';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -20,6 +20,8 @@ const DefaultComponent = props => (
 );
 
 describe('AssociatedSegmentsCard', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<DefaultComponent

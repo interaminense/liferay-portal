@@ -3,12 +3,12 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import RecommendationListQuery from '../../queries/RecommendationListQuery';
 import Recommendations from '../Recommendations';
+import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockJobBag} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {range} from 'lodash';
-import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {waitForLoading} from 'test/helpers';
 
@@ -52,6 +52,8 @@ const DefaultComponent = props => (
 );
 
 describe('Recommendations', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(<DefaultComponent />);
 

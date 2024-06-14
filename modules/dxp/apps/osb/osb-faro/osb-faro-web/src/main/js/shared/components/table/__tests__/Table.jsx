@@ -1,7 +1,7 @@
 import React from 'react';
 import Table, {getRowIdentifierValue} from '../index';
+import {cleanup, render} from '@testing-library/react';
 import {mockIndividual} from 'test/data';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {times} from 'lodash';
 
@@ -21,6 +21,8 @@ const COLUMNS = [
 ];
 
 describe('Table', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<StaticRouter>
@@ -106,6 +108,8 @@ describe('Table', () => {
 	});
 
 	describe('getRowIdentifierValue', () => {
+		afterEach(cleanup);
+
 		it('should return a combination of the items specified in the rowIdentifier', () => {
 			expect(
 				getRowIdentifierValue(

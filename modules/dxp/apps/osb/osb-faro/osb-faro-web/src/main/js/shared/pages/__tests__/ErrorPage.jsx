@@ -1,6 +1,6 @@
 import ErrorPage from '../ErrorPage';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
@@ -12,6 +12,8 @@ const DefaultComponent = props => (
 );
 
 describe('ErrorPage', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<DefaultComponent />);
 

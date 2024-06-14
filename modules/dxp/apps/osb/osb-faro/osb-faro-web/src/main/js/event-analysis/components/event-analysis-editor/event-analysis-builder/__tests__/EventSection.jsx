@@ -3,14 +3,16 @@ import EventSection from '../EventSection';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 
 jest.unmock('react-dom');
 
 describe('EventSection', () => {
+	afterEach(cleanup);
+
 	const WrappedComponent = props => (
 		<MemoryRouter initialEntries={['/workspace/23/event-analysis']}>
 			<Route path={Routes.EVENT_ANALYSIS}>

@@ -3,8 +3,8 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import ValueInput from '../ValueInput';
 import {ApolloProvider} from '@apollo/react-hooks';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {DataTypes} from 'event-analysis/utils/types';
-import {fireEvent, render} from '@testing-library/react';
 import {
 	FunctionalOperators,
 	RelationalOperators
@@ -43,6 +43,8 @@ const WrapperComponent = ({children}) => (
 );
 
 describe('ValueInput', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container, getAllByText, getByText} = render(
 			<WrapperComponent>

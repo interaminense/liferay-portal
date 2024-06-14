@@ -1,6 +1,6 @@
 import React from 'react';
 import RoleRenderer from '../RoleRenderer';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -11,6 +11,8 @@ const userRoleOptions = [
 ];
 
 describe('RoleRenderer', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<RoleRenderer data={{roleName: 'Site Owner'}} />

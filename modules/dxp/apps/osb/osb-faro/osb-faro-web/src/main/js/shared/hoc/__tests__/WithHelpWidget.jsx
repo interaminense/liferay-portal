@@ -2,9 +2,9 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import withHelpWidget from '../WithHelpWidget';
+import {cleanup, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -12,6 +12,8 @@ const faroSubscription = fromJS(data.mockSubscription());
 const wrappedComponentText = () => 'wrapped component text';
 
 describe('withHelpWidget', () => {
+	afterEach(cleanup);
+
 	it('should render a wrapped component', () => {
 		const WrappedComponent = withHelpWidget(wrappedComponentText);
 

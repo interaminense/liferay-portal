@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	mapPropsToOptions,
 	mapResultToProps
@@ -100,6 +101,8 @@ const props = {
 };
 
 describe('TouchpointsAssetsListQuery Mappers', () => {
+	afterEach(cleanup);
+
 	it('should extract items from result', () => {
 		const props = mapResultToProps({data});
 

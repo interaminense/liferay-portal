@@ -2,16 +2,18 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import TrainingItemsCard from '../TrainingItemsCard';
+import {cleanup, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockRecommendationPageAssetsReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {range} from 'lodash';
-import {render} from '@testing-library/react';
 import {waitForLoading} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('TrainingItemsCard', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<MockedProvider

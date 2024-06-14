@@ -1,7 +1,12 @@
+import {cleanup} from '@testing-library/react';
 import {some} from '../iterable';
 
 describe('iterable', () => {
+	afterEach(cleanup);
+
 	describe('some', () => {
+		afterEach(cleanup);
+
 		it('should return true if an item satifies the predicate', () => {
 			const items = [1, 2, 3];
 

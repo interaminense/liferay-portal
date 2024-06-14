@@ -1,10 +1,12 @@
 import React from 'react';
 import withEmptyState from '../WithEmptyState';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('withEmptyState', () => {
+	afterEach(cleanup);
+
 	it('should render with an empty state', () => {
 		const WrappedComponent = withEmptyState(() => 'test');
 

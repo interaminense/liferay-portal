@@ -1,7 +1,7 @@
 import React from 'react';
 import UserDropdown, {Menus} from '../index';
 import {BrowserRouter} from 'react-router-dom';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -41,6 +41,8 @@ const mockMenus = (): Menus => ({
 });
 
 describe('UserDropdown', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<BrowserRouter>

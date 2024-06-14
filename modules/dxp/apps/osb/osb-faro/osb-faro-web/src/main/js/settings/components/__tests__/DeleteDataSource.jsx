@@ -20,6 +20,8 @@ Router.navigate = jest.fn();
 jest.unmock('react-dom');
 
 describe('DeleteDataSource', () => {
+	afterEach(cleanup);
+
 	const dataSource = data.getImmutableMock(
 		DataSource,
 		data.mockLiferayDataSource

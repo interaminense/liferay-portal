@@ -1,5 +1,6 @@
 import * as API from 'shared/api';
 import * as data from 'test/data';
+import {cleanup} from '@testing-library/react';
 import {
 	CredentialTypes,
 	DataSourceStates,
@@ -32,7 +33,11 @@ function getMockLiferayDataSource(id, config) {
 }
 
 describe('data-sources', () => {
+	afterEach(cleanup);
+
 	describe('dataSourceRedirectFn', () => {
+		afterEach(cleanup);
+
 		it('should return the SETTINGS_DATA_SOURCE route if the data source state is NOT VALID', () => {
 			const groupId = '23';
 			const id = '123';
@@ -65,6 +70,8 @@ describe('data-sources', () => {
 	});
 
 	describe('isDataSourceValid', () => {
+		afterEach(cleanup);
+
 		it.each`
 			state                                     | isValid
 			${DataSourceStates.CredentialsInvalid}    | ${false}
@@ -85,6 +92,8 @@ describe('data-sources', () => {
 	});
 
 	describe('getDataSourceDisplayObject', () => {
+		afterEach(cleanup);
+
 		it('should return the active state display object if credentials are valid, at least one configuration is valid, and active is true', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
@@ -222,6 +231,8 @@ describe('data-sources', () => {
 	});
 
 	describe('getIdsFromConfiguration', () => {
+		afterEach(cleanup);
+
 		it('should return an array of numerical ids from a Map.<List.<Map>>', () => {
 			const expectedArray = range(5);
 
@@ -238,6 +249,8 @@ describe('data-sources', () => {
 	});
 
 	describe('getServiceAlertConfig', () => {
+		afterEach(cleanup);
+
 		it('should return a service permission related alert props', () => {
 			expect(getServiceAlertConfig(403)).toMatchSnapshot();
 		});
@@ -248,6 +261,8 @@ describe('data-sources', () => {
 	});
 
 	describe('hasLegacyDXPConnection', () => {
+		afterEach(cleanup);
+
 		it('should return true if the DataSource has a credential type other than "token"', () => {
 			expect(
 				hasLegacyDXPConnection(
@@ -293,6 +308,8 @@ describe('data-sources', () => {
 		});
 	});
 	describe('validateUniqueName', () => {
+		afterEach(cleanup);
+
 		it('should return a success assertion if the data source name does NOT already exist', () => {
 			expect.assertions(1);
 
@@ -335,6 +352,8 @@ describe('data-sources', () => {
 	});
 
 	describe('validAnalyticsConfig', () => {
+		afterEach(cleanup);
+
 		it('should return false for csv data source types since they only have contacts', () => {
 			const mockCSVDataSource = data.getImmutableMock(
 				DataSource,
@@ -371,6 +390,8 @@ describe('data-sources', () => {
 	});
 
 	describe('validContactsConfig', () => {
+		afterEach(cleanup);
+
 		it('should return true for csv types if the status is ACTIVE', () => {
 			const mockCSVDataSource = data.getImmutableMock(
 				DataSource,

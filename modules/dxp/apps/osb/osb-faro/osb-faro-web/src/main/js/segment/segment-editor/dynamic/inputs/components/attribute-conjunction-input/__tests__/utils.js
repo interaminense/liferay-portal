@@ -1,4 +1,5 @@
 import * as UTILS from '../utils';
+import {cleanup} from '@testing-library/react';
 import {DataTypes} from 'event-analysis/utils/types';
 import {
 	FunctionalOperators,
@@ -7,7 +8,11 @@ import {
 } from '../../../../utils/constants';
 
 describe('Utils', () => {
+	afterEach(cleanup);
+
 	describe('createOption', () => {
+		afterEach(cleanup);
+
 		it.each`
 			option                          | dataType              | label
 			${'true'}                       | ${DataTypes.Boolean}  | ${'True'}
@@ -35,6 +40,8 @@ describe('Utils', () => {
 	});
 
 	describe('getOperatorOptions', () => {
+		afterEach(cleanup);
+
 		it.each`
 			dataType              | count
 			${DataTypes.Date}     | ${3}
@@ -50,6 +57,8 @@ describe('Utils', () => {
 	});
 
 	describe('getDefaultAttributeOperator', () => {
+		afterEach(cleanup);
+
 		it.each`
 			dataType              | value
 			${DataTypes.Boolean}  | ${RelationalOperators.EQ}
@@ -66,6 +75,8 @@ describe('Utils', () => {
 	});
 
 	describe('getDefaultAttributeValue', () => {
+		afterEach(cleanup);
+
 		it.each`
 			dataType              | operatorName                    | value
 			${DataTypes.Boolean}  | ${RelationalOperators.EQ}       | ${'true'}
@@ -86,6 +97,8 @@ describe('Utils', () => {
 	});
 
 	describe('validateAttributeValue', () => {
+		afterEach(cleanup);
+
 		it.each`
 			dataType              | value           | valid
 			${DataTypes.Boolean}  | ${'true'}       | ${true}

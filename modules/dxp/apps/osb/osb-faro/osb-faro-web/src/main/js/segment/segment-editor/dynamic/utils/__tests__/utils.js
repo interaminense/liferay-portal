@@ -11,6 +11,7 @@ import {
 	SUPPORTED_OPERATORS_MAP,
 	TimeSpans
 } from '../constants';
+import {cleanup} from '@testing-library/react';
 import {EntityType} from '../../context/referencedObjects';
 import {fromJS, Map} from 'immutable';
 import {Property} from 'shared/util/records';
@@ -25,7 +26,11 @@ const {And} = Conjunctions;
 const {EQ, GT} = RelationalOperators;
 
 describe('utils', () => {
+	afterEach(cleanup);
+
 	describe('createInterestProperty', () => {
+		afterEach(cleanup);
+
 		it('should create an Interest Property', () => {
 			const name = 'Some Interest Property';
 			const property = utils.createInterestProperty(name);
@@ -39,6 +44,8 @@ describe('utils', () => {
 	});
 
 	describe('createNewGroup', () => {
+		afterEach(cleanup);
+
 		it('should create a new CriterionGroup', () => {
 			const items = [];
 
@@ -51,18 +58,24 @@ describe('utils', () => {
 	});
 
 	describe('generateGroupId', () => {
+		afterEach(cleanup);
+
 		it('should generate a group id', () => {
 			expect(utils.generateGroupId()).toContain('group_');
 		});
 	});
 
 	describe('generateRowId', () => {
+		afterEach(cleanup);
+
 		it('should generate a row id', () => {
 			expect(utils.generateRowId()).toContain('row_');
 		});
 	});
 
 	describe('getChildGroupIds', () => {
+		afterEach(cleanup);
+
 		it('should grab child group ids', () => {
 			const excluded = 'excluded';
 			const criterionGroup = {
@@ -85,6 +98,8 @@ describe('utils', () => {
 	});
 
 	describe('getPropertyContextFromRaw', () => {
+		afterEach(cleanup);
+
 		it('should get context name from a raw property string', () => {
 			const context = 'custom';
 
@@ -99,6 +114,8 @@ describe('utils', () => {
 	});
 
 	describe('getPropertyNameFromRaw', () => {
+		afterEach(cleanup);
+
 		it('should get property name from a raw property string', () => {
 			const propertyName = 'city';
 
@@ -111,6 +128,8 @@ describe('utils', () => {
 	});
 
 	describe('getSupportedOperatorsFromType', () => {
+		afterEach(cleanup);
+
 		it('should get the supported operators from type', () => {
 			expect(
 				utils.getSupportedOperatorsFromType(PropertyTypes.AccountNumber)
@@ -119,6 +138,8 @@ describe('utils', () => {
 	});
 
 	describe('isCriterionGroup', () => {
+		afterEach(cleanup);
+
 		it('should return true when value is a CriterionGroup', () => {
 			expect(
 				utils.isCriterionGroup({
@@ -141,6 +162,8 @@ describe('utils', () => {
 	});
 
 	describe('isMap', () => {
+		afterEach(cleanup);
+
 		it('should return true when value is an instance of ImmutableMap', () => {
 			expect(utils.isMap(new Map())).toBeTrue();
 		});
@@ -151,6 +174,8 @@ describe('utils', () => {
 	});
 
 	describe('isOfKnownType', () => {
+		afterEach(cleanup);
+
 		it('should return true when value is isKnown or isUnknown', () => {
 			expect(utils.isOfKnownType(isKnown)).toBeTrue();
 			expect(utils.isOfKnownType(isUnknown)).toBeTrue();
@@ -162,6 +187,8 @@ describe('utils', () => {
 	});
 
 	describe('objectToFormData', () => {
+		afterEach(cleanup);
+
 		it('should convert input object to FormData', () => {
 			expect(utils.objectToFormData({foo: 'bar'})).toBeInstanceOf(
 				FormData
@@ -170,6 +197,8 @@ describe('utils', () => {
 	});
 
 	describe('parseActivityKey', () => {
+		afterEach(cleanup);
+
 		it('should return an object containing the eventId, id, & objectType from the activityKey', () => {
 			expect(utils.parseActivityKey('foo#bar#test')).toMatchObject({
 				eventId: 'bar',
@@ -180,6 +209,8 @@ describe('utils', () => {
 	});
 
 	describe('jsDatetoYYYYMMDD', () => {
+		afterEach(cleanup);
+
 		it('should return Date object as a string in YYYY-MM-DD format', () => {
 			expect(utils.jsDatetoYYYYMMDD(new Date('12-31-2012'))).toBe(
 				'2012-12-31'
@@ -188,6 +219,8 @@ describe('utils', () => {
 	});
 
 	describe('findPropertyByCriterion', () => {
+		afterEach(cleanup);
+
 		it('should return the blog viewed Property when provided with a blog viewed Criterion', () => {
 			const criterion = data.generateCriterion({
 				operatorName: ActivitiesFilterByCount,
@@ -351,6 +384,8 @@ describe('utils', () => {
 	});
 
 	describe('isValid', () => {
+		afterEach(cleanup);
+
 		it.each`
 			value        | result
 			${'test'}    | ${true}
@@ -366,6 +401,8 @@ describe('utils', () => {
 	});
 
 	describe('validateSegmentInputs', () => {
+		afterEach(cleanup);
+
 		it('should validate as false if a criterion is invalid', () => {
 			expect(
 				utils.validateSegmentInputs(
@@ -382,6 +419,8 @@ describe('utils', () => {
 	});
 
 	describe('invalidateCriterionWithMissingProperty', () => {
+		afterEach(cleanup);
+
 		it('should invalidate criterions with missing property', () => {
 			const criteria = data.mockNewCriteria(1, {
 				propertyName: 'demographics/firstName/value'
@@ -417,6 +456,8 @@ describe('utils', () => {
 	});
 
 	describe('convertFieldMappingToAccountProperty', () => {
+		afterEach(cleanup);
+
 		const accountFieldMapping = {
 			context: 'organization',
 			id: '345606994945962466',
@@ -439,6 +480,8 @@ describe('utils', () => {
 	});
 
 	describe('convertFieldMappingToIndividualProperty', () => {
+		afterEach(cleanup);
+
 		const individualFieldMapping = {
 			context: 'demographics',
 			id: '335454102264596251',
@@ -465,6 +508,8 @@ describe('utils', () => {
 	});
 
 	describe('convertFieldMappingsToProperties', () => {
+		afterEach(cleanup);
+
 		it('should convert fieldMappings to Properties', () => {
 			const fieldMappingsIMap = fromJS({
 				account: {
@@ -518,6 +563,8 @@ describe('utils', () => {
 	});
 
 	describe('parseReferencedEntityId', () => {
+		afterEach(cleanup);
+
 		it('should parse referenced entity id', () => {
 			const referencedEntities = new Map({
 				assets: new Map({'123_title': 'test'})

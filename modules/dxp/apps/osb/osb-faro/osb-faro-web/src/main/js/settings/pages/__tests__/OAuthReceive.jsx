@@ -1,7 +1,7 @@
 import OAuthReceive from '../OAuthReceive';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {emitAuthCode, emitError, emitToken} from 'shared/util/oauth';
-import {render} from '@testing-library/react';
 
 jest.mock('shared/util/oauth', () => ({
 	emitAuthCode: jest.fn(),
@@ -12,6 +12,8 @@ jest.mock('shared/util/oauth', () => ({
 jest.unmock('react-dom');
 
 describe('OAuthReceive', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		emitToken.mockReset();
 	});

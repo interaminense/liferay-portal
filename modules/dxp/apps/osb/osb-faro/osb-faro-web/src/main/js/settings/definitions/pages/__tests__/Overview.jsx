@@ -1,14 +1,16 @@
 import * as Constants from 'shared/util/constants';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {Overview} from '../Overview';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
 describe('Definitions Overview', () => {
+	afterEach(cleanup);
+
 	it('should render a list of definitions that includes individuals, accounts, behaviors, events, search and interests', () => {
 		// TODO: LRAC-4511 Remove DEVELOPER_MODE
 		Constants.DEVELOPER_MODE = true;

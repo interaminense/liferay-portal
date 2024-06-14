@@ -1,5 +1,6 @@
 import * as data from 'test/data';
 import * as utils from '../utils';
+import {cleanup} from '@testing-library/react';
 import {
 	CustomFunctionOperators,
 	isKnown,
@@ -13,7 +14,11 @@ const {ActivitiesFilterByCount} = CustomFunctionOperators;
 const {EQ, LT, NE} = RelationalOperators;
 
 describe('utils', () => {
+	afterEach(cleanup);
+
 	describe('getOperatorLabel', () => {
+		afterEach(cleanup);
+
 		it.each`
 			operatorKey                | type                                | retVal
 			${EQ}                      | ${PropertyTypes.AccountText}        | ${Liferay.Language.get('is-fragment')}
@@ -37,6 +42,8 @@ describe('utils', () => {
 		);
 	});
 	describe('maybeFormatToKnownType', () => {
+		afterEach(cleanup);
+
 		it.each`
 			operatorName | value   | retVal
 			${NE}        | ${null} | ${isKnown}
@@ -50,6 +57,8 @@ describe('utils', () => {
 	});
 
 	describe('maybeFormatValue', () => {
+		afterEach(cleanup);
+
 		it.each`
 			value                  | type                                | retVal
 			${'Test'}              | ${PropertyTypes.AccountText}        | ${'"Test"'}

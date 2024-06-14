@@ -6,10 +6,10 @@ import VisitorsByTimeCard, {
 	renderTooltip
 } from '../VisitorsByTimeCard';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {createMemoryHistory} from 'history';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
-import {render} from '@testing-library/react';
 import {Router} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -47,6 +47,8 @@ const WrappedComponent = props => {
 };
 
 describe('VisitorsByTimeCard', () => {
+	afterEach(cleanup);
+
 	it('render', async () => {
 		const {container} = render(<WrappedComponent />);
 
@@ -57,6 +59,8 @@ describe('VisitorsByTimeCard', () => {
 });
 
 describe('renderTooltip', () => {
+	afterEach(cleanup);
+
 	it('render', () => {
 		const {container} = render(
 			renderTooltip({column: 'Sunday', row: 12, value: 98})
@@ -67,6 +71,8 @@ describe('renderTooltip', () => {
 });
 
 describe('formatHour', () => {
+	afterEach(cleanup);
+
 	it.each`
 		hour  | retVal
 		${0}  | ${'12 AM'}

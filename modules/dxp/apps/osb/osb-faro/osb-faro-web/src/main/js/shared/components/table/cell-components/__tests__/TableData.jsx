@@ -1,11 +1,13 @@
 import React from 'react';
 import TableData from '../TableData';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
 describe('TableData', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<TableData />);
 

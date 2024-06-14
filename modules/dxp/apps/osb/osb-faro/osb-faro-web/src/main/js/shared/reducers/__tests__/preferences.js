@@ -1,10 +1,13 @@
 import reducer from '../preferences';
+import {cleanup} from '@testing-library/react';
 import {DistributionTab, RemoteData} from 'shared/util/records';
 import {List, Map} from 'immutable';
 import {actionTypes as preferencesActionTypes} from 'shared/actions/preferences';
 import {PreferencesScopes} from 'shared/util/constants';
 
 describe('Preferences Reducer', () => {
+	afterEach(cleanup);
+
 	it('should get default channel id', () => {
 		const defaultChannelId = '123';
 

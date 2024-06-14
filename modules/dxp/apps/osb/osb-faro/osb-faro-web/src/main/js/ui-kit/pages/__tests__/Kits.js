@@ -1,8 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import {cleanup} from '@testing-library/react';
 import {renderWithStore} from 'test/mock-store';
 
 describe('Kits', () => {
+	afterEach(cleanup);
+
 	let component;
 
 	const files = fs
@@ -19,6 +22,8 @@ describe('Kits', () => {
 		const kitName = file.replace('.js', '');
 
 		describe(kitName, () => {
+			afterEach(cleanup);
+
 			const Kit = require(`../${file}`).default;
 
 			it('should render', () => {

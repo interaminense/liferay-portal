@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {CompositionTypes} from 'shared/util/constants';
 import {
 	getMapResultToProps,
@@ -28,7 +29,11 @@ const mockProps = {
 };
 
 describe('Composition Query Mapper', () => {
+	afterEach(cleanup);
+
 	describe('getMapResultToProps', () => {
+		afterEach(cleanup);
+
 		it('should map interests list query result to props', () => {
 			expect(
 				getMapResultToProps(CompositionTypes.SiteInterests)({
@@ -46,6 +51,8 @@ describe('Composition Query Mapper', () => {
 	});
 
 	describe('mapCardPropsToOptions', () => {
+		afterEach(cleanup);
+
 		it('should map interests list query card props to options', () => {
 			const rangeKey = '30';
 			const channelId = '321';
@@ -74,6 +81,8 @@ describe('Composition Query Mapper', () => {
 	});
 
 	describe('mapPropsToOptions', () => {
+		afterEach(cleanup);
+
 		it('should map interests list query props to options', () => {
 			const {
 				delta,

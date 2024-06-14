@@ -1,9 +1,12 @@
 import * as data from 'test/data';
 import reducer from '../maintenance-seen';
 import {actionTypes} from '../../actions/maintenance-seen';
+import {cleanup} from '@testing-library/react';
 import {Map} from 'immutable';
 
 describe('Maintenance Seen Reducer', () => {
+	afterEach(cleanup);
+
 	it('should be a function', () => {
 		expect(reducer).toBeInstanceOf(Function);
 	});

@@ -4,8 +4,8 @@ import mockStore from 'test/mock-store';
 import Overview from '../Overview';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {Segment} from 'shared/util/records';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
@@ -13,6 +13,8 @@ import {waitForLoadingToBeRemoved} from 'test/helpers';
 jest.unmock('react-dom');
 
 describe('SegmentOverview', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<Provider store={mockStore()}>

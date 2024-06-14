@@ -4,9 +4,9 @@ import Activities from '../Activities';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {Account} from 'shared/util/records';
+import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -34,6 +34,8 @@ const DefaultComponent = props => (
 );
 
 describe('Activities', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(<DefaultComponent />);
 

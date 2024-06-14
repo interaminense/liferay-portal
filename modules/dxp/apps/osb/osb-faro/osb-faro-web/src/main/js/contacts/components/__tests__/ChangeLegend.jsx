@@ -1,13 +1,15 @@
 import ChangeLegend from '../ChangeLegend';
 import React from 'react';
 import {CHART_ACTIVITY_ID} from 'shared/util/activities';
+import {cleanup, render} from '@testing-library/react';
 import {DEFAULT_ACTIVITY_MAX} from 'shared/api/activities';
-import {render} from '@testing-library/react';
 import {sub} from 'shared/util/lang';
 
 jest.unmock('react-dom');
 
 describe('ChangeLegend', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const mockActivityCount = 50;
 

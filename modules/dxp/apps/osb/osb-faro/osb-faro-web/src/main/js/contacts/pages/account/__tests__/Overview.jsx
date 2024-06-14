@@ -4,15 +4,17 @@ import Overview from '../Overview';
 import React from 'react';
 import {Account} from 'shared/util/records';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockInterestsReq} from 'test/graphql-data';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('AccountOverview', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<ApolloProvider client={client}>

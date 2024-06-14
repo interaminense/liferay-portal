@@ -1,14 +1,19 @@
 import {actionTypes, addAlert, removeAlert, updateAlert} from '../alerts';
 import {Alert} from 'shared/types';
+import {cleanup} from '@testing-library/react';
 
 import {isFSA} from 'flux-standard-action';
 
 describe('alerts', () => {
+	afterEach(cleanup);
+
 	const alertType = Alert.Types.Alert;
 	const id = 123;
 	const timeout = false;
 
 	describe('addAlert', () => {
+		afterEach(cleanup);
+
 		it('should return an addAlert action', () => {
 			const action = addAlert({alertType, timeout});
 
@@ -36,6 +41,8 @@ describe('alerts', () => {
 	});
 
 	describe('updateAlert', () => {
+		afterEach(cleanup);
+
 		it('should return a updateAlert action', () => {
 			const action = updateAlert({alertType, id, timeout});
 
@@ -51,6 +58,8 @@ describe('alerts', () => {
 	});
 
 	describe('removeAlert', () => {
+		afterEach(cleanup);
+
 		it('should return a removeAlert action', () => {
 			const action = removeAlert(id);
 

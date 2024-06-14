@@ -11,6 +11,8 @@ jest.mock('shared/actions/preferences');
 jest.unmock('react-dom');
 
 describe('DistributionCard', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		fetchDistributionTabs.mockClear();
 

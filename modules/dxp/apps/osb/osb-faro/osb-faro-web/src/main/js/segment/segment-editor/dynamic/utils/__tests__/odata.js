@@ -1,6 +1,7 @@
 import * as data from 'test/data';
 import * as ODataUtil from '../odata';
 import * as Utils from '../utils';
+import {cleanup} from '@testing-library/react';
 import {CustomValue} from 'shared/util/records';
 import {List, Map} from 'immutable';
 
@@ -16,12 +17,16 @@ function testConversionToAndFrom(testQuery, queryConjunction) {
 }
 
 describe('odata', () => {
+	afterEach(cleanup);
+
 	beforeAll(() => {
 		Utils.generateGroupId = jest.fn(() => 'group_01');
 		Utils.generateRowId = jest.fn(() => 'row_01');
 	});
 
 	describe('convertBetweenToSubstring', () => {
+		afterEach(cleanup);
+
 		it('should convert between to substring', () => {
 			expect(
 				ODataUtil.convertBetweenToSubstring(
@@ -38,6 +43,8 @@ describe('odata', () => {
 	});
 
 	describe('trimSpacesBeforeParams', () => {
+		afterEach(cleanup);
+
 		it('should trims spaces before params', () => {
 			expect(
 				ODataUtil.trimSpacesBeforeParams(
@@ -59,6 +66,8 @@ describe('odata', () => {
 	});
 
 	describe('buildQueryString', () => {
+		afterEach(cleanup);
+
 		it('should build a query string from a flat criteria map', () => {
 			expect(
 				ODataUtil.buildQueryString([data.mockNewCriteria(1)])
@@ -98,6 +107,8 @@ describe('odata', () => {
 	});
 
 	describe('escapeSingleQuotes', () => {
+		afterEach(cleanup);
+
 		it('should escape all single quotes in a given string', () => {
 			expect(ODataUtil.escapeSingleQuotes("o'high o'hara")).toEqual(
 				"o''high o''hara"
@@ -106,10 +117,14 @@ describe('odata', () => {
 	});
 
 	describe('toCriteria', () => {
+		afterEach(cleanup);
+
 		it('should return a parsed criteria', () => {});
 	});
 
 	describe('translateQueryToCriteria', () => {
+		afterEach(cleanup);
+
 		it('should translate a query string into a criteria map', () => {
 			expect(
 				ODataUtil.translateQueryToCriteria("(firstName eq 'test')")
@@ -469,6 +484,8 @@ describe('odata', () => {
 	});
 
 	describe('conversion to and from', () => {
+		afterEach(cleanup);
+
 		it('should be able to translate a query string to map and back to string', () => {
 			const testQuery = "(firstName eq 'test')";
 

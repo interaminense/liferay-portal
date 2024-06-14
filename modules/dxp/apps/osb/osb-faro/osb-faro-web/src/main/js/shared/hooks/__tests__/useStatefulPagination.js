@@ -1,8 +1,8 @@
 import Constants from 'shared/util/constants';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {createOrderIOMap} from 'shared/util/pagination';
 import {Map, Set} from 'immutable';
-import {render} from '@testing-library/react';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 
 const {cur: DEFAULT_PAGE, delta: DEFAULT_DELTA} = Constants.pagination;
@@ -10,6 +10,8 @@ const {cur: DEFAULT_PAGE, delta: DEFAULT_DELTA} = Constants.pagination;
 jest.unmock('react-dom');
 
 describe('useStatefulPagination', () => {
+	afterEach(cleanup);
+
 	it('should return default values', () => {
 		let result = null;
 

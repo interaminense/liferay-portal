@@ -1,7 +1,10 @@
 import RemoteData, {remoteDataFromList} from '../RemoteData';
+import {cleanup} from '@testing-library/react';
 import {isArray, range} from 'lodash';
 
 describe('RemoteData', () => {
+	afterEach(cleanup);
+
 	it('should return a new RemoteData', () => {
 		const remoteData = new RemoteData();
 
@@ -9,6 +12,8 @@ describe('RemoteData', () => {
 	});
 
 	describe('remoteDataFromList', () => {
+		afterEach(cleanup);
+
 		it('should return a single RemoteData from an array of RemoteDatas', () => {
 			const remoteDatas = range(5).map(() => new RemoteData({data: []}));
 

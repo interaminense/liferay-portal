@@ -2,10 +2,10 @@ import client from 'shared/apollo/client';
 import Edit from '../Edit';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {SegmentTypes} from 'shared/util/constants';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
@@ -27,6 +27,8 @@ const DefaultComponent = props => (
 );
 
 describe('Edit', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		client.query.mockReturnValueOnce(
 			Promise.resolve({

@@ -1,15 +1,17 @@
 import Interests from '../Interests';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockIndividualInterestsReq} from 'test/graphql-data';
-import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('Interests', () => {
+	afterEach(cleanup);
+
 	it('renders', async () => {
 		const {container} = render(
 			<MockedProvider

@@ -1,7 +1,12 @@
+import {cleanup} from '@testing-library/react';
 import {getUrl} from '../urls';
 
 describe('Url Utils', () => {
+	afterEach(cleanup);
+
 	describe('getUrl', () => {
+		afterEach(cleanup);
+
 		it('should return the url for touchpoint', () => {
 			const path =
 				'/workspace/:groupId/pages/known-individuals/:touchpoint/:title';

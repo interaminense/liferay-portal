@@ -1,6 +1,7 @@
 import * as data from 'test/data';
 import AttributeConjunctionDisplay from '../AttributeConjunctionDisplay';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {DataTypes} from 'event-analysis/utils/types';
 import {
 	FunctionalOperators,
@@ -8,7 +9,6 @@ import {
 	RelationalOperators
 } from 'segment/segment-editor/dynamic/utils/constants';
 import {ReferencedObjectsProvider} from 'segment/segment-editor/dynamic/context/referencedObjects';
-import {render} from '@testing-library/react';
 import {Segment} from 'shared/util/records';
 
 jest.unmock('react-dom');
@@ -52,6 +52,8 @@ const DefaultComponent = props => (
 );
 
 describe('AttributeConjunctionDisplay', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<DefaultComponent

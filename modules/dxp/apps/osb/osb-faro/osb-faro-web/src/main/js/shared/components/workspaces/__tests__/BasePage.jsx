@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {User} from 'shared/util/records';
 import {WorkspacesBasePage} from '../BasePage';
@@ -22,6 +22,8 @@ const DefaultComponent = props => (
 );
 
 describe('WorkspacesBasePage', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<DefaultComponent

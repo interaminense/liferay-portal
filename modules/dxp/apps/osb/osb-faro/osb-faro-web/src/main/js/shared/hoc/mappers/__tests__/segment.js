@@ -1,8 +1,13 @@
 import * as data from 'test/data';
+import {cleanup} from '@testing-library/react';
 import {mapGrowthHistory} from '../segment';
 
 describe('Segment Mappers', () => {
+	afterEach(cleanup);
+
 	describe('mapGrowthHistory', () => {
+		afterEach(cleanup);
+
 		it('should remap a Segment growth history API response', () => {
 			const mockGrowthAggregation = {
 				addedIndividualsCount: 1,

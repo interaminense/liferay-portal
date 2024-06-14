@@ -32,6 +32,8 @@ const DefaultComponent = props => (
 );
 
 describe('WithOnboarding', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		cleanup();
 		jest.clearAllMocks();

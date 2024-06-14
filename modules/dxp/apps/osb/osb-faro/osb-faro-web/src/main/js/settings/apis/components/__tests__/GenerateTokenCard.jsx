@@ -1,7 +1,7 @@
 import 'test/mock-modal';
 import GenerateTokenCard from '../GenerateTokenCard';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -15,6 +15,8 @@ const DefaultComponent = props => (
 );
 
 describe('GenerateTokenCard', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<DefaultComponent />);
 

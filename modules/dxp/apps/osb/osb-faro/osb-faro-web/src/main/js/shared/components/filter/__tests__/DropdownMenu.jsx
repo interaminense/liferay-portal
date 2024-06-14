@@ -1,6 +1,6 @@
 import DropdownMenu, {InputItem, OptionItem} from '../DropdownMenu';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -110,6 +110,8 @@ const MOCK_ITEMS = [
 const [INDIVIDUAL_ITEM] = MOCK_ITEMS[0].items;
 
 describe('DropdownMenu', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<DropdownMenu />);
 
@@ -134,6 +136,8 @@ describe('DropdownMenu', () => {
 });
 
 describe('InputItem', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<InputItem item={INDIVIDUAL_ITEM} />);
 
@@ -142,6 +146,8 @@ describe('InputItem', () => {
 });
 
 describe('OptionItem', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<OptionItem item={INDIVIDUAL_ITEM} />);
 

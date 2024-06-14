@@ -4,10 +4,10 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import View from '../View';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEventDefinitionReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {waitForLoading} from 'test/helpers';
 
@@ -21,6 +21,8 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('Event View page', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<ApolloProvider client={client}>

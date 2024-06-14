@@ -1,5 +1,6 @@
 import * as data from 'test/data';
 import moment from 'moment';
+import {cleanup} from '@testing-library/react';
 import {
 	createDateKeysIMap,
 	getByCustomRangeKey,
@@ -40,6 +41,8 @@ const mockData = [
 ];
 
 describe('createDateKeysIMap', () => {
+	afterEach(cleanup);
+
 	it('should create an dateKeysIMap', () => {
 		const dateKeysIMap = createDateKeysIMap('D', mockData);
 
@@ -61,6 +64,8 @@ describe('createDateKeysIMap', () => {
 });
 
 describe('getNext Functions', () => {
+	afterEach(cleanup);
+
 	it('should get next sunday from a given date', () => {
 		const nextSunday = getNextSunday(currentDate);
 
@@ -86,6 +91,8 @@ describe('getNext Functions', () => {
 });
 
 describe('getDates functions', () => {
+	afterEach(cleanup);
+
 	const dates = [];
 
 	for (let i = 1; i < 30; i++) {
@@ -170,6 +177,8 @@ describe('getDates functions', () => {
 });
 
 describe('get functions to handle custom range key', () => {
+	afterEach(cleanup);
+
 	it('should return undefined if the duration is less than 14 days', () => {
 		const handleFn = getByCustomRangeKey(13, INTERVAL_KEY_MAP.day);
 
@@ -208,6 +217,8 @@ describe('get functions to handle custom range key', () => {
 });
 
 describe('getIntervalHandle functions', () => {
+	afterEach(cleanup);
+
 	it('should return undefined if a interval or rangeKey is not mapped', () => {
 		let handleFn = getIntervalHandle(
 			RangeKeyTimeRanges.Last30Days,
@@ -264,6 +275,8 @@ describe('getIntervalHandle functions', () => {
 });
 
 describe('handleDayInterval', () => {
+	afterEach(cleanup);
+
 	it('should extract an array of dates from a start and end date using the handleFn argument as step', () => {
 		// function to step two days
 		const handleFn = date => moment.utc(date).add(2, 'days').valueOf();

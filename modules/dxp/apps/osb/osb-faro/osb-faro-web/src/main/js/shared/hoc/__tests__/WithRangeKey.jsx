@@ -1,7 +1,7 @@
 import React from 'react';
 import withRangeKey from '../WithRangeKey';
+import {cleanup, render} from '@testing-library/react';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -18,6 +18,8 @@ const WrappedComponent = withRangeKey(({rangeSelectors}) => {
 });
 
 describe('WithRangeKey', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {getByText} = render(<WrappedComponent />);
 

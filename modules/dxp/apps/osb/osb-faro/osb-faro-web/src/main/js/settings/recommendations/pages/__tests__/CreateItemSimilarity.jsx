@@ -3,8 +3,8 @@ import CreateItemSimilarity from '../CreateItemSimilarity';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
@@ -24,6 +24,8 @@ const DefaultComponent = props => (
 );
 
 describe('Recommendations', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(<DefaultComponent />);
 

@@ -1,4 +1,5 @@
 import reducer from '../normalizer';
+import {cleanup} from '@testing-library/react';
 import {Map} from 'immutable';
 import {
 	mockAccount,
@@ -9,6 +10,8 @@ import {
 } from 'test/data';
 
 describe('Normalizer Reducer', () => {
+	afterEach(cleanup);
+
 	it('should update store with normalized entities', () => {
 		const action = {
 			payload: {

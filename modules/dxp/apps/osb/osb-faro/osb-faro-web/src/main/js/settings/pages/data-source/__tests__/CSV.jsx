@@ -1,10 +1,10 @@
 import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {CSV} from '../CSV';
 import {DataSource, User} from 'shared/util/records';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {UserRoleNames} from 'shared/util/constants';
 
@@ -25,6 +25,8 @@ const DefaultComponent = props => (
 );
 
 describe('CSV', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container, queryByText} = render(<DefaultComponent />);
 

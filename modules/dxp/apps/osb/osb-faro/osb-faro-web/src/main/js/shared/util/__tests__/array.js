@@ -1,7 +1,12 @@
 import * as ArrayUtils from '../array';
+import {cleanup} from '@testing-library/react';
 
 describe('array utils', () => {
+	afterEach(cleanup);
+
 	describe('insertAtIndex', () => {
+		afterEach(cleanup);
+
 		it('inserts "eggs" between "cream cheese" and "muffins"', () => {
 			expect(
 				ArrayUtils.insertAtIndex(
@@ -14,6 +19,8 @@ describe('array utils', () => {
 	});
 
 	describe('removeAtIndex', () => {
+		afterEach(cleanup);
+
 		it('removes "muffins" from items', () => {
 			expect(
 				ArrayUtils.removeAtIndex(
@@ -25,6 +32,8 @@ describe('array utils', () => {
 	});
 
 	describe('moveItem', () => {
+		afterEach(cleanup);
+
 		it('returns a new array where "bagels" has been inserted between "muffins" and "toast"', () => {
 			const original = ['bagels', 'cream cheese', 'muffins', 'toast'];
 
@@ -42,6 +51,8 @@ describe('array utils', () => {
 	});
 
 	describe('replaceAtIndex', () => {
+		afterEach(cleanup);
+
 		it('returns a new array where "bagels" has replaced "toast"', () => {
 			expect(
 				ArrayUtils.replaceAtIndex(
@@ -54,6 +65,8 @@ describe('array utils', () => {
 	});
 
 	describe('replaceWithMultipleAtIndex', () => {
+		afterEach(cleanup);
+
 		it('should replace the item at the index and insert remaining items after the index', () => {
 			expect(
 				ArrayUtils.replaceWithMultipleAtIndex([4, 5, 6], [1, 2, 3], 1)
@@ -62,6 +75,8 @@ describe('array utils', () => {
 	});
 
 	describe('getDifferences', () => {
+		afterEach(cleanup);
+
 		it('should return the difference between two arrays of numbers', () => {
 			expect(
 				ArrayUtils.getDifferences([1, 2, 3, 4, 5], [3, 4, 5, 6])

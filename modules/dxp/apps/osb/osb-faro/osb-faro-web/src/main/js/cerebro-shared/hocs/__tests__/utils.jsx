@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {withEmpty, withError} from '../utils';
 
 jest.unmock('react-dom');
@@ -7,6 +7,8 @@ jest.unmock('react-dom');
 const MyAwesomeComponent = () => <div>{'my awesome component'}</div>;
 
 describe('withEmpty', () => {
+	afterEach(cleanup);
+
 	it('should render with emptyTitle if query exists & items is empty', () => {
 		const ComposedComponent = withEmpty({emptyTitle: 'an empty title'})(
 			MyAwesomeComponent
@@ -80,6 +82,8 @@ describe('withEmpty', () => {
 });
 
 describe('withError', () => {
+	afterEach(cleanup);
+
 	it('should render error state when "error" props is true', () => {
 		const ComposedComponent = withError()(MyAwesomeComponent);
 

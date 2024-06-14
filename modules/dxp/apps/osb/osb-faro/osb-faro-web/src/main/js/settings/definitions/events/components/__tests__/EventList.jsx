@@ -4,7 +4,7 @@ import EventList from '../EventList';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEventDefinitionsReq} from 'test/graphql-data';
@@ -15,6 +15,8 @@ import {waitForLoading} from 'test/helpers';
 jest.unmock('react-dom');
 
 describe('EventList', () => {
+	afterEach(cleanup);
+
 	const WrappedComponent = ({event, ...otherProps}) => (
 		<ApolloProvider client={client}>
 			<Provider store={mockStore()}>

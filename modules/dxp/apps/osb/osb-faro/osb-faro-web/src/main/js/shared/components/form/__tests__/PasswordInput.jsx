@@ -1,7 +1,7 @@
 import Form from 'shared/components/form';
 import PasswordInput from '../PasswordInput';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {mockForm} from 'test/data';
 
 jest.unmock('react-dom');
@@ -13,6 +13,8 @@ const TestComponent = () => (
 );
 
 describe('PasswordInput', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<TestComponent />);
 

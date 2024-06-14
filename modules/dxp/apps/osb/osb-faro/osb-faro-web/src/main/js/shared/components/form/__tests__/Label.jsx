@@ -1,10 +1,12 @@
 import Label from '../Label';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('Label', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<Label />);
 

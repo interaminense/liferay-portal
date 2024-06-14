@@ -6,7 +6,7 @@ import EventAnalysisList from '../List';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEmptyState, mockSuccessState} from 'test/__mocks__/mock-objects';
@@ -61,6 +61,8 @@ const WrappedComponent = ({eventAnalyses}) => (
 const mockUseDataSource = useDataSource;
 
 describe('Event Analysis List', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		mockUseDataSource.useDataSource = jest.fn(() => mockSuccessState);
 
@@ -124,6 +126,8 @@ describe('Event Analysis List', () => {
 });
 
 describe('EventAnalysisList with no Data Source', () => {
+	afterEach(cleanup);
+
 	it('should render EmptyState', () => {
 		mockUseDataSource.useDataSource = jest.fn(() => mockEmptyState);
 

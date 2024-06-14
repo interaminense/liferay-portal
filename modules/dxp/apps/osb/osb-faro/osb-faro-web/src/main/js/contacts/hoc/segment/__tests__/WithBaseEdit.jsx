@@ -1,8 +1,9 @@
+import * as data from 'test/data';
 jest.unmock('shared/components/DocumentTitle');
 
-import * as data from 'test/data';
 import React from 'react';
 import withBaseEdit from '../WithBaseEdit';
+import {cleanup} from '@testing-library/react';
 import {compose} from 'redux';
 import {renderWithStore} from 'test/mock-store';
 import {withChannelProvider} from 'test/mock-channel-context';
@@ -17,6 +18,8 @@ class TestComponent extends React.Component {
 }
 
 describe('WithBaseEdit', () => {
+	afterEach(cleanup);
+
 	it('should render the wrapped component', () => {
 		const WrappedComponent = compose(
 			withChannelProvider,

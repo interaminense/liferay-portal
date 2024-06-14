@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	toPromise,
 	validateGreaterThanZero,
@@ -13,6 +14,8 @@ import {
 } from '../validators';
 
 describe('toPromise', () => {
+	afterEach(cleanup);
+
 	it('should resolve if the result is another Promise', () => {
 		expect.assertions(1);
 
@@ -39,6 +42,8 @@ describe('toPromise', () => {
 });
 
 describe('validateInputMessage', () => {
+	afterEach(cleanup);
+
 	it('should validate input message as not valid', () => {
 		expect.assertions(1);
 
@@ -57,6 +62,8 @@ describe('validateInputMessage', () => {
 });
 
 describe('validateMinDuration', () => {
+	afterEach(cleanup);
+
 	it('should validate min duration as not valid', () => {
 		expect.assertions(1);
 
@@ -75,6 +82,8 @@ describe('validateMinDuration', () => {
 });
 
 describe('validateMaxLength', () => {
+	afterEach(cleanup);
+
 	it('should validate max length as not valid', () => {
 		expect.assertions(1);
 
@@ -93,6 +102,8 @@ describe('validateMaxLength', () => {
 });
 
 describe('validateMinLength', () => {
+	afterEach(cleanup);
+
 	it('should validate min length as not valid', () => {
 		expect.assertions(1);
 
@@ -111,6 +122,8 @@ describe('validateMinLength', () => {
 });
 
 describe('validateGreaterThanZero', () => {
+	afterEach(cleanup);
+
 	it('should validate value as invalid', () => {
 		expect.assertions(1);
 
@@ -129,6 +142,8 @@ describe('validateGreaterThanZero', () => {
 });
 
 describe('validateIsInteger', () => {
+	afterEach(cleanup);
+
 	it('should validate value as invalid', () => {
 		expect.assertions(1);
 
@@ -147,6 +162,8 @@ describe('validateIsInteger', () => {
 });
 
 describe('validateMinValue', () => {
+	afterEach(cleanup);
+
 	it('should validate min value as not valid', () => {
 		expect.assertions(1);
 
@@ -165,6 +182,8 @@ describe('validateMinValue', () => {
 });
 
 describe('validatePattern', () => {
+	afterEach(cleanup);
+
 	it('should validate a regex pattern as not valid', () => {
 		expect.assertions(1);
 
@@ -185,6 +204,8 @@ describe('validatePattern', () => {
 });
 
 describe('validateProtocol', () => {
+	afterEach(cleanup);
+
 	it('should validate protocol as not valid', () => {
 		expect.assertions(1);
 
@@ -203,6 +224,8 @@ describe('validateProtocol', () => {
 });
 
 describe('validateRequired', () => {
+	afterEach(cleanup);
+
 	it('should validate required as not valid', () => {
 		expect.assertions(1);
 

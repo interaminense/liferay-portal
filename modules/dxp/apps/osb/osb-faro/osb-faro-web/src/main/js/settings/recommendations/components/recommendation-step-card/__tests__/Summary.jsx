@@ -2,6 +2,7 @@ import * as data from 'test/data';
 import Form from 'shared/components/form';
 import React from 'react';
 import Summary from '../Summary';
+import {cleanup, render} from '@testing-library/react';
 import {
 	JobRunDataPeriods,
 	JobRunFrequencies,
@@ -12,12 +13,13 @@ import {
 	mockRecommendationActivitiesReq,
 	mockRecommendationPageAssetsReq
 } from 'test/graphql-data';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
 describe('Summary', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<MockedProvider

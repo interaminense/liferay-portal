@@ -1,8 +1,11 @@
 import reducer from '../modals';
 import {actionTypes} from '../../actions/modals';
+import {cleanup} from '@testing-library/react';
 import {fromJS, List, Map, Set} from 'immutable';
 
 describe('Modals Reducer', () => {
+	afterEach(cleanup);
+
 	it('should be a function', () => {
 		expect(reducer).toBeInstanceOf(Function);
 	});

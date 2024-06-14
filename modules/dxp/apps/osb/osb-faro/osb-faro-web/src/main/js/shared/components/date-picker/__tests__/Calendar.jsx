@@ -7,11 +7,13 @@ import Calendar, {
 } from '../Calendar';
 import moment from 'moment';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('Calendar', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<Calendar
@@ -58,6 +60,8 @@ describe('Calendar', () => {
 	});
 
 	describe('isSelected', () => {
+		afterEach(cleanup);
+
 		const range = {
 			end: moment(20000),
 			start: moment(50)
@@ -77,6 +81,8 @@ describe('Calendar', () => {
 	});
 
 	describe('isStart', () => {
+		afterEach(cleanup);
+
 		const range = {
 			end: moment(20000),
 			start: moment(50)
@@ -95,6 +101,8 @@ describe('Calendar', () => {
 	});
 
 	describe('isEnd', () => {
+		afterEach(cleanup);
+
 		const range = {
 			end: moment(20000),
 			start: moment(50)
@@ -114,6 +122,8 @@ describe('Calendar', () => {
 	});
 
 	describe('isHoverDateBeforeStartDate', () => {
+		afterEach(cleanup);
+
 		const range = {
 			end: null,
 			start: moment(50)
@@ -131,6 +141,8 @@ describe('Calendar', () => {
 	});
 
 	describe('isInHoverRange', () => {
+		afterEach(cleanup);
+
 		const range = {
 			end: null,
 			start: moment(50)

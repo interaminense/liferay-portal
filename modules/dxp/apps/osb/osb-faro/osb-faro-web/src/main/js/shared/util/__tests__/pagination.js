@@ -13,11 +13,16 @@ import {
 	invertSortOrder,
 	NAME
 } from '../pagination';
+import {cleanup} from '@testing-library/react';
 
 const {orderDescending} = FaroConstants.pagination;
 
 describe('pagination', () => {
+	afterEach(cleanup);
+
 	describe('buildOrderByFields', () => {
+		afterEach(cleanup);
+
 		it('should build an array of orderByField objects for an individual name', () => {
 			expect(
 				buildOrderByFields(
@@ -85,6 +90,8 @@ describe('pagination', () => {
 	});
 
 	describe('createOrderByField', () => {
+		afterEach(cleanup);
+
 		it('should create an orderByField object', () => {
 			expect(
 				createOrderByField(ACCOUNT_NAME, OrderByDirections.Descending)
@@ -110,6 +117,8 @@ describe('pagination', () => {
 	});
 
 	describe('invertSortOrder', () => {
+		afterEach(cleanup);
+
 		it('should return the opposite order from what was received', () => {
 			expect(invertSortOrder(OrderByDirections.Ascending)).toEqual(
 				OrderByDirections.Descending
@@ -128,6 +137,8 @@ describe('pagination', () => {
 	});
 
 	describe('getDefaultSortOrder', () => {
+		afterEach(cleanup);
+
 		it('should return Descending for a fieldName in the INVERTED_SORT_FIELDS array', () => {
 			expect(getDefaultSortOrder(ACTIVITIES_COUNT)).toEqual(
 				OrderByDirections.Descending
@@ -142,12 +153,16 @@ describe('pagination', () => {
 	});
 
 	describe('createOrderIOMap', () => {
+		afterEach(cleanup);
+
 		it('should create an Immutable OrderedMap with an OrderParams record inside', () => {
 			expect(createOrderIOMap('name')).toMatchSnapshot();
 		});
 	});
 
 	describe('getSortFromOrderIOMap', () => {
+		afterEach(cleanup);
+
 		it('should return an object in sort format from an orderIOMap', () => {
 			expect(getSortFromOrderIOMap(createOrderIOMap('name'))).toEqual({
 				column: 'name',
@@ -157,6 +172,8 @@ describe('pagination', () => {
 	});
 
 	describe('getGraphQLVariablesFromPagination', () => {
+		afterEach(cleanup);
+
 		it('should return the pagination params in our standard graphql format', () => {
 			expect(
 				getGraphQLVariablesFromPagination({

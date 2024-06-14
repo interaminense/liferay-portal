@@ -1,9 +1,9 @@
 import * as data from 'test/data';
 import EventInput from '../EventInput';
 import React from 'react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {createNewGroup} from '../../utils/utils';
 import {CustomValue, Property} from 'shared/util/records';
-import {fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/react-testing';
@@ -16,6 +16,8 @@ import {waitForLoading} from 'test/helpers';
 jest.unmock('react-dom');
 
 describe('EventInput', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container, getAllByRole, getAllByText, getByText} = render(
 			<MockedProvider

@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {getVariableDefinitions, removeUnusedVariables} from '../graphql';
 
 const mockGQLQuery = {
@@ -30,7 +31,11 @@ const mockVariables = {
 };
 
 describe('GraphQL Utils', () => {
+	afterEach(cleanup);
+
 	describe('getVariableDefinitions', () => {
+		afterEach(cleanup);
+
 		it('Returns the variable definitions from a GQLQuery', () => {
 			expect(getVariableDefinitions(mockGQLQuery)).toEqual({
 				name: true,
@@ -40,6 +45,8 @@ describe('GraphQL Utils', () => {
 	});
 
 	describe('removeUnusedVariables', () => {
+		afterEach(cleanup);
+
 		it('Returns only the variables that exist in the variableDefinitions', () => {
 			expect(
 				removeUnusedVariables(mockVariables, {

@@ -1,4 +1,5 @@
 import * as data from 'test/data';
+import {cleanup} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {getBasicProjects, getSingleProjectRoute} from '../projects';
 import {PLANS} from 'shared/util/subscriptions';
@@ -42,7 +43,11 @@ const mockProjects = [
 ];
 
 describe('projects', () => {
+	afterEach(cleanup);
+
 	describe('getBasicProjects', () => {
+		afterEach(cleanup);
+
 		it('should return only basic projects given a list of projects', () => {
 			const projects = getBasicProjects(mockProjects);
 
@@ -61,6 +66,8 @@ describe('projects', () => {
 	});
 
 	describe('getSingleProjectRoute', () => {
+		afterEach(cleanup);
+
 		it('should return the homepage route for a single project that is configured', () => {
 			const route = getSingleProjectRoute(mockProjects[2]);
 

@@ -3,14 +3,16 @@ import AssociatedSegments from '../AssociatedSegments';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {Account} from 'shared/util/records';
+import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('AccountAssociatedSegments', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<StaticRouter>

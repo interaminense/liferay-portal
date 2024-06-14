@@ -1,7 +1,10 @@
 import normalizer from '../normalizer';
+import {cleanup} from '@testing-library/react';
 import {schema} from 'normalizr';
 
 describe('Normalizer Middleware', () => {
+	afterEach(cleanup);
+
 	it('Should normalize a response with a schema', () => {
 		const id = '123';
 		const name = 'foo';

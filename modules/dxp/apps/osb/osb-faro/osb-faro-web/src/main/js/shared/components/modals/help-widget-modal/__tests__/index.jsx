@@ -1,12 +1,14 @@
 import HelpWidgetModal from '../index';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('HelpWidgetModal', () => {
+	afterEach(cleanup);
+
 	it('Should render', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>

@@ -1,9 +1,11 @@
 import toggleSwitch from '../ToggleSwitch';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('ToggleSwitch', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(toggleSwitch({field: {}}));
 

@@ -1,11 +1,13 @@
 import BatchActionModal from '../BatchActionModal';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {noop} from 'lodash';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('BatchActionModal', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<BatchActionModal

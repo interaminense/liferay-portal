@@ -2,7 +2,7 @@ import BaseCard from '..';
 import client from 'shared/apollo/client';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-hoc';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -24,6 +24,8 @@ const WrappedComponent = props => (
 );
 
 describe('BaseCard', () => {
+	afterEach(cleanup);
+
 	it('should render component', () => {
 		const {container} = render(
 			<WrappedComponent>

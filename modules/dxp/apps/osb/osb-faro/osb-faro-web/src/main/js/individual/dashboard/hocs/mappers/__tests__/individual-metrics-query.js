@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {mapPropsToOptions, mapResultToProps} from '../individual-metrics-query';
 import {range} from 'lodash';
 
@@ -18,7 +19,11 @@ const mockData = {
 };
 
 describe('Individual Metrics Query Mapper', () => {
+	afterEach(cleanup);
+
 	describe('mapPropsToOptions', () => {
+		afterEach(cleanup);
+
 		it('should map props to options', () => {
 			const props = {
 				interval: 'day',
@@ -41,6 +46,8 @@ describe('Individual Metrics Query Mapper', () => {
 	});
 
 	describe('mapResultToProps', () => {
+		afterEach(cleanup);
+
 		xit('should map results to props', () => {
 			expect(mapResultToProps(mockData).items).toEqual(
 				expect.arrayContaining([

@@ -30,6 +30,8 @@ const WrapperComponent = () => {
 };
 
 describe('DownloadReportIndividualModal CSV', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		jest.clearAllTimers();
 

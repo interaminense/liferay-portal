@@ -181,6 +181,8 @@ const generateCSVURL = (type: CSVType) => {
 };
 
 describe('DownloadReportModal CSV', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		jest.clearAllTimers();
 
@@ -256,6 +258,8 @@ describe('DownloadReportModal CSV', () => {
 });
 
 describe('DownloadReportModal PDF', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		jest.clearAllTimers();
 

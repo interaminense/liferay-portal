@@ -1,10 +1,12 @@
 import React from 'react';
 import Trend from '../Trend';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('Trend', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container, getByText} = render(
 			<Trend color='red' label='Trend component' />

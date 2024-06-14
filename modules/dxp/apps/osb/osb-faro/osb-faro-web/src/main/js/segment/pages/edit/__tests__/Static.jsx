@@ -3,7 +3,7 @@ import mockStore from 'test/mock-store';
 import ModalRenderer from 'shared/components/ModalRenderer';
 import React from 'react';
 import {BrowserRouter, StaticRouter} from 'react-router-dom';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {INDIVIDUALS} from 'shared/util/router';
 import {Provider} from 'react-redux';
 import {Segment} from 'shared/util/records';
@@ -20,6 +20,8 @@ window.confirm = () => {
 };
 
 describe('StaticSegmentEdit', () => {
+	afterEach(cleanup);
+
 	beforeEach(() => {
 		isShowingNavigationWarning = false;
 	});

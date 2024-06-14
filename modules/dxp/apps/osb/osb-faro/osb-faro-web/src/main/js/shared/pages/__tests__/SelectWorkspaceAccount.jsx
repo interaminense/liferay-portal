@@ -3,11 +3,11 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import SelectWorkspaceAccount, {routingFn} from '../SelectWorkspaceAccount';
 import {BrowserRouter} from 'react-router-dom';
+import {cleanup, render} from '@testing-library/react';
 import {DataSourceStates} from 'shared/util/constants';
 import {fromJS} from 'immutable';
 import {Project} from 'shared/util/records';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {Routes, setUriQueryValue, toRoute} from 'shared/util/router';
 import {useFetchProjects} from 'shared/hooks/useProjects';
 
@@ -39,6 +39,8 @@ jest.mock('shared/hooks/useProjects', () => ({
 jest.unmock('react-dom');
 
 describe('SelectWorkspaceAccount', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const mockProjects = [
 			new Project(
@@ -78,6 +80,8 @@ describe('SelectWorkspaceAccount', () => {
 });
 
 describe('routingFn', () => {
+	afterEach(cleanup);
+
 	it('should route the user to the workspaces list if there are multiple basic workspaces and all are configured', () => {
 		const expectedRoute = setUriQueryValue(
 			toRoute(Routes.WORKSPACES),

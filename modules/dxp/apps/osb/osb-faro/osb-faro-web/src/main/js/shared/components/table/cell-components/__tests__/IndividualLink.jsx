@@ -1,6 +1,6 @@
 import IndividualLinkCell from '../IndividualLink';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
@@ -14,6 +14,8 @@ const DefaultComponent = props => (
 const tableRow = document.createElement('tr');
 
 describe('IndividualLinkCell', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<DefaultComponent

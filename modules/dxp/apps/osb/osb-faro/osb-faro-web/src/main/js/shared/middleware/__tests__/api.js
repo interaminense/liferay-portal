@@ -1,9 +1,12 @@
+import api, {CALL_API, toAction} from '../api';
 jest.mock('shared/util/request');
 
-import api, {CALL_API, toAction} from '../api';
 import sendRequest from 'shared/util/request';
+import {cleanup} from '@testing-library/react';
 
 describe('API Middleware', () => {
+	afterEach(cleanup);
+
 	it('should call next middleware if not an API call', () => {
 		sendRequest.setResponseData({foo: 'bar'});
 
@@ -122,6 +125,8 @@ describe('API Middleware', () => {
 });
 
 describe('toAction', () => {
+	afterEach(cleanup);
+
 	it('should return an action object', () => {
 		const actionType = 'TEST';
 

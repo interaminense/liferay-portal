@@ -1,8 +1,8 @@
 import React from 'react';
 import withQueryPagination from '../WithQueryPagination';
+import {cleanup, render} from '@testing-library/react';
 import {createOrderIOMap, getSortFromOrderIOMap} from 'shared/util/pagination';
 import {MemoryRouter} from 'react-router-dom';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -34,6 +34,8 @@ const WrapperComponent = ({children, queryString = ''}) => (
 );
 
 describe('withQueryPagination', () => {
+	afterEach(cleanup);
+
 	it('should return initial values', () => {
 		const TestComponent = withQueryPagination({
 			initialDelta: 6,

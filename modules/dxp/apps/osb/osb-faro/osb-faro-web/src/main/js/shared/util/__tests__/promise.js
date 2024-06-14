@@ -1,6 +1,9 @@
+import {cleanup} from '@testing-library/react';
 import {sequence} from '../promise';
 
 describe('sequence', () => {
+	afterEach(cleanup);
+
 	it('should return the first rejected promise', () => {
 		expect.assertions(1);
 

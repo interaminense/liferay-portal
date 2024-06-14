@@ -1,9 +1,12 @@
+import {cleanup} from '@testing-library/react';
 jest.unmock('clay-charts');
 
 import {Colors} from 'shared/util/charts';
 import {getIcon, getStatsColor, Icons} from '../metrics';
 
 describe('getStatsColor', () => {
+	afterEach(cleanup);
+
 	it('should be return the neutral color if no color is specificated', () => {
 		const color = getStatsColor();
 
@@ -30,6 +33,8 @@ describe('getStatsColor', () => {
 });
 
 describe('getIcon', () => {
+	afterEach(cleanup);
+
 	it('should be return the current icon based in a positive number', () => {
 		const icon = getIcon(10);
 

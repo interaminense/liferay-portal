@@ -1,8 +1,13 @@
+import {cleanup} from '@testing-library/react';
 import {fetchCard} from '../cards';
 import {isFSA} from 'flux-standard-action';
 
 describe('Card Actions', () => {
+	afterEach(cleanup);
+
 	describe('fetchCard', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = fetchCard({
 				contactsCardTemplateId: 'test',

@@ -2,7 +2,7 @@ import * as API from 'shared/api';
 import ConnectDXP from '../ConnectDXP';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {noop} from 'lodash';
 import {Provider} from 'react-redux';
 import {StaticRouter} from 'react-router-dom';
@@ -10,6 +10,8 @@ import {StaticRouter} from 'react-router-dom';
 jest.unmock('react-dom');
 
 describe('ConnectDXP', () => {
+	afterEach(cleanup);
+
 	it('renders', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>

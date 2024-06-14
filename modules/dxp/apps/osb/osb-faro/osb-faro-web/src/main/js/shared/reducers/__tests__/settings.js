@@ -1,9 +1,12 @@
 import reducer from '../settings';
+import {cleanup} from '@testing-library/react';
 import {Map} from 'immutable';
 import {actionTypes as projectsActionTypes} from 'shared/actions/projects';
 import {actionTypes as settingsActionTypes} from 'shared/actions/settings';
 
 describe('settings reducer', () => {
+	afterEach(cleanup);
+
 	it('should set back url', () => {
 		const url = 'foo/bar';
 

@@ -1,12 +1,14 @@
 import Form from 'shared/components/form';
 import React from 'react';
 import TimeZonePicker from '../TimeZonePicker';
-import {render, waitFor} from '@testing-library/react';
+import {cleanup, render, waitFor} from '@testing-library/react';
 import {TimeZone} from 'shared/util/records';
 
 jest.unmock('react-dom');
 
 describe('TimeZonePicker', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		jest.useFakeTimers();
 

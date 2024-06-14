@@ -1,10 +1,12 @@
 import CohortChart from '../index';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('CohortChart', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const dateLabelFn = (value, shouldRender) =>
 			shouldRender ? value : '-';

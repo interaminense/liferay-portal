@@ -1,6 +1,6 @@
 import InterestPagesList from '../InterestPagesList';
 import React from 'react';
-import {render, waitFor} from '@testing-library/react';
+import {cleanup, render, waitFor} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
@@ -12,6 +12,8 @@ jest.unmock('react-dom');
  * of the order button on those tests.
  */
 describe('InterestPagesList', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<StaticRouter>

@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	validateEmail,
 	validateEmailArr,
@@ -6,7 +7,11 @@ import {
 } from '../email-validators';
 
 describe('email-validators', () => {
+	afterEach(cleanup);
+
 	describe('validateEmailDomain', () => {
+		afterEach(cleanup);
+
 		it.each`
 			domain                 | isValid
 			${'liferay.com'}       | ${true}
@@ -19,6 +24,8 @@ describe('email-validators', () => {
 	});
 
 	describe('validateEmailDomainArr', () => {
+		afterEach(cleanup);
+
 		it('should return an empty string if there are valid email domains', () => {
 			expect(
 				validateEmailDomainArr(['liferay.com.br', 'liferay.com'])
@@ -33,6 +40,8 @@ describe('email-validators', () => {
 	});
 
 	describe('validateEmail', () => {
+		afterEach(cleanup);
+
 		it.each`
 			email                    | isValid
 			${'test@liferay.com'}    | ${true}
@@ -46,6 +55,8 @@ describe('email-validators', () => {
 	});
 
 	describe('validateEmailArr', () => {
+		afterEach(cleanup);
+
 		it('should return an empty string if there are valid emails', () => {
 			expect(
 				validateEmailArr(['test@liferay.com.br', 'test@liferay.com'])

@@ -1,6 +1,6 @@
 import HTMLBarChart from '../HTMLBarChart';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -90,6 +90,8 @@ const ITEMS_WITH_TOOLTIP = [
 ];
 
 describe('HTMLBarChart', () => {
+	afterEach(cleanup);
+
 	it('should render component without crashing', () => {
 		const {container} = render(<HTMLBarChart items={ITEMS} />);
 

@@ -1,6 +1,6 @@
 import Name from '../Name';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
@@ -14,6 +14,8 @@ const FilledComponent = props => (
 );
 
 describe('Name', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<Name data={{name: 'foo'}} renderSecondaryInfo={() => 'bar'} />

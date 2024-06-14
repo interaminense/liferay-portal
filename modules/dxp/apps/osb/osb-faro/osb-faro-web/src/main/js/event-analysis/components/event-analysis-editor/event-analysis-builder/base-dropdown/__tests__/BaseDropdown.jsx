@@ -1,10 +1,12 @@
 import BaseDropdown from '../index';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('BaseDropdown', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container, getByTestId} = render(
 			<BaseDropdown

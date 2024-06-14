@@ -1,10 +1,12 @@
 import React from 'react';
 import SelectFieldInput from '../SelectFieldInput';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('SelectFieldInput', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<SelectFieldInput groupId='23' />);
 

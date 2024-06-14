@@ -1,10 +1,12 @@
 import React from 'react';
 import WillBeRemovedCell from '../WillBeRemoved';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('WillBeRemovedCell', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<WillBeRemovedCell

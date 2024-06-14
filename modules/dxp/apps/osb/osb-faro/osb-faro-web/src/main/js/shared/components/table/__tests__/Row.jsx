@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from '../Row';
+import {cleanup, render} from '@testing-library/react';
 import {mockIndividual} from 'test/data';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -24,6 +24,8 @@ const COLUMNS = [
 ];
 
 describe('Row', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<Row />);
 

@@ -1,11 +1,13 @@
 import FilterOptions from '../index';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {withAttributesProvider} from 'event-analysis/components/event-analysis-editor/context/attributes';
 
 jest.unmock('react-dom');
 
 describe('FilterOptions', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const WrappedFilterOptions = withAttributesProvider(FilterOptions);
 

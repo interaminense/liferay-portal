@@ -1,6 +1,6 @@
 import React from 'react';
 import StepList from '../StepList';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -9,6 +9,8 @@ const DefaultComponent = props => (
 );
 
 describe('StepList', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<DefaultComponent />);
 

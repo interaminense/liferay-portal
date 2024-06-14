@@ -1,4 +1,5 @@
 import * as API from 'shared/api';
+import {cleanup} from '@testing-library/react';
 import {
 	emitAuthCode,
 	emitError,
@@ -11,6 +12,8 @@ import {
 } from '../oauth';
 
 describe('isOAuthErrorString', () => {
+	afterEach(cleanup);
+
 	it('should return true is the error is considered an OAuth error type', () => {
 		OAUTH_ERROR_CODES.map(code => {
 			expect(isOAuthErrorString(code)).toBe(true);
@@ -27,6 +30,8 @@ describe('isOAuthErrorString', () => {
 });
 
 describe('oauth-token', () => {
+	afterEach(cleanup);
+
 	class MockWindow {
 		closed = false;
 		focus = jest.fn();
@@ -40,6 +45,8 @@ describe('oauth-token', () => {
 	}
 
 	describe('emitAuthCode', () => {
+		afterEach(cleanup);
+
 		beforeAll(() => {
 			window.opener = {
 				postMessage: jest.fn()
@@ -63,6 +70,8 @@ describe('oauth-token', () => {
 	});
 
 	describe('emitError', () => {
+		afterEach(cleanup);
+
 		beforeAll(() => {
 			window.opener = {
 				postMessage: jest.fn()
@@ -86,6 +95,8 @@ describe('oauth-token', () => {
 	});
 
 	describe('emitToken', () => {
+		afterEach(cleanup);
+
 		beforeAll(() => {
 			window.opener = {
 				postMessage: jest.fn()
@@ -112,6 +123,8 @@ describe('oauth-token', () => {
 	});
 
 	describe('getTempCredentials', () => {
+		afterEach(cleanup);
+
 		beforeAll(() => {
 			jest.useRealTimers();
 		});

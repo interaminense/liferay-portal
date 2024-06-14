@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {DataSourceTypes, EntityTypes} from '../constants';
 import {
 	getDataSourceLangKey,
@@ -7,6 +8,8 @@ import {
 } from '../lang';
 
 describe('sub', () => {
+	afterEach(cleanup);
+
 	it('should return an array', () => {
 		const res = sub('hello world', [''], false);
 
@@ -39,12 +42,16 @@ describe('sub', () => {
 });
 
 describe('getTypeLangKey', () => {
+	afterEach(cleanup);
+
 	it('should lang key for account', () => {
 		expect(getTypeLangKey(EntityTypes.Account)).toBe('Accounts');
 	});
 });
 
 describe('getDataSourceLangKey', () => {
+	afterEach(cleanup);
+
 	it('should return a lang key for a data-source type', () => {
 		expect(getDataSourceLangKey(DataSourceTypes.Liferay)).toBe(
 			'Liferay DXP'
@@ -53,6 +60,8 @@ describe('getDataSourceLangKey', () => {
 });
 
 describe('getPluralMessage', () => {
+	afterEach(cleanup);
+
 	it.each`
 		count        | expected
 		${1}         | ${'1 person'}

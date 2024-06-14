@@ -59,6 +59,8 @@ const WrappedComponent = props => (
 );
 
 describe('CustomEventList', () => {
+	afterEach(cleanup);
+
 	afterAll(cleanup);
 
 	it('should render', async () => {

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import {cleanup} from '@testing-library/react';
 import {
 	formatDateRange,
 	formatDateWithTimezone,
@@ -52,6 +53,8 @@ const timeRange = [
 ];
 
 describe('formatDateWithTimezone', () => {
+	afterEach(cleanup);
+
 	it.each`
 		timeZoneId               | result                         | isAfter
 		${'Asia/Tokyo'}          | ${'1970-01-01T09:00:00+00:00'} | ${true}
@@ -77,6 +80,8 @@ describe('formatDateWithTimezone', () => {
 });
 
 describe('formatDateRange', () => {
+	afterEach(cleanup);
+
 	it('returns formatted dates for timeRange', () => {
 		expect(formatTimeRange(timeRange)).toEqual([
 			{
@@ -130,6 +135,8 @@ describe('formatDateRange', () => {
 });
 
 describe('formatDateRange', () => {
+	afterEach(cleanup);
+
 	it('returns formatted date range for last 24 hours', () => {
 		expect(formatDateRange(moment(0), 0)).toEqual('01 Jan, 12 AM');
 	});
@@ -144,6 +151,8 @@ describe('formatDateRange', () => {
 });
 
 describe('getFilteredItems', () => {
+	afterEach(cleanup);
+
 	it('filter items', () => {
 		expect(
 			getFilteredItems({
@@ -305,6 +314,8 @@ describe('getFilteredItems', () => {
 });
 
 describe('getSelectedItem', () => {
+	afterEach(cleanup);
+
 	it('returns selected item', () => {
 		expect(
 			getSelectedItem({

@@ -5,9 +5,14 @@ import {
 	DateGroupings,
 	Operators
 } from '../types';
+import {cleanup} from '@testing-library/react';
 
 describe('utils', () => {
+	afterEach(cleanup);
+
 	describe('formatDateName', () => {
+		afterEach(cleanup);
+
 		it.each`
 			name            | dateGrouping           | result
 			${'2020-11-22'} | ${DateGroupings.Day}   | ${'Nov 22, 2020'}
@@ -24,6 +29,8 @@ describe('utils', () => {
 	});
 
 	describe('formatDurationName', () => {
+		afterEach(cleanup);
+
 		it.each`
 			name                       | result
 			${'6000 -12000'}           | ${'00:00:06 - 00:00:12'}
@@ -35,6 +42,8 @@ describe('utils', () => {
 	});
 
 	describe('formatBreakdownNameByDataType', () => {
+		afterEach(cleanup);
+
 		it.each`
 			name              | breakdown                                                      | result
 			${'2020-11-22'}   | ${{dataType: DataTypes.Date, dateGrouping: DateGroupings.Day}} | ${'Nov 22, 2020'}
@@ -54,6 +63,8 @@ describe('utils', () => {
 	});
 
 	describe('getFilterDisplay', () => {
+		afterEach(cleanup);
+
 		it.each`
 			dataType              | attributeType                     | operator                 | values                          | result
 			${DataTypes.Boolean}  | ${AttributeOwnerTypes.Account}    | ${Operators.EQ}          | ${[true]}                       | ${['Account | Test', 'True']}
@@ -88,6 +99,8 @@ describe('utils', () => {
 	});
 
 	describe('getBreakdownDisplay', () => {
+		afterEach(cleanup);
+
 		it.each`
 			type                              | result
 			${AttributeOwnerTypes.Account}    | ${['Account', 'Test']}
@@ -107,6 +120,8 @@ describe('utils', () => {
 	});
 
 	describe('isAttribute', () => {
+		afterEach(cleanup);
+
 		it('returns true when item is an attribute', () => {
 			expect(
 				utils.isAttribute({
@@ -126,6 +141,8 @@ describe('utils', () => {
 	});
 
 	describe('createBooleanBreakdown', () => {
+		afterEach(cleanup);
+
 		it('returns a boolean breakdown', () => {
 			const attributeId = '123';
 			const attributeType = AttributeOwnerTypes.Event;
@@ -147,6 +164,8 @@ describe('utils', () => {
 	});
 
 	describe('createDateBreakdown', () => {
+		afterEach(cleanup);
+
 		it('returns a date breakdown', () => {
 			const attributeId = '123';
 			const attributeType = AttributeOwnerTypes.Event;
@@ -168,6 +187,8 @@ describe('utils', () => {
 	});
 
 	describe('createDurationBreakdown', () => {
+		afterEach(cleanup);
+
 		it('returns a duration breakdown', () => {
 			const attributeId = '123';
 			const attributeType = AttributeOwnerTypes.Event;
@@ -189,6 +210,8 @@ describe('utils', () => {
 	});
 
 	describe('createNumberBreakdown', () => {
+		afterEach(cleanup);
+
 		it('returns a number breakdown', () => {
 			const attributeId = '123';
 			const attributeType = AttributeOwnerTypes.Event;
@@ -210,6 +233,8 @@ describe('utils', () => {
 	});
 
 	describe('createStringBreakdown', () => {
+		afterEach(cleanup);
+
 		it('returns a string breakdown', () => {
 			const attributeId = '123';
 			const attributeType = AttributeOwnerTypes.Event;

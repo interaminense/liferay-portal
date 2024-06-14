@@ -1,5 +1,6 @@
 import * as utils from '../utils';
 import {CHART_COLOR_NAMES} from 'shared/util/charts';
+import {cleanup} from '@testing-library/react';
 
 const {
 	martell,
@@ -17,7 +18,11 @@ const {
 } = CHART_COLOR_NAMES;
 
 describe('utils', () => {
+	afterEach(cleanup);
+
 	describe('formatDate', () => {
+		afterEach(cleanup);
+
 		it.each`
 			date            | interval       | abbreviated | formattedDate
 			${'2019-12-12'} | ${utils.DAY}   | ${false}    | ${'December 12'}
@@ -37,6 +42,8 @@ describe('utils', () => {
 	});
 
 	describe('getPeriodLabel', () => {
+		afterEach(cleanup);
+
 		it.each`
 			period | interval       | label
 			${0}   | ${utils.DAY}   | ${'Day 0'}
@@ -51,6 +58,8 @@ describe('utils', () => {
 	});
 
 	describe('getColorHex', () => {
+		afterEach(cleanup);
+
 		it.each`
 			retention | visitorsType                | hexColor
 			${13}     | ${utils.VISITORS}           | ${martellL4}

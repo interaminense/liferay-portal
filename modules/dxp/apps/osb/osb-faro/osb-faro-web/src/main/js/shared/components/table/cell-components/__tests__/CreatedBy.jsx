@@ -1,13 +1,15 @@
 import * as data from 'test/data';
 import CreatedByCell from '../CreatedBy';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 const tableRow = document.createElement('tr');
 
 describe('CreatedByCell', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<CreatedByCell

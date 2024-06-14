@@ -1,11 +1,11 @@
 import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {CredentialTypes} from 'shared/util/constants';
 import {DataSource, User} from 'shared/util/records';
 import {MemoryRouter} from 'react-router';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {View} from '../View';
 import {waitForLoading, waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -29,6 +29,8 @@ const DefaultComponent = props => (
 );
 
 describe('View', () => {
+	afterEach(cleanup);
+
 	it('should render a CSV data-source page', async () => {
 		const {container} = render(
 			<DefaultComponent

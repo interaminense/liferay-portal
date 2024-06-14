@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {renderHook} from '@testing-library/react-hooks';
 import {useLocation} from 'react-router-dom';
 import {useQueryParams} from '../useQueryParams';
@@ -7,6 +8,8 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('useQueryParams', () => {
+	afterEach(cleanup);
+
 	it('returns an empty object if no query parameters are present', () => {
 		useLocation.mockReturnValue({search: ''});
 		const {result} = renderHook(() => useQueryParams());

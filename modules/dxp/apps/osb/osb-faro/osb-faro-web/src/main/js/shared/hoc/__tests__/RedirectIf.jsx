@@ -1,6 +1,6 @@
 import React from 'react';
 import redirectIf from '../RedirectIf';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {Routes, toRoute} from 'shared/util/router';
 import {StaticRouter} from 'react-router';
 
@@ -19,6 +19,8 @@ const WrapperComponent = ({route = null}) => {
 };
 
 describe('redirectIf', () => {
+	afterEach(cleanup);
+
 	it('should render the component', () => {
 		const {container} = render(<WrapperComponent />);
 

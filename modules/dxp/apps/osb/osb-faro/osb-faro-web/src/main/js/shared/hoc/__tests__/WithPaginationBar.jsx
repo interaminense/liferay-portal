@@ -1,12 +1,14 @@
 import React from 'react';
 import withPaginationBar from '../WithPaginationBar';
+import {cleanup, render} from '@testing-library/react';
 import {compose} from 'redux';
-import {render} from '@testing-library/react';
 import {withStaticRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
 describe('withPaginationBar', () => {
+	afterEach(cleanup);
+
 	it('renders', () => {
 		const WrappedComponent = compose(
 			withStaticRouter,

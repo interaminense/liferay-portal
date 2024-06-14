@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	formatPlanData,
 	getPlanAddOns,
@@ -17,7 +18,11 @@ jest.mock('shared/hooks/useTimeZone', () => ({
 }));
 
 describe('subscriptions', () => {
+	afterEach(cleanup);
+
 	describe('getPlanAddOns', () => {
+		afterEach(cleanup);
+
 		it('should return the correct plan addons', () => {
 			const planAddOns = getPlanAddOns(
 				formatPlanData(
@@ -55,6 +60,8 @@ describe('subscriptions', () => {
 	});
 
 	describe('getPropIcon', () => {
+		afterEach(cleanup);
+
 		it('should return the prop icon symbol', () => {
 			const symbol = getPropIcon(INDIVIDUALS);
 
@@ -63,6 +70,8 @@ describe('subscriptions', () => {
 	});
 
 	describe('getPropLabel', () => {
+		afterEach(cleanup);
+
 		it('should return the correct prop label', () => {
 			const label = getPropLabel(PAGEVIEWS);
 
@@ -71,6 +80,8 @@ describe('subscriptions', () => {
 	});
 
 	describe('formatPlanData', () => {
+		afterEach(cleanup);
+
 		it('should format the plan data as a basic Plan record', () => {
 			const plan = formatPlanData(
 				fromJS(

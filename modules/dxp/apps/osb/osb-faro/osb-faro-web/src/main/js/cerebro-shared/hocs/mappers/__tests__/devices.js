@@ -1,6 +1,9 @@
+import {cleanup} from '@testing-library/react';
 import {getDevicesMapper} from '../devices';
 
 describe('Shared HOCs Mappers - Devices', () => {
+	afterEach(cleanup);
+
 	it('should map devices information', () => {
 		const mapper = getDevicesMapper(
 			result => result.form.submissionsMetric

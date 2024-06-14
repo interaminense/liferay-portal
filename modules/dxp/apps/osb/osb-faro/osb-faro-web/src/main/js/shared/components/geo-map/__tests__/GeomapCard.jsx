@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {GeomapCard} from '../GeomapCard';
 
 jest.unmock('react-dom');
@@ -59,6 +59,8 @@ const props = {
 	loading: false
 };
 describe('GeoMapCard', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<GeomapCard {...props} />);
 		expect(container).toMatchSnapshot();

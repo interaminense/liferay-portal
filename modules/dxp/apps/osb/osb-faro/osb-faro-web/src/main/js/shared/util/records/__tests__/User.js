@@ -1,4 +1,5 @@
 import User from '../User';
+import {cleanup} from '@testing-library/react';
 import {UserRoleNames} from 'shared/util/constants';
 
 const adminUser = new User({roleName: UserRoleNames.Administrator});
@@ -8,6 +9,8 @@ const memberUser = new User({roleName: UserRoleNames.Member});
 const ownerUser = new User({roleName: UserRoleNames.Owner});
 
 describe('User', () => {
+	afterEach(cleanup);
+
 	it('should return a new User', () => {
 		const user = new User();
 

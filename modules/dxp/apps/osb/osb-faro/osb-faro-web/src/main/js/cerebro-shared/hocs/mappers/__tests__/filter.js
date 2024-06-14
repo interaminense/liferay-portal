@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {getFiltersMapper} from '../filter';
 
 const data = {
@@ -178,6 +179,8 @@ const data = {
 };
 
 describe('Shared HOCs Mappers - Filter', () => {
+	afterEach(cleanup);
+
 	it('should map filter information', () => {
 		const mapper = getFiltersMapper(result => result.forms.submissions);
 

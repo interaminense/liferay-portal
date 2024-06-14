@@ -3,9 +3,9 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {BrowserRouter} from 'react-router-dom';
+import {cleanup, render} from '@testing-library/react';
 import {DataSource} from 'shared/util/records';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {ConfigurationOverview as SalesforceConfigurationOverview} from '../ConfigurationOverview';
 
 jest.mock('shared/actions/alerts', () => ({
@@ -41,6 +41,8 @@ const DefaultComponent = props => (
 );
 
 describe('SalesforceConfigurationOverview', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		jest.clearAllMocks();
 	});

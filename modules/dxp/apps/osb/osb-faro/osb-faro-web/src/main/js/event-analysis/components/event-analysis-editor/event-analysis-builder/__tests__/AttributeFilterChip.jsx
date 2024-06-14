@@ -3,10 +3,10 @@ import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -18,6 +18,8 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('AttributeFilterChip', () => {
+	afterEach(cleanup);
+
 	it('render', () => {
 		const {container} = render(
 			<ApolloProvider client={client}>

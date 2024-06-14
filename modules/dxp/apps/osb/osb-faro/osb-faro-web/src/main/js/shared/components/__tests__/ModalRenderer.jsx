@@ -11,6 +11,8 @@ jest.unmock('react-dom');
 const {modalTypes} = modalActions;
 
 describe('ModalRenderer', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		jest.clearAllMocks();
 		cleanup();

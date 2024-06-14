@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {createOrderIOMap} from 'shared/util/pagination';
 import {mapCardPropsToOptions, mapPropsToOptions} from '../interests-query';
 
@@ -11,7 +12,11 @@ const mockProps = {
 };
 
 describe('Interests Query Mapper', () => {
+	afterEach(cleanup);
+
 	describe('mapCardPropsToOptions', () => {
+		afterEach(cleanup);
+
 		it('should map interests list query card props to options', () => {
 			const id = '123';
 
@@ -33,6 +38,8 @@ describe('Interests Query Mapper', () => {
 	});
 
 	describe('mapPropsToOptions', () => {
+		afterEach(cleanup);
+
 		it('should map interests list query props to options', () => {
 			const {delta, id, query} = mockProps;
 

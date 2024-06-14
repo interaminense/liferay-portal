@@ -1,9 +1,9 @@
 import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {DataSource, User} from 'shared/util/records';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {SalesforceAuthorization} from '../Authorization';
 import {StaticRouter} from 'react-router-dom';
 import {UserRoleNames} from 'shared/util/constants';
@@ -28,6 +28,8 @@ const DefaultComponent = props => (
 );
 
 describe('SalesforceAuthorization', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<DefaultComponent />);
 

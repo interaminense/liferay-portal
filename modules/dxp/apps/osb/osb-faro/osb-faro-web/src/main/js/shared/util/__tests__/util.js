@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	formatStringToLowercase,
 	getAlignPosition,
@@ -13,7 +14,11 @@ import {
 } from '../util';
 
 describe('util', () => {
+	afterEach(cleanup);
+
 	describe('formatStringToLowercase', () => {
+		afterEach(cleanup);
+
 		it('should format a string to lowercase', () => {
 			const text = '   THIS IS A NOT LOWERCASE TEXT   ';
 			const lowercaseText = formatStringToLowercase(text);
@@ -23,6 +28,8 @@ describe('util', () => {
 	});
 
 	describe('getAlignPosition', () => {
+		afterEach(cleanup);
+
 		it('should return an align position top when it dont have a suggested position', () => {
 			const source = document.createElement('div');
 			const target = document.createElement('div');
@@ -41,6 +48,8 @@ describe('util', () => {
 	});
 
 	describe('getPercentage', () => {
+		afterEach(cleanup);
+
 		it('should convert number to percent passing current number and total number', () => {
 			const number1 = 50;
 			const number2 = 1000;
@@ -59,6 +68,8 @@ describe('util', () => {
 	});
 
 	describe('getSafeDisplayValue', () => {
+		afterEach(cleanup);
+
 		it.each`
 			value        | expected
 			${0}         | ${0}
@@ -76,6 +87,8 @@ describe('util', () => {
 	});
 
 	describe('getSafeTouchpoint', () => {
+		afterEach(cleanup);
+
 		it.each`
 			value                                                        | expected
 			${'http://localhost:7400/日本語ページ'}                      | ${'http://localhost:7400/%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%83%9A%E3%83%BC%E3%82%B8'}
@@ -101,6 +114,8 @@ describe('util', () => {
 	});
 
 	describe('isBlank', () => {
+		afterEach(cleanup);
+
 		it.each`
 			value        | expected
 			${0}         | ${false}
@@ -118,6 +133,8 @@ describe('util', () => {
 	});
 
 	describe('isEllipisActive', () => {
+		afterEach(cleanup);
+
 		it('should return true if is an ellipsis', () => {
 			const event = {
 				target: {
@@ -131,6 +148,8 @@ describe('util', () => {
 	});
 
 	describe('truncateText', () => {
+		afterEach(cleanup);
+
 		it('should truncate the text', () => {
 			const text = 'this is a text that should be truncate';
 			const truncatedText = truncateText(text, 25);
@@ -164,6 +183,8 @@ describe('util', () => {
 	});
 
 	describe('getRangeSelectorsFromQuery', () => {
+		afterEach(cleanup);
+
 		it.each`
 			rangeEnd        | rangeKey    | rangeStart      | results
 			${''}           | ${'30'}     | ${''}           | ${{rangeEnd: '', rangeKey: '30', rangeStart: ''}}
@@ -180,6 +201,8 @@ describe('util', () => {
 	});
 
 	describe('getSafeRangeSelectors', () => {
+		afterEach(cleanup);
+
 		it.each`
 			rangeEnd        | rangeKey    | rangeStart      | results
 			${''}           | ${'30'}     | ${''}           | ${{rangeEnd: null, rangeKey: 30, rangeStart: null}}
@@ -196,6 +219,8 @@ describe('util', () => {
 	});
 
 	describe('normalizeRangeSelectors', () => {
+		afterEach(cleanup);
+
 		it.each`
 			rangeEnd        | rangeKey | rangeStart      | results
 			${null}         | ${30}    | ${null}         | ${{rangeEnd: '', rangeKey: '30', rangeStart: ''}}

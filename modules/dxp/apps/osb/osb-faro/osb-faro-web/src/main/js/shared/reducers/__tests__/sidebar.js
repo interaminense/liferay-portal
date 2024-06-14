@@ -1,8 +1,11 @@
 import reducer from '../sidebar';
 import {actionTypes} from '../../actions/sidebar';
+import {cleanup} from '@testing-library/react';
 import {Map} from 'immutable';
 
 describe('Sidebar Reducer', () => {
+	afterEach(cleanup);
+
 	it('should be a function', () => {
 		expect(reducer).toBeInstanceOf(Function);
 	});

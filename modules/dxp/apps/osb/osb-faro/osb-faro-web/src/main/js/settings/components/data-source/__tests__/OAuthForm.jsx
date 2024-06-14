@@ -1,12 +1,12 @@
 import * as data from 'test/data';
 import React from 'react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {DataSource} from 'shared/util/records';
 import {
 	DataSourceStates,
 	DataSourceStatuses,
 	DataSourceTypes
 } from 'shared/util/constants';
-import {fireEvent, render} from '@testing-library/react';
 import {OAUTH_CALLBACK_URL} from 'shared/util/oauth';
 import {OAuthForm} from '../OAuthForm';
 import {StaticRouter} from 'react-router';
@@ -37,6 +37,8 @@ const defaultProps = {
 };
 
 describe('OAuthForm', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<StaticRouter>

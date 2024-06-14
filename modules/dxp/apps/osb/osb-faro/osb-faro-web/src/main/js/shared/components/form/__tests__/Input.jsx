@@ -1,7 +1,7 @@
 import Input from '../Input';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {mockForm} from 'test/data';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -16,6 +16,8 @@ const DefaultComponent = props => (
 );
 
 describe('Input', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<Input field={{name: 'foo'}} form={mockForm()} inline />

@@ -4,8 +4,13 @@ import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {
+	cleanup,
+	fireEvent,
+	render,
+	waitForElement
+} from '@testing-library/react';
 import {DISPLAY_NAME} from 'shared/util/pagination';
-import {fireEvent, render, waitForElement} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEventAttributeDefinitionsReq} from 'test/graphql-data';
 import {OrderByDirections} from 'shared/util/constants';
@@ -15,6 +20,8 @@ import {range} from 'lodash';
 jest.unmock('react-dom');
 
 describe('AttributeFilterDropdown', () => {
+	afterEach(cleanup);
+
 	const WrappedComponent = props => (
 		<ApolloProvider client={client}>
 			<Provider store={mockStore()}>

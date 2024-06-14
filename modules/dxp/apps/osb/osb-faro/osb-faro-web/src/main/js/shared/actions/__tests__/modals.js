@@ -1,8 +1,13 @@
 import * as actions from '../modals';
+import {cleanup} from '@testing-library/react';
 import {isFSA} from 'flux-standard-action';
 
 describe('Modal Actions', () => {
+	afterEach(cleanup);
+
 	describe('open', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.open();
 
@@ -19,6 +24,8 @@ describe('Modal Actions', () => {
 	});
 
 	describe('close', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.close();
 
@@ -28,6 +35,8 @@ describe('Modal Actions', () => {
 	});
 
 	describe('closeAll', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.closeAll();
 

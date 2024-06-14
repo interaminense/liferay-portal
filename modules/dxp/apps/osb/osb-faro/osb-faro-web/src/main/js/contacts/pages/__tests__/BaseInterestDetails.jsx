@@ -4,13 +4,15 @@ import mockDate from 'test/mock-date';
 import React from 'react';
 import {Account, Segment} from 'shared/util/records';
 import {ACCOUNTS, Routes, SEGMENTS} from 'shared/util/router';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('BaseInterestDetails', () => {
+	afterEach(cleanup);
+
 	beforeAll(() => mockDate());
 
 	afterAll(() => jest.restoreMocks());

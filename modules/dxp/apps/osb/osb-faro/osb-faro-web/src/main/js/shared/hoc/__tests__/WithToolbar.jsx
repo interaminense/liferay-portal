@@ -1,12 +1,14 @@
 import React from 'react';
 import withToolbar from '../WithToolbar';
+import {cleanup, render} from '@testing-library/react';
 import {compose} from 'redux';
-import {render} from '@testing-library/react';
 import {withStaticRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
 describe('withToolbar', () => {
+	afterEach(cleanup);
+
 	it('renders', () => {
 		const WrappedComponent = compose(
 			withStaticRouter,

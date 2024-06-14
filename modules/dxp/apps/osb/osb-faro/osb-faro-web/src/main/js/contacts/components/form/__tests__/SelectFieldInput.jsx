@@ -1,11 +1,13 @@
 import * as data from 'test/data';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {FormSelectFieldInput} from '../SelectFieldInput';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('SelectFieldInput', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<FormSelectFieldInput

@@ -1,6 +1,7 @@
+import sendRequest from 'shared/util/request';
 jest.mock('shared/util/request');
 
-import sendRequest from 'shared/util/request';
+import {cleanup} from '@testing-library/react';
 import {create, update} from '../individual-segment';
 
 const createArgs = {
@@ -32,7 +33,11 @@ const updateRequestParams = {
 };
 
 describe('Individual Segment API', () => {
+	afterEach(cleanup);
+
 	describe('Create Segment', () => {
+		afterEach(cleanup);
+
 		it('should NOT pass filter in the data object to sendRequest if the segmentType is STATIC', () => {
 			const segmentType = 'STATIC';
 
@@ -69,6 +74,8 @@ describe('Individual Segment API', () => {
 	});
 
 	describe('Update Segment', () => {
+		afterEach(cleanup);
+
 		it('should pass filter in data object to sendRequest if the segmentType is DYNAMIC', () => {
 			const segmentType = 'DYNAMIC';
 

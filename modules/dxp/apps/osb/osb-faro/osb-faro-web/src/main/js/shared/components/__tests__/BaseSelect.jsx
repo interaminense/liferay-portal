@@ -4,7 +4,7 @@ import EventAttributeValuesQuery from 'event-analysis/queries/EventAttributeValu
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEventAttributeValues} from 'test/graphql-data';
 import {noop} from 'lodash';
@@ -38,6 +38,8 @@ const MOCK_APOLLO_QUERY = {
 };
 
 describe('BaseSelect', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<BaseSelect
@@ -213,6 +215,8 @@ describe('BaseSelect', () => {
 });
 
 describe('Item', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<Item item={{name: 'test'}} itemRenderer={({name}) => name} />

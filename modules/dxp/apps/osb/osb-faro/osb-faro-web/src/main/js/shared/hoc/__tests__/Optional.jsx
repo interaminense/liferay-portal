@@ -1,10 +1,12 @@
 import optional from '../Optional';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('Optional', () => {
+	afterEach(cleanup);
+
 	it('should render the original component', () => {
 		const hoc = jest.fn(() => 'hoc component');
 		const Optional = optional(hoc)(jest.fn(() => 'wrapped component'));

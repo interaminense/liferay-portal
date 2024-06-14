@@ -1,10 +1,12 @@
 import React from 'react';
 import SearchableList from '../SearchableList';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('BaseDropdownSearchableList', () => {
+	afterEach(cleanup);
+
 	const WrappedComponent = props => (
 		<SearchableList
 			items={[

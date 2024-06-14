@@ -3,9 +3,9 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import ModalRenderer from 'shared/components/ModalRenderer';
 import React from 'react';
+import {cleanup, fireEvent, render, waitFor} from '@testing-library/react';
 import {close, open} from 'shared/actions/modals';
 import {connect} from 'react-redux';
-import {fireEvent, render, waitFor} from '@testing-library/react';
 import {mockGetDateNow} from 'test/mock-date';
 import {
 	NotificationSubtypes,
@@ -28,6 +28,8 @@ const WrapperComponent = connect(null, {close, open})(({close, open}) => {
 });
 
 describe('useModalNotifications', () => {
+	afterEach(cleanup);
+
 	it('should open a notification modal', async () => {
 		mockGetDateNow(data.getTimestamp(0));
 

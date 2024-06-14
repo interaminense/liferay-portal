@@ -1,10 +1,13 @@
 import reducer from '../projects';
 import {actionTypes} from '../../actions/projects';
+import {cleanup} from '@testing-library/react';
 import {fromJS, OrderedMap} from 'immutable';
 import {mockProject} from 'test/data';
 import {RemoteData} from 'shared/util/records';
 
 describe('Projects Reducer', () => {
+	afterEach(cleanup);
+
 	it('should be a function', () => {
 		expect(typeof reducer).toBe('function');
 	});

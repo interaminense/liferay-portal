@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	getVariables,
 	mapListResultsToProps,
@@ -13,7 +14,11 @@ const mapResultToProps = safeResultToProps(({myData}) => {
 });
 
 describe('mappers', () => {
+	afterEach(cleanup);
+
 	describe('mapListResultsToProps', () => {
+		afterEach(cleanup);
+
 		it('should map the query results to props for ListComponent', () => {
 			const refetch = jest.fn;
 			const moreStuff = [{name: 'test'}, {name: 'test2'}];
@@ -70,6 +75,8 @@ describe('mappers', () => {
 	});
 
 	describe('safeResultToProps', () => {
+		afterEach(cleanup);
+
 		it("should not extract data when there's an error in the result", () => {
 			const props = mapResultToProps({
 				data: {
@@ -115,6 +122,8 @@ describe('mappers', () => {
 	});
 
 	describe('getVariables', () => {
+		afterEach(cleanup);
+
 		const filters = {
 			devices: ['Desktop'],
 			location: ['Brazil']

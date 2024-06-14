@@ -3,12 +3,14 @@ import EventChip from '../EventChip';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('EventChip', () => {
+	afterEach(cleanup);
+
 	it('render', () => {
 		const {container} = render(
 			<ApolloProvider client={client}>

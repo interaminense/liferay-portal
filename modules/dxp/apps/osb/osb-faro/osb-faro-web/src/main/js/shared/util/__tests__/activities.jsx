@@ -7,9 +7,14 @@ import {
 	getActivityLabel,
 	getSafeRangeKey
 } from '../activities';
+import {cleanup} from '@testing-library/react';
 
 describe('activities', () => {
+	afterEach(cleanup);
+
 	describe('buildLegendItems', () => {
+		afterEach(cleanup);
+
 		it('should return an array formatted for use as items in ChangeLegend', () => {
 			const mockChangeData = {
 				activityChange: 20,
@@ -21,6 +26,8 @@ describe('activities', () => {
 	});
 
 	describe('formatGroupingTime', () => {
+		afterEach(cleanup);
+
 		it('should format grouping time', () => {
 			const result = formatGroupingTime(data.getTimestamp());
 
@@ -29,6 +36,8 @@ describe('activities', () => {
 	});
 
 	describe('formatEvents', () => {
+		afterEach(cleanup);
+
 		it('should decode canonicalUrl, referrer and url params', () => {
 			const result = formatEvents([
 				{
@@ -62,6 +71,8 @@ describe('activities', () => {
 	});
 
 	describe('formatSessions', () => {
+		afterEach(cleanup);
+
 		it('should format sessions', () => {
 			const result = formatSessions(
 				[data.mockSession(2, {}, {assetType: 'foo'})],
@@ -74,6 +85,8 @@ describe('activities', () => {
 	});
 
 	describe('getActivityLabel', () => {
+		afterEach(cleanup);
+
 		it('should get singular label', () => {
 			const result = getActivityLabel(1);
 
@@ -88,6 +101,8 @@ describe('activities', () => {
 	});
 
 	describe('getSafeRangeKey', () => {
+		afterEach(cleanup);
+
 		it('should return the rangeKey when it is different of CUSTOM', () => {
 			const rangeKey = getSafeRangeKey('30');
 

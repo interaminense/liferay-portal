@@ -1,12 +1,14 @@
 import OperatorSelect from '../OperatorSelect';
 import React from 'react';
 import {ATTRIBUTES_NUMBER_OPERATOR_LONGHAND_LABELS_MAP} from '../utils';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {DataTypes, Operators} from 'event-analysis/utils/types';
-import {fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('OperatorSelect', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container, getByText} = render(
 			<OperatorSelect

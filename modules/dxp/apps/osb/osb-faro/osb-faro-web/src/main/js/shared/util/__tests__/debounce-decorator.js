@@ -1,10 +1,13 @@
+import autobind from 'autobind-decorator';
 jest.unmock('lodash/debounce');
 
-import autobind from 'autobind-decorator';
 import debounce from '../debounce-decorator';
+import {cleanup} from '@testing-library/react';
 import {times} from 'lodash';
 
 describe('debounce-decorator', () => {
+	afterEach(cleanup);
+
 	beforeAll(() => {
 		jest.useRealTimers();
 	});

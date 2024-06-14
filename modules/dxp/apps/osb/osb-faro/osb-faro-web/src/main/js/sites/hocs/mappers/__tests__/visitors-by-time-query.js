@@ -1,6 +1,9 @@
+import {cleanup} from '@testing-library/react';
 import {mapPropsToOptions, mapResultToProps} from '../visitors-by-time-query';
 
 describe('VisitorsByTimeQuery Mappers', () => {
+	afterEach(cleanup);
+
 	it('should map results to props', () => {
 		const mockResult = {
 			data: {siteVisitorHeatMap: []}

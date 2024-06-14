@@ -4,14 +4,16 @@ import SegmentGrowthWithList, {
 	SegmentGrowthChart,
 	SelectedPointInfo
 } from '../Growth';
+import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
-import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('SegmentGrowthWithList', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<MemoryRouter
@@ -46,6 +48,8 @@ describe('SegmentGrowthWithList', () => {
 });
 
 describe('SegmentGrowthChart', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<SegmentGrowthChart data={[]} onPointSelect={jest.fn()} />
@@ -56,6 +60,8 @@ describe('SegmentGrowthChart', () => {
 });
 
 describe('SelectedPointInfo', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<SelectedPointInfo

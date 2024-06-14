@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	getFilterItem,
 	getFilters,
@@ -8,7 +9,11 @@ import {
 import {range} from 'lodash';
 
 describe('Filter Utils', () => {
+	afterEach(cleanup);
+
 	describe('getFilters', () => {
+		afterEach(cleanup);
+
 		it('should return all filters with default value of "Any" as a fallback when filters is empty', () => {
 			expect(getFilters()).toEqual({
 				devices: 'Any',
@@ -75,6 +80,8 @@ describe('Filter Utils', () => {
 	});
 
 	describe('getFilterItem', () => {
+		afterEach(cleanup);
+
 		it('should return a filter item from a list of filter values', () => {
 			expect(
 				getFilterItem(
@@ -110,6 +117,8 @@ describe('Filter Utils', () => {
 	});
 
 	describe('hasCategoryFilters', () => {
+		afterEach(cleanup);
+
 		it('should return false if there is no category in a filter', () => {
 			expect(
 				hasCategoryFilters(
@@ -137,6 +146,8 @@ describe('Filter Utils', () => {
 	});
 
 	describe('hasSearch', () => {
+		afterEach(cleanup);
+
 		it('should return false when there are less than or equal to 15 filter items', () => {
 			expect(hasSearch(range(15))).toBeFalse();
 			expect(hasSearch(range(10))).toBeFalse();
@@ -148,6 +159,8 @@ describe('Filter Utils', () => {
 	});
 
 	describe('isClearFilterVisible', () => {
+		afterEach(cleanup);
+
 		it('should return false if there is no filter', () => {
 			expect(isClearFilterVisible()).toBeFalsy();
 			expect(isClearFilterVisible([])).toBeFalsy();

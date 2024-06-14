@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	formatYAxis,
 	getFormattedMedian,
@@ -22,6 +23,8 @@ const mockBestVariant = {
 };
 
 describe('getStatusColor', () => {
+	afterEach(cleanup);
+
 	it('should return display property based on status', () => {
 		expect(getStatusColor('COMPLETED')).toEqual('success');
 		expect(getStatusColor('DRAFT')).toEqual('secondary');
@@ -34,6 +37,8 @@ describe('getStatusColor', () => {
 });
 
 describe('getMetricName', () => {
+	afterEach(cleanup);
+
 	it('should return status name', () => {
 		expect(getStatusName('COMPLETED')).toEqual('COMPLETE');
 		expect(getStatusName('DRAFT')).toEqual('DRAFT');
@@ -46,6 +51,8 @@ describe('getMetricName', () => {
 });
 
 describe('getMetricName', () => {
+	afterEach(cleanup);
+
 	it('should return metric name', () => {
 		expect(getMetricName('BOUNCE_RATE')).toEqual('Bounce Rate');
 		expect(getMetricName('CLICK_RATE')).toEqual('Click-Through Rate');
@@ -55,6 +62,8 @@ describe('getMetricName', () => {
 });
 
 describe('getMetricUnit', () => {
+	afterEach(cleanup);
+
 	it('should return metric name', () => {
 		expect(getMetricUnit('BOUNCE_RATE')).toEqual('%');
 		expect(getMetricUnit('CLICK_RATE')).toEqual('%');
@@ -64,6 +73,8 @@ describe('getMetricUnit', () => {
 });
 
 describe('formatYAxis', () => {
+	afterEach(cleanup);
+
 	it('should return formatted Y axis for BOUNCE_RATE metric', () => {
 		expect(formatYAxis(getMetricUnit('BOUNCE_RATE'))(100)).toEqual('100%');
 	});
@@ -84,6 +95,8 @@ describe('formatYAxis', () => {
 });
 
 describe('getFormattedMedian', () => {
+	afterEach(cleanup);
+
 	it('should return formatted median using BOUNCE_RATE metric', () => {
 		expect(getFormattedMedian(50.4321, 'BOUNCE_RATE')).toEqual('50.43');
 	});
@@ -104,6 +117,8 @@ describe('getFormattedMedian', () => {
 });
 
 describe('getFormattedMedianLabel', () => {
+	afterEach(cleanup);
+
 	it('should return formatted median using BOUNCE_RATE metric', () => {
 		expect(getFormattedMedianLabel('BOUNCE_RATE')).toEqual(
 			'Bounce Rate Median'
@@ -130,6 +145,8 @@ describe('getFormattedMedianLabel', () => {
 });
 
 describe('getFormattedProbabilityToWin', () => {
+	afterEach(cleanup);
+
 	it('should return formatted probability to win', () => {
 		expect(getFormattedProbabilityToWin(50.4321)).toEqual('50.4');
 	});
@@ -144,6 +161,8 @@ describe('getFormattedProbabilityToWin', () => {
 });
 
 describe('getVariantLabels', () => {
+	afterEach(cleanup);
+
 	it('should return a label in especific cases', () => {
 		expect(
 			getVariantLabels({
@@ -215,6 +234,8 @@ describe('getVariantLabels', () => {
 });
 
 describe('getTicks', () => {
+	afterEach(cleanup);
+
 	it('should not return intervals with max value 40', () => {
 		expect(getTicks(40)).toStrictEqual([1, 6, 11, 16, 21, 26, 31, 36]);
 	});
@@ -253,6 +274,8 @@ describe('getTicks', () => {
 });
 
 describe('toThousandsABTesting', () => {
+	afterEach(cleanup);
+
 	it('should return the number truncate', () => {
 		expect(toThousandsABTesting(0.1)).toEqual('0.1');
 		expect(toThousandsABTesting(1.4)).toEqual('1.4');

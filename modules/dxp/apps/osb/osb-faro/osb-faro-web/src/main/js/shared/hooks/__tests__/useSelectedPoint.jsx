@@ -1,10 +1,12 @@
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {useSelectedPoint} from 'shared/hooks/useSelectedPoint';
 
 jest.unmock('react-dom');
 
 describe('useSelectedPoint', () => {
+	afterEach(cleanup);
+
 	it('should not have value on the first render', () => {
 		let result = null;
 

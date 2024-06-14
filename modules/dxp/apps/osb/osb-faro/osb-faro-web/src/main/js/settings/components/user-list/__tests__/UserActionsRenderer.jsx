@@ -1,11 +1,13 @@
 import React from 'react';
 import UserActionsRenderer from '../UserActionsRenderer';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {User} from 'shared/util/records';
 
 jest.unmock('react-dom');
 
 describe('UserActionsRenderer', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<UserActionsRenderer currentUserId={1} data={new User({id: 2})} />

@@ -1,16 +1,18 @@
 import MatchingPagesModal from '../MatchingPagesModal';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockRecommendationPageAssetsReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
 import {waitForLoading} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('MatchingPagesModal', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<StaticRouter>

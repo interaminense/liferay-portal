@@ -1,6 +1,6 @@
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
-import {render} from '@testing-library/react';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
 
 jest.unmock('react-dom');
@@ -25,6 +25,8 @@ const WrapperComponent = ({children, queryString = ''}) => (
 );
 
 describe('useQueryRangeSelectors', () => {
+	afterEach(cleanup);
+
 	it('should return initial values', () => {
 		const TestComponent = () => {
 			const queryRangeSelectorsParams = useQueryRangeSelectors({

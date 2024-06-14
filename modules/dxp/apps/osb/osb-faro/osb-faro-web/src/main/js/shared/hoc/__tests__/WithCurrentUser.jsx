@@ -1,6 +1,6 @@
 import React from 'react';
 import withCurrentUser from '../WithCurrentUser';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -13,6 +13,8 @@ const MockComponent = ({className, currentUser}) => (
 );
 
 describe('WithCurrentUser', () => {
+	afterEach(cleanup);
+
 	it('should pass the currentUser to the WrappedComponent', () => {
 		const WrappedComponent = withCurrentUser(MockComponent);
 

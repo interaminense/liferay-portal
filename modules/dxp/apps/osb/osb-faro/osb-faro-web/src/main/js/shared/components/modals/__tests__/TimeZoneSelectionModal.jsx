@@ -2,14 +2,16 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import TimeZoneSelectionModal from '../TimeZoneSelectionModal';
+import {cleanup, render, waitFor} from '@testing-library/react';
 import {mockGetDateNow} from 'test/mock-date';
 import {Provider} from 'react-redux';
-import {render, waitFor} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
 describe('TimeZoneSelectionModal', () => {
+	afterEach(cleanup);
+
 	mockGetDateNow(data.getTimestamp(0));
 
 	it('should render', async () => {

@@ -1,11 +1,13 @@
 import FilterTags from '../FilterTags';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {range} from 'lodash';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('FilterTags', () => {
+	afterEach(cleanup);
+
 	it('should render a list of tags', () => {
 		const {container} = render(
 			<FilterTags

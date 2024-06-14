@@ -17,10 +17,13 @@ import {
 	setUriQueryValues,
 	toRoute
 } from '../router';
+import {cleanup} from '@testing-library/react';
 import {DataSourceTypes, EntityTypes} from '../constants';
 import {Map, Set} from 'immutable';
 
 describe('setUriFilterValues', () => {
+	afterEach(cleanup);
+
 	it('should add filter queries to url and return as a string', () => {
 		const mockFilterBy = new Map({
 			biz: new Set(['buz']),
@@ -36,6 +39,8 @@ describe('setUriFilterValues', () => {
 });
 
 describe('setUriQueryValue', () => {
+	afterEach(cleanup);
+
 	it('should add query to url and return as a string', () => {
 		const url = 'http://www.liferay.com';
 
@@ -46,6 +51,8 @@ describe('setUriQueryValue', () => {
 });
 
 describe('setUriQueryValues', () => {
+	afterEach(cleanup);
+
 	it('should add multiple queries to url and return as a string', () => {
 		const url = 'http://www.liferay.com';
 
@@ -56,18 +63,24 @@ describe('setUriQueryValues', () => {
 });
 
 describe('getType', () => {
+	afterEach(cleanup);
+
 	it('should return type for a given route name', () => {
 		expect(getType(ACCOUNTS)).toBe(EntityTypes.Account);
 	});
 });
 
 describe('getDataSourceType', () => {
+	afterEach(cleanup);
+
 	it('should return a data-source type for a given route name', () => {
 		expect(getDataSourceType(LIFERAY)).toBe(DataSourceTypes.Liferay);
 	});
 });
 
 describe('getMatchedRoute', () => {
+	afterEach(cleanup);
+
 	it('should return the matched route', () => {
 		expect(
 			getMatchedRoute(
@@ -79,6 +92,8 @@ describe('getMatchedRoute', () => {
 });
 
 describe('getRouteName', () => {
+	afterEach(cleanup);
+
 	it('should return route name for a given type', () => {
 		expect(getRouteName(EntityTypes.Account)).toBe(ACCOUNTS);
 	});
@@ -89,6 +104,8 @@ describe('getRouteName', () => {
 });
 
 describe('removePageParam', () => {
+	afterEach(cleanup);
+
 	it('should remove page query string', () => {
 		const url = 'http://www.liferay.com/';
 
@@ -103,6 +120,8 @@ describe('removePageParam', () => {
 });
 
 describe('removeUriQueryParam', () => {
+	afterEach(cleanup);
+
 	it('should remove uri query param', () => {
 		const href =
 			'http://localhost:3000/project/33551/touchpoints/?sortField=views';
@@ -114,6 +133,8 @@ describe('removeUriQueryParam', () => {
 });
 
 describe('resetPaginationParams', () => {
+	afterEach(cleanup);
+
 	it('should reset the pagination parameters to the default value', () => {
 		const url = 'http://www.liferay.com/';
 
@@ -124,6 +145,8 @@ describe('resetPaginationParams', () => {
 });
 
 describe('setUriFilterValues', () => {
+	afterEach(cleanup);
+
 	it('should set the uri filter params from the filterBy Map', () => {
 		const url = 'http://www.liferay.com';
 
@@ -139,12 +162,16 @@ describe('setUriFilterValues', () => {
 });
 
 describe('Routes', () => {
+	afterEach(cleanup);
+
 	it('should match Routes snapshot', () => {
 		expect(Routes).toMatchSnapshot();
 	});
 });
 
 describe('toRoute', () => {
+	afterEach(cleanup);
+
 	it('should create a url for specific options', () => {
 		const id = 123;
 
@@ -161,6 +188,8 @@ describe('toRoute', () => {
 });
 
 describe('buildRoutes', () => {
+	afterEach(cleanup);
+
 	it('should return an object with keys that map to route strings', () => {
 		const routes = buildRoutes({
 			BAR: '/bar',

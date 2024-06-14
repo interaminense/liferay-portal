@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	dataSource,
 	getDistributionSchema,
@@ -17,6 +18,8 @@ import {
 import {normalize} from 'normalizr';
 
 describe('Schema', () => {
+	afterEach(cleanup);
+
 	it('should normalize an individual', () => {
 		const action = mockIndividual('foo');
 
@@ -56,6 +59,8 @@ describe('Schema', () => {
 	});
 
 	describe('getLayoutSchema', () => {
+		afterEach(cleanup);
+
 		it('should normalize a layout schema with a faroEntity of individual', () => {
 			const action = mockLayout(1, mockIndividual());
 
@@ -77,6 +82,8 @@ describe('Schema', () => {
 	});
 
 	describe('getDistributionSchema', () => {
+		afterEach(cleanup);
+
 		it('should normalize distribution data', () => {
 			const payload = [{count: 2, values: ['foo', 'bar']}];
 

@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {mapPropsToOptions, mapResultToProps} from '../cohort-query';
 
 const mockData = {
@@ -9,7 +10,11 @@ const mockData = {
 };
 
 describe('Cohort Query Mapper', () => {
+	afterEach(cleanup);
+
 	describe('mapPropsToOptions', () => {
+		afterEach(cleanup);
+
 		it('should map cohort query props to options', () => {
 			const interval = 'D';
 			const channelId = '123';
@@ -26,6 +31,8 @@ describe('Cohort Query Mapper', () => {
 	});
 
 	describe('mapResultToProps', () => {
+		afterEach(cleanup);
+
 		it('should map cohort query result to props', () => {
 			expect(mapResultToProps({data: mockData})).toEqual(
 				expect.objectContaining({

@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 import {
 	formatChange,
 	getFinitePercentChange,
@@ -6,7 +7,11 @@ import {
 } from '../change';
 
 describe('change', () => {
+	afterEach(cleanup);
+
 	describe('formatChange', () => {
+		afterEach(cleanup);
+
 		it.each`
 			change  | expected
 			${0}    | ${0}
@@ -18,6 +23,8 @@ describe('change', () => {
 	});
 
 	describe('getFinitePercentChange', () => {
+		afterEach(cleanup);
+
 		it.each`
 			prevVal | curVal | expected
 			${0}    | ${0}   | ${null}
@@ -34,6 +41,8 @@ describe('change', () => {
 	});
 
 	describe('getNetChange', () => {
+		afterEach(cleanup);
+
 		it.each`
 			prev    | cur     | expected
 			${0}    | ${100}  | ${['+100', 100]}
@@ -50,6 +59,8 @@ describe('change', () => {
 	});
 
 	describe('getSafeChange', () => {
+		afterEach(cleanup);
+
 		it.each`
 			change       | expected
 			${NaN}       | ${0}

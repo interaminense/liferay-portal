@@ -1,8 +1,13 @@
 import * as actions from '../preferences';
+import {cleanup} from '@testing-library/react';
 import {isFSA} from 'flux-standard-action';
 
 describe('Preferences Actions', () => {
+	afterEach(cleanup);
+
 	describe('addDistributionTabs', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.addDistributionTab({
 				distributionKey: '123',
@@ -18,6 +23,8 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('fetchDistributionTabs', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.fetchDistributionTabs({
 				distributionKey: '321',
@@ -31,6 +38,8 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('removeDistributionTabs', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.removeDistributionTab({
 				distributionKey: '123',
@@ -45,6 +54,8 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('fetchDefaultChannelId', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.fetchDefaultChannelId('321');
 
@@ -54,6 +65,8 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('fetchUpgradeModalSeen', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.fetchUpgradeModalSeen();
 
@@ -63,6 +76,8 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('updateDefaultChannelId', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.updateDefaultChannelId({
 				defaultChannelId: '122',
@@ -75,6 +90,8 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('updateUpgradeModalSeen', () => {
+		afterEach(cleanup);
+
 		it('should return an action', () => {
 			const action = actions.updateUpgradeModalSeen({
 				groupId: '321',

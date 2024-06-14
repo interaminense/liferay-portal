@@ -1,6 +1,7 @@
 import * as data from 'test/data';
 import EventDisplay from '../EventDisplay';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {
 	CustomFunctionOperators,
 	FunctionalOperators,
@@ -10,7 +11,6 @@ import {
 } from 'segment/segment-editor/dynamic/utils/constants';
 import {DataTypes, EventTypes} from 'event-analysis/utils/types';
 import {List, Map} from 'immutable';
-import {render} from '@testing-library/react';
 import {Segment} from 'shared/util/records';
 import {withReferencedObjectsProvider} from 'segment/segment-editor/dynamic/context/referencedObjects';
 
@@ -68,6 +68,8 @@ const mockCriterion = {
 };
 
 describe('EventDisplay', () => {
+	afterEach(cleanup);
+
 	it('renders', () => {
 		const {container} = render(
 			<WrappedEventDisplay

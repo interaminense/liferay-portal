@@ -39,6 +39,8 @@ const DefaultComponent = props => {
 };
 
 describe('View Channel', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		cleanup();
 

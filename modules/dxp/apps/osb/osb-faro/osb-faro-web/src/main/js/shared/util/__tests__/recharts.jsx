@@ -1,4 +1,5 @@
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {
 	getAxisTickText,
 	getTextWidth,
@@ -6,18 +7,23 @@ import {
 	getYAxisWidth,
 	RechartsTooltip
 } from '../recharts';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('Recharts Util', () => {
+	afterEach(cleanup);
+
 	describe('getTextWidth', () => {
+		afterEach(cleanup);
+
 		it('should return text width', () => {
 			expect(getTextWidth('test')).toEqual(52);
 		});
 	});
 
 	describe('getAxisTickText', () => {
+		afterEach(cleanup);
+
 		it('should return a function', () => {
 			expect(getAxisTickText('x')).toBeFunction();
 		});
@@ -37,6 +43,8 @@ describe('Recharts Util', () => {
 	});
 
 	describe('RechartsTooltip', () => {
+		afterEach(cleanup);
+
 		it('should render', () => {
 			const {container} = render(
 				<RechartsTooltip
@@ -51,6 +59,8 @@ describe('Recharts Util', () => {
 	});
 
 	describe('getYAxisLabel', () => {
+		afterEach(cleanup);
+
 		it('should return a function', () => {
 			expect(getYAxisLabel('Test')).toBeFunction();
 		});
@@ -72,6 +82,8 @@ describe('Recharts Util', () => {
 	});
 
 	describe('getYAxisWidth', () => {
+		afterEach(cleanup);
+
 		it('should max y-axis width', () => {
 			expect(
 				getYAxisWidth([{title: 'test test'}, {title: 'meow'}], 'title')

@@ -4,6 +4,7 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import TopPagesCard from '../TopPagesCard';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {
 	mockPreferenceReq,
@@ -12,7 +13,6 @@ import {
 } from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -58,6 +58,8 @@ const DefaultComponent = () => (
 );
 
 describe('TopPagesCard', () => {
+	afterEach(cleanup);
+
 	it('renders', async () => {
 		const {container} = render(<DefaultComponent />);
 

@@ -1,8 +1,11 @@
 import reducer from '../store';
 import {actionTypes} from '../../actions/store';
+import {cleanup} from '@testing-library/react';
 import {Map} from 'immutable';
 
 describe('store', () => {
+	afterEach(cleanup);
+
 	afterAll(() => {
 		global.localStorage.removeItem('maintenanceSeen');
 		global.localStorage.removeItem('sidebar');

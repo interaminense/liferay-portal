@@ -1,6 +1,6 @@
 import BarComparisonTable from '../BarComparisonTable';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -31,6 +31,8 @@ const getData = (comparePrevious = false) =>
 	].filter(Boolean);
 
 describe('BarComparisonTable', () => {
+	afterEach(cleanup);
+
 	const event = {name: 'View Article'};
 
 	it('render', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Toolbar from '../index';
+import {cleanup, render} from '@testing-library/react';
 import {Map, Set} from 'immutable';
-import {render} from '@testing-library/react';
 import {withStaticRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
@@ -9,6 +9,8 @@ jest.unmock('react-dom');
 const DefaultComponent = withStaticRouter(Toolbar);
 
 describe('Toolbar', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<DefaultComponent />);
 

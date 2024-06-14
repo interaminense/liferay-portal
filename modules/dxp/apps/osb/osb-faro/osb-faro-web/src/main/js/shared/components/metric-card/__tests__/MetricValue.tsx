@@ -1,11 +1,13 @@
 import MetricValue from '../MetricValue';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {MetricType} from '../metrics';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('MetricValue', () => {
+	afterEach(cleanup);
+
 	it('should render the component', () => {
 		const {container} = render(<MetricValue value='100K' />);
 

@@ -11,7 +11,7 @@ import {
 	SessionsPerVisitorMetric,
 	VisitorsMetric
 } from '../metrics';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {getSiteMetricsChartData} from 'shared/components/metric-card/util';
 import {MockedProvider} from '@apollo/react-testing';
 import {
@@ -136,6 +136,8 @@ const WrapperComponent = ({
 );
 
 describe('MetricBaseCard', () => {
+	afterEach(cleanup);
+
 	it('renders component', async () => {
 		useLocation.mockReturnValue({
 			search: `?rangeKey=${RangeKeyTimeRanges.Last30Days}`

@@ -1,11 +1,15 @@
 import React from 'react';
 import {autoCancel, autoCancelWith, hasRequest} from '../request-decorator';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('request-decorator', () => {
+	afterEach(cleanup);
+
 	describe('autoCancel', () => {
+		afterEach(cleanup);
+
 		it('should cancel the request if the same request was made again', () => {
 			expect.assertions(2);
 
@@ -66,6 +70,8 @@ describe('request-decorator', () => {
 	});
 
 	describe('hasRequest', () => {
+		afterEach(cleanup);
+
 		it('should cancel the requests on the disposal of the component', () => {
 			expect.assertions(2);
 

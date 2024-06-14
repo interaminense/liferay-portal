@@ -1,11 +1,13 @@
 import React from 'react';
 import TabRoutes from '../TabRoutes';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
 describe('TabRoutes', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const Component = () => <div>{'Foo Bar'}</div>;
 

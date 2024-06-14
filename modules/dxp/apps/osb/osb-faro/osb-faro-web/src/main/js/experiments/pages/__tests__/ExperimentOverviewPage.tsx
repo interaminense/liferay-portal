@@ -3,7 +3,7 @@ import ExperimentOverviewPage from '../ExperimentOverviewPage';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-hooks';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/react-testing';
 import {
@@ -44,6 +44,8 @@ const WrappedComponent = ({mocks}) => (
 );
 
 describe('ExperimentOverviewPage', () => {
+	afterEach(cleanup);
+
 	it('renders review and delete button in the DRAFT status', async () => {
 		const {container, findByRole} = render(
 			<WrappedComponent

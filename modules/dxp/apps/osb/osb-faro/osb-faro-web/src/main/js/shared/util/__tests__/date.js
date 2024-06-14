@@ -13,9 +13,14 @@ import {
 	getLastDate,
 	toUnix
 } from '../date';
+import {cleanup} from '@testing-library/react';
 
 describe('date', () => {
+	afterEach(cleanup);
+
 	describe('formatUTCDate', () => {
+		afterEach(cleanup);
+
 		it('should convert from the specified format and convert to the specified format', () => {
 			expect(formatUTCDate('January 1, 1970', 'll', 'LL')).toBe(
 				'Jan 1, 1970'
@@ -28,6 +33,8 @@ describe('date', () => {
 	});
 
 	describe('formatUTCDateFromUnix', () => {
+		afterEach(cleanup);
+
 		it('should convert and format a timestamp to the default format', () => {
 			expect(formatUTCDateFromUnix(1574288551000)).toBe(
 				'November 20, 2019'
@@ -42,6 +49,8 @@ describe('date', () => {
 	});
 
 	describe('generateDateRange', () => {
+		afterEach(cleanup);
+
 		it.each`
 			period | interval
 			${30}  | ${'days'}
@@ -56,6 +65,8 @@ describe('date', () => {
 	});
 
 	describe('getDate', () => {
+		afterEach(cleanup);
+
 		const date1 = '2018-04-05T00:00';
 		const date2 = '2018-04-05T00:00';
 
@@ -77,12 +88,16 @@ describe('date', () => {
 	});
 
 	describe('getDateNow', () => {
+		afterEach(cleanup);
+
 		it('should execute without any errors', () => {
 			expect(getDateNow()).toBeTruthy();
 		});
 	});
 
 	describe('getISODate', () => {
+		afterEach(cleanup);
+
 		it('should return the date as an ISO String', () => {
 			const expected = '2018-07-10T23:01:06.366Z';
 
@@ -114,6 +129,8 @@ describe('date', () => {
 	});
 
 	describe('getDateRangeLabel', () => {
+		afterEach(cleanup);
+
 		it('should get the date range label from an array of objects', () => {
 			const dates = [
 				{intervalInitDate: data.getTimestamp(-2)},
@@ -136,6 +153,8 @@ describe('date', () => {
 	});
 
 	describe('getDateRangeLabelFromDate', () => {
+		afterEach(cleanup);
+
 		it('should get the date range label from a date and interval', () => {
 			expect(
 				getDateRangeLabelFromDate(data.getTimestamp(), 'D')
@@ -152,6 +171,8 @@ describe('date', () => {
 	});
 
 	describe('toUnix', () => {
+		afterEach(cleanup);
+
 		it.each`
 			date                         | expected
 			${'2016-01-01'}              | ${1451606400000}
@@ -164,6 +185,8 @@ describe('date', () => {
 	});
 
 	describe('getFirstDate', () => {
+		afterEach(cleanup);
+
 		it('should return the date from the first item in the history array', () => {
 			const {activityAggregations} = data.mockActivityHistory();
 
@@ -174,6 +197,8 @@ describe('date', () => {
 	});
 
 	describe('getLastDate', () => {
+		afterEach(cleanup);
+
 		it('should return the date from the last item in the history array', () => {
 			const {activityAggregations} = data.mockActivityHistory();
 
@@ -184,6 +209,8 @@ describe('date', () => {
 	});
 
 	describe('applyTimeZone', () => {
+		afterEach(cleanup);
+
 		it.each`
 			date                         | timeZoneId               | formattedDate
 			${'2022-11-11T23:00:00.000'} | ${'America/Los_Angeles'} | ${'2022-11-11T15:00:00-08:00'}

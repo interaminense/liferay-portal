@@ -3,10 +3,10 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import SalesforceConfigurationStatus from '../ConfigurationStatus';
 import {BrowserRouter} from 'react-router-dom';
+import {cleanup, render} from '@testing-library/react';
 import {DataSource} from 'shared/util/records';
 import {fromJS, Map} from 'immutable';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 
 jest.unmock('react-dom');
@@ -53,6 +53,8 @@ const WrappedComponent = ({dataSource = DEFAULT_DATA_SOURCE}) => (
 );
 
 describe('SalesforceConfigurationStatus', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
 

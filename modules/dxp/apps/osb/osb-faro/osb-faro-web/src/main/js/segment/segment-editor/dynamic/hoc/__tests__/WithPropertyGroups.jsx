@@ -2,7 +2,7 @@ import * as API from 'shared/api';
 import client from 'shared/apollo/client';
 import React from 'react';
 import withPropertyGroups from '../WithPropertyGroups';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -35,6 +35,8 @@ const TestComponent = ({propertyGroupsIList}) => (
 );
 
 describe('WithPropertyGroups', () => {
+	afterEach(cleanup);
+
 	it('should pass propertyGroups to the WrappedComponent', async () => {
 		API.fieldMappings.search.mockReturnValueOnce(
 			Promise.resolve({

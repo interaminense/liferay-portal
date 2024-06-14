@@ -1,8 +1,13 @@
 import * as Util from '../util';
 import moment from 'moment';
+import {cleanup} from '@testing-library/react';
 
 describe('Util', () => {
+	afterEach(cleanup);
+
 	describe('isAboveMaxRange', () => {
+		afterEach(cleanup);
+
 		it('should return true if the date is above the max range', () => {
 			expect(
 				Util.isAboveMaxRange(
@@ -37,6 +42,8 @@ describe('Util', () => {
 	});
 
 	describe('isDateOrRange', () => {
+		afterEach(cleanup);
+
 		it.each`
 			value                                     | valid
 			${moment(0)}                              | ${true}
@@ -54,6 +61,8 @@ describe('Util', () => {
 	});
 
 	describe('isInRange', () => {
+		afterEach(cleanup);
+
 		it('should return true if the date is in the range', () => {
 			expect(
 				Util.isInRange(
@@ -90,6 +99,8 @@ describe('Util', () => {
 	});
 
 	describe('isRange', () => {
+		afterEach(cleanup);
+
 		it.each`
 			value                                 | valid
 			${null}                               | ${false}
@@ -105,6 +116,8 @@ describe('Util', () => {
 	});
 
 	describe('updateRange', () => {
+		afterEach(cleanup);
+
 		it('should update an empty range object with a new value', () => {
 			expect(
 				Util.updateRange({end: null, start: null}, moment(0))

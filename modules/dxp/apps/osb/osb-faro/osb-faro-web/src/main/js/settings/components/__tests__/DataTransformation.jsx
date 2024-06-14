@@ -1,8 +1,8 @@
 import * as API from 'shared/api';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {DataTransformation, processFieldMappings} from '../DataTransformation';
-import {fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {mockFieldMapping, mockMapping} from 'test/data';
 import {Provider} from 'react-redux';
@@ -26,6 +26,8 @@ const DefaultComponent = props => (
 );
 
 describe('processFieldMappings', () => {
+	afterEach(cleanup);
+
 	it('should return fieldMappings', () => {
 		const foo = 'foo';
 		const bar = 'bar';
@@ -46,6 +48,8 @@ describe('processFieldMappings', () => {
 });
 
 describe('DataTransformation', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(<DefaultComponent />);
 

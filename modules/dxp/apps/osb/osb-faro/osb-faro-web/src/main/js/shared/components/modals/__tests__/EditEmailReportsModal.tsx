@@ -2,8 +2,8 @@ import EditEmailReportsModal from '../EditEmailReportsModal';
 import React from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {close} from 'shared/actions/modals';
-import {fireEvent, render} from '@testing-library/react';
 import {Frequency} from 'settings/channels/components/EmailReports';
 
 jest.mock('shared/actions/alerts', () => ({
@@ -23,6 +23,8 @@ addAlert({
 jest.unmock('react-dom');
 
 describe('EditEmailReportsModal', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<EditEmailReportsModal

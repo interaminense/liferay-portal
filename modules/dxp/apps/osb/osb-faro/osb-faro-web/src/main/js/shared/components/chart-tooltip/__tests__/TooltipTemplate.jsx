@@ -1,10 +1,12 @@
 import React from 'react';
 import TooltipTemplate from '../TooltipTemplate';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('TooltipTemplate', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<TooltipTemplate children='TooltipTemplate' />
@@ -15,6 +17,8 @@ describe('TooltipTemplate', () => {
 });
 
 describe('TooltipTemplate.Body', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<TooltipTemplate.Body children='Body' />);
 
@@ -23,6 +27,8 @@ describe('TooltipTemplate.Body', () => {
 });
 
 describe('TooltipTemplate.Column', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<TooltipTemplate.Column children='Column' />
@@ -57,6 +63,8 @@ describe('TooltipTemplate.Column', () => {
 });
 
 describe('TooltipTemplate.Header', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<TooltipTemplate.Header children='Header' />
@@ -67,6 +75,8 @@ describe('TooltipTemplate.Header', () => {
 });
 
 describe('TooltipTemplate.Row', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<TooltipTemplate.Row children='Row' />);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import StagedSubnav from '../StagedSubnav';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -13,6 +13,8 @@ const DefaultComponent = props => (
 );
 
 describe('StagedSubnav', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<DefaultComponent />);
 

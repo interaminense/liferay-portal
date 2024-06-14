@@ -3,8 +3,8 @@ import InterestDetails from '../InterestDetails';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
 import {ChannelContext} from 'shared/context/channel';
+import {cleanup, render} from '@testing-library/react';
 import {mockChannelContext} from 'test/mock-channel-context';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
@@ -24,6 +24,8 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('Sites Dashboard InterestDetails', () => {
+	afterEach(cleanup);
+
 	it('render', () => {
 		const {container} = render(
 			<ApolloProvider client={client}>

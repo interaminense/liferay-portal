@@ -1,7 +1,10 @@
+import {cleanup} from '@testing-library/react';
 import {fontMapper, JSPDFExtension, PosX, Size, Weight} from '../jsPDF';
 import {LanguageIds} from 'shared/util/constants';
 
 describe('fontMapper', () => {
+	afterEach(cleanup);
+
 	it('test fontMapper function', () => {
 		Object.keys(fontMapper).forEach(key => {
 			const {test} = fontMapper[key];
@@ -24,6 +27,8 @@ describe('fontMapper', () => {
 });
 
 describe('JSPDFExtension', () => {
+	afterEach(cleanup);
+
 	it('should create a new instance of JSPDFExtension', () => {
 		const containers = [];
 		const fontFamily = 'Helvetica';

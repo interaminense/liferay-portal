@@ -4,16 +4,18 @@ import GlobalAttributeList from '../GlobalAttributeList';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
 import {AttributeTypes} from 'event-analysis/utils/types';
+import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEventAttributeDefinitionsReq} from 'test/graphql-data';
-import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {waitForLoading} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 describe('GlobalAttributeList', () => {
+	afterEach(cleanup);
+
 	const WrappedComponent = props => (
 		<ApolloProvider client={client}>
 			<MemoryRouter

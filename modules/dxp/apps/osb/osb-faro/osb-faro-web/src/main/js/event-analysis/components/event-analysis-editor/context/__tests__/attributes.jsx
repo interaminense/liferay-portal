@@ -6,12 +6,14 @@ import {
 	withAttributesConsumer,
 	withAttributesProvider
 } from '../attributes';
+import {cleanup, render} from '@testing-library/react';
 import {isBoolean} from 'lodash';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('attributes', () => {
+	afterEach(cleanup);
+
 	const initialAttributes = {
 		attributes: {
 			1: {
@@ -42,6 +44,8 @@ describe('attributes', () => {
 	};
 
 	describe('isAttributeInUse', () => {
+		afterEach(cleanup);
+
 		it('should return false if no attributes are in use', () => {
 			expect(
 				isAttributeInUse(
@@ -64,6 +68,8 @@ describe('attributes', () => {
 	});
 
 	describe('attributesReducer', () => {
+		afterEach(cleanup);
+
 		const attribute = {
 			dataType: 'STRING',
 			id: '0',
@@ -660,6 +666,8 @@ describe('attributes', () => {
 	});
 
 	describe('withAttributesConsumer', () => {
+		afterEach(cleanup);
+
 		it('should pass the WrappedComponent', () => {
 			const ChildComponent = ({
 				addBreakdown,
@@ -718,6 +726,8 @@ describe('attributes', () => {
 	});
 
 	describe('withAttributesProvider', () => {
+		afterEach(cleanup);
+
 		it('should pass the WrappedComponent', () => {
 			const WrappedComponent = withAttributesProvider(() => (
 				<div>{'foo'}</div>

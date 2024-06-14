@@ -32,6 +32,8 @@ const DefaultComponent = props => (
 );
 
 describe('EnrichedProfilesCard', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		jest.clearAllMocks();
 
@@ -66,6 +68,8 @@ describe('EnrichedProfilesCard', () => {
 });
 
 describe('EnrichedProfilesCard Enrich Profiles Prompt', () => {
+	afterEach(cleanup);
+
 	const baseDescription =
 		'should render a prompt to enrich profiles if the only connected datasource is DXP with no contacts configuration';
 

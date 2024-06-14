@@ -1,6 +1,6 @@
+import 'whatwg-fetch';
 jest.mock('../router');
 
-import 'whatwg-fetch';
 import request, {
 	addParams,
 	getFormData,
@@ -9,9 +9,12 @@ import request, {
 	serializeQueryString,
 	stringifyValues
 } from '../request';
+import {cleanup} from '@testing-library/react';
 import {reloadPage} from '../router';
 
 describe('addParams', () => {
+	afterEach(cleanup);
+
 	it('should correctly append query string params', () => {
 		const result = addParams('http://www.test.com', {
 			name: 'joe',
@@ -32,6 +35,8 @@ describe('addParams', () => {
 });
 
 describe('getFormData', () => {
+	afterEach(cleanup);
+
 	it('should return a FormData object', () => {
 		const formData = getFormData({
 			name: 'test'
@@ -50,6 +55,8 @@ describe('getFormData', () => {
 });
 
 describe('parseFromJSON', () => {
+	afterEach(cleanup);
+
 	it('should return a parsed JSON object', () => {
 		const expected = {foo: 'bar'};
 
@@ -58,6 +65,8 @@ describe('parseFromJSON', () => {
 });
 
 describe('getServiceError', () => {
+	afterEach(cleanup);
+
 	it('should return a parsed service error', () => {
 		const nestedError = {status: 403};
 
@@ -76,6 +85,8 @@ describe('getServiceError', () => {
 });
 
 describe('serializeQueryString', () => {
+	afterEach(cleanup);
+
 	it('should contain params', () => {
 		const queryString = serializeQueryString(
 			{
@@ -97,6 +108,8 @@ describe('serializeQueryString', () => {
 });
 
 describe('request', () => {
+	afterEach(cleanup);
+
 	beforeEach(() => {
 		window.fetch = jest.fn();
 	});
@@ -225,6 +238,8 @@ describe('request', () => {
 });
 
 describe('stringifyValues', () => {
+	afterEach(cleanup);
+
 	it('should serialize instances of objects', () => {
 		const arr = ['foo'];
 		const obj = {foo: 'bar'};

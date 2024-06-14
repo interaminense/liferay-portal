@@ -1,7 +1,7 @@
 import FieldDropDown from '../FieldDropDown';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {Map} from 'immutable';
-import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -16,6 +16,8 @@ const DefaultComponent = props => (
 );
 
 describe('FieldDropDown', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<DefaultComponent />);
 

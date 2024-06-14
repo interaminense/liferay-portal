@@ -1,5 +1,6 @@
 import * as data from 'test/data';
 import {CHART_COLOR_NAMES} from 'shared/util/charts';
+import {cleanup} from '@testing-library/react';
 import {CompositeMetric} from '../metrics';
 import {
 	convertHistogramKeysToDate,
@@ -14,6 +15,8 @@ import {toUnix} from 'shared/util/date';
 const {stark: CHART_BLUE, starkL2: CHART_BLUE_L2} = CHART_COLOR_NAMES;
 
 describe('convertHistogramKeysToDate', () => {
+	afterEach(cleanup);
+
 	it('should convert the histogram date key strings to Date types', () => {
 		expect(
 			[
@@ -29,6 +32,8 @@ describe('convertHistogramKeysToDate', () => {
 });
 
 describe('getMetricsChartData', () => {
+	afterEach(cleanup);
+
 	it('should return data formatted for use in a Metrics chart', () => {
 		const mockParameters = {
 			histogram: data
@@ -45,6 +50,8 @@ describe('getMetricsChartData', () => {
 });
 
 describe('getMetricsData', () => {
+	afterEach(cleanup);
+
 	it('should return the chart items', () => {
 		const rangeKey = 30;
 		const keyDate = '2018-07-16T00:00';
@@ -206,6 +213,8 @@ describe('getMetricsData', () => {
 });
 
 describe('getSiteMetricsChartData', () => {
+	afterEach(cleanup);
+
 	it('should return data formatted for use in a Site Metrics chart', () => {
 		const {name, title, tooltipTitle, type} = CompositeMetric;
 

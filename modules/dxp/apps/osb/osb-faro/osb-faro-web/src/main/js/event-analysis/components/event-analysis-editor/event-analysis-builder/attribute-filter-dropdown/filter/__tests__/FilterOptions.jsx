@@ -3,8 +3,8 @@ import FilterOptions from '../index';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {withAttributesProvider} from '../../../../context/attributes';
 
 jest.unmock('react-dom');
@@ -17,6 +17,8 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('FilterOptions', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const WrappedFilterOptions = withAttributesProvider(FilterOptions);
 

@@ -1,10 +1,12 @@
 import AddReport from '../AddReport';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('AddReport', () => {
+	afterEach(cleanup);
+
 	it('should render without analytics-add-report-empty-dashboard class', () => {
 		const {container} = render(<AddReport />);
 

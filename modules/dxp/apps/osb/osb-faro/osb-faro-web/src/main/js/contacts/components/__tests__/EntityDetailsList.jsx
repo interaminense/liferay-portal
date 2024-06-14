@@ -1,7 +1,7 @@
 import * as data from 'test/data';
 import EntityDetailsList from '../EntityDetailsList';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {Routes} from 'shared/util/router';
@@ -27,6 +27,8 @@ const DefaultComponent = props => (
 );
 
 describe('EntityDetailsList', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<DefaultComponent

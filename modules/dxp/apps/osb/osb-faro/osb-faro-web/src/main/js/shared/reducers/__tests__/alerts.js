@@ -1,8 +1,11 @@
 import reducer from '../alerts';
 import {actionTypes} from '../../actions/alerts';
+import {cleanup} from '@testing-library/react';
 import {Map, OrderedMap} from 'immutable';
 
 describe('Alerts Reducer', () => {
+	afterEach(cleanup);
+
 	const message = 'Hello World!';
 
 	it('should be a function', () => {

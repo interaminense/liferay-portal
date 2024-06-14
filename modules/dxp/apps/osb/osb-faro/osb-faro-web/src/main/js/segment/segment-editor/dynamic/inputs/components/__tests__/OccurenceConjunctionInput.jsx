@@ -1,11 +1,13 @@
 import OccurenceConjunctionInput from '../OccurenceConjunctionInput';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {RelationalOperators} from '../../../utils/constants';
 
 jest.unmock('react-dom');
 
 describe('OccurenceConjunctionInput', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container, getByRole, getByText} = render(
 			<OccurenceConjunctionInput

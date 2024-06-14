@@ -1,8 +1,11 @@
+import FileUploader, {ERROR_TYPES, normalizeFiles} from '../FileUploader';
 /* eslint-disable no-underscore-dangle */
 
-import FileUploader, {ERROR_TYPES, normalizeFiles} from '../FileUploader';
+import {cleanup} from '@testing-library/react';
 
 describe('FileUploader', () => {
+	afterEach(cleanup);
+
 	let uploader;
 
 	afterEach(() => {
@@ -135,6 +138,8 @@ describe('FileUploader', () => {
 	});
 
 	describe('onProgress', () => {
+		afterEach(cleanup);
+
 		it('should call onChange', () => {
 			const spy = jest.fn();
 
@@ -149,6 +154,8 @@ describe('FileUploader', () => {
 	});
 
 	describe('addFiles', () => {
+		afterEach(cleanup);
+
 		const {FILE_LIMIT, INVALID_FILE, MULTIPLE_FILES} = ERROR_TYPES;
 
 		it.each`
@@ -185,6 +192,8 @@ describe('FileUploader', () => {
 	});
 
 	describe('normalizeFiles', () => {
+		afterEach(cleanup);
+
 		it.each`
 			files                          | results
 			${mockFile('foo.csv')}         | ${['foo.csv']}

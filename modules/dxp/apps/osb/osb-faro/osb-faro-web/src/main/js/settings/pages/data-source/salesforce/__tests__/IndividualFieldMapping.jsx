@@ -1,10 +1,10 @@
 import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {DataSource} from 'shared/util/records';
 import {IndividualFieldMapping} from '../IndividualFieldMapping';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -17,6 +17,8 @@ const defaultProps = {
 };
 
 describe('IndividualFieldMapping', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<Provider store={mockStore()}>

@@ -1,11 +1,13 @@
 import HeaderCell from '../HeaderCell';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
 describe('HeaderCell', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(
 			<HeaderCell>

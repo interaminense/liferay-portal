@@ -1,9 +1,12 @@
 import reducer from '../data-sources';
 import {actionTypes} from '../../actions/data-sources';
+import {cleanup} from '@testing-library/react';
 import {Map} from 'immutable';
 import {RemoteData} from 'shared/util/records';
 
 describe('data-sources', () => {
+	afterEach(cleanup);
+
 	function getResult(action, id, initialiState) {
 		return reducer(initialiState, action).get(String(id));
 	}

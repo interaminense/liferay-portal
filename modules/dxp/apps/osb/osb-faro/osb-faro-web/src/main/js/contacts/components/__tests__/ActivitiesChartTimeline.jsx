@@ -1,8 +1,8 @@
 import * as data from 'test/data';
 import ActivitiesChartTimeline from '../ActivitiesChartTimeline';
 import React from 'react';
+import {cleanup, render} from '@testing-library/react';
 import {EntityTypes} from 'shared/util/constants';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -11,6 +11,8 @@ jest.unmock('react-dom');
 const {activityAggregations} = data.mockActivityHistory();
 
 describe('ActivitiesChartTimeline', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(
 			<StaticRouter>

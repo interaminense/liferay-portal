@@ -1,10 +1,12 @@
 import FilterInfo from '../FilterInfo';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('FilterInfo', () => {
+	afterEach(cleanup);
+
 	it('render', () => {
 		const {container} = render(
 			<FilterInfo

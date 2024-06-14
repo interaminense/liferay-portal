@@ -1,6 +1,6 @@
 import AttributeConjunctionInput from '../index';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import {mockEventAttributeDefinition} from 'test/data';
 import {range} from 'lodash';
 import {RelationalOperators} from '../../../../utils/constants';
@@ -8,6 +8,8 @@ import {RelationalOperators} from '../../../../utils/constants';
 jest.unmock('react-dom');
 
 describe('AttributeConjunctionInput', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container, getAllByText, getByText} = render(
 			<AttributeConjunctionInput

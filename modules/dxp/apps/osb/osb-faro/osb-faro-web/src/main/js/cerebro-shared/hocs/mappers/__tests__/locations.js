@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 jest.unmock('clay-charts');
 
 import {getLocationsMapper, getLocationsMapperCountries} from '../locations';
@@ -101,6 +102,8 @@ const data = {
 };
 
 describe('Shared HOCs Mappers - Locations', () => {
+	afterEach(cleanup);
+
 	it('should map locations information', () => {
 		const mapper = getLocationsMapper(
 			result => result.form.submissionsMetric
@@ -205,6 +208,8 @@ describe('Shared HOCs Mappers - Locations', () => {
 });
 
 describe('Shared HOCs Mappers - Locations Countries', () => {
+	afterEach(cleanup);
+
 	it('should return countries information', () => {
 		const mapper = getLocationsMapperCountries(
 			result => result.form.submissionsMetric

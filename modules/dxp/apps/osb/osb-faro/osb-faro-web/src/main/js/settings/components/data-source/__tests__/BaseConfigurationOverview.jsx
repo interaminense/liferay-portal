@@ -1,10 +1,12 @@
 import BaseConfigurationOverview from '../BaseConfigurationOverview';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
 describe('BaseConfigurationOverview', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const mockConfigurationItems = [
 			{

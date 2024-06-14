@@ -1,7 +1,10 @@
+import {cleanup} from '@testing-library/react';
 import {createOrderIOMap} from 'shared/util/pagination';
 import {getMapResultToProps, mapPropsToOptions} from '../dxp-entity-bag-mapper';
 
 describe('DXPEntityBag Mapper', () => {
+	afterEach(cleanup);
+
 	it('should map props to options', () => {
 		expect(
 			mapPropsToOptions({

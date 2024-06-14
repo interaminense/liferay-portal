@@ -1,3 +1,4 @@
+import {cleanup} from '@testing-library/react';
 jest.unmock('clay-charts');
 
 import {getMetricsMapper} from '../metrics';
@@ -97,6 +98,8 @@ const data = {
 };
 
 describe('Shared HOCs Mappers - Metrics', () => {
+	afterEach(cleanup);
+
 	it('should map metrics information', () => {
 		const mapper = getMetricsMapper(result => result.forms, [
 			{

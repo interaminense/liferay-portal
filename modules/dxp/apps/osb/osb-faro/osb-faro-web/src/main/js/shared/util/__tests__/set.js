@@ -1,8 +1,13 @@
+import {cleanup} from '@testing-library/react';
 import {Set} from 'immutable';
 import {toggle, toggleSingleton} from '../set';
 
 describe('set', () => {
+	afterEach(cleanup);
+
 	describe('toggle', () => {
+		afterEach(cleanup);
+
 		it('should remove the item from the set', () => {
 			expect(toggle(new Set([1, 2, 3]), 2)).toEqual(new Set([1, 3]));
 
@@ -19,6 +24,8 @@ describe('set', () => {
 	});
 
 	describe('toggleSingleton', () => {
+		afterEach(cleanup);
+
 		it('should remove the item from the set', () => {
 			expect(toggleSingleton(new Set([1]), 1)).toEqual(new Set());
 		});

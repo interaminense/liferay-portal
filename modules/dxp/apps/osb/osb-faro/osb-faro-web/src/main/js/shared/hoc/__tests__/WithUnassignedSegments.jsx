@@ -32,6 +32,8 @@ const DefaultComponent = props => (
 );
 
 describe('WithUnassignedSegments', () => {
+	afterEach(cleanup);
+
 	afterEach(() => {
 		cleanup();
 		jest.clearAllMocks();

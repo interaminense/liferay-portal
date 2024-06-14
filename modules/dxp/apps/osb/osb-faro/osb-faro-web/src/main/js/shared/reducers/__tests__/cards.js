@@ -1,11 +1,14 @@
 import reducer from '../cards';
 import {actionTypes} from 'shared/actions/cards';
+import {cleanup} from '@testing-library/react';
 import {EntityTypes} from 'shared/util/constants';
 import {getLayoutSchema} from 'shared/middleware/schema';
 import {actionTypes as layoutActionTypes} from 'shared/actions/layouts';
 import {Map} from 'immutable';
 
 describe('Card Reducer', () => {
+	afterEach(cleanup);
+
 	it('should add card on fetch card success', () => {
 		const cardId = 'cardId';
 		const foo = 'foo';

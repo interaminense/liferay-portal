@@ -1,6 +1,6 @@
 import AppliedFilters from '../AppliedFilters';
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
@@ -10,6 +10,8 @@ const filters = {
 };
 
 describe('AppliedFilters', () => {
+	afterEach(cleanup);
+
 	it('should render', () => {
 		const {container} = render(<AppliedFilters filters={filters} />);
 

@@ -4,10 +4,10 @@ import Edit from '../Edit';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {cleanup, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockRecommendationReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
 import {waitForLoading} from 'test/helpers';
 
@@ -38,6 +38,8 @@ const DefaultComponent = props => (
 );
 
 describe('Edit', () => {
+	afterEach(cleanup);
+
 	it('should render', async () => {
 		const {container} = render(<DefaultComponent />);
 
