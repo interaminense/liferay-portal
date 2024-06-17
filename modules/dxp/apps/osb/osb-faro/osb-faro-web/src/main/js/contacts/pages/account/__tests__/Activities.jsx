@@ -39,8 +39,6 @@ describe('Activities', () => {
 	it('should render', async () => {
 		const {container} = render(<DefaultComponent />);
 
-		jest.runAllTimers();
-
 		await waitForLoadingToBeRemoved(container);
 
 		expect(container).toMatchSnapshot();
@@ -50,8 +48,6 @@ describe('Activities', () => {
 		API.activities.fetchHistory.mockReturnValueOnce(Promise.reject({}));
 
 		const {container, getByText} = render(<DefaultComponent pageDisplay />);
-
-		jest.runAllTimers();
 
 		await waitForLoadingToBeRemoved(container);
 

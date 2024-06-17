@@ -83,7 +83,7 @@ const Card: React.FC<ICardProps> & {
 		<div
 			className={classes}
 			data-testid={testId}
-			id={reportContainer}
+			id={reportContainer || undefined}
 			style={minHeight && {minHeight: `${minHeight}px`}}
 		>
 			{children}

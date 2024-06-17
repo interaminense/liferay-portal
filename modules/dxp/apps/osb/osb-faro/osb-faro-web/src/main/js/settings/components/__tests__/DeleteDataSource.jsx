@@ -3,12 +3,7 @@ import 'test/mock-modal';
 import * as data from 'test/data';
 import * as Router from 'shared/util/router';
 import React from 'react';
-import {
-	cleanup,
-	fireEvent,
-	render,
-	waitForElement
-} from '@testing-library/react';
+import {cleanup, fireEvent, render, waitFor} from '@testing-library/react';
 import {DataSource} from 'shared/util/records';
 import {DeleteDataSource} from '../DeleteDataSource';
 import {EntityTypes} from 'shared/util/constants';
@@ -91,7 +86,7 @@ describe('DeleteDataSource', () => {
 			target: {value: 'remove'}
 		});
 
-		const form = await waitForElement(() => queryByTestId('form'));
+		const form = await waitFor(() => queryByTestId('form'));
 
 		// Firing submit to trigger validation.
 		fireEvent.submit(form);
@@ -125,7 +120,7 @@ describe('DeleteDataSource', () => {
 			target: {value: `remove ${dataSource.name}`}
 		});
 
-		const form = await waitForElement(() => queryByTestId('form'));
+		const form = await waitFor(() => queryByTestId('form'));
 
 		fireEvent.submit(form);
 
@@ -147,7 +142,7 @@ describe('DeleteDataSource', () => {
 			target: {value: `remove ${dataSource.name}`}
 		});
 
-		const form = await waitForElement(() => queryByTestId('form'));
+		const form = await waitFor(() => queryByTestId('form'));
 
 		fireEvent.submit(form);
 

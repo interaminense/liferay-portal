@@ -4,7 +4,7 @@ import {
 	getByPlaceholderText,
 	getByTestId,
 	getByText,
-	waitForElement,
+	waitFor,
 	waitForElementToBeRemoved
 } from '@testing-library/react';
 
@@ -33,13 +33,13 @@ export const selectFilterDropdownItem = (container, labelText) => {
 };
 
 export const waitForTable = async container => {
-	await waitForElement(() => container.querySelector('.table-root'), {
+	await waitFor(() => container.querySelector('.table-root'), {
 		container
 	});
 };
 
 export const waitForLoading = async container => {
-	await waitForElement(() => container.querySelector('.loading-root'));
+	await waitFor(() => container.querySelector('.loading-root'));
 };
 
 export const waitForLoadingToBeRemoved = async (
@@ -56,7 +56,7 @@ export const waitForLoadingToBeRemoved = async (
 			'function waitForLoadingToBeRemoved is not needed for this test, please remove it to improve performance!'
 		);
 
-		return Promise.resolve();
+		return Promise.reject();
 	}
 };
 

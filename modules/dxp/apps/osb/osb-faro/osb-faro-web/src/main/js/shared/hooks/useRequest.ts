@@ -27,6 +27,17 @@ export const useRequest = ({
 	skipRequest?: boolean;
 	variables: {[key: string]: any};
 }) => {
+	const getData = () => {
+		setState({...state, loading: true});
+
+		debounceRef.current = debouncedDataSourceFn(variables);
+	};
+
+	const [state, setState] = useState({
+		...initialState,
+		refetch: getData
+	});
+
 	const requestAbortControllerRef = useRef<AbortController>();
 	const debounceRef = useRef<ReturnType<typeof debounce>>();
 
@@ -54,17 +65,6 @@ export const useRequest = ({
 		}),
 		[]
 	);
-
-	const getData = () => {
-		setState({...state, loading: true});
-
-		debounceRef.current = debouncedDataSourceFn(variables);
-	};
-
-	const [state, setState] = useState({
-		...initialState,
-		refetch: getData
-	});
 
 	useDeepEqualEffect(() => {
 		if (!skipRequest) {

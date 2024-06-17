@@ -4,12 +4,7 @@ import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {
-	cleanup,
-	fireEvent,
-	render,
-	waitForElement
-} from '@testing-library/react';
+import {cleanup, fireEvent, render, waitFor} from '@testing-library/react';
 import {DISPLAY_NAME} from 'shared/util/pagination';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEventAttributeDefinitionsReq} from 'test/graphql-data';
@@ -62,7 +57,7 @@ describe('AttributeBreakdownDropdown', () => {
 
 		jest.runAllTimers();
 
-		await waitForElement(() => container.querySelector('.dropdown'));
+		await waitFor(() => container.querySelector('.dropdown'));
 
 		expect(container).toMatchSnapshot();
 
@@ -93,7 +88,7 @@ describe('AttributeBreakdownDropdown', () => {
 
 		jest.runAllTimers();
 
-		await waitForElement(() => container.querySelector('.dropdown'));
+		await waitFor(() => container.querySelector('.dropdown'));
 
 		expect(
 			document.body.getElementsByClassName('dropdown-item active').length
@@ -109,7 +104,7 @@ describe('AttributeBreakdownDropdown', () => {
 
 		jest.runAllTimers();
 
-		await waitForElement(() => container.querySelector('.dropdown'));
+		await waitFor(() => container.querySelector('.dropdown'));
 
 		expect(
 			document.body.getElementsByClassName('dropdown-item disabled')

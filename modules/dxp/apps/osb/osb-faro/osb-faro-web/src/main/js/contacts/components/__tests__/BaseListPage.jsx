@@ -4,7 +4,7 @@ import BaseListPage from '../BaseListPage';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ChannelContext} from 'shared/context/channel';
-import {cleanup, render, waitForElement} from '@testing-library/react';
+import {cleanup, render, waitFor} from '@testing-library/react';
 import {createOrderIOMap} from 'shared/util/pagination';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {mockChannelContext} from 'test/mock-channel-context';
@@ -129,7 +129,7 @@ describe('BaseListPage', () => {
 			<WrappedComponent alerts={[{message: 'foo alert'}]} />
 		);
 
-		await waitForElement(() => getByRole('alert'));
+		await waitFor(() => getByRole('alert'));
 
 		expect(getByText('foo alert')).toBeInTheDocument();
 	});

@@ -12,21 +12,23 @@ export default gql`
 			rangeKey: $rangeKey
 		) {
 			anonymousIndividualsMetric {
-				...trendFragment
+				value
+				trend {
+					percentage
+				}
 			}
 			knownIndividualsMetric {
-				...trendFragment
+				value
+				trend {
+					percentage
+				}
 			}
 			totalIndividualsMetric {
-				...trendFragment
+				value
+				trend {
+					percentage
+				}
 			}
-		}
-	}
-
-	fragment trendFragment on Metric {
-		value
-		trend {
-			percentage
 		}
 	}
 `;

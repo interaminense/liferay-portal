@@ -1,7 +1,8 @@
 import InterestPagesList from '../InterestPagesList';
 import React from 'react';
-import {cleanup, render, waitFor} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
+import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
@@ -17,11 +18,15 @@ describe('InterestPagesList', () => {
 	it('should render', async () => {
 		const {container} = render(
 			<StaticRouter>
-				<InterestPagesList dataSourceParams={{active: true}} />
+				<InterestPagesList
+					channelId='456'
+					dataSourceParams={{active: true}}
+					groupId='123'
+				/>
 			</StaticRouter>
 		);
 
-		await waitFor(() => {});
+		await waitForLoadingToBeRemoved(container);
 
 		expect(container).toMatchSnapshot();
 	});

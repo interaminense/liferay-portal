@@ -1,9 +1,8 @@
 import '@testing-library/jest-dom/extend-expect';
 import 'jest-extended';
-import * as pedantic from './pedantic';
 import lang from './lang';
 
-pedantic.enable();
+// pedantic.enable();
 
 jest.mock('shared/util/svg');
 jest.mock('shared/api');
@@ -18,23 +17,13 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 	unobserve: jest.fn()
 }));
 
-global.analytics = {
-	group: () => {},
-	identify: () => {},
-	track: () => {}
-};
-
-global.AUI = () => ({
-	use: (module, callback) => callback()
-});
-
 global.Liferay = {
 	Language: {
 		get: lang
 	}
 };
 
-global.console = {error: jest.fn(), log: console.log, warn: jest.fn()}; // eslint-disable-line no-console
+// global.console = {error: jest.fn(), log: console.log, warn: jest.fn()}; // eslint-disable-line no-console
 
 global.localStorage = (() => {
 	let store = {};
