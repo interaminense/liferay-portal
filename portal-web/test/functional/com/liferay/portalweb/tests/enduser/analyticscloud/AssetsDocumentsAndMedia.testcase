@@ -48,6 +48,8 @@ definition {
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8419 | Test Summary: Document asset appears on list shows pages that the document exists on"
 	@priority = 5
 	test AssertAppearsOnListShowsPagesDocumentsExists {
+		property portal.upstream = "poshi";
+		
 		ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Site Name");
 
 		task ("Visit the document") {

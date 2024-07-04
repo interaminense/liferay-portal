@@ -47,6 +47,8 @@ definition {
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8456 | Test Summary: Web content appears on card shows the pages that the web content appears on"
 	@priority = 5
 	test AssertAppearsOnListShowsPagesWebContentExists {
+		property portal.upstream = "poshi";
+		
 		ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Site Name");
 
 		task ("Go to the site page") {
