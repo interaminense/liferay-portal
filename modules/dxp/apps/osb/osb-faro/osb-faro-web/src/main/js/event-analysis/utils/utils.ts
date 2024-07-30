@@ -81,8 +81,8 @@ export const DATE_GROUPING_LABELS_MAP = {
 };
 
 export const DATE_OPERATOR_LABELS_MAP = {
-	[Operators.Between]: '-',
-	[Operators.EQ]: '=',
+	[Operators.Between]: Liferay.Language.get('between-fragment'),
+	[Operators.EQ]: Liferay.Language.get('is-fragment'),
 	[Operators.GT]: Liferay.Language.get('after-fragment'),
 	[Operators.LT]: Liferay.Language.get('before-fragment')
 };
@@ -95,8 +95,8 @@ export const DATE_OPERATOR_LONGHAND_LABELS_MAP = {
 };
 
 export const DURATION_OPERATOR_LABELS_MAP = {
-	[Operators.GT]: '>',
-	[Operators.LT]: '<'
+	[Operators.GT]: Liferay.Language.get('is-greater-than-fragment'),
+	[Operators.LT]: Liferay.Language.get('is-less-than-fragment')
 };
 
 export const DURATION_OPERATOR_LONGHAND_LABELS_MAP = {
@@ -105,9 +105,9 @@ export const DURATION_OPERATOR_LONGHAND_LABELS_MAP = {
 };
 
 export const NUMBER_OPERATOR_LABELS_MAP = {
-	[Operators.Between]: '-',
-	[Operators.GT]: '>',
-	[Operators.LT]: '<'
+	[Operators.Between]: Liferay.Language.get('between-fragment'),
+	[Operators.GT]: Liferay.Language.get('is-greater-than-fragment'),
+	[Operators.LT]: Liferay.Language.get('is-less-than-fragment')
 };
 
 export const NUMBER_OPERATOR_LONGHAND_LABELS_MAP = {
@@ -337,7 +337,9 @@ export const formatDateName = (
 };
 
 export const formatDurationName = (name: string): string => {
-	const [durationStart, durationEnd] = name.split('-');
+	const [durationStart, durationEnd] = name.split(
+		Liferay.Language.get('between')
+	);
 
 	return `${formatTime(Number(durationStart))} - ${formatTime(
 		Number(durationEnd)
