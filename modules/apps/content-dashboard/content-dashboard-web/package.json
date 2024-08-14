@@ -1,6 +1,7 @@
 {
 	"dependencies": {
 		"@clayui/alert": "3.111.0",
+		"@liferay/analytics-reports-js-components-web": "*",
 		"@clayui/button": "3.116.0",
 		"@clayui/core": "3.116.1",
 		"@clayui/date-picker": "3.116.1",
