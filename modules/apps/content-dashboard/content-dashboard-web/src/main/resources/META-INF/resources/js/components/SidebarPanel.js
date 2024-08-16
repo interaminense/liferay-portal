@@ -97,6 +97,7 @@ const dataReducer = (state, action) => {
 const SidebarPanel = React.forwardRef(
 	(
 		{
+			contentPerformanceDataFetchURL,
 			fetchURL: initialFetchUrl,
 			onClose,
 			singlePageApplicationEnabled,
@@ -216,6 +217,9 @@ const SidebarPanel = React.forwardRef(
 					state?.data && (
 						<CurrentViewRef.current
 							{...state.data}
+							contentPerformanceDataFetchURL={
+								contentPerformanceDataFetchURL
+							}
 							singlePageApplicationEnabled={
 								singlePageApplicationEnabled
 							}

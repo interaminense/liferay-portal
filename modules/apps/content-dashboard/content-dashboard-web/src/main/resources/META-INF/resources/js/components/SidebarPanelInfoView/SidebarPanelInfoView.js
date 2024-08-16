@@ -36,6 +36,7 @@ const TABS_2 = {
 };
 
 const SidebarPanelInfoView = ({
+	contentPerformanceDataFetchURL,
 	classPK,
 	createDate,
 	description,
@@ -275,28 +276,36 @@ const SidebarPanelInfoView = ({
 							/>
 						</ClayTabs.TabPane>
 
-						{!!Liferay.FeatureFlags['LPD-28830'] && (
-							<ClayTabs.TabPane
-								aria-labelledby={`tab-${TABS.performance + 1}`}
-								className="flex-shrink-0"
-							>
-								<AnalyticsReports />
-							</ClayTabs.TabPane>
-						)}
+						{!!Liferay.FeatureFlags['LPD-28830'] &&
+							showTabs &&
+							activeTabKeyValue === TABS.performance && (
+								<ClayTabs.TabPane
+									aria-labelledby={`tab-${TABS.performance + 1}`}
+									className="flex-shrink-0"
+								>
+									<AnalyticsReports
+										contentPerformanceDataFetchURL={
+											contentPerformanceDataFetchURL
+										}
+									/>
+								</ClayTabs.TabPane>
+							)}
 
-						{hasCategorization && showTabs && (
-							<ClayTabs.TabPane
-								aria-labelledby={`tab-${TABS.categorization + 1}`}
-								className="flex-shrink-0"
-							>
-								<Categorization
-									tags={tags}
-									vocabularies={vocabularies}
-								/>
-							</ClayTabs.TabPane>
-						)}
+						{showTabs &&
+							activeTabKeyValue === TABS.categorization &&
+							hasCategorization && (
+								<ClayTabs.TabPane
+									aria-labelledby={`tab-${TABS.categorization + 1}`}
+									className="flex-shrink-0"
+								>
+									<Categorization
+										tags={tags}
+										vocabularies={vocabularies}
+									/>
+								</ClayTabs.TabPane>
+							)}
 
-						{showTabs && (
+						{showTabs && activeTabKeyValue === TABS.showTabs && (
 							<ClayTabs.TabPane
 								aria-labelledby={`tab-${TABS.version + 1}`}
 								className="flex-shrink-0"
