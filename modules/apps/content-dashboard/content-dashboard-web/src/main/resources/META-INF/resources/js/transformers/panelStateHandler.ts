@@ -16,6 +16,7 @@ import {OPEN_PANEL_VALUE} from '../utils/constants';
 import ActionsComponentPropsTransformer from './ActionsComponentPropsTransformer';
 
 const handlePanelStateFromSession = ({
+	contentPerformanceDataFetchURL,
 	currentRowId,
 	namespace,
 	panelState,
@@ -23,6 +24,7 @@ const handlePanelStateFromSession = ({
 	selectedItemRowId,
 	singlePageApplicationEnabled,
 }: {
+	contentPerformance: string;
 	currentRowId: string;
 	namespace: string;
 	panelState: string;
