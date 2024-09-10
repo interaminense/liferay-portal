@@ -48,6 +48,7 @@ const OverviewMetric: React.FC<IOverviewMetricProps> = ({
 	return (
 		<button
 			className={classNames('overview-metric text-uppercase', {selected})}
+			data-testid={`overview__${name.toLocaleLowerCase()}-metric`}
 			onClick={onSelectMetric}
 		>
 			<div className="overview-metric__title">
