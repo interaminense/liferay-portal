@@ -10,6 +10,7 @@ import GlobalFilters from './components/GlobalFilters';
 import OverviewMetrics from './components/OverviewMetrics';
 
 import '../css/main.scss';
+import AppearsOn from './components/AppearsOn';
 import VisitorsBehavior from './components/VisitorsBehavior';
 
 interface AnalyticsReports {
@@ -46,6 +47,8 @@ const AnalyticsReports: React.FC<AnalyticsReports> = ({
 				<OverviewMetrics />
 
 				<VisitorsBehavior />
+
+				<AppearsOn />
 			</AppSetup>
 		</div>
 	);
