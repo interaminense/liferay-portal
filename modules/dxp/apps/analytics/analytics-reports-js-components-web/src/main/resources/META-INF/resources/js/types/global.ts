@@ -10,6 +10,7 @@ export enum Individuals {
 }
 
 export enum RangeSelectors {
+	Last24Hours = '0',
 	Last7Days = '7',
 	Last28Days = '28',
 	Last30Days = '30',
@@ -21,6 +22,7 @@ export enum MetricName {
 	Downloads = 'downloadsMetric',
 	Previews = 'previewsMetric',
 	Views = 'viewsMetric',
+	Undefined = 'undefinedMetric',
 }
 
 export enum AssetTypes {
@@ -35,4 +37,29 @@ export enum MetricType {
 	Downloads = 'DOWNLOADS',
 	Previews = 'PREVIEWS',
 	Views = 'VIEWS',
+	Undefined = 'UNDEFINED',
 }
+
+export enum Alignments {
+	Center = 'center',
+	Left = 'left',
+	Right = 'right',
+}
+
+export enum Weights {
+	Light = 'light',
+	Normal = 'normal',
+	Semibold = 'semibold',
+	Bold = 'bold',
+}
+
+export type Column = {
+	align?: Alignments;
+	className?: string;
+	color?: string;
+	colspan?: number;
+	label: string | (() => React.ReactNode);
+	truncated?: boolean;
+	weight?: Weights;
+	width?: number;
+};

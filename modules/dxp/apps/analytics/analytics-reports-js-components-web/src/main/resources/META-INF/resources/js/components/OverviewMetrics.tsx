@@ -12,11 +12,8 @@ import {fetchAssetMetric} from '../apis/asset-metrics';
 import OverviewMetric, {
 	TrendClassification,
 } from '../components/OverviewMetric';
-import {AssetTypes, MetricName, MetricType} from '../types/global';
-
-type AssetMetrics = {
-	[key in AssetTypes]: MetricName[];
-};
+import {AssetTypes, MetricType} from '../types/global';
+import {assetMetrics} from '../utils/metrics';
 
 type MetricData = {
 	metricType: MetricType;
@@ -34,17 +31,6 @@ type Data = {
 	selectedMetrics: MetricData[];
 };
 
-const assetMetrics: AssetMetrics = {
-	[AssetTypes.Blog]: [MetricName.Views, MetricName.Comments],
-	[AssetTypes.Document]: [
-		MetricName.Downloads,
-		MetricName.Previews,
-		MetricName.Comments,
-	],
-	[AssetTypes.WebContent]: [MetricName.Views],
-	[AssetTypes.Undefined]: [],
-};
-
 type Metrics = {
 	[key in MetricType]: string;
 };
@@ -54,6 +40,7 @@ export const MetricsTitle: Metrics = {
 	[MetricType.Downloads]: Liferay.Language.get('downloads'),
 	[MetricType.Previews]: Liferay.Language.get('previews'),
 	[MetricType.Views]: Liferay.Language.get('views'),
+	[MetricType.Undefined]: Liferay.Language.get('undefined'),
 };
 
 interface IOverviewMetricsWithDataProps {
@@ -114,6 +101,10 @@ const OverviewMetrics = () => {
 						assetMetrics[assetType || AssetTypes.Undefined],
 				});
 
+				if (!response.ok) {
+					throw new Error();
+				}
+
 				const data = await response.json();
 
 				if (data.error) {
@@ -125,7 +116,9 @@ const OverviewMetrics = () => {
 				setError('');
 			}
 			catch (error: any) {
-				console.error(error);
+				if (process.env.NODE_ENV === 'development') {
+					console.error(error);
+				}
 
 				setData(null);
 				setLoading(false);

@@ -46,7 +46,7 @@ const initialState: State = {
 	filters: {
 		individual: Individuals.AllIndividuals,
 		metric: null,
-		rangeSelector: RangeSelectors.Last30Days,
+		rangeSelector: RangeSelectors.Last24Hours,
 	},
 	groupId: '0',
 };

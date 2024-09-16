@@ -70,6 +70,16 @@ const GlobalFilters = () => {
 					icon="calendar"
 					items={[
 						{
+							description: getDateRange(
+								RangeSelectors.Last24Hours
+							),
+							label: Liferay.Util.sub(
+								Liferay.Language.get('last-x-days'),
+								[RangeSelectors.Last24Hours]
+							),
+							value: RangeSelectors.Last24Hours,
+						},
+						{
 							description: getDateRange(RangeSelectors.Last7Days),
 							label: Liferay.Util.sub(
 								Liferay.Language.get('last-x-days'),

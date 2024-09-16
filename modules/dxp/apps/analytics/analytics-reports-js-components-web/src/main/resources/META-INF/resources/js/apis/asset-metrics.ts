@@ -30,3 +30,26 @@ export function fetchAssetMetric({
 		}
 	);
 }
+
+export function fetchHistogram({
+	assetId,
+	assetType,
+	groupId,
+	individual,
+	rangeSelector,
+	selectedMetrics,
+}: {
+	assetId: string;
+	assetType: string;
+	groupId: string;
+	individual: Individuals;
+	rangeSelector: RangeSelectors;
+	selectedMetrics: MetricName[];
+}) {
+	return fetch(
+		`${API_PREFIX}/${groupId}/asset-metrics/${assetType}/histogram?assetId=${assetId}&identityType=${individual}&rangeKey=${rangeSelector}&selectedMetrics=${selectedMetrics}`,
+		{
+			method: 'GET',
+		}
+	);
+}
