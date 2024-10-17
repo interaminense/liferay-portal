@@ -16,6 +16,7 @@ import {Provider} from 'react-redux';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+import {empty} from 'apollo-boost';
 
 jest.unmock('react-dom');
 
@@ -32,7 +33,7 @@ jest.mock('react-router-dom', () => ({
 	})
 }));
 
-const WrappedComponent = ({accessors, assetType}) => (
+const WrappedComponent = ({accessors, assetType, empty = false}) => (
 	<Provider store={mockStore()}>
 		<ApolloProvider client={client}>
 			<StaticRouter>
@@ -40,10 +41,13 @@ const WrappedComponent = ({accessors, assetType}) => (
 					mocks={[
 						mockTimeRangeReq(),
 						mockPreferenceReq(),
-						mockAssetAppearsOnReq({
-							assetType: assetType.toUpperCase(),
-							selectedMetrics: accessors
-						})
+						mockAssetAppearsOnReq(
+							{
+								assetType: assetType.toUpperCase(),
+								selectedMetrics: accessors
+							},
+							empty
+						)
 					]}
 				>
 					<AssetAppearsOnCard
@@ -96,6 +100,22 @@ describe('AssetAppearsOnCard', () => {
 		);
 
 		await waitForLoadingToBeRemoved(container);
+
+		expect(getByText('Views')).toBeInTheDocument();
+	});
+
+	it.only('should render empty state for Documents and Media', async () => {
+		const {container, debug, getByText} = render(
+			<WrappedComponent
+				accessors={[Accessor.PreviewsMetric]}
+				assetType={AssetTypes.Document}
+				empty
+			/>
+		);
+
+		await waitForLoadingToBeRemoved(container);
+
+		debug();
 
 		expect(getByText('Views')).toBeInTheDocument();
 	});
