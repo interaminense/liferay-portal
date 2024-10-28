@@ -23,6 +23,7 @@ import {
 } from '../analytics-settings-web/utils/analytics-settings';
 import {createChannel} from '../osb-faro-web/utils/channel';
 import {createDataSource} from '../osb-faro-web/utils/data-source';
+import {Analytics} from './analytics';
 
 export const test = mergeTests(
 	apiHelpersTest,
@@ -129,12 +130,9 @@ async function connectACToDXP({
 }
 
 async function checkAnalyticsInstance(page: Page) {
-	return await page.evaluate(() => {
+	const analytics = new Analytics(page);
 
-		// @ts-ignore
-
-		return !!window.Analytics && !window.Analytics._disposed;
-	});
+	return !analytics.isDisposed();
 }
 
 test.describe(

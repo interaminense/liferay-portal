@@ -17,6 +17,7 @@ import {liferayConfig} from '../../liferay.config';
 import getRandomString from '../../utils/getRandomString';
 import {selectAndExpectToHaveValue} from '../../utils/selectAndExpectToHaveValue';
 import {syncAnalyticsCloud} from '../analytics-settings-web/utils/analytics-settings';
+import {Analytics} from '../analytics-web/analytics';
 import {pagesPagesTest} from '../layout-admin-web/fixtures/pagesPagesTest';
 import {
 	addBreakdown,
@@ -100,50 +101,18 @@ test(
 		tag: '@LRAC-6280',
 	},
 
-	async ({
-		apiHelpers,
-		page,
-		pageConfigurationPage,
-		pageEditorPage,
-		pagesAdminPage,
-	}) => {
+	async ({page}) => {
 		await test.step('Go to configure My Page and create a custom event', async () => {
-			await pagesAdminPage.goto(site.friendlyUrlPath);
+			const analytics = new Analytics(page);
 
-			await pageConfigurationPage.goToSection(pageTitle, 'Design');
-
-			await page.getByRole('tab', {name: 'JavaScript'}).click();
-
-			const customEventContent = `Analytics.track('pageTitleEvent', {
-birthdate: "2021-11-25T14:36:30.685Z",
-category: "wetsuit",
-duration: "3600000",
-like: "true",
-price: "259.95",
-temp: "11",
-});`;
-
-			await page.getByPlaceholder('JavaScript').fill(customEventContent);
-
-			await pageConfigurationPage.save();
-		});
-
-		await test.step('Publish My Page and generate a custom event with attributes of different types', async () => {
-			await pageEditorPage.goto(layout, site.friendlyUrlPath);
-
-			await pageEditorPage.publishPage();
-
-			await navigateToSitePage({
-				page,
-				pageName: pageTitle,
-				siteName,
+			await analytics.track('pageTitleEvent', {
+				birthdate: '2021-11-25T14:36:30.685Z',
+				category: 'wetsuit',
+				duration: '3600000',
+				like: 'true',
+				price: '259.95',
+				temp: '11',
 			});
-
-			await page.reload();
-
-			await page.waitForTimeout(5000);
-
-			await closeSessions(apiHelpers, page);
 		});
 
 		await test.step('Go to Analytics Cloud and Switch the property', async () => {
