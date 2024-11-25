@@ -29,7 +29,7 @@ export const AddDataSource: React.FC<IAddDataSourceProps> = ({
 		{
 			dataSources: [
 				{
-					iconName: 'liferay-logo',
+					iconName: 'liferay_logo',
 					iconSize: 'xxxl',
 					name: Liferay.Language.get('liferay-dxp'),
 					onClick: () => {
@@ -41,7 +41,7 @@ export const AddDataSource: React.FC<IAddDataSourceProps> = ({
 					subtitle: Liferay.Language.get('supports-liferay-70+')
 				},
 				ENABLE_SALESFORCE && {
-					iconName: 'salesforce-logo',
+					iconName: 'salesforce_logo',
 					iconSize: 'xxl',
 					name: Liferay.Language.get('salesforce'),
 					subtitle: Liferay.Language.get(
@@ -50,7 +50,7 @@ export const AddDataSource: React.FC<IAddDataSourceProps> = ({
 					url: toRoute(Routes.SETTINGS_SALESFORCE_ADD, {groupId})
 				},
 				ENABLE_CSVFILE && {
-					iconName: 'csv-logo',
+					iconName: 'csv_logo',
 					iconSize: 'xl',
 					name: Liferay.Language.get('csv-file'),
 					subtitle: Liferay.Language.get(

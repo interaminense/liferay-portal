@@ -401,7 +401,7 @@ const RequestList: React.FC<IRequestListProps> = ({
 						icon={{
 							border: false,
 							size: Sizes.XXXLarge,
-							symbol: 'ac-satellite'
+							symbol: 'ac_satellite'
 						}}
 						title={Liferay.Language.get('no-requests-found')}
 					/>
