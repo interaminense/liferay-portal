@@ -9,7 +9,7 @@ exports[`Welcome should render 1`] = `
       class="modal-body d-flex flex-column align-items-center"
     >
       <div
-        class="ac-property-buildings"
+        class="ac_property_buildings"
       />
       <h2>
         Introducing Properties

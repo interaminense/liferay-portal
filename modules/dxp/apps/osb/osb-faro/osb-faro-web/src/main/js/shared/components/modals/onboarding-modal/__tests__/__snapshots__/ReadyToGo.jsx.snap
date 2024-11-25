@@ -31,7 +31,7 @@ exports[`ReadyToGo renders 1`] = `
       class="modal-body d-flex flex-column align-items-center"
     >
       <div
-        class="ac-ready-to-use"
+        class="ac_ready_to_use"
       />
       <span
         class="title d-flex justify-content-center"
