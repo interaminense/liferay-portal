@@ -8,7 +8,7 @@
  * @param {Date} date
  * @returns {number}
  */
-export function convertUTCDateToLocalDate(date = new Date()) {
+export function convertUTCDateToLocalDate(date: Date = new Date()): Date {
 	return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
 }
 
@@ -17,7 +17,7 @@ export function convertUTCDateToLocalDate(date = new Date()) {
  * @param {Date} date
  * @returns {number}
  */
-export function getTimezoneOffsetHour(date = new Date()) {
+export function getTimezoneOffsetHour(date: Date = new Date()): string {
 	const offset = date.getTimezoneOffset() / 60;
 
 	const sign = offset > 0 ? '-' : '+';
