@@ -26,36 +26,14 @@ interface Window {
 					options: {}
 				) => void;
 			};
+			LocalStorage?: {
+				TYPES?: {
+					[key: string]: string;
+				};
+				getItem: () => void;
+				removeItem: () => void;
+				setItem: () => void;
+			};
 		};
-	};
-}
-
-declare namespace Analytics {
-	type Config = {
-		channelId: string;
-		dataSourceId: string;
-		endpointUrl: string;
-		flushInterval: number;
-		identity: {
-			emailAddressHashed: string;
-		};
-		identityEndpoint: string;
-		projectId: string;
-		userId: string;
-	};
-
-	type Middleware = {
-		[key: string]: Function;
-	};
-
-	type Plugin = (analytics?: Instance) => void;
-
-	type EventProps = {
-		[key: string]: boolean | number | string;
-	};
-
-	type Identity = {
-		email: string;
-		name: string;
 	};
 }

@@ -19,17 +19,15 @@ const divElement = `<div>
 	<p>"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."</p>
 </div>`;
 
-const getPage = () => {
-	setInnerHTML(document.body, '');
+const getPage = (): HTMLDivElement => {
+	document.body.innerHTML = '';
 
-	const page = document.createElement('div');
+	const page: HTMLDivElement = document.createElement('div');
 
 	page.style.width = '600px';
 
-	setInnerHTML(
-		page,
-		divElement + divElement + blogElement + divElement + divElement
-	);
+	page.innerHTML =
+		divElement + divElement + blogElement + divElement + divElement;
 
 	document.body.appendChild(page);
 
@@ -41,6 +39,8 @@ describe('ScrollTracker', () => {
 		beforeEach(() => {
 
 			// Avoid: "Error: Not implemented: window.scrollTo."
+
+			// TODO: fix it
 
 			window.scrollTo = (_x, y) => {
 				window.pageYOffset = y;
@@ -57,9 +57,7 @@ describe('ScrollTracker', () => {
 
 		it('returns the depth number from a element when the element has not yet been seen', () => {
 			const page = getPage();
-
-			const blogElementNode = page.querySelector('#blog');
-
+			const blogElementNode = page.querySelector('#blog') as HTMLElement;
 			const scroll = new ScrollTracker();
 
 			jest.spyOn(
@@ -70,12 +68,12 @@ describe('ScrollTracker', () => {
 					bottom: 1600,
 					height: 500,
 					top: 1100,
-				};
+				} as DOMRect;
 			});
 
 			expect(scroll.getDepth(blogElementNode)).toBe(0);
 
-			setInnerHTML(page, '');
+			page.innerHTML = '';
 
 			document.body.removeChild(page);
 		});
@@ -83,7 +81,7 @@ describe('ScrollTracker', () => {
 		it('returns the depth number from a element when the element was completely viewed', () => {
 			const page = getPage();
 
-			const blogElementNode = page.querySelector('#blog');
+			const blogElementNode = page.querySelector('#blog') as HTMLElement;
 
 			const scroll = new ScrollTracker();
 
@@ -97,12 +95,12 @@ describe('ScrollTracker', () => {
 					bottom: -1100,
 					height: 500,
 					top: -1600,
-				};
+				} as DOMRect;
 			});
 
 			expect(scroll.getDepth(blogElementNode)).toBe(100);
 
-			setInnerHTML(page, '');
+			page.innerHTML = '';
 
 			document.body.removeChild(page);
 		});
@@ -110,7 +108,7 @@ describe('ScrollTracker', () => {
 		it('returns the depth number from a element when it is fully visible on the screen', () => {
 			const page = getPage();
 
-			const blogElementNode = page.querySelector('#blog');
+			const blogElementNode = page.querySelector('#blog') as HTMLElement;
 
 			const scroll = new ScrollTracker();
 
@@ -124,7 +122,7 @@ describe('ScrollTracker', () => {
 					bottom: 900,
 					height: 1000,
 					top: -100,
-				};
+				} as DOMRect;
 			});
 
 			const {bottom, top} = blogElementNode.getBoundingClientRect();
@@ -136,7 +134,7 @@ describe('ScrollTracker', () => {
 					scroll.getDepth(blogElementNode) < 100
 			).toBe(true);
 
-			setInnerHTML(page, '');
+			page.innerHTML = '';
 
 			document.body.removeChild(page);
 		});
@@ -150,27 +148,31 @@ describe('ScrollTracker', () => {
 
 			window.scrollTo(0, 5000);
 
-			expect(scroll.getDepth()).toBe(100);
+			// TODO: fix it
+
+			expect(scroll.getDepth(0)).toBe(100);
 		});
 	});
 
 	describe('isPartiallyInViewport', () => {
 		it('returns false when element is outside of viewport', () => {
 			const page = getPage();
-
-			const blogElementNode = page.querySelector('#blog');
+			const blogElementNode = page.querySelector('#blog') as HTMLElement;
 
 			jest.spyOn(
 				blogElementNode,
 				'getBoundingClientRect'
-			).mockImplementation(() => ({
-				bottom: 1500,
-				height: 500,
-				left: 0,
-				right: 500,
-				top: 1000,
-				width: 500,
-			}));
+			).mockImplementation(
+				() =>
+					({
+						bottom: 1500,
+						height: 500,
+						left: 0,
+						right: 500,
+						top: 1000,
+						width: 500,
+					}) as DOMRect
+			);
 
 			expect(isPartiallyInViewport(blogElementNode)).toBe(false);
 		});
@@ -178,19 +180,22 @@ describe('ScrollTracker', () => {
 		it('returns true when element is outside of viewport', () => {
 			const page = getPage();
 
-			const blogElementNode = page.querySelector('#blog');
+			const blogElementNode = page.querySelector('#blog') as HTMLElement;
 
 			jest.spyOn(
 				blogElementNode,
 				'getBoundingClientRect'
-			).mockImplementation(() => ({
-				bottom: 500,
-				height: 500,
-				left: 0,
-				right: 500,
-				top: 0,
-				width: 500,
-			}));
+			).mockImplementation(
+				() =>
+					({
+						bottom: 500,
+						height: 500,
+						left: 0,
+						right: 500,
+						top: 0,
+						width: 500,
+					}) as DOMRect
+			);
 
 			expect(isPartiallyInViewport(blogElementNode)).toBe(true);
 		});
