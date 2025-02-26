@@ -10,7 +10,7 @@ import {
 } from '../../src/utils/assets';
 
 describe('getNumberOfWords()', () => {
-	let document;
+	let document: Document;
 
 	beforeEach(() => {
 		document = global.document;
@@ -30,7 +30,7 @@ describe('getNumberOfWords()', () => {
 
 		const element = document.createElement('div');
 
-		setInnerHTML(element, markup);
+		element.innerHTML = markup;
 
 		const numberOfWords = getNumberOfWords(element);
 
