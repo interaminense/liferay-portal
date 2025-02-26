@@ -12,6 +12,12 @@ import {
 	validatePropsLength,
 } from '../../src/utils/validators';
 
+type Event = {
+	applicationId: string;
+	eventId: string;
+	eventProps: any;
+};
+
 describe('isValidEvent()', () => {
 	const originalError = console.error;
 
@@ -28,7 +34,8 @@ describe('isValidEvent()', () => {
 	});
 
 	it('returns if an event is valid', () => {
-		const event = {
+		const event: Event = {
+			applicationId: '123',
 			eventId: 'Small Event Name',
 			eventProps: {
 				someKey: 'Some Value',
@@ -40,7 +47,8 @@ describe('isValidEvent()', () => {
 	});
 
 	it('returns false if an event id has more than 255 chars', () => {
-		const event = {
+		const event: Event = {
+			applicationId: '123',
 			eventId: new Array(256).fill('a').join(''),
 			eventProps: {
 				someKey: 'Some Value',
@@ -52,7 +60,8 @@ describe('isValidEvent()', () => {
 	});
 
 	it('returns false if an event id is empty', () => {
-		const event = {
+		const event: Event = {
+			applicationId: '123',
 			eventId: '',
 			eventProps: {
 				someKey: 'Some Value',
@@ -64,7 +73,8 @@ describe('isValidEvent()', () => {
 	});
 
 	it('returns false if an event prop key has more than 255 chars', () => {
-		const event = {
+		const event: Event = {
+			applicationId: '123',
 			eventId: 'Small Event Name',
 			eventProps: {
 				[new Array(256).fill('a').join('')]: 'Some Value',
@@ -77,6 +87,7 @@ describe('isValidEvent()', () => {
 
 	it('returns false if an event prop key is empty', () => {
 		const event = {
+			applicationId: '123',
 			eventId: 'Small Event Name',
 			eventProps: {
 				[new Array(256).fill('a').join('')]: 'Some Value',
@@ -88,7 +99,8 @@ describe('isValidEvent()', () => {
 	});
 
 	it('returns false if an event prop value has more than 1024 chars', () => {
-		const event = {
+		const event: Event = {
+			applicationId: '123',
 			eventId: 'Small Event Name',
 			eventProps: {
 				someKey: new Array(1025).fill('a').join(''),
@@ -100,7 +112,8 @@ describe('isValidEvent()', () => {
 	});
 
 	it('returns false if eventProps has more than 25 items', () => {
-		const event = {
+		const event: Event = {
+			applicationId: '123',
 			eventId: 'Small Event Name',
 			eventProps: new Array(26)
 				.fill('a')
@@ -112,7 +125,8 @@ describe('isValidEvent()', () => {
 	});
 
 	it('show all errors in console', () => {
-		const event = {
+		const event: Event = {
+			applicationId: '123',
 			eventId: '',
 			eventProps: {
 				someKey: new Array(1025).fill('a').join(''),
