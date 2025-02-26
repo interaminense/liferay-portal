@@ -50,7 +50,9 @@ describe('Storage Utils', () => {
 
 			removeItem(STORAGE_KEY);
 
-			expect(window.Liferay.Util.LocalStorage.removeItem).toBeCalled();
+			expect(
+				window?.Liferay?.Util?.LocalStorage?.removeItem
+			).toBeCalled();
 		});
 	});
 
@@ -68,7 +70,7 @@ describe('Storage Utils', () => {
 
 			getItem(STORAGE_KEY);
 
-			expect(window.Liferay.Util.LocalStorage.getItem).toBeCalled();
+			expect(window?.Liferay?.Util?.LocalStorage?.getItem).toBeCalled();
 		});
 	});
 
@@ -86,17 +88,19 @@ describe('Storage Utils', () => {
 
 			setItem(STORAGE_KEY, expected);
 
-			expect(JSON.parse(localStorage.getItem(STORAGE_KEY))).toEqual(
-				expected
-			);
+			expect(
+				JSON.parse(localStorage.getItem(STORAGE_KEY) as string)
+			).toEqual(expected);
 		});
 
 		it('Sets an item in localStorage by using Liferay Instance', () => {
 			window.Liferay.FeatureFlags['LPD-10588'] = true;
 
-			setItem(STORAGE_KEY);
+			const expected = {name: 'foo'};
 
-			expect(window.Liferay.Util.LocalStorage.setItem).toBeCalled();
+			setItem(STORAGE_KEY, expected);
+
+			expect(window?.Liferay?.Util?.LocalStorage?.setItem).toBeCalled();
 		});
 	});
 
