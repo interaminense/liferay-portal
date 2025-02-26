@@ -10,7 +10,7 @@ import {
 
 describe('convertUTCDateToLocalDate()', () => {
 	it('returns the converted local date', () => {
-		const date = new Date('2020-01-01T00:00:00.000Z');
+		const date: Date = new Date('2020-01-01T00:00:00.000Z');
 
 		expect(convertUTCDateToLocalDate(date)).toEqual(
 			new Date('2020-01-01T00:00:00.000Z')
@@ -20,7 +20,7 @@ describe('convertUTCDateToLocalDate()', () => {
 
 describe('getTimezoneOffsetHour()', () => {
 	it('returns the timezone offset hour', () => {
-		const date = new Date('2020-01-01T00:00:00.000+00:00');
+		const date: Date = new Date('2020-01-01T00:00:00.000+00:00');
 
 		expect(getTimezoneOffsetHour(date)).toBe('+00:00');
 	});
