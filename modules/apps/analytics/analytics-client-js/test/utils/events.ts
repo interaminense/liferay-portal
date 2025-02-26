@@ -17,8 +17,8 @@ describe('Event Utils', () => {
 			'2020-04-20',
 			'2020-04-07',
 			'2017-07-15',
-		].map((dateStr) => {
-			const date = new Date(dateStr);
+		].map((dateStr: string) => {
+			const date: Date = new Date(dateStr);
 
 			return {
 				eventDate: date.toISOString(),
@@ -39,10 +39,10 @@ describe('Event Utils', () => {
 	});
 
 	it('returns a normalized event', () => {
-		const eventId = 'pageViewed';
-		const applicationId = 'Page';
-		const contextHash = 12345;
-		const properties = {};
+		const eventId: string = 'pageViewed';
+		const applicationId: string = 'Page';
+		const contextHash: number = 12345;
+		const properties: any = {};
 
 		expect(
 			normalizeEvent(eventId, applicationId, properties, contextHash)
