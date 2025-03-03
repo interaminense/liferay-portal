@@ -1,0 +1,483 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+// TODO: import fetch-mock fix
+
+import fetchMock from 'fetch-mock';
+
+import AnalyticsClient from '../src/analytics';
+import {Analytics as AnalyticsType} from '../src/types';
+import {getItem} from '../src/utils/storage';
+import {DXP_APPLICATION_IDS} from '../src/utils/validators';
+import {sendDummyEvents, trackDummyEvents, wait} from './helpers';
+
+const ANALYTICS_IDENTITY = {email: 'foo@bar.com', name: 'Foo Bar'};
+const ENDPOINT_URL = 'https://ac-server.io';
+const FLUSH_INTERVAL = 100;
+const INITIAL_CONFIG = {
+	channelId: '4321',
+	dataSourceId: '1234',
+	endpointUrl: ENDPOINT_URL,
+	flushInterval: FLUSH_INTERVAL,
+	identity: {
+		emailAddressHashed: '',
+	},
+	identityEndpoint: '',
+	projectId: '123456',
+	userId: '',
+};
+
+describe('Analytics', () => {
+	let Analytics: AnalyticsClient;
+
+	beforeEach(() => {
+		fetchMock.mock(/ac-server/i, () => Promise.resolve(200));
+
+		Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+		localStorage.removeItem(AnalyticsType.StorageKeys.Events);
+		localStorage.removeItem(AnalyticsType.StorageKeys.UserId);
+	});
+
+	afterEach(() => {
+		Analytics.reset();
+		AnalyticsClient.dispose();
+
+		fetchMock.restore();
+
+		jest.restoreAllMocks();
+	});
+
+	it('returns channelId from config by default', () => {
+		expect(Analytics._getContext().channelId).toBe('4321');
+	});
+
+	it('returns channelId from middleware', () => {
+		const middleware = ((request: {context: AnalyticsType.Context}) => {
+			request.context.channelId = '5678';
+
+			return request;
+		}) as unknown as AnalyticsType.Middleware;
+
+		Analytics.registerMiddleware(middleware);
+
+		expect(Analytics._getContext().channelId).toBe('5678');
+	});
+
+	it('is exposed in the global scope', () => {
+		expect((global as any).Analytics).toBeInstanceOf(Object);
+	});
+
+	it('exposes a "create" instantiation method', () => {
+		expect(typeof AnalyticsClient.create).toBe('function');
+	});
+
+	it('accepts a configuration object', () => {
+		Analytics.reset();
+		AnalyticsClient.dispose();
+
+		Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+		expect(Analytics.config).toEqual(INITIAL_CONFIG);
+	});
+
+	it('regenerates the stored identity if the identity changed', async () => {
+		fetchMock.mock(/identity$/i, () => Promise.resolve(200));
+
+		Analytics.reset();
+		AnalyticsClient.dispose();
+
+		Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+		await Analytics.setIdentity(ANALYTICS_IDENTITY);
+
+		const previousIdentityHash = getItem(
+			AnalyticsType.StorageKeys.Identity
+		);
+
+		await Analytics.setIdentity({
+			email: 'john@liferay.com',
+			name: 'John',
+		});
+
+		const currentIdentityHash = getItem(AnalyticsType.StorageKeys.Identity);
+
+		expect(currentIdentityHash).not.toEqual(previousIdentityHash);
+	});
+
+	it('reports identity changes to the Identity Service', async () => {
+		fetchMock.mock('*', () => Promise.resolve(200));
+
+		Analytics.reset();
+		AnalyticsClient.dispose();
+
+		Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+		let identityCalled = 0;
+
+		await Analytics.setIdentity(ANALYTICS_IDENTITY);
+
+		await wait(FLUSH_INTERVAL);
+
+		fetchMock.restore();
+		fetchMock.mock(/identity$/, () => {
+			identityCalled += 1;
+
+			return '';
+		});
+
+		await Analytics.setIdentity({
+			email: 'test@liferay.com',
+			name: 'Test',
+		});
+
+		await wait(FLUSH_INTERVAL);
+
+		expect(identityCalled).toBe(1);
+	});
+
+	it("does not request the Identity Service when identity hasn't changed", async () => {
+		fetchMock.mock(/identity$/, () => Promise.resolve(200));
+
+		Analytics.reset();
+		AnalyticsClient.dispose();
+
+		Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+		let identityCalled = 0;
+
+		await Analytics.setIdentity(ANALYTICS_IDENTITY);
+
+		fetchMock.restore();
+		fetchMock.mock(/identity$/, () => {
+			identityCalled += 1;
+
+			return 200;
+		});
+
+		await Analytics.setIdentity(ANALYTICS_IDENTITY);
+
+		expect(identityCalled).toBe(0);
+	});
+
+	it('preserves the user id whenever the set identity is called after a anonymous navigation', async () => {
+		fetchMock.mock(/ac-server/i, () => Promise.resolve(200));
+		fetchMock.mock(/identity$/, () => Promise.resolve(200));
+
+		Analytics.reset();
+		AnalyticsClient.dispose();
+
+		Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+		sendDummyEvents(Analytics, 1);
+
+		setTimeout(async () => {
+
+			// Flush should have happened at least once
+
+			const userId = getItem(AnalyticsType.StorageKeys.UserId);
+
+			await Analytics.setIdentity({
+				email: 'john@liferay.com',
+				name: 'John',
+			});
+
+			expect(getItem(AnalyticsType.StorageKeys.UserId)).toEqual(userId);
+		}, FLUSH_INTERVAL * 2);
+	});
+
+	it('replace the user id whenever the set identity hash is changed', async () => {
+		fetchMock.mock(/ac-server/i, () => Promise.resolve(200));
+		fetchMock.mock(/identity$/, () => Promise.resolve(200));
+
+		await Analytics.setIdentity({
+			email: 'john@liferay.com',
+			name: 'John',
+		});
+
+		const firstUserId = getItem(AnalyticsType.StorageKeys.UserId);
+
+		await Analytics.setIdentity({
+			email: 'brian@liferay.com',
+			name: 'Brian',
+		});
+
+		const secondUserId = getItem(AnalyticsType.StorageKeys.UserId);
+
+		expect(firstUserId).not.toEqual(secondUserId);
+	});
+
+	it('does not replace the user id whenever the set identity hash is the same', async () => {
+		fetchMock.mock(/ac-server/i, () => Promise.resolve(200));
+		fetchMock.mock(/identity$/, () => Promise.resolve(200));
+
+		await Analytics.setIdentity({
+			email: 'john@liferay.com',
+			name: 'John',
+		});
+
+		const firstUserId = getItem(AnalyticsType.StorageKeys.UserId);
+
+		await Analytics.setIdentity({
+			email: 'john@liferay.com',
+			name: 'John',
+		});
+
+		const secondUserId = getItem(AnalyticsType.StorageKeys.UserId);
+
+		expect(firstUserId).toEqual(secondUserId);
+	});
+
+	it('does not replace the user id whenever the set identity hash is the same and emailAddress is uppercase', async () => {
+		fetchMock.mock(/ac-server/i, () => Promise.resolve(200));
+		fetchMock.mock(/identity$/, () => Promise.resolve(200));
+
+		await Analytics.setIdentity({
+			email: 'JOHN@LIFERAY.COM',
+			name: 'John',
+		});
+
+		const firstUserId = getItem(AnalyticsType.StorageKeys.UserId);
+
+		await Analytics.setIdentity({
+			email: 'john@liferay.com',
+			name: 'John',
+		});
+
+		const secondUserId = getItem(AnalyticsType.StorageKeys.UserId);
+
+		expect(firstUserId).toEqual(secondUserId);
+	});
+
+	it('regenerates the user id on logouts or session expirations ', async () => {
+		fetchMock.mock(/ac-server/i, () => Promise.resolve(200));
+		fetchMock.mock(/identity$/, () => Promise.resolve(200));
+
+		sendDummyEvents(Analytics, 1);
+
+		await Analytics._queueFlushService?.flush();
+
+		const userId = getItem(AnalyticsType.StorageKeys.UserId);
+
+		await Analytics.setIdentity({
+			email: 'john@liferay.com',
+			name: 'John',
+		});
+
+		Analytics.reset();
+		AnalyticsClient.dispose();
+
+		sendDummyEvents(Analytics, 1);
+
+		await Analytics._queueFlushService?.flush();
+
+		expect(getItem(AnalyticsType.StorageKeys.UserId)).not.toEqual(userId);
+	});
+
+	describe('send()', () => {
+		it('is exposed as an Analytics method', () => {
+			expect(typeof Analytics.send).toBe('function');
+		});
+
+		it('adds the given event to the event queue', async () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+			const properties = {a: 1, b: 2, c: 3};
+
+			await Analytics.send(
+				AnalyticsType.EventId.BlogViewed,
+				AnalyticsType.ApplicationId.Blog,
+				properties
+			);
+
+			const events = Analytics.getEvents();
+
+			expect(events).toEqual([
+				expect.objectContaining({
+					applicationId: AnalyticsType.ApplicationId.Blog,
+					eventId: AnalyticsType.EventId.BlogViewed,
+					properties,
+				}),
+			]);
+		});
+
+		it('persists the given events to the LocalStorage', async () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+			const eventsNumber = 5;
+
+			await sendDummyEvents(Analytics, eventsNumber);
+
+			const events = Analytics.getEvents();
+
+			expect(events.length).toBeGreaterThanOrEqual(eventsNumber);
+		});
+	});
+
+	describe('track()', () => {
+		afterEach(() => {
+			const error = console.error as any;
+
+			if (error.mockRestore) {
+				error.mockRestore();
+			}
+		});
+
+		it('is exposed as an Analytics method', () => {
+			expect(typeof Analytics.track).toBe('function');
+		});
+
+		it('adds the given event to the event queue', async () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+			const properties = {a: 1, b: 2, c: 3};
+
+			await Analytics.track(AnalyticsType.EventId.BlogViewed, properties);
+
+			const events = Analytics.getEvents();
+
+			expect(events).toEqual([
+				expect.objectContaining({
+					applicationId: 'CustomEvent',
+					eventId: AnalyticsType.EventId.BlogViewed,
+					properties,
+				}),
+			]);
+		});
+
+		it('returns a type error if the eventId is not a string', async () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+			const eventId = {test: 'test'};
+
+			console.error = jest.fn((val) => val);
+
+			await Analytics.track(eventId as any);
+
+			expect(console.error).toHaveBeenCalledTimes(1);
+		});
+
+		it('returns a type error if the attribute type is not valid', () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+			console.error = jest.fn((val) => val);
+
+			Analytics.track(
+				AnalyticsType.EventId.AssetClicked,
+				{bar: [], type: null} as any,
+				{applicationId: 'Any'}
+			);
+
+			expect(console.error).toHaveBeenCalledTimes(2);
+		});
+
+		it('does not returns a type error if the attribute type is not valid and applicationId is from DXP', () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+			console.error = jest.fn((val) => val);
+
+			DXP_APPLICATION_IDS.forEach((applicationId) => {
+				Analytics.track(
+					AnalyticsType.EventId.AssetClicked,
+					{bar: [], type: null} as any,
+					{applicationId}
+				);
+
+				expect(console.error).toHaveBeenCalledTimes(0);
+			});
+		});
+
+		it('uses the applicationId from options', async () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+			const eventId = AnalyticsType.EventId.BlogViewed;
+			const applicationId = AnalyticsType.ApplicationId.Blog;
+			const properties = {a: 1, b: 2, c: 3};
+
+			await Analytics.track(eventId, properties, {applicationId});
+
+			const events = Analytics.getEvents();
+
+			expect(events).toEqual([
+				expect.objectContaining({
+					applicationId,
+					eventId,
+					properties,
+				}),
+			]);
+		});
+
+		it('uses the assetType from properties over the applicationId from options', async () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+			const eventId = AnalyticsType.EventId.BlogViewed;
+			const properties = {
+				a: 1,
+				assetType: AnalyticsType.ApplicationId.Blog,
+			};
+
+			await Analytics.track(eventId, properties, {applicationId: 'Page'});
+
+			const events = Analytics.getEvents();
+
+			expect(events).toEqual([
+				expect.objectContaining({
+					applicationId: AnalyticsType.ApplicationId.Blog,
+					eventId,
+					properties: {a: 1},
+				}),
+			]);
+		});
+
+		it('uses CustomEvent as default applicationId', async () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+			const eventId = AnalyticsType.EventId.AssetClicked;
+			const properties = {a: 1, b: 2, c: 3};
+
+			await Analytics.track(eventId, properties);
+
+			const events = Analytics.getEvents();
+
+			expect(events).toEqual([
+				expect.objectContaining({
+					applicationId: AnalyticsType.ApplicationId.CustomEvent,
+					eventId,
+					properties,
+				}),
+			]);
+		});
+
+		it('uses applicationId from options', async () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+
+			const eventId = AnalyticsType.EventId.BlogViewed;
+			const properties = {a: 1, b: 2, c: 3};
+			const options = {applicationId: AnalyticsType.ApplicationId.Blog};
+
+			await Analytics.track(eventId, properties, options);
+
+			const events = Analytics.getEvents();
+
+			expect(events).toEqual([
+				expect.objectContaining({
+					applicationId: AnalyticsType.ApplicationId.Blog,
+					eventId,
+					properties,
+				}),
+			]);
+		});
+
+		it('persists the given events to the LocalStorage', async () => {
+			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
+			const eventsNumber = 5;
+
+			await trackDummyEvents(Analytics, eventsNumber);
+
+			const events = Analytics.getEvents();
+
+			expect(events.length).toBeGreaterThanOrEqual(eventsNumber);
+		});
+	});
+});

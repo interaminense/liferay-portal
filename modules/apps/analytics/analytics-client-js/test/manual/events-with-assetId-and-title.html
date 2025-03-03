@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="en">
 	<head>
@@ -20,7 +20,11 @@
 			<div>
 				Open console to see events in the Network tab or you can
 				download
-			<a href="https://chrome.google.com/webstore/detail/ac-event-bucket/gghpanomgaddpgokmgjjemebmdkbpbck" target="_blank">ac-event-bucket chrome extension</a>
+				<a
+					href="https://chrome.google.com/webstore/detail/ac-event-bucket/gghpanomgaddpgokmgjjemebmdkbpbck"
+					target="_blank"
+					>ac-event-bucket chrome extension</a
+				>
 			</div>
 
 			<div id="hiddenBoxes"></div>
@@ -34,7 +38,12 @@
 
 				<h2 class="box__title"><small>ApplicationId</small> Blog</h2>
 
-			<div class="box__track" data-analytics-asset-id="myBlogId" data-analytics-asset-title="Blog Title" data-analytics-asset-type="blog">
+				<div
+					class="box__track"
+					data-analytics-asset-id="myBlogId"
+					data-analytics-asset-title="Blog Title"
+					data-analytics-asset-type="blog"
+				>
 					<h3>
 						Bringing Ideas To Life: A Look Into Creative Writing
 					</h3>
@@ -69,17 +78,45 @@
 					<h3>List of the documents related to Analytics Cloud</h3>
 
 					<ul>
-					<li data-analytics-asset-action="preview" data-analytics-asset-id="myDocumentA" data-analytics-asset-title="Document A" data-analytics-asset-type="document">
-						<a data-analytics-asset-action="download" href="#">Document A</a>
+						<li
+							data-analytics-asset-action="preview"
+							data-analytics-asset-id="myDocumentA"
+							data-analytics-asset-title="Document A"
+							data-analytics-asset-type="document"
+						>
+							<a data-analytics-asset-action="download" href="#"
+								>Document A</a
+							>
 						</li>
-					<li data-analytics-asset-action="preview" data-analytics-asset-id="myDocumentB" data-analytics-asset-title="Document B" data-analytics-asset-type="document">
-						<a data-analytics-asset-action="download" href="#">Document B</a>
+						<li
+							data-analytics-asset-action="preview"
+							data-analytics-asset-id="myDocumentB"
+							data-analytics-asset-title="Document B"
+							data-analytics-asset-type="document"
+						>
+							<a data-analytics-asset-action="download" href="#"
+								>Document B</a
+							>
 						</li>
-					<li data-analytics-asset-action="preview" data-analytics-asset-id="myDocumentC" data-analytics-asset-title="Document C" data-analytics-asset-type="document">
-						<a data-analytics-asset-action="download" href="#">Document C</a>
+						<li
+							data-analytics-asset-action="preview"
+							data-analytics-asset-id="myDocumentC"
+							data-analytics-asset-title="Document C"
+							data-analytics-asset-type="document"
+						>
+							<a data-analytics-asset-action="download" href="#"
+								>Document C</a
+							>
 						</li>
-					<li data-analytics-asset-action="preview" data-analytics-asset-id="myDocumentD" data-analytics-asset-title="Document D" data-analytics-asset-type="document">
-						<a data-analytics-asset-action="download" href="#">Document D</a>
+						<li
+							data-analytics-asset-action="preview"
+							data-analytics-asset-id="myDocumentD"
+							data-analytics-asset-title="Document D"
+							data-analytics-asset-type="document"
+						>
+							<a data-analytics-asset-action="download" href="#"
+								>Document D</a
+							>
 						</li>
 					</ul>
 				</div>
@@ -99,7 +136,12 @@
 					<small>ApplicationId</small> WebContent
 				</h2>
 
-			<div class="box__track" data-analytics-asset-id="myWebContentId" data-analytics-asset-title="Web Content Title" data-analytics-asset-type="web-content">
+				<div
+					class="box__track"
+					data-analytics-asset-id="myWebContentId"
+					data-analytics-asset-title="Web Content Title"
+					data-analytics-asset-type="web-content"
+				>
 					<h3>
 						Bringing Ideas To Life: A Look Into Creative Writing
 					</h3>
@@ -127,7 +169,12 @@
 
 				<h2 class="box__title"><small>ApplicationId</small> Form</h2>
 
-			<form class="box__track box__form" data-analytics-asset-id="myFormId" data-analytics-asset-title="Form Title" data-analytics-asset-type="form">
+				<form
+					class="box__track box__form"
+					data-analytics-asset-id="myFormId"
+					data-analytics-asset-title="Form Title"
+					data-analytics-asset-type="form"
+				>
 					<h3>Create new user</h3>
 
 					<div class="content">
@@ -166,7 +213,11 @@
 
 				<h2 class="box__title"><small>ApplicationId</small> Custom</h2>
 
-			<div class="box__track" data-analytics-asset-id="myCustomId" data-analytics-asset-type="custom">
+				<div
+					class="box__track"
+					data-analytics-asset-id="myCustomId"
+					data-analytics-asset-type="custom"
+				>
 					<h3>
 						Bringing Ideas To Life: A Look Into Creative Writing
 					</h3>
@@ -178,10 +229,14 @@
 
 					<ul>
 						<li>
-						<a data-analytics-asset-action="download" href="#">Custom Document A</a>
+							<a data-analytics-asset-action="download" href="#"
+								>Custom Document A</a
+							>
 						</li>
 						<li>
-						<a data-analytics-asset-action="download" href="#">Custom Document B</a>
+							<a data-analytics-asset-action="download" href="#"
+								>Custom Document B</a
+							>
 						</li>
 					</ul>
 
@@ -213,87 +268,85 @@
 
 		<script>
 			(function (u, c, a, m, o, l) {
-				(o = 'script'),
-					(l = document),
-					(a = l.createElement(o)),
-					(m = l.getElementsByTagName(o)[0]),
-					(a.async = 1),
-					(a.src = u),
-					(a.onload = c),
-					m.parentNode.insertBefore(a, m);
-			})('http://localhost:8081/analytics-all-min.js', function () {
-				Analytics.create({
-					channelId: '4321',
-					dataSourceId: '1234',
-					endpointUrl: 'http://127.0.0.1:8084',
-					projectId: 'osbasah',
-				});
-			});
+	(o = 'script'),
+		(l = document),
+		(a = l.createElement(o)),
+		(m = l.getElementsByTagName(o)[0]),
+		(a.async = 1),
+		(a.src = u),
+		(a.onload = c),
+		m.parentNode.insertBefore(a, m);
+})('http://localhost:8081/analytics-all-min.js', function () {
+	Analytics.create({
+		channelId: '720271131714146820',
+		dataSourceId: '738263022377919294',
+		endpointUrl: 'https://osbasahpublisher-ac-stg.lfr.st',
+		projectId: 'stg044aa4867ef54ca1b50c73a63863a252',
+	});
+});
 
-			function getBoxes() {
-				return JSON.parse(localStorage.getItem('boxes'));
-			}
+function getBoxes() {
+	return JSON.parse(localStorage.getItem('boxes'));
+}
 
-			function renderBtns() {
-				const btns = [];
-				const boxes = getBoxes();
+function renderBtns() {
+	const btns = [];
+	const boxes = getBoxes();
 
-				Object.keys(boxes)
-					.filter((key) => boxes[key] === 'hidden')
-					.forEach((key) => {
-						btns.push(
-							`<button onclick='setShow("${key}")'>${key} X</button>`
-						);
-					});
+	Object.keys(boxes)
+		.filter((key) => boxes[key] === 'hidden')
+		.forEach((key) => {
+			btns.push(`<button onclick='setShow("${key}")'>${key} X</button>`);
+		});
 
-				const hiddenBoxes = document.querySelector('#hiddenBoxes');
+	const hiddenBoxes = document.querySelector('#hiddenBoxes');
 
-				if (Object.keys(boxes).some((key) => boxes[key] === 'hidden')) {
-					hiddenBoxes.innerHTML = `
+	if (Object.keys(boxes).some((key) => boxes[key] === 'hidden')) {
+		hiddenBoxes.innerHTML = `
 						<div class="btns-header">
 							<span>Hidden boxes</span>
 							${btns.join('')}
 						</div>
 					`;
-				}
-			}
+	}
+}
 
-			function renderBoxes() {
-				const boxes = getBoxes();
+function renderBoxes() {
+	const boxes = getBoxes();
 
-				Object.keys(getBoxes()).forEach((key) => {
-					const box = document.querySelector(`#${key}`);
+	Object.keys(getBoxes()).forEach((key) => {
+		const box = document.querySelector(`#${key}`);
 
-					if (boxes[key] === 'hidden') {
-						box.remove();
-					}
-				});
-			}
+		if (boxes[key] === 'hidden') {
+			box.remove();
+		}
+	});
+}
 
-			function setHidden(id) {
-				localStorage.setItem(
-					'boxes',
-					JSON.stringify({...getBoxes(), [id]: 'hidden'})
-				);
+function setHidden(id) {
+	localStorage.setItem(
+		'boxes',
+		JSON.stringify({...getBoxes(), [id]: 'hidden'})
+	);
 
-				window.location.reload();
-			}
+	window.location.reload();
+}
 
-			function setShow(id) {
-				localStorage.setItem(
-					'boxes',
-					JSON.stringify({...getBoxes(), [id]: 'show'})
-				);
+function setShow(id) {
+	localStorage.setItem(
+		'boxes',
+		JSON.stringify({...getBoxes(), [id]: 'show'})
+	);
 
-				window.location.reload();
-			}
+	window.location.reload();
+}
 
-			function init() {
-				renderBtns();
-				renderBoxes();
-			}
+function init() {
+	renderBtns();
+	renderBoxes();
+}
 
-			init();
+init();
 		</script>
 	</body>
 </html>
