@@ -10,5 +10,6 @@ export {default as StructuresFDSPropsTransformer} from './main/FDSPropsTransform
 export {default as ViewTags} from './main/categorization/tags/ViewTags';
 export {default as ViewVocabularies} from './main/categorization/vocabularies/ViewVocabularies';
 export {default as SpacesSticker} from './main/components/SpaceSticker';
+export {default as ViewDashboard} from './main/dashboard/ViewDashboard';
 export {default as SpacesNavigation} from './main/spaces_navigation/SpacesNavigation';
 export {default as StructureBuilder} from './structure_builder/components/StructureBuilder';
