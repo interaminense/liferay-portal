@@ -134,7 +134,6 @@ import com.liferay.portal.kernel.portlet.FriendlyURLResolverRegistryUtil;
 import com.liferay.portal.kernel.portlet.constants.FriendlyURLResolverConstants;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
-import com.liferay.portal.kernel.security.RandomUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
@@ -191,6 +190,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.osgi.framework.BundleContext;
@@ -1930,9 +1930,13 @@ public class ObjectDefinitionLocalServiceImpl
 				ObjectDefinitionConstants.
 					CLASS_NAME_PREFIX_CUSTOM_OBJECT_DEFINITION);
 			sb.append(StringUtil.toUpperCase(StringUtil.randomId(1)));
-			sb.append(RandomUtil.nextInt(10));
+
+			ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
+
+			sb.append(threadLocalRandom.nextInt(10));
+
 			sb.append(StringUtil.toUpperCase(StringUtil.randomId(1)));
-			sb.append(RandomUtil.nextInt(10));
+			sb.append(threadLocalRandom.nextInt(10));
 
 			ObjectDefinition existingObjectDefinition =
 				objectDefinitionPersistence.fetchByC_C(
