@@ -5,6 +5,7 @@
 
 import {IInternalRenderer} from '@liferay/frontend-data-set-web';
 
+import InfoPanelComponent from '../components/InfoPanelComponent';
 import createAssetAction from './actions/createAssetAction';
 import createFolderAction from './actions/createFolderAction';
 import AuthorRenderer from './cell_renderers/AuthorRenderer';
@@ -69,6 +70,7 @@ export default function ContentFDSPropsTransformer({
 				} as IInternalRenderer,
 			],
 		},
+		infoPanelComponent: InfoPanelComponent,
 		itemsActions: itemsActions.map((action) => {
 			if (action?.data?.id === 'actionLink') {
 				return {
