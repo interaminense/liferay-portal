@@ -12,6 +12,19 @@ import {getImage} from '../../../../common/utils/getImage';
 import {EmptyStateData} from '../PerformanceTabContent';
 
 import '../../../../../css/infoPanel/PerfomanceTabEmptyState.scss';
+import { createRenderURL } from 'frontend-js-web';
+
+function buildAnalyticsCloudConfigURL() {
+	const url = createRenderURL('group/control_panel/manage', {
+				configurationScreenKey: 'analytics-cloud-connection',
+				mvcRenderCommandName:
+					'/configuration_admin/view_configuration_screen',
+				p_p_id: Liferay.PortletKeys.INSTANCE_SETTINGS,
+			})
+
+	return url;
+}
+
 export function getEmptyState(data: EmptyStateData) {
 	let title = '';
 	let description = '';
@@ -19,6 +32,7 @@ export function getEmptyState(data: EmptyStateData) {
 	let action = null;
 
 	if (!data.connectedToSpace) {
+		
 		title = Liferay.Language.get('no-sites-are-connected-yet');
 		if (data.isAdmin) {
 			description = Liferay.Language.get(
@@ -39,15 +53,19 @@ export function getEmptyState(data: EmptyStateData) {
 			description = Liferay.Language.get(
 				'in-order-to-view-asset-performance,-your-liferay-dxp-instance-has-to-be-connected-with-liferay-analytics-cloud'
 			);
+
+			const link = buildAnalyticsCloudConfigURL();
+
 			action = (
 				<ClayLink
 					button
 					displayType="primary"
-					href={data.analyticsSettingsPortletURL}
+					href={link.href}
 				>
 					{Liferay.Language.get('connect')}
 				</ClayLink>
 			);
+			
 		}
 		else {
 			description = Liferay.Language.get(
@@ -62,11 +80,14 @@ export function getEmptyState(data: EmptyStateData) {
 			description = Liferay.Language.get(
 				'in-order-to-view-asset-performance,-your-sites-have-to-be-synced-to-liferay-analytics-cloud'
 			);
+
+			const link = buildAnalyticsCloudConfigURL();
+
 			action = (
 				<ClayLink
 					button
 					displayType="primary"
-					href={`${data.analyticsSettingsPortletURL}&currentPage=PROPERTIES`}
+					href={`${link.href}&currentPage=PROPERTIES`}
 				>
 					{Liferay.Language.get('sync')}
 				</ClayLink>

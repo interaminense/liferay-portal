@@ -178,11 +178,9 @@ const renderEmptyState = (data: EmptyStateData) => {
 describe('getEmptyState', () => {
 	it('renders site not connected (admin)', () => {
 		renderEmptyState({
-			analyticsSettingsPortletURL: '/mock-url',
 			connectedToAnalyticsCloud: false,
 			connectedToSpace: false,
 			isAdmin: true,
-			siteEditDepotEntryDepotAdminPortletURL: '/mock-url',
 			siteSyncedToAnalyticsCloud: false,
 		});
 
@@ -194,11 +192,9 @@ describe('getEmptyState', () => {
 
 	it('renders site not connected (non-admin)', () => {
 		renderEmptyState({
-			analyticsSettingsPortletURL: '/mock-url',
 			connectedToAnalyticsCloud: false,
 			connectedToSpace: false,
 			isAdmin: false,
-			siteEditDepotEntryDepotAdminPortletURL: '/mock-url',
 			siteSyncedToAnalyticsCloud: false,
 		});
 
@@ -211,11 +207,9 @@ describe('getEmptyState', () => {
 
 	it('renders not connected to analytics cloud (admin)', () => {
 		renderEmptyState({
-			analyticsSettingsPortletURL: '/mock-url',
 			connectedToAnalyticsCloud: false,
 			connectedToSpace: true,
 			isAdmin: true,
-			siteEditDepotEntryDepotAdminPortletURL: '/mock-url',
 			siteSyncedToAnalyticsCloud: false,
 		});
 
@@ -230,11 +224,9 @@ describe('getEmptyState', () => {
 
 	it('renders not connected to analytics cloud (non-admin)', () => {
 		renderEmptyState({
-			analyticsSettingsPortletURL: '/mock-url',
 			connectedToAnalyticsCloud: false,
 			connectedToSpace: true,
 			isAdmin: false,
-			siteEditDepotEntryDepotAdminPortletURL: '/mock-url',
 			siteSyncedToAnalyticsCloud: false,
 		});
 
@@ -247,11 +239,9 @@ describe('getEmptyState', () => {
 
 	it('renders site not synced to analytics cloud (admin)', () => {
 		renderEmptyState({
-			analyticsSettingsPortletURL: '/mock-url',
 			connectedToAnalyticsCloud: true,
 			connectedToSpace: true,
 			isAdmin: true,
-			siteEditDepotEntryDepotAdminPortletURL: '/mock-url',
 			siteSyncedToAnalyticsCloud: false,
 		});
 
@@ -264,11 +254,9 @@ describe('getEmptyState', () => {
 
 	it('renders site not synced to analytics cloud (non-admin)', () => {
 		renderEmptyState({
-			analyticsSettingsPortletURL: '/mock-url',
 			connectedToAnalyticsCloud: true,
 			connectedToSpace: true,
 			isAdmin: false,
-			siteEditDepotEntryDepotAdminPortletURL: '/mock-url',
 			siteSyncedToAnalyticsCloud: false,
 		});
 
@@ -281,11 +269,9 @@ describe('getEmptyState', () => {
 
 	it('returns null when all conditions are satisfied', () => {
 		const result = getEmptyState({
-			analyticsSettingsPortletURL: '/mock-url',
 			connectedToAnalyticsCloud: true,
 			connectedToSpace: true,
 			isAdmin: true,
-			siteEditDepotEntryDepotAdminPortletURL: '/mock-url',
 			siteSyncedToAnalyticsCloud: true,
 		});
 
