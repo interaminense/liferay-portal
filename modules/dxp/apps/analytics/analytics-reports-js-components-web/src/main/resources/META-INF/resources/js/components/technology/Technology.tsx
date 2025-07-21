@@ -29,6 +29,7 @@ const TITLE: {
 } = {
 	[MetricType.Comments]: Liferay.Language.get('comments-by-technology'),
 	[MetricType.Downloads]: Liferay.Language.get('downloads-by-technology'),
+	[MetricType.Impressions]: Liferay.Language.get('impressions-by-technology'),
 	[MetricType.Previews]: Liferay.Language.get('previews-by-technology'),
 	[MetricType.Undefined]: Liferay.Language.get('undefined'),
 	[MetricType.Views]: Liferay.Language.get('views-by-technology'),
@@ -55,7 +56,7 @@ const Technology = () => {
 		}
 	);
 
-	const title = TITLE[filters?.metric ?? MetricType.Undefined];
+	const title = TITLE[filters.metric];
 
 	return (
 		<div>
@@ -69,10 +70,7 @@ const Technology = () => {
 
 			<StateRenderer data={data} error={error} loading={loading}>
 				{({data}) => {
-					const formattedData = formatData(
-						data,
-						filters?.metric || MetricType.Undefined
-					);
+					const formattedData = formatData(data, filters.metric);
 
 					return (
 						<StackedBarChart

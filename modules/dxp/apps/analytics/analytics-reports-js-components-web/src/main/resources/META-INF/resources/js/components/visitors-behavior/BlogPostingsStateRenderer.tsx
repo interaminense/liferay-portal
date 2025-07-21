@@ -8,7 +8,6 @@ import React, {useContext} from 'react';
 import {AnalyticsReportsContext} from '../../AnalyticsReportsContext';
 import {fetchBlogPosting} from '../../apis/headless-dxp';
 import useFetch from '../../hooks/useFetch';
-import {MetricType} from '../../types/global';
 import {metricNameByType} from '../../utils/metrics';
 import StateRenderer from '../StateRenderer';
 import {Data} from './VisitorsBehavior';
@@ -37,8 +36,7 @@ const VisitorsBehaviorWithBlogData: React.FC<
 > = ({data, visitorsBehaviorData}) => {
 	const {filters} = useContext(AnalyticsReportsContext);
 
-	const metricName =
-		metricNameByType[filters?.metric || MetricType.Undefined];
+	const metricName = metricNameByType[filters.metric];
 	const selectedHistogram = getSelectedHistogram(
 		visitorsBehaviorData,
 		metricName

@@ -21,7 +21,7 @@ export type State = {
 	changeRangeSelectorFilter: (value: any) => void;
 	filters: {
 		individual: Individuals;
-		metric: MetricType | null;
+		metric: MetricType;
 		rangeSelector: RangeSelectors;
 	};
 	groupId: string;
@@ -47,7 +47,7 @@ const initialState: State = {
 	changeRangeSelectorFilter: () => {},
 	filters: {
 		individual: Individuals.AllIndividuals,
-		metric: null,
+		metric: MetricType.Undefined,
 		rangeSelector: RangeSelectors.Last30Days,
 	},
 	groupId: '0',

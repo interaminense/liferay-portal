@@ -36,9 +36,10 @@ type Metrics = {
 export const MetricsTitle: Metrics = {
 	[MetricType.Comments]: Liferay.Language.get('comments'),
 	[MetricType.Downloads]: Liferay.Language.get('downloads'),
+	[MetricType.Impressions]: Liferay.Language.get('impressions'),
 	[MetricType.Previews]: Liferay.Language.get('previews'),
-	[MetricType.Views]: Liferay.Language.get('views'),
 	[MetricType.Undefined]: Liferay.Language.get('undefined'),
+	[MetricType.Views]: Liferay.Language.get('views'),
 };
 
 interface IOverviewMetricsWithDataProps {
@@ -51,7 +52,7 @@ const OverviewMetricsWithData: React.FC<IOverviewMetricsWithDataProps> = ({
 	const {changeMetricFilter, filters} = useContext(AnalyticsReportsContext);
 
 	useEffect(() => {
-		if (!filters.metric) {
+		if (filters.metric === MetricType.Undefined) {
 			changeMetricFilter(data.defaultMetric.metricType);
 		}
 	}, [changeMetricFilter, data.defaultMetric.metricType, filters.metric]);
