@@ -7,12 +7,10 @@ import React, {useContext, useEffect} from 'react';
 
 import {AnalyticsReportsContext} from '../AnalyticsReportsContext';
 import {AssetMetricProps, fetchAssetMetric} from '../apis/analytics-reports';
-import OverviewMetric, {
-	TrendClassification,
-} from '../components/OverviewMetric';
+import OverviewMetric from '../components/OverviewMetric';
 import useFetch from '../hooks/useFetch';
 import {AssetTypes, MetricType} from '../types/global';
-import {assetMetrics} from '../utils/metrics';
+import {TrendClassification, assetMetrics} from '../utils/metrics';
 import StateRenderer from './StateRenderer';
 
 type MetricData = {
