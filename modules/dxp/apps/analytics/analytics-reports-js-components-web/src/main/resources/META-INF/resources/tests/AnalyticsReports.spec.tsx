@@ -12,7 +12,6 @@ import {fetch} from 'frontend-js-web';
 import React from 'react';
 
 import AnalyticsReports from '../js/AnalyticsReports';
-import {TrendClassification} from '../js/components/OverviewMetric';
 import {
 	AssetTypes,
 	Individuals,
@@ -21,6 +20,8 @@ import {
 } from '../js/types/global';
 
 import '@testing-library/jest-dom/extend-expect';
+
+import {TrendClassification} from '../js/utils/metrics';
 
 jest.mock('frontend-js-web', () => ({
 	...(jest.requireActual('frontend-js-web') as object),

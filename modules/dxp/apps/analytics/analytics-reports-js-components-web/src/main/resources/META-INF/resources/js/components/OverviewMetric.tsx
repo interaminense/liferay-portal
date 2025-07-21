@@ -4,28 +4,16 @@
  */
 
 import {Text} from '@clayui/core';
-import {ColorType} from '@clayui/core/lib/typography/Text';
 import ClayIcon from '@clayui/icon';
 import classNames from 'classnames';
 import React from 'react';
 
 import {getPercentage, toThousands} from '../utils/math';
-
-export enum TrendClassification {
-	Negative = 'NEGATIVE',
-	Neutral = 'NEUTRAL',
-	Positive = 'POSITIVE',
-}
-
-type Classification = {
-	[key in TrendClassification]: ColorType;
-};
-
-const classification: Classification = {
-	[TrendClassification.Negative]: 'danger',
-	[TrendClassification.Neutral]: 'secondary',
-	[TrendClassification.Positive]: 'success',
-};
+import {
+	TrendClassification,
+	getStatsColor,
+	getStatsIcon,
+} from '../utils/metrics';
 
 interface IOverviewMetricProps {
 	name: string;
@@ -60,18 +48,11 @@ const OverviewMetric: React.FC<IOverviewMetricProps> = ({
 			<div className="overview-metric__value">{toThousands(value)}</div>
 
 			<div className="overview-metric__comparison">
-				<Text
-					color={classification[trend.trendClassification]}
-					size={1}
-				>
+				<Text color={getStatsColor(trend.trendClassification)} size={1}>
 					{trend.percentage !== 0 && (
 						<ClayIcon
 							className="mr-1"
-							symbol={
-								trend.percentage > 0
-									? 'caret-top'
-									: 'caret-bottom'
-							}
+							symbol={getStatsIcon(trend.percentage)}
 						/>
 					)}
 
