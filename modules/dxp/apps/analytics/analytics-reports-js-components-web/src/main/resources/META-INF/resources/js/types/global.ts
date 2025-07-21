@@ -45,6 +45,7 @@ export enum RangeSelectors {
 export enum MetricName {
 	Comments = 'commentsMetric',
 	Downloads = 'downloadsMetric',
+	Impressions = 'impressionMadeMetric',
 	Previews = 'previewsMetric',
 	Undefined = 'undefinedMetric',
 	Views = 'viewsMetric',
@@ -60,6 +61,7 @@ export enum AssetTypes {
 export enum MetricType {
 	Comments = 'COMMENTS',
 	Downloads = 'DOWNLOADS',
+	Impressions = 'IMPRESSIONS',
 	Previews = 'PREVIEWS',
 	Undefined = 'UNDEFINED',
 	Views = 'VIEWS',

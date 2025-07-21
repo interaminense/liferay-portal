@@ -7,7 +7,6 @@ import React, {useContext, useMemo, useState} from 'react';
 import {Line} from 'recharts';
 
 import {AnalyticsReportsContext} from '../../AnalyticsReportsContext';
-import {MetricType} from '../../types/global';
 import {formatTooltipDate} from '../../utils/date';
 import {assetContent, metricNameByType} from '../../utils/metrics';
 import {CircleDot, DiamondDot, DotProps, SquareDot} from '../metrics/Dots';
@@ -43,8 +42,7 @@ const InteractionsByPageChart: React.FC<IInteractionsByPageChartProps> = ({
 		InteractionsByPageDataKey | DataKey | null
 	>(null);
 
-	const metricName =
-		metricNameByType[filters?.metric || MetricType.Undefined];
+	const metricName = metricNameByType[filters.metric];
 
 	const formattedData = useMemo(
 		() =>

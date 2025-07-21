@@ -7,7 +7,7 @@ import React, {useContext, useMemo, useState} from 'react';
 import {Line} from 'recharts';
 
 import {AnalyticsReportsContext} from '../../AnalyticsReportsContext';
-import {Colors, MetricType} from '../../types/global';
+import {Colors} from '../../types/global';
 import {formatTooltipDate} from '../../utils/date';
 import {assetContent, metricNameByType} from '../../utils/metrics';
 import {CircleDot, PublishedVersionDot} from '../metrics/Dots';
@@ -35,8 +35,7 @@ const VisitorsBehaviorChart: React.FC<IVisitorsBehaviorChartProps> = ({
 		VisitorsBehaviorDataKey | DataKey | null
 	>(null);
 
-	const metricName =
-		metricNameByType[filters?.metric || MetricType.Undefined];
+	const metricName = metricNameByType[filters.metric];
 
 	const formattedData = useMemo(
 		() =>
