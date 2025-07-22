@@ -29,6 +29,7 @@
 		"@clayui/tabs": "3.140.0",
 		"@clayui/toolbar": "3.140.0",
 		"@clayui/tooltip": "3.140.0",
+		"@liferay/analytics-reports-js-components-web": "*",
 		"@liferay/frontend-data-set-web": "*",
 		"@liferay/frontend-js-react-web": "*",
 		"@liferay/layout-js-components-web": "*",

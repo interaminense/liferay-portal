@@ -14,7 +14,6 @@ import React from 'react';
 import {
 	ContentAndFilesCard,
 	IMetricsProps,
-	TrendClassification,
 } from '../../../../src/main/resources/META-INF/resources/js/main_view/dashboard/components/ContentAndFilesCard';
 import {RangeSelectors} from '../../../../src/main/resources/META-INF/resources/js/main_view/dashboard/components/RangeSelectorsDropdown';
 
@@ -23,7 +22,7 @@ const mockedResponse: IMetricsProps = {
 	tagsCount: 10,
 	totalCount: 30,
 	trend: {
-		classification: TrendClassification.Neutral,
+		classification: 'NEUTRAL',
 		percentage: 100.0,
 	},
 	vocabulariesCount: 10,

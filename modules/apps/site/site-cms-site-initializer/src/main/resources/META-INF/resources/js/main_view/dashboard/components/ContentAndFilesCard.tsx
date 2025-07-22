@@ -6,20 +6,19 @@
 import {Text} from '@clayui/core';
 import ClayIcon from '@clayui/icon';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
+import {
+	TrendClassification,
+	getStatsColor,
+	getStatsIcon,
+	toThousands,
+} from '@liferay/analytics-reports-js-components-web';
 import {sub} from 'frontend-js-web';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 
 import ApiHelper from '../../../common/services/ApiHelper';
 import {ViewDashboardContext} from '../ViewDashboardContext';
 import {buildQueryString} from '../utils/buildQueryString';
-import {toThousands} from '../utils/number';
 import {RangeSelector, getSafeRangeSelector} from './RangeSelectorsDropdown';
-
-export enum TrendClassification {
-	Negative = 'NEGATIVE',
-	Neutral = 'NEUTRAL',
-	Positive = 'POSITIVE',
-}
 
 export interface IMetricsProps {
 	categoriesCount: number;
@@ -36,30 +35,6 @@ export interface IContentAndFilesCard {
 	endpointURL: string;
 	rangeSelector: RangeSelector;
 	title: (totalCount: number) => string;
-}
-
-function getStatsColor(
-	trendClassification: TrendClassification
-): 'danger' | 'success' | 'secondary' {
-	if (trendClassification === TrendClassification.Negative) {
-		return 'danger';
-	}
-	else if (trendClassification === TrendClassification.Positive) {
-		return 'success';
-	}
-
-	return 'secondary';
-}
-
-function getStatsIcon(trendPercentage: number) {
-	if (trendPercentage > 0) {
-		return 'caret-top';
-	}
-	else if (trendPercentage < 0) {
-		return 'caret-bottom';
-	}
-
-	return null;
 }
 
 const ContentAndFilesCard: React.FC<IContentAndFilesCard> = ({
