@@ -9,13 +9,12 @@ import {ClayTooltipProvider} from '@clayui/tooltip';
 import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
-import {AnalyticsReportsProvider} from '../AnalyticsReportsContext';
-import {AssetTypes, Version} from '../types/global';
-import EmptyState from './EmptyState';
-import StateRenderer from './StateRenderer';
+import {AnalyticsReportsProvider} from '../../AnalyticsReportsContext';
+import {AssetTypes, Version} from '../../types/global';
+import EmptyState from '../EmptyState';
+import StateRenderer from '../StateRenderer';
 
-interface IAppSetupStateRendererProps
-	extends React.HTMLAttributes<HTMLElement> {
+interface ICheckPermissionsProps extends React.HTMLAttributes<HTMLElement> {
 	contentPerformanceDataFetchURL: string;
 	getItemVersionsURL: string;
 }
@@ -47,6 +46,12 @@ const AppSetup: React.FC<IAppSetupProps> = ({children, data}) => {
 					description={Liferay.Language.get(
 						'in-order-to-view-asset-performance,-your-liferay-dxp-instance-has-to-be-connected-with-liferay-analytics-cloud'
 					)}
+					externalImage={{
+						src: '/o/analytics-reports-js-components-web/assets/ac-icon.svg',
+						style: {
+							width: 88,
+						},
+					}}
 					title={Liferay.Language.get(
 						'connect-to-liferay-analytics-cloud'
 					)}
@@ -67,6 +72,15 @@ const AppSetup: React.FC<IAppSetupProps> = ({children, data}) => {
 				description={Liferay.Language.get(
 					'please-contact-a-dxp-instance-administrator-to-connect-your-dxp-instance-to-analytics-cloud'
 				)}
+				externalImage={{
+					src: '/o/analytics-reports-js-components-web/assets/ac-icon.svg',
+					style: {
+						width: 88,
+					},
+				}}
+				style={{
+					maxWidth: 268,
+				}}
 				title={Liferay.Language.get(
 					'connect-to-liferay-analytics-cloud'
 				)}
@@ -103,6 +117,9 @@ const AppSetup: React.FC<IAppSetupProps> = ({children, data}) => {
 					'please-contact-a-dxp-instance-administrator-to-connect-your-sites-to-an-asset-library'
 				)}
 				imgSrc={`${Liferay.ThemeDisplay.getPathThemeImages()}/states/search_state.svg`}
+				style={{
+					maxWidth: 268,
+				}}
 				title={Liferay.Language.get(
 					'there-are-no-sites-connected-to-this-asset-library'
 				)}
@@ -117,6 +134,12 @@ const AppSetup: React.FC<IAppSetupProps> = ({children, data}) => {
 					description={Liferay.Language.get(
 						'in-order-to-view-asset-performance,-your-sites-have-to-be-synced-to-liferay-analytics-cloud'
 					)}
+					externalImage={{
+						src: '/o/analytics-reports-js-components-web/assets/ac-icon.svg',
+						style: {
+							width: 88,
+						},
+					}}
 					title={Liferay.Language.get('sync-to-analytics-cloud')}
 				>
 					<ClayLink
@@ -135,6 +158,15 @@ const AppSetup: React.FC<IAppSetupProps> = ({children, data}) => {
 				description={Liferay.Language.get(
 					'please-contact-a-dxp-instance-administrator-to-sync-your-sites-to-analytics-cloud'
 				)}
+				externalImage={{
+					src: '/o/analytics-reports-js-components-web/assets/ac-icon.svg',
+					style: {
+						width: 88,
+					},
+				}}
+				style={{
+					maxWidth: 268,
+				}}
 				title={Liferay.Language.get('sync-to-analytics-cloud')}
 			/>
 		);
@@ -160,7 +192,7 @@ const AppSetup: React.FC<IAppSetupProps> = ({children, data}) => {
 	);
 };
 
-const AppSetupStateRenderer: React.FC<IAppSetupStateRendererProps> = ({
+const CheckPermissions: React.FC<ICheckPermissionsProps> = ({
 	children,
 	contentPerformanceDataFetchURL,
 	getItemVersionsURL,
@@ -239,4 +271,4 @@ const AppSetupStateRenderer: React.FC<IAppSetupStateRendererProps> = ({
 	);
 };
 
-export default AppSetupStateRenderer;
+export default CheckPermissions;

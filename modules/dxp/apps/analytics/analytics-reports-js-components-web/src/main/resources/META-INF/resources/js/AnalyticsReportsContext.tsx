@@ -14,8 +14,8 @@ import {
 } from './types/global';
 
 export type State = {
-	assetId: string;
-	assetType: AssetTypes | null;
+	assetId?: string;
+	assetType?: AssetTypes | null;
 	changeIndividualFilter: (value: any) => void;
 	changeMetricFilter: (value: any) => void;
 	changeRangeSelectorFilter: (value: any) => void;
@@ -24,8 +24,8 @@ export type State = {
 		metric: MetricType;
 		rangeSelector: RangeSelectors;
 	};
-	groupId: string;
-	versions: Version[] | null;
+	groupId?: string;
+	versions?: Version[] | null;
 };
 
 enum Types {
@@ -98,10 +98,10 @@ const reducer = (state: State, action: Action): State => {
 
 interface IAnalyticsReportsProviderProps
 	extends React.HTMLAttributes<HTMLElement> {
-	assetId: string;
-	assetType: AssetTypes | null;
-	groupId: string;
-	versions: Version[] | null;
+	assetId?: string;
+	assetType?: AssetTypes | null;
+	groupId?: string;
+	versions?: Version[] | null;
 }
 
 const AnalyticsReportsProvider: React.FC<IAnalyticsReportsProviderProps> = ({
