@@ -8,34 +8,31 @@ import ClayDropdown from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import React, {useState} from 'react';
 
-interface IChartsAndTableViewProps {
-	chartsView: JSX.Element;
-	tableView: JSX.Element;
-}
+import CurrentVsPreviousChart from './CurrentVsPreviousChart';
 
 type DropdownItem = {
-	component: JSX.Element;
+	Component: () => JSX.Element;
 	icon: string;
 	name: string;
+	value: string;
 };
 
-const ChartsAndTableView: React.FC<IChartsAndTableViewProps> = ({
-	chartsView,
-	tableView,
-}) => {
-	const dropdownItems: DropdownItem[] = [
-		{
-			component: chartsView,
-			icon: 'analytics',
-			name: 'Chart',
-		},
-		{
-			component: tableView,
-			icon: 'table',
-			name: 'Table',
-		},
-	];
+const dropdownItems: DropdownItem[] = [
+	{
+		Component: CurrentVsPreviousChart,
+		icon: 'analytics',
+		name: Liferay.Language.get('chart'),
+		value: 'chart',
+	},
+	{
+		Component: () => <>table</>,
+		icon: 'table',
+		name: Liferay.Language.get('table'),
+		value: 'table',
+	},
+];
 
+const CurrentVsPrevious = () => {
 	const [selectedItem, setSelectedItem] = useState(dropdownItems[0]);
 	const [dropdownActive, setDropdownActive] = useState(false);
 
@@ -72,8 +69,8 @@ const ChartsAndTableView: React.FC<IChartsAndTableViewProps> = ({
 				>
 					{dropdownItems.map((item) => (
 						<ClayDropdown.Item
-							active={item.name === selectedItem.name}
-							key={item.name}
+							active={item.value === selectedItem.value}
+							key={item.value}
 							onClick={() => {
 								setSelectedItem(item);
 								setDropdownActive(false);
@@ -88,8 +85,11 @@ const ChartsAndTableView: React.FC<IChartsAndTableViewProps> = ({
 					))}
 				</ClayDropdown>
 			</div>
-			<main className="mt-3">{selectedItem.component}</main>
+
+			<main className="mt-3">
+				<selectedItem.Component />
+			</main>
 		</>
 	);
 };
-export {ChartsAndTableView};
+export {CurrentVsPrevious};
