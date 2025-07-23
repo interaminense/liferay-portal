@@ -3,10 +3,25 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import React from 'react';
+import {InContextAnalytics} from '@liferay/analytics-reports-js-components-web';
+import React, {useContext} from 'react';
 
-const PerformanceTabContent = () => {
-	return <></>;
+import {
+	AssetTypeInfoPanelContext,
+	IAssetTypeInfoPanelContext,
+} from '../context';
+
+const PerformanceTab = () => {
+	const selectedAsset = useContext<IAssetTypeInfoPanelContext>(
+		AssetTypeInfoPanelContext
+	);
+
+	return (
+		<InContextAnalytics
+			assetId={selectedAsset?.id}
+			spaceId={selectedAsset?.objectEntries?.[0]?.embedded.scopeId}
+		/>
+	);
 };
 
-export default PerformanceTabContent;
+export default PerformanceTab;
