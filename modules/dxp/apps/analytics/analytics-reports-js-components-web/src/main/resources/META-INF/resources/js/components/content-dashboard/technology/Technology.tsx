@@ -5,16 +5,16 @@
 
 import React, {useContext} from 'react';
 
-import {Context} from '../../Context';
+import {Context} from '../../../Context';
 import {
 	AssetDeviceMetric,
 	fetchAssetDeviceMetric,
-} from '../../apis/analytics-reports';
-import useFetch from '../../hooks/useFetch';
-import {AssetTypes, MetricName, MetricType} from '../../types/global';
-import StateRenderer from '../StateRenderer';
-import Title from '../Title';
-import StackedBarChart from '../content-dashboard/stacked-bar/StackedBarChart';
+} from '../../../apis/analytics-reports';
+import useFetch from '../../../hooks/useFetch';
+import {AssetTypes, MetricName, MetricType} from '../../../types/global';
+import StateRenderer from '../../StateRenderer';
+import Title from '../../Title';
+import StackedBarChart from '../stacked-bar/StackedBarChart';
 import {formatData} from './utils';
 
 export type Data = {

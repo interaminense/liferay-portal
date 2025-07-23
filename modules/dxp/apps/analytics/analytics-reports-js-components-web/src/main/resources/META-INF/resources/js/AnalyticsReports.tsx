@@ -5,14 +5,14 @@
 
 import React from 'react';
 
-import AppSetup from './components/AppSetup';
-import GlobalFilters from './components/GlobalFilters';
 import OverviewMetrics from './components/OverviewMetrics';
-import InteractionsByPage from './components/interactions-by-page/InteractionsByPage';
+import CheckPermissions from './components/content-dashboard/CheckPermissions';
+import GlobalFilters from './components/content-dashboard/GlobalFilters';
+import InteractionsByPage from './components/content-dashboard/interactions-by-page/InteractionsByPage';
+import VisitorsBehavior from './components/content-dashboard/visitors-behavior/VisitorsBehavior';
 import Technology from './components/technology/Technology';
-import VisitorsBehavior from './components/visitors-behavior/VisitorsBehavior';
 
-import '../css/main.scss';
+import '../css/analytics-reports.scss';
 
 interface AnalyticsReports {
 	contentPerformanceDataFetchURL: string;
@@ -25,7 +25,7 @@ const AnalyticsReports: React.FC<AnalyticsReports> = ({
 }) => {
 	return (
 		<div className="analytics-reports">
-			<AppSetup
+			<CheckPermissions
 				contentPerformanceDataFetchURL={contentPerformanceDataFetchURL}
 				getItemVersionsURL={getItemVersionsURL}
 			>
@@ -38,7 +38,7 @@ const AnalyticsReports: React.FC<AnalyticsReports> = ({
 				<InteractionsByPage />
 
 				<Technology />
-			</AppSetup>
+			</CheckPermissions>
 		</div>
 	);
 };

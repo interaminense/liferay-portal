@@ -5,11 +5,11 @@
 
 import React, {useContext} from 'react';
 
-import {AnalyticsReportsContext} from '../../AnalyticsReportsContext';
-import {fetchBlogPosting} from '../../apis/headless-dxp';
-import useFetch from '../../hooks/useFetch';
-import {metricNameByType} from '../../utils/metrics';
-import StateRenderer from '../StateRenderer';
+import {Context} from '../../../Context';
+import {fetchBlogPosting} from '../../../apis/headless-dxp';
+import useFetch from '../../../hooks/useFetch';
+import {metricNameByType} from '../../../utils/metrics';
+import StateRenderer from '../../StateRenderer';
 import {Data} from './VisitorsBehavior';
 import VisitorsBehaviorChart from './VisitorsBehaviorChart';
 import {
@@ -34,7 +34,7 @@ interface IVisitorsBehaviorWithBlogDataProps {
 const VisitorsBehaviorWithBlogData: React.FC<
 	IVisitorsBehaviorWithBlogDataProps
 > = ({data, visitorsBehaviorData}) => {
-	const {filters} = useContext(AnalyticsReportsContext);
+	const {filters} = useContext(Context);
 
 	const metricName = metricNameByType[filters.metric];
 	const selectedHistogram = getSelectedHistogram(
@@ -69,7 +69,7 @@ const VisitorsBehaviorWithBlogData: React.FC<
 const BlogPostingsStateRenderer: React.FC<IBlogPostingsStateRendererProps> = ({
 	data: visitorsBehaviorData,
 }) => {
-	const {assetId} = useContext(AnalyticsReportsContext);
+	const {assetId} = useContext(Context);
 
 	const {data, error, loading} = useFetch<
 		BlogPostingsData,

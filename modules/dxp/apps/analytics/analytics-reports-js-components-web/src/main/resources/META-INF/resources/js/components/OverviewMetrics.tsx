@@ -5,7 +5,7 @@
 
 import React, {useContext, useEffect} from 'react';
 
-import {AnalyticsReportsContext} from '../AnalyticsReportsContext';
+import {Context} from '../Context';
 import {AssetMetricProps, fetchAssetMetric} from '../apis/analytics-reports';
 import OverviewMetric from '../components/OverviewMetric';
 import useFetch from '../hooks/useFetch';
@@ -49,7 +49,7 @@ interface IOverviewMetricsWithDataProps {
 const OverviewMetricsWithData: React.FC<IOverviewMetricsWithDataProps> = ({
 	data,
 }) => {
-	const {changeMetricFilter, filters} = useContext(AnalyticsReportsContext);
+	const {changeMetricFilter, filters} = useContext(Context);
 
 	useEffect(() => {
 		if (filters.metric === MetricType.Undefined) {
@@ -77,9 +77,7 @@ const OverviewMetricsWithData: React.FC<IOverviewMetricsWithDataProps> = ({
 };
 
 const OverviewMetrics = () => {
-	const {assetId, assetType, filters, groupId} = useContext(
-		AnalyticsReportsContext
-	);
+	const {assetId, assetType, filters, groupId} = useContext(Context);
 
 	const {data, error, loading} = useFetch<Data, AssetMetricProps>(
 		fetchAssetMetric,

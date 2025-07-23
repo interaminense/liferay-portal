@@ -9,12 +9,12 @@ import {ClayTooltipProvider} from '@clayui/tooltip';
 import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
-import {AnalyticsReportsProvider} from '../AnalyticsReportsContext';
-import {AssetTypes, Version} from '../types/global';
-import EmptyState from './EmptyState';
-import StateRenderer from './StateRenderer';
+import {ContextProvider} from '../../Context';
+import {AssetTypes, Version} from '../../types/global';
+import EmptyState from '.././EmptyState';
+import StateRenderer from '.././StateRenderer';
 
-interface IAppSetupStateRendererProps
+interface ICheckPermissionsStateRendererProps
 	extends React.HTMLAttributes<HTMLElement> {
 	contentPerformanceDataFetchURL: string;
 	getItemVersionsURL: string;
@@ -34,12 +34,15 @@ type Data = {
 	versions: Version[] | null;
 };
 
-interface IAppSetupProps {
+interface ICheckPermissionsProps {
 	children?: React.ReactNode;
 	data: Data;
 }
 
-const AppSetup: React.FC<IAppSetupProps> = ({children, data}) => {
+const CheckPermissionsContent: React.FC<ICheckPermissionsProps> = ({
+	children,
+	data,
+}) => {
 	if (!data.connectedToAnalyticsCloud) {
 		if (data.isAdmin) {
 			return (
@@ -146,25 +149,23 @@ const AppSetup: React.FC<IAppSetupProps> = ({children, data}) => {
 		>
 			<ClayTooltipProvider>
 				<div>
-					<AnalyticsReportsProvider
+					<ContextProvider
 						assetId={data?.assetId ?? '0'}
 						assetType={data?.assetType ?? null}
 						groupId={data?.groupId ?? '0'}
 						versions={data?.versions ?? null}
 					>
 						{children}
-					</AnalyticsReportsProvider>
+					</ContextProvider>
 				</div>
 			</ClayTooltipProvider>
 		</ClayIconProvider>
 	);
 };
 
-const AppSetupStateRenderer: React.FC<IAppSetupStateRendererProps> = ({
-	children,
-	contentPerformanceDataFetchURL,
-	getItemVersionsURL,
-}) => {
+const CheckPermissionsStateRenderer: React.FC<
+	ICheckPermissionsStateRendererProps
+> = ({children, contentPerformanceDataFetchURL, getItemVersionsURL}) => {
 	const [data, setData] = useState<Data | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
@@ -234,9 +235,13 @@ const AppSetupStateRenderer: React.FC<IAppSetupStateRendererProps> = ({
 
 	return (
 		<StateRenderer data={data} error={error} loading={loading}>
-			{({data}) => <AppSetup data={data}>{children}</AppSetup>}
+			{({data}) => (
+				<CheckPermissionsContent data={data}>
+					{children}
+				</CheckPermissionsContent>
+			)}
 		</StateRenderer>
 	);
 };
 
-export default AppSetupStateRenderer;
+export default CheckPermissionsStateRenderer;

@@ -5,16 +5,16 @@
 
 import React, {useContext} from 'react';
 
-import {AnalyticsReportsContext} from '../../AnalyticsReportsContext';
+import {Context} from '../../../Context';
 import {
 	AssetMetricHistogramProps,
 	fetchAssetMetricHistogram,
-} from '../../apis/analytics-reports';
-import useFetch from '../../hooks/useFetch';
-import {AssetTypes, MetricName} from '../../types/global';
-import {assetMetrics} from '../../utils/metrics';
-import StateRenderer from '../StateRenderer';
-import Title from '../Title';
+} from '../../../apis/analytics-reports';
+import useFetch from '../../../hooks/useFetch';
+import {AssetTypes, MetricName} from '../../../types/global';
+import {assetMetrics} from '../../../utils/metrics';
+import StateRenderer from '../../StateRenderer';
+import Title from '../../Title';
 import BlogPostingsStateRenderer from './BlogPostingsStateRenderer';
 import VisitorsBehaviorStateRenderer from './VisitorsBehaviorStateRenderer';
 
@@ -44,7 +44,7 @@ const VisitorsBehavior = () => {
 		assetType: initialAssetType,
 		filters,
 		groupId,
-	} = useContext(AnalyticsReportsContext);
+	} = useContext(Context);
 
 	const assetType = initialAssetType || AssetTypes.Undefined;
 

@@ -5,15 +5,15 @@
 
 import React, {useContext} from 'react';
 
-import {AnalyticsReportsContext} from '../../AnalyticsReportsContext';
+import {Context} from '../../../Context';
 import {
 	AssetAppearsOnHistogramProps,
 	fetchAssetAppearsOnHistogram,
-} from '../../apis/analytics-reports';
-import useFetch from '../../hooks/useFetch';
-import {AssetTypes, MetricName} from '../../types/global';
-import StateRenderer from '../StateRenderer';
-import Title from '../Title';
+} from '../../../apis/analytics-reports';
+import useFetch from '../../../hooks/useFetch';
+import {AssetTypes, MetricName} from '../../../types/global';
+import StateRenderer from '../../StateRenderer';
+import Title from '../../Title';
 import InteractionsByPageChart from './InteractionsByPageChart';
 
 export type Data = {
@@ -39,7 +39,7 @@ const InteractionsByPage = () => {
 		assetType: initialAssetType,
 		filters,
 		groupId,
-	} = useContext(AnalyticsReportsContext);
+	} = useContext(Context);
 
 	const assetType = initialAssetType || AssetTypes.Undefined;
 
