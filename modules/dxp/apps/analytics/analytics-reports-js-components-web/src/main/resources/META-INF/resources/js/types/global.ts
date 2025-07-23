@@ -12,6 +12,7 @@ export enum Colors {
 	Green = '#9be169',
 	Indigo = '#7785ff',
 	Indigo2 = '#6675ff',
+	LightGray = '#a6a8bb',
 	Orange = '#ffb46e',
 	Pink = '#ff73c3',
 	Pink2 = '#ff73c3',

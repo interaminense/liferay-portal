@@ -9,6 +9,7 @@ import {ContextProvider} from './Context';
 import {CheckPermissions} from './components/cms/CheckPermissions';
 import {Metrics} from './components/cms/Metrics';
 import {MetricsChart} from './components/cms/MetricsChart';
+import {ChartsAndTableView} from './components/cms/TableAndChartsView';
 
 import '../css/in-context-analytics.scss';
 import {AssetTypes} from './types/global';
@@ -30,7 +31,10 @@ const InContextAnalytics: React.FC<IInContextAnalyticsProps> = ({assetId}) => {
 				>
 					<Metrics />
 
-					<MetricsChart />
+					<ChartsAndTableView
+						chartsView={<MetricsChart />}
+						tableView={<>Table!</>}
+					/>
 				</ContextProvider>
 			</CheckPermissions>
 		</div>

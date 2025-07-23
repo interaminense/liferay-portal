@@ -7,6 +7,7 @@ import React from 'react';
 
 import {Alignments, RangeSelectors, Weights} from '../../../types/global';
 import {formatTooltipDate} from '../../../utils/date';
+import {toThousands} from '../../../utils/math';
 import ChartTooltip from '../../ChartTooltip';
 import {CircleDot} from '../../metrics/Dots';
 import {FormattedData} from '../../metrics/utils';
@@ -71,6 +72,16 @@ const CurrentVsPreviousTooltip: React.FC<ICurrentVsPreviousTooltipProps> = ({
 					),
 				},
 				{
+					align: Alignments.Right,
+					label: toThousands(
+						payload[MetricDataKey.Current] as number
+					),
+				},
+			],
+		},
+		{
+			columns: [
+				{
 					label: () => (
 						<>
 							<span className="mr-2">
@@ -86,7 +97,9 @@ const CurrentVsPreviousTooltip: React.FC<ICurrentVsPreviousTooltipProps> = ({
 				},
 				{
 					align: Alignments.Right,
-					label: metricData?.format?.('number'),
+					label: toThousands(
+						payload[MetricDataKey.Previous] as number
+					),
 				},
 			],
 		},
