@@ -14,7 +14,6 @@ import React from 'react';
 import {
 	ContentAndFilesCard,
 	IMetricsProps,
-	TrendClassification,
 } from '../../../../src/main/resources/META-INF/resources/js/main_view/dashboard/components/ContentAndFilesCard';
 import {RangeSelectors} from '../../../../src/main/resources/META-INF/resources/js/main_view/dashboard/components/RangeSelectorsDropdown';
 
@@ -23,7 +22,7 @@ const mockedResponse: IMetricsProps = {
 	tagsCount: 10,
 	totalCount: 30,
 	trend: {
-		classification: TrendClassification.Neutral,
+		classification: 'NEUTRAL',
 		percentage: 100.0,
 	},
 	vocabulariesCount: 10,
@@ -82,7 +81,7 @@ describe('[CMS Dashboard] Components: ContentAndFilesCard', () => {
 				Promise.resolve({
 					...mockedResponse,
 					trend: {
-						classification: TrendClassification.Positive,
+						classification: 'POSITIVE',
 						percentage: -42,
 					},
 				}),
@@ -108,7 +107,7 @@ describe('[CMS Dashboard] Components: ContentAndFilesCard', () => {
 				Promise.resolve({
 					...mockedResponse,
 					trend: {
-						classification: TrendClassification.Negative,
+						classification: 'NEGATIVE',
 						percentage: 42,
 					},
 				}),

@@ -11,10 +11,7 @@ import {
 } from '@testing-library/react';
 import React from 'react';
 
-import {
-	IMetricsProps,
-	TrendClassification,
-} from '../../../../src/main/resources/META-INF/resources/js/main_view/dashboard/components/ContentAndFilesCard';
+import {IMetricsProps} from '../../../../src/main/resources/META-INF/resources/js/main_view/dashboard/components/ContentAndFilesCard';
 import {ContentCard} from '../../../../src/main/resources/META-INF/resources/js/main_view/dashboard/components/ContentCard';
 
 describe('[CMS Dashboard] Components: ContentCard', () => {
@@ -24,7 +21,7 @@ describe('[CMS Dashboard] Components: ContentCard', () => {
 			tagsCount: 10,
 			totalCount: 30,
 			trend: {
-				classification: TrendClassification.Neutral,
+				classification: 'NEUTRAL',
 				percentage: 100.0,
 			},
 			vocabulariesCount: 10,
