@@ -4,5 +4,10 @@
  */
 
 import AnalyticsReports from './AnalyticsReports';
+import InContextAnalytics from './InContextAnalytics';
 
-export {AnalyticsReports};
+export * from './utils/date';
+export * from './utils/math';
+export * from './utils/metrics';
+
+export {InContextAnalytics, AnalyticsReports};
