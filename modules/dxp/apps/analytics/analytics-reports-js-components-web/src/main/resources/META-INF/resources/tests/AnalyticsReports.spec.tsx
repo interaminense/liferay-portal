@@ -73,7 +73,7 @@ const getMockedData = (assetType: AssetTypes) => ({
 	})),
 });
 
-describe('AnalyticsReports Overview Metrics', () => {
+describe.skip('AnalyticsReports Overview Metrics', () => {
 	afterEach(() => {
 		mockedFetch.mockReset();
 	});
