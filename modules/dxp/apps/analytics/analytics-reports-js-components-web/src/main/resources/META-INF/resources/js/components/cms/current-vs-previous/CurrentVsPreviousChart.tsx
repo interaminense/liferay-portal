@@ -8,7 +8,11 @@ import {Line} from 'recharts';
 
 import {Colors, MetricName, MetricType} from '../../../types/global';
 import {formatTooltipDate, toUnix} from '../../../utils/date';
-import {CircleDot} from '../../metrics/Dots';
+import {
+	CircleDot,
+	CurrentVsPreviousDot,
+	DashedDotIcon,
+} from '../../metrics/Dots';
 import MetricsChart from '../../metrics/MetricsChart';
 import {formatter, getFillOpacity} from '../../metrics/utils';
 import CurrentVsPreviousTooltip from './CurrentVsPreviousTooltip';
@@ -60,15 +64,7 @@ export function getSelectedHistogram(data: Data, metricType: MetricType) {
 	);
 }
 
-export function formatData({
-	data: initialData,
-	metricType,
-}: {
-	data: Data;
-	metricType: MetricType;
-}): FormattedData {
-	const selectedHistogram = getSelectedHistogram(initialData, metricType);
-
+function getTitle(metricType: MetricType) {
 	const title: Partial<{
 		[key in MetricType]: string;
 	}> = {
@@ -77,17 +73,28 @@ export function formatData({
 		[MetricType.Downloads]: Liferay.Language.get('downloads'),
 	};
 
+	return title[metricType];
+}
+
+export function formatData({
+	data: initialData,
+	metricType,
+}: {
+	data: Data;
+	metricType: MetricType;
+}): FormattedData {
+	const selectedHistogram = getSelectedHistogram(initialData, metricType);
+	const title = getTitle(metricType) as string;
+
 	const data = {
 		METRIC_DATA_KEY: {
 			color: Colors.Blue,
-			format: formatter('number'),
-			title: title[metricType ?? MetricType.Impressions] as string,
+			title,
 			total: formatter('number')(selectedHistogram?.totalValue ?? 0),
 		},
 		PREV_METRIC_DATA_KEY: {
-			color: Colors.Black,
-			format: formatter('number'),
-			title: title[metricType ?? MetricType.Impressions] as string,
+			color: Colors.LightGray,
+			title,
 			total: formatter('number')(selectedHistogram?.totalValue ?? 0),
 		},
 		x: {
@@ -153,7 +160,7 @@ export interface IMetricsChartLegendProps {
 		dataKey: string;
 		dotColor: string;
 		title: string;
-		total: string | number;
+		total?: string | number;
 		url?: string;
 	}[];
 	onDatakeyChange: (dataKey: string | null) => void;
@@ -188,18 +195,16 @@ const CurrentVsPreviousChart: React.FC<ICurrentVsPreviousChartProps> = ({
 
 	const legendItems: IMetricsChartLegendProps['legendItems'] = [
 		{
+			Dot: DashedDotIcon,
+			dataKey: MetricDataKey.Previous,
+			dotColor: prevMetricsChartData?.color ?? 'none',
+			title: Liferay.Language.get('previous-period'),
+		},
+		{
 			Dot: CircleDot,
 			dataKey: MetricDataKey.Current,
 			dotColor: metricsChartData?.color ?? 'none',
 			title: Liferay.Language.get('current-period'),
-			total: metricsChartData.total,
-		},
-		{
-			Dot: CircleDot,
-			dataKey: MetricDataKey.Previous,
-			dotColor: prevMetricsChartData?.color ?? 'none',
-			title: Liferay.Language.get('previous-period'),
-			total: prevMetricsChartData.total,
 		},
 	];
 
@@ -224,22 +229,29 @@ const CurrentVsPreviousChart: React.FC<ICurrentVsPreviousChartProps> = ({
 					),
 				}}
 				formattedData={formattedData}
+				legendAlign="text-right"
 				legendItems={legendItems}
 				onChartBlur={() => setActiveTabIndex(false)}
 				onChartFocus={() => setActiveTabIndex(true)}
 				onDatakeyChange={(dataKey) => setActiveLegendItem(dataKey)}
 				rangeSelector={30 as any}
-				tooltipTitle={Liferay.Language.get('visitors-behavior')}
+				tooltipTitle={getTitle(metricType) as string}
 				xAxisDataKey="METRIC_DATA_KEY"
 			>
 				<Line
 					activeDot={
-						<CircleDot stroke={metricsChartData.color ?? 'none'} />
+						<CurrentVsPreviousDot
+							fill="white"
+							stroke={metricsChartData.color ?? 'none'}
+						/>
 					}
 					animationDuration={100}
 					dataKey="METRIC_DATA_KEY"
 					dot={
-						<CircleDot stroke={metricsChartData.color ?? 'none'} />
+						<CurrentVsPreviousDot
+							fill={metricsChartData.color ?? 'none'}
+							stroke={metricsChartData.color ?? 'none'}
+						/>
 					}
 					fill={Colors.Blue}
 					fillOpacity={getFillOpacity(
@@ -258,22 +270,22 @@ const CurrentVsPreviousChart: React.FC<ICurrentVsPreviousChartProps> = ({
 
 				<Line
 					activeDot={
-						<CircleDot stroke={metricsChartData.color ?? 'none'} />
-					}
-					animationDuration={100}
-					dataKey="PREV_METRIC_DATA_KEY"
-					dot={
-						<CircleDot
+						<CurrentVsPreviousDot
+							fill="none"
 							stroke={prevMetricsChartData.color ?? 'none'}
 						/>
 					}
-					fill={Colors.Blue}
+					animationDuration={100}
+					dataKey="PREV_METRIC_DATA_KEY"
+					dot={false}
+					fill={Colors.LightGray}
 					fillOpacity={getFillOpacity(
 						MetricDataKey.Previous,
 						activeLegendItem
 					)}
 					legendType="plainline"
 					stroke={prevMetricsChartData.color ?? 'none'}
+					strokeDasharray="5 5"
 					strokeOpacity={getFillOpacity(
 						MetricDataKey.Previous,
 						activeLegendItem
