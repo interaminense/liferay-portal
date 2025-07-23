@@ -25,7 +25,7 @@ export type State = {
 		rangeSelector: RangeSelectors;
 	};
 	groupId: string;
-	versions: Version[] | null;
+	versions?: Version[] | null;
 };
 
 enum Types {
@@ -54,9 +54,9 @@ const initialState: State = {
 	versions: null,
 };
 
-export const AnalyticsReportsContext = createContext(initialState);
+export const Context = createContext(initialState);
 
-AnalyticsReportsContext.displayName = 'AnalyticsReportsContext';
+Context.displayName = 'Context';
 
 const reducer = (state: State, action: Action): State => {
 	switch (action.type) {
@@ -96,15 +96,14 @@ const reducer = (state: State, action: Action): State => {
 	}
 };
 
-interface IAnalyticsReportsProviderProps
-	extends React.HTMLAttributes<HTMLElement> {
+interface IContextProviderProps extends React.HTMLAttributes<HTMLElement> {
 	assetId: string;
 	assetType: AssetTypes | null;
 	groupId: string;
-	versions: Version[] | null;
+	versions?: Version[] | null;
 }
 
-const AnalyticsReportsProvider: React.FC<IAnalyticsReportsProviderProps> = ({
+const ContextProvider: React.FC<IContextProviderProps> = ({
 	assetId,
 	assetType,
 	children,
@@ -135,7 +134,7 @@ const AnalyticsReportsProvider: React.FC<IAnalyticsReportsProviderProps> = ({
 	};
 
 	return (
-		<AnalyticsReportsContext.Provider
+		<Context.Provider
 			value={{
 				...state,
 				assetId,
@@ -148,8 +147,8 @@ const AnalyticsReportsProvider: React.FC<IAnalyticsReportsProviderProps> = ({
 			}}
 		>
 			{children}
-		</AnalyticsReportsContext.Provider>
+		</Context.Provider>
 	);
 };
 
-export {AnalyticsReportsProvider};
+export {ContextProvider};
