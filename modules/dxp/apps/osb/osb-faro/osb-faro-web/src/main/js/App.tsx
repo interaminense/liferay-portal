@@ -35,6 +35,8 @@ import {setBackURL} from 'shared/actions/settings';
 import {throttle} from 'lodash';
 import {useFetchCurrentUser} from 'shared/hooks/useCurrentUser';
 
+console.log('wip')
+
 // Workspaces
 
 const AddWorkspace = lazy(
