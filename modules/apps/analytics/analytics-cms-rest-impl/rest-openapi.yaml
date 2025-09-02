@@ -167,16 +167,9 @@ info:
 openapi: 3.0.1
 paths:
     "/asset-deletion-overviews":
-        get:
-            operationId: getAssetDeletionOverviewsPage
+        post:
+            operationId: postAssetDeletionOverviewsPage
             parameters:
-                -   in: query
-                    name: assetIds
-                    schema:
-                        items:
-                            format: int64
-                            type: integer
-                        type: array
                 -   in: query
                     name: languageId
                     schema:
@@ -189,6 +182,20 @@ paths:
                     name: pageSize
                     schema:
                         type: integer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            items:
+                                format: int64
+                                type: integer
+                            type: array
+                    application/xml:
+                        schema:
+                            items:
+                                format: int64
+                                type: integer
+                            type: array
             responses:
                 200:
                     content:
