@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.liferay.analytics.cms.rest.client.dto.v1_0.AssetDeletionOverview;
 import com.liferay.analytics.cms.rest.client.http.HttpInvoker;
 import com.liferay.analytics.cms.rest.client.pagination.Page;
-import com.liferay.analytics.cms.rest.client.pagination.Pagination;
 import com.liferay.analytics.cms.rest.client.resource.v1_0.AssetDeletionOverviewResource;
 import com.liferay.analytics.cms.rest.client.serdes.v1_0.AssetDeletionOverviewSerDes;
 import com.liferay.petra.function.transform.TransformUtil;
@@ -32,7 +31,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -187,156 +185,8 @@ public abstract class BaseAssetDeletionOverviewResourceTestCase {
 	}
 
 	@Test
-	public void testGetAssetDeletionOverviewsPage() throws Exception {
-		Page<AssetDeletionOverview> page =
-			assetDeletionOverviewResource.getAssetDeletionOverviewsPage(
-				null, RandomTestUtil.randomString(), Pagination.of(1, 10));
-
-		long totalCount = page.getTotalCount();
-
-		AssetDeletionOverview assetDeletionOverview1 =
-			testGetAssetDeletionOverviewsPage_addAssetDeletionOverview(
-				randomAssetDeletionOverview());
-
-		AssetDeletionOverview assetDeletionOverview2 =
-			testGetAssetDeletionOverviewsPage_addAssetDeletionOverview(
-				randomAssetDeletionOverview());
-
-		page = assetDeletionOverviewResource.getAssetDeletionOverviewsPage(
-			null, null, Pagination.of(1, 10));
-
-		Assert.assertEquals(totalCount + 2, page.getTotalCount());
-
-		assertContains(
-			assetDeletionOverview1,
-			(List<AssetDeletionOverview>)page.getItems());
-		assertContains(
-			assetDeletionOverview2,
-			(List<AssetDeletionOverview>)page.getItems());
-		assertValid(
-			page, testGetAssetDeletionOverviewsPage_getExpectedActions());
-	}
-
-	protected Map<String, Map<String, String>>
-			testGetAssetDeletionOverviewsPage_getExpectedActions()
-		throws Exception {
-
-		Map<String, Map<String, String>> expectedActions = new HashMap<>();
-
-		return expectedActions;
-	}
-
-	@Test
-	public void testGetAssetDeletionOverviewsPageWithPagination()
-		throws Exception {
-
-		Page<AssetDeletionOverview> assetDeletionOverviewsPage =
-			assetDeletionOverviewResource.getAssetDeletionOverviewsPage(
-				null, null, null);
-
-		int totalCount = GetterUtil.getInteger(
-			assetDeletionOverviewsPage.getTotalCount());
-
-		AssetDeletionOverview assetDeletionOverview1 =
-			testGetAssetDeletionOverviewsPage_addAssetDeletionOverview(
-				randomAssetDeletionOverview());
-
-		AssetDeletionOverview assetDeletionOverview2 =
-			testGetAssetDeletionOverviewsPage_addAssetDeletionOverview(
-				randomAssetDeletionOverview());
-
-		AssetDeletionOverview assetDeletionOverview3 =
-			testGetAssetDeletionOverviewsPage_addAssetDeletionOverview(
-				randomAssetDeletionOverview());
-
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
-
-		int pageSizeLimit = 500;
-
-		if (totalCount >= (pageSizeLimit - 2)) {
-			Page<AssetDeletionOverview> page1 =
-				assetDeletionOverviewResource.getAssetDeletionOverviewsPage(
-					null, null,
-					Pagination.of(
-						(int)Math.ceil((totalCount + 1.0) / pageSizeLimit),
-						pageSizeLimit));
-
-			Assert.assertEquals(totalCount + 3, page1.getTotalCount());
-
-			assertContains(
-				assetDeletionOverview1,
-				(List<AssetDeletionOverview>)page1.getItems());
-
-			Page<AssetDeletionOverview> page2 =
-				assetDeletionOverviewResource.getAssetDeletionOverviewsPage(
-					null, null,
-					Pagination.of(
-						(int)Math.ceil((totalCount + 2.0) / pageSizeLimit),
-						pageSizeLimit));
-
-			assertContains(
-				assetDeletionOverview2,
-				(List<AssetDeletionOverview>)page2.getItems());
-
-			Page<AssetDeletionOverview> page3 =
-				assetDeletionOverviewResource.getAssetDeletionOverviewsPage(
-					null, null,
-					Pagination.of(
-						(int)Math.ceil((totalCount + 3.0) / pageSizeLimit),
-						pageSizeLimit));
-
-			assertContains(
-				assetDeletionOverview3,
-				(List<AssetDeletionOverview>)page3.getItems());
-		}
-		else {
-			Page<AssetDeletionOverview> page1 =
-				assetDeletionOverviewResource.getAssetDeletionOverviewsPage(
-					null, null, Pagination.of(1, totalCount + 2));
-
-			List<AssetDeletionOverview> assetDeletionOverviews1 =
-				(List<AssetDeletionOverview>)page1.getItems();
-
-			Assert.assertEquals(
-				assetDeletionOverviews1.toString(), totalCount + 2,
-				assetDeletionOverviews1.size());
-
-			Page<AssetDeletionOverview> page2 =
-				assetDeletionOverviewResource.getAssetDeletionOverviewsPage(
-					null, null, Pagination.of(2, totalCount + 2));
-
-			Assert.assertEquals(totalCount + 3, page2.getTotalCount());
-
-			List<AssetDeletionOverview> assetDeletionOverviews2 =
-				(List<AssetDeletionOverview>)page2.getItems();
-
-			Assert.assertEquals(
-				assetDeletionOverviews2.toString(), 1,
-				assetDeletionOverviews2.size());
-
-			Page<AssetDeletionOverview> page3 =
-				assetDeletionOverviewResource.getAssetDeletionOverviewsPage(
-					null, null, Pagination.of(1, (int)totalCount + 3));
-
-			assertContains(
-				assetDeletionOverview1,
-				(List<AssetDeletionOverview>)page3.getItems());
-			assertContains(
-				assetDeletionOverview2,
-				(List<AssetDeletionOverview>)page3.getItems());
-			assertContains(
-				assetDeletionOverview3,
-				(List<AssetDeletionOverview>)page3.getItems());
-		}
-	}
-
-	protected AssetDeletionOverview
-			testGetAssetDeletionOverviewsPage_addAssetDeletionOverview(
-				AssetDeletionOverview assetDeletionOverview)
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+	public void testPostAssetDeletionOverviewsPage() throws Exception {
+		Assert.assertTrue(false);
 	}
 
 	protected void assertContains(

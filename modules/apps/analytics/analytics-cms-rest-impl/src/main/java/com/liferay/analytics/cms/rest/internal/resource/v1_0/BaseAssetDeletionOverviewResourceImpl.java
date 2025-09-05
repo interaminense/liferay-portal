@@ -48,14 +48,10 @@ public abstract class BaseAssetDeletionOverviewResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/analytics-cms-rest/v1.0/asset-deletion-overviews'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/analytics-cms-rest/v1.0/asset-deletion-overviews'  -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@io.swagger.v3.oas.annotations.Parameter(
-				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
-				name = "assetIds"
-			),
 			@io.swagger.v3.oas.annotations.Parameter(
 				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
 				name = "languageId"
@@ -77,18 +73,16 @@ public abstract class BaseAssetDeletionOverviewResourceImpl
 			)
 		}
 	)
-	@jakarta.ws.rs.GET
+	@jakarta.ws.rs.Consumes({"application/json", "application/xml"})
 	@jakarta.ws.rs.Path("/asset-deletion-overviews")
+	@jakarta.ws.rs.POST
 	@jakarta.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	public Page<AssetDeletionOverview> getAssetDeletionOverviewsPage(
-			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
-			@jakarta.ws.rs.QueryParam("assetIds")
-			Long[] assetIds,
+	public Page<AssetDeletionOverview> postAssetDeletionOverviewsPage(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@jakarta.ws.rs.QueryParam("languageId")
 			String languageId,
-			@jakarta.ws.rs.core.Context Pagination pagination)
+			@jakarta.ws.rs.core.Context Pagination pagination, Long[] longs)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

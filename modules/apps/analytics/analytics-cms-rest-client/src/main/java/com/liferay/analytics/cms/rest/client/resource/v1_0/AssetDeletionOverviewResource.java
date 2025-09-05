@@ -16,7 +16,9 @@ import jakarta.annotation.Generated;
 
 import java.net.URL;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -34,12 +36,12 @@ public interface AssetDeletionOverviewResource {
 		return new Builder();
 	}
 
-	public Page<AssetDeletionOverview> getAssetDeletionOverviewsPage(
-			Long[] assetIds, String languageId, Pagination pagination)
+	public Page<AssetDeletionOverview> postAssetDeletionOverviewsPage(
+			String languageId, Pagination pagination, Long[] longs)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse getAssetDeletionOverviewsPageHttpResponse(
-			Long[] assetIds, String languageId, Pagination pagination)
+	public HttpInvoker.HttpResponse postAssetDeletionOverviewsPageHttpResponse(
+			String languageId, Pagination pagination, Long[] longs)
 		throws Exception;
 
 	public static class Builder {
@@ -151,13 +153,13 @@ public interface AssetDeletionOverviewResource {
 	public static class AssetDeletionOverviewResourceImpl
 		implements AssetDeletionOverviewResource {
 
-		public Page<AssetDeletionOverview> getAssetDeletionOverviewsPage(
-				Long[] assetIds, String languageId, Pagination pagination)
+		public Page<AssetDeletionOverview> postAssetDeletionOverviewsPage(
+				String languageId, Pagination pagination, Long[] longs)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getAssetDeletionOverviewsPageHttpResponse(
-					assetIds, languageId, pagination);
+				postAssetDeletionOverviewsPageHttpResponse(
+					languageId, pagination, longs);
 
 			String content = httpResponse.getContent();
 
@@ -219,11 +221,19 @@ public interface AssetDeletionOverviewResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				getAssetDeletionOverviewsPageHttpResponse(
-					Long[] assetIds, String languageId, Pagination pagination)
+				postAssetDeletionOverviewsPageHttpResponse(
+					String languageId, Pagination pagination, Long[] longs)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			List<String> values = new ArrayList<>();
+
+			for (Long longValue : longs) {
+				values.add(String.valueOf(longValue));
+			}
+
+			httpInvoker.body(values.toString(), "application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -242,14 +252,7 @@ public interface AssetDeletionOverviewResource {
 				httpInvoker.parameter(entry.getKey(), entry.getValue());
 			}
 
-			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
-
-			if (assetIds != null) {
-				for (int i = 0; i < assetIds.length; i++) {
-					httpInvoker.parameter(
-						"assetIds", String.valueOf(assetIds[i]));
-				}
-			}
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.POST);
 
 			if (languageId != null) {
 				httpInvoker.parameter("languageId", String.valueOf(languageId));

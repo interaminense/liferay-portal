@@ -43,8 +43,8 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface AssetDeletionOverviewResource {
 
-	public Page<AssetDeletionOverview> getAssetDeletionOverviewsPage(
-			Long[] assetIds, String languageId, Pagination pagination)
+	public Page<AssetDeletionOverview> postAssetDeletionOverviewsPage(
+			String languageId, Pagination pagination, Long[] longs)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(
