@@ -10,10 +10,10 @@ import React from 'react';
 import formatActionURL from '../../common/utils/formatActionURL';
 import {ISearchAssetObjectEntry} from '../../structure_builder/types/AssetType';
 import AssetTypeInfoPanel from '../info_panel/AssetTypeInfoPanelContent';
+import {openDeleteAssetModal} from '../modal/DeleteAssetModal';
 import createAssetAction from './actions/createAssetAction';
 import createFolderAction from './actions/createFolderAction';
 import deleteAssetEntriesBulkAction from './actions/deleteAssetEntriesBulkAction';
-import deleteItemAction from './actions/deleteItemAction';
 import shareAction from './actions/shareAction';
 import AuthorRenderer from './cell_renderers/AuthorRenderer';
 import NameRenderer from './cell_renderers/NameRenderer';
@@ -133,10 +133,9 @@ export default function ContentFDSPropsTransformer({
 			loadData: () => {};
 		}) {
 			if (action?.data?.id === 'delete') {
-				await deleteItemAction(itemData, loadData);
+				openDeleteAssetModal([itemData], loadData);
 			}
-
-			if (action?.data?.id === 'share') {
+			else if (action?.data?.id === 'share') {
 				const {autocompleteURL, collaboratorURLs} = additionalProps;
 
 				shareAction({
@@ -174,13 +173,10 @@ export default function ContentFDSPropsTransformer({
 			selectedData,
 		}: {
 			action: any;
-			selectedData: any;
+			selectedData: {items: ItemData[]};
 		}) => {
 			if (action?.data?.id === 'delete') {
-				deleteAssetEntriesBulkAction({
-					actionId: action.data.id,
-					selectedData,
-				});
+				openDeleteAssetModal(selectedData.items);
 			}
 		},
 		views: transformViewsItemsProps({

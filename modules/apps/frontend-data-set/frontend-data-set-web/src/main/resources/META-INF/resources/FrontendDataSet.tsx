@@ -115,7 +115,9 @@ const FrontendDataSetContent = ({
 	namespace,
 	nestedItemsKey,
 	nestedItemsReferenceKey,
+	onPageChange,
 	onActionDropdownItemClick,
+	onDeltaChange,
 	onBulkActionItemClick,
 	onSelect,
 	onSelectedItemsChange,
@@ -940,7 +942,11 @@ const FrontendDataSetContent = ({
 						perPageItems: Liferay.Language.get('x-items'),
 						selectPerPageItems: Liferay.Language.get('x-items'),
 					}}
-					onActiveChange={setPageNumber}
+					onActiveChange={(page: number) => {
+						setPageNumber(page);
+
+						onPageChange?.(page);
+					}}
 					onDeltaChange={(delta) => {
 						setPageNumber(1);
 
@@ -948,6 +954,8 @@ const FrontendDataSetContent = ({
 							type: VIEWS_ACTION_TYPES.UPDATE_PAGINATION_DELTA,
 							value: delta,
 						});
+
+						onDeltaChange?.(delta);
 					}}
 					totalItems={total}
 				/>

@@ -313,6 +313,8 @@ export interface IFrontendDataSetProps {
 	nestedItemsReferenceKey?: string;
 	onActionDropdownItemClick?: any;
 	onBulkActionItemClick?: any;
+	onDeltaChange?: (delta: number) => void;
+	onPageChange?: (page: number) => void;
 	onSelect?: ({selectedItems}: {selectedItems: Array<any>}) => void;
 	onSelectedItemsChange?: (selectedItems: Array<any>) => void;
 	overrideEmptyResultView?: boolean;

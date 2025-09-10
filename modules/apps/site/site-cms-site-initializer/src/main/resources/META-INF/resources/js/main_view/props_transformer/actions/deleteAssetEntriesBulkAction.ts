@@ -6,28 +6,27 @@
 import {openModal} from 'frontend-js-components-web';
 import {fetch, sub} from 'frontend-js-web';
 
+import {START_TASK} from '../../../common/utils/events';
+import DeleteAssetEntriesBulkModalContent from '../../modal/DeleteAssetEntriesBulkModalContent';
+
 function getBulkDeleteMessage(selectedData: any) {
-	if (selectedData.selectAll) {
+	if (selectedData.items.length > 1 || selectedData.selectAll) {
 		return {
 			confirmationMessage: Liferay.Language.get(
-				'delete-all-entries-confirmation'
+				'some-items-are-being-used-in-other-assets-or-pages.-deleting-them-will-break-those-references-and-cause-broken-links-or-missing-content.-this-action-cannot-be-undone.-are-you-sure-you-want-to-continue'
 			),
-			title: Liferay.Language.get('delete-all-entries'),
-		};
-	}
-	else if (selectedData.items.length > 1) {
-		return {
-			confirmationMessage: sub(
-				Liferay.Language.get('delete-entries-confirmation'),
-				[selectedData.items.length]
-			),
-			title: Liferay.Language.get('delete-entries'),
+
+			title: sub(Liferay.Language.get('delete-x-items'), [
+				selectedData.items.length,
+			]),
 		};
 	}
 
 	return {
-		confirmationMessage: Liferay.Language.get('delete-entry-confirmation'),
-		title: Liferay.Language.get('delete-entry'),
+		confirmationMessage: Liferay.Language.get(
+			'this-item-is-being-used-in-other-assets-or-pages-deleting-it-will-break-those-references-and-cause-broken-links-or-missing-content-this-action-cannot-be-undone-are-you-sure-you-want-to-continue'
+		),
+		title: Liferay.Language.get('delete-item'),
 	};
 }
 
@@ -42,13 +41,13 @@ export default function deleteAssetEntriesBulkAction({
 	const {confirmationMessage, title} = getBulkDeleteMessage(selectedData);
 
 	openModal({
-		bodyHTML: `
-                <div>
-                    <p>
-                        ${confirmationMessage}
-                    </p>
-                </div>
-			`,
+		contentComponent: ({closeModal}: {closeModal: () => void}) =>
+			DeleteAssetEntriesBulkModalContent({
+				closeModal,
+				confirmationMessage,
+				title,
+				selectedData,
+			}),
 		buttons: [
 			{
 				displayType: 'secondary',
@@ -58,43 +57,31 @@ export default function deleteAssetEntriesBulkAction({
 				},
 				type: 'cancel',
 			},
-			{
-				displayType: 'danger',
-				label: Liferay.Language.get('delete'),
-				onClick: async ({processClose}: any) => {
-					processClose();
-
-					const bulkActionItems = selectedData.items.map(
-						(item: any) => ({
-							classExternalReferenceCode:
-								item.embedded.externalReferenceCode,
-							className: item.entryClassName,
-							classPK: item.embedded.id,
-							name: item.embedded.title,
-						})
-					);
-
-					await fetch('/o/headless-cms/v1.0/bulk-action', {
-						body: JSON.stringify({
-							bulkActionItems,
-							selectAll: false,
-							type: 'DeleteBulkAction',
-						}),
-						headers: {
-							'Accept': 'application/json',
-							'Content-Type': 'application/json',
-							'x-csrf-token': Liferay.authToken,
-						},
-
-						method: 'POST',
-					});
-
-					loadData?.();
-				},
-			},
 		],
+
+		size: 'md',
+
+		// buttons: [
+		// 	{
+		// 		displayType: 'secondary',
+		// 		label: Liferay.Language.get('cancel'),
+		// 		onClick: ({processClose}) => {
+		// 			processClose();
+		// 		},
+		// 		type: 'cancel',
+		// 	},
+		// 	{
+		// 		displayType: 'danger',
+		// 		label: Liferay.Language.get('delete'),
+		// 		onClick: ({processClose}) => {
+		// 			Liferay.fire(START_TASK, {actionId, selectedData});
+
+		// 			processClose();
+		// 		},
+		// 	},
+		// ],
+
 		center: true,
 		status: 'danger',
-		title,
 	});
 }

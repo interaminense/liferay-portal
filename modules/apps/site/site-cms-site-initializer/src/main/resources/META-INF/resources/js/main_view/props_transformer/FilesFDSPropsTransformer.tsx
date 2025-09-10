@@ -10,11 +10,11 @@ import React from 'react';
 import {START_TASK} from '../../common/utils/events';
 import {ISearchAssetObjectEntry} from '../../structure_builder/types/AssetType';
 import AssetTypeInfoPanel from '../info_panel/AssetTypeInfoPanelContent';
+import {openDeleteAssetModal} from '../modal/DeleteAssetModal';
 import FilePreviewerModalContent from '../modal/FilePreviewerModalContent';
 import createAssetAction from './actions/createAssetAction';
 import createFolderAction from './actions/createFolderAction';
 import deleteAssetEntriesBulkAction from './actions/deleteAssetEntriesBulkAction';
-import deleteItemAction from './actions/deleteItemAction';
 import multipleFilesUploadAction from './actions/multipleFilesUploadAction';
 import shareAction from './actions/shareAction';
 import AuthorRenderer from './cell_renderers/AuthorRenderer';
@@ -154,11 +154,10 @@ export default function FilesFDSPropsTransformer({
 			itemData: ItemData;
 			loadData: () => {};
 		}) {
-			if (action?.data?.id === 'delete') {
-				await deleteItemAction(itemData, loadData);
+			if (action?.data.id === 'delete') {
+				openDeleteAssetModal(itemData, loadData);
 			}
-
-			if (action?.data?.id === 'view-file') {
+			else if (action?.data?.id === 'view-file') {
 				openModal({
 					containerProps: {
 						className: '',

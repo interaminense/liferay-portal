@@ -17,12 +17,17 @@ import displayUndoDeleteSuccessToast from '../utils/displayUndoDeleteSuccessToas
  * Enabled: Toast with success message, undo action and link to the Recycle Bin
  * Disabled: Toast with default success message
  */
-async function showSuccessToast(
-	getURL: string,
-	label: string,
-	loadData: () => {},
-	method: string
-) {
+async function showSuccessToast({
+	getURL,
+	label,
+	loadData,
+	method,
+}: {
+	getURL: string;
+	label: string;
+	loadData?: () => {};
+	method: string;
+}) {
 	const getItemResponse = await fetch(getURL, {
 		headers: {
 			...DEFAULT_HEADERS,
@@ -34,22 +39,23 @@ async function showSuccessToast(
 	const deletedEntry = await getItemResponse.json();
 
 	if (getItemResponse.ok) {
-		loadData();
+		loadData?.();
 
 		const {actions} = deletedEntry;
 
 		if (actions) {
-			displayUndoDeleteSuccessToast(
+			displayUndoDeleteSuccessToast({
 				label,
 				loadData,
-				actions.restore.method,
-				actions.restore.href
-			);
+				method: actions.restore.method,
+				restoreURL: actions.restore.href,
+			});
 		}
 	}
 	else {
 		if (getItemResponse.status === 404) {
-			loadData();
+			loadData?.();
+
 			displayDeleteSuccessToast(label);
 		}
 		else {
@@ -60,7 +66,7 @@ async function showSuccessToast(
 
 export default async function deleteItemAction(
 	itemData: ItemData,
-	loadData: () => {}
+	loadData?: () => {}
 ) {
 	const {actions, embedded} = itemData;
 
@@ -71,12 +77,12 @@ export default async function deleteItemAction(
 				method: actions.delete.method,
 			});
 
-			showSuccessToast(
-				actions.get.href,
-				embedded.title,
+			showSuccessToast({
+				getURL: actions.get.href,
+				label: embedded.title,
 				loadData,
-				actions.get.method
-			);
+				method: actions.get.method,
+			});
 		}
 		catch {
 			displayErrorToast();

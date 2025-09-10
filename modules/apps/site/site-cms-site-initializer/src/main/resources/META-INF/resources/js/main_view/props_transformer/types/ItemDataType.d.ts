@@ -12,11 +12,19 @@ interface ItemData {
 		restore: Action;
 		update: Action;
 	};
-    entryClassName: string;
-	embedded: {content: string; file?: any, id: number, objectEntryFolderId: number; title: string; creator: {
-		contentType: string;
+	embedded: {
+		content: string;
+		creator: {
+			contentType: string;
+			id: number;
+			image?: string;
+			name: string;
+		};
+		externalReferenceCode: string;
+		file?: any;
 		id: number;
-		image?: string;
-		name: string;
-	};};
+		objectEntryFolderId: number;
+		title: string;
+	};
+	entryClassName: string;
 }

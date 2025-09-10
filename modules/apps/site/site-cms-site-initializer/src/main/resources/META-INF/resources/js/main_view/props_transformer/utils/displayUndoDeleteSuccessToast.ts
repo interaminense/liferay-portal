@@ -18,12 +18,17 @@ const recycleBinToastInfo = {
 	url: '/cms/recycle-bin',
 };
 
-export default function displayUndoDeleteSuccessToast(
-	label: string,
-	loadData: () => {},
-	method: string,
-	restoreURL: string
-) {
+export default function displayUndoDeleteSuccessToast({
+	label,
+	loadData,
+	method,
+	restoreURL,
+}: {
+	label: string;
+	loadData?: () => {};
+	method: string;
+	restoreURL: string;
+}) {
 	const {className, linkText, url} = recycleBinToastInfo;
 
 	const formmatedRecycleBinLink = getFormattedLink(

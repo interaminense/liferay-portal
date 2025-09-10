@@ -424,7 +424,7 @@ public abstract class BaseSectionDisplayContext {
 				"modal-permissions"),
 			new FDSActionDropdownItem(
 				null, "trash", "delete",
-				language.get(httpServletRequest, "delete"), null, "delete",
+				language.get(httpServletRequest, "delete"), "delete", "delete",
 				null));
 	}
 
