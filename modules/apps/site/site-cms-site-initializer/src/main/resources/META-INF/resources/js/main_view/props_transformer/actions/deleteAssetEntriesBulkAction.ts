@@ -14,7 +14,7 @@ import {isFromRecycleBin} from '../utils/isFromRecycleBin';
 /**
  * Executes the bulk delete action.
  */
-async function executeBulkDeleteAction(
+export async function executeBulkDeleteAction(
 	selectedData: any,
 	processClose?: () => void
 ): Promise<void> {
@@ -158,7 +158,6 @@ async function showModal(
 				displayType: 'danger',
 				label: Liferay.Language.get('delete'),
 				onClick: async ({processClose}: {processClose: () => void}) => {
-					processClose();
 					await executeBulkDeleteAction(selectedData, processClose);
 				},
 			},

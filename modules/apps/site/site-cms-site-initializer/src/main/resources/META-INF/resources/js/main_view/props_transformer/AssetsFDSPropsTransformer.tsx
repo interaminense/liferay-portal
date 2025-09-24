@@ -16,7 +16,9 @@ import AssetTypeInfoPanel from '../info_panel/AssetTypeInfoPanelContent';
 import ItemNavigationModalContent from '../modal/item_navigation_view/ItemNavigationModalContent';
 import createAssetAction from './actions/createAssetAction';
 import createFolderAction from './actions/createFolderAction';
-import deleteAssetEntriesBulkAction from './actions/deleteAssetEntriesBulkAction';
+import deleteAssetEntriesBulkAction, {
+	executeBulkDeleteAction,
+} from './actions/deleteAssetEntriesBulkAction';
 import deleteItemAction from './actions/deleteItemAction';
 import multipleFilesUploadAction from './actions/multipleFilesUploadAction';
 import shareAction from './actions/shareAction';
@@ -273,7 +275,7 @@ export default function AssetsFDSPropsTransformer({
 				});
 			}
 		},
-		onBulkActionItemClick: ({
+		onBulkActionItemClick: async ({
 			action,
 			selectedData,
 		}: {
@@ -281,20 +283,26 @@ export default function AssetsFDSPropsTransformer({
 			selectedData: any;
 		}) => {
 			if (action?.data?.id === 'delete') {
+
+				// The bulk delete action should first check whether
+				// the Prevent Broken Links feature is enabled.
+
 				if (additionalProps.brokenLinksCheckerEnabled) {
 					openAssetUsageListModal({
 						apiURL: selectedData.apiURL,
 						itemsData: selectedData.items,
-						onDelete: () => {
-							deleteAssetEntriesBulkAction({
-								selectedData,
-							});
+						onDelete: async () => {
+
+							// The callback triggered after clicking the delete button
+							// will execute the deletion without opening another modal.
+
+							await executeBulkDeleteAction(selectedData);
 						},
 						selectAll: selectedData.selectAll,
 					});
 				}
 				else {
-					deleteAssetEntriesBulkAction({
+					await deleteAssetEntriesBulkAction({
 						selectedData,
 					});
 				}
