@@ -137,9 +137,7 @@ const PaginatedTable: React.FC<IPaginatedTable> = ({
 						{
 							align: 'left',
 							id: 'title',
-							name: Liferay.Language.get(
-								currentStructureTypeLabel
-							),
+							name: currentStructureTypeLabel,
 							width: viewSpecs[viewType].titleWidth,
 						},
 						{
