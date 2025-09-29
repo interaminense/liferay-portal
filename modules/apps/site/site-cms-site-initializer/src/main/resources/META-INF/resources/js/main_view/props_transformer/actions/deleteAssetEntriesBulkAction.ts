@@ -73,12 +73,12 @@ function getBulkDeleteMessage(selectedData: any): {
 /**
  * Fetches asset library spaces for the given items.
  */
-async function getEntriesSpaces(items: any[]): Promise<any[]> {
+async function getEntriesSpaces(items: ItemData[]): Promise<any[]> {
 	const promises = items
-		.filter((item) => item.embedded.scopeId)
+		.filter((item) => item.embedded.externalReferenceCode)
 		.map((item) =>
 			SpaceService.getSpace({
-				externalReferenceCode: item.embedded.scopeId,
+				spaceId: item.embedded.scopeId,
 			})
 		);
 
