@@ -32,6 +32,16 @@ const displayEditSuccessToast = (name: string) => {
 	});
 };
 
+const displayDeletionRequestAcceptedToast = () => {
+	openToast({
+		message: Liferay.Language.get(
+			'the-deletion-process-has-started-and-your-assets-will-be-removed-soon'
+		),
+		title: Liferay.Language.get('info'),
+		type: 'info',
+	});
+};
+
 const displayRequestSuccessToast = () => {
 	openToast({
 		message: Liferay.Language.get('your-request-completed-successfully'),
@@ -72,7 +82,8 @@ export {
 	displayDeleteSuccessToast,
 	displayEditSuccessToast,
 	displayErrorToast,
+	displayNameInUseErrorToast,
+	displayDeletionRequestAcceptedToast,
 	displayRequestSuccessToast,
 	displaySystemErrorToast,
-	displayNameInUseErrorToast,
 };
