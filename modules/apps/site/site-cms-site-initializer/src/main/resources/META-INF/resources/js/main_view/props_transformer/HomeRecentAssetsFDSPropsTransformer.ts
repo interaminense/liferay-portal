@@ -82,13 +82,18 @@ export default function HomeRecentAssetsFDSPropsTransformer({
 			loadData: () => {};
 		}) {
 			if (action?.data?.id === 'delete') {
-				openAssetUsageListModal({
-					itemsData: [itemData],
-					onDelete: async () => {
-						await deleteItemAction(itemData, loadData);
-					},
-					selectAll: false,
-				});
+				if (Liferay.FeatureFlags['LPD-48123']) {
+					openAssetUsageListModal({
+						itemsData: [itemData],
+						onDelete: async () => {
+							await deleteItemAction(itemData, loadData);
+						},
+						selectAll: false,
+					});
+				}
+				else {
+					await deleteItemAction(itemData, loadData);
+				}
 			}
 
 			if (
