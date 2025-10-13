@@ -1,12 +1,13 @@
 import AlertFeed from 'shared/components/AlertFeed';
-import BundleRouter from './route-middleware/BundleRouter';
-import ChannelProvider from 'shared/context/channel';
+import AppContextProvider, {AppContext} from './AppContext';
+import BundleRouter from 'route-middleware/BundleRouter';
 import client from 'shared/apollo/client';
 import ErrorPage from 'shared/pages/ErrorPage';
 import Loading from 'shared/components/Loading';
+import ModalNotificationLayer from 'shared/components/ModalNotificationLayer';
 import ModalRenderer from 'shared/components/ModalRenderer';
 import pathToRegexp from 'path-to-regexp';
-import React, {lazy, Suspense, useEffect, useState} from 'react';
+import React, {lazy, Suspense, useContext, useEffect, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import store from 'shared/store';
 import UnassignedSegmentsProvider from 'shared/context/unassignedSegments';
@@ -17,6 +18,7 @@ import {ClayLinkContext} from '@clayui/link';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import {close, modalTypes, open} from 'shared/actions/modals';
 import {ENABLE_ADD_TRIAL_WORKSPACE} from 'shared/util/constants';
+import {fetchCurrentUser} from 'shared/api/user';
 import {
 	Link,
 	matchPath,
@@ -25,17 +27,11 @@ import {
 	Switch,
 	useLocation
 } from 'react-router-dom';
-import {OnboardingContext} from 'shared/context/onboarding';
-import {Pendo} from 'shared/util/pendo';
-import {Project} from 'shared/util/records';
-import {Provider, useSelector} from 'react-redux';
+import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';
 import {saveState} from 'shared/store/local-storage';
 import {setBackURL} from 'shared/actions/settings';
 import {throttle} from 'lodash';
-import {useFetchCurrentUser} from 'shared/hooks/useCurrentUser';
-
-// Workspaces
 
 const AddWorkspace = lazy(
 	() =>
@@ -43,26 +39,13 @@ const AddWorkspace = lazy(
 			/* webpackChunkName: "AddWorkspace" */ './shared/pages/AddWorkspace'
 		)
 );
-const SelectWorkspaceAccount = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "SelectWorkspaceAccount" */ './shared/pages/SelectWorkspaceAccount'
-		)
-);
+
 const Workspaces = lazy(
 	() =>
-		import(/* webpackChunkName: "Workspaces" */ './shared/pages/Workspaces')
-);
-
-// WorkspaceLayer
-const WorkspaceLayer = lazy(
-	() =>
 		import(
-			/* webpackChunkName: "WorkspaceLayer" */ './shared/components/WorkspaceLayer'
-		)
+			/* webpackChunkName: "Workspaces" */ './shared/pages/Workspaces'
+		) as any
 );
-
-// Other
 
 const OAuthReceive = lazy(
 	() =>
@@ -71,80 +54,25 @@ const OAuthReceive = lazy(
 		)
 );
 
-const SETTINGS_PATH_REGEX = pathToRegexp(Routes.SETTINGS, null, {end: false});
+const AppSidebarRoutes = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "AppSidebarRoutes" */ 'shared/pages/AppSidebarRoutes'
+		)
+);
 
-const RoutesContainer = ({children}) => {
-	const location = useLocation();
-
-	const matchingPath = matchPath<any>(location.pathname, {
-		path: Routes.WORKSPACE_WITH_ID
-	});
-
-	const groupId = matchingPath?.params.groupId ?? '0';
-
-	const project: Project = useSelector<any, any>(state =>
-		state.getIn(['projects', groupId, 'data'])
-	);
-
-	const {data: currentUser, loading} = useFetchCurrentUser(groupId);
-
-	useEffect(() => {
-		const {
-			location: {pathname, search}
-		} = window;
-
-		if (!SETTINGS_PATH_REGEX.test(pathname)) {
-			store.dispatch(setBackURL(`${pathname}${search}`));
-		}
-	}, [location]);
-
-	useEffect(() => {
-		if (currentUser?.id && project?.corpProjectName) {
-			const pendo = new Pendo();
-
-			pendo.initialize({currentUser, project});
-		}
-	}, [currentUser?.id, project?.corpProjectName]);
-
-	if (loading) {
-		return <Loading />;
-	}
-
-	if (location?.state?.notFoundError) {
-		return <ErrorPage />;
-	}
-
-	return children;
-};
+const Settings = lazy(
+	() => import(/* webpackChunkName: "Settings" */ 'settings/pages/Settings')
+);
 
 const App = () => {
-	const [onboardingTriggered, setOnboardingTriggered] = useState(false);
-
 	useEffect(() => {
-		store.subscribe(throttle(() => saveState(store.getState()), 1000));
-	}, []);
-
-	const handleUserConfirmation = (message, callback) => {
-		store.dispatch(
-			open(modalTypes.CONFIRMATION_MODAL, {
-				cancelMessage: Liferay.Language.get('stay-on-page'),
-				message,
-				modalVariant: 'modal-warning',
-				onClose: () => {
-					callback(false);
-
-					store.dispatch(close());
-				},
-				onSubmit: () => {
-					callback(true);
-				},
-				submitButtonDisplay: 'warning',
-				submitMessage: Liferay.Language.get('leave-page'),
-				title: Liferay.Language.get('unsaved-changes'),
-				titleIcon: 'warning-full'
-			})
+		const unsubscribe = store.subscribe(
+			throttle(() => saveState(store.getState()), 1000)
 		);
-	};
+
+		return unsubscribe;
+	}, []);
 
 	return (
 		<ApolloProvider client={client}>
@@ -178,22 +106,55 @@ const App = () => {
 							}}
 						>
 							<UnassignedSegmentsProvider>
-								<OnboardingContext.Provider
-									value={{
-										onboardingTriggered,
-										setOnboardingTriggered: () =>
-											setOnboardingTriggered(true)
-									}}
-								>
-									<ChannelProvider>
-										<ClayTooltipProvider>
-											<div>
-												<Router
-													getUserConfirmation={
-														handleUserConfirmation
-													}
-												>
-													<RoutesContainer>
+								<ClayTooltipProvider>
+									<div>
+										<AppContextProvider>
+											<Router
+												getUserConfirmation={(
+													message,
+													callback
+												) => {
+													store.dispatch(
+														open(
+															modalTypes.CONFIRMATION_MODAL,
+															{
+																cancelMessage: Liferay.Language.get(
+																	'stay-on-page'
+																),
+																message,
+																modalVariant:
+																	'modal-warning',
+																onClose: () => {
+																	callback(
+																		false
+																	);
+
+																	store.dispatch(
+																		close()
+																	);
+																},
+																onSubmit: () => {
+																	callback(
+																		true
+																	);
+																},
+																submitButtonDisplay:
+																	'warning',
+																submitMessage: Liferay.Language.get(
+																	'leave-page'
+																),
+																title: Liferay.Language.get(
+																	'unsaved-changes'
+																),
+																titleIcon:
+																	'warning-full'
+															}
+														)
+													);
+												}}
+											>
+												<AppInitializer>
+													<div>
 														<AlertFeed />
 
 														<ModalRenderer />
@@ -224,16 +185,6 @@ const App = () => {
 																	}
 																/>
 
-																<BundleRouter
-																	data={
-																		SelectWorkspaceAccount
-																	}
-																	exact
-																	path={
-																		Routes.WORKSPACE_ADD
-																	}
-																/>
-
 																{ENABLE_ADD_TRIAL_WORKSPACE && (
 																	<BundleRouter
 																		data={
@@ -258,16 +209,6 @@ const App = () => {
 
 																<BundleRouter
 																	data={
-																		SelectWorkspaceAccount
-																	}
-																	exact
-																	path={
-																		Routes.WORKSPACE_SELECT_ACCOUNT
-																	}
-																/>
-
-																<BundleRouter
-																	data={
 																		OAuthReceive
 																	}
 																	exact
@@ -285,17 +226,35 @@ const App = () => {
 																	}
 																/>
 
-																<WorkspaceLayer />
+																<BundleRouter
+																	data={
+																		Settings
+																	}
+																	path={
+																		Routes.SETTINGS
+																	}
+																/>
+
+																<BundleRouter
+																	data={
+																		AppSidebarRoutes
+																	}
+																	path={
+																		Routes.CHANNEL
+																	}
+																/>
+
+																<ModalNotificationLayer />
 
 																<RouteNotFound />
 															</Switch>
 														</Suspense>
-													</RoutesContainer>
-												</Router>
-											</div>
-										</ClayTooltipProvider>
-									</ChannelProvider>
-								</OnboardingContext.Provider>
+													</div>
+												</AppInitializer>
+											</Router>
+										</AppContextProvider>
+									</div>
+								</ClayTooltipProvider>
 							</UnassignedSegmentsProvider>
 						</ClayLinkContext.Provider>
 					</ClayIconSpriteContext.Provider>
@@ -303,6 +262,54 @@ const App = () => {
 			</ApolloProviderHooks>
 		</ApolloProvider>
 	);
+};
+
+const SETTINGS_PATH_REGEX = pathToRegexp(Routes.SETTINGS, null, {end: false});
+
+const AppInitializer = ({children}) => {
+	const {setCurrentUser} = useContext(AppContext);
+	const location = useLocation();
+	const [loading, setLoading] = useState(true);
+
+	const matchingPath = matchPath<any>(location.pathname, {
+		path: Routes.WORKSPACE_WITH_ID
+	});
+
+	const groupId = matchingPath?.params.groupId ?? '0';
+
+	useEffect(() => {
+		// Store currentUser on Context
+
+		async function fetch() {
+			const currentUser = await fetchCurrentUser({groupId});
+
+			console.log('currentUser', currentUser);
+
+			setCurrentUser(currentUser);
+
+			setLoading(false);
+		}
+
+		fetch();
+	}, [groupId]);
+
+	useEffect(() => {
+		if (!SETTINGS_PATH_REGEX.test(location.pathname)) {
+			store.dispatch(
+				setBackURL(`${location.pathname}${location.search}`)
+			);
+		}
+	}, [location]);
+
+	if (loading) {
+		return <Loading />;
+	}
+
+	if (location?.state?.notFoundError) {
+		return <ErrorPage />;
+	}
+
+	return children;
 };
 
 export default App;

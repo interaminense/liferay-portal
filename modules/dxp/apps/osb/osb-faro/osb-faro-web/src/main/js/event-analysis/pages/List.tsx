@@ -6,13 +6,12 @@ import React from 'react';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
 import {Routes, toRoute} from 'shared/util/router';
-import {useChannelContext} from 'shared/context/channel';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser, useSelectedChannel} from '../../AppContext';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useParams} from 'react-router-dom';
 
 const List = () => {
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 
 	const {channelId, groupId} = useParams();
 	const currentUser = useCurrentUser();

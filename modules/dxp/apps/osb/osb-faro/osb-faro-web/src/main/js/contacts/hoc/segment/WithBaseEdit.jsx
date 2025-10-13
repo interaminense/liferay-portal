@@ -8,7 +8,7 @@ import omitDefinedProps from 'shared/util/omitDefinedProps';
 import React from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../../AppContext';
 import {close, modalTypes, open} from 'shared/actions/modals';
 import {connect} from 'react-redux';
 import {PropTypes} from 'prop-types';
@@ -35,7 +35,7 @@ const ERRORS = {
 };
 export default WrappedComponent => {
 	class BaseEdit extends React.Component {
-		static contextType = ChannelContext;
+		static contextType = AppContext;
 
 		static propTypes = {
 			addAlert: PropTypes.func.isRequired,

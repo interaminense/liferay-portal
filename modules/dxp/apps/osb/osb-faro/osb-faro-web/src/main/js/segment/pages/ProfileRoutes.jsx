@@ -9,7 +9,7 @@ import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {AlertTypes} from 'shared/components/Alert';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../AppContext';
 import {compose} from 'shared/hoc';
 import {CSVType} from 'shared/components/download-report/utils';
 import {DownloadStaticCSVReport} from 'shared/components/download-report/DownloadStaticCSVReport';
@@ -60,7 +60,7 @@ const NAV_ITEMS = [
 ];
 
 export class SegmentProfileRoutes extends React.Component {
-	static contextType = ChannelContext;
+	static contextType = AppContext;
 
 	static propTypes = {
 		groupId: PropTypes.string.isRequired,

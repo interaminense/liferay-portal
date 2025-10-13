@@ -2,11 +2,11 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {addAlert} from 'shared/actions/alerts';
+import {AppContext} from '../../../AppContext';
 import {cleanup, render} from '@testing-library/react';
 import {Project, User} from 'shared/util/records';
 import {Provider} from 'react-redux';
 import {StaticRouter} from 'react-router';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {Workspace} from '../Workspace';
 
 jest.unmock('react-dom');
@@ -28,31 +28,27 @@ const defaultProps = {
 };
 
 const DefaultComponent = props => (
-	<Provider store={mockStore()}>
-		<StaticRouter>
-			<Workspace {...defaultProps} {...props} />
-		</StaticRouter>
-	</Provider>
+	<AppContext.Provider value={props.currentUser}>
+		<Provider store={mockStore()}>
+			<StaticRouter>
+				<Workspace {...defaultProps} {...props} />
+			</StaticRouter>
+		</Provider>
+	</AppContext.Provider>
 );
 
 describe('Workspace Settting', () => {
 	afterEach(cleanup);
 
 	it('should render', () => {
-		useCurrentUser.mockImplementation(() => ({
-			isAdmin: () => true
-		}));
-
-		const {container} = render(<DefaultComponent />);
+		const {container} = render(
+			<DefaultComponent currentUser={{isAdmin: () => true}} />
+		);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('should render as disabled if the user is not an AC admin', () => {
-		useCurrentUser.mockImplementation(() => ({
-			isAdmin: () => false
-		}));
-
 		const {container, getByDisplayValue, getByLabelText} = render(
 			<DefaultComponent
 				currentUser={data.getImmutableMock(User, data.mockMemberUser)}

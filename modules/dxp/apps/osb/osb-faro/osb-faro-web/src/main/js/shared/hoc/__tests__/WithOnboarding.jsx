@@ -4,11 +4,11 @@ import * as API from 'shared/api';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import withOnboarding from '../WithOnboarding';
+import {AppContext} from '../../../AppContext';
 import {cleanup, render} from '@testing-library/react';
 import {mockDataSourcesReq} from 'test/graphql-data';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockMemberUser} from 'test/data';
-import {OnboardingContext} from 'shared/context/onboarding';
 import {open} from 'shared/actions/modals';
 import {Provider} from 'react-redux';
 
@@ -23,11 +23,11 @@ const defaultContext = {
 
 const DefaultComponent = props => (
 	<Provider store={mockStore()}>
-		<OnboardingContext.Provider value={defaultContext}>
+		<AppContext.Provider value={defaultContext}>
 			<MockedProvider mocks={[mockDataSourcesReq()]}>
 				<WrappedComponent {...props} />
 			</MockedProvider>
-		</OnboardingContext.Provider>
+		</AppContext.Provider>
 	</Provider>
 );
 
@@ -40,7 +40,7 @@ describe('WithOnboarding', () => {
 	it('should render the wrapped component', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<OnboardingContext.Provider value={defaultContext}>
+				<AppContext.Provider value={defaultContext}>
 					<MockedProvider
 						mocks={[
 							mockDataSourcesReq([
@@ -55,7 +55,7 @@ describe('WithOnboarding', () => {
 					>
 						<WrappedComponent />
 					</MockedProvider>
-				</OnboardingContext.Provider>
+				</AppContext.Provider>
 			</Provider>
 		);
 
@@ -83,7 +83,7 @@ describe('WithOnboarding', () => {
 	it('should not trigger the onboarding modal if it has already been triggered', () => {
 		render(
 			<Provider store={mockStore()}>
-				<OnboardingContext.Provider
+				<AppContext.Provider
 					value={{
 						...defaultContext,
 						onboardingTriggered: true
@@ -92,7 +92,7 @@ describe('WithOnboarding', () => {
 					<MockedProvider mocks={[mockDataSourcesReq()]}>
 						<WrappedComponent />
 					</MockedProvider>
-				</OnboardingContext.Provider>
+				</AppContext.Provider>
 			</Provider>
 		);
 
@@ -104,13 +104,13 @@ describe('WithOnboarding', () => {
 	it('should not trigger the onboarding modal when a prop happens to match a field in the SitesDashboardQuery', () => {
 		render(
 			<Provider store={mockStore()}>
-				<OnboardingContext.Provider value={defaultContext}>
+				<AppContext.Provider value={defaultContext}>
 					<MockedProvider
 						mocks={[mockDataSourcesReq([], {type: 'DYNAMIC'})]}
 					>
 						<WrappedComponent type='DYNAMIC' />
 					</MockedProvider>
-				</OnboardingContext.Provider>
+				</AppContext.Provider>
 			</Provider>
 		);
 

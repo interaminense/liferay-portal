@@ -13,8 +13,7 @@ import {
 import {EXPERIMENT_LIST_QUERY} from '../queries/ExperimentQuery';
 import {get} from 'lodash';
 import {Routes, toRoute} from 'shared/util/router';
-import {useChannelContext} from 'shared/context/channel';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser, useSelectedChannel} from '../../AppContext';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useParams} from 'react-router-dom';
 import {useQuery} from '@apollo/react-hooks';
@@ -27,7 +26,7 @@ const ExperimentsListPage = () => {
 		initialOrderIOMap: createOrderIOMap(MODIFIED_DATE)
 	});
 	const dataSourceStates = useDataSource();
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 	const currentUser = useCurrentUser();
 	const {timeZoneId} = useTimeZone();
 

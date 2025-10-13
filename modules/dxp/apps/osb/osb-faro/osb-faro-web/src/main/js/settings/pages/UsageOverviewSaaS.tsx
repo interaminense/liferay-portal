@@ -4,10 +4,9 @@ import ClayLayout from '@clayui/layout';
 
 import React from 'react';
 
-import {compose, withProject} from 'shared/hoc';
 import {GenericBarsCard} from 'settings/components/usage-overview/GenericBarsCard';
 import {GenericDonutChart} from 'settings/components/usage-overview/GenericDonutChart';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../AppContext';
 
 export type Resource = {
 	capacity: string;
@@ -112,4 +111,4 @@ export const UsageOverviewSaaS: React.FC<IUsageOverviewSaaS> = ({groupId}) => {
 	);
 };
 
-export default compose(withProject)(UsageOverviewSaaS);
+export default UsageOverviewSaaS;

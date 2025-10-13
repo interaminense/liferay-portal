@@ -15,10 +15,10 @@ import InfoPopover from 'shared/components/InfoPopover';
 import Input from 'shared/components/Input';
 import Label from 'shared/components/form/Label';
 import Modal from 'shared/components/modal';
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, useContext, useEffect, useRef, useState} from 'react';
 import Select from 'shared/components/Select';
 import URLConstants from 'shared/util/url-constants';
-import {ActionType, useChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../../../AppContext';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {CREATE_DATE} from 'shared/util/pagination';
@@ -101,7 +101,7 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 	onDxpConnected,
 	onNext
 }) => {
-	const {channelDispatch} = useChannelContext();
+	const {setChannels, setSelectedChannel} = useContext(AppContext);
 	const [token, setToken] = useState<string>('');
 
 	const [getDataSources, {data}] = useLazyQuery<DataSourceData>(
@@ -166,15 +166,9 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 
 			history.push(toRoute(Routes.SITES, {channelId, groupId}));
 
-			channelDispatch({
-				payload: getDefaultChannel(channelId, items),
-				type: ActionType.setSelectedChannel
-			});
+			setSelectedChannel(getDefaultChannel(channelId, items));
 
-			channelDispatch({
-				payload: items,
-				type: ActionType.setChannels
-			});
+			setChannels(items);
 		});
 	};
 

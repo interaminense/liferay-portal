@@ -10,8 +10,8 @@ import {DownloadStaticCSVReport} from 'shared/components/download-report/Downloa
 import {getMatchedRoute, Routes} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {Switch, useParams} from 'react-router-dom';
-import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
+import {useSelectedChannel} from '../../../AppContext';
 
 const Distribution = lazy(
 	() =>
@@ -73,7 +73,7 @@ const NAV_ITEMS = [
 
 const Dashboard: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
 	const dataSourceStates = useDataSource();
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 	const {channelId, groupId} = useParams();
 	const matchedRoute = getMatchedRoute(NAV_ITEMS);
 

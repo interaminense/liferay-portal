@@ -20,10 +20,10 @@ import {graphql} from '@apollo/react-hoc';
 import {pickBy} from 'lodash';
 import {setUriQueryValues} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
-import {useChannelContext} from 'shared/context/channel';
 import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
+import {useSelectedChannel} from '../../AppContext';
 import {withHistory, withPaginationBar, withTableData} from 'shared/hoc';
 
 const {
@@ -84,7 +84,7 @@ const TableWithData = withTableData(withData, {
 });
 
 const SearchTerms = ({history}) => {
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 	const {channelId, groupId} = useParams();
 	const {delta, orderIOMap, page} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(COUNT)

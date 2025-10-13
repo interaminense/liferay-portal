@@ -2,7 +2,7 @@ import BasePage from 'settings/components/BasePage';
 import React from 'react';
 import RequestList from '../hocs/RequestList';
 import {getDataPrivacy} from 'shared/util/breadcrumbs';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../../AppContext';
 import {useParams} from 'react-router-dom';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 

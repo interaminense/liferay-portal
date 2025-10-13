@@ -2,7 +2,7 @@ import BasePage from 'settings/components/BasePage';
 import React from 'react';
 import TrackedBehaviorsList from '../hocs/TrackedBehaviorsList';
 import {getDefinitions} from 'shared/util/breadcrumbs';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../../AppContext';
 
 interface ITrackedBehaviorsProps {
 	groupId: string;

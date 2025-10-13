@@ -10,11 +10,10 @@ import Form, {
 import getCN from 'classnames';
 import Loading, {Align} from 'shared/components/Loading';
 import NavigationWarning from 'shared/components/NavigationWarning';
-import React, {useContext, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Sheet from 'shared/components/Sheet';
 import TimeZonePicker from '../form/TimeZonePicker';
 import URLConstants from 'shared/util/url-constants';
-import {BasePageContext} from './BasePage';
 import {close, open} from 'shared/actions/modals';
 import {connect} from 'react-redux';
 import {Formik} from 'formik';
@@ -22,6 +21,7 @@ import {Modal} from 'shared/types';
 import {Project, TimeZone} from 'shared/util/records';
 import {sequence} from 'shared/util/promise';
 import {sub} from 'shared/util/lang';
+import {useCurrentUser} from '../../../AppContext';
 import {
 	validateEmail,
 	validateEmailArr,
@@ -66,13 +66,13 @@ const getDefaultServerLocation = () => {
 };
 
 interface IAddWorkspaceFormProps extends React.HTMLAttributes<HTMLElement> {
-	close: Modal.close;
-	disabled: boolean;
-	editing: boolean;
-	emailAddressDomains: string[];
+	close?: Modal.close;
+	disabled?: boolean;
+	editing?: boolean;
+	emailAddressDomains?: string[];
 	onSubmit: (values) => Promise<any>;
-	open: Modal.open;
-	project?: Project;
+	open?: Modal.open;
+	project: Project;
 }
 
 const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
@@ -85,7 +85,7 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 	open,
 	project
 }) => {
-	const {currentUser} = useContext(BasePageContext);
+	const currentUser = useCurrentUser();
 
 	const formRef = useRef<Formik>();
 

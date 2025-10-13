@@ -3,19 +3,17 @@ import ClayLink from '@clayui/link';
 import EmptyState from 'shared/components/workspaces/EmptyState';
 import JoinableWorkspacesWrapper from 'shared/components/workspaces/JoinableWorkspacesWrapper';
 import Loading from 'shared/components/Loading';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import URLConstants from 'shared/util/url-constants';
 import WorkspaceList from 'shared/components/workspaces/workspace-list';
 import WorkspacesBasePage from 'shared/components/workspaces/BasePage';
 import {ENABLE_ADD_TRIAL_WORKSPACE} from 'shared/util/constants';
+import {fetchJoinableProjects, fetchMany} from 'shared/api/projects';
 import {isString} from 'lodash';
 import {PLANS} from 'shared/util/subscriptions';
+import {Project} from 'shared/util/records';
 import {Redirect} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
-import {
-	useFetchJoinableProjects,
-	useFetchProjects
-} from 'shared/hooks/useProjects';
 import {useIncidentAlert} from 'shared/hooks/useIncidentAlert';
 
 export const routingFn = ({projects}) => {
@@ -28,24 +26,11 @@ export const routingFn = ({projects}) => {
 	return null;
 };
 
-const WorkspacesContent = ({
-	joinableProjects,
-	loading,
-	loadingJoinableProjects,
-	projects
-}) => {
-	if (loading) {
-		return <Loading spacer />;
-	}
-
+const WorkspaceContent = ({joinableProjects, projects}) => {
 	const filteredProjects = projects.filter(
 		({faroSubscription, groupId}) =>
-			faroSubscription.name !== PLANS.basic.name || groupId
+			faroSubscription.get('name') !== PLANS.basic.name || groupId
 	);
-
-	if (!projects.length && !joinableProjects.length) {
-		return <EmptyState />;
-	}
 
 	return (
 		<>
@@ -57,22 +42,18 @@ const WorkspacesContent = ({
 				/>
 			)}
 
-			{loadingJoinableProjects ? (
-				<Loading spacer />
-			) : (
-				!!joinableProjects.length && (
-					<JoinableWorkspacesWrapper
-						details={Liferay.Language.get(
-							'workspaces-you-can-request-access-to-based-on-your-email-domain'
-						)}
-						title={Liferay.Language.get('workspaces-you-can-join')}
-					>
-						<WorkspaceList
-							accounts={joinableProjects}
-							isJoinableProjects
-						/>
-					</JoinableWorkspacesWrapper>
-				)
+			{!!joinableProjects.length && (
+				<JoinableWorkspacesWrapper
+					details={Liferay.Language.get(
+						'workspaces-you-can-request-access-to-based-on-your-email-domain'
+					)}
+					title={Liferay.Language.get('workspaces-you-can-join')}
+				>
+					<WorkspaceList
+						accounts={joinableProjects}
+						isJoinableProjects
+					/>
+				</JoinableWorkspacesWrapper>
 			)}
 
 			{ENABLE_ADD_TRIAL_WORKSPACE && (
@@ -92,49 +73,41 @@ const WorkspacesContent = ({
 	);
 };
 
-const Workspaces: any = () => {
-	const {data: projects, loading} = useFetchProjects();
-
+const Workspaces = () => {
 	const {
 		data: preferences,
 		loading: loadingPreferences,
 		onClose
 	} = useIncidentAlert();
 
-	const {
-		data: joinableProjects,
-		loading: loadingJoinableProjects
-	} = useFetchJoinableProjects();
+	const [loading, setLoading] = useState(true);
+	const [projects, setProjects] = useState<Project[]>([]);
+	const [joinableProjects, setJoinableProjects] = useState<Project[]>([]);
+
+	useEffect(() => {
+		async function fetch() {
+			try {
+				const projects = await fetchMany();
+				const joinableProjects = await fetchJoinableProjects();
+
+				setProjects(projects.map(project => new Project(project)));
+				setJoinableProjects(joinableProjects);
+			} catch (error) {
+				// eslint-disable-next-line no-console
+				console.error('Error on fetch projects', error);
+			}
+
+			setLoading(false);
+		}
+
+		fetch();
+	}, []);
 
 	if (projects.length === 1 && !projects[0].groupId) {
 		return toRoute(Routes.WORKSPACE_ADD_WITH_CORP_PROJECT_UUID, {
 			corpProjectUuid: projects[0].corpProjectUuid
 		});
 	}
-
-	const handleDetails = () => {
-		if (projects.length) {
-			return [
-				<p key='SELECT'>
-					{Liferay.Language.get('workspaces-you-have-joined')}
-				</p>
-			];
-		} else if (!loading && !projects.length && !joinableProjects.length) {
-			return [
-				<p key='EMPTY_STATE'>
-					{Liferay.Language.get(
-						'you-are-not-a-part-of-any-workspaces,-lets-create-a-new-one'
-					)}
-				</p>
-			];
-		}
-	};
-
-	const handleTitle = () => {
-		if (projects.length || (!projects.length && !joinableProjects.length)) {
-			return Liferay.Language.get('your-workspaces');
-		}
-	};
 
 	const route = routingFn({projects});
 
@@ -144,7 +117,32 @@ const Workspaces: any = () => {
 
 	return (
 		<div className='workspaces-root' key='Workspaces'>
-			<WorkspacesBasePage details={handleDetails()} title={handleTitle()}>
+			<WorkspacesBasePage
+				details={() => {
+					if (projects.length) {
+						return [
+							<p key='SELECT'>
+								{Liferay.Language.get(
+									'workspaces-you-have-joined'
+								)}
+							</p>
+						];
+					} else if (
+						!loading &&
+						!projects.length &&
+						!joinableProjects.length
+					) {
+						return [
+							<p key='EMPTY_STATE'>
+								{Liferay.Language.get(
+									'you-are-not-a-part-of-any-workspaces,-lets-create-a-new-one'
+								)}
+							</p>
+						];
+					}
+				}}
+				title={Liferay.Language.get('your-workspaces')}
+			>
 				{!loadingPreferences && preferences.incidentAlertEnabled && (
 					<ClayAlert
 						displayType='warning'
@@ -170,12 +168,16 @@ const Workspaces: any = () => {
 					</ClayAlert>
 				)}
 
-				<WorkspacesContent
-					joinableProjects={joinableProjects}
-					loading={loading}
-					loadingJoinableProjects={loadingJoinableProjects}
-					projects={projects}
-				/>
+				{loading ? (
+					<Loading spacer />
+				) : !projects.length && !joinableProjects.length ? (
+					<EmptyState />
+				) : (
+					<WorkspaceContent
+						joinableProjects={joinableProjects}
+						projects={projects}
+					/>
+				)}
 			</WorkspacesBasePage>
 		</div>
 	);

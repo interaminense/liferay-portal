@@ -2,12 +2,12 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import SalesforceConfigurationStatus from '../ConfigurationStatus';
+import {AppContext} from '../../../../../AppContext';
 import {BrowserRouter} from 'react-router-dom';
 import {DataSource} from 'shared/util/records';
 import {fromJS, Map} from 'immutable';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 
 jest.unmock('react-dom');
 
@@ -40,41 +40,42 @@ const DEFAULT_DATA_SOURCE = new DataSource(
 	})
 );
 
-const WrappedComponent = ({dataSource = DEFAULT_DATA_SOURCE}) => (
-	<Provider store={mockStore()}>
-		<BrowserRouter>
-			<SalesforceConfigurationStatus
-				dataSource={dataSource}
-				groupId='23'
-				id='23'
-			/>
-		</BrowserRouter>
-	</Provider>
+const WrappedComponent = ({currentUser, dataSource = DEFAULT_DATA_SOURCE}) => (
+	<AppContext.Provider value={currentUser}>
+		<Provider store={mockStore()}>
+			<BrowserRouter>
+				<SalesforceConfigurationStatus
+					dataSource={dataSource}
+					groupId='23'
+					id='23'
+				/>
+			</BrowserRouter>
+		</Provider>
+	</AppContext.Provider>
 );
 
 describe('SalesforceConfigurationStatus', () => {
 	it('should render', () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
-		const {container} = render(<WrappedComponent />);
+		const {container} = render(
+			<WrappedComponent currentUser={{isAdmin: () => true}} />
+		);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('should render as read-only if the user is not authorized to make changes', () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => false}));
-
-		const {container} = render(<WrappedComponent />);
+		const {container} = render(
+			<WrappedComponent currentUser={{isAdmin: () => false}} />
+		);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	// TODO: should be rewritten when new endpoint to replace connectionStatuses is added
 	it('should render already configured items with the button text "pause" instead of "enable"', () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
 		const {container} = render(
 			<WrappedComponent
+				currentUser={{isAdmin: () => true}}
 				dataSource={
 					new DataSource(
 						data.mockLiferayDataSource(23, {
@@ -109,10 +110,9 @@ describe('SalesforceConfigurationStatus', () => {
 
 	// TODO: should be rewritten when new endpoint to replace connectionStatuses is added
 	it('should render as configuring items with a metric bar instead of a button', () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
 		const {container} = render(
 			<WrappedComponent
+				currentUser={{isAdmin: () => true}}
 				dataSource={
 					new DataSource(
 						data.mockLiferayDataSource(23, {

@@ -1,3 +1,5 @@
+// Refatorar o withSidebar
+
 import * as API from 'shared/api';
 import autobind from 'autobind-decorator';
 import checkProjectState from './CheckProjectState';
@@ -10,7 +12,7 @@ import Sidebar from 'shared/components/sidebar';
 import withCurrentUser from './WithCurrentUser';
 import withDefaultChannelId from './WithDefaultChannelId';
 import withQuery from './WithQuery';
-import {ActionType, ChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../AppContext';
 import {collapseSidebar} from 'shared/actions/sidebar';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
@@ -54,7 +56,7 @@ export default compose(
 	checkValidChannel,
 	WrappedComponent => {
 		class WithSidebar extends React.Component {
-			static contextType = ChannelContext;
+			static contextType = AppContext;
 
 			static propTypes = {
 				channels: PropTypes.arrayOf(
@@ -77,7 +79,7 @@ export default compose(
 				showTransition: false
 			};
 
-			constructor(props, {channelDispatch}) {
+			constructor(props, {setChannels, setSelectedChannel}) {
 				super(props);
 
 				const {
@@ -98,15 +100,9 @@ export default compose(
 					});
 				}
 
-				channelDispatch({
-					payload: channel,
-					type: ActionType.setSelectedChannel
-				});
+				setSelectedChannel(channel);
 
-				channelDispatch({
-					payload: channels,
-					type: ActionType.setChannels
-				});
+				setChannels(channels);
 			}
 
 			componentDidMount() {
@@ -116,7 +112,7 @@ export default compose(
 			}
 
 			componentDidUpdate(prevProps) {
-				const {channelDispatch} = this.context;
+				const {setSelectedChannel} = this.context;
 
 				if (hasChanges(prevProps, this.props, 'collapsed')) {
 					setTimeout(
@@ -131,10 +127,9 @@ export default compose(
 						props: {defaultChannelId}
 					} = this;
 
-					channelDispatch({
-						payload: getDefaultChannel(defaultChannelId, channels),
-						type: ActionType.setSelectedChannel
-					});
+					setSelectedChannel(
+						getDefaultChannel(defaultChannelId, channels)
+					);
 				}
 			}
 

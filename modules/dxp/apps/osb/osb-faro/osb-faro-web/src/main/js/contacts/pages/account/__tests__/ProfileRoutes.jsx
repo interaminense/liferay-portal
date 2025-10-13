@@ -3,11 +3,18 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import {Account} from 'shared/util/records';
 import {AccountProfileRoutes} from '../ProfileRoutes';
+import {AppContext} from 'AppContext';
 import {BrowserRouter} from 'react-router-dom';
-import {ChannelContext} from 'shared/context/channel';
 import {cleanup, render} from '@testing-library/react';
-import {mockChannelContext} from 'test/mock-channel-context';
+import {mockChannel} from './data';
+
 import {Provider} from 'react-redux';
+
+export const mockChannelContext = () => ({
+	channelDispatch: jest.fn(() => null),
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel()
+});
 
 const defaultProps = {
 	account: data.getImmutableMock(Account, data.mockAccount),
@@ -32,9 +39,9 @@ describe('AccountProfileRoutes', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
 				<BrowserRouter>
-					<ChannelContext.Provider value={mockChannelContext()}>
+					<AppContext.Provider value={mockChannelContext()}>
 						<AccountProfileRoutes {...defaultProps} />
-					</ChannelContext.Provider>
+					</AppContext.Provider>
 				</BrowserRouter>
 			</Provider>
 		);

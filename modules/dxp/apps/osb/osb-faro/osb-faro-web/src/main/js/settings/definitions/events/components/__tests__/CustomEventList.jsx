@@ -6,6 +6,7 @@ import CustomEventList from '../CustomEventList';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {AppContext} from '../../../../../AppContext';
 import {cleanup, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/react-testing';
@@ -14,7 +15,6 @@ import {NotificationSubtypes} from 'shared/util/records/Notification';
 import {Provider} from 'react-redux';
 import {range} from 'lodash';
 import {Routes} from 'shared/util/router';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {waitForLoading} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -62,9 +62,11 @@ describe('CustomEventList', () => {
 	afterAll(cleanup);
 
 	it('should render', async () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
-		const {container, queryByTestId} = render(<WrappedComponent />);
+		const {container, queryByTestId} = render(
+			<AppContext.Provider value={{currentUser: {isAdmin: () => true}}}>
+				<WrappedComponent />
+			</AppContext.Provider>
+		);
 
 		await waitForLoading(container);
 
@@ -75,13 +77,15 @@ describe('CustomEventList', () => {
 	});
 
 	it('should render w/o select all checkbox if user is not an admin', async () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => false}));
-
 		API.user.fetchCurrentUser.mockReturnValueOnce(
 			Promise.resolve(data.mockMemberUser('23'))
 		);
 
-		const {container, queryByTestId} = render(<WrappedComponent />);
+		const {container, queryByTestId} = render(
+			<AppContext.Provider value={{currentUser: {isAdmin: () => false}}}>
+				<WrappedComponent />
+			</AppContext.Provider>
+		);
 
 		await waitForLoading(container);
 
@@ -91,8 +95,6 @@ describe('CustomEventList', () => {
 	});
 
 	it('should render alert notification', async () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
 		mockNotificationAlertList.useNotificationsAPI = jest.fn(() => ({
 			data: range(1).map(i =>
 				data.mockNotification(i, {
@@ -103,7 +105,11 @@ describe('CustomEventList', () => {
 			refetch: () => {}
 		}));
 
-		const {container} = render(<WrappedComponent />);
+		const {container} = render(
+			<AppContext.Provider value={{currentUser: {isAdmin: () => true}}}>
+				<WrappedComponent />
+			</AppContext.Provider>
+		);
 
 		await waitForLoading(container);
 

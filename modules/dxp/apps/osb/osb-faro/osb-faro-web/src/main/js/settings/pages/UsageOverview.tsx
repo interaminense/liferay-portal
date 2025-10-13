@@ -3,9 +3,9 @@ import Card from 'shared/components/Card';
 import ClayAlert from '@clayui/alert';
 import ClayLayout from '@clayui/layout';
 import moment from 'moment';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {AlertTypes} from 'shared/components/Alert';
-import {compose, withProject} from 'shared/hoc';
+import {AppContext} from '../../AppContext';
 import {CUSTOM_DATE_FORMAT, formatDateToTimeZone} from 'shared/util/date';
 import {
 	formatPlanData,
@@ -19,7 +19,6 @@ import {sub} from 'shared/util/lang';
 import {SubscriptionDetails} from 'settings/components/usage-overview/SubscriptionDetails';
 import {SubscriptionStatuses} from 'shared/util/constants';
 import {Text} from '@clayui/core';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const subscriptionStatuses = admin => ({
@@ -65,9 +64,9 @@ const getAlertStatusCode = currentPlan => {
 	return null;
 };
 
-export const UsageOverview = ({groupId, project}) => {
+export const UsageOverview = ({groupId}) => {
 	const [showAlert, setShowAlert] = useState(true);
-	const currentUser = useCurrentUser();
+	const {currentUser, project} = useContext(AppContext);
 	const admin = currentUser.isAdmin();
 	const currentPlan = formatPlanData(project.faroSubscription);
 	const {timeZoneId} = useTimeZone();
@@ -193,4 +192,4 @@ export const UsageOverview = ({groupId, project}) => {
 	);
 };
 
-export default compose(withProject)(UsageOverview);
+export default UsageOverview;

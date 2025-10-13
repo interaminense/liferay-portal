@@ -11,7 +11,7 @@ import React, {lazy, Suspense, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
 import {Switch, useParams} from 'react-router-dom';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../../AppContext';
 import {UserStatuses} from 'shared/util/constants';
 
 const UserList = lazy(

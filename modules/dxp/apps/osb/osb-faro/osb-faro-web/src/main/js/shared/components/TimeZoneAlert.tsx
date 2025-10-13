@@ -2,7 +2,7 @@ import Alert, {AlertTypes} from 'shared/components/Alert';
 import React from 'react';
 import {applyTimeZone} from 'shared/util/date';
 import {sub} from 'shared/util/lang';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../AppContext';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const TIME_ZONE_COUNTRY_REGEX = /\([^)]+.*/;

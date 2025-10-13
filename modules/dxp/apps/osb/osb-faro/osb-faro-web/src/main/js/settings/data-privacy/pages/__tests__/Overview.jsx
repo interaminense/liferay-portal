@@ -2,33 +2,29 @@ import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-hooks';
+import {AppContext} from '../../../../AppContext';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {Overview} from '../Overview';
 import {Provider} from 'react-redux';
 import {StaticRouter} from 'react-router-dom';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 
 jest.unmock('react-dom');
-
-jest.mock('shared/hooks/useCurrentUser', () => ({
-	useCurrentUser: jest.fn()
-}));
 
 describe('Data Privacy Overview', () => {
 	afterEach(cleanup);
 
 	it('should render', () => {
-		useCurrentUser.mockImplementation(() => ({
-			isAdmin: () => true
-		}));
-
 		const {container, getByText} = render(
 			<ApolloProvider client={client}>
-				<Provider store={mockStore()}>
-					<StaticRouter>
-						<Overview groupId='23' />
-					</StaticRouter>
-				</Provider>
+				<AppContext.Provider
+					value={{currentUser: {isAdmin: () => true}}}
+				>
+					<Provider store={mockStore()}>
+						<StaticRouter>
+							<Overview groupId='23' />
+						</StaticRouter>
+					</Provider>
+				</AppContext.Provider>
 			</ApolloProvider>
 		);
 
@@ -42,17 +38,17 @@ describe('Data Privacy Overview', () => {
 	});
 
 	it('should render with disabled buttons in the Suppressed Users section if the user is not an AC admin', () => {
-		useCurrentUser.mockImplementation(() => ({
-			isAdmin: () => false
-		}));
-
 		const {getByTestId} = render(
 			<ApolloProvider client={client}>
-				<Provider store={mockStore()}>
-					<StaticRouter>
-						<Overview groupId='23' />
-					</StaticRouter>
-				</Provider>
+				<AppContext.Provider
+					value={{currentUser: {isAdmin: () => true}}}
+				>
+					<Provider store={mockStore()}>
+						<StaticRouter>
+							<Overview groupId='23' />
+						</StaticRouter>
+					</Provider>
+				</AppContext.Provider>
 			</ApolloProvider>
 		);
 

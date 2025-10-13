@@ -57,7 +57,24 @@ export default class Project
 	timeZone: TimeZone;
 	userId: number;
 
-	constructor(props = {}) {
-		super(props);
+	constructor(project?: IProject) {
+		if (project) {
+			super({
+				...project,
+				faroSubscription: Map(project.faroSubscription || {}),
+				incidentReportEmailAddresses: List(
+					project.incidentReportEmailAddresses || []
+				),
+				timeZone: project.timeZone
+					? new TimeZone(project.timeZone)
+					: new TimeZone()
+			});
+
+			return;
+		}
+
+		super({});
+
+		return;
 	}
 }

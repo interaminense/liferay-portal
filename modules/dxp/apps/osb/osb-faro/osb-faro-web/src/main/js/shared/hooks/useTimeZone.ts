@@ -1,13 +1,10 @@
 import {ITimeZone} from 'shared/util/records/TimeZone';
-import {useParams} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useProject} from '../../AppContext';
 
-export const useTimeZone = (initialGroupId?: string): ITimeZone => {
-	const {groupId} = useParams();
+// Remover o useTimeZone e usar o project diretamente
 
-	const value = useSelector<any, any>(state =>
-		state.getIn(['projects', initialGroupId || groupId, 'data', 'timeZone'])
-	);
+export const useTimeZone = (): ITimeZone => {
+	const project = useProject();
 
-	return value.toObject();
+	return project.timeZone;
 };

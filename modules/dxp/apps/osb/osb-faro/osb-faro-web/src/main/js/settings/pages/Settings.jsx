@@ -14,6 +14,7 @@ import {Link, matchPath, Switch, withRouter} from 'react-router-dom';
 import {Project, User} from 'shared/util/records';
 import {PropTypes} from 'prop-types';
 import {Routes, toRoute} from 'shared/util/router';
+import {useModalNotifications} from 'shared/hooks/useModalNotifications';
 import {withOnboarding} from 'shared/hoc';
 
 // APIS
@@ -144,7 +145,7 @@ export class Settings extends React.Component {
 	};
 
 	getSidebarSections() {
-		const {currentUser, groupId, recommendationsEnabled} = this.props;
+		const {currentUser, groupId, project} = this.props;
 
 		return [
 			{
@@ -177,7 +178,7 @@ export class Settings extends React.Component {
 							groupId
 						})
 					},
-					recommendationsEnabled && {
+					project.recommendationsEnabled && {
 						icon: 'ac_star',
 						label: Liferay.Language.get('recommendations'),
 						route: Routes.SETTINGS_RECOMMENDATIONS,
@@ -475,13 +476,17 @@ export class Settings extends React.Component {
 export default compose(
 	withRouter,
 	checkProjectState,
-	connect((store, {groupId}) => ({
-		backURL: store.getIn(['settings', 'backURL']),
-		project: store.getIn(['projects', groupId, 'data']),
-		recommendationsEnabled: store.getIn(
-			['projects', groupId, 'data', 'recommendationsEnabled'],
-			false
+	connect(
+		store => (
+			{
+				backURL: store.getIn(['settings', 'backURL'])
+			},
+			{close, open}
 		)
-	})),
+	),
 	withOnboarding
-)(Settings);
+)(props => {
+	useModalNotifications(props.close, props.groupId, props.open);
+
+	return <Settings {...props} />;
+});

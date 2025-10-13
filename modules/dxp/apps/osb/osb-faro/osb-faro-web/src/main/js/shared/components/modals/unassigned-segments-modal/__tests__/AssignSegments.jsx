@@ -1,18 +1,25 @@
 import * as API from 'shared/api';
 import AssignSegments from '../AssignSegments';
 import React from 'react';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from 'AppContext';
 import {
 	cleanup,
 	fireEvent,
 	render,
 	waitForDomChange
 } from '@testing-library/react';
-import {mockChannelContext} from 'test/mock-channel-context';
+import {mockChannel} from './data';
 import {mockSegment} from 'test/data';
 import {noop} from 'lodash';
+
 import {StaticRouter} from 'react-router-dom';
 import {UnassignedSegmentsContext} from 'shared/context/unassignedSegments';
+
+export const mockChannelContext = () => ({
+	channelDispatch: jest.fn(() => null),
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel()
+});
 
 jest.unmock('react-dom');
 
@@ -27,11 +34,11 @@ const mockedContext = {
 
 const DefaultComponent = props => (
 	<UnassignedSegmentsContext.Provider value={mockedContext}>
-		<ChannelContext.Provider value={mockChannelContext()}>
+		<AppContext.Provider value={mockChannelContext()}>
 			<StaticRouter>
 				<AssignSegments groupId='123' onClose={noop} {...props} />
 			</StaticRouter>
-		</ChannelContext.Provider>
+		</AppContext.Provider>
 	</UnassignedSegmentsContext.Provider>
 );
 

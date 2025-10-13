@@ -18,10 +18,10 @@ import {get} from 'lodash';
 import {NAME} from 'shared/util/pagination';
 import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
-import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useParams} from 'react-router-dom';
 import {User} from 'shared/util/records';
+import {useSelectedChannel} from '../../AppContext';
 
 interface IBaseListPageProps {
 	alerts?: IEmbeddedAlertListProps[];
@@ -81,7 +81,7 @@ const BaseListPage: React.FC<IBaseListPageProps> = ({
 	showCheckbox = false,
 	...otherProps
 }) => {
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 	const {channelId, groupId} = useParams();
 	const authorized = currentUser.isAdmin();
 

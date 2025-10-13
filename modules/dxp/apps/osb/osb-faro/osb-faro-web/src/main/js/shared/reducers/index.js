@@ -2,7 +2,6 @@ import accounts from './accounts';
 import alerts from './alerts';
 import cards from './cards';
 import cardTemplates from './card-templates';
-import currentUser from './current-user';
 import dataSources from './data-sources';
 import distributions from './distributions';
 import individuals from './individuals';
@@ -12,7 +11,6 @@ import maintenanceSeen from './maintenance-seen';
 import modals from './modals';
 import normalizer from './normalizer';
 import preferences from './preferences';
-import projects from './projects';
 import segments from './segments';
 import settings from './settings';
 import sidebar from './sidebar';
@@ -29,7 +27,6 @@ export default composeReducers(
 		alerts,
 		cards,
 		cardTemplates,
-		currentUser,
 		dataSources,
 		distributions,
 		individuals,
@@ -38,7 +35,6 @@ export default composeReducers(
 		maintenanceSeen,
 		modals,
 		preferences,
-		projects,
 		segments,
 		settings,
 		sidebar,

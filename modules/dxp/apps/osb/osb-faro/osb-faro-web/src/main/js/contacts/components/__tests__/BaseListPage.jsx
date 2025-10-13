@@ -3,17 +3,24 @@ import * as useDataSource from 'shared/hooks/useDataSource';
 import BaseListPage from '../BaseListPage';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../../AppContext';
 import {cleanup, render, waitForElement} from '@testing-library/react';
 import {createOrderIOMap} from 'shared/util/pagination';
 import {MemoryRouter, Route} from 'react-router-dom';
-import {mockChannelContext} from 'test/mock-channel-context';
+import {mockChannel} from './data';
 import {mockEmptyState, mockSuccessState} from 'test/__mocks__/mock-objects';
 import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';
 import {times} from 'lodash';
+
 import {User} from 'shared/util/records';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+
+export const mockChannelContext = () => ({
+	channelDispatch: jest.fn(() => null),
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel()
+});
 
 const TOTAL = 5;
 
@@ -54,13 +61,13 @@ const WrappedComponent = ({alerts, empty, query}) => (
 			initialEntries={['/workspace/23/123123/contacts/segments']}
 		>
 			<Route path={Routes.CONTACTS_LIST_SEGMENT}>
-				<ChannelContext.Provider value={mockChannelContext()}>
+				<AppContext.Provider value={mockChannelContext()}>
 					<BaseListPage
 						alerts={alerts}
 						{...defaultProps(empty)}
 						query={query}
 					/>
-				</ChannelContext.Provider>
+				</AppContext.Provider>
 			</Route>
 		</MemoryRouter>
 	</Provider>

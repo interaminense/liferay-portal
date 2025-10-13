@@ -3,11 +3,18 @@ import client from 'shared/apollo/client';
 import Overview from '../Overview';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../../AppContext';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {MemoryRouter, Route} from 'react-router-dom';
-import {mockChannelContext} from 'test/mock-channel-context';
+
+import {mockChannel} from './data';
 import {Routes} from 'shared/util/router';
+
+export const mockChannelContext = () => ({
+	channelDispatch: jest.fn(() => null),
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel()
+});
 
 jest.unmock('react-dom');
 
@@ -32,7 +39,7 @@ describe('Sites Dashboard Overview', () => {
 			<ApolloProvider client={client}>
 				<MemoryRouter initialEntries={['/workspace/23/123123/sites']}>
 					<Route path={Routes.SITES}>
-						<ChannelContext.Provider value={mockChannelContext()}>
+						<AppContext.Provider value={mockChannelContext()}>
 							<BasePage.Context.Provider value={MOCK_CONTEXT}>
 								<Overview
 									channelName='Test Channel'
@@ -44,7 +51,7 @@ describe('Sites Dashboard Overview', () => {
 									}}
 								/>
 							</BasePage.Context.Provider>
-						</ChannelContext.Provider>
+						</AppContext.Provider>
 					</Route>
 				</MemoryRouter>
 			</ApolloProvider>

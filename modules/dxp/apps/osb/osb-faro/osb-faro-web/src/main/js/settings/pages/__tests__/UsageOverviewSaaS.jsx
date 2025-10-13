@@ -2,12 +2,12 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import UsageOverviewSaaS from '../UsageOverviewSaaS';
+import {AppContext} from '../../../AppContext';
 import {fromJS} from 'immutable';
 import {Project} from 'shared/util/records';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 
 jest.unmock('react-dom');
 
@@ -33,18 +33,23 @@ const defaultProps = {
 };
 
 const WrappedComponent = props => (
-	<Provider store={mockStore()}>
-		<StaticRouter>
-			<UsageOverviewSaaS {...props} />
-		</StaticRouter>
-	</Provider>
+	<AppContext.Provider value={props.currentUser}>
+		<Provider store={mockStore()}>
+			<StaticRouter>
+				<UsageOverviewSaaS {...props} />
+			</StaticRouter>
+		</Provider>
+	</AppContext.Provider>
 );
 
 describe('UsageOverviewSaaS', () => {
 	it('should render', () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
-		const {container} = render(<WrappedComponent {...defaultProps} />);
+		const {container} = render(
+			<WrappedComponent
+				currentUser={{isAdmin: () => true}}
+				{...defaultProps}
+			/>
+		);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -62,17 +67,23 @@ describe('UsageOverviewSaaS', () => {
 	});
 
 	it('should render the "Go to Customer Portal" button for admin user', () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
-		const {queryByText} = render(<WrappedComponent {...defaultProps} />);
+		const {queryByText} = render(
+			<WrappedComponent
+				currentUser={{isAdmin: () => true}}
+				{...defaultProps}
+			/>
+		);
 
 		expect(queryByText('Go to Customer Portal')).toBeInTheDocument();
 	});
 
 	it('should not render the "Go to Customer Portal" button for member user', () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => false}));
-
-		const {queryByText} = render(<WrappedComponent {...defaultProps} />);
+		const {queryByText} = render(
+			<WrappedComponent
+				currentUser={{isAdmin: () => true}}
+				{...defaultProps}
+			/>
+		);
 
 		expect(queryByText('Go to Customer Portal')).toBeNull();
 	});

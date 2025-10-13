@@ -13,7 +13,7 @@ import {Option, Picker} from '@clayui/core';
 import {partition} from 'lodash';
 import {Segment} from 'shared/util/records';
 import {sequence} from 'shared/util/promise';
-import {useChannelContext} from 'shared/context/channel';
+import {useChannels} from '../../../../AppContext';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 
 const DELETE_OPTION = {
@@ -54,7 +54,7 @@ const AssignSegments: React.FC<IAssignSegmentsProps> = ({groupId, onClose}) => {
 		initialOrderIOMap: createOrderIOMap(NAME)
 	});
 
-	const {channels} = useChannelContext();
+	const channels = useChannels();
 
 	const {
 		unassignedSegments,

@@ -4,13 +4,20 @@ import * as API from 'shared/api';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import withUnassignedSegments from '../WithUnassignedSegments';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from 'AppContext';
 import {cleanup, render} from '@testing-library/react';
-import {mockChannelContext} from 'test/mock-channel-context';
+import {mockChannel} from './data';
 import {mockSearch} from 'test/data';
 import {open} from 'shared/actions/modals';
+
 import {Provider} from 'react-redux';
 import {UnassignedSegmentsContext} from 'shared/context/unassignedSegments';
+
+export const mockChannelContext = () => ({
+	channelDispatch: jest.fn(() => null),
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel()
+});
 
 jest.unmock('react-dom');
 
@@ -23,11 +30,11 @@ const mockedContext = {
 
 const DefaultComponent = props => (
 	<Provider store={mockStore()}>
-		<ChannelContext.Provider value={mockChannelContext()}>
+		<AppContext.Provider value={mockChannelContext()}>
 			<UnassignedSegmentsContext.Provider value={mockedContext}>
 				<WrappedComponent {...props} />
 			</UnassignedSegmentsContext.Provider>
-		</ChannelContext.Provider>
+		</AppContext.Provider>
 	</Provider>
 );
 
@@ -62,7 +69,7 @@ describe('WithUnassignedSegments', () => {
 
 		render(
 			<Provider store={mockStore()}>
-				<ChannelContext.Provider value={mockChannelContext()}>
+				<AppContext.Provider value={mockChannelContext()}>
 					<UnassignedSegmentsContext.Provider
 						value={{
 							...mockedContext
@@ -70,7 +77,7 @@ describe('WithUnassignedSegments', () => {
 					>
 						<WrappedComponent />
 					</UnassignedSegmentsContext.Provider>
-				</ChannelContext.Provider>
+				</AppContext.Provider>
 			</Provider>
 		);
 

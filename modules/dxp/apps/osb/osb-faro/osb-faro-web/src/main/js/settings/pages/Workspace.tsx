@@ -6,11 +6,9 @@ import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
 import {compose, withHistory, withQuery} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
-import {Project} from 'shared/util/records';
 import {Routes, toRoute} from 'shared/util/router';
 import {updateProject} from 'shared/actions/projects';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {withProject} from 'shared/hoc/WithProject';
+import {useCurrentUser, useProject} from '../../AppContext';
 
 type History = {
 	push: (path: string) => void;
@@ -28,7 +26,6 @@ interface IWorkspaceProps
 		PropsFromRedux {
 	emailAddressDomains: string[];
 	groupId: string;
-	project: Project;
 	history: History;
 }
 
@@ -37,9 +34,9 @@ export const Workspace: React.FC<IWorkspaceProps> = ({
 	emailAddressDomains,
 	groupId,
 	history,
-	project,
 	updateProject
 }) => {
+	const project = useProject();
 	const currentUser = useCurrentUser();
 
 	const handleSubmit = ({
@@ -108,7 +105,6 @@ export const Workspace: React.FC<IWorkspaceProps> = ({
 export default compose(
 	connector,
 	withHistory,
-	withProject(true),
 	withQuery(
 		({groupId}) =>
 			API.projects.fetchEmailAddressDomains({

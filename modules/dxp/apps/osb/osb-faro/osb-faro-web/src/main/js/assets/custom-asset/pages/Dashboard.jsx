@@ -16,7 +16,7 @@ import URLConstants from 'shared/util/url-constants';
 import withCurrentUser from 'shared/hoc/WithCurrentUser';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../../AppContext';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {getRangeSelectorsFromQuery} from 'shared/util/util';
@@ -30,7 +30,7 @@ import {sub} from 'shared/util/lang';
  * @class
  */
 class CustomAssetsDashboardPage extends React.Component {
-	static contextType = ChannelContext;
+	static contextType = AppContext;
 
 	static propTypes = {
 		/**

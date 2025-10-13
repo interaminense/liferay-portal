@@ -2,8 +2,6 @@ import {
 	configureProject,
 	createProject,
 	createTrialProject,
-	fetchProject,
-	fetchProjects,
 	fetchProjectViaCorpProjectUuid,
 	updateProject
 } from '../projects';
@@ -36,24 +34,6 @@ describe('Projects Actions', () => {
 	describe('createTrialProject', () => {
 		it('should return an action', () => {
 			const action = createTrialProject();
-
-			expect(isFSA(action)).toBe(true);
-			expect(action.type).toBe('NO_OP');
-		});
-	});
-
-	describe('fetchProject', () => {
-		it('should return an action', () => {
-			const action = fetchProject({groupId: '23'});
-
-			expect(isFSA(action)).toBe(true);
-			expect(action.type).toBe('NO_OP');
-		});
-	});
-
-	describe('fetchProjects', () => {
-		it('should return an action', () => {
-			const action = fetchProjects();
 
 			expect(isFSA(action)).toBe(true);
 			expect(action.type).toBe('NO_OP');

@@ -11,7 +11,7 @@ import {
 	updateUpgradeModalSeen
 } from 'shared/actions/preferences';
 import {RootState} from 'shared/store';
-import {useChannelContext} from 'shared/context/channel';
+import {useChannels} from '../../AppContext';
 import {useRequest} from 'shared/hooks/useRequest';
 
 const connector = connect(
@@ -46,7 +46,7 @@ const withUnassignedSegments = (
 	}) => {
 		const {unassignedSegmentsDispatch} = useUnassignedSegmentsContext();
 
-		const {channels} = useChannelContext();
+		const channels = useChannels();
 
 		const {data, error, loading} = useRequest({
 			dataSourceFn: API.individualSegment.searchUnassigned,

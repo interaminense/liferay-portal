@@ -17,10 +17,10 @@ import {Routes} from 'shared/util/router';
 import {SessionsCard} from 'experiments/components/SessionsCard';
 import {Status} from 'experiments/components/summary-card/types';
 import {SummaryCard} from 'experiments/components/summary-card/SummaryCard';
-import {useChannelContext} from 'shared/context/channel';
 import {useModal} from '@clayui/modal';
 import {useParams} from 'react-router-dom';
 import {useQuery} from '@apollo/react-hooks';
+import {useSelectedChannel} from '../../AppContext';
 import {VariantCard} from 'experiments/components/variant-card/VariantCard';
 
 const ExperimentActions = ({experiment}) => {
@@ -81,7 +81,7 @@ const ExperimentOverviewPage = () => {
 
 const ExperimentOverviewContent = ({status}) => {
 	const {channelId, groupId, id} = useParams();
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 
 	let Query = EXPERIMENT_QUERY;
 

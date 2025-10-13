@@ -17,7 +17,7 @@ import {connect} from 'react-redux';
 import {FieldArray, Formik, FormikTouched, FormikValues} from 'formik';
 import {Routes, toRoute} from 'shared/util/router';
 import {sequence} from 'shared/util/promise';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../../../AppContext';
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {WrapSafeResults} from 'shared/hoc/util';
 

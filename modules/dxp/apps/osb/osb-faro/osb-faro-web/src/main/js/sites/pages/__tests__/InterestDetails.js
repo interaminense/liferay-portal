@@ -2,10 +2,17 @@ import client from 'shared/apollo/client';
 import InterestDetails from '../InterestDetails';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {ChannelContext} from 'shared/context/channel';
-import {mockChannelContext} from 'test/mock-channel-context';
+import {AppContext} from '../../../AppContext';
+import {mockChannel} from './data';
+
 import {render} from '@testing-library/react';
 import {StaticRouter} from 'react-router-dom';
+
+export const mockChannelContext = () => ({
+	channelDispatch: jest.fn(() => null),
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel()
+});
 
 jest.unmock('react-dom');
 
@@ -28,7 +35,7 @@ describe('Sites Dashboard InterestDetails', () => {
 		const {container} = render(
 			<ApolloProvider client={client}>
 				<StaticRouter>
-					<ChannelContext.Provider value={mockChannelContext()}>
+					<AppContext.Provider value={mockChannelContext()}>
 						<InterestDetails
 							channelName='Test Channel'
 							router={{
@@ -36,7 +43,7 @@ describe('Sites Dashboard InterestDetails', () => {
 								query: {rangeKey: '30'}
 							}}
 						/>
-					</ChannelContext.Provider>
+					</AppContext.Provider>
 				</StaticRouter>
 			</ApolloProvider>
 		);

@@ -1,11 +1,11 @@
 import AddWorkspaceForm from 'shared/components/workspaces/AddWorkspaceForm';
-import autobind from 'autobind-decorator';
 import getCN from 'classnames';
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import WorkspacesBasePage from 'shared/components/workspaces/BasePage';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
-import {compose, optional, redirectIf, withProject} from 'shared/hoc';
+import {AppContext} from '../../AppContext';
+import {compose, redirectIf} from 'shared/hoc';
 import {
 	configureProject,
 	createProject,
@@ -13,8 +13,6 @@ import {
 } from 'shared/actions/projects';
 import {connect} from 'react-redux';
 import {DataSourceStates} from 'shared/util/constants';
-import {Project} from '../util/records';
-import {PropTypes} from 'prop-types';
 import {Redirect} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
 
@@ -30,49 +28,42 @@ export const routingFn = ({project}) => {
 	}
 };
 
-export class AddWorkspace extends React.Component {
-	state = {
+const AddWorkspace = ({
+	addAlert,
+	className,
+	configureProject,
+	corpProjectUuid,
+	createProject,
+	createTrialProject
+}) => {
+	const [state, setState] = useState({
+		friendlyURL: '',
 		redirectToWorkspace: false
-	};
+	});
 
-	static propTypes = {
-		addAlert: PropTypes.func,
-		createProject: PropTypes.func,
-		history: PropTypes.object.isRequired,
-		project: PropTypes.instanceOf(Project)
-	};
+	const {project} = useContext(AppContext);
 
-	@autobind
-	handleSubmit({
+	const handleSubmit = ({
 		emailAddressDomains,
 		friendlyURL,
 		incidentReportEmailAddresses,
 		name,
 		serverLocation,
 		timeZoneId
-	}) {
-		const {
-			addAlert,
-			configureProject,
-			corpProjectUuid,
-			createProject,
-			createTrialProject,
-			project: {groupId, state} = {}
-		} = this.props;
-
+	}) => {
 		const params = {
 			emailAddressDomains,
 			friendlyURL: friendlyURL && `/${friendlyURL}`,
 			incidentReportEmailAddresses,
 			name,
 			timeZoneId,
-			...(state === DataSourceStates.Unconfigured
-				? {groupId}
+			...(project.state === DataSourceStates.Unconfigured
+				? {groupId: project.groupId}
 				: {corpProjectUuid, serverLocation})
 		};
 
 		const createFn =
-			state === DataSourceStates.Unconfigured
+			project.state === DataSourceStates.Unconfigured
 				? configureProject
 				: corpProjectUuid
 				? createProject
@@ -80,7 +71,7 @@ export class AddWorkspace extends React.Component {
 
 		return createFn(params)
 			.then(({payload: {friendlyURL, groupId}}) => {
-				this.setState({
+				setState({
 					friendlyURL: friendlyURL
 						? friendlyURL.replace('/', '')
 						: groupId,
@@ -103,39 +94,32 @@ export class AddWorkspace extends React.Component {
 
 				return Promise.reject(error);
 			});
-	}
+	};
 
-	render() {
-		const {
-			props: {className, project},
-			state: {friendlyURL, redirectToWorkspace}
-		} = this;
-
-		return (
-			<div
-				className={getCN('add-workspace-root', className)}
-				key='AddWorkspace'
-			>
-				{redirectToWorkspace ? (
-					<Redirect
-						to={toRoute(Routes.WORKSPACE_WITH_ID, {
-							groupId: friendlyURL
-						})}
+	return (
+		<div
+			className={getCN('add-workspace-root', className)}
+			key='AddWorkspace'
+		>
+			{state.redirectToWorkspace ? (
+				<Redirect
+					to={toRoute(Routes.WORKSPACE_WITH_ID, {
+						groupId: state.friendlyURL
+					})}
+				/>
+			) : (
+				<WorkspacesBasePage
+					title={Liferay.Language.get('create-workspace')}
+				>
+					<AddWorkspaceForm
+						onSubmit={handleSubmit}
+						project={project}
 					/>
-				) : (
-					<WorkspacesBasePage
-						title={Liferay.Language.get('create-workspace')}
-					>
-						<AddWorkspaceForm
-							onSubmit={this.handleSubmit}
-							project={project}
-						/>
-					</WorkspacesBasePage>
-				)}
-			</div>
-		);
-	}
-}
+				</WorkspacesBasePage>
+			)}
+		</div>
+	);
+};
 
 export default compose(
 	connect(null, {
@@ -144,6 +128,5 @@ export default compose(
 		createProject,
 		createTrialProject
 	}),
-	optional(withProject, {idPropName: 'corpProjectUuid'}),
 	redirectIf(routingFn)
 )(AddWorkspace);

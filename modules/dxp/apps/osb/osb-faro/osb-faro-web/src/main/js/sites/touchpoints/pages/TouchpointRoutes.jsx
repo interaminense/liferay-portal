@@ -16,9 +16,9 @@ import {getMatchedRoute, Routes} from 'shared/util/router';
 import {pickBy} from 'lodash';
 import {PropTypes} from 'prop-types';
 import {Switch} from 'react-router-dom';
-import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
+import {useSelectedChannel} from '../../../AppContext';
 
 const KnownIndividuals = lazy(() =>
 	import(
@@ -59,7 +59,7 @@ function TouchpointRoutes({className, router}) {
 	const [pathRangeSelectors, setPathRangeSelectors] = useState(
 		rangeSelectors
 	);
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 	const matchedRoute = getMatchedRoute(NAV_ITEMS);
 	const decodedTitle = decodeURIComponent(title);
 	const decodedTouchpoint = decodeURIComponent(touchpoint);

@@ -18,7 +18,7 @@ import {omit} from 'lodash';
 import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../../AppContext';
 import {User} from 'shared/util/records';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 

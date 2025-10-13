@@ -5,17 +5,24 @@ import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../../AppContext';
 import {cleanup, render} from '@testing-library/react';
 import {Dashboard} from '../index';
 import {MemoryRouter, Route} from 'react-router-dom';
-import {mockChannelContext} from 'test/mock-channel-context';
+import {mockChannel} from './data';
 import {mockEmptyState, mockSuccessState} from 'test/__mocks__/mock-objects';
 import {OAuthUpgradeWarningContext} from 'shared/context/oAuthUpgradeWarning';
 import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';
 import {User} from 'shared/util/records';
+
 import {UserRoleNames} from 'shared/util/constants';
+
+export const mockChannelContext = () => ({
+	channelDispatch: jest.fn(() => null),
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel()
+});
 
 jest.unmock('react-dom');
 
@@ -55,7 +62,7 @@ const WrappedComponent = props => (
 			>
 				<MemoryRouter initialEntries={['/workspace/2000/123/sites']}>
 					<Route path={Routes.SITES}>
-						<ChannelContext.Provider value={mockChannelContext()}>
+						<AppContext.Provider value={mockChannelContext()}>
 							<BasePage.Context.Provider value={MOCK_CONTEXT}>
 								<Dashboard
 									currentUser={MEMBER_USER}
@@ -63,7 +70,7 @@ const WrappedComponent = props => (
 									{...props}
 								/>
 							</BasePage.Context.Provider>
-						</ChannelContext.Provider>
+						</AppContext.Provider>
 					</Route>
 				</MemoryRouter>
 			</OAuthUpgradeWarningContext.Provider>
@@ -100,7 +107,7 @@ describe('Sites Dashboard Index', () => {
 							initialEntries={['/workspace/2000/123/sites']}
 						>
 							<Route path={Routes.SITES}>
-								<ChannelContext.Provider
+								<AppContext.Provider
 									value={CHANNEL_CONTEXT_MOCK}
 								>
 									<BasePage.Context.Provider
@@ -112,7 +119,7 @@ describe('Sites Dashboard Index', () => {
 											{...props}
 										/>
 									</BasePage.Context.Provider>
-								</ChannelContext.Provider>
+								</AppContext.Provider>
 							</Route>
 						</MemoryRouter>
 					</OAuthUpgradeWarningContext.Provider>
@@ -143,7 +150,7 @@ describe('Sites Dashboard Index', () => {
 							initialEntries={['/workspace/2000/123/sites']}
 						>
 							<Route path={Routes.SITES}>
-								<ChannelContext.Provider
+								<AppContext.Provider
 									value={mockChannelContext()}
 								>
 									<BasePage.Context.Provider
@@ -155,7 +162,7 @@ describe('Sites Dashboard Index', () => {
 											{...props}
 										/>
 									</BasePage.Context.Provider>
-								</ChannelContext.Provider>
+								</AppContext.Provider>
 							</Route>
 						</MemoryRouter>
 					</OAuthUpgradeWarningContext.Provider>

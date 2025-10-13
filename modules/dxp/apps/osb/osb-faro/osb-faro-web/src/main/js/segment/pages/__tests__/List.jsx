@@ -2,15 +2,22 @@ import * as data from 'test/data';
 import List from '../List';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../../AppContext';
 import {MemoryRouter, Route} from 'react-router-dom';
-import {mockChannelContext} from 'test/mock-channel-context';
+import {mockChannel} from './data';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {UnassignedSegmentsContext} from 'shared/context/unassignedSegments';
+
 import {User} from 'shared/util/records';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+
+export const mockChannelContext = () => ({
+	channelDispatch: jest.fn(() => null),
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel()
+});
 
 jest.unmock('react-dom');
 
@@ -31,7 +38,7 @@ const DefaultComponent = ({queryString = '', ...otherProps}) => (
 				<UnassignedSegmentsContext.Provider
 					value={MOCK_UNASSIGNED_SEGMENTS_CONTEXT}
 				>
-					<ChannelContext.Provider value={mockChannelContext()}>
+					<AppContext.Provider value={mockChannelContext()}>
 						<List
 							channelId='123'
 							currentUser={data.getImmutableMock(
@@ -41,7 +48,7 @@ const DefaultComponent = ({queryString = '', ...otherProps}) => (
 							groupId='23'
 							{...otherProps}
 						/>
-					</ChannelContext.Provider>
+					</AppContext.Provider>
 				</UnassignedSegmentsContext.Provider>
 			</Route>
 		</MemoryRouter>

@@ -4,9 +4,9 @@ import DownloadPDFReport from 'shared/components/download-report/DownloadPDFRepo
 import React from 'react';
 import TitleEditor from 'shared/components/TitleEditor';
 import {Routes, toRoute} from 'shared/util/router';
-import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useParams} from 'react-router-dom';
+import {useSelectedChannel} from '../../AppContext';
 
 interface IEventAnalysisToolbarProps extends React.HTMLAttributes<HTMLElement> {
 	isValid: boolean;
@@ -19,7 +19,7 @@ const EventAnalysisToolbar: React.FC<IEventAnalysisToolbarProps> = ({
 
 	const {channelId, groupId} = useParams();
 
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 
 	return (
 		<div className='event-analysis-toolbar-root'>

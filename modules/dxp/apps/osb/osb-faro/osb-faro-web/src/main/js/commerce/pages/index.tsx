@@ -9,8 +9,7 @@ import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
 import {Routes, toRoute} from 'shared/util/router';
 import {Switch, useParams} from 'react-router-dom';
-import {useChannelContext} from 'shared/context/channel';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser, useSelectedChannel} from '../../AppContext';
 import {useDataSource} from 'shared/hooks/useDataSource';
 
 const Overview = lazy(
@@ -43,7 +42,7 @@ interface ICommerceDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
 const CommerceDashboard: React.FC<ICommerceDashboardProps> = ({router}) => {
 	const {channelId, groupId} = useParams();
 	const dataSourceStates = useDataSource();
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 	const currentUser = useCurrentUser();
 
 	const authorized = currentUser.isAdmin();

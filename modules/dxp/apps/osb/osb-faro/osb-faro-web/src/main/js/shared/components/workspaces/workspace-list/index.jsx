@@ -86,7 +86,7 @@ export default class WorkspaceList extends React.Component {
 								planInfo={
 									displayPlanInfo
 										? `${getPlanLabel(
-												faroSubscription.get('name')
+												faroSubscription.name
 										  )}`
 										: ''
 								}

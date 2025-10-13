@@ -1,12 +1,12 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
 import SearchCard from '../SearchCard';
+import {AppContext} from '../../../../../AppContext';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockSearchStringListReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {StaticRouter} from 'react-router';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -35,9 +35,11 @@ describe('SearchCard', () => {
 	afterEach(cleanup);
 
 	it('should render', async () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
-		const {container} = render(<DefaultComponent />);
+		const {container} = render(
+			<AppContext.Provider value={{currentUser: {isAdmin: () => true}}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		await waitForLoadingToBeRemoved(container);
 
@@ -45,9 +47,11 @@ describe('SearchCard', () => {
 	});
 
 	it('should have a default uneditable field with value of q', async () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
-		const {container, getByDisplayValue} = render(<DefaultComponent />);
+		const {container, getByDisplayValue} = render(
+			<AppContext.Provider value={{currentUser: {isAdmin: () => true}}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		await waitForLoadingToBeRemoved(container);
 
@@ -55,9 +59,11 @@ describe('SearchCard', () => {
 	});
 
 	it('should remove special characters on fields', async () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
-		const {container, getByDisplayValue} = render(<DefaultComponent />);
+		const {container, getByDisplayValue} = render(
+			<AppContext.Provider value={{currentUser: {isAdmin: () => true}}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		await waitForLoadingToBeRemoved(container);
 
@@ -69,9 +75,11 @@ describe('SearchCard', () => {
 	});
 
 	it('should remove every character after equals sign', async () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => true}));
-
-		const {container, getByDisplayValue} = render(<DefaultComponent />);
+		const {container, getByDisplayValue} = render(
+			<AppContext.Provider value={{currentUser: {isAdmin: () => true}}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		await waitForLoadingToBeRemoved(container);
 
@@ -83,9 +91,11 @@ describe('SearchCard', () => {
 	});
 
 	it('should render input as disabled when user is not admin', async () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => false}));
-
-		const {container} = render(<DefaultComponent />);
+		const {container} = render(
+			<AppContext.Provider value={{currentUser: {isAdmin: () => false}}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		await waitForLoadingToBeRemoved(container);
 
@@ -95,9 +105,11 @@ describe('SearchCard', () => {
 	});
 
 	it('should not render buttons when user is not admin', async () => {
-		useCurrentUser.mockImplementation(() => ({isAdmin: () => false}));
-
-		const {container} = render(<DefaultComponent />);
+		const {container} = render(
+			<AppContext.Provider value={{currentUser: {isAdmin: () => false}}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		await waitForLoadingToBeRemoved(container);
 

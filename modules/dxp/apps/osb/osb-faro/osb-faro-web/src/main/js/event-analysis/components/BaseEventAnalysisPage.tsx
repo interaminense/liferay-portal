@@ -27,8 +27,7 @@ import {getSafeRangeSelectors} from 'shared/util/util';
 import {hasChanges} from 'shared/util/react';
 import {omit} from 'lodash';
 import {Routes, toRoute} from 'shared/util/router';
-import {useChannelContext} from 'shared/context/channel';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser, useSelectedChannel} from '../../AppContext';
 import {useHistory, useParams} from 'react-router-dom';
 import {useMutation} from '@apollo/react-hooks';
 import {WithRangeKeyProps} from 'shared/hoc/WithRangeKey';
@@ -81,7 +80,7 @@ const BaseEventAnalysisPage: React.FC<IBaseEventAnalysisPageProps> = ({
 }) => {
 	const history = useHistory();
 
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 
 	const {channelId, groupId, id: eventAnalysisId = null} = useParams();
 

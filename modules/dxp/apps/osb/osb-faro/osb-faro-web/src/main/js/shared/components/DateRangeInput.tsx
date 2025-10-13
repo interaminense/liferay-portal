@@ -49,7 +49,6 @@ const DateInput: React.FC<IDateInputProps> = ({
 	className,
 	displayFormat,
 	format = DEFAULT_DATE_FORMAT,
-	groupId,
 	onBlur = noop,
 	onChange = noop,
 	showRetentionPeriod = true,
@@ -57,7 +56,7 @@ const DateInput: React.FC<IDateInputProps> = ({
 }) => {
 	const [active, setActive] = useState(false);
 
-	const {timeZoneId} = useTimeZone(groupId);
+	const {timeZoneId} = useTimeZone();
 	const retentionPeriod = useRetentionPeriod();
 
 	const convertMomentToDisplayFormat = (value: moment.Moment): string =>

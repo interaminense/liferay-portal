@@ -1,7 +1,7 @@
 import * as API from 'shared/api';
 import {CALL_API} from '../middleware/api';
 import {createActionTypes} from 'redux-toolbox';
-import {project, projects} from '../middleware/schema';
+import {project} from '../middleware/schema';
 
 export const actionTypes = {
 	...createActionTypes('configure', 'project'),
@@ -13,6 +13,7 @@ export const actionTypes = {
 };
 
 export function createProject(data) {
+	console.log('caiu aqui createProject');
 	return {
 		meta: {
 			[CALL_API]: {
@@ -31,6 +32,7 @@ export function createProject(data) {
 }
 
 export function configureProject(data) {
+	console.log('caiu aqui configureProject');
 	return {
 		meta: {
 			[CALL_API]: {
@@ -49,6 +51,7 @@ export function configureProject(data) {
 }
 
 export function createTrialProject(data) {
+	console.log('caiu aqui createTrialProject');
 	return {
 		meta: {
 			[CALL_API]: {
@@ -66,45 +69,8 @@ export function createTrialProject(data) {
 	};
 }
 
-export function fetchProject({groupId}) {
-	return {
-		meta: {
-			[CALL_API]: {
-				data: {groupId},
-				requestFn: API.projects.fetch,
-				schema: project(groupId),
-				types: [
-					actionTypes.FETCH_PROJECT_REQUEST,
-					actionTypes.FETCH_PROJECT_SUCCESS,
-					actionTypes.FETCH_PROJECT_FAILURE
-				]
-			}
-		},
-		payload: {
-			id: groupId
-		},
-		type: 'NO_OP'
-	};
-}
-
-export function fetchProjects() {
-	return {
-		meta: {
-			[CALL_API]: {
-				requestFn: API.projects.fetchMany,
-				schema: projects,
-				types: [
-					actionTypes.FETCH_PROJECTS_REQUEST,
-					actionTypes.FETCH_PROJECTS_SUCCESS,
-					actionTypes.FETCH_PROJECTS_FAILURE
-				]
-			}
-		},
-		type: 'NO_OP'
-	};
-}
-
 export function fetchProjectViaCorpProjectUuid({corpProjectUuid}) {
+	console.log('caiu aqui fetchProjectViaCorpProjectUuid');
 	return {
 		meta: {
 			[CALL_API]: {

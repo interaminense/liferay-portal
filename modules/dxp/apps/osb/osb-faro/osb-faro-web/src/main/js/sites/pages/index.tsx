@@ -13,8 +13,7 @@ import URLConstants from 'shared/util/url-constants';
 import {CSVType} from 'shared/components/download-report/utils';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
 import {Switch, useParams} from 'react-router-dom';
-import {useChannelContext} from 'shared/context/channel';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser, useSelectedChannel} from '../../AppContext';
 import {useDataSource} from 'shared/hooks/useDataSource';
 
 const InterestDetails = lazy(
@@ -83,7 +82,7 @@ interface IDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Dashboard: React.FC<IDashboardProps> = ({router}) => {
 	const {channelId, groupId} = useParams();
 	const dataSourceStates = useDataSource();
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 	const currentUser = useCurrentUser();
 
 	const authorized = currentUser.isAdmin();

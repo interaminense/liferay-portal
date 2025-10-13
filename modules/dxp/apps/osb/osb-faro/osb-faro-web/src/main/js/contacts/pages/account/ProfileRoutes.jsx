@@ -6,7 +6,7 @@ import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {Account} from 'shared/util/records';
-import {ChannelContext} from 'shared/context/channel';
+import {AppContext} from '../../../AppContext';
 import {compose, withAccount} from 'shared/hoc';
 import {getMatchedRoute, Routes} from 'shared/util/router';
 import {PropTypes} from 'prop-types';
@@ -71,7 +71,7 @@ const NAV_ITEMS = [
 ];
 
 export class AccountProfileRoutes extends React.Component {
-	static contextType = ChannelContext;
+	static contextType = AppContext;
 
 	static propTypes = {
 		account: PropTypes.instanceOf(Account).isRequired,

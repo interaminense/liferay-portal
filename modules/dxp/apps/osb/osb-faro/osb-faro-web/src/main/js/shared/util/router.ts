@@ -64,7 +64,6 @@ export const Routes = buildRoutes({
 	WORKSPACE: {
 		path: '/workspace',
 		routes: {
-			WORKSPACE_ADD: '/add',
 			WORKSPACE_ADD_TRIAL: '/add/trial',
 			WORKSPACE_ADD_WITH_CORP_PROJECT_UUID: '/:corpProjectUuid/add',
 			WORKSPACE_SELECT_ACCOUNT: '/select-account',

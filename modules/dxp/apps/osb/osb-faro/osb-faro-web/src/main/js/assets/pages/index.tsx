@@ -12,8 +12,7 @@ import {CSVType} from 'shared/components/download-report/utils';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
 import {Router} from 'shared/types';
 import {Switch, useParams} from 'react-router-dom';
-import {useChannelContext} from 'shared/context/channel';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser, useSelectedChannel} from '../../AppContext';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {User} from 'shared/util/records';
 
@@ -67,7 +66,7 @@ interface IAssetsProps extends React.HTMLAttributes<HTMLElement> {
 const Assets: React.FC<IAssetsProps> = ({className, router}) => {
 	const {channelId, groupId} = useParams();
 	const dataSourceStates = useDataSource();
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 	const currentUser = useCurrentUser();
 
 	const authorized = currentUser.isAdmin();

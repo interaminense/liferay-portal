@@ -1,5 +1,5 @@
 import React from 'react';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../AppContext';
 
 /**
  * CurrentUser HOC

@@ -4,6 +4,7 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import Workspaces, {routingFn} from '../Workspaces';
 import {ApolloProvider} from '@apollo/react-components';
+import {AppContext} from '../../../AppContext';
 import {BrowserRouter} from 'react-router-dom';
 import {cleanup, render} from '@testing-library/react';
 import {Map} from 'immutable';
@@ -11,7 +12,6 @@ import {noop} from 'lodash';
 import {Project} from 'shared/util/records';
 import {Provider} from 'react-redux';
 import {Routes, toRoute} from 'shared/util/router';
-import {useFetchProjects} from 'shared/hooks/useProjects';
 
 const corpProjectUuid = 'corpProjectUuid24';
 
@@ -66,9 +66,11 @@ describe('Workspaces', () => {
 	};
 
 	it('should render empty state', () => {
-		useFetchProjects.mockImplementation(() => ({data: [], loading: false}));
-
-		const {container} = render(<DefaultComponent />);
+		const {container} = render(
+			<AppContext.Provider value={{projects: []}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -76,14 +78,16 @@ describe('Workspaces', () => {
 	it('should render with the incident alert message notification', () => {
 		const {useIncidentAlert} = require('shared/hooks/useIncidentAlert');
 
-		useFetchProjects.mockImplementation(() => ({data: [], loading: false}));
-
 		useIncidentAlert.mockImplementation(() => ({
 			data: {incidentAlertEnabled: true},
 			loading: false
 		}));
 
-		const {container, getByText} = render(<DefaultComponent />);
+		const {container, getByText} = render(
+			<AppContext.Provider value={{projects: []}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		expect(
 			getByText(
@@ -121,36 +125,33 @@ describe('Workspaces', () => {
 			})
 		];
 
-		useFetchProjects.mockImplementation(() => ({
-			data: mockProjects,
-			loading: false
-		}));
-
-		const {container} = render(<DefaultComponent />);
+		const {container} = render(
+			<AppContext.Provider value={{projects: mockProjects}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('should render with a message that all basic tier plans have been configured if all of the basic tier plans have been configured and the allBasicConfigured url prop is true', () => {
-		useFetchProjects.mockImplementation(() => ({
-			data: [mockBasicProject(123), mockBasicProject(124)],
-			loading: false
-		}));
-
 		const {container} = render(
-			<DefaultComponent allBasicConfigured client={client} />
+			<AppContext.Provider
+				value={[mockBasicProject(123), mockBasicProject(124)]}
+			>
+				<DefaultComponent allBasicConfigured client={client} />
+			</AppContext.Provider>
 		);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('should render a list of projects if there is only one project and it is configured', () => {
-		useFetchProjects.mockImplementation(() => ({
-			data: [mockBasicProject(23)],
-			loading: false
-		}));
-
-		const {container} = render(<DefaultComponent />);
+		const {container} = render(
+			<AppContext.Provider value={{projects: [mockBasicProject(23)]}}>
+				<DefaultComponent />
+			</AppContext.Provider>
+		);
 
 		expect(container).toMatchSnapshot();
 	});

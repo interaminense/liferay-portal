@@ -1,13 +1,20 @@
 import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {AppContext} from '../../../AppContext';
 import {BrowserRouter} from 'react-router-dom';
-import {ChannelContext} from 'shared/context/channel';
 import {cleanup, render} from '@testing-library/react';
-import {mockChannelContext} from 'test/mock-channel-context';
+import {mockChannel} from './data';
 import {Provider} from 'react-redux';
 import {Segment} from 'shared/util/records';
+
 import {SegmentProfileRoutes} from '../ProfileRoutes';
+
+export const mockChannelContext = () => ({
+	channelDispatch: jest.fn(() => null),
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel()
+});
 
 const defaultProps = {
 	channelId: '123',
@@ -32,9 +39,9 @@ describe('SegmentProfileRoutes', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
 				<BrowserRouter>
-					<ChannelContext.Provider value={mockChannelContext()}>
+					<AppContext.Provider value={mockChannelContext()}>
 						<SegmentProfileRoutes {...defaultProps} />
-					</ChannelContext.Provider>
+					</AppContext.Provider>
 				</BrowserRouter>
 			</Provider>
 		);

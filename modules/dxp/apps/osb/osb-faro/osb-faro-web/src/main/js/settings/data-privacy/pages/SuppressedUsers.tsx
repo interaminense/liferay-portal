@@ -2,7 +2,7 @@ import BasePage from 'settings/components/BasePage';
 import React from 'react';
 import SuppressedUserList from '../hocs/SuppressedUserList';
 import {getDataPrivacy} from 'shared/util/breadcrumbs';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../../AppContext';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 export const SuppressedUsers = ({router}) => {

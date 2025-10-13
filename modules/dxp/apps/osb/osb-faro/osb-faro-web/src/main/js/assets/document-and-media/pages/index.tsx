@@ -15,9 +15,9 @@ import {pickBy} from 'lodash';
 import {Router} from 'shared/types';
 import {sub} from 'shared/util/lang';
 import {Switch} from 'react-router-dom';
-import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
+import {useSelectedChannel} from '../../../AppContext';
 
 const Overview = lazy(
 	() =>
@@ -59,7 +59,7 @@ const DocumentAndMedia: React.FC<{
 
 	const rangeSelectorsFromQuery = useQueryRangeSelectors();
 
-	const {selectedChannel} = useChannelContext();
+	const selectedChannel = useSelectedChannel();
 
 	return (
 		<BasePage

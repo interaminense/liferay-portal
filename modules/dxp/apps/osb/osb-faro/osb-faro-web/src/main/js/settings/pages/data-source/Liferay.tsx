@@ -3,7 +3,7 @@ import BaseDataSourcePage from '../../components/data-source/BasePage';
 import LiferayOverview from '../../components/liferay/Overview';
 import React from 'react';
 import {DataSource} from 'shared/util/records';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useCurrentUser} from '../../../AppContext';
 
 interface ILiferayProps {
 	dataSource: DataSource;

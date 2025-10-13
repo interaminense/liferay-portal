@@ -1,19 +1,28 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
 import withSidebar from '../WithSidebar';
+import {AppContext} from '../../../AppContext';
 import {BrowserRouter} from 'react-router-dom';
-import {ChannelContext} from 'shared/context/channel';
 import {cleanup, render} from '@testing-library/react';
 import {compose} from 'redux';
-import {
-	mockChannelContext,
-	withChannelProvider
-} from 'test/mock-channel-context';
+import {mockChannel} from './data';
 import {Provider} from 'react-redux';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 import {withStaticRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
+
+const mockChannelContext = () => ({
+	channels: [mockChannel(1), mockChannel(2)],
+	selectedChannel: mockChannel(),
+	setSelectedChannel: jest.fn(() => null)
+});
+
+const withChannelProvider = props => Component => (
+	<AppContext.Provider value={mockChannelContext()}>
+		<Component {...props} />
+	</AppContext.Provider>
+);
 
 describe('withSidebar', () => {
 	afterEach(cleanup);
@@ -22,11 +31,11 @@ describe('withSidebar', () => {
 
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<ChannelContext.Provider value={mockChannelContext()}>
+				<AppContext.Provider value={mockChannelContext()}>
 					<BrowserRouter>
 						<WrappedComponent />
 					</BrowserRouter>
-				</ChannelContext.Provider>
+				</AppContext.Provider>
 			</Provider>
 		);
 
