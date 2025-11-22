@@ -383,6 +383,20 @@ export function fetchUserCount({groupId, id}) {
 	});
 }
 
+export function fetchChannelDatasources({
+	delta,
+	groupId,
+	id,
+	page,
+	query = ''
+}) {
+	return sendRequest({
+		data: {cur: page, delta, name: query},
+		method: 'GET',
+		path: `contacts/${groupId}/data_source/${id}/channel-datasources`
+	});
+}
+
 export function fetchCompanies({groupId}) {
 	return sendRequest({
 		method: 'GET',

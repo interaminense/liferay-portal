@@ -8,7 +8,7 @@ import Modal from 'shared/components/modal';
 import NoResultsDisplay from '../NoResultsDisplay';
 import React, {useEffect, useState} from 'react';
 import URLConstants from 'shared/util/url-constants';
-import {CREATE_TIME, createOrderIOMap} from 'shared/util/pagination';
+import {createOrderIOMap, NAME} from 'shared/util/pagination';
 import {Sizes} from 'shared/util/constants';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useRequest} from 'shared/hooks/useRequest';
@@ -18,9 +18,10 @@ import {
 } from 'shared/context/selection';
 
 interface ISelectChannelsModalProps {
+	groupId: string;
+	initialChannelIds: string[];
 	onClose: () => {};
 	onSelect: (channels: string[]) => {};
-	groupId: string;
 }
 
 const SelectChannelsModal: React.FC<ISelectChannelsModalProps> = ({
@@ -28,13 +29,14 @@ const SelectChannelsModal: React.FC<ISelectChannelsModalProps> = ({
 	 * const {groupId} = useParams() doesn't work on Modals
 	 */
 	groupId,
+	// initialChannelIds,
 	onClose,
 	onSelect
 }) => {
 	const {selectedItems} = useSelectionContext();
 
 	const {delta, orderIOMap, page, query} = useQueryPagination({
-		initialOrderIOMap: createOrderIOMap(CREATE_TIME)
+		initialOrderIOMap: createOrderIOMap(NAME)
 	});
 
 	const {data, error, loading} = useRequest({
@@ -55,6 +57,8 @@ const SelectChannelsModal: React.FC<ISelectChannelsModalProps> = ({
 			setShowAlert(false);
 		}
 	}, [selectedItems]);
+
+	// console.log({initialChannelIds, items: data?.items});
 
 	return (
 		<Modal size='lg'>
