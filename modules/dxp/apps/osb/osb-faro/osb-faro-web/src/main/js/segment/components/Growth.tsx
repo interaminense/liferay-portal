@@ -43,7 +43,11 @@ import {formatXAxisDate, getIntervals} from 'shared/util/charts';
 import {get, isNil} from 'lodash';
 import {getNetChange} from 'shared/util/change';
 import {INDIVIDUALS} from 'shared/util/router';
-import {OrderByDirections, RangeKeyTimeRanges} from 'shared/util/constants';
+import {
+	OrderByDirections,
+	RangeKeyTimeRanges,
+	SegmentTypes
+} from 'shared/util/constants';
 import {OrderedMap} from 'immutable';
 import {OrderParams} from 'shared/util/records';
 import {sub} from 'shared/util/lang';
@@ -277,6 +281,11 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 		return null;
 	};
 
+	const handleClick = data => {
+		console.log(new Date(data.activeLabel).toUTCString());
+		console.log(data.activeTooltipIndex);
+	};
+
 	interface ICommonAreaChartStyles {
 		isAnimationActive: boolean;
 		legendType: string;
@@ -331,6 +340,7 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 			<ResponsiveContainer height={height}>
 				<AreaChart
 					data={data}
+					onClick={handleClick}
 					onMouseLeave={() => setMouseOutside(true)}
 					onMouseMove={() => setMouseOutside(false)}
 				>
@@ -548,6 +558,16 @@ export const SelectedPointInfo: React.FC = () => (
 	</div>
 );
 
+export const RealTimeSelectedPointInfo: React.FC<{
+	date?: string;
+	hasSelectedPoint: boolean;
+}> = ({date = new Date().toLocaleString(), hasSelectedPoint}) => (
+	<div className='selected-point-info'>
+		<div className='h4'>{date}</div>
+		{hasSelectedPoint && <div>{'Clear Date Selection'}</div>}
+	</div>
+);
+
 interface ISegmentGrowthWithList {
 	channelId: string;
 	className: string;
@@ -556,6 +576,7 @@ interface ISegmentGrowthWithList {
 	hasSelectedPoint: boolean;
 	id: string;
 	individualCounts?: {anonymousCount: number; knownCount: number};
+	segmentType?: string;
 	selectedPoint: number;
 	timeZoneId: string;
 }
@@ -568,6 +589,7 @@ const SegmentGrowthWithList: React.FC<ISegmentGrowthWithList> = ({
 	hasSelectedPoint,
 	id,
 	individualCounts,
+	segmentType,
 	selectedPoint,
 	timeZoneId
 }) => {
@@ -645,60 +667,83 @@ const SegmentGrowthWithList: React.FC<ISegmentGrowthWithList> = ({
 
 			{showMembershipList && (
 				<>
-					<SelectedPointInfo />
+					{segmentType === SegmentTypes.Batch ? (
+						<>
+							<SelectedPointInfo />
+							<SearchableEntityTable
+								{...paginationParams}
+								columns={getColumns()}
+								dataSourceFn={fetchMembers}
+								dataSourceParams={{
+									channelId,
+									groupId,
+									id,
+									modifiedDate
+								}}
+								entityType={INDIVIDUALS}
+								noResultsRenderer={() => {
+									// Check if intervals exists after fetch members
+									// to show/hide membership list based on intervals of chart
+									// to avoid render two empty states
+									setShowMembershipList(
+										!!individualCounts.knownCount ||
+											!!intervals.length
+									);
 
-					<SearchableEntityTable
-						{...paginationParams}
-						columns={getColumns()}
-						dataSourceFn={fetchMembers}
-						dataSourceParams={{
-							channelId,
-							groupId,
-							id,
-							modifiedDate
-						}}
-						entityType={INDIVIDUALS}
-						noResultsRenderer={() => {
-							// Check if intervals exists after fetch members
-							// to show/hide membership list based on intervals of chart
-							// to avoid render two empty states
-							setShowMembershipList(
-								!!individualCounts.knownCount ||
-									!!intervals.length
-							);
+									return (
+										<NoResultsDisplay
+											description={
+												<>
+													<span className='mr-1'>
+														{Liferay.Language.get(
+															'check-back-later-to-verify-if-data-has-been-received-from-your-data-sources'
+														)}
+													</span>
 
-							return (
-								<NoResultsDisplay
-									description={
-										<>
-											<span className='mr-1'>
-												{Liferay.Language.get(
-													'check-back-later-to-verify-if-data-has-been-received-from-your-data-sources'
-												)}
-											</span>
+													<ClayLink
+														href={
+															URLConstants.SegmentsMembershipDocumentationLink
+														}
+														key='DOCUMENTATION'
+														target='_blank'
+													>
+														{Liferay.Language.get(
+															'learn-more-about-individuals'
+														)}
+													</ClayLink>
+												</>
+											}
+											spacer
+											title={Liferay.Language.get(
+												'there-are-no-members-found-on-the-selected-time-period'
+											)}
+										/>
+									);
+								}}
+								rowIdentifier='id'
+							/>
+						</>
+					) : (
+						<>
+							<RealTimeSelectedPointInfo
+								hasSelectedPoint={hasSelectedPoint}
+							/>
 
-											<ClayLink
-												href={
-													URLConstants.SegmentsMembershipDocumentationLink
-												}
-												key='DOCUMENTATION'
-												target='_blank'
-											>
-												{Liferay.Language.get(
-													'learn-more-about-individuals'
-												)}
-											</ClayLink>
-										</>
-									}
-									spacer
-									title={Liferay.Language.get(
-										'there-are-no-members-found-on-the-selected-time-period'
-									)}
-								/>
-							);
-						}}
-						rowIdentifier='id'
-					/>
+							<SearchableEntityTable
+								{...paginationParams}
+								columns={getColumns()}
+								dataSourceFn={fetchMembers}
+								dataSourceParams={{
+									channelId,
+									groupId,
+									id,
+									modifiedDate
+								}}
+								entityType={INDIVIDUALS}
+								rowIdentifier='id'
+							/>
+						</>
+					)}
 				</>
 			)}
 		</Card.Body>
