@@ -10,7 +10,7 @@ import ClayLink from '@clayui/link';
 import ComposedChartWithEmptyState from 'shared/components/ComposedChartWithEmptyState';
 import getCN from 'classnames';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
-import React, {useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import SearchableEntityTable from 'shared/components/SearchableEntityTable';
 import URLConstants from 'shared/util/url-constants';
 import {
@@ -38,7 +38,7 @@ import {
 import {CHART_COLOR_NAMES} from 'shared/util/charts';
 import {createDateKeysIMap} from 'shared/util/intervals';
 import {DATE_CHANGED, NAME} from 'shared/util/pagination';
-import {formatUTCDateFromUnix} from 'shared/util/date';
+import {formatUTCDate, formatUTCDateFromUnix} from 'shared/util/date';
 import {formatXAxisDate, getIntervals} from 'shared/util/charts';
 import {get, isNil} from 'lodash';
 import {getNetChange} from 'shared/util/change';
@@ -116,6 +116,7 @@ interface ISegmentGrowthChartProps {
 	height?: number;
 	individualCounts?: {anonymousCount: number; knownCount: number};
 	selectedPoint: number;
+	setSelectedDate?: (date: string) => void;
 }
 
 interface ITooltipProps {
@@ -131,7 +132,8 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 		anonymousCount: 0,
 		knownCount: 0
 	},
-	selectedPoint
+	selectedPoint,
+	setSelectedDate
 }) => {
 	const [legendHoverItem, setLegendHoverItem] = useState(null);
 	const [mouseOutside, setMouseOutside] = useState(false);
@@ -282,8 +284,10 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 	};
 
 	const handleClick = data => {
-		console.log(new Date(data.activeLabel).toUTCString());
-		console.log(data.activeTooltipIndex);
+		if (!data || !data.activeLabel) {
+			return;
+		}
+		setSelectedDate(new Date(data?.activeLabel).toUTCString());
 	};
 
 	interface ICommonAreaChartStyles {
@@ -558,16 +562,6 @@ export const SelectedPointInfo: React.FC = () => (
 	</div>
 );
 
-export const RealTimeSelectedPointInfo: React.FC<{
-	date?: string;
-	hasSelectedPoint: boolean;
-}> = ({date = new Date().toLocaleString(), hasSelectedPoint}) => (
-	<div className='selected-point-info'>
-		<div className='h4'>{date}</div>
-		{hasSelectedPoint && <div>{'Clear Date Selection'}</div>}
-	</div>
-);
-
 interface ISegmentGrowthWithList {
 	channelId: string;
 	className: string;
@@ -594,6 +588,19 @@ const SegmentGrowthWithList: React.FC<ISegmentGrowthWithList> = ({
 	timeZoneId
 }) => {
 	const [showMembershipList, setShowMembershipList] = useState(true);
+	const [selectedDate, setSelectedDate] = useState<string>(null);
+
+	const dateRange = useMemo(() => {
+		hasSelectedPoint
+			? selectedDate
+			: `${formatUTCDate(
+					data[0].modifiedDate,
+					'MMM DD, YYYY'
+			  )} - ${formatUTCDate(
+					data[data.length - 1].modifiedDate,
+					'MMM DD, YYYY'
+			  )}`;
+	}, [hasSelectedPoint, setSelectedDate, selectedDate, data]);
 
 	const fetchMembers = params => {
 		const fetchMembersFn = hasSelectedPoint
@@ -662,6 +669,7 @@ const SegmentGrowthWithList: React.FC<ISegmentGrowthWithList> = ({
 					height={360}
 					individualCounts={individualCounts}
 					selectedPoint={selectedPoint}
+					setSelectedDate={setSelectedDate}
 				/>
 			</div>
 
@@ -725,9 +733,14 @@ const SegmentGrowthWithList: React.FC<ISegmentGrowthWithList> = ({
 						</>
 					) : (
 						<>
-							<RealTimeSelectedPointInfo
-								hasSelectedPoint={hasSelectedPoint}
-							/>
+							<div className='selected-point-info'>
+								<div className='h4'>{dateRange}</div>
+								{hasSelectedPoint && (
+									<ClayLink>
+										{'Clear Date Selection'}
+									</ClayLink>
+								)}
+							</div>
 
 							<SearchableEntityTable
 								{...paginationParams}
