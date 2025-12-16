@@ -4,7 +4,6 @@ import EmptyState from 'shared/components/workspaces/EmptyState';
 import JoinableWorkspacesWrapper from 'shared/components/workspaces/JoinableWorkspacesWrapper';
 import Loading from 'shared/components/Loading';
 import React from 'react';
-import URLConstants from 'shared/util/url-constants';
 import WorkspaceList from 'shared/components/workspaces/workspace-list';
 import WorkspacesBasePage from 'shared/components/workspaces/BasePage';
 import {ENABLE_ADD_TRIAL_WORKSPACE} from 'shared/util/constants';
@@ -154,13 +153,13 @@ const Workspaces: any = () => {
 						variant='inline'
 					>
 						{Liferay.Language.get(
-							'we-are-experiencing-changes-that-may-affect-your-workflow'
+							'Maintenance is scheduled for December 16 and may impact your workflow. Visit the status page for more details.'
 						)}
 
 						<ClayLink
 							className='ml-1'
 							decoration='underline'
-							href={URLConstants.HelpCenterAnnouncements}
+							href='https://status.liferay.cloud/incidents/f0vzkwrm0gb7'
 							target='_blank'
 						>
 							{Liferay.Language.get(
