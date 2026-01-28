@@ -2,7 +2,7 @@ import InterestDetails from '../InterestDetails';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockTimeRangeReq, mockTouchpointsReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';

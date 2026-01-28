@@ -1,17 +1,17 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
 import Search from '../Search';
+import {BrowserRouter} from 'react-router';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockSearchStringListReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -24,9 +24,9 @@ describe('Search', () => {
 		const {container} = render(
 			<MockedProvider mocks={[mockSearchStringListReq()]}>
 				<Provider store={mockStore()}>
-					<StaticRouter>
+					<BrowserRouter>
 						<Search groupId='23' />
-					</StaticRouter>
+					</BrowserRouter>
 				</Provider>
 			</MockedProvider>
 		);

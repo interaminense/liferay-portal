@@ -2,18 +2,18 @@ import * as data from 'test/data';
 import AddWorkspaceForm from '../AddWorkspaceForm';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {Project} from 'shared/util/records';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
 const DefaultComponent = props => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<AddWorkspaceForm {...props} />
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

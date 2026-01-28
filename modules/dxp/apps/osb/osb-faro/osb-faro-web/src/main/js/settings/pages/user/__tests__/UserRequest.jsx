@@ -2,7 +2,7 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import UserRequest from '../UserRequest';
 import {cleanup, render} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {noop} from 'lodash';
 import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';

@@ -1,12 +1,12 @@
 import * as API from 'shared/api';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {DataTransformation, processFieldMappings} from '../DataTransformation';
 import {fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {mockFieldMapping, mockMapping} from 'test/data';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -18,11 +18,11 @@ const defaultProps = {
 };
 
 const DefaultComponent = props => (
-	<StaticRouter>
+	<BrowserRouter>
 		<Provider store={mockStore()}>
 			<DataTransformation {...defaultProps} {...props} />
 		</Provider>
-	</StaticRouter>
+	</BrowserRouter>
 );
 
 describe('processFieldMappings', () => {

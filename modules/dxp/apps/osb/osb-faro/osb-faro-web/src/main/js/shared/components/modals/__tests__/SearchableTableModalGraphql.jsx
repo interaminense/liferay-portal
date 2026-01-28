@@ -7,7 +7,7 @@ import {
 	getMapResultToProps,
 	mapPropsToOptions
 } from 'segment/segment-editor/dynamic/mappers/dxp-entity-bag-mapper';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockOrganizationsListReq} from 'test/graphql-data';
 import {noop} from 'lodash';

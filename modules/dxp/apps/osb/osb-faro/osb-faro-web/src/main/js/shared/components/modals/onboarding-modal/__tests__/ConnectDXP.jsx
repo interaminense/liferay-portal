@@ -2,10 +2,10 @@ import * as API from 'shared/api';
 import ConnectDXP from '../ConnectDXP';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {fireEvent, render} from '@testing-library/react';
 import {noop} from 'lodash';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
@@ -13,9 +13,9 @@ describe('ConnectDXP', () => {
 	it('renders', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<ConnectDXP groupId='123' onClose={noop} onNext={noop} />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -25,14 +25,14 @@ describe('ConnectDXP', () => {
 	it('renders "Connected" when dxpConnected is true', () => {
 		const {queryByText} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<ConnectDXP
 						dxpConnected
 						groupId='123'
 						onClose={noop}
 						onNext={noop}
 					/>
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -47,9 +47,9 @@ describe('ConnectDXP', () => {
 	it('renders Download button', () => {
 		const {queryByText} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<ConnectDXP groupId='123' onClose={noop} onNext={noop} />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -59,9 +59,9 @@ describe('ConnectDXP', () => {
 	it('change Download link when change DXP version', () => {
 		const {container, queryByText} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<ConnectDXP groupId='123' onClose={noop} onNext={noop} />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -81,7 +81,7 @@ describe('ConnectDXP', () => {
 
 		render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<ConnectDXP
 						groupId='123'
 						onboarding
@@ -89,7 +89,7 @@ describe('ConnectDXP', () => {
 						onDxpConnected={spy}
 						onNext={noop}
 					/>
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 

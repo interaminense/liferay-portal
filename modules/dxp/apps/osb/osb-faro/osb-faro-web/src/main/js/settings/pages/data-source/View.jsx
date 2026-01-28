@@ -3,11 +3,10 @@ import LiferayOverview from 'settings/components/liferay/LiferayOverview';
 import omitDefinedProps from 'shared/util/omitDefinedProps';
 import React from 'react';
 import SalesforceOverview from 'settings/components/salesforce/SalesforceOverview';
-import {compose, withDataSource} from 'shared/hoc';
 import {DataSource} from 'shared/util/records';
 import {DataSourceTypes} from 'shared/util/constants';
 import {PropTypes} from 'prop-types';
-import {withRouter} from 'react-router-dom';
+import {withDataSource} from 'shared/hoc';
 
 const PAGE_MAP = {
 	[DataSourceTypes.Csv]: CSV,
@@ -38,4 +37,4 @@ export class View extends React.Component {
 	}
 }
 
-export default compose(withRouter, withDataSource)(View);
+export default withDataSource(View);

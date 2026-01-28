@@ -2,7 +2,7 @@ import BasePage from 'shared/components/base-page';
 import React from 'react';
 import Table from 'shared/components/table';
 import TextTruncate from 'shared/components/TextTruncate';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {pickBy} from 'lodash';
 import {PropTypes} from 'prop-types';
 import {toAssetOverviewRoute} from 'shared/util/router';

@@ -12,7 +12,7 @@ import {EntityTypes} from '../util/constants';
 import {getDataSourceLangKey} from 'shared/util/lang';
 import {getRouteName, Routes, toRoute} from 'shared/util/router';
 import {LIFERAY_SITE_TYPE} from 'shared/util/data-sources';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {PropTypes} from 'prop-types';
 import {Set} from 'immutable';
 import {sub} from '../util/lang';

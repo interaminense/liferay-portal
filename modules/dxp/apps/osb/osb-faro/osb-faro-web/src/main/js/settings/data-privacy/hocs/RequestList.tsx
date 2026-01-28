@@ -43,14 +43,14 @@ import {
 	TYPES
 } from 'shared/util/router';
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {User} from 'shared/util/records';
 import {
 	useSelectionContext,
 	withSelectionProvider
 } from 'shared/context/selection';
-import {withHistory} from 'shared/hoc';
+import {withNavigate} from 'shared/hoc';
 
 const {
 	pagination: {cur: defaultPage}
@@ -199,9 +199,8 @@ interface IRequestListProps {
 	addAlert: Alert.AddAlert;
 	close: () => void;
 	currentUser: User;
-	history: {
-		push: (href: string) => void;
-	};
+	navigate: (path: string) => void;
+
 	open: (modalType: string, options: object) => void;
 	timeZoneId: string;
 }
@@ -210,7 +209,7 @@ const RequestList: React.FC<IRequestListProps> = ({
 	addAlert,
 	close,
 	currentUser,
-	history,
+	navigate,
 	open,
 	timeZoneId
 }) => {
@@ -279,7 +278,7 @@ const RequestList: React.FC<IRequestListProps> = ({
 							)
 						});
 
-						history.push(
+						navigate(
 							setUriQueryValues(
 								{
 									field: CREATE_DATE,
@@ -495,5 +494,5 @@ const RequestList: React.FC<IRequestListProps> = ({
 export default compose<any>(
 	withSelectionProvider,
 	connect(null, {addAlert, close, open}),
-	withHistory
+	withNavigate
 )(RequestList);

@@ -15,7 +15,6 @@ import {DropdownRangeKey} from 'shared/components/dropdown-range-key/DropdownRan
 import {getMatchedRoute, Routes} from 'shared/util/router';
 import {pickBy} from 'lodash';
 import {PropTypes} from 'prop-types';
-import {Switch} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
@@ -36,17 +35,14 @@ const TouchpointPathPage = lazy(() =>
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('overview'),
 		route: Routes.SITES_TOUCHPOINTS_OVERVIEW
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('path'),
 		route: Routes.SITES_TOUCHPOINTS_PATH
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('known-individuals'),
 		route: Routes.SITES_TOUCHPOINTS_KNOWN_INDIVIDUALS
 	}
@@ -164,36 +160,29 @@ function TouchpointRoutes({className, router}) {
 
 				<BasePage.Body>
 					<Suspense fallback={<Loading />}>
-						<Switch>
-							<BundleRouter
-								data={TouchpointOverviewPage}
-								destructured={false}
-								exact
-								path={Routes.SITES_TOUCHPOINTS_OVERVIEW}
-							/>
+						<BundleRouter
+							data={TouchpointOverviewPage}
+							destructured={false}
+							path={Routes.SITES_TOUCHPOINTS_OVERVIEW}
+						/>
 
-							<BundleRouter
-								data={KnownIndividuals}
-								destructured={false}
-								exact
-								path={
-									Routes.SITES_TOUCHPOINTS_KNOWN_INDIVIDUALS
-								}
-							/>
+						<BundleRouter
+							data={KnownIndividuals}
+							destructured={false}
+							path={Routes.SITES_TOUCHPOINTS_KNOWN_INDIVIDUALS}
+						/>
 
-							<BundleRouter
-								componentProps={{
-									rangeSelectors: pathRangeSelectors,
-									selectedSegment
-								}}
-								data={TouchpointPathPage}
-								destructured={false}
-								exact
-								path={Routes.SITES_TOUCHPOINTS_PATH}
-							/>
+						<BundleRouter
+							componentProps={{
+								rangeSelectors: pathRangeSelectors,
+								selectedSegment
+							}}
+							data={TouchpointPathPage}
+							destructured={false}
+							path={Routes.SITES_TOUCHPOINTS_PATH}
+						/>
 
-							<RouteNotFound />
-						</Switch>
+						<RouteNotFound />
 					</Suspense>
 				</BasePage.Body>
 			</BasePage.Context.Provider>

@@ -1,9 +1,9 @@
 import * as API from 'shared/api';
 import * as data from 'test/data';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {Formik} from 'formik';
-import {StaticRouter} from 'react-router';
 import {Toolbar} from '../Toolbar';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -18,7 +18,7 @@ describe('Toolbar', () => {
 
 	it('should render', () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Formik>
 					<Toolbar
 						channelId='321'
@@ -27,14 +27,14 @@ describe('Toolbar', () => {
 						segmentType='BATCH'
 					/>
 				</Formik>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 		expect(container).toMatchSnapshot();
 	});
 
 	it('should render w/ preview button disabled if criteria is valid and total members count is equal to 0', () => {
 		const {getByTestId} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Formik>
 					<Toolbar
 						channelId='321'
@@ -43,7 +43,7 @@ describe('Toolbar', () => {
 						segmentType='BATCH'
 					/>
 				</Formik>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(getByTestId('preview-criteria-button')).toBeDisabled();
@@ -51,7 +51,7 @@ describe('Toolbar', () => {
 
 	it('should render w/ preview button disabled if criteria is not valid', () => {
 		const {getByTestId} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Formik>
 					<Toolbar
 						channelId='321'
@@ -60,7 +60,7 @@ describe('Toolbar', () => {
 						segmentType='BATCH'
 					/>
 				</Formik>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(getByTestId('preview-criteria-button')).toBeDisabled();
@@ -70,7 +70,7 @@ describe('Toolbar', () => {
 		API.individuals.search.mockReturnValue(Promise.resolve({total: 1}));
 
 		const {container, getByTestId} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Formik>
 					<Toolbar
 						channelId='321'
@@ -79,7 +79,7 @@ describe('Toolbar', () => {
 						segmentType='BATCH'
 					/>
 				</Formik>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		await waitForLoadingToBeRemoved(container);

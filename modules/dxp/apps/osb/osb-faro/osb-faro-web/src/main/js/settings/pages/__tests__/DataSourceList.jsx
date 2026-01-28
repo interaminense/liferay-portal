@@ -10,7 +10,7 @@ import mockStore, {mockStoreData} from 'test/mock-store';
 import React from 'react';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {DataSourceStates} from 'shared/util/constants';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {RemoteData} from 'shared/util/records';
 import {Routes} from 'shared/util/router';

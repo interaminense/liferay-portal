@@ -1,14 +1,14 @@
 import BasePage from '../base-page/BasePage';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -35,9 +35,9 @@ describe('BasePage', () => {
 	it('should render', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<BasePage />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -47,9 +47,9 @@ describe('BasePage', () => {
 	it('should render with a description', () => {
 		const {getByText} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<BasePage pageDescription='testPageDescription' />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -59,9 +59,9 @@ describe('BasePage', () => {
 	it('should render with a breadcrumb', () => {
 		const {getByText} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<BasePage breadcrumbItems={mockBreadcrumbItems} />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -71,9 +71,9 @@ describe('BasePage', () => {
 	it('should render with a page action', () => {
 		const {getByText} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<BasePage groupId='23' pageActions={mockPageActions} />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -83,9 +83,9 @@ describe('BasePage', () => {
 	it('should render with a title', () => {
 		const {getByText} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<BasePage groupId='23' pageTitle='testPageTitle' />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -95,13 +95,13 @@ describe('BasePage', () => {
 	it('should render with an inline title with subtitle', () => {
 		const {getByText} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<BasePage
 						groupId='23'
 						pageTitle='testPageTitle'
 						subTitle='mysubtitle'
 					/>
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 

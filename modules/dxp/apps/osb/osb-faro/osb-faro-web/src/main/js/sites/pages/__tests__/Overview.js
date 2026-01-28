@@ -5,7 +5,7 @@ import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
 import {ChannelContext} from 'shared/context/channel';
 import {cleanup, fireEvent, render} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {mockChannelContext} from 'test/mock-channel-context';
 import {Routes} from 'shared/util/router';
 

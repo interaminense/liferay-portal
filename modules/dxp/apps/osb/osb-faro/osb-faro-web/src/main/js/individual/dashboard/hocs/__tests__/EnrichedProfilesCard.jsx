@@ -2,6 +2,7 @@ import * as API from 'shared/api';
 import EnrichedProfilesCard from '../EnrichedProfilesCard';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, queryByText, render} from '@testing-library/react';
 import {CredentialTypes} from 'shared/util/constants';
 import {DataSource} from 'shared/util/records';
@@ -11,13 +12,12 @@ import {
 	mockLiferayDataSource,
 	mockSalesforceDataSource
 } from 'test/data';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -26,9 +26,9 @@ jest.mock('react-router-dom', () => ({
 ReactDOM.createPortal = jest.fn();
 
 const DefaultComponent = props => (
-	<StaticRouter>
+	<BrowserRouter>
 		<EnrichedProfilesCard {...props} />
-	</StaticRouter>
+	</BrowserRouter>
 );
 
 describe('EnrichedProfilesCard', () => {

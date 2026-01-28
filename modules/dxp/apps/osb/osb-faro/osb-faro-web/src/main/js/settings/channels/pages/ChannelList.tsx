@@ -27,7 +27,7 @@ import {formatDateToTimeZone} from 'shared/util/date';
 import {FormikActions} from 'formik';
 import {getPluralMessage, sub} from 'shared/util/lang';
 import {IPagination} from 'shared/types';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {RootState} from 'shared/store';
 import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';

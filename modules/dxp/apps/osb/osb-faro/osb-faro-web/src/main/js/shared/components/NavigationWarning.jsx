@@ -1,18 +1,24 @@
-import React from 'react';
-import {Prompt} from 'react-router';
+// TODO: Fix it
+// @ts-nocheck
 
-const NavigationWarning = ({
-	message = Liferay.Language.get(
-		'you-have-unsaved-changes-that-will-be-discarded-by-navigating-away-from-this-page.-do-you-want-to-leave-and-discard-your-changes'
-	),
-	...otherProps
-}) => (
-	<Prompt
-		message={nextLocation =>
-			nextLocation.pathname === window.location.pathname || message
-		}
-		{...otherProps}
-	/>
+import React from 'react';
+// import {Prompt} from 'react-router';
+
+const NavigationWarning = ({when}) => (
+	// const NavigationWarning = ({
+	// 	message = Liferay.Language.get(
+	// 		'you-have-unsaved-changes-that-will-be-discarded-by-navigating-away-from-this-page.-do-you-want-to-leave-and-discard-your-changes'
+	// 	),
+	// 	...otherProps
+	// }) => (
+	// <Prompt
+	// 	message={nextLocation =>
+	// 		nextLocation.pathname === window.location.pathname || message
+	// 	}
+	// 	{...otherProps}
+	// />
+
+	<div>{when}</div>
 );
 
 export default NavigationWarning;

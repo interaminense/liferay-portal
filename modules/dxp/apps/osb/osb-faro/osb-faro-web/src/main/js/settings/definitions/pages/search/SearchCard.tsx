@@ -12,7 +12,7 @@ import React, {useRef} from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert, Modal} from 'shared/types';
 import {close, modalTypes, open} from 'shared/actions/modals';
-import {compose, withHistory} from 'shared/hoc';
+import {compose, withNavigate} from 'shared/hoc';
 import {connect} from 'react-redux';
 import {FieldArray, Formik, FormikTouched, FormikValues} from 'formik';
 import {Routes, toRoute} from 'shared/util/router';
@@ -28,9 +28,7 @@ interface ISearchCardProps {
 	addAlert: Alert.AddAlert;
 	close: Modal.close;
 	groupId: string;
-	history: {
-		push: (path: string) => void;
-	};
+	navigate: (path: string) => void;
 	open: Modal.open;
 }
 
@@ -67,7 +65,7 @@ export const SearchCard: React.FC<ISearchCardProps> = ({
 	addAlert,
 	close,
 	groupId,
-	history,
+	navigate,
 	open
 }) => {
 	const currentUser = useCurrentUser();
@@ -109,7 +107,7 @@ export const SearchCard: React.FC<ISearchCardProps> = ({
 					)
 				});
 
-				history.push(toRoute(Routes.SETTINGS_DEFINITIONS, {groupId}));
+				navigate(toRoute(Routes.SETTINGS_DEFINITIONS, {groupId}));
 			})
 			.catch(() => {
 				currentForm.setSubmitting(false);
@@ -131,7 +129,7 @@ export const SearchCard: React.FC<ISearchCardProps> = ({
 					modalVariant: 'modal-warning',
 					onClose: close,
 					onSubmit: () => {
-						history.push(
+						navigate(
 							toRoute(Routes.SETTINGS_DEFINITIONS, {groupId})
 						);
 					},
@@ -140,7 +138,7 @@ export const SearchCard: React.FC<ISearchCardProps> = ({
 					title: Liferay.Language.get('exit-without-saving'),
 					titleIcon: 'warning-full'
 			  })
-			: history.push(toRoute(Routes.SETTINGS_DEFINITIONS, {groupId}));
+			: navigate(toRoute(Routes.SETTINGS_DEFINITIONS, {groupId}));
 	};
 
 	const handleBlur = (
@@ -321,6 +319,6 @@ export const SearchCard: React.FC<ISearchCardProps> = ({
 };
 
 export default compose<any>(
-	withHistory,
+	withNavigate,
 	connect(null, {addAlert, close, open})
 )(SearchCard);

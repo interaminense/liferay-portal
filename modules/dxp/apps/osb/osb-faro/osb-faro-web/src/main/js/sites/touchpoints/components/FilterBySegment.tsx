@@ -22,7 +22,7 @@ import {
 	SegmentPageViewsQueryVariables
 } from 'shared/queries/SegmentPageViewsQuery';
 import {sub} from 'shared/util/lang';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/react-hooks';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useRequest} from 'shared/hooks/useRequest';

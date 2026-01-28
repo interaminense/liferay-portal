@@ -3,7 +3,7 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import UserList from '../UserList';
 import {cleanup, render} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';
 import {User} from 'shared/util/records';

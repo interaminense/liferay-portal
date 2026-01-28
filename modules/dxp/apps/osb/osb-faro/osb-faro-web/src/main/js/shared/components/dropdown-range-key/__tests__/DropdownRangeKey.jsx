@@ -8,7 +8,7 @@ import {DropdownRangeKey} from '../DropdownRangeKey';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
-import {Router} from 'react-router-dom';
+import {Router} from 'react-router';
 import {SEVEN_MONTHS} from 'shared/util/constants';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 

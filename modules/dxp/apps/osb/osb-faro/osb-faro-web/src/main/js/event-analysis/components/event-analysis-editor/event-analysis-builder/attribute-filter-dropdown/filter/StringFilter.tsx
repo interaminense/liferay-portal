@@ -7,7 +7,7 @@ import {
 	STRING_OPERATOR_LABELS_MAP,
 	STRING_OPTIONS
 } from 'event-analysis/utils/utils';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 
 type EventAttributeValuesData = {

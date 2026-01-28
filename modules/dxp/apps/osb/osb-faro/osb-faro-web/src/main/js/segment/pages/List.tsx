@@ -51,7 +51,7 @@ import {
 	NAME,
 	paginationDefaults
 } from 'shared/util/pagination';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {OrderedMap} from 'immutable';
 import {OrderParams} from 'shared/util/records';
 import {SegmentStates, SegmentTypes, Sizes} from 'shared/util/constants';

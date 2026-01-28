@@ -2,8 +2,8 @@ import {CSVType, useDownloadCSV} from '../utils';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {renderHook} from '@testing-library/react-hooks';
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: jest.fn(() => ({
 		channelId: '123',
 		groupId: '456',

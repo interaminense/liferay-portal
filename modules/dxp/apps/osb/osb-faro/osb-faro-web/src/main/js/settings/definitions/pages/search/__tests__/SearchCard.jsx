@@ -1,11 +1,11 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
 import SearchCard from '../SearchCard';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockSearchStringListReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -16,13 +16,13 @@ jest.mock('shared/hooks/useCurrentUser', () => ({
 }));
 
 const DefaultComponent = props => (
-	<StaticRouter>
+	<BrowserRouter>
 		<MockedProvider mocks={[mockSearchStringListReq()]}>
 			<Provider store={mockStore()}>
 				<SearchCard groupId='23' {...props} />
 			</Provider>
 		</MockedProvider>
-	</StaticRouter>
+	</BrowserRouter>
 );
 
 const changeInputValue = (input, newValue) => {

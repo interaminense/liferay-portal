@@ -1,7 +1,7 @@
 import React from 'react';
 import TableData from '../TableData';
+import {BrowserRouter} from 'react-router';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -14,9 +14,9 @@ describe('TableData', () => {
 
 	it('should render with Link', () => {
 		const {container, getAllByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<TableData title='My Title' url='foo/bar' />
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container.querySelector('a')).toHaveAttribute(

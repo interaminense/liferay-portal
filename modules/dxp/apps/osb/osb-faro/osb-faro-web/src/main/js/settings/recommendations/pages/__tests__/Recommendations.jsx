@@ -3,7 +3,7 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import RecommendationListQuery from '../../queries/RecommendationListQuery';
 import Recommendations from '../Recommendations';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockJobBag} from 'test/graphql-data';
 import {Provider} from 'react-redux';

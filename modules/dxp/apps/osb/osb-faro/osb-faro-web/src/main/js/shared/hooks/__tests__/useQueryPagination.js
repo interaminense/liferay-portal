@@ -1,6 +1,6 @@
 import React from 'react';
 import {createOrderIOMap, getSortFromOrderIOMap} from 'shared/util/pagination';
-import {MemoryRouter} from 'react-router-dom';
+import {MemoryRouter} from 'react-router';
 import {render} from '@testing-library/react';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 

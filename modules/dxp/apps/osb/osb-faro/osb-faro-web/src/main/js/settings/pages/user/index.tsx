@@ -10,8 +10,8 @@ import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useParams} from 'react-router';
 import {UserStatuses} from 'shared/util/constants';
 
 const UserList = lazy(
@@ -37,12 +37,10 @@ export const User = ({className}) => {
 
 	const NAV_ITEMS = [
 		{
-			exact: true,
 			label: Liferay.Language.get('manage-users'),
 			route: Routes.SETTINGS_USERS
 		},
 		{
-			exact: true,
 			label: (
 				<>
 					{Liferay.Language.get('requests')}
@@ -94,23 +92,19 @@ export const User = ({className}) => {
 				)}
 
 				<Suspense fallback={<Loading />}>
-					<Switch>
-						<BundleRouter
-							componentProps={{currentUser}}
-							data={UserList}
-							exact
-							path={Routes.SETTINGS_USERS}
-						/>
+					<BundleRouter
+						componentProps={{currentUser}}
+						data={UserList}
+						path={Routes.SETTINGS_USERS}
+					/>
 
-						<BundleRouter
-							componentProps={{onSetUserRequest}}
-							data={UserRequest}
-							exact
-							path={Routes.SETTINGS_USERS_REQUESTS}
-						/>
+					<BundleRouter
+						componentProps={{onSetUserRequest}}
+						data={UserRequest}
+						path={Routes.SETTINGS_USERS_REQUESTS}
+					/>
 
-						<RouteNotFound />
-					</Switch>
+					<RouteNotFound />
 				</Suspense>
 			</Card>
 		</BasePage>

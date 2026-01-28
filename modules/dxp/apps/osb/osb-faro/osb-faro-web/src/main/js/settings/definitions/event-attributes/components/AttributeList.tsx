@@ -13,7 +13,7 @@ import {
 	NAME
 } from 'shared/util/pagination';
 import {mapListResultsToProps} from 'shared/util/mappers';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/react-hooks';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 

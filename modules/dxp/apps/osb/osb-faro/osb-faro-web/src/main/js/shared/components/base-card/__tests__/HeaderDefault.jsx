@@ -9,7 +9,7 @@ import {INTERVAL_KEY_MAP} from 'shared/util/time';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
-import {Router} from 'react-router-dom';
+import {Router} from 'react-router';
 
 jest.unmock('react-dom');
 

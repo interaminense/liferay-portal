@@ -1,15 +1,15 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {TrackedBehaviors} from '../TrackedBehaviors';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -23,9 +23,9 @@ describe('TrackedBehaviorsList', () => {
 	it('should render', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<TrackedBehaviors groupId='23' />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 

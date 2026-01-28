@@ -5,7 +5,7 @@ import React from 'react';
 import {pickBy} from 'lodash';
 import {Router} from 'shared/types';
 import {Routes, setUriQueryValues, toRoute} from 'shared/util/router';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
 
 interface IInterestDetailsProps extends React.HTMLAttributes<HTMLDivElement> {

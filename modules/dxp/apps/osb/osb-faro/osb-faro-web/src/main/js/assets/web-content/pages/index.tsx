@@ -14,7 +14,6 @@ import {getMatchedRoute, Routes} from 'shared/util/router';
 import {pickBy} from 'lodash';
 import {Router} from 'shared/types';
 import {sub} from 'shared/util/lang';
-import {Switch} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
@@ -31,12 +30,10 @@ const KnownIndividuals = lazy(
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('overview'),
 		route: Routes.ASSETS_WEB_CONTENT_OVERVIEW
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('known-individuals'),
 		route: Routes.ASSETS_WEB_CONTENT_KNOWN_INDIVIDUALS
 	}
@@ -134,25 +131,19 @@ const WebContent: React.FC<{
 
 				<BasePage.Body>
 					<Suspense fallback={<Loading />}>
-						<Switch>
-							<BundleRouter
-								data={Overview}
-								destructured={false}
-								exact
-								path={Routes.ASSETS_WEB_CONTENT_OVERVIEW}
-							/>
+						<BundleRouter
+							data={Overview}
+							destructured={false}
+							path={Routes.ASSETS_WEB_CONTENT_OVERVIEW}
+						/>
 
-							<BundleRouter
-								data={KnownIndividuals}
-								destructured={false}
-								exact
-								path={
-									Routes.ASSETS_WEB_CONTENT_KNOWN_INDIVIDUALS
-								}
-							/>
+						<BundleRouter
+							data={KnownIndividuals}
+							destructured={false}
+							path={Routes.ASSETS_WEB_CONTENT_KNOWN_INDIVIDUALS}
+						/>
 
-							<RouteNotFound />
-						</Switch>
+						<RouteNotFound />
 					</Suspense>
 				</BasePage.Body>
 			</BasePage.Context.Provider>

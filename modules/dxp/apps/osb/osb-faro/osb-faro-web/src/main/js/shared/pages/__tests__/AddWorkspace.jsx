@@ -3,7 +3,7 @@ import * as Router from 'shared/util/router';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {AddWorkspace, routingFn} from '../AddWorkspace';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {Project} from 'shared/util/records';

@@ -5,7 +5,7 @@ import {ApolloProvider} from '@apollo/react-components';
 import {AttributeBreakdownSection} from '../AttributeBreakdownSection';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';

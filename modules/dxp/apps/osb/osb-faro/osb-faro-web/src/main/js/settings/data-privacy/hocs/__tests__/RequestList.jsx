@@ -6,7 +6,7 @@ import RequestListQuery from '../../queries/RequestListQuery';
 import {cleanup, render} from '@testing-library/react';
 import {GDPRRequestStatuses, GDPRRequestTypes} from 'shared/util/constants';
 import {Map, Set} from 'immutable';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {mockDataControlTaskBag} from 'test/graphql-data';
 import {MockedProvider} from '@apollo/react-testing';
 import {Provider} from 'react-redux';

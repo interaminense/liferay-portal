@@ -3,7 +3,7 @@ import React from 'react';
 import RequestList from '../hocs/RequestList';
 import {getDataPrivacy} from 'shared/util/breadcrumbs';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 export const RequestLog = () => {

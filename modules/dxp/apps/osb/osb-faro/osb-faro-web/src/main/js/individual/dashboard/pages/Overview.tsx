@@ -15,7 +15,7 @@ import {fromJS} from 'immutable';
 import {Routes, toRoute} from 'shared/util/router';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 const {
 	pagination: {cur}

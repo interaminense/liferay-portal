@@ -4,7 +4,7 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import Workspaces, {routingFn} from '../Workspaces';
 import {ApolloProvider} from '@apollo/react-components';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {Map} from 'immutable';
 import {noop} from 'lodash';

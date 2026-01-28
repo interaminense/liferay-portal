@@ -2,7 +2,7 @@ import * as API from 'shared/api';
 import {DataSourceStatuses, DataSourceTypes} from 'shared/util/constants';
 import {IStatesRendererContextProps} from 'shared/components/states-renderer/StatesRenderer';
 import {Pagination} from 'shared/types';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useRequest} from 'shared/hooks/useRequest';
 
 interface IDataSourceProps {

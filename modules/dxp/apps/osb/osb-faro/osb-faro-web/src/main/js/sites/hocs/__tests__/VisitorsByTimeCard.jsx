@@ -10,7 +10,7 @@ import {createMemoryHistory} from 'history';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
 import {render} from '@testing-library/react';
-import {Router} from 'react-router-dom';
+import {Router} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');

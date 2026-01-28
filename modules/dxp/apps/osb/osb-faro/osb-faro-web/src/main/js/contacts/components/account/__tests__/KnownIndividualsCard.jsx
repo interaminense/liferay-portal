@@ -1,8 +1,8 @@
 import * as data from 'test/data';
 import KnownIndividualsCard from '../KnownIndividualsCard';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -11,7 +11,7 @@ const dataSourceFn = total => () =>
 	Promise.resolve(data.mockSearch(data.mockIndividual, total));
 
 const DefaultComponent = props => (
-	<StaticRouter>
+	<BrowserRouter>
 		<KnownIndividualsCard
 			channelId='123'
 			dataSourceFn={dataSourceFn(3)}
@@ -19,7 +19,7 @@ const DefaultComponent = props => (
 			id='23'
 			{...props}
 		/>
-	</StaticRouter>
+	</BrowserRouter>
 );
 
 describe('KnownIndividualsCard', () => {

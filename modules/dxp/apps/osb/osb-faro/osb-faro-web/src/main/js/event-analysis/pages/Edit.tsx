@@ -14,7 +14,7 @@ import {
 import {normalizeRangeSelectors} from 'shared/util/util';
 import {Routes, toRoute} from 'shared/util/router';
 import {uniqueId} from 'lodash';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/react-hooks';
 
 function normalizeItems<T extends {id: string; __typename?: string}>(

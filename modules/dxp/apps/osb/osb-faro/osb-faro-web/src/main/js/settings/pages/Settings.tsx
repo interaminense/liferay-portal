@@ -6,7 +6,7 @@ import RouteNotFound from 'shared/components/RouteNotFound';
 import {compose} from 'shared/hoc';
 import {ENABLE_CSVFILE} from 'shared/util/constants';
 import {Routes} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useStore} from 'react-redux';
 import {withOnboarding} from 'shared/hoc';
 
@@ -139,133 +139,116 @@ export const Settings = () => {
 
 	return (
 		<Suspense fallback={<Loading />}>
-			<Switch>
-				<BundleRouter
-					data={DataSourceList}
-					exact
-					path={Routes.SETTINGS_DATA_SOURCE_LIST}
-				/>
+			<BundleRouter
+				data={DataSourceList}
+				path={Routes.SETTINGS_DATA_SOURCE_LIST}
+			/>
 
-				<BundleRouter
-					data={DataSourceOnboarding}
-					exact
-					path={Routes.SETTINGS_DATA_SOURCE_ONBOARDING}
-				/>
+			<BundleRouter
+				data={DataSourceOnboarding}
+				path={Routes.SETTINGS_DATA_SOURCE_ONBOARDING}
+			/>
 
-				<BundleRouter
-					data={DeleteDataSource}
-					path={Routes.SETTINGS_DATA_SOURCE_DELETE}
-				/>
+			<BundleRouter
+				data={DeleteDataSource}
+				path={Routes.SETTINGS_DATA_SOURCE_DELETE}
+			/>
 
-				<BundleRouter
-					data={DataSourceEdit}
-					exact
-					path={Routes.SETTINGS_DATA_SOURCE_EDIT}
-				/>
+			<BundleRouter
+				data={DataSourceEdit}
+				path={Routes.SETTINGS_DATA_SOURCE_EDIT}
+			/>
 
-				{ENABLE_CSVFILE && (
+			{ENABLE_CSVFILE && (
+				<BundleRouter
+					data={ConfigureCSV}
+					path={Routes.SETTINGS_CSV_UPLOAD_CONFIGURE}
+				/>
+			)}
+
+			{ENABLE_CSVFILE && (
+				<BundleRouter
+					data={UploadCSV}
+					path={Routes.SETTINGS_CSV_UPLOAD}
+				/>
+			)}
+
+			<BundleRouter
+				data={DataSource}
+				path={Routes.SETTINGS_DATA_SOURCE}
+			/>
+
+			<BundleRouter data={Users} path={Routes.SETTINGS_USERS} />
+
+			{!IS_PROJECT_SAAS && (
+				<BundleRouter
+					data={UsageOverview}
+					path={Routes.SETTINGS_USAGE}
+				/>
+			)}
+
+			{IS_PROJECT_SAAS && (
+				<BundleRouter
+					data={UsageOverviewSaaS}
+					path={Routes.SETTINGS_USAGE}
+				/>
+			)}
+
+			<BundleRouter
+				data={Definitions}
+				path={Routes.SETTINGS_DEFINITIONS}
+			/>
+
+			<BundleRouter
+				data={DataPrivacy}
+				path={Routes.SETTINGS_DATA_PRIVACY}
+			/>
+
+			<BundleRouter
+				data={WorkspaceSettings}
+				path={Routes.SETTINGS_WORKSPACE}
+			/>
+
+			<BundleRouter
+				data={ChannelView}
+				path={Routes.SETTINGS_CHANNELS_VIEW}
+			/>
+
+			<BundleRouter data={ChannelList} path={Routes.SETTINGS_CHANNELS} />
+
+			<BundleRouter data={Apis} path={Routes.SETTINGS_APIS} />
+
+			{recommendationsEnabled && (
+				<Fragment key='RECOMMENDATIONS'>
 					<BundleRouter
-						data={ConfigureCSV}
-						exact
-						path={Routes.SETTINGS_CSV_UPLOAD_CONFIGURE}
+						data={RecommendationList}
+						destructured={false}
+						path={Routes.SETTINGS_RECOMMENDATIONS}
 					/>
-				)}
 
-				{ENABLE_CSVFILE && (
 					<BundleRouter
-						data={UploadCSV}
-						exact
-						path={Routes.SETTINGS_CSV_UPLOAD}
+						data={RecommendationCreateItemSimilarity}
+						destructured={false}
+						path={
+							Routes.SETTINGS_RECOMMENDATIONS_CREATE_ITEM_SIMILARITY_MODEL
+						}
 					/>
-				)}
 
-				<BundleRouter
-					data={DataSource}
-					path={Routes.SETTINGS_DATA_SOURCE}
-				/>
-
-				<BundleRouter data={Users} path={Routes.SETTINGS_USERS} />
-
-				{!IS_PROJECT_SAAS && (
 					<BundleRouter
-						data={UsageOverview}
-						exact
-						path={Routes.SETTINGS_USAGE}
+						data={RecommendationEdit}
+						destructured={false}
+						path={Routes.SETTINGS_RECOMMENDATION_EDIT}
 					/>
-				)}
 
-				{IS_PROJECT_SAAS && (
 					<BundleRouter
-						data={UsageOverviewSaaS}
-						exact
-						path={Routes.SETTINGS_USAGE}
+						data={RecommendationView}
+						destructured={false}
+						path={Routes.SETTINGS_RECOMMENDATION_MODEL_VIEW}
 					/>
-				)}
+				</Fragment>
+			)}
 
-				<BundleRouter
-					data={Definitions}
-					path={Routes.SETTINGS_DEFINITIONS}
-				/>
-
-				<BundleRouter
-					data={DataPrivacy}
-					path={Routes.SETTINGS_DATA_PRIVACY}
-				/>
-
-				<BundleRouter
-					data={WorkspaceSettings}
-					path={Routes.SETTINGS_WORKSPACE}
-				/>
-
-				<BundleRouter
-					data={ChannelView}
-					exact
-					path={Routes.SETTINGS_CHANNELS_VIEW}
-				/>
-
-				<BundleRouter
-					data={ChannelList}
-					path={Routes.SETTINGS_CHANNELS}
-				/>
-
-				<BundleRouter data={Apis} path={Routes.SETTINGS_APIS} />
-
-				{recommendationsEnabled && (
-					<Fragment key='RECOMMENDATIONS'>
-						<BundleRouter
-							data={RecommendationList}
-							destructured={false}
-							exact
-							path={Routes.SETTINGS_RECOMMENDATIONS}
-						/>
-
-						<BundleRouter
-							data={RecommendationCreateItemSimilarity}
-							destructured={false}
-							exact
-							path={
-								Routes.SETTINGS_RECOMMENDATIONS_CREATE_ITEM_SIMILARITY_MODEL
-							}
-						/>
-
-						<BundleRouter
-							data={RecommendationEdit}
-							destructured={false}
-							exact
-							path={Routes.SETTINGS_RECOMMENDATION_EDIT}
-						/>
-
-						<BundleRouter
-							data={RecommendationView}
-							destructured={false}
-							exact
-							path={Routes.SETTINGS_RECOMMENDATION_MODEL_VIEW}
-						/>
-					</Fragment>
-				)}
-
-				<RouteNotFound />
-			</Switch>
+			<RouteNotFound />
 		</Suspense>
 	);
 };

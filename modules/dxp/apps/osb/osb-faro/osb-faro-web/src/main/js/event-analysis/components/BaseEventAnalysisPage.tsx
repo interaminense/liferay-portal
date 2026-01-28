@@ -29,8 +29,8 @@ import {omit} from 'lodash';
 import {Routes, toRoute} from 'shared/util/router';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useHistory, useParams} from 'react-router-dom';
 import {useMutation} from '@apollo/react-hooks';
+import {useNavigate, useParams} from 'react-router';
 import {WithRangeKeyProps} from 'shared/hoc/WithRangeKey';
 
 enum MessageKeys {
@@ -79,7 +79,7 @@ const BaseEventAnalysisPage: React.FC<IBaseEventAnalysisPageProps> = ({
 	open,
 	rangeSelectors: initialRangeSelectors
 }) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const {selectedChannel} = useChannelContext();
 
@@ -151,7 +151,7 @@ const BaseEventAnalysisPage: React.FC<IBaseEventAnalysisPageProps> = ({
 
 				close();
 
-				history.push(
+				navigate(
 					toRoute(Routes.EVENT_ANALYSIS, {
 						channelId,
 						groupId

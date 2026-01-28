@@ -2,7 +2,7 @@ import getCN from 'classnames';
 import React from 'react';
 import {getSafeDisplayValue} from 'shared/util/util';
 import {isNil} from 'lodash';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {PropTypes} from 'prop-types';
 import {Routes, toRoute} from 'shared/util/router';
 

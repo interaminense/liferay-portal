@@ -4,6 +4,7 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import View from '../View';
 import {ApolloProvider} from '@apollo/react-components';
+import {BrowserRouter} from 'react-router';
 import {MockedProvider} from '@apollo/react-testing';
 import {
 	mockRecommendationJobRunsReq,
@@ -11,7 +12,6 @@ import {
 } from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoading} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -22,8 +22,8 @@ jest.mock('shared/hooks/useTimeZone', () => ({
 	})
 }));
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '123',
 		jobId: '321',
@@ -34,7 +34,7 @@ jest.mock('react-router-dom', () => ({
 const DefaultComponent = props => (
 	<ApolloProvider client={client}>
 		<Provider store={mockStore()}>
-			<StaticRouter>
+			<BrowserRouter>
 				<MockedProvider
 					mocks={[
 						mockRecommendationJobRunsReq([
@@ -48,7 +48,7 @@ const DefaultComponent = props => (
 						router={{params: {groupId: '123', jobId: '321'}}}
 					/>
 				</MockedProvider>
-			</StaticRouter>
+			</BrowserRouter>
 		</Provider>
 	</ApolloProvider>
 );

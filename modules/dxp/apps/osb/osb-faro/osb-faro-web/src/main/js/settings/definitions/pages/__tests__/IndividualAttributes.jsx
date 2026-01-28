@@ -3,16 +3,16 @@ import 'test/mock-modal';
 import IndividualAttributes from '../IndividualAttributes';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {open} from 'shared/actions/modals';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -24,9 +24,9 @@ jest.mock('shared/hooks/useTimeZone', () => ({
 
 const DefaultComponent = props => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<IndividualAttributes groupId='23' {...props} />
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

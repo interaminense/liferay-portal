@@ -1,7 +1,7 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
 import withSidebar from '../WithSidebar';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {ChannelContext} from 'shared/context/channel';
 import {cleanup, render} from '@testing-library/react';
 import {compose} from 'redux';
@@ -11,7 +11,7 @@ import {
 } from 'test/mock-channel-context';
 import {Provider} from 'react-redux';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
-import {withStaticRouter} from 'test/mock-router';
+import {withBrowserRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -36,7 +36,7 @@ describe('withSidebar', () => {
 	it('should render with the sidebar', async () => {
 		const WrappedComponent = compose(
 			withChannelProvider,
-			withStaticRouter,
+			withBrowserRouter,
 			withSidebar
 		)(() => <p>{'bizbaz'}</p>);
 

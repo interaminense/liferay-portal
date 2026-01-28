@@ -4,10 +4,10 @@ import {
 	AttributesContext,
 	withAttributesProvider
 } from '../../context/attributes';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEventAnalysisResultReq} from 'test/graphql-data';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 const initialAttributes = {
@@ -86,7 +86,7 @@ describe('BreakdownTable', () => {
 
 	it('render', async () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<AttributesContext.Provider value={initialAttributes}>
 					<MockedProvider
 						mocks={[
@@ -111,7 +111,7 @@ describe('BreakdownTable', () => {
 						/>
 					</MockedProvider>
 				</AttributesContext.Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		await waitForLoadingToBeRemoved(container);
@@ -123,7 +123,7 @@ describe('BreakdownTable', () => {
 		const BreakdownWithProvider = withAttributesProvider(BreakdownTable);
 
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<MockedProvider
 					mocks={[
 						mockEventAnalysisResultReq(eventAnalysisResult, {
@@ -142,7 +142,7 @@ describe('BreakdownTable', () => {
 						type='TOTAL'
 					/>
 				</MockedProvider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		await waitForLoadingToBeRemoved(container);
@@ -185,7 +185,7 @@ describe('BreakdownTable', () => {
 		};
 
 		const {container, getByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<AttributesContext.Provider value={initialAttributes}>
 					<MockedProvider
 						mocks={[
@@ -210,7 +210,7 @@ describe('BreakdownTable', () => {
 						/>
 					</MockedProvider>
 				</AttributesContext.Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		await waitForLoadingToBeRemoved(container);

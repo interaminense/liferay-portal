@@ -1,7 +1,7 @@
 import * as API from 'shared/api';
 import * as data from 'test/data';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {
 	cleanup,
 	render,

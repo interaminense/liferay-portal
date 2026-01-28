@@ -1,15 +1,15 @@
 import React from 'react';
-import {StaticRouter} from 'react-router';
+import {BrowserRouter} from 'react-router';
 
 export default {
 	params: {},
 	query: {}
 };
 
-export function withStaticRouter(Component) {
+export function withBrowserRouter(Component) {
 	return props => (
-		<StaticRouter>
+		<BrowserRouter>
 			<Component {...props} />
-		</StaticRouter>
+		</BrowserRouter>
 	);
 }

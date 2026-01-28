@@ -2,14 +2,14 @@ import React from 'react';
 import withPaginationBar from '../WithPaginationBar';
 import {compose} from 'redux';
 import {render} from '@testing-library/react';
-import {withStaticRouter} from 'test/mock-router';
+import {withBrowserRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
 describe('withPaginationBar', () => {
 	it('renders', () => {
 		const WrappedComponent = compose(
-			withStaticRouter,
+			withBrowserRouter,
 			withPaginationBar({defaultDelta: 10})
 		)(() => <div>{'foobar'}</div>);
 
@@ -22,7 +22,7 @@ describe('withPaginationBar', () => {
 
 	it('renders w/o the pagination bar', () => {
 		const WrappedComponent = compose(
-			withStaticRouter,
+			withBrowserRouter,
 			withPaginationBar({defaultDelta: 10})
 		)(() => <div>{'foobar'}</div>);
 

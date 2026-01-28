@@ -3,14 +3,14 @@ import CreateItemSimilarity from '../CreateItemSimilarity';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {BrowserRouter} from 'react-router';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -23,9 +23,9 @@ const defaultProps = {
 const DefaultComponent = props => (
 	<ApolloProvider client={client}>
 		<Provider store={mockStore()}>
-			<StaticRouter>
+			<BrowserRouter>
 				<CreateItemSimilarity {...defaultProps} {...props} />
-			</StaticRouter>
+			</BrowserRouter>
 		</Provider>
 	</ApolloProvider>
 );

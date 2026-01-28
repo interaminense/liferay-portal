@@ -1,9 +1,9 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
 import Sidebar from '../index';
+import {BrowserRouter} from 'react-router';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 import {User} from 'shared/util/records';
 
 const defaultProps = {
@@ -19,9 +19,9 @@ describe('Sidebar', () => {
 	it('should render', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<Sidebar {...defaultProps} />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -31,9 +31,9 @@ describe('Sidebar', () => {
 	it('should render as collapsed', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<Sidebar {...defaultProps} collapsed />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -47,12 +47,12 @@ describe('Sidebar', () => {
 
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<Sidebar
 						{...defaultProps}
 						activePathname={activePathName}
 					/>
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 

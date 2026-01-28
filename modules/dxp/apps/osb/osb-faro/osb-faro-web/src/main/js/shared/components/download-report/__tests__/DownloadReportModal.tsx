@@ -10,7 +10,6 @@ import {
 	formattedContainers,
 	ReportContainer
 } from '../DownloadPDFReport';
-import {createMemoryHistory} from 'history';
 import {CSVType, useDownloadCSV} from '../utils';
 import {DownloadReportButton} from '../DownloadReportButton';
 import {DownloadReportModal, ReportType} from '../DownloadReportModal';
@@ -19,15 +18,14 @@ import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {RangeSelectors} from 'shared/types';
-import {Router} from 'react-router-dom';
 import {sub} from 'shared/util/lang';
 import {useModal} from '@clayui/modal';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '456',
 		groupId: '2000',
@@ -123,30 +121,27 @@ const WrapperComponent: React.FC<IWrapperComponent> = ({
 }) => {
 	const [visible, setVisible] = useState(false);
 	const {observer} = useModal({onClose: () => setVisible(false)});
-	const history = createMemoryHistory();
 
 	return (
 		<>
 			{visible && (
 				<ApolloProvider client={client}>
-					<Router history={history}>
-						<MockedProvider
-							mocks={[mockTimeRangeReq(), mockPreferenceReq()]}
-						>
-							<Provider store={mockStore()}>
-								<DownloadReportModal
-									{...otherProps}
-									infoMessage={infoMessage}
-									observer={observer}
-									onClose={jest.fn()}
-									onSubmit={onSubmit}
-									type={type}
-								>
-									{children}
-								</DownloadReportModal>
-							</Provider>
-						</MockedProvider>
-					</Router>
+					<MockedProvider
+						mocks={[mockTimeRangeReq(), mockPreferenceReq()]}
+					>
+						<Provider store={mockStore()}>
+							<DownloadReportModal
+								{...otherProps}
+								infoMessage={infoMessage}
+								observer={observer}
+								onClose={jest.fn()}
+								onSubmit={onSubmit}
+								type={type}
+							>
+								{children}
+							</DownloadReportModal>
+						</Provider>
+					</MockedProvider>
 				</ApolloProvider>
 			)}
 

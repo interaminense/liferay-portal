@@ -1,7 +1,7 @@
 import getCN from 'classnames';
 import React from 'react';
 import TextTruncate from 'shared/components/TextTruncate';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {noop} from 'lodash';
 
 interface INameProps {

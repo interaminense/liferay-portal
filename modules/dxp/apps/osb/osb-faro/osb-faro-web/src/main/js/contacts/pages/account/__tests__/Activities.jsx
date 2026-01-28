@@ -4,7 +4,7 @@ import Activities from '../Activities';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {Account} from 'shared/util/records';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';

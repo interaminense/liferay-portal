@@ -1,7 +1,7 @@
 import InterestPagesList from '../InterestPagesList';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {render, waitFor} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -14,9 +14,9 @@ jest.unmock('react-dom');
 describe('InterestPagesList', () => {
 	it('should render', async () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<InterestPagesList dataSourceParams={{active: true}} />
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		await waitFor(() => {});

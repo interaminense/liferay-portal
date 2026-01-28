@@ -8,7 +8,7 @@ import {ApolloProvider} from '@apollo/react-components';
 import {ChannelContext} from 'shared/context/channel';
 import {cleanup, render} from '@testing-library/react';
 import {Dashboard} from '../index';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {mockChannelContext} from 'test/mock-channel-context';
 import {mockEmptyState, mockSuccessState} from 'test/__mocks__/mock-objects';
 import {OAuthUpgradeWarningContext} from 'shared/context/oAuthUpgradeWarning';

@@ -2,6 +2,7 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import Overview from '../Overview';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {Individual} from 'shared/util/records';
 import {MockedProvider} from '@apollo/react-testing';
@@ -12,7 +13,6 @@ import {
 	mockTimeRangeReq
 } from 'test/graphql-data';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -33,7 +33,7 @@ describe('IndividualOverview', () => {
 				]}
 			>
 				<Provider store={mockStore()}>
-					<StaticRouter>
+					<BrowserRouter>
 						<Overview
 							groupId='23'
 							id='test'
@@ -42,7 +42,7 @@ describe('IndividualOverview', () => {
 								data.mockIndividual
 							)}
 						/>
-					</StaticRouter>
+					</BrowserRouter>
 				</Provider>
 			</MockedProvider>
 		);

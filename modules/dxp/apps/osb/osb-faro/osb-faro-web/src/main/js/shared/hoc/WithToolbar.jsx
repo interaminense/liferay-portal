@@ -1,9 +1,11 @@
+// TODO: Fix it
+// There is no history, we should use navigate instead.
+
 import autobind from 'autobind-decorator';
 import FaroConstants, {RangeKeyTimeRanges} from 'shared/util/constants';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Toolbar from 'shared/components/toolbar';
-import withHistory from './WithHistory';
 import {DropdownRangeKey} from 'shared/components/dropdown-range-key/DropdownRangeKey';
 import {get} from 'lodash';
 import {hasChanges} from 'shared/util/react';
@@ -197,5 +199,5 @@ export default configs => WrappedComponent => {
 		}
 	}
 
-	return withHistory(WithToolbarBar);
+	return WithToolbarBar;
 };

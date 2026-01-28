@@ -3,9 +3,9 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import RequestLog from '../RequestLog';
 import {ApolloProvider} from '@apollo/react-components';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
@@ -15,8 +15,8 @@ jest.mock('shared/hooks/useTimeZone', () => ({
 	})
 }));
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -29,11 +29,11 @@ describe('RequestLog', () => {
 		const {container} = render(
 			<ApolloProvider client={client}>
 				<Provider store={mockStore()}>
-					<StaticRouter>
+					<BrowserRouter>
 						<RequestLog
 							router={{params: {groupId: '23'}, query: {}}}
 						/>
-					</StaticRouter>
+					</BrowserRouter>
 				</Provider>
 			</ApolloProvider>
 		);

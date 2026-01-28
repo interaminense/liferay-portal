@@ -5,12 +5,12 @@ import {Alert} from 'shared/types';
 import {connect} from 'react-redux';
 import {EXPERIMENT_DELETE_MUTATION} from 'experiments/queries/ExperimentMutation';
 import {Routes, toRoute} from 'shared/util/router';
-import {useHistory, useParams} from 'react-router-dom';
 import {useMutation} from '@apollo/react-hooks';
+import {useNavigate, useParams} from 'react-router';
 
 const DeleteExperimentModal = ({addAlert, experimentId, observer, onClose}) => {
 	const {channelId, groupId} = useParams();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [mutate] = useMutation(EXPERIMENT_DELETE_MUTATION);
 
 	const onSubmit = () =>
@@ -26,7 +26,7 @@ const DeleteExperimentModal = ({addAlert, experimentId, observer, onClose}) => {
 			message: Liferay.Language.get('the-test-has-been-deleted')
 		});
 
-		history.push(toRoute(Routes.TESTS, {channelId, groupId}));
+		navigate(toRoute(Routes.TESTS, {channelId, groupId}));
 	};
 
 	return (

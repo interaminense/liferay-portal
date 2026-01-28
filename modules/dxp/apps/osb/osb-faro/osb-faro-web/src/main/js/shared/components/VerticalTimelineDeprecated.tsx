@@ -7,7 +7,7 @@ import Sticker from './Sticker';
 import TextTruncate from './TextTruncate';
 import {formatDateToTimeZone} from 'shared/util/date';
 import {get} from 'lodash';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 

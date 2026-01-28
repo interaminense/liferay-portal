@@ -35,7 +35,7 @@ import {sub} from 'shared/util/lang';
 import {Text} from '@clayui/core';
 import {useInterval} from 'shared/hooks/useInterval';
 import {useLazyQuery} from '@apollo/react-hooks';
-import {withHistory} from 'shared/hoc';
+import {withNavigate} from 'shared/hoc';
 
 const TIMEOUT_INTERVAL = 5000;
 
@@ -78,9 +78,7 @@ interface IConnectDXPWrapperProps {
 		groupId: string;
 		id: string;
 	}) => DataSource;
-	history: {
-		push: (path: string) => void;
-	};
+	navigate: (path: string) => void;
 	isUpgrading: boolean;
 	onDxpConnected: (dxpConnected: boolean) => void;
 	onPrevious?: () => void;
@@ -95,7 +93,7 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 	dxpConnected,
 	fetchDataSource,
 	groupId,
-	history,
+	navigate,
 	onboarding,
 	onClose,
 	onDxpConnected,
@@ -164,7 +162,7 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 		API.channels.fetchAll({groupId}).then(({items}) => {
 			const channelId = get(items, [0, 'id']);
 
-			history.push(toRoute(Routes.SITES, {channelId, groupId}));
+			navigate(toRoute(Routes.SITES, {channelId, groupId}));
 
 			channelDispatch({
 				payload: getDefaultChannel(channelId, items),
@@ -504,7 +502,7 @@ const TokenInput: FC<ITokenInputProps> = ({token}) => {
 };
 
 export default compose<any>(
-	withHistory,
+	withNavigate,
 	connect(null, {
 		fetchDataSource
 	})

@@ -21,10 +21,10 @@ import {pickBy} from 'lodash';
 import {Routes, setUriQueryValues, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useChannelContext} from 'shared/context/channel';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
-import {withHistory, withPaginationBar, withTableData} from 'shared/hoc';
+import {withPaginationBar, withTableData} from 'shared/hoc';
 
 const {
 	pagination: {cur: defaultPage, delta: defaultDelta}
@@ -98,7 +98,8 @@ const TableWithData = withTableData(withData, {
 	rowIdentifier: 'name'
 });
 
-const Interests = ({history}) => {
+const Interests = () => {
+	const navigate = useNavigate();
 	const {selectedChannel} = useChannelContext();
 	const {channelId, groupId} = useParams();
 	const {delta, orderIOMap, page} = useQueryPagination({
@@ -112,7 +113,7 @@ const Interests = ({history}) => {
 	const rangeKeys = [Yesterday, Last7Days, Last30Days, Last90Days];
 
 	const handleRangeKeyValueChange = ({rangeEnd, rangeKey, rangeStart}) => {
-		history.push(
+		navigate(
 			setUriQueryValues(
 				pickBy({
 					page: defaultPage,
@@ -156,4 +157,4 @@ const Interests = ({history}) => {
 	);
 };
 
-export default withHistory(Interests);
+export default Interests;

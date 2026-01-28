@@ -12,10 +12,10 @@ import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
 import {CSVType} from 'shared/components/download-report/utils';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
+import {useParams} from 'react-router';
 
 const InterestDetails = lazy(
 	() =>
@@ -45,22 +45,18 @@ const Touchpoints = lazy(
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('overview'),
 		route: Routes.SITES
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('pages'),
 		route: Routes.SITES_TOUCHPOINTS
 	},
 	{
-		exact: false,
 		label: Liferay.Language.get('interests'),
 		route: Routes.SITES_INTERESTS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('search-terms'),
 		route: Routes.SITES_SEARCH_TERMS
 	}
@@ -209,47 +205,40 @@ export const Dashboard: React.FC<IDashboardProps> = ({router}) => {
 							/>
 
 							<StatesRenderer.Success>
-								<Switch>
-									<BundleRouter
-										data={InterestDetails}
-										destructured={false}
-										exact
-										path={Routes.SITES_INTEREST_DETAILS}
-									/>
+								<BundleRouter
+									data={InterestDetails}
+									destructured={false}
+									path={Routes.SITES_INTEREST_DETAILS}
+								/>
 
-									<BundleRouter
-										data={Interests}
-										destructured={false}
-										exact
-										path={Routes.SITES_INTERESTS}
-									/>
+								<BundleRouter
+									data={Interests}
+									destructured={false}
+									path={Routes.SITES_INTERESTS}
+								/>
 
-									<BundleRouter
-										data={Touchpoints}
-										destructured={false}
-										exact
-										path={Routes.SITES_TOUCHPOINTS}
-									/>
+								<BundleRouter
+									data={Touchpoints}
+									destructured={false}
+									path={Routes.SITES_TOUCHPOINTS}
+								/>
 
-									<BundleRouter
-										componentProps={{
-											channelName: selectedChannelName
-										}}
-										data={Overview}
-										destructured={false}
-										exact
-										path={Routes.SITES}
-									/>
+								<BundleRouter
+									componentProps={{
+										channelName: selectedChannelName
+									}}
+									data={Overview}
+									destructured={false}
+									path={Routes.SITES}
+								/>
 
-									<BundleRouter
-										data={SearchTermsPage}
-										destructured={false}
-										exact
-										path={Routes.SITES_SEARCH_TERMS}
-									/>
+								<BundleRouter
+									data={SearchTermsPage}
+									destructured={false}
+									path={Routes.SITES_SEARCH_TERMS}
+								/>
 
-									<RouteNotFound />
-								</Switch>
+								<RouteNotFound />
 							</StatesRenderer.Success>
 						</StatesRenderer>
 					</Suspense>

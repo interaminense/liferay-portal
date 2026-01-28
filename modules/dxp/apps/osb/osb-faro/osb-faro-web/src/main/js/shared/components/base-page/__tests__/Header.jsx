@@ -1,18 +1,17 @@
 import Header from '../Header';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';
-import {StaticRouter} from 'react-router';
 jest.unmock('react-dom');
 
 const WrappedComponent = props => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<Header {...props}></Header>
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 
@@ -57,7 +56,6 @@ describe('BasePage.Header', () => {
 					<Header.NavBar
 						items={[
 							{
-								exact: true,
 								label: 'Test',
 								route: Routes.CONTACTS_ACCOUNT
 							}
@@ -81,7 +79,6 @@ describe('BasePage.Header', () => {
 						items={[
 							{
 								deprecated: true,
-								exact: true,
 								label: 'Test',
 								route: Routes.CONTACTS_ACCOUNT
 							}
@@ -110,7 +107,6 @@ describe('BasePage.Header', () => {
 					<Header.NavBar
 						items={[
 							{
-								exact: true,
 								label: 'Test',
 								route: Routes.CONTACTS_ACCOUNT
 							}

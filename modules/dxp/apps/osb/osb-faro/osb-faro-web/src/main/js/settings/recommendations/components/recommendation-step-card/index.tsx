@@ -22,11 +22,11 @@ import {
 	RECOMMENDATION_MUTATION,
 	RECOMMENDATION_UPDATE_MUTATION
 } from '../../queries/RecommendationMutation';
-import {Router} from 'shared/types';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useMutation} from '@apollo/react-hooks';
-import {withHistory} from 'shared/hoc';
+import {useParams} from 'react-router';
+import {withNavigate} from 'shared/hoc';
 
 const STEPS = [
 	{
@@ -53,26 +53,19 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IRecommendationStepCardProps extends PropsFromRedux {
 	cancelHref: string;
-	history: {
-		push: (value: string) => void;
-	};
 	job?: Job;
 	jobType?: JobTypes;
-	router: Router;
+	navigate: (path: string) => void;
 }
 
 const RecommendationStepCard: React.FC<IRecommendationStepCardProps> = ({
 	addAlert,
 	cancelHref,
-	history,
 	job,
 	jobType,
-	router
+	navigate
 }) => {
-	const {
-		params: {groupId}
-	} = router;
-
+	const {groupId} = useParams();
 	const [currentStep, setCurrentStep] = useState(0);
 	const [disabled, setDisabled] = useState(true);
 
@@ -159,7 +152,7 @@ const RecommendationStepCard: React.FC<IRecommendationStepCardProps> = ({
 						) as string
 					});
 
-					history.push(
+					navigate(
 						toRoute(Routes.SETTINGS_RECOMMENDATIONS, {
 							groupId
 						})
@@ -310,4 +303,4 @@ const RecommendationStepCard: React.FC<IRecommendationStepCardProps> = ({
 	);
 };
 
-export default compose<any>(withHistory, connector)(RecommendationStepCard);
+export default compose<any>(withNavigate, connector)(RecommendationStepCard);

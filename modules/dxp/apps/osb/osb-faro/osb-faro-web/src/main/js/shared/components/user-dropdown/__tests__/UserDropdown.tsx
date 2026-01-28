@@ -1,6 +1,6 @@
 import React from 'react';
 import UserDropdown, {Menus} from '../index';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {fireEvent, render} from '@testing-library/react';
 
 jest.unmock('react-dom');

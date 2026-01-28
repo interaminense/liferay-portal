@@ -7,7 +7,6 @@ import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch} from 'react-router';
 
 const CustomEventList = lazy(
 	() => import(/* webpackChunkName: "CustomEventList" */ './CustomEventList')
@@ -19,12 +18,10 @@ const EventList = lazy(
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('default-events'),
 		route: Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('custom-events'),
 		route: Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM
 	}
@@ -82,21 +79,17 @@ const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
 			)}
 
 			<Suspense fallback={<Loading />}>
-				<Switch>
-					<BundleRouter
-						data={EventList}
-						exact
-						path={Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT}
-					/>
+				<BundleRouter
+					data={EventList}
+					path={Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT}
+				/>
 
-					<BundleRouter
-						data={CustomEventList}
-						exact
-						path={Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM}
-					/>
+				<BundleRouter
+					data={CustomEventList}
+					path={Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM}
+				/>
 
-					<RouteNotFound />
-				</Switch>
+				<RouteNotFound />
 			</Suspense>
 		</Card>
 	);

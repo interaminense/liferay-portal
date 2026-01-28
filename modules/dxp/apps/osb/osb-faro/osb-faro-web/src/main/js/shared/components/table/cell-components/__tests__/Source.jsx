@@ -1,7 +1,7 @@
 import React from 'react';
 import SourceCell from '../Source';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -10,7 +10,7 @@ describe('SourceCell', () => {
 
 	it('should render', () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<SourceCell
 					data={{
 						dataSourceId: '456',
@@ -18,7 +18,7 @@ describe('SourceCell', () => {
 					}}
 					groupId='123'
 				/>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container).toMatchSnapshot();
@@ -26,14 +26,14 @@ describe('SourceCell', () => {
 
 	it('should render without an href', () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<SourceCell
 					data={{
 						dataSourceName: 'Test Data Source'
 					}}
 					groupId='123'
 				/>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container.querySelector('a')).toBeNull();

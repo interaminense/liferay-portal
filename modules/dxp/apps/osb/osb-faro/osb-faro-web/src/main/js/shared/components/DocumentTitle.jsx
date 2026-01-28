@@ -1,7 +1,7 @@
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {hasChanges} from 'shared/util/react';
 import {PropTypes} from 'prop-types';
-import {BrowserRouter as Router} from 'react-router-dom';
 
 class DocumentTitle extends React.Component {
 	static propTypes = {
@@ -11,7 +11,7 @@ class DocumentTitle extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this._router = Router;
+		this._router = BrowserRouter;
 	}
 
 	componentDidMount() {

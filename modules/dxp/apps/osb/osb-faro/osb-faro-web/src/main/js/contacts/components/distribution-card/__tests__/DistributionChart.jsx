@@ -1,7 +1,7 @@
 import DistributionChart from '../DistributionChart';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {DistributionTab} from 'shared/util/records';
 import {FieldContexts} from 'shared/util/constants';

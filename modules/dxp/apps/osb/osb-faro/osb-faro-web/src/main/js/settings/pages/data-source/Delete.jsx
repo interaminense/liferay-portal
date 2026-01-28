@@ -11,7 +11,7 @@ import {
 	compose,
 	withAdminPermission,
 	withDataSource,
-	withHistory,
+	withNavigate,
 	withRequest,
 	withSheet
 } from 'shared/hoc';
@@ -41,8 +41,8 @@ export class Delete extends React.Component {
 		deleteDataSource: PropTypes.func.isRequired,
 		entitiesCount: PropTypes.object,
 		groupId: PropTypes.string.isRequired,
-		history: PropTypes.object.isRequired,
-		id: PropTypes.string.isRequired
+		id: PropTypes.string.isRequired,
+		navigate: PropTypes.func.isRequired
 	};
 
 	@autobind
@@ -52,8 +52,8 @@ export class Delete extends React.Component {
 			dataSource: {name},
 			deleteDataSource,
 			groupId,
-			history,
-			id
+			id,
+			navigate
 		} = this.props;
 
 		return deleteDataSource({
@@ -71,7 +71,7 @@ export class Delete extends React.Component {
 					)
 				});
 
-				history.push(
+				navigate(
 					toRoute(Routes.SETTINGS_DATA_SOURCE_LIST, {
 						groupId
 					})
@@ -159,7 +159,7 @@ export class Delete extends React.Component {
 }
 
 export default compose(
-	withHistory,
+	withNavigate,
 	withAdminPermission,
 	withDataSource,
 	connect(null, {addAlert, deleteDataSource})

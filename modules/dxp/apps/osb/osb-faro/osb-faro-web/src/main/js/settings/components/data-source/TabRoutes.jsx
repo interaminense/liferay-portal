@@ -3,7 +3,6 @@ import omitDefinedProps from 'shared/util/omitDefinedProps';
 import React from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {PropTypes} from 'prop-types';
-import {Switch} from 'react-router-dom';
 
 export default class TabRoutes extends React.Component {
 	static propTypes = {
@@ -19,7 +18,7 @@ export default class TabRoutes extends React.Component {
 		const {routes, ...otherProps} = this.props;
 
 		return (
-			<Switch>
+			<>
 				{routes.map(({component: Component, path}) => (
 					<BundleRouter
 						componentProps={omitDefinedProps(
@@ -27,14 +26,13 @@ export default class TabRoutes extends React.Component {
 							TabRoutes.propTypes
 						)}
 						data={Component}
-						exact
 						key={path}
 						path={path}
 					/>
 				))}
 
 				<RouteNotFound />
-			</Switch>
+			</>
 		);
 	}
 }

@@ -9,7 +9,7 @@ import withPermission, {withAdminPermission} from '../WithPermission';
 import {compose} from 'redux';
 import {render} from '@testing-library/react';
 import {User} from 'shared/util/records';
-import {withStaticRouter} from 'test/mock-router';
+import {withBrowserRouter} from 'test/mock-router';
 
 const {userRoleNames} = FaroConstants;
 
@@ -24,7 +24,7 @@ jest.mock('shared/hooks/useCurrentUser', () => ({
 describe('withPermission', () => {
 	it('should render an error page', () => {
 		const Component = compose(
-			withStaticRouter,
+			withBrowserRouter,
 			withPermission(['foo'])
 		)(() => <h1>{'Foobar'}</h1>);
 

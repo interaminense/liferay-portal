@@ -1,10 +1,10 @@
 import * as data from 'test/data';
 import BaseResults from '../BaseResults';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render, waitFor} from '@testing-library/react';
 import {noop, times} from 'lodash';
 import {SelectionProvider} from 'shared/context/selection';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -14,9 +14,9 @@ const INDIVIDUALS = times(TOTAL, i => data.mockIndividual(i));
 
 const DefaultComponent = props => (
 	<SelectionProvider>
-		<StaticRouter>
+		<BrowserRouter>
 			<BaseResults {...props} />
-		</StaticRouter>
+		</BrowserRouter>
 	</SelectionProvider>
 );
 

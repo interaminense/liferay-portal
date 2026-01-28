@@ -5,11 +5,10 @@ import RouteNotFound from './RouteNotFound';
 import {close, open} from 'shared/actions/modals';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {matchPath} from 'react-router';
+import {matchPath, Route} from 'react-router';
 import {Project} from 'shared/util/records';
 import {RootState} from 'shared/store';
 import {Routes} from 'shared/util/router';
-import {Switch} from 'react-router-dom';
 import {useModalNotifications} from 'shared/hooks/useModalNotifications';
 import {withHelpWidget} from 'shared/hoc';
 
@@ -23,14 +22,15 @@ const AppSidebarRoutes = lazy(
 
 // Settings
 const Settings = lazy(
-	() => import(/* webpackChunkName: "Settings" */ 'settings/pages/Settings')
+	() =>
+		import(
+			/* webpackChunkName: "Settings" */ 'settings/pages/Settings'
+		) as any
 );
 
 const connector = connect(
 	(store: RootState, {location: {pathname}}: {location: Location}) => {
-		const path = matchPath<any>(pathname, {
-			path: Routes.WORKSPACE_WITH_ID
-		});
+		const path = matchPath(Routes.WORKSPACE_WITH_ID, pathname);
 
 		const groupId = path?.params?.groupId ?? '0';
 
@@ -55,15 +55,11 @@ const WorkspaceLayer = ({close, groupId, open}) => {
 	useModalNotifications(close, groupId, open);
 
 	return (
-		<Suspense fallback={<Loading />}>
-			<Switch>
-				<BundleRouter data={Settings} path={Routes.SETTINGS} />
+		<>
+			<Route element={<Settings />} path={Routes.SETTINGS} />
 
-				<BundleRouter data={AppSidebarRoutes} path={Routes.CHANNEL} />
-
-				<RouteNotFound />
-			</Switch>
-		</Suspense>
+			<Route element={<AppSidebarRoutes />} path={Routes.CHANNEL} />
+		</>
 	);
 };
 

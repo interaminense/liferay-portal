@@ -12,15 +12,15 @@ import {
 } from 'shared/util/constants';
 import {ReviewSyncedDataFragment} from '../ReviewSyncedDataFragment';
 import {updateSearchParams} from 'settings/components/base-page/utis';
-import {useHistory} from 'react-router-dom';
 import {useInterval} from 'shared/hooks/useInterval';
 import {useLazyQuery} from '@apollo/react-hooks';
+import {useNavigate} from 'react-router';
 import {WizardPageButtonGroup} from 'settings/components/base-page/WizardPageButtonGroup';
 
 const TIMEOUT_INTERVAL = 5000;
 
 const ReviewSyncedDataStep = ({onNext, onPrev}) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [dataSource, setDataSource] = useState<DataSource>({
 		contactsSyncDetails: {selected: false},
 		id: '',
@@ -61,7 +61,7 @@ const ReviewSyncedDataStep = ({onNext, onPrev}) => {
 			onSubmit={async event => {
 				event.preventDefault();
 
-				updateSearchParams(history, 'dataSourceId', dataSource.id);
+				updateSearchParams(navigate, 'dataSourceId', dataSource.id);
 
 				onNext();
 			}}

@@ -16,7 +16,7 @@ import {metricsListColumns} from 'shared/util/table-columns';
 import {pickBy} from 'lodash';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {Routes} from 'shared/util/router';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/react-hooks';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
 

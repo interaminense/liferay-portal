@@ -2,15 +2,15 @@ import client from 'shared/apollo/client';
 import InterestDetails from '../InterestDetails';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
+import {BrowserRouter} from 'react-router';
 import {ChannelContext} from 'shared/context/channel';
 import {mockChannelContext} from 'test/mock-channel-context';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useLocation: () => ({
 		search: '?rangeKey=30'
 	}),
@@ -27,7 +27,7 @@ describe('Sites Dashboard InterestDetails', () => {
 	it('render', () => {
 		const {container} = render(
 			<ApolloProvider client={client}>
-				<StaticRouter>
+				<BrowserRouter>
 					<ChannelContext.Provider value={mockChannelContext()}>
 						<InterestDetails
 							channelName='Test Channel'
@@ -37,7 +37,7 @@ describe('Sites Dashboard InterestDetails', () => {
 							}}
 						/>
 					</ChannelContext.Provider>
-				</StaticRouter>
+				</BrowserRouter>
 			</ApolloProvider>
 		);
 

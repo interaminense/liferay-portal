@@ -2,21 +2,21 @@ import * as data from 'test/data';
 import AssociatedSegmentsCard from '../AssociatedSegmentsCard';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
 const DefaultComponent = props => (
-	<StaticRouter>
+	<BrowserRouter>
 		<AssociatedSegmentsCard
 			groupId='23'
 			id='123'
 			pageUrl='/foo'
 			{...props}
 		/>
-	</StaticRouter>
+	</BrowserRouter>
 );
 
 describe('AssociatedSegmentsCard', () => {

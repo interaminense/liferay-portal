@@ -20,7 +20,7 @@ import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {User} from 'shared/util/records';
 
 interface IBaseListPageProps {

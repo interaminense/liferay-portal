@@ -19,7 +19,7 @@ import {List} from 'immutable';
 import {Property, PropertyGroup, PropertySubgroup} from 'shared/util/records';
 import {Routes, toRoute} from 'shared/util/router';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 /**
  * Returns a default value for a property provided.

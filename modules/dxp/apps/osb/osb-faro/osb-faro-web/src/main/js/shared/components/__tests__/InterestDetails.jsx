@@ -3,7 +3,7 @@ import InterestDetails from '../InterestDetails';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
 import {createMemoryHistory} from 'history';
-import {MemoryRouter, Route, Router} from 'react-router-dom';
+import {MemoryRouter, Route, Router} from 'react-router';
 import {MockedProvider} from '@apollo/react-testing';
 import {
 	mockPreferenceReq,

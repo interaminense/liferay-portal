@@ -3,10 +3,10 @@ import 'test/mock-modal';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import UserList from '../UserList';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {open} from 'shared/actions/modals';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -18,9 +18,9 @@ const defaultProps = {
 
 const DefaultComponent = props => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<UserList {...defaultProps} {...props} />
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

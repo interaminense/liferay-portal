@@ -1,10 +1,10 @@
 import * as data from 'test/data';
 import InterestsCard, {InterestsList} from '../InterestsCard';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {mockSegment} from 'test/data';
 import {SEGMENTS} from 'shared/util/router';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -14,13 +14,13 @@ describe('InterestsCard', () => {
 
 	it('should render', async () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<InterestsCard
 					entity={mockSegment(15)}
 					groupId='23'
 					type={SEGMENTS}
 				/>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		jest.runAllTimers();
@@ -34,14 +34,14 @@ describe('InterestsCard', () => {
 describe('InterestsList', () => {
 	it('should render', () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<InterestsList
 					groupId='23'
 					id='foo'
 					interests={[data.mockInterestData()]}
 					type={SEGMENTS}
 				/>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		jest.runAllTimers();

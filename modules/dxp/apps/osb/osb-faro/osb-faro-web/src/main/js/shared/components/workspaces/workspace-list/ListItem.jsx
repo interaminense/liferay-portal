@@ -11,9 +11,9 @@ import {autoCancel, hasRequest} from 'shared/util/request-decorator';
 import {ProjectStates} from 'shared/util/constants';
 import {PropTypes} from 'prop-types';
 import {Routes, toRoute} from 'shared/util/router';
-import {withHistory} from 'shared/hoc';
+import {withNavigate} from 'shared/hoc';
 
-@withHistory
+@withNavigate
 @hasRequest
 export default class WorkspaceListItem extends React.Component {
 	static propTypes = {
@@ -22,10 +22,10 @@ export default class WorkspaceListItem extends React.Component {
 		corpProjectName: PropTypes.string,
 		disabled: PropTypes.bool,
 		groupId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-		history: PropTypes.object,
 		href: PropTypes.string,
 		isJoinableProjects: PropTypes.bool,
 		name: PropTypes.string,
+		navigate: PropTypes.object,
 		planInfo: PropTypes.string,
 		projectState: PropTypes.oneOf(Object.values(ProjectStates)),
 		requested: PropTypes.bool
@@ -48,7 +48,7 @@ export default class WorkspaceListItem extends React.Component {
 
 	@autobind
 	handleActivate() {
-		const {groupId, history} = this.props;
+		const {groupId, navigate} = this.props;
 
 		this.setState({loading: true});
 
@@ -60,9 +60,7 @@ export default class WorkspaceListItem extends React.Component {
 						loading: false
 					},
 					() => {
-						history.push(
-							toRoute(Routes.WORKSPACE_WITH_ID, {groupId})
-						);
+						navigate(toRoute(Routes.WORKSPACE_WITH_ID, {groupId}));
 					}
 				);
 			})

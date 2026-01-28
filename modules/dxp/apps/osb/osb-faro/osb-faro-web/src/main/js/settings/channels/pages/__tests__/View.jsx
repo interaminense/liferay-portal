@@ -4,6 +4,7 @@ import mockStore from 'test/mock-store';
 import ModalRenderer from 'shared/components/ModalRenderer';
 import React from 'react';
 import View from '../View';
+import {BrowserRouter} from 'react-router';
 import {
 	cleanup,
 	fireEvent,
@@ -13,14 +14,13 @@ import {
 	screen
 } from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {User} from 'shared/util/records';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -38,9 +38,9 @@ const DefaultComponent = props => {
 		<Provider store={mockStore()}>
 			<ModalRenderer />
 
-			<StaticRouter>
+			<BrowserRouter>
 				<View {...defaultProps} {...props} />
-			</StaticRouter>
+			</BrowserRouter>
 		</Provider>
 	);
 };

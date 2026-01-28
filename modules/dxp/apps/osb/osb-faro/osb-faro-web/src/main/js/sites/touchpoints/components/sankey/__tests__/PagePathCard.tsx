@@ -2,7 +2,7 @@ import client from 'shared/apollo/client';
 import PagePathCard from '../PagePathCard';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {CHART_COLORS, MAIN_NODE_COLOR, SECONDARY_NODE_COLOR} from '../utils';
 import {cleanup, fireEvent, getByTestId, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
@@ -12,8 +12,8 @@ import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '123',
 		groupId: '4567',

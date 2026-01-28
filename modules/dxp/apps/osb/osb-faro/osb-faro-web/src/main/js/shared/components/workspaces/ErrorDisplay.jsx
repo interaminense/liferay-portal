@@ -2,7 +2,7 @@ import getCN from 'classnames';
 import React from 'react';
 import StepList from './StepList';
 import WorkspacesBasePage from './BasePage';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {ProjectStates} from 'shared/util/constants';
 import {PropTypes} from 'prop-types';
 

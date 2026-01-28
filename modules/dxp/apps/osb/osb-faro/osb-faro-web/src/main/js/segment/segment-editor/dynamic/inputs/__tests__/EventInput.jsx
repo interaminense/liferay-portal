@@ -5,7 +5,7 @@ import {createNewGroup} from '../../utils/utils';
 import {CustomValue, Property} from 'shared/util/records';
 import {fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEventPropertiesReq} from 'test/graphql-data';
 import {range} from 'lodash';

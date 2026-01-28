@@ -1,7 +1,7 @@
 import ChannelsMenu from '../index';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
 

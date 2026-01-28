@@ -8,6 +8,7 @@ import {
 	ViewsMetric
 } from 'shared/components/metric-card/metrics';
 import {ApolloProvider} from '@apollo/react-hooks';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {
 	mockAssetMetricReq,
@@ -17,13 +18,12 @@ import {
 } from 'test/graphql-data';
 import {MockedProvider} from '@apollo/react-testing';
 import {RangeKeyTimeRanges, THIRTEEN_MONTHS} from 'shared/util/constants';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		assetId: '123',
 		channelId: '456',
@@ -63,7 +63,7 @@ const NAME = 'form';
 
 const WrappedComponent = ({empty = false}) => (
 	<ApolloProvider client={client}>
-		<StaticRouter>
+		<BrowserRouter>
 			<MockedProvider
 				mocks={[
 					mockTimeRangeReq(),
@@ -90,7 +90,7 @@ const WrappedComponent = ({empty = false}) => (
 					label={Liferay.Language.get('visitors-behavior')}
 				/>
 			</MockedProvider>
-		</StaticRouter>
+		</BrowserRouter>
 	</ApolloProvider>
 );
 

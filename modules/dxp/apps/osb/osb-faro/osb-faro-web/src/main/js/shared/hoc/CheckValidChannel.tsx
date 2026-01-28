@@ -2,7 +2,7 @@ import ErrorPage from 'shared/pages/ErrorPage';
 import React, {useEffect} from 'react';
 import {Channel} from 'shared/components/channels-menu';
 import {getDefaultChannel} from 'shared/components/channels-menu';
-import {matchPath} from 'react-router-dom';
+import {matchPath} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
 
 type History = {
@@ -34,10 +34,7 @@ const checkValidChannel = (
 	...otherProps
 }) => {
 	useEffect(() => {
-		const isHome = matchPath(location.pathname, {
-			exact: true,
-			path: Routes.WORKSPACE_WITH_ID
-		});
+		const isHome = matchPath(Routes.WORKSPACE_WITH_ID, location.pathname);
 
 		if (isHome) {
 			const channel = getDefaultChannel(defaultChannelId, channels);

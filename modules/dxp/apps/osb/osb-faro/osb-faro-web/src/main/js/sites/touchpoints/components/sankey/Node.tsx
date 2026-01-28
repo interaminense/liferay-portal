@@ -10,12 +10,13 @@ import {
 } from './utils';
 import {getUrl} from 'shared/util/urls';
 import {Layer, Rectangle} from 'recharts';
-import {Link, useParams} from 'react-router-dom';
+import {Link} from 'react-router';
 import {pickBy} from 'lodash';
 import {Routes} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {TitleKey, Type} from './types';
 import {toThousands} from 'shared/util/numbers';
+import {useParams} from 'react-router';
 
 function truncateText(text: string, limit: number) {
 	if (text.length > limit) {

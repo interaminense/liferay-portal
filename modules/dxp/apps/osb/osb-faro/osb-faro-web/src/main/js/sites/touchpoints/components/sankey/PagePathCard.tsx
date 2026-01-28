@@ -12,7 +12,7 @@ import {getSafeRangeSelectors, getSafeTouchpoint} from 'shared/util/util';
 import {RangeSelectors} from 'shared/types';
 import {SANKEY_WIDTH, SECONDARY_NODE_COLOR} from './utils';
 import {TitleKey, Type} from './types';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/react-hooks';
 import {useResize} from 'shared/hooks/useResize';
 import {v4 as uuidv4} from 'uuid';

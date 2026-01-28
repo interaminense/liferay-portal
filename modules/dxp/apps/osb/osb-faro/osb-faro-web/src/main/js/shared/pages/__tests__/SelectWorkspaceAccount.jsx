@@ -2,7 +2,7 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import SelectWorkspaceAccount, {routingFn} from '../SelectWorkspaceAccount';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {DataSourceStates} from 'shared/util/constants';
 import {fromJS} from 'immutable';
 import {Project} from 'shared/util/records';

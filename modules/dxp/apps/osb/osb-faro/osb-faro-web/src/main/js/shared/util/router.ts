@@ -1,7 +1,7 @@
 import Constants, {DataSourceTypes, EntityTypes} from '../util/constants';
 import {compile} from 'shared/util/path-to-regexp';
 import {invert, isEmpty, isString, memoize} from 'lodash';
-import {matchPath} from 'react-router-dom';
+import {matchPath} from 'react-router';
 
 function createURL(href) {
 	try {
@@ -448,9 +448,7 @@ export function getDataSourceType(routeName) {
  * @returns {string} Matched path string or null if no match.
  */
 export function getMatchedRoute(routes, pathname = location.pathname) {
-	const matchedRoute = routes.find(({exact = true, route}) =>
-		matchPath(pathname, {exact, path: route})
-	);
+	const matchedRoute = routes.find(({route}) => matchPath(route, pathname));
 
 	return (matchedRoute && matchedRoute.route) || null;
 }

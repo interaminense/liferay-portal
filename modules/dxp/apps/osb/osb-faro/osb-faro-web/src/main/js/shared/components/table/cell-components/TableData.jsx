@@ -4,7 +4,7 @@ import Popover from 'shared/components/Popover';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {isEllipisActive} from 'shared/util/util';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {PropTypes} from 'prop-types';
 
 /**

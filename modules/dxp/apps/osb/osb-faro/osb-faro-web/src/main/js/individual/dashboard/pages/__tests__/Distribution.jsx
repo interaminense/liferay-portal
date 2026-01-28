@@ -2,17 +2,17 @@ import * as data from 'test/data';
 import * as useDataSource from 'shared/hooks/useDataSource';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {IndividualsDistribution} from '../Distribution';
 import {mockEmptyState, mockSuccessState} from 'test/__mocks__/mock-objects';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router-dom';
 import {User} from 'shared/util/records';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '123'
 	})
@@ -27,9 +27,9 @@ const defaultProps = {
 
 const WrappedComponent = () => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<IndividualsDistribution {...defaultProps} />
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

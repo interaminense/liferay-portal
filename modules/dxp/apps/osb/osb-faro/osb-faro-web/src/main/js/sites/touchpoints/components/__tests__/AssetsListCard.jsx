@@ -3,7 +3,7 @@ import BasePage from 'shared/components/base-page';
 import client from 'shared/apollo/client';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {render} from '@testing-library/react';
 
 jest.unmock('react-dom');

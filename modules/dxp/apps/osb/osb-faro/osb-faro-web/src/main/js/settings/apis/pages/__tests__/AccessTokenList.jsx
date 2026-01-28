@@ -4,18 +4,18 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {AccessTokenList} from '../AccessTokenList';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, getByText, render} from '@testing-library/react';
 import {getISODate} from 'shared/util/date';
 import {mockGetDateNow} from 'test/mock-date';
 import {open} from 'shared/actions/modals';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -26,11 +26,11 @@ const defaultProps = {
 };
 
 const DefaultComponent = props => (
-	<StaticRouter>
+	<BrowserRouter>
 		<Provider store={mockStore()}>
 			<AccessTokenList {...defaultProps} {...props} />
 		</Provider>
-	</StaticRouter>
+	</BrowserRouter>
 );
 
 describe('AccessTokenList', () => {

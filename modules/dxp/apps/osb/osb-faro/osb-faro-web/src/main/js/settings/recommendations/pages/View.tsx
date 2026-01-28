@@ -22,9 +22,9 @@ import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
-import {withHistory} from 'shared/hoc';
+import {withNavigate} from 'shared/hoc';
 
 const {
 	pagination: {orderDescending}
@@ -34,13 +34,11 @@ const connector = connect(null, {addAlert, close, open});
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IViewProps extends PropsFromRedux {
-	history: {
-		push: (value: string) => void;
-	};
+	navigate: (path: string) => void;
 	job: Job;
 }
 
-const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
+const View: React.FC<IViewProps> = ({addAlert, close, job, navigate, open}) => {
 	const {groupId, jobId} = useParams();
 	const {timeZoneId} = useTimeZone();
 	const currentUser = useCurrentUser();
@@ -210,7 +208,7 @@ const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
 																	) as string
 																});
 
-																history.push(
+																navigate(
 																	toRoute(
 																		Routes.SETTINGS_RECOMMENDATIONS,
 																		{
@@ -267,4 +265,4 @@ const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
 	);
 };
 
-export default compose<any>(withRecommendation, withHistory, connector)(View);
+export default compose<any>(withRecommendation, withNavigate, connector)(View);

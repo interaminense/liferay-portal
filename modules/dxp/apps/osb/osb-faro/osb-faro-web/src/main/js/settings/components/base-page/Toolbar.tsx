@@ -1,7 +1,7 @@
 import ClayIcon from '@clayui/icon';
 import ClayToolbar from '@clayui/toolbar';
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {Text} from '@clayui/core';
 
 interface IToolbarProps {

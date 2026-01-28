@@ -6,9 +6,9 @@ import * as API from 'shared/api';
 import checkProjectState from '../CheckProjectState';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render, waitFor} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -85,11 +85,11 @@ describe('SuccessDisplayIf', () => {
 		const WrappedComponent = checkProjectState(TestComponent);
 
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<WrappedComponent groupId='28' />
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container).toMatchSnapshot();
@@ -99,11 +99,11 @@ describe('SuccessDisplayIf', () => {
 		const WrappedComponent = checkProjectState(TestComponent);
 
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<WrappedComponent groupId='29' />
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container).toMatchSnapshot();
@@ -117,11 +117,11 @@ describe('SuccessDisplayIf', () => {
 		const WrappedComponent = checkProjectState(TestComponent);
 
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<WrappedComponent groupId='23' />
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		jest.runAllTimers();

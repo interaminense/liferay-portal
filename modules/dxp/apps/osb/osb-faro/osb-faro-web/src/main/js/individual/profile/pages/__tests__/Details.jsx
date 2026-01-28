@@ -2,10 +2,10 @@ import * as data from 'test/data';
 import Details from '../Details';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {Individual} from 'shared/util/records';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -15,7 +15,7 @@ describe('IndividualDetails', () => {
 
 	it('should render', async () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<Details
 						groupId='23'
@@ -26,7 +26,7 @@ describe('IndividualDetails', () => {
 						)}
 					/>
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		jest.runAllTimers();

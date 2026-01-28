@@ -9,7 +9,7 @@ import {Routes, toRoute} from 'shared/util/router';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 const List = () => {
 	const {selectedChannel} = useChannelContext();

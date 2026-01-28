@@ -4,7 +4,7 @@ import getCN from 'classnames';
 import Item from './Item';
 import React, {useRef, useState} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
 import {updateDefaultChannelId} from 'shared/actions/preferences';
 

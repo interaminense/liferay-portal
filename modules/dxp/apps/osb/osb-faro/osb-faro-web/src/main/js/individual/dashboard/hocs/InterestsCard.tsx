@@ -15,7 +15,7 @@ import {COUNT} from 'shared/util/pagination';
 import {OrderByDirections} from 'shared/util/constants';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {Routes, toRoute} from 'shared/util/router';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/react-hooks';
 
 const InterestsCard: React.FC<React.HTMLAttributes<HTMLElement>> = () => {

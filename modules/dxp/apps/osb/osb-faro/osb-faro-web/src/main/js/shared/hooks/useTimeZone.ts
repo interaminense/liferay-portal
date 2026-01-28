@@ -1,5 +1,5 @@
 import {ITimeZone} from 'shared/util/records/TimeZone';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useSelector} from 'react-redux';
 
 export const useTimeZone = (initialGroupId?: string): ITimeZone => {

@@ -11,7 +11,8 @@ import {
 	ENABLE_ACCOUNTS,
 	LANGUAGES
 } from 'shared/util/constants';
-import {Link, matchPath} from 'react-router-dom';
+import {Link} from 'react-router';
+import {matchPath} from 'react-router';
 import {User} from 'shared/util/records';
 
 interface ISidebarProps {
@@ -208,10 +209,8 @@ const Sidebar: React.FC<ISidebarProps> = ({
 											<SidebarItem
 												active={
 													!!matchPath(
-														activePathname,
-														{
-															path: route
-														}
+														route,
+														activePathname
 													)
 												}
 												href={url}
@@ -240,11 +239,7 @@ const Sidebar: React.FC<ISidebarProps> = ({
 					/>
 
 					<SidebarItem
-						active={
-							!!matchPath(activePathname, {
-								path: Routes.SETTINGS
-							})
-						}
+						active={!!matchPath(Routes.SETTINGS, activePathname)}
 						href={toRoute(Routes.SETTINGS_DATA_SOURCE_LIST, {
 							groupId
 						})}
@@ -254,11 +249,7 @@ const Sidebar: React.FC<ISidebarProps> = ({
 
 					{DEVELOPER_MODE && (
 						<SidebarItem
-							active={
-								!!matchPath(activePathname, {
-									path: Routes.UI_KIT
-								})
-							}
+							active={!!matchPath(Routes.UI_KIT, activePathname)}
 							href={toRoute(Routes.UI_KIT, {
 								channelId,
 								groupId

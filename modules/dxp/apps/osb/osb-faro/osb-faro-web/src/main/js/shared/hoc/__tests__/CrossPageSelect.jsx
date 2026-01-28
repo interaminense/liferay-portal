@@ -9,7 +9,7 @@ import React from 'react';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {createOrderIOMap, NAME} from 'shared/util/pagination';
 import {inputSearchText, selectAllAndToggle} from 'test/helpers';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {OrderedMap} from 'immutable';
 import {range} from 'lodash';
 import {Routes} from 'shared/util/router';

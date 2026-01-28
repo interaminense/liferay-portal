@@ -2,16 +2,16 @@ import * as data from 'test/data';
 import BaseDataSourcePage from '../BasePage';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {DataSource, User} from 'shared/util/records';
 import {DataSourceStates, UserRoleNames} from 'shared/util/constants';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -22,7 +22,7 @@ describe('BaseDataSourcePage', () => {
 
 	it('should render', () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<BaseDataSourcePage
 						currentUser={data.getImmutableMock(User, data.mockUser)}
@@ -34,7 +34,7 @@ describe('BaseDataSourcePage', () => {
 						id='test'
 					/>
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container).toMatchSnapshot();
@@ -44,7 +44,7 @@ describe('BaseDataSourcePage', () => {
 
 	it.skip('should render a delete button if showDelete is true', () => {
 		const {queryByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<BaseDataSourcePage
 						currentUser={data.getImmutableMock(User, data.mockUser)}
@@ -57,7 +57,7 @@ describe('BaseDataSourcePage', () => {
 						showDelete
 					/>
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(queryByText('Delete Data Source')).toBeTruthy();
@@ -65,7 +65,7 @@ describe('BaseDataSourcePage', () => {
 
 	it('should NOT render a delete button if the user is not an admin level', () => {
 		const {queryByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<BaseDataSourcePage
 						currentUser={data.getImmutableMock(
@@ -85,7 +85,7 @@ describe('BaseDataSourcePage', () => {
 						showDelete
 					/>
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(queryByText('Delete Data Source')).toBeNull();
@@ -93,7 +93,7 @@ describe('BaseDataSourcePage', () => {
 
 	it('should render with an UNDEFINED_ERROR message in the datasource status column', () => {
 		const {queryByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<BaseDataSourcePage
 						currentUser={data.getImmutableMock(
@@ -115,7 +115,7 @@ describe('BaseDataSourcePage', () => {
 						showDelete
 					/>
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(queryByText(/A server error occurred/)).toBeTruthy();
@@ -123,7 +123,7 @@ describe('BaseDataSourcePage', () => {
 
 	it('should render w/o datasource', () => {
 		const {queryByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<BaseDataSourcePage
 						currentUser={data.getImmutableMock(User, data.mockUser)}
@@ -131,7 +131,7 @@ describe('BaseDataSourcePage', () => {
 						id='test'
 					/>
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(

@@ -4,7 +4,7 @@ import client from 'shared/apollo/client';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
 import {AttributeTypes} from 'event-analysis/utils/types';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockEventAttributeDefinitionsReq} from 'test/graphql-data';
 import {render} from '@testing-library/react';

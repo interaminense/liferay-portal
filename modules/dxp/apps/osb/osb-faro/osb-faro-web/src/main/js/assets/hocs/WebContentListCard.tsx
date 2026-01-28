@@ -15,7 +15,7 @@ import {mapListResultsToProps} from 'shared/util/mappers';
 import {metricsListColumns} from 'shared/util/table-columns';
 import {Routes} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/react-hooks';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';

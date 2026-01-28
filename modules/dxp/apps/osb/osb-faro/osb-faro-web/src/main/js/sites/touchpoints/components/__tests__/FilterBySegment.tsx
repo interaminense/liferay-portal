@@ -3,17 +3,17 @@ import client from 'shared/apollo/client';
 import FilterBySegment from '../FilterBySegment';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-hooks';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {MockedProvider} from '@apollo/react-testing';
 import {mockSegmentPageViewsReq} from 'test/graphql-data';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '456',
 		groupId: '123',
@@ -32,7 +32,7 @@ const WrapperComponent: React.FC<IWrapperComponentProps> = ({
 	segmentPageViews
 }) => (
 	<ApolloProvider client={client}>
-		<StaticRouter>
+		<BrowserRouter>
 			<MockedProvider
 				mocks={[mockSegmentPageViewsReq({segmentPageViews})]}
 			>
@@ -45,7 +45,7 @@ const WrapperComponent: React.FC<IWrapperComponentProps> = ({
 					}}
 				/>
 			</MockedProvider>
-		</StaticRouter>
+		</BrowserRouter>
 	</ApolloProvider>
 );
 

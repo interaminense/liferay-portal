@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from '../components/Row';
 import VerticalTimeline from 'shared/components/VerticalTimelineDeprecated';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 
 const NESTED_ITEMS = [
 	{

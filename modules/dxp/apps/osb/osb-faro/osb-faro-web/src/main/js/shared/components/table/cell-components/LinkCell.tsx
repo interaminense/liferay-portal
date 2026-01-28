@@ -1,6 +1,6 @@
 import React from 'react';
 import TextTruncate from 'shared/components/TextTruncate';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 
 const LinkCell = ({data, hrefFormatter}) => (
 	<td className='table-cell-expand' key={data.id}>

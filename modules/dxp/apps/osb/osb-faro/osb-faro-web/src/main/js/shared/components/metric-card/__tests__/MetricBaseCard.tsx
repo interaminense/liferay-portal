@@ -25,13 +25,13 @@ import {
 	THIRTEEN_MONTHS
 } from 'shared/util/constants';
 import {SitesMetricQuery, SitesTabsQuery} from '../queries';
-import {useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useLocation: jest.fn(),
 	useParams: () => ({
 		channelId: '456',
@@ -137,6 +137,9 @@ const WrapperComponent = ({
 
 describe('MetricBaseCard', () => {
 	it('renders component', async () => {
+		// TODO: Fix useLocation
+		// @ts-ignore
+
 		useLocation.mockReturnValue({
 			search: `?rangeKey=${RangeKeyTimeRanges.Last30Days}`
 		});
@@ -171,6 +174,9 @@ describe('MetricBaseCard', () => {
 	});
 
 	it('renders tooltip with retention period for 7 months', async () => {
+		// TODO: Fix useLocation
+		// @ts-ignore
+
 		useLocation.mockReturnValue({
 			search: `?rangeKey=${RangeKeyTimeRanges.Last180Days}`
 		});
@@ -218,6 +224,9 @@ describe('MetricBaseCard', () => {
 	});
 
 	it('renders tooltip with retention period for 13 months', async () => {
+		// TODO: Fix useLocation
+		// @ts-ignore
+
 		useLocation.mockReturnValue({
 			search: `?rangeKey=${RangeKeyTimeRanges.Last180Days}`
 		});

@@ -6,6 +6,7 @@ import CommerceTotalOrderValueQuery, {
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-hooks';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {
 	mockCommerceTotalOrderValueReq,
@@ -15,13 +16,12 @@ import {
 import {MockedProvider} from '@apollo/react-testing';
 import {Provider} from 'react-redux';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '123',
 		query: {
@@ -62,7 +62,7 @@ const variables = {
 const WrappedComponent = ({data}: {data?: any; defaultLanguageId?: string}) => (
 	<Provider store={mockStore()}>
 		<ApolloProvider client={client}>
-			<StaticRouter>
+			<BrowserRouter>
 				<MockedProvider
 					mocks={[
 						mockTimeRangeReq(),
@@ -82,7 +82,7 @@ const WrappedComponent = ({data}: {data?: any; defaultLanguageId?: string}) => (
 						Query={CommerceTotalOrderValueQuery}
 					/>
 				</MockedProvider>
-			</StaticRouter>
+			</BrowserRouter>
 		</ApolloProvider>
 	</Provider>
 );

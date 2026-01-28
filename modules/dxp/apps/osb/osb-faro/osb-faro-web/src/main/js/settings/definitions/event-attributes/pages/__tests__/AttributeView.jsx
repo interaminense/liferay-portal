@@ -10,7 +10,7 @@ import {MockedProvider} from '@apollo/react-testing';
 import {mockEventAttributeDefinitionWithRecentValuesReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {Route} from 'react-router-dom';
+import {Route} from 'react-router';
 import {Routes} from 'shared/util/router';
 import {waitForLoading} from 'test/helpers';
 

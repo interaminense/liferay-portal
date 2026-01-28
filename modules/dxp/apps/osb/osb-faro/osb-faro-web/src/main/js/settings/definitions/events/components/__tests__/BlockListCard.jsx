@@ -4,7 +4,7 @@ import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/react-components';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {mockBlockedCustomEventDefinitionsReq} from 'test/graphql-data';
 import {MockedProvider} from '@apollo/react-testing';
 import {Provider} from 'react-redux';

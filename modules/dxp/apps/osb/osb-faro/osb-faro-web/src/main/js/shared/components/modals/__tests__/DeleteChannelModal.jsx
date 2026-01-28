@@ -1,9 +1,9 @@
 import * as API from 'shared/api';
 import DeleteChannelModal from '../DeleteChannelModal';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {noop} from 'lodash';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -17,9 +17,9 @@ describe('DeleteChannelModal', () => {
 		);
 
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<DeleteChannelModal onClose={noop} onSubmit={noop} />
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		jest.runAllTimers();
@@ -31,9 +31,9 @@ describe('DeleteChannelModal', () => {
 
 	it('should render with data source alert message', async () => {
 		const {container, getByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<DeleteChannelModal onClose={noop} onSubmit={noop} />
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		jest.runAllTimers();

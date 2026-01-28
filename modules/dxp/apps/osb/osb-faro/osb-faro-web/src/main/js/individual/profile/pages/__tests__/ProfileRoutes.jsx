@@ -2,7 +2,7 @@ import * as data from 'test/data';
 import IndividualProfileRoutes from '../ProfileRoutes';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {ChannelContext} from 'shared/context/channel';
 import {cleanup, render} from '@testing-library/react';
 import {Individual} from 'shared/util/records';
