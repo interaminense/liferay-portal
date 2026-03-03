@@ -149,8 +149,12 @@ const config = {
 			filename: 'main.css'
 		}),
 		new ForkTsCheckerWebpackPlugin({
-			eslint: {
-				files: 'src/main/js/**/*.+(js|ts)?(x)'
+			async: true,
+			typescript: {
+				diagnosticOptions: {
+					semantic: true,
+					syntactic: true
+				}
 			}
 		}),
 		new SpriteLoaderPlugin(),
