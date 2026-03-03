@@ -617,9 +617,6 @@ module.exports = {
 				approved: 0,
 				pending: 1
 			}
-		},
-		'ts-jest': {
-			tsconfig: 'tsconfig.test.json'
 		}
 	},
 	moduleNameMapper: {
@@ -644,12 +641,17 @@ module.exports = {
 		'^ui-kit(.*)$': '<rootDir>/src/main/js/ui-kit$1'
 	},
 	setupFilesAfterEnv: ['<rootDir>/src/main/js/test/setup.js'],
-	testEnvironment: 'jest-environment-jsdom-fifteen',
+	testEnvironment: 'jsdom',
 	testResultsProcessor: '@liferay/jest-junit-reporter',
-	testURL: 'http://liferay.com',
-	timers: 'fake',
+	testEnvironmentOptions: {url: 'http://localhost'},
 	transform: {
-		'^.+\\.jsx?$': 'babel-jest',
-		'^.+\\.tsx?$': 'ts-jest'
+		'^.+\\.(ts|tsx)$': [
+			'ts-jest',
+			{
+				isolatedModules: true,
+				tsconfig: 'tsconfig.json'
+			}
+		],
+		'^.+\\.(js|jsx)$': 'babel-jest'
 	}
 };
