@@ -4,7 +4,7 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import getCN from 'classnames';
 import React from 'react';
-import {MenuItem} from './types';
+import type {MenuItem} from './types';
 
 const UserMenuDropdownItem: React.FC<
 	React.ComponentProps<typeof ClayDropDown.Item> & MenuItem

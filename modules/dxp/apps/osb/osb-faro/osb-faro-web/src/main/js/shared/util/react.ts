@@ -4,13 +4,14 @@ export const getDisplayName = WrappedComponent =>
 	WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
 type HasChanges = <T>(
-	prev: T | object,
-	next: T | object,
+	prev: T | any,
+	next: T | any,
 	...keys: string[]
 ) => boolean;
 
 /**
  * Compare previous state or props object by provided keys to detect changes.
+ * @deprecated
  */
 export const hasChanges: HasChanges = (prev = {}, next = {}, ...keys) => {
 	for (const key of keys) {

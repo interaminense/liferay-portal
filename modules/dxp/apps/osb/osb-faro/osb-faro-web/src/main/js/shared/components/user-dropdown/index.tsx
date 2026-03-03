@@ -8,7 +8,7 @@ import Sticker from '../Sticker';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import {getInitials} from 'shared/util/util';
 import {last} from 'lodash';
-import {MenuItem, Menus} from './types';
+import type {MenuItem, Menus} from './types';
 
 interface IUserDropdownProps extends React.HTMLAttributes<HTMLElement> {
 	alignmentPosition?: React.ComponentProps<

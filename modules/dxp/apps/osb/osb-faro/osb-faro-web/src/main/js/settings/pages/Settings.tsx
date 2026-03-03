@@ -53,7 +53,7 @@ const DeleteDataSource = lazy(
 	() =>
 		import(
 			/* webpackChunkName: "DeleteDataSource" */ './data-source/Delete'
-		) as any
+		)
 );
 
 // Definitions
@@ -270,4 +270,7 @@ export const Settings = () => {
 	);
 };
 
-export default compose(checkProjectState, withOnboarding)(Settings);
+export default compose(
+	checkProjectState,
+	withOnboarding
+)(Settings) as React.ComponentType<any>;

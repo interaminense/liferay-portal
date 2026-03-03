@@ -10,9 +10,9 @@ export type MenuItem = {
 	url?: string;
 };
 
-export type MenuGroup = {
-	items: MenuItem[];
-	subheaderLabel?: string;
+export type Menus = {
+	[key: string]: {
+		items: MenuItem[];
+		subheaderLabel?: string;
+	}[];
 };
-
-export type Menus = {[key: string]: MenuGroup[]};
