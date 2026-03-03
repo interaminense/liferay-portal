@@ -2,12 +2,12 @@ import client from 'shared/apollo/client';
 import CriteriaRow from '../CriteriaRow';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {DndProvider} from 'react-dnd';
 import {fromJS, Map} from 'immutable';
 import {HTML5Backend} from 'react-dnd-html5-backend';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockPreferenceReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 

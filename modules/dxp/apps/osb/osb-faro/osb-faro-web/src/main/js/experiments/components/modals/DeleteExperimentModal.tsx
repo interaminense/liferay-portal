@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {EXPERIMENT_DELETE_MUTATION} from 'experiments/queries/ExperimentMutation';
 import {Routes, toRoute} from 'shared/util/router';
 import {useHistory, useParams} from 'react-router-dom';
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/client/react';
 
 const DeleteExperimentModal = ({addAlert, experimentId, observer, onClose}) => {
 	const {channelId, groupId} = useParams();

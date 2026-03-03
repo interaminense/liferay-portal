@@ -1,10 +1,10 @@
+import {ErrorLike} from '@apollo/client';
 import ErrorDisplay from '../ErrorDisplay';
 import React from 'react';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
-import {ApolloError} from 'apollo-client';
 
 interface IAudienceReportStateRendererProps {
-	error: ApolloError;
+	error: ErrorLike;
 	loading: boolean;
 }
 

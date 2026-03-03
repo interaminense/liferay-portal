@@ -13,7 +13,7 @@ import ReactDOMServer from 'react-dom/server';
 import URLConstants from 'shared/util/url-constants';
 import VisitorsByTimeQuery from 'shared/queries/VisitorsByTimeQuery';
 import {compose} from 'shared/hoc';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {IBasePageContext} from 'shared/types';
 import {
 	mapPropsToOptions,

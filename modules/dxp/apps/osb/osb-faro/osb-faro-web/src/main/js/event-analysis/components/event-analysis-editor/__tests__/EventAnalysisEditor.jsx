@@ -2,7 +2,7 @@ import client from 'shared/apollo/client';
 import EventAnalysisEditor from '../index';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-components';
+import {ApolloProvider} from '@apollo/client/react';
 import {CalculationTypes} from 'event-analysis/utils/types';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';

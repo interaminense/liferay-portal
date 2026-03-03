@@ -15,7 +15,7 @@ import {DISPLAY_NAME} from 'shared/util/pagination';
 import {Event, EventTypes} from 'event-analysis/utils/types';
 import {Modal} from 'shared/types';
 import {SafeResults} from 'shared/hoc/util';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 
 const {
 	pagination: {orderDefault}

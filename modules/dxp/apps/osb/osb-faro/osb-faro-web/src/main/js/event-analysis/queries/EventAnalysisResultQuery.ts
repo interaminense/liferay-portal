@@ -4,7 +4,7 @@ import {
 	CalculationTypes,
 	Filter
 } from '../utils/types';
-import {gql} from 'apollo-boost';
+import {gql} from '@apollo/client';
 
 export interface EventAnalysisResultData {
 	count: number;

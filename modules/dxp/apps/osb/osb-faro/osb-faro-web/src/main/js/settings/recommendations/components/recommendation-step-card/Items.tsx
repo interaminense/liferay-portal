@@ -12,7 +12,7 @@ import {FieldArray} from 'formik';
 import {Filter, getPropertiesFromItems} from '../../utils/utils';
 import {get} from 'lodash';
 import {Modal} from 'shared/types';
-import {useLazyQuery, useQuery} from '@apollo/react-hooks';
+import {useLazyQuery, useQuery} from '@apollo/client/react';
 
 const {
 	pagination: {orderDescending}

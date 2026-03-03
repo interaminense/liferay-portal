@@ -3,8 +3,8 @@ import NoResultsDisplay, {
 	INoResultsDisplayProps
 } from 'shared/components/NoResultsDisplay';
 import React, {createContext, FC, useContext} from 'react';
-import {ApolloError} from 'apollo-client';
 import {Sizes} from 'shared/util/constants';
+import {ErrorLike} from '@apollo/client';
 
 export interface IStatesRendererContextProps
 	extends React.HTMLAttributes<HTMLElement> {
@@ -25,7 +25,7 @@ interface IEmptyStateProps extends INoResultsDisplayProps, ISwitcherComponent {
 interface IErrorStateProps
 	extends React.HTMLAttributes<HTMLElement>,
 		ISwitcherComponent {
-	apolloError?: ApolloError;
+	apolloError?: ErrorLike;
 }
 
 interface ILoadingStateProps extends ILoadingProps, ISwitcherComponent {

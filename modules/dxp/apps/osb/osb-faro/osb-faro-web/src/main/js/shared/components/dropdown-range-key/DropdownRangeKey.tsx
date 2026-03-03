@@ -5,7 +5,7 @@ import TimeRangeQuery from 'shared/queries/TimeRangeQuery';
 import {DropdownRangeKeyContent} from './DropdownRangeKeyContent';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {RangeSelectors} from 'shared/types';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 
 export interface DropdownRangeKeyIProps
 	extends React.HTMLAttributes<HTMLElement> {

@@ -11,7 +11,7 @@ import {
 	withQueryRangeSelectors
 } from 'shared/hoc';
 import {createOrderIOMap, NAME, VIEWS_METRIC} from 'shared/util/pagination';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {metricsListColumns} from 'shared/util/table-columns';
 import {RangeSelectors} from 'shared/types';
 import {Routes} from 'shared/util/router';

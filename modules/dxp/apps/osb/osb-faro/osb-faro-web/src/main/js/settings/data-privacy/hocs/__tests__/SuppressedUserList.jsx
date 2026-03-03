@@ -4,7 +4,7 @@ import SuppressedUserList from '../SuppressedUserList';
 import {cleanup, render} from '@testing-library/react';
 import {GDPRRequestStatuses} from 'shared/util/constants';
 import {MemoryRouter, Route} from 'react-router-dom';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockSuppressedUsersListReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';

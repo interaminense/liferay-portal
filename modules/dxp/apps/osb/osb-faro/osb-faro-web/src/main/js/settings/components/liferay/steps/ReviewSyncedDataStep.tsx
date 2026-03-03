@@ -14,7 +14,7 @@ import {ReviewSyncedDataFragment} from '../ReviewSyncedDataFragment';
 import {updateSearchParams} from 'settings/components/base-page/utis';
 import {useHistory} from 'react-router-dom';
 import {useInterval} from 'shared/hooks/useInterval';
-import {useLazyQuery} from '@apollo/react-hooks';
+import {useLazyQuery} from '@apollo/client/react';
 import {WizardPageButtonGroup} from 'settings/components/base-page/WizardPageButtonGroup';
 
 const TIMEOUT_INTERVAL = 5000;
@@ -29,16 +29,7 @@ const ReviewSyncedDataStep = ({onNext, onPrev}) => {
 	const [getDataSources, {data}] = useLazyQuery<DataSourceSyncData>(
 		DataSourceQuery,
 		{
-			fetchPolicy: 'network-only',
-			variables: {
-				credentialsType: CredentialTypes.Token,
-				size: 1,
-				sort: {
-					column: CREATE_DATE,
-					type: OrderByDirections.Descending
-				},
-				type: DataSourceTypes.Liferay
-			}
+			fetchPolicy: 'network-only'
 		}
 	);
 
@@ -53,7 +44,17 @@ const ReviewSyncedDataStep = ({onNext, onPrev}) => {
 	}, [data]);
 
 	useEffect(() => {
-		getDataSources();
+		getDataSources({
+			variables: {
+				credentialsType: CredentialTypes.Token,
+				size: 1,
+				sort: {
+					column: CREATE_DATE,
+					type: OrderByDirections.Descending
+				},
+				type: DataSourceTypes.Liferay
+			}
+		});
 	}, []);
 
 	return (

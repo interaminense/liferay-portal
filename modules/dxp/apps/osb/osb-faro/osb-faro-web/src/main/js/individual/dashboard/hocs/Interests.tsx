@@ -11,7 +11,7 @@ import {
 	getMapResultToProps,
 	mapPropsToOptions
 } from 'contacts/hoc/mappers/interests-query';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {Routes, toRoute} from 'shared/util/router';
 import {useParams} from 'react-router-dom';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';

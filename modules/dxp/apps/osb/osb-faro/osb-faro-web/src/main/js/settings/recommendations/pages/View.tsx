@@ -12,7 +12,6 @@ import {compose} from 'redux';
 import {connect, ConnectedProps} from 'react-redux';
 import {Filter, Job} from '../utils/utils';
 import {get} from 'lodash';
-import {getOperationName} from 'apollo-link';
 import {getRecommendations} from 'shared/util/breadcrumbs';
 import {
 	RECOMMENDATION_DELETE_MUTATION,
@@ -21,10 +20,11 @@ import {
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/client/react';
 import {useParams} from 'react-router-dom';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 import {withHistory} from 'shared/hoc';
+import {getOperationName} from '@apollo/client/utilities/internal';
 
 const {
 	pagination: {orderDescending}
@@ -45,7 +45,7 @@ const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
 	const {timeZoneId} = useTimeZone();
 	const currentUser = useCurrentUser();
 
-	const {data: jobRuns, loading} = useQuery(RecommendationJobRunsQuery, {
+	const {data: jobRuns, loading} = useQuery<any>(RecommendationJobRunsQuery, {
 		variables: {
 			jobId,
 			size: 1,

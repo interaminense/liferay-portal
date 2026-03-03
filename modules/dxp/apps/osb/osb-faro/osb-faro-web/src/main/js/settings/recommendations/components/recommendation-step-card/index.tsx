@@ -25,7 +25,7 @@ import {
 import {Router} from 'shared/types';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/client/react';
 import {withHistory} from 'shared/hoc';
 
 const STEPS = [
@@ -148,7 +148,7 @@ const RecommendationStepCard: React.FC<IRecommendationStepCardProps> = ({
 					data: {
 						[key]: {name}
 					}
-				}) => {
+				}: any) => {
 					addAlert({
 						alertType: Alert.Types.Success,
 						message: sub(

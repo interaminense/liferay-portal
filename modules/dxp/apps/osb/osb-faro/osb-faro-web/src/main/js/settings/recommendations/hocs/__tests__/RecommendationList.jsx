@@ -4,7 +4,7 @@ import React from 'react';
 import RecommendationList from '../RecommendationList';
 import RecommendationListQuery from '../../queries/RecommendationListQuery';
 import {MemoryRouter, Route} from 'react-router-dom';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockJobBag} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {range} from 'lodash';

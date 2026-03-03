@@ -2,7 +2,7 @@ import client from 'shared/apollo/client';
 import FilterOptions from '../index';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-components';
+import {ApolloProvider} from '@apollo/client/react';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 import {withAttributesProvider} from '../../../../context/attributes';

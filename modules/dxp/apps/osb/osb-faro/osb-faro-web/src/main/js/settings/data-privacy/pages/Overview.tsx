@@ -26,7 +26,7 @@ import {Option, Picker} from '@clayui/core';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/client/react';
 
 let RETENTION_OPTIONS = [SEVEN_MONTHS, THIRTEEN_MONTHS];
 
@@ -67,7 +67,7 @@ interface IOverviewProps {
 export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 	const [updatePreference] = useMutation(PreferenceMutation);
 
-	const {data} = useQuery(PreferenceQuery, {
+	const {data} = useQuery<{preference: {value: string}}>(PreferenceQuery, {
 		variables: {key: DATA_RETENTION_PERIOD_KEY}
 	});
 

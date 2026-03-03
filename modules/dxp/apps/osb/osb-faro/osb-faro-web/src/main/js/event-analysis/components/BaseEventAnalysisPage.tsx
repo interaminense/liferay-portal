@@ -30,7 +30,7 @@ import {Routes, toRoute} from 'shared/util/router';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useHistory, useParams} from 'react-router-dom';
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/client/react';
 import {WithRangeKeyProps} from 'shared/hoc/WithRangeKey';
 
 enum MessageKeys {

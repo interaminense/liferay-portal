@@ -6,7 +6,7 @@ import React from 'react';
 import TouchpointsQuery from 'shared/queries/TouchpointsQuery';
 import URLConstants from 'shared/util/url-constants';
 import {createOrderIOMap, VISITORS_METRIC} from 'shared/util/pagination';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {
 	metricsListColumns,
 	sitePagesListColumns

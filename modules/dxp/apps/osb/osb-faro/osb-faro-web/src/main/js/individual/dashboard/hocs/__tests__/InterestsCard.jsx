@@ -2,7 +2,7 @@ import InterestsCard from '../InterestsCard';
 import React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import {cleanup, render} from '@testing-library/react';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockIndividualInterestsReq} from 'test/graphql-data';
 import {omit} from 'lodash';
 

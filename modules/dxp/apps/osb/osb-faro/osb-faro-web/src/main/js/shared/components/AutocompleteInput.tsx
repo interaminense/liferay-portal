@@ -1,10 +1,10 @@
 import ClayAutocomplete from '@clayui/autocomplete';
 import getCN from 'classnames';
 import React, {useEffect, useState} from 'react';
-import {DocumentNode} from 'apollo-boost';
+import type {DocumentNode} from 'graphql';
 import {NetworkStatus} from '@clayui/data-provider';
 import {useDebounce} from 'shared/hooks/useDebounce';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 import {useRequest} from 'shared/hooks/useRequest';
 
 type TMappedData = {

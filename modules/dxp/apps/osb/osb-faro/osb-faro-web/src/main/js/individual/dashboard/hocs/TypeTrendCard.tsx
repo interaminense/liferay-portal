@@ -3,7 +3,7 @@ import IndividualMetricsQuery from 'shared/queries/IndividualMetricsQuery';
 import React from 'react';
 import TypeTrend from '../components/TypeTrend';
 import {compose} from 'redux';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {INTERVAL_KEY_MAP} from 'shared/util/time';
 import {
 	mapPropsToOptions,

@@ -8,11 +8,11 @@ import {
 	withSelectionProvider
 } from 'shared/context/selection';
 import {Columns, IPagination} from 'shared/types';
-import {DocumentNode} from 'apollo-boost';
+import type {DocumentNode} from 'graphql';
 import {noop} from 'lodash';
 import {OrderedMap} from 'immutable';
 import {OrderParams} from 'shared/util/records';
-import {QueryHookOptions, useQuery} from '@apollo/react-hooks';
+import {QueryHookOptions, useQuery} from '@apollo/client/react';
 import {safeResultToProps} from 'shared/util/mappers';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 
@@ -66,7 +66,7 @@ const SearchableTableModalGraphql: React.FC<ISearchableTableModalGraphQLProps> =
 		query
 	} = useStatefulPagination(null, {initialDelta, initialOrderIOMap});
 
-	const {data, error, loading} = useQuery(
+	const {data, error, loading} = useQuery<any>(
 		graphqlQuery,
 		mapPropsToOptions({delta, orderIOMap, page, query, ...otherProps})
 	);

@@ -14,7 +14,7 @@ import {
 	getFilterValueBreakdown
 } from 'settings/recommendations/utils/utils';
 import {getMapResultToProps} from 'shared/hoc/mappers/metrics';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {isArray, isString} from 'lodash';
 import {omit} from 'lodash';
 import {OrderedMap} from 'immutable';

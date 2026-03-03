@@ -10,7 +10,7 @@ import {
 	getMapResultToProps,
 	mapPropsToOptions
 } from 'contacts/hoc/mappers/interests-query';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {PAGES, Routes, setUriQueryValue, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {useParams} from 'react-router-dom';

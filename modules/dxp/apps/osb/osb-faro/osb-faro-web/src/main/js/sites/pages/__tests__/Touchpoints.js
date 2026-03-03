@@ -1,9 +1,9 @@
 import client from 'shared/apollo/client';
 import React from 'react';
 import Touchpoints from '../Touchpoints';
-import {ApolloProvider} from '@apollo/react-components';
+import {ApolloProvider} from '@apollo/client/react';
 import {createMemoryHistory} from 'history';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
 import {render} from '@testing-library/react';
 import {Router} from 'react-router-dom';

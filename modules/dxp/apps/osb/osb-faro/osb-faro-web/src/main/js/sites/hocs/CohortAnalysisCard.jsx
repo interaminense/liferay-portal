@@ -14,7 +14,7 @@ import {
 	VISITORS,
 	VISITORS_TYPE_OPTIONS
 } from 'sites/components/cohort-analysis/utils';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {mapPropsToOptions, mapResultToProps} from './mappers/cohort-query';
 import {Option, Picker} from '@clayui/core';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';

@@ -1,7 +1,7 @@
 import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {Overview} from '../Overview';
 import {Provider} from 'react-redux';

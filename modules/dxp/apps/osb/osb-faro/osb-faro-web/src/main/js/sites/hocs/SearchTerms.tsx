@@ -16,7 +16,7 @@ import {
 	getMapResultToProps,
 	mapPropsToOptions
 } from './mappers/composition-query';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {pickBy} from 'lodash';
 import {setUriQueryValues} from 'shared/util/router';
 import {sub} from 'shared/util/lang';

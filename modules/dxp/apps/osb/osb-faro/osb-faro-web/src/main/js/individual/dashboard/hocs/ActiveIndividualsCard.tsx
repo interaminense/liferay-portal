@@ -4,7 +4,7 @@ import Card from 'shared/components/Card';
 import IndividualSiteMetricsQuery from 'shared/queries/IndividualSiteMetricsQuery';
 import React from 'react';
 import {compose} from 'redux';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {
 	mapPropsToOptions,
 	mapResultToProps

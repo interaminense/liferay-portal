@@ -2,7 +2,7 @@ import BasePage from 'shared/components/base-page';
 import client from 'shared/apollo/client';
 import MetricBaseCard from '../MetricBaseCard';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
 import {
 	BounceRateMetric,
 	CompositeMetric,
@@ -13,7 +13,7 @@ import {
 } from '../metrics';
 import {fireEvent, render} from '@testing-library/react';
 import {getSiteMetricsChartData} from 'shared/components/metric-card/util';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {
 	mockPreferenceReq,
 	mockSitesMetricReq,

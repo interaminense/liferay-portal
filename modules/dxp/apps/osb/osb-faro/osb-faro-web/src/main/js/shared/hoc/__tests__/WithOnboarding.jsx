@@ -6,7 +6,7 @@ import React from 'react';
 import withOnboarding from '../WithOnboarding';
 import {cleanup, render} from '@testing-library/react';
 import {mockDataSourcesReq} from 'test/graphql-data';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockMemberUser} from 'test/data';
 import {OnboardingContext} from 'shared/context/onboarding';
 import {open} from 'shared/actions/modals';

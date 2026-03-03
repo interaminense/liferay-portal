@@ -14,7 +14,7 @@ import {
 } from 'shared/util/pagination';
 import {mapListResultsToProps} from 'shared/util/mappers';
 import {useParams} from 'react-router-dom';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 
 const GlobalAttributeList: React.FC = () => {

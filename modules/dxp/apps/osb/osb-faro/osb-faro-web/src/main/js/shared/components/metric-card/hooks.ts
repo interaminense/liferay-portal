@@ -1,4 +1,4 @@
-import {DocumentNode} from 'apollo-boost';
+import type {DocumentNode} from 'graphql';
 import {fetchPolicyDefinition} from 'shared/util/graphql';
 import {Filters, getFilters, RawFilters} from 'shared/util/filter';
 import {
@@ -8,7 +8,7 @@ import {
 } from 'shared/util/util';
 import {Interval, RangeSelectors, SafeRangeSelectors} from 'shared/types';
 import {useParams} from 'react-router-dom';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 
 interface ICommonVariables extends SafeRangeSelectors, Filters {
 	interval: Interval;

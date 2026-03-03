@@ -8,7 +8,7 @@ import {GDPRRequestStatuses, GDPRRequestTypes} from 'shared/util/constants';
 import {Map, Set} from 'immutable';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {mockDataControlTaskBag} from 'test/graphql-data';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';
 import {

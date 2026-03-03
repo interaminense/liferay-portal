@@ -2,7 +2,7 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import SearchCard from '../SearchCard';
 import {cleanup, fireEvent, render} from '@testing-library/react';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockSearchStringListReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {StaticRouter} from 'react-router';

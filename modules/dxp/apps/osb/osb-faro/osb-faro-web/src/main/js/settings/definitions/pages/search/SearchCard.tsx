@@ -18,7 +18,7 @@ import {FieldArray, Formik, FormikTouched, FormikValues} from 'formik';
 import {Routes, toRoute} from 'shared/util/router';
 import {sequence} from 'shared/util/promise';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/client/react';
 import {WrapSafeResults} from 'shared/hoc/util';
 
 const QUERY_STRING_SIZE_LIMIT = 512;
@@ -71,13 +71,12 @@ export const SearchCard: React.FC<ISearchCardProps> = ({
 	open
 }) => {
 	const currentUser = useCurrentUser();
-	const {data: searchQueryStringsData, error, loading} = useQuery(
-		PreferenceQuery,
-		{
-			fetchPolicy: 'no-cache',
-			variables: {key: SEARCH_QUERY_STRINGS_KEY}
-		}
-	);
+	const {data: searchQueryStringsData, error, loading} = useQuery<{
+		preference: {value: string};
+	}>(PreferenceQuery, {
+		fetchPolicy: 'no-cache',
+		variables: {key: SEARCH_QUERY_STRINGS_KEY}
+	});
 
 	const [updatePreference] = useMutation(PreferenceMutation);
 

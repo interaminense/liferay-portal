@@ -7,7 +7,7 @@ import {
 	SubmissionsMetric,
 	ViewsMetric
 } from 'shared/components/metric-card/metrics';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
 import {cleanup, render} from '@testing-library/react';
 import {
 	mockAssetMetricReq,
@@ -15,7 +15,7 @@ import {
 	mockPreferenceReq,
 	mockTimeRangeReq
 } from 'test/graphql-data';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {RangeKeyTimeRanges, THIRTEEN_MONTHS} from 'shared/util/constants';
 import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';

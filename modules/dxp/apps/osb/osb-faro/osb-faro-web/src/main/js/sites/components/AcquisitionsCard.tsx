@@ -14,12 +14,12 @@ import Table from 'shared/components/table';
 import URLConstants from 'shared/util/url-constants';
 import {ACQUISITION_LABEL_MAP} from 'shared/util/lang';
 import {AcquisitionTypes, CompositionTypes} from 'shared/util/constants';
-import {ApolloError} from 'apollo-client';
 import {compositionListColumns} from 'shared/util/table-columns';
 import {getSafeRangeSelectors} from 'shared/util/util';
 import {RangeSelectors} from 'shared/types';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
+import {ErrorLike} from '@apollo/client';
 
 const ROW_IDENTIFIER = 'name';
 
@@ -161,7 +161,7 @@ const AcquisitionsCardWithData: React.FC<IAcquisitionsCard> = ({
 interface IAcquisitionsCardWithStatesRendererProps
 	extends React.HTMLAttributes<HTMLElement> {
 	empty?: boolean;
-	error: ApolloError;
+	error: ErrorLike;
 	loading?: boolean;
 }
 

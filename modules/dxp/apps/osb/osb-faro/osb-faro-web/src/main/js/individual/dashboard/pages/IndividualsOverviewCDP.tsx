@@ -23,7 +23,7 @@ import {TrendClassification} from 'segment/types';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useParams} from 'react-router-dom';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 import {useRequest} from 'shared/hooks/useRequest';
 
 type IndividualsMetricCard = {
@@ -221,7 +221,13 @@ const IndividualsOverviewCDP = () => {
 			groupId
 		}
 	});
-	const {data, loading} = useQuery(IndividualMetricsQuery, {
+	const {data, loading} = useQuery<{
+		individualMetric: {
+			anonymousIndividualsMetric: IndividualsMetricCard;
+			knownIndividualsMetric: IndividualsMetricCard;
+			totalIndividualsMetric: IndividualsMetricCard;
+		};
+	}>(IndividualMetricsQuery, {
 		fetchPolicy: 'network-only',
 		variables: {
 			channelId,

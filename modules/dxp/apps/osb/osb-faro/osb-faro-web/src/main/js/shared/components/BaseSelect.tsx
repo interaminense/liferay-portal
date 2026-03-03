@@ -6,10 +6,10 @@ import Input from './Input';
 import Loading from 'shared/components/Loading';
 import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {ARROW_DOWN, ARROW_UP, ENTER} from '../util/key-constants';
-import {DocumentNode} from 'apollo-boost';
+import type {DocumentNode} from 'graphql';
 import {identity, noop} from 'lodash';
 import {useDebounce} from 'shared/hooks/useDebounce';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 import {useRequest} from 'shared/hooks/useRequest';
 
 const DEBOUNCE_DELAY = 250;

@@ -3,8 +3,8 @@ import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import View from '../View';
-import {ApolloProvider} from '@apollo/react-components';
-import {MockedProvider} from '@apollo/react-testing';
+import {ApolloProvider} from '@apollo/client/react';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {
 	mockRecommendationJobRunsReq,
 	mockRecommendationReq

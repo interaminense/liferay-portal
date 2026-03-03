@@ -13,7 +13,6 @@ import SitesTopPagesQuery, {
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import Table from 'shared/components/table';
 import URLConstants from 'shared/util/url-constants';
-import {ApolloError} from 'apollo-client';
 import {ENTRANCES_METRIC, EXIT_RATE_METRIC} from 'shared/util/pagination';
 import {getSafeRangeSelectors} from 'shared/util/util';
 import {metricsListColumns} from 'shared/util/table-columns';
@@ -23,7 +22,8 @@ import {pickBy} from 'lodash';
 import {RangeSelectors} from 'shared/types';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {setUriQueryValues} from 'shared/util/router';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
+import {ErrorLike} from '@apollo/client';
 
 const ROW_IDENTIFIER = ['assetId', 'assetTitle'];
 
@@ -210,7 +210,7 @@ const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 interface ITopPagesCardWithStatesRendererProps
 	extends React.HTMLAttributes<HTMLElement> {
 	empty?: boolean;
-	error: ApolloError;
+	error: ErrorLike;
 	loading?: boolean;
 }
 

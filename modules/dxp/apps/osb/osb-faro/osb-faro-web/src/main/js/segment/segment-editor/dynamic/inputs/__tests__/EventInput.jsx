@@ -6,7 +6,7 @@ import {CustomValue, Property} from 'shared/util/records';
 import {fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {MemoryRouter, Route} from 'react-router-dom';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockEventPropertiesReq} from 'test/graphql-data';
 import {range} from 'lodash';
 import {RelationalOperators} from '../../utils/constants';
