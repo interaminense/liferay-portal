@@ -11,6 +11,25 @@ jest.mock('shared/api');
 jest.mock('shared/components/DocumentTitle');
 jest.mock('react-dom');
 
+jest.mock('jspdf', () => ({
+	__esModule: true,
+	default: jest.fn().mockImplementation(() => ({
+		addPage: jest.fn(),
+		save: jest.fn(),
+		text: jest.fn(),
+		setProperties: jest.fn(),
+		setFontSize: jest.fn(),
+		setFont: jest.fn(),
+		addImage: jest.fn(),
+		internal: {
+			pageSize: {
+				getWidth: () => 595.28,
+				getHeight: () => 841.89
+			}
+		}
+	}))
+}));
+
 document.body.className = 'dxp';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
