@@ -51,7 +51,7 @@ import {
 	NAME,
 	paginationDefaults
 } from 'shared/util/pagination';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {OrderedMap} from 'immutable';
 import {OrderParams} from 'shared/util/records';
 import {SegmentStates, SegmentTypes, Sizes} from 'shared/util/constants';
@@ -93,7 +93,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 interface IListProps extends PropsFromRedux {
 	channelId: string;
 	groupId: string;
-	history: any;
+	navigate: any;
 }
 
 const SEGMENT_TYPES_LABEL_MAP = {
@@ -150,7 +150,7 @@ export const List: React.FC<IListProps> = ({
 	channelId,
 	close,
 	groupId,
-	history,
+	navigate,
 	open
 }) => {
 	const currentUser = useCurrentUser();
@@ -337,7 +337,7 @@ export const List: React.FC<IListProps> = ({
 						});
 
 						if (items.length === 1 && page !== 1) {
-							history.push(
+							navigate(
 								setUriQueryValue(
 									window.location.href,
 									'page',

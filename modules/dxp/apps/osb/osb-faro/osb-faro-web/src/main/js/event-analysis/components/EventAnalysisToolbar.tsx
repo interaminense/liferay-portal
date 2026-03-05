@@ -6,7 +6,7 @@ import TitleEditor from 'shared/components/TitleEditor';
 import {Routes, toRoute} from 'shared/util/router';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 interface IEventAnalysisToolbarProps extends React.HTMLAttributes<HTMLElement> {
 	isValid: boolean;

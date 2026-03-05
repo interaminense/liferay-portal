@@ -7,10 +7,9 @@ import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {Account} from 'shared/util/records';
 import {ChannelContext} from 'shared/context/channel';
-import {compose, withAccount} from 'shared/hoc';
 import {getMatchedRoute, Routes} from 'shared/util/router';
 import {PropTypes} from 'prop-types';
-import {Switch, withRouter} from 'react-router-dom';
+import {withAccount} from 'shared/hoc';
 
 const Activities = lazy(() =>
 	import(/* webpackChunkName: "AccountActivities" */ './hoc/Activities')
@@ -38,33 +37,26 @@ const Overview = lazy(() =>
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('overview'),
 		route: Routes.CONTACTS_ACCOUNT
 	},
 	{
-		exact: false,
 		label: Liferay.Language.get('activities'),
 		route: Routes.CONTACTS_ACCOUNT_ACTIVITIES
 	},
 	{
-		exact: false,
 		label: Liferay.Language.get('interests'),
 		route: Routes.CONTACTS_ACCOUNT_INTERESTS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('segments'),
 		route: Routes.CONTACTS_ACCOUNT_SEGMENTS
 	},
 	{
-		exact: true,
-
 		label: Liferay.Language.get('individuals'),
 		route: Routes.CONTACTS_ACCOUNT_INDIVIDUALS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('details'),
 		route: Routes.CONTACTS_ACCOUNT_DETAILS
 	}
@@ -141,59 +133,50 @@ export class AccountProfileRoutes extends React.Component {
 
 				<BasePage.Body>
 					<Suspense fallback={<Loading />}>
-						<Switch>
-							<BundleRouter
-								componentProps={componentProps}
-								data={Activities}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_ACTIVITIES}
-							/>
+						<BundleRouter
+							componentProps={componentProps}
+							data={Activities}
+							path={Routes.CONTACTS_ACCOUNT_ACTIVITIES}
+						/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={AssociatedSegments}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_SEGMENTS}
-							/>
+						<BundleRouter
+							componentProps={componentProps}
+							data={AssociatedSegments}
+							path={Routes.CONTACTS_ACCOUNT_SEGMENTS}
+						/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={Details}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_DETAILS}
-							/>
+						<BundleRouter
+							componentProps={componentProps}
+							data={Details}
+							path={Routes.CONTACTS_ACCOUNT_DETAILS}
+						/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={InterestDetails}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_INTEREST_DETAILS}
-							/>
+						<BundleRouter
+							componentProps={componentProps}
+							data={InterestDetails}
+							path={Routes.CONTACTS_ACCOUNT_INTEREST_DETAILS}
+						/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={Interests}
-								destructured={false}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_INTERESTS}
-							/>
+						<BundleRouter
+							componentProps={componentProps}
+							data={Interests}
+							destructured={false}
+							path={Routes.CONTACTS_ACCOUNT_INTERESTS}
+						/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={KnownIndividuals}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_INDIVIDUALS}
-							/>
+						<BundleRouter
+							componentProps={componentProps}
+							data={KnownIndividuals}
+							path={Routes.CONTACTS_ACCOUNT_INDIVIDUALS}
+						/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={Overview}
-								exact
-								path={Routes.CONTACTS_ACCOUNT}
-							/>
+						<BundleRouter
+							componentProps={componentProps}
+							data={Overview}
+							path={Routes.CONTACTS_ACCOUNT}
+						/>
 
-							<RouteNotFound />
-						</Switch>
+						<RouteNotFound />
 					</Suspense>
 				</BasePage.Body>
 			</BasePage>
@@ -201,4 +184,4 @@ export class AccountProfileRoutes extends React.Component {
 	}
 }
 
-export default compose(withRouter, withAccount)(AccountProfileRoutes);
+export default withAccount(AccountProfileRoutes);

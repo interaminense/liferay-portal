@@ -2,11 +2,11 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import UsageOverviewSaaS from '../UsageOverviewSaaS';
+import {BrowserRouter} from 'react-router';
 import {fromJS} from 'immutable';
 import {Project} from 'shared/util/records';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 
 jest.unmock('react-dom');
@@ -15,8 +15,8 @@ jest.mock('shared/hooks/useTimeZone', () => ({
 	useTimeZone: () => ({timeZoneId: 'UTC'})
 }));
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -41,9 +41,9 @@ const defaultProps = {
 
 const WrappedComponent = props => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<UsageOverviewSaaS {...props} />
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

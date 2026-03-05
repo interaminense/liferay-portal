@@ -11,10 +11,11 @@ import React from 'react';
 import TextTruncate from 'shared/components/TextTruncate';
 import Toolbar from './Toolbar';
 import {IBreadcrumbArgs} from 'shared/util/breadcrumbs';
-import {matchPath, useLocation, useParams} from 'react-router-dom';
+import {matchPath} from 'react-router';
 import {PageActions} from 'shared/components/base-page/Header';
 import {Routes, toRoute} from 'shared/util/router';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useLocation, useParams} from 'react-router';
 import {useStore} from 'react-redux';
 
 function getSidebarSections({currentUser, groupId, recommendationsEnabled}) {
@@ -156,10 +157,8 @@ const SettingsBasePage: React.FC<ISettingsBasePageProps> = ({
 									<li
 										className={getCN('item', {
 											active: !!matchPath(
-												location.pathname,
-												{
-													path: route
-												}
+												route,
+												location.pathname
 											)
 										})}
 										key={url}
@@ -198,6 +197,8 @@ const SettingsBasePage: React.FC<ISettingsBasePageProps> = ({
 							{...notificationResponse}
 							groupId={groupId}
 						/>
+
+						{/* @ts-ignore */}
 
 						<MaintenanceAlert />
 

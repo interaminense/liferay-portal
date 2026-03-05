@@ -24,7 +24,7 @@ jest.mock('shared/hooks/useCurrentUser', () => ({
 	useCurrentUser: () => ({isAdmin: () => true})
 }));
 
-jest.mock('react-router-dom', () => ({
+jest.mock('react-router', () => ({
 	useParams: () => ({groupId: '12345'})
 }));
 

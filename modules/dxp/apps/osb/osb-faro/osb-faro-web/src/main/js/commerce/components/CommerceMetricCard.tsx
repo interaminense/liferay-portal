@@ -12,7 +12,7 @@ import {sub} from 'shared/util/lang';
 import {toRounded} from 'shared/util/numbers';
 import {Trend} from 'commerce/utils/types';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/client/react';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
 import {ErrorLike, ErrorPolicy} from '@apollo/client';

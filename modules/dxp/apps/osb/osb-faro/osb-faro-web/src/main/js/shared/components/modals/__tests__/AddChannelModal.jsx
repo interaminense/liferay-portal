@@ -1,8 +1,8 @@
 import AddChannelModal from '../AddChannelModal';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {noop} from 'lodash';
-import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
@@ -11,9 +11,9 @@ describe('AddChannelModal', () => {
 
 	it('renders', () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<AddChannelModal onClose={noop} onSubmit={noop} />
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container).toMatchSnapshot();

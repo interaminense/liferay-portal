@@ -11,11 +11,12 @@ import {ClayRadio, ClayRadioGroup, ClayToggle} from '@clayui/form';
 import {createOrderIOMap, NAME} from 'shared/util/pagination';
 import {DataSourceStatuses, Sizes} from 'shared/util/constants';
 import {fetchChannelDatasources} from 'shared/api/data-source';
-import {Link, useParams} from 'react-router-dom';
+import {Link} from 'react-router';
 import {modalTypes} from 'shared/actions/modals';
 import {Routes, toRoute} from 'shared/util/router';
 import {Text} from '@clayui/core';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useParams} from 'react-router';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useRequest} from 'shared/hooks/useRequest';
 

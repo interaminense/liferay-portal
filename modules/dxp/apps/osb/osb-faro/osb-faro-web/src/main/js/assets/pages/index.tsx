@@ -11,10 +11,10 @@ import URLConstants from 'shared/util/url-constants';
 import {CSVType} from 'shared/components/download-report/utils';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
 import {Router} from 'shared/types';
-import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
+import {useParams} from 'react-router';
 import {User} from 'shared/util/records';
 
 const BlogsList = lazy(
@@ -38,22 +38,18 @@ const WebContentList = lazy(
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('blogs'),
 		route: Routes.ASSETS_BLOGS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('documents-and-media'),
 		route: Routes.ASSETS_DOCUMENTS_AND_MEDIA
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('forms'),
 		route: Routes.ASSETS_FORMS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('web-content'),
 		route: Routes.ASSETS_WEB_CONTENT
 	}
@@ -202,37 +198,31 @@ const Assets: React.FC<IAssetsProps> = ({className, router}) => {
 							/>
 
 							<StatesRenderer.Success>
-								<Switch>
-									<BundleRouter
-										data={BlogsList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_BLOGS}
-									/>
+								<BundleRouter
+									data={BlogsList}
+									destructured={false}
+									path={Routes.ASSETS_BLOGS}
+								/>
 
-									<BundleRouter
-										data={DocumentsAndMediaList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_DOCUMENTS_AND_MEDIA}
-									/>
+								<BundleRouter
+									data={DocumentsAndMediaList}
+									destructured={false}
+									path={Routes.ASSETS_DOCUMENTS_AND_MEDIA}
+								/>
 
-									<BundleRouter
-										data={FormsList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_FORMS}
-									/>
+								<BundleRouter
+									data={FormsList}
+									destructured={false}
+									path={Routes.ASSETS_FORMS}
+								/>
 
-									<BundleRouter
-										data={WebContentList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_WEB_CONTENT}
-									/>
+								<BundleRouter
+									data={WebContentList}
+									destructured={false}
+									path={Routes.ASSETS_WEB_CONTENT}
+								/>
 
-									<RouteNotFound />
-								</Switch>
+								<RouteNotFound />
 							</StatesRenderer.Success>
 						</StatesRenderer>
 					</Suspense>

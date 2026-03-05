@@ -27,7 +27,7 @@ import {formatDateToTimeZone} from 'shared/util/date';
 import {FormikActions} from 'formik';
 import {getPluralMessage, sub} from 'shared/util/lang';
 import {IPagination} from 'shared/types';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {RootState} from 'shared/store';
 import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
@@ -73,9 +73,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IChannelListProps extends IPagination, PropsFromRedux {
 	groupId: string;
-	history: {
-		push: (href: string) => void;
-	};
+	navigate: (href: string) => void;
 }
 
 const ChannelList: React.FC<IChannelListProps> = ({
@@ -83,7 +81,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 	close,
 	defaultChannelId,
 	groupId,
-	history,
+	navigate,
 	open,
 	updateDefaultChannelId
 }) => {
@@ -302,7 +300,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 
 				close();
 
-				history.push(
+				navigate(
 					toRoute(Routes.SETTINGS_CHANNELS_VIEW, {
 						groupId,
 						id

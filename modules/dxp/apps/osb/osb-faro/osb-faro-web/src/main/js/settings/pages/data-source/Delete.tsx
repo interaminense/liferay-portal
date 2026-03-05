@@ -10,7 +10,7 @@ import {
 	compose,
 	withAdminPermission,
 	withDataSource,
-	withHistory,
+	withNavigate,
 	withRequest,
 	withSheet
 } from 'shared/hoc';
@@ -32,17 +32,13 @@ const WrappedDeleteDataSource = compose(
 	)
 )(DeleteDataSource) as React.ComponentType<any>;
 
-type History = {
-	push: (path: string) => void;
-};
-
 interface IDeleteProps extends React.HTMLAttributes<HTMLElement> {
 	addAlert: Alert.AddAlert;
 	dataSource: DataSource;
 	deleteDataSource: (params: {groupId: string; id: string}) => Promise<void>;
 	entitiesCount?: Record<string, any>;
 	groupId: string;
-	history: History;
+	navigate: (path: string) => void;
 	id: string;
 }
 
@@ -53,7 +49,7 @@ export const Delete: React.FC<IDeleteProps> = ({
 	deleteDataSource,
 	entitiesCount,
 	groupId,
-	history,
+	navigate,
 	id
 }) => {
 	const handleDeleteDataSource = () =>
@@ -72,7 +68,7 @@ export const Delete: React.FC<IDeleteProps> = ({
 					) as string
 				});
 
-				history.push(
+				navigate(
 					toRoute(Routes.SETTINGS_DATA_SOURCE_LIST, {
 						groupId
 					})
@@ -157,7 +153,7 @@ export const Delete: React.FC<IDeleteProps> = ({
 };
 
 export default compose(
-	withHistory,
+	withNavigate,
 	withAdminPermission,
 	withDataSource,
 	connect(null, {addAlert, deleteDataSource})

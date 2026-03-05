@@ -15,7 +15,7 @@ import {
 	SitesMetricQuery,
 	SitesTabsQuery
 } from 'shared/components/metric-card/queries';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 type TChartData = typeof getSiteMetricsChartData;
 

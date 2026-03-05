@@ -3,7 +3,7 @@ import ConnectSalesforce from './ConnectSalesforce';
 import React from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {DataSourceTypes} from 'shared/util/constants';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 const PAGE_MAP = {
 	[DataSourceTypes.Salesforce]: ConnectSalesforce,

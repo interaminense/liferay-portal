@@ -2,15 +2,14 @@ import * as API from 'shared/api';
 
 import IndividualsList from '../IndividualsList';
 import React from 'react';
-import {createMemoryHistory} from 'history';
 import {render} from '@testing-library/react';
 import {Router} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '123',
 		groupId: '23'
@@ -74,10 +73,8 @@ describe('Individuals List', () => {
 	);
 
 	it('renders', async () => {
-		const history = createMemoryHistory();
-
 		const {container} = render(
-			<Router history={history}>
+			<Router location={''} navigator={undefined}>
 				<IndividualsList />
 			</Router>
 		);

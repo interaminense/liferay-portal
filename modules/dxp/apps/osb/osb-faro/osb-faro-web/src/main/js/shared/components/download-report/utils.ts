@@ -6,7 +6,7 @@ import {INDIVIDUALS} from 'shared/util/router';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {RangeSelectors} from 'shared/types';
 import {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 export function formatDate(date: string | Date) {
 	return moment(date).format(DEFAULT_DATE_FORMAT);

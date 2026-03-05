@@ -4,7 +4,7 @@ import ChannelList from '../ChannelList';
 import mockStore, {mockStoreData} from 'test/mock-store';
 import React from 'react';
 import {cleanup, render, screen} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {RemoteData} from 'shared/util/records';
 import {Routes} from 'shared/util/router';

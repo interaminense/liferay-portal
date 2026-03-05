@@ -22,7 +22,7 @@ import {toRounded, toThousands} from 'shared/util/numbers';
 import {TrendClassification} from 'segment/types';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/client/react';
 import {useRequest} from 'shared/hooks/useRequest';
 

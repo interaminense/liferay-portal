@@ -1,17 +1,17 @@
 import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {DataSource} from 'shared/util/records';
 import {ClearData as DataSourceClearData} from '../ClearData';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -29,9 +29,9 @@ describe('DataSourceClearData', () => {
 	it('should render', async () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<DataSourceClearData {...defaultProps} />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 

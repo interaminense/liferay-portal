@@ -5,7 +5,7 @@ import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
 import {Text} from '@clayui/core';
 import {updateSalesforce} from 'shared/api/data-source';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useWizardPage} from '../../base-page/WizardPageContext';
 import {WizardPageButtonGroup} from 'settings/components/base-page/WizardPageButtonGroup';
 

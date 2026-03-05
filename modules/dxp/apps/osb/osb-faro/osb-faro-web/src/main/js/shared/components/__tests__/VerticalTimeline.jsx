@@ -1,13 +1,13 @@
 import mockDate from 'test/mock-date';
 import React from 'react';
 import VerticalTimeline from '../VerticalTimeline';
+import {BrowserRouter} from 'react-router';
 import {
 	cleanup,
 	fireEvent,
 	render,
 	waitForElement
 } from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -153,9 +153,9 @@ const ITEMS = [
 const SESSION_ATTRIBUTES_TITLE = 'Session Attributes';
 
 const DefaultComponent = props => (
-	<StaticRouter>
+	<BrowserRouter>
 		<VerticalTimeline {...props} />
-	</StaticRouter>
+	</BrowserRouter>
 );
 
 describe('VerticalTimeline', () => {

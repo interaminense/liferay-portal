@@ -7,7 +7,7 @@ import {
 	getSafeTouchpoint
 } from 'shared/util/util';
 import {Interval, RangeSelectors, SafeRangeSelectors} from 'shared/types';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/client/react';
 
 interface ICommonVariables extends SafeRangeSelectors, Filters {

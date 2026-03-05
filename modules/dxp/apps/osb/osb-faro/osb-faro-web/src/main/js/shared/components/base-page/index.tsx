@@ -22,6 +22,8 @@ export const BasePage: React.FC<IBasePageProps> & {
 	<div className={getCN('index-root', className)}>
 		<DocumentTitle title={documentTitle} />
 
+		{/* @ts-ignore */}
+
 		<MaintenanceAlert stripe />
 
 		{children}

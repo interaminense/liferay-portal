@@ -1,6 +1,6 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 
@@ -49,7 +49,7 @@ describe('IndividualsOverviewCDP', () => {
 	});
 
 	it('should render Individuals Metrics Cards', async () => {
-		jest.doMock('@apollo/react-hooks', () => ({
+		jest.doMock('@apollo/client/react', () => ({
 			useQuery: jest.fn(() => ({
 				data: mockedIndividualMetrics.data,
 				loading: false
@@ -71,8 +71,8 @@ describe('IndividualsOverviewCDP', () => {
 			useDataSource: jest.fn(() => ({empty: false}))
 		}));
 
-		jest.doMock('react-router-dom', () => ({
-			...jest.requireActual('react-router-dom'),
+		jest.doMock('react-router', () => ({
+			...jest.requireActual('react-router'),
 			useParams: () => ({
 				channelId: '123',
 				groupId: '456'

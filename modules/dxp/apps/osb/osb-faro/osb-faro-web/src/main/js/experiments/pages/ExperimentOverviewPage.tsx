@@ -20,7 +20,7 @@ import {Status} from 'experiments/components/summary-card/types';
 import {SummaryCard} from 'experiments/components/summary-card/SummaryCard';
 import {useChannelContext} from 'shared/context/channel';
 import {useModal} from '@clayui/modal';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/client/react';
 import {VariantCard} from 'experiments/components/variant-card/VariantCard';
 
@@ -158,7 +158,6 @@ const ExperimentOverviewContent = ({status}) => {
 							<BasePage.Header.NavBar
 								items={[
 									{
-										exact: true,
 										label: Liferay.Language.get('report'),
 										route: Routes.TESTS_OVERVIEW
 									}

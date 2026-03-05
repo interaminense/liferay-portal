@@ -10,7 +10,7 @@ import {
 	mapResultToProps
 } from '../hocs/mappers/site-metrics-query';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {withError} from 'shared/hoc';
 
 const ChartWithData = compose<any>(

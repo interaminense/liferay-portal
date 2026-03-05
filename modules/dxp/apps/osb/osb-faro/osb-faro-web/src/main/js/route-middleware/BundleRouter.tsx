@@ -1,48 +1,40 @@
 import React from 'react';
-import {matchPath, Route} from 'react-router-dom';
+import {useNavigate, useParams, useLocation, matchPath} from 'react-router';
 import {useQueryParams} from 'shared/hooks/useQueryParams';
 
 const BundleRouter = ({
 	componentProps = {},
 	data: Component,
 	destructured = true,
-	...otherRouteProps
+	path
 }) => {
+	const navigate = useNavigate();
+
+	const params = useParams();
 	const query = useQueryParams();
+	const {pathname} = useLocation();
+
+	console.log({path, params, query, pathname});
+
+	let routerData = {};
+
+	if (!destructured) {
+		const matchedPath = matchPath({path}, pathname);
+
+		routerData = {
+			params: {
+				...params,
+				touchpoint: matchedPath?.params?.['touchpoint']
+			},
+			query
+		};
+	}
 
 	return (
-		<Route
-			{...otherRouteProps}
-			render={({history, match: {params, path}}) => {
-				if (destructured) {
-					return (
-						<Component
-							history={history}
-							{...query}
-							{...params}
-							{...componentProps}
-						/>
-					);
-				}
-
-				const matchedPath = matchPath<any>(window.location.pathname, {
-					path
-				});
-
-				return (
-					<Component
-						history={history}
-						router={{
-							params: {
-								...params,
-								touchpoint: matchedPath.params.touchpoint
-							},
-							query
-						}}
-						{...componentProps}
-					/>
-				);
-			}}
+		<Component
+			navigate={navigate}
+			{...(destructured ? {...query, ...params} : {router: routerData})}
+			{...componentProps}
 		/>
 	);
 };

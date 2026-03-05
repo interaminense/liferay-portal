@@ -5,7 +5,7 @@ import {mockIndividual} from 'test/data';
 import {SelectionProvider} from 'shared/context/selection';
 import {times} from 'lodash';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
-import {withStaticRouter} from 'test/mock-router';
+import {withBrowserRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -37,7 +37,7 @@ const COLUMNS = [
 const TOTAL = 5;
 const INDIVIDUALS = times(TOTAL, i => mockIndividual(i));
 
-const DefaultComponent = withStaticRouter(SearchableEntityTable);
+const DefaultComponent = withBrowserRouter(SearchableEntityTable);
 
 describe('SearchableEntityTable', () => {
 	afterEach(cleanup);

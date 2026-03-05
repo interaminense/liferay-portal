@@ -6,7 +6,6 @@ import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch} from 'react-router';
 
 const AttributeList = lazy(
 	() => import(/* webpackChunkName: "AttributeList" */ './AttributeList')
@@ -21,12 +20,10 @@ const GlobalAttributeList = lazy(
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('global-attributes'),
 		route: Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('attributes'),
 		route: Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL
 	}
@@ -66,25 +63,17 @@ const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
 			</ClayNavigationBar>
 
 			<Suspense fallback={<Loading />}>
-				<Switch>
-					<BundleRouter
-						data={AttributeList}
-						exact
-						path={
-							Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL
-						}
-					/>
+				<BundleRouter
+					data={AttributeList}
+					path={Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL}
+				/>
 
-					<BundleRouter
-						data={GlobalAttributeList}
-						exact
-						path={
-							Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
-						}
-					/>
+				<BundleRouter
+					data={GlobalAttributeList}
+					path={Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL}
+				/>
 
-					<RouteNotFound />
-				</Switch>
+				<RouteNotFound />
 			</Suspense>
 		</Card>
 	);

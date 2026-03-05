@@ -3,7 +3,7 @@ import BasePage from 'shared/components/base-page';
 import IndividualsOverviewCDP from './IndividualsOverviewCDP';
 import React from 'react';
 import {useChannelContext} from 'shared/context/channel';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 const IndividualsDashboardCDP = () => {
 	const {channelId, groupId} = useParams();

@@ -5,7 +5,7 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import {ApolloProvider} from '@apollo/client/react';
 import {fireEvent, render} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {MockedProvider} from '@apollo/client/testing/react';
 import {mockEventDefinitionsReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';

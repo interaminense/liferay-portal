@@ -19,7 +19,7 @@ import {
 	SegmentTypes
 } from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 const sanitizeActivation = (activation: any) => {
 	if (!activation) return null;

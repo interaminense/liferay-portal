@@ -34,10 +34,11 @@ import {
 	validAnalyticsConfig,
 	validContactsConfig
 } from 'shared/util/data-sources';
-import {Link, useHistory, useParams} from 'react-router-dom';
+import {Link} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useNavigate, useParams} from 'react-router';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useRequest} from 'shared/hooks/useRequest';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
@@ -169,7 +170,7 @@ interface IDataSourceListProps extends React.HTMLAttributes<HTMLElement> {}
 
 const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 	const currentUser = useCurrentUser();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const {groupId} = useParams();
 	const [alerts, setAlerts] = useState([]);
 	const {timeZoneId} = useTimeZone();
@@ -230,7 +231,7 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 					label: Liferay.Language.get('liferay-dxp'),
 
 					onClick: () => {
-						history.push(
+						navigate(
 							toRoute(Routes.SETTINGS_DATA_SOURCE_ONBOARDING, {
 								groupId,
 								id: DataSourceTypes.Liferay
@@ -242,7 +243,7 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 					label: Liferay.Language.get('salesforce'),
 
 					onClick: () => {
-						history.push(
+						navigate(
 							toRoute(Routes.SETTINGS_DATA_SOURCE_ONBOARDING, {
 								groupId,
 								id: DataSourceTypes.Salesforce

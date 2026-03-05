@@ -9,12 +9,11 @@ import React, {lazy, Suspense, useContext} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {buildHeaderSubtitle} from './utils/utils';
 import {ChannelContext} from 'shared/context/channel';
-import {compose, withIndividual} from 'shared/hoc';
 import {CSVType} from 'shared/components/download-report/utils';
 import {getMatchedRoute, Routes} from 'shared/util/router';
-import {Switch, withRouter} from 'react-router-dom';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useRequest} from 'shared/hooks/useRequest';
+import {withIndividual} from 'shared/hoc';
 
 const AssociatedSegments = lazy(
 	() =>
@@ -45,17 +44,14 @@ const NAV_ITEMS = [
 		route: Routes.CONTACTS_INDIVIDUAL
 	},
 	{
-		exact: false,
 		label: Liferay.Language.get('interests'),
 		route: Routes.CONTACTS_INDIVIDUAL_INTERESTS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('segments'),
 		route: Routes.CONTACTS_INDIVIDUAL_SEGMENTS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('details'),
 		route: Routes.CONTACTS_INDIVIDUAL_DETAILS
 	}
@@ -136,48 +132,41 @@ export const IndividualProfileRoutes = ({
 
 			<BasePage.Body>
 				<Suspense fallback={<Loading />}>
-					<Switch>
-						<BundleRouter
-							componentProps={componentProps}
-							data={AssociatedSegments}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_SEGMENTS}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={AssociatedSegments}
+						path={Routes.CONTACTS_INDIVIDUAL_SEGMENTS}
+					/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={Details}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_DETAILS}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={Details}
+						path={Routes.CONTACTS_INDIVIDUAL_DETAILS}
+					/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={InterestDetails}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_INTEREST_DETAILS}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={InterestDetails}
+						path={Routes.CONTACTS_INDIVIDUAL_INTEREST_DETAILS}
+					/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={Interests}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_INTERESTS}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={Interests}
+						path={Routes.CONTACTS_INDIVIDUAL_INTERESTS}
+					/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={Overview}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={Overview}
+						path={Routes.CONTACTS_INDIVIDUAL}
+					/>
 
-						<RouteNotFound />
-					</Switch>
+					<RouteNotFound />
 				</Suspense>
 			</BasePage.Body>
 		</BasePage>
 	);
 };
 
-export default compose(withRouter, withIndividual)(IndividualProfileRoutes);
+export default withIndividual(IndividualProfileRoutes);

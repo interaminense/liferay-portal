@@ -1,8 +1,8 @@
 import React from 'react';
 import redirectIf from '../RedirectIf';
+import {BrowserRouter} from 'react-router';
 import {render} from '@testing-library/react';
 import {Routes, toRoute} from 'shared/util/router';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -12,9 +12,9 @@ const WrapperComponent = ({route = null}) => {
 	));
 
 	return (
-		<StaticRouter>
+		<BrowserRouter>
 			<Component />
-		</StaticRouter>
+		</BrowserRouter>
 	);
 };
 

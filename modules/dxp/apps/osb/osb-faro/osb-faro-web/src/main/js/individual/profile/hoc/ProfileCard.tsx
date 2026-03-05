@@ -5,7 +5,7 @@ import {ENABLE_CDP} from 'shared/util/constants';
 import {Individual} from 'shared/util/records';
 import {pickBy} from 'lodash';
 import {removeUriQueryParam, setUriQueryValues} from 'shared/util/router';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 
 const DEFAULT_SESSIONS_DELTA = 50;
@@ -19,7 +19,7 @@ interface IProfileCardProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const ProfileCard: React.FC<IProfileCardProps> = ({tabId, ...props}) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const {
 		delta,
 		onDeltaChange,
@@ -65,7 +65,7 @@ const ProfileCard: React.FC<IProfileCardProps> = ({tabId, ...props}) => {
 						onDeltaChange={onDeltaChange}
 						onPageChange={onPageChange}
 						onQueryChange={query => {
-							history.push(
+							navigate(
 								setUriQueryValues(
 									pickBy({query}),
 									removeUriQueryParam(
@@ -78,7 +78,7 @@ const ProfileCard: React.FC<IProfileCardProps> = ({tabId, ...props}) => {
 							onQueryChange(query);
 						}}
 						onRangeSelectorsChange={rangeSelectors => {
-							history.push(
+							navigate(
 								setUriQueryValues(
 									pickBy(rangeSelectors),
 									removeUriQueryParam(

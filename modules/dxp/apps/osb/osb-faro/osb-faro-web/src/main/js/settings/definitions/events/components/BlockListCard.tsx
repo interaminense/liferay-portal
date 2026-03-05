@@ -68,7 +68,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IBlockListCardProps extends PropsFromRedux {
 	groupId: string;
-	history: {push: (url: string) => void};
+	navigate: (url: string) => void;
 	timeZoneId: string;
 }
 
@@ -76,7 +76,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 	addAlert,
 	close,
 	groupId,
-	history,
+	navigate,
 	open,
 	removeAlert,
 	timeZoneId
@@ -269,7 +269,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 
 					const {field, sortOrder} = orderParams;
 
-					history.push(
+					navigate(
 						setUriQueryValues(
 							{
 								field,

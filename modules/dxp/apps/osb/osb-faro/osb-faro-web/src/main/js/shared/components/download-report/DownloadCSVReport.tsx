@@ -10,7 +10,7 @@ import {sub} from 'shared/util/lang';
 import {toLocale} from 'shared/util/numbers';
 import {useDispatch} from 'react-redux';
 import {useModal} from '@clayui/modal';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useUnsafeQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
 
 export interface IDownloadReport {

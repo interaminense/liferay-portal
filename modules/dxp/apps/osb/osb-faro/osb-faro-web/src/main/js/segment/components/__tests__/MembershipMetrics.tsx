@@ -1,6 +1,6 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 
@@ -63,8 +63,8 @@ describe('MembershipMetrics', () => {
 				}))
 			}));
 
-			jest.doMock('react-router-dom', () => ({
-				...jest.requireActual('react-router-dom'),
+			jest.doMock('react-router', () => ({
+				...jest.requireActual('react-router'),
 				useParams: () => ({
 					groupId: '123',
 					id: '456'

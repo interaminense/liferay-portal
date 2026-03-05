@@ -14,7 +14,7 @@ import {
 import {graphql} from 'shared/apollo/compatibility-layer';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {Routes, setUriQueryValues, toRoute} from 'shared/util/router';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {withTableData} from 'shared/hoc';
 
 const withData = () =>

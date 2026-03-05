@@ -11,7 +11,7 @@ import {
 } from '../hocs/mappers/individual-metrics-query';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {withError, withLoading} from 'shared/hoc';
 
 const TypeTrendWithData = compose<any>(

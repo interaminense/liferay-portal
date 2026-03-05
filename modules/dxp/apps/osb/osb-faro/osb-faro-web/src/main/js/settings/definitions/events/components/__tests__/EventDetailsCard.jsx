@@ -2,10 +2,10 @@ import * as data from 'test/data';
 import EventDetailsCard from '../EventDetailsCard';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {fireEvent, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
 import {range} from 'lodash';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -17,13 +17,13 @@ describe('EventDetailsCard', () => {
 	it('should render', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<EventDetailsCard
 						eventAttributes={eventAttributes}
 						eventName='viewArticle'
 						groupId='23'
 					/>
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 
@@ -33,13 +33,13 @@ describe('EventDetailsCard', () => {
 	it('should match the displayed code with the selected attributes', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<EventDetailsCard
 						eventAttributes={eventAttributes}
 						eventName='viewArticle'
 						groupId='23'
 					/>
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 

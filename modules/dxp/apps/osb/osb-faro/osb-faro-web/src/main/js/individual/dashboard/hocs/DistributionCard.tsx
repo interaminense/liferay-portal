@@ -7,7 +7,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {fetchIndividualsDistribution} from 'shared/actions/distributions';
 import {Routes, toRoute} from 'shared/util/router';
 import {toPromise} from 'shared/util/validators';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 const connector = connect(null, {
 	fetchDistribution: fetchIndividualsDistribution

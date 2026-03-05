@@ -3,7 +3,7 @@ import React from 'react';
 import SearchableTableModal from '../SearchableTableModal';
 import {cleanup, render} from '@testing-library/react';
 import {createOrderIOMap} from 'shared/util/pagination';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {noop} from 'lodash';
 import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';

@@ -11,9 +11,8 @@ import {
 } from 'shared/util/constants';
 import {DownloadReportProvider} from 'shared/components/download-report/DownloadReportContext';
 import {Routes} from 'shared/util/router';
-import {Switch, withRouter} from 'react-router-dom';
 import {withOnboarding, withUnassignedSegments} from 'shared/hoc';
-import {withSidebar} from 'shared/hoc';
+import {withRouter, withSidebar} from 'shared/hoc';
 
 const UIKit = lazy(() =>
 	import(/* webpackChunkName: "UIKit" */ '../../ui-kit/pages/index')
@@ -77,12 +76,6 @@ const EventAnalysisList = lazy(() =>
 const IndividualProfileRoutes = lazy(() =>
 	import(
 		/* webpackChunkName: "IndividualProfileRoutes" */ '../../individual/profile/pages/ProfileRoutes'
-	)
-);
-
-const IndividualProfileRoutesCDP = lazy(() =>
-	import(
-		/* webpackChunkName: "IndividualProfileRoutesCDP" */ '../../individual/profile/pages/ProfileRoutesCDP'
 	)
 );
 
@@ -167,18 +160,15 @@ const ROUTES = [
 	},
 	{
 		data: AccountProfileRoutes,
-		exact: false,
 		path: Routes.CONTACTS_ACCOUNT
 	},
 	{
-		data: ENABLE_CDP ? IndividualProfileRoutesCDP : IndividualProfileRoutes,
-		exact: false,
+		data: IndividualProfileRoutes,
 		path: Routes.CONTACTS_INDIVIDUAL
 	},
 	{
 		data: ENABLE_CDP ? IndividualsDashboardCDP : IndividualsDashboard,
 		destructured: false,
-		exact: false,
 		path: Routes.CONTACTS_INDIVIDUALS
 	},
 	{
@@ -195,7 +185,6 @@ const ROUTES = [
 	},
 	{
 		data: SegmentProfileRoutes,
-		exact: false,
 		path: Routes.CONTACTS_SEGMENT
 	},
 	{
@@ -211,43 +200,36 @@ const ROUTES = [
 	{
 		data: DocumentAndMedia,
 		destructured: false,
-		exact: false,
 		path: Routes.ASSETS_DOCUMENTS_AND_MEDIA_ROUTES
 	},
 	{
 		data: Form,
 		destructured: false,
-		exact: false,
 		path: Routes.ASSETS_FORMS_ROUTES
 	},
 	{
 		data: WebContent,
 		destructured: false,
-		exact: false,
 		path: Routes.ASSETS_WEB_CONTENT_ROUTES
 	},
 	{
 		data: TouchpointRoutes,
 		destructured: false,
-		exact: false,
 		path: Routes.SITES_TOUCHPOINTS_ROUTES
 	},
 	{
 		data: EventAnalysisList,
 		destructured: false,
-		exact: true,
 		path: Routes.EVENT_ANALYSIS
 	},
 	{
 		data: EventAnalysisCreate,
 		destructured: false,
-		exact: true,
 		path: Routes.EVENT_ANALYSIS_CREATE
 	},
 	{
 		data: EventAnalysisEdit,
 		destructured: false,
-		exact: true,
 		path: Routes.EVENT_ANALYSIS_EDIT
 	},
 	{
@@ -263,13 +245,11 @@ const ROUTES = [
 	{
 		data: AssetsList,
 		destructured: false,
-		exact: false,
 		path: Routes.ASSETS
 	},
 	{
 		data: SitesDashboard,
 		destructured: false,
-		exact: false,
 		path: Routes.SITES
 	},
 	{
@@ -301,38 +281,28 @@ export default class AppSidebarRoutes extends React.PureComponent {
 		return (
 			<DownloadReportProvider>
 				<Suspense fallback={<Loading />}>
-					<Switch>
-						{!selectedChannel && (
-							<BundleRouter
-								componentProps={{currentUser, groupId}}
-								data={NoPropertiesAvailable}
-								exact={false}
-								path={Routes.WORKSPACE_WITH_ID}
-							/>
-						)}
+					{!selectedChannel && (
+						<BundleRouter
+							componentProps={{currentUser, groupId}}
+							data={NoPropertiesAvailable}
+							path={Routes.WORKSPACE_WITH_ID}
+						/>
+					)}
 
-						{ROUTES.map(
-							({data, exact = true, path, ...otherProps}) => (
-								<BundleRouter
-									{...otherProps}
-									data={data}
-									exact={exact}
-									key={path}
-									path={path}
-								/>
-							)
-						)}
+					{ROUTES.map(({data, path, ...otherProps}) => (
+						<BundleRouter
+							{...otherProps}
+							data={data}
+							key={path}
+							path={path}
+						/>
+					))}
 
-						{DEVELOPER_MODE && (
-							<BundleRouter
-								data={UIKit}
-								exact
-								path={Routes.UI_KIT}
-							/>
-						)}
+					{DEVELOPER_MODE && (
+						<BundleRouter data={UIKit} path={Routes.UI_KIT} />
+					)}
 
-						<RouteNotFound />
-					</Switch>
+					<RouteNotFound />
 				</Suspense>
 			</DownloadReportProvider>
 		);

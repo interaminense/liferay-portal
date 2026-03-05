@@ -2,9 +2,9 @@ import * as API from 'shared/api';
 import * as data from 'test/data';
 import React from 'react';
 import WorkspaceListItem from '../ListItem';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {ProjectStates} from 'shared/util/constants';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -14,12 +14,12 @@ describe('WorkspaceListItem', () => {
 
 	it('should render', () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<WorkspaceListItem
 					accountName=''
 					projectState={ProjectStates.Ready}
 				/>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container).toMatchSnapshot();
@@ -31,9 +31,9 @@ describe('WorkspaceListItem', () => {
 		);
 
 		const {container, queryByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<WorkspaceListItem projectState={ProjectStates.Unavailable} />
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		const button = queryByText('Workspace unavailable; click to reload.');
@@ -53,12 +53,12 @@ describe('WorkspaceListItem', () => {
 
 	it('should render a workspace with projects you can join', () => {
 		const {queryByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<WorkspaceListItem
 					isJoinableProjects
 					projectState={ProjectStates.Ready}
 				/>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(queryByText('Request Access')).toBeTruthy();
@@ -66,9 +66,9 @@ describe('WorkspaceListItem', () => {
 
 	it('should render a workspace with a deactivated project', () => {
 		const {queryByText} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<WorkspaceListItem projectState={ProjectStates.Deactivated} />
-			</StaticRouter>
+			</BrowserRouter>
 		);
 		expect(queryByText('Activate')).toBeTruthy();
 	});

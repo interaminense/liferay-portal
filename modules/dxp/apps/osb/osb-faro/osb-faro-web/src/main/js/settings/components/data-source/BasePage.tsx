@@ -14,7 +14,7 @@ import {getDataSourceDisplayObject} from 'shared/util/data-sources';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {truncate} from 'lodash';
-import {withHistory} from 'shared/hoc';
+import {withNavigate} from 'shared/hoc';
 
 const getPageDescription = dataSource =>
 	dataSource
@@ -38,9 +38,7 @@ interface IBaseDataSourcePageProps extends React.HTMLAttributes<HTMLElement> {
 		id: string;
 	}) => Promise<void>;
 	groupId: string;
-	history: {
-		push: (path: string) => void;
-	};
+	navigate: (path: string) => void;
 	id: string;
 	open: Modal.open;
 	pageDescription: string;
@@ -58,8 +56,8 @@ const BaseDataSourcePage: React.FC<IBaseDataSourcePageProps> = ({
 	deleteDataSource,
 	documentTitle = Liferay.Language.get('configure-data-source'),
 	groupId,
-	history,
 	id,
+	navigate,
 	open,
 	pageDescription,
 	pageTitle = Liferay.Language.get('configure-data-source'),
@@ -102,7 +100,7 @@ const BaseDataSourcePage: React.FC<IBaseDataSourcePageProps> = ({
 
 						close();
 
-						history.push(
+						navigate(
 							toRoute(Routes.SETTINGS_DATA_SOURCE_LIST, {
 								groupId
 							})
@@ -164,6 +162,6 @@ const getOwnChildren = (store, ownProps) => ({
 });
 
 export default compose<any>(
-	withHistory,
+	withNavigate,
 	connect(getOwnChildren, {addAlert, close, deleteDataSource, open})
 )(BaseDataSourcePage);

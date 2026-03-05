@@ -7,7 +7,7 @@ import {DataSource} from 'shared/util/records';
 import {isFinite} from 'lodash';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {sub} from 'shared/util/lang';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {validContactsConfig} from 'shared/util/data-sources';
 import {withRequest} from 'shared/hoc';
 

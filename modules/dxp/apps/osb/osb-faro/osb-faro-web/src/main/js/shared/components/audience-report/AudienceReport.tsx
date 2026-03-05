@@ -14,7 +14,7 @@ import {
 } from 'shared/util/util';
 import {IAudienceReportBaseCardProps, Name, TData} from './types';
 import {RangeSelectors} from 'shared/types';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQuery} from '@apollo/client/react';
 
 const AudienceReportTitle: React.FC<IInfoPopoverProps> = ({content, title}) => (

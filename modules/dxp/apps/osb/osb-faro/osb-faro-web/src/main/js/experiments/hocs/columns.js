@@ -9,9 +9,10 @@ import {getSafeDecodedURIComponent} from 'shared/util/util';
 import {getStatusColor, getStatusName} from 'experiments/util/experiments';
 import {getUrl} from 'shared/util/urls';
 import {isNil} from 'lodash';
-import {Link, useParams} from 'react-router-dom';
+import {Link} from 'react-router';
 import {Routes} from 'shared/util/router';
 import {TableDataCell} from 'shared/components/table/cell-components';
+import {useParams} from 'react-router';
 
 const ExperimentListTitle = ({id, title, touchpoint}) => {
 	const {channelId, groupId} = useParams();

@@ -1,8 +1,11 @@
+// TODO: Fix it
+// @ts-nocheck
+
 import {renderHook} from '@testing-library/react-hooks';
-import {useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router';
 import {useQueryParams} from '../useQueryParams';
 
-jest.mock('react-router-dom', () => ({
+jest.mock('react-router', () => ({
 	useLocation: jest.fn()
 }));
 

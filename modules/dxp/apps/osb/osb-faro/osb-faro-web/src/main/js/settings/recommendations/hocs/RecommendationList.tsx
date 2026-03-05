@@ -68,9 +68,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IRecommendationListProps extends PropsFromRedux {
 	groupId: string;
-	history: {
-		push: (value: string) => void;
-	};
+	navigate: (value: string) => void;
 	router: Router;
 }
 
@@ -78,7 +76,7 @@ const RecommendationList: React.FC<IRecommendationListProps> = ({
 	addAlert,
 	close,
 	groupId,
-	history,
+	navigate,
 	open,
 	timeZoneId
 }: IRecommendationListProps) => {
@@ -147,7 +145,7 @@ const RecommendationList: React.FC<IRecommendationListProps> = ({
 
 				refetch();
 
-				history.push(
+				navigate(
 					setUriQueryValues(
 						{
 							field: NAME,

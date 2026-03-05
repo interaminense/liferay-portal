@@ -21,10 +21,10 @@ import {pickBy} from 'lodash';
 import {setUriQueryValues} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useChannelContext} from 'shared/context/channel';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
-import {withHistory, withPaginationBar, withTableData} from 'shared/hoc';
+import {withPaginationBar, withTableData} from 'shared/hoc';
 
 const {
 	pagination: {cur: defaultPage, delta: defaultDelta}
@@ -83,7 +83,8 @@ const TableWithData = withTableData(withData, {
 	rowIdentifier: 'name'
 });
 
-const SearchTerms = ({history}) => {
+const SearchTerms = () => {
+	const navigate = useNavigate();
 	const {selectedChannel} = useChannelContext();
 	const {channelId, groupId} = useParams();
 	const {delta, orderIOMap, page} = useQueryPagination({
@@ -97,7 +98,7 @@ const SearchTerms = ({history}) => {
 	const rangeKeys = [Last7Days, Last24Hours, Last30Days, Last90Days];
 
 	const handleRangeKeyValueChange = ({rangeEnd, rangeKey, rangeStart}) => {
-		history.push(
+		navigate(
 			setUriQueryValues(
 				pickBy({
 					page: defaultPage,
@@ -141,4 +142,4 @@ const SearchTerms = ({history}) => {
 	);
 };
 
-export default withHistory(SearchTerms);
+export default SearchTerms;

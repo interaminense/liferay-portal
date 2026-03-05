@@ -30,7 +30,7 @@ import {getMatchedRoute, Routes, SEGMENTS, toRoute} from 'shared/util/router';
 import {Segment} from 'shared/util/records';
 import {SegmentStates, SegmentTypes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
-import {Switch, useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useRequest} from 'shared/hooks/useRequest';
 
 const Overview = lazy(() =>
@@ -54,22 +54,18 @@ const Distribution = lazy(() =>
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('overview'),
 		route: Routes.CONTACTS_SEGMENT
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('membership'),
 		route: Routes.CONTACTS_SEGMENT_MEMBERSHIP
 	},
 	{
-		exact: false,
 		label: Liferay.Language.get('interests'),
 		route: Routes.CONTACTS_SEGMENT_INTERESTS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('distribution'),
 		route: Routes.CONTACTS_SEGMENT_DISTRIBUTION
 	}
@@ -317,45 +313,38 @@ export const SegmentProfileRoutes = () => {
 			<BasePage.Body disabled={checkDisabled()}>
 				{segment.id ? (
 					<Suspense fallback={<Loading />}>
-						<Switch>
-							<BundleRouter
-								componentProps={{segment}}
-								data={Membership}
-								exact
-								path={Routes.CONTACTS_SEGMENT_MEMBERSHIP}
-							/>
+						<BundleRouter
+							componentProps={{segment}}
+							data={Membership}
+							path={Routes.CONTACTS_SEGMENT_MEMBERSHIP}
+						/>
 
-							<BundleRouter
-								componentProps={{segment}}
-								data={InterestDetails}
-								exact
-								path={Routes.CONTACTS_SEGMENT_INTEREST_DETAILS}
-							/>
+						<BundleRouter
+							componentProps={{segment}}
+							data={InterestDetails}
+							path={Routes.CONTACTS_SEGMENT_INTEREST_DETAILS}
+						/>
 
-							<BundleRouter
-								componentProps={{segment}}
-								data={Interests}
-								destructured={false}
-								exact
-								path={Routes.CONTACTS_SEGMENT_INTERESTS}
-							/>
+						<BundleRouter
+							componentProps={{segment}}
+							data={Interests}
+							destructured={false}
+							path={Routes.CONTACTS_SEGMENT_INTERESTS}
+						/>
 
-							<BundleRouter
-								componentProps={{segment}}
-								data={Distribution}
-								exact
-								path={Routes.CONTACTS_SEGMENT_DISTRIBUTION}
-							/>
+						<BundleRouter
+							componentProps={{segment}}
+							data={Distribution}
+							path={Routes.CONTACTS_SEGMENT_DISTRIBUTION}
+						/>
 
-							<BundleRouter
-								componentProps={{segment}}
-								data={isBatch ? Overview : OverviewRealTime}
-								exact
-								path={Routes.CONTACTS_SEGMENT}
-							/>
+						<BundleRouter
+							componentProps={{segment}}
+							data={isBatch ? Overview : OverviewRealTime}
+							path={Routes.CONTACTS_SEGMENT}
+						/>
 
-							<RouteNotFound />
-						</Switch>
+						<RouteNotFound />
 					</Suspense>
 				) : (
 					<Loading />

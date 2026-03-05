@@ -2,11 +2,11 @@ import * as data from 'test/data';
 import Membership, {MembershipChart} from '../Membership';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 import {Segment} from 'shared/util/records';
 import {SegmentTypes} from 'shared/util/constants';
-import {StaticRouter} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -24,9 +24,9 @@ const defaultProps = {
 describe('Membership', () => {
 	const WrappedComponent = props => (
 		<Provider store={mockStore()}>
-			<StaticRouter>
+			<BrowserRouter>
 				<Membership {...defaultProps} {...props} />
-			</StaticRouter>
+			</BrowserRouter>
 		</Provider>
 	);
 
@@ -43,9 +43,9 @@ describe('Membership', () => {
 
 describe('MembershipChart', () => {
 	const WrappedComponent = props => (
-		<StaticRouter>
+		<BrowserRouter>
 			<MembershipChart {...defaultProps} {...props} />
-		</StaticRouter>
+		</BrowserRouter>
 	);
 
 	it('should render', async () => {

@@ -105,9 +105,7 @@ interface IViewProps
 		IPaginationUnsorted {
 	channel?: Channel;
 	groupId: string;
-	history: {
-		push: (value: string) => void;
-	};
+	navigate: (value: string) => void;
 	id: string;
 }
 
@@ -117,7 +115,7 @@ const View: React.FC<IViewProps> = ({
 	close,
 	defaultChannelId,
 	groupId,
-	history,
+	navigate,
 	id,
 	open,
 	updateDefaultChannelId,
@@ -372,7 +370,7 @@ const View: React.FC<IViewProps> = ({
 
 													close();
 
-													history.push(
+													navigate(
 														toRoute(
 															Routes.SETTINGS_CHANNELS,
 															{

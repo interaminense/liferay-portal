@@ -1,11 +1,11 @@
 import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, getByTestId, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {Project} from 'shared/util/records';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {SubscriptionStatuses, UserRoleNames} from 'shared/util/constants';
 import {UsageOverview} from '../UsageOverview';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
@@ -13,8 +13,8 @@ import {User} from 'shared/util/records';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '456',
 		groupId: '2000'
@@ -39,9 +39,9 @@ const defaultProps = {
 
 const WrappedComponent = props => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<UsageOverview {...props} />
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

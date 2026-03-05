@@ -20,7 +20,7 @@ import {Routes} from 'shared/util/router';
 import {sequence} from 'shared/util/promise';
 import {sub} from 'shared/util/lang';
 import {Text} from '@clayui/core';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {
 	validateRequired,
 	validateSalesforceDomain

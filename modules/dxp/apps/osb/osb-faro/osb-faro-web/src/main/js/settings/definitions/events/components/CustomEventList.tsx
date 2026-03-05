@@ -57,14 +57,14 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface ICustomEventListProps extends PropsFromRedux {
 	groupId: string;
-	history: {push: (url: string) => void};
+	navigate: (url: string) => void;
 }
 
 const CustomEventList: React.FC<ICustomEventListProps> = ({
 	addAlert,
 	close,
 	groupId,
-	history,
+	navigate,
 	open,
 	removeAlert
 }) => {
@@ -176,7 +176,7 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 
 							const {field, sortOrder} = orderParams;
 
-							history.push(
+							navigate(
 								setUriQueryValues(
 									{
 										field,

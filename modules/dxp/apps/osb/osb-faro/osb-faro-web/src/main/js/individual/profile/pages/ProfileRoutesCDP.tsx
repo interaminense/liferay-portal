@@ -9,10 +9,9 @@ import React, {lazy, Suspense, useContext} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {buildHeaderSubtitle} from './utils/utils';
 import {ChannelContext} from 'shared/context/channel';
-import {compose, withIndividual} from 'shared/hoc';
+import {compose, withIndividual, withRouter} from 'shared/hoc';
 import {CSVType} from 'shared/components/download-report/utils';
 import {getMatchedRoute, Routes} from 'shared/util/router';
-import {Switch, withRouter} from 'react-router-dom';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useRequest} from 'shared/hooks/useRequest';
 
@@ -142,44 +141,37 @@ export const IndividualProfileRoutesCDP = ({
 
 			<BasePage.Body>
 				<Suspense fallback={<Loading />}>
-					<Switch>
-						<BundleRouter
-							componentProps={componentProps}
-							data={AssociatedSegments}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_SEGMENTS}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={AssociatedSegments}
+						path={Routes.CONTACTS_INDIVIDUAL_SEGMENTS}
+					/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={IndividualProfileCDP}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_DETAILS}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={IndividualProfileCDP}
+						path={Routes.CONTACTS_INDIVIDUAL_DETAILS}
+					/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={InterestDetails}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_INTEREST_DETAILS}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={InterestDetails}
+						path={Routes.CONTACTS_INDIVIDUAL_INTEREST_DETAILS}
+					/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={Interests}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_INTERESTS}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={Interests}
+						path={Routes.CONTACTS_INDIVIDUAL_INTERESTS}
+					/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={OverviewCDP}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL}
-						/>
+					<BundleRouter
+						componentProps={componentProps}
+						data={OverviewCDP}
+						path={Routes.CONTACTS_INDIVIDUAL}
+					/>
 
-						<RouteNotFound />
-					</Switch>
+					<RouteNotFound />
 				</Suspense>
 			</BasePage.Body>
 		</BasePage>

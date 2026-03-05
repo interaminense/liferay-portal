@@ -87,7 +87,7 @@ class ConfigureCSV extends React.Component {
 
 		request(data)
 			.then(response => {
-				history.push(
+				navigate(
 					toRoute(Routes.SETTINGS_DATA_SOURCE, {
 						groupId,
 						id: response.id

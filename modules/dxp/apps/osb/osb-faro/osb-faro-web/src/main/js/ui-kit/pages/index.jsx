@@ -56,7 +56,7 @@ export default class UIKit extends React.Component {
 		const selectedItem = find(kits, ['name', componentName]) || kits[0];
 
 		if (!componentName) {
-			history.push(
+			navigate(
 				toRoute(Routes.UI_KIT, {name: selectedItem.name.toLowerCase()})
 			);
 		}

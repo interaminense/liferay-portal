@@ -260,7 +260,7 @@ export default class BaseResults extends React.Component {
 			onQueryChange && onQueryChange('');
 			onFilterByChange && onFilterByChange(emptyFilterBy);
 		} else {
-			history.push(
+			navigate(
 				setUriFilterValues(
 					emptyFilterBy,
 					setUriQueryValues({page: defaultPage, query: ''})

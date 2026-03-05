@@ -104,7 +104,7 @@ export default WrappedComponent => {
 								)
 							});
 
-							history.push(
+							navigate(
 								toRoute(Routes.CONTACTS_LIST_ENTITY, {
 									channelId,
 									groupId,
@@ -170,7 +170,7 @@ export default WrappedComponent => {
 						(Array.isArray(segment) && segment.length) ||
 						(segment && !Array.isArray(segment))
 					) {
-						history.push(
+						navigate(
 							toRoute(Routes.CONTACTS_ENTITY, {
 								channelId,
 								groupId,

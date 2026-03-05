@@ -1,7 +1,7 @@
 import React from 'react';
 import TabRoutes from '../TabRoutes';
+import {BrowserRouter} from 'react-router';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -10,11 +10,11 @@ describe('TabRoutes', () => {
 		const Component = () => <div>{'Foo Bar'}</div>;
 
 		const {container, getByText} = render(
-			<StaticRouter location='foo/path'>
+			<BrowserRouter location='foo/path'>
 				<TabRoutes
 					routes={[{component: Component, path: 'foo/path'}]}
 				/>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(getByText('Foo Bar')).toBeTruthy();
