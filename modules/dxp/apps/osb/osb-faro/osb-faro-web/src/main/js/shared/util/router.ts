@@ -73,10 +73,10 @@ export const Routes = buildRoutes({
 			WORKSPACE_ADD_WITH_CORP_PROJECT_UUID: '/:corpProjectUuid/add',
 			WORKSPACE_SELECT_ACCOUNT: '/select-account',
 			WORKSPACE_WITH_ID: {
-				path: '/:groupId([\\w._-]+)',
+				path: '/:groupId',
 				routes: {
 					CHANNEL: {
-						path: '/:channelId(\\d+)?',
+						path: '/:channelId',
 						routes: {
 							ASSETS: {
 								path: '/assets',

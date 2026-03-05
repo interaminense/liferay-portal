@@ -29,6 +29,7 @@ import {
 	validateEmailDomain,
 	validateEmailDomainArr
 } from 'shared/util/email-validators';
+import {Routes, toRoute} from 'shared/util/router';
 
 const {
 	faroURL,
@@ -588,6 +589,16 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 					)}
 				</Form>
 			</Sheet>
+
+			<ClayLink
+				button
+				className='mt-4'
+				displayType='secondary'
+				href={toRoute(Routes.BASE)}
+				small
+			>
+				{Liferay.Language.get('go-back-to-your-workspaces')}
+			</ClayLink>
 		</div>
 	);
 };

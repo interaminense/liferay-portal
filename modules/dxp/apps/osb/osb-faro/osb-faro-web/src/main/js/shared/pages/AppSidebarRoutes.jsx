@@ -10,9 +10,11 @@ import {
 	ENABLE_CDP
 } from 'shared/util/constants';
 import {DownloadReportProvider} from 'shared/components/download-report/DownloadReportContext';
-import {Routes} from 'shared/util/router';
+import {Routes as Path} from 'shared/util/router';
 import {withOnboarding, withUnassignedSegments} from 'shared/hoc';
 import {withRouter, withSidebar} from 'shared/hoc';
+import {Route, Routes, useParams} from 'react-router';
+import {fetchProject} from 'shared/actions/projects';
 
 const UIKit = lazy(() =>
 	import(/* webpackChunkName: "UIKit" */ '../../ui-kit/pages/index')
@@ -156,111 +158,111 @@ const CommerceDashboard = lazy(() =>
 const ROUTES = [
 	ENABLE_ACCOUNTS && {
 		data: AccountsList,
-		path: Routes.CONTACTS_LIST_ACCOUNT
+		path: Path.CONTACTS_LIST_ACCOUNT
 	},
 	{
 		data: AccountProfileRoutes,
-		path: Routes.CONTACTS_ACCOUNT
+		path: Path.CONTACTS_ACCOUNT
 	},
 	{
 		data: IndividualProfileRoutes,
-		path: Routes.CONTACTS_INDIVIDUAL
+		path: Path.CONTACTS_INDIVIDUAL
 	},
 	{
 		data: ENABLE_CDP ? IndividualsDashboardCDP : IndividualsDashboard,
 		destructured: false,
-		path: Routes.CONTACTS_INDIVIDUALS
+		path: Path.CONTACTS_INDIVIDUALS
 	},
 	{
 		data: SegmentsList,
-		path: Routes.CONTACTS_LIST_SEGMENT
+		path: Path.CONTACTS_LIST_SEGMENT
 	},
 	{
 		data: SegmentEdit,
-		path: Routes.CONTACTS_SEGMENT_EDIT
+		path: Path.CONTACTS_SEGMENT_EDIT
 	},
 	{
 		data: SegmentEdit,
-		path: Routes.CONTACTS_SEGMENT_CREATE
+		path: Path.CONTACTS_SEGMENT_CREATE
 	},
 	{
 		data: SegmentProfileRoutes,
-		path: Routes.CONTACTS_SEGMENT
+		path: Path.CONTACTS_SEGMENT
 	},
 	{
 		data: Blog,
 		destructured: false,
-		path: Routes.ASSETS_BLOGS_ROUTES
+		path: Path.ASSETS_BLOGS_ROUTES
 	},
 	{
 		data: CustomAssetsDashboard,
 		destructured: false,
-		path: Routes.ASSETS_CUSTOM_DASHBOARD
+		path: Path.ASSETS_CUSTOM_DASHBOARD
 	},
 	{
 		data: DocumentAndMedia,
 		destructured: false,
-		path: Routes.ASSETS_DOCUMENTS_AND_MEDIA_ROUTES
+		path: Path.ASSETS_DOCUMENTS_AND_MEDIA_ROUTES
 	},
 	{
 		data: Form,
 		destructured: false,
-		path: Routes.ASSETS_FORMS_ROUTES
+		path: Path.ASSETS_FORMS_ROUTES
 	},
 	{
 		data: WebContent,
 		destructured: false,
-		path: Routes.ASSETS_WEB_CONTENT_ROUTES
+		path: Path.ASSETS_WEB_CONTENT_ROUTES
 	},
 	{
 		data: TouchpointRoutes,
 		destructured: false,
-		path: Routes.SITES_TOUCHPOINTS_ROUTES
+		path: Path.SITES_TOUCHPOINTS_ROUTES
 	},
 	{
 		data: EventAnalysisList,
 		destructured: false,
-		path: Routes.EVENT_ANALYSIS
+		path: Path.EVENT_ANALYSIS
 	},
 	{
 		data: EventAnalysisCreate,
 		destructured: false,
-		path: Routes.EVENT_ANALYSIS_CREATE
+		path: Path.EVENT_ANALYSIS_CREATE
 	},
 	{
 		data: EventAnalysisEdit,
 		destructured: false,
-		path: Routes.EVENT_ANALYSIS_EDIT
+		path: Path.EVENT_ANALYSIS_EDIT
 	},
 	{
 		data: ExperimentsList,
 		destructured: false,
-		path: Routes.TESTS
+		path: Path.TESTS
 	},
 	{
 		data: ExperimentOverview,
 		destructured: false,
-		path: Routes.TESTS_OVERVIEW
+		path: Path.TESTS_OVERVIEW
 	},
 	{
 		data: AssetsList,
 		destructured: false,
-		path: Routes.ASSETS
+		path: Path.ASSETS
 	},
 	{
 		data: SitesDashboard,
 		destructured: false,
-		path: Routes.SITES
+		path: Path.SITES
 	},
 	{
 		data: SitesDashboard,
 		destructured: false,
-		path: Routes.CHANNEL
+		path: Path.CHANNEL
 	},
 	DEVELOPER_MODE && {
 		data: CommerceDashboard,
 		destructured: false,
-		path: Routes.COMMERCE
+		path: Path.COMMERCE
 	}
 ].filter(Boolean);
 
@@ -271,40 +273,64 @@ const ROUTES = [
 @connect((store, {groupId}) => ({
 	project: store.getIn(['projects', groupId, 'data'])
 }))
-export default class AppSidebarRoutes extends React.PureComponent {
+class AppSidebarRoutes extends React.PureComponent {
 	static contextType = ChannelContext;
 
 	render() {
-		const {currentUser, groupId} = this.props;
 		const {selectedChannel} = this.context;
 
 		return (
-			<DownloadReportProvider>
-				<Suspense fallback={<Loading />}>
-					{!selectedChannel && (
-						<BundleRouter
-							componentProps={{currentUser, groupId}}
-							data={NoPropertiesAvailable}
-							path={Routes.WORKSPACE_WITH_ID}
-						/>
-					)}
+			<div>aaa</div>
+			// <DownloadReportProvider>
+			// 	<Suspense fallback={<Loading />}>
+			// 		<Routes>
+			// 			<Route
+			// 				path={'/workspace/:groupId/sites'}
+			// 				element={<Sites />}
+			// 			/>
 
-					{ROUTES.map(({data, path, ...otherProps}) => (
-						<BundleRouter
-							{...otherProps}
-							data={data}
-							key={path}
-							path={path}
-						/>
-					))}
+			// 			{/* {!selectedChannel && (
+			// 				<Route
+			// 					path={Path.WORKSPACE_WITH_ID}
+			// 					element={
+			// 						<BundleRouter
+			// 							data={NoPropertiesAvailable}
+			// 							path={Path.WORKSPACE_WITH_ID}
+			// 						/>
+			// 					}
+			// 				/>
+			// 			)}
 
-					{DEVELOPER_MODE && (
-						<BundleRouter data={UIKit} path={Routes.UI_KIT} />
-					)}
+			// 			{Path.map(({data, path, ...otherProps}) => (
+			// 				<Route
+			// 					key={path}
+			// 					path={path}
+			// 					element={
+			// 						<BundleRouter
+			// 							{...otherProps}
+			// 							data={data}
+			// 							path={path}
+			// 						/>
+			// 					}
+			// 				/>
+			// 			))} */}
 
-					<RouteNotFound />
-				</Suspense>
-			</DownloadReportProvider>
+			// 			{/* {DEVELOPER_MODE && (
+			// 				<BundleRouter data={UIKit} path={Path.UI_KIT} />
+			// 			)} */}
+
+			// 			{/* <RouteNotFound /> */}
+			// 		</Routes>
+			// 	</Suspense>
+			// </DownloadReportProvider>
 		);
 	}
 }
+
+const AppSidebarRoutes = () => {
+	const {groupId} = useParams();
+
+	return <div>aaaa</div>;
+};
+
+export default AppSidebarRoutes;

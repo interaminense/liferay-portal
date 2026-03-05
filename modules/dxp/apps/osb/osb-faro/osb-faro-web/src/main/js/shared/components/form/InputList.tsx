@@ -128,7 +128,9 @@ const FormInputList: React.FC<IInputListProps> = ({
 		}
 	}, [inputValue]);
 
-	onChangeInputList(inputValue);
+	useEffect(() => {
+		onChangeInputList(inputValue);
+	}, []);
 
 	const classes = getCN(className, {
 		'form-inline-group': inline,

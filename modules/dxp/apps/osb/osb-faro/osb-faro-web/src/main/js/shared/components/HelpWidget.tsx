@@ -5,11 +5,12 @@ import ClayLink from '@clayui/link';
 import React from 'react';
 import URLConstants from 'shared/util/url-constants';
 import {close, modalTypes, open} from 'shared/actions/modals';
-import {connect, ConnectedProps} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {Map} from 'immutable';
 import {Modal} from 'shared/types';
 import {PLANS} from 'shared/util/subscriptions';
 import {RootState} from 'shared/store';
+import {useParams} from 'react-router';
 
 const getDropdownItems = ({
 	close,
@@ -44,28 +45,13 @@ const getDropdownItems = ({
 	}
 ];
 
-const connector = connect(
-	(store: RootState, {groupId}: {groupId: string}) => ({
-		faroSubscriptionIMap: store.getIn(
-			['projects', groupId, 'data', 'faroSubscription'],
-			Map()
-		)
-	}),
-	{close, open}
-);
+const HelpWidget = () => {
+	const {groupId} = useParams();
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
+	const faroSubscriptionIMap = useSelector((state: RootState) =>
+		state.getIn(['projects', groupId, 'data', 'faroSubscription'], Map())
+	);
 
-interface IHelpWidgetProps extends PropsFromRedux {
-	groupId: string;
-}
-
-const HelpWidget: React.FC<IHelpWidgetProps> = ({
-	close,
-	faroSubscriptionIMap,
-	groupId,
-	open
-}) => {
 	const basicTier = faroSubscriptionIMap.get('name') === PLANS.basic.name;
 
 	return (
@@ -121,4 +107,4 @@ const HelpWidget: React.FC<IHelpWidgetProps> = ({
 	);
 };
 
-export default connector(HelpWidget);
+export default HelpWidget;

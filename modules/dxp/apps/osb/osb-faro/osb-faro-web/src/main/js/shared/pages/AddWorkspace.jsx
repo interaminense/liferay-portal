@@ -38,7 +38,7 @@ export class AddWorkspace extends React.Component {
 	static propTypes = {
 		addAlert: PropTypes.func,
 		createProject: PropTypes.func,
-		history: PropTypes.object.isRequired,
+		navigate: PropTypes.func,
 		project: PropTypes.instanceOf(Project)
 	};
 

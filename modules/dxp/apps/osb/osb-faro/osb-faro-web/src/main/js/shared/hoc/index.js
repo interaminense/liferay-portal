@@ -14,7 +14,6 @@ export {default as withCurrentUser} from './WithCurrentUser';
 export {default as withDataSource} from './WithDataSource';
 export {default as withDefaultChannelId} from './WithDefaultChannelId';
 export {default as withFilters} from './WithFilters';
-export {default as withHelpWidget} from './WithHelpWidget';
 export {default as withNavigate} from './WithNavigate';
 export {default as withIndividual} from './WithIndividual';
 export {default as withInterval} from './WithInterval';

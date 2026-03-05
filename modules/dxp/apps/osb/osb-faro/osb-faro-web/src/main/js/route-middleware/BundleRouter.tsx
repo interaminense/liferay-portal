@@ -14,8 +14,6 @@ const BundleRouter = ({
 	const query = useQueryParams();
 	const {pathname} = useLocation();
 
-	console.log({path, params, query, pathname});
-
 	let routerData = {};
 
 	if (!destructured) {
