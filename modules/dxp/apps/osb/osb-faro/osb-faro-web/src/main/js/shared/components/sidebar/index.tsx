@@ -11,31 +11,29 @@ import {
 	ENABLE_ACCOUNTS,
 	LANGUAGES
 } from 'shared/util/constants';
-import {Link} from 'react-router';
+import {Link, useParams} from 'react-router';
 import {matchPath} from 'react-router';
 import {User} from 'shared/util/records';
 
 interface ISidebarProps {
 	activePathname: string;
-	channelId: string;
 	channels: Channel[];
 	className?: string;
 	collapsed: boolean;
 	currentUser: User;
-	groupId: string;
 	onToggle: () => void;
 }
 
 const Sidebar: React.FC<ISidebarProps> = ({
 	activePathname,
-	channelId,
 	channels = [],
 	className,
 	collapsed = false,
 	currentUser = new User(),
-	groupId,
 	onToggle
 }) => {
+	const {groupId, channelId} = useParams();
+
 	const sidebarSections = [
 		{
 			items: [

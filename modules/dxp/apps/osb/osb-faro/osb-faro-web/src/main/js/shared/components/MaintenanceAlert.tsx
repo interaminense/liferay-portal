@@ -8,6 +8,8 @@ import {Project} from 'shared/util/records';
 import {ProjectStates} from 'shared/util/constants';
 import {setMaintenanceSeen} from 'shared/actions/maintenance-seen';
 import {sub} from 'shared/util/lang';
+import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useParams} from 'react-router';
 
 interface IMaintenanceAlertProps {
 	alertDismissed: boolean;
@@ -80,29 +82,23 @@ export class MaintenanceAlert extends React.Component<IMaintenanceAlertProps> {
 	}
 }
 
-export const mapState = (
-	store,
-	{
-		match: {
-			params: {groupId}
-		}
-	}
-) => {
-	const currentUserId = store.getIn(['currentUser', 'data']);
+export const connector = store => {
+	const {groupId} = useParams();
+	const currentUser = useCurrentUser();
 
 	const project = store.getIn(['projects', groupId, 'data'], new Project());
 
 	const prevStateStartDate = store.getIn([
 		'maintenanceSeen',
-		`${groupId}-${currentUserId}`
+		`${groupId}-${currentUser.id}`
 	]);
 
 	return {
 		alertDismissed: prevStateStartDate === project.stateStartDate,
-		currentUserId,
-		groupId,
 		project: store.getIn(['projects', groupId, 'data'], new Project())
 	};
 };
 
-export default connect(mapState, {setMaintenanceSeen})(MaintenanceAlert);
+export default connect(connector, {setMaintenanceSeen})(
+	MaintenanceAlert
+) as any;

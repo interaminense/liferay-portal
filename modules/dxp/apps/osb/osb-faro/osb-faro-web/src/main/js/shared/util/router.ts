@@ -76,7 +76,7 @@ export const Routes = buildRoutes({
 				path: '/:groupId',
 				routes: {
 					CHANNEL: {
-						path: '/:channelId',
+						path: '/:channelId?',
 						routes: {
 							ASSETS: {
 								path: '/assets',
@@ -277,7 +277,7 @@ export const Routes = buildRoutes({
 										'/suppressed-users'
 								}
 							},
-							SETTINGS_DATA_SOURCE: '/data-source/:id',
+							SETTINGS_DATA_SOURCE: '/data-source/:id?',
 							SETTINGS_DATA_SOURCE_CLEAR_DATA:
 								'/data-source/:id/clear-data',
 							SETTINGS_DATA_SOURCE_DELETE:

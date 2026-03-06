@@ -15,16 +15,11 @@ import {withOnboarding, withUnassignedSegments} from 'shared/hoc';
 import {withRouter, withSidebar} from 'shared/hoc';
 import {Route, Routes, useParams} from 'react-router';
 import {fetchProject} from 'shared/actions/projects';
+import Sidebar from 'shared/components/sidebar';
+import NoPropertiesAvailable from './NoPropertiesAvailable';
 
 const UIKit = lazy(() =>
 	import(/* webpackChunkName: "UIKit" */ '../../ui-kit/pages/index')
-);
-
-/* No Properties Available */
-const NoPropertiesAvailable = lazy(() =>
-	import(
-		/* webpackChunkName: "NoPropertiesAvailable" */ './NoPropertiesAvailable'
-	)
 );
 
 /* Segments */
@@ -280,57 +275,69 @@ class AppSidebarRoutes extends React.PureComponent {
 		const {selectedChannel} = this.context;
 
 		return (
-			<div>aaa</div>
 			// <DownloadReportProvider>
-			// 	<Suspense fallback={<Loading />}>
-			// 		<Routes>
-			// 			<Route
-			// 				path={'/workspace/:groupId/sites'}
-			// 				element={<Sites />}
-			// 			/>
+			<Suspense fallback={<Loading />}>
+				<Routes>
+					{!selectedChannel && (
+						<Route
+							path='*'
+							element={
+								<BundleRouter
+									data={NoPropertiesAvailable}
+									path='*'
+								/>
+							}
+						/>
+					)}
 
-			// 			{/* {!selectedChannel && (
-			// 				<Route
-			// 					path={Path.WORKSPACE_WITH_ID}
-			// 					element={
-			// 						<BundleRouter
-			// 							data={NoPropertiesAvailable}
-			// 							path={Path.WORKSPACE_WITH_ID}
-			// 						/>
-			// 					}
-			// 				/>
-			// 			)}
+					{ROUTES.map(({data, path, ...otherProps}) => (
+						<Route
+							key={path}
+							path={path}
+							element={
+								<BundleRouter
+									{...otherProps}
+									data={data}
+									path={path}
+								/>
+							}
+						/>
+					))}
 
-			// 			{Path.map(({data, path, ...otherProps}) => (
-			// 				<Route
-			// 					key={path}
-			// 					path={path}
-			// 					element={
-			// 						<BundleRouter
-			// 							{...otherProps}
-			// 							data={data}
-			// 							path={path}
-			// 						/>
-			// 					}
-			// 				/>
-			// 			))} */}
+					{DEVELOPER_MODE && (
+						<Route
+							element={
+								<BundleRouter data={UIKit} path={Path.UI_KIT} />
+							}
+							path={Path.UIKit}
+						/>
+					)}
 
-			// 			{/* {DEVELOPER_MODE && (
-			// 				<BundleRouter data={UIKit} path={Path.UI_KIT} />
-			// 			)} */}
-
-			// 			{/* <RouteNotFound /> */}
-			// 		</Routes>
-			// 	</Suspense>
+					{/* <RouteNotFound /> */}
+				</Routes>
+			</Suspense>
 			// </DownloadReportProvider>
 		);
 	}
 }
 
-const AppSidebarRoutes = () => {
-	const {groupId} = useParams();
+// const AppSidebarRoutes = () => {
+// 	const {groupId} = useParams();
 
-	return <div>aaaa</div>;
-};
+// 	return (
+// 		<>
+// 			<Sidebar />
+
+// 			<Routes>
+// 				<Route
+// 					element={
+// 						<BundleRouter data={NoPropertiesAvailable} path='*' />
+// 					}
+// 					path='*'
+// 				/>
+// 			</Routes>
+// 		</>
+// 	);
+// };
 
 export default AppSidebarRoutes;

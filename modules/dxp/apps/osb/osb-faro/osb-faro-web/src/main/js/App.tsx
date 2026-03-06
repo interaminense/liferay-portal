@@ -1,10 +1,14 @@
-import React, {Suspense, useEffect, useState} from 'react';
+import React, {Suspense, useContext, useEffect, useState} from 'react';
 import {
 	BrowserRouter,
 	Link,
+	matchPath,
 	Outlet,
 	Route,
 	Routes,
+	UNSAFE_NavigationContext,
+	useBlocker,
+	useLocation,
 	useParams
 } from 'react-router';
 
@@ -25,7 +29,7 @@ import {useFetchProjects} from 'shared/hooks/useProjects';
 import BundleRouter from 'route-middleware/BundleRouter';
 import {Routes as Path} from 'shared/util/router';
 import Workspaces from 'shared/pages/Workspaces';
-import {User} from 'shared/util/records';
+import {Project, User} from 'shared/util/records';
 import {fetchCurrentUser} from 'shared/actions/users';
 import AddWorkspace from 'shared/pages/AddWorkspace';
 import WorkspaceLayer from 'shared/components/WorkspaceLayer';
@@ -35,101 +39,157 @@ import {OnboardingContext} from 'shared/context/onboarding';
 import Loading from 'shared/components/Loading';
 import {throttle} from 'lodash';
 import {saveState} from 'shared/store/local-storage';
+import {Pendo} from 'shared/util/pendo';
+import ErrorPage from 'shared/pages/ErrorPage';
+import AlertFeed from 'shared/components/AlertFeed';
+import ModalRenderer from 'shared/components/ModalRenderer';
+import RouteNotFound from 'shared/components/RouteNotFound';
+import SelectWorkspaceAccount from 'shared/pages/SelectWorkspaceAccount';
+import {ENABLE_ADD_TRIAL_WORKSPACE} from 'shared/util/constants';
+import OAuthReceive from 'settings/pages/OAuthReceive';
 
-const AppSetup = () => {
-	const dispatch = useDispatch();
-	const {groupId} = useParams();
+// const AppSetup = () => {
+// 	const dispatch = useDispatch();
+// 	const {groupId} = useParams();
+
+// 	useEffect(() => {
+// 		dispatch(fetchCurrentUser(groupId ?? '0'));
+
+// 		/**
+// 		 * TODO: Conseguir armazenar os projects ou project no redux store
+// 		 * Depois ir em AppSidebarRoutes e corrigir as rotas
+// 		 */
+
+// 		if (groupId) {
+// 			dispatch(fetchProject({groupId}));
+// 		}
+// 	}, [groupId]);
+
+// 	return <Outlet />;
+// };
+
+const RoutesContainer = () => {
+	const location = useLocation();
+
+	const matchingPath = matchPath(Path.WORKSPACE_WITH_ID, location.pathname);
+
+	const groupId = matchingPath?.params.groupId ?? '0';
+
+	const project: Project = useSelector<any, any>(state =>
+		state.getIn(['projects', groupId, 'data'])
+	);
+
+	const {data: currentUser, loading} = useFetchCurrentUser(groupId);
 
 	useEffect(() => {
-		dispatch(fetchCurrentUser(groupId ?? '0'));
+		if (currentUser?.id && project?.corpProjectName) {
+			const pendo = new Pendo();
 
-		/**
-		 * TODO: Conseguir armazenar os projects ou project no redux store
-		 * Depois ir em AppSidebarRoutes e corrigir as rotas
-		 */
-
-		if (groupId) {
-			dispatch(fetchProject({groupId}));
+			pendo.initialize({currentUser, project});
 		}
-	}, [groupId]);
+	}, [currentUser?.id, project?.corpProjectName]);
 
-	return <Outlet />;
+	if (loading) {
+		return <Loading />;
+	}
+
+	if (location?.state?.notFoundError) {
+		console.log('caiu aqui');
+		return <ErrorPage />;
+	}
+
+	return (
+		<>
+			<AlertFeed />
+
+			<ModalRenderer />
+
+			<Outlet />
+		</>
+	);
 };
 
 const AppRoutes = () => {
 	return (
 		<Routes>
-			<Route element={<AppSetup />}>
+			<Route element={<RoutesContainer />}>
+				<Route element={<Workspaces />} path={Path.BASE} />
+
+				<Route element={<Workspaces />} path={Path.WORKSPACES} />
+
+				<Route element={<AddWorkspace />} path={Path.WORKSPACE_ADD} />
+
 				<Route
-					path={Path.BASE}
-					element={
-						<BundleRouter data={Workspaces} path={Path.BASE} />
-					}
+					element={<SelectWorkspaceAccount />}
+					path={Path.WORKSPACE_ADD}
 				/>
 
 				<Route
-					path={Path.WORKSPACE_ADD_TRIAL}
-					element={
-						<BundleRouter
-							data={AddWorkspace}
-							path={Path.WORKSPACE_ADD_TRIAL}
-						/>
-					}
+					element={<SelectWorkspaceAccount />}
+					path={Path.WORKSPACE_SELECT_ACCOUNT}
 				/>
 
+				{ENABLE_ADD_TRIAL_WORKSPACE && (
+					<Route
+						element={<AddWorkspace />}
+						path={Path.WORKSPACE_ADD_TRIAL}
+					/>
+				)}
+
 				<Route
+					element={<AddWorkspace />}
 					path={Path.WORKSPACE_ADD_WITH_CORP_PROJECT_UUID}
-					element={
-						<BundleRouter
-							data={AddWorkspace}
-							path={Path.WORKSPACE_ADD_TRIAL}
-						/>
-					}
 				/>
+
+				<Route element={<OAuthReceive />} path={Path.OAUTH_RECEIVE} />
+
+				<Route element={<Loading />} path={Path.LOADING} />
+
+				{/* <Route element={<RouteNotFound />} path='*' /> */}
 
 				<Route element={<WorkspaceLayer />}>
 					<Route
-						path={Path.SETTINGS}
+						path={`${Path.SETTINGS}/*`}
 						element={
 							<BundleRouter
 								data={Settings}
-								path={Path.SETTINGS}
+								path={`${Path.SETTINGS}/*`}
 							/>
 						}
 					/>
 
 					<Route
-						path={Path.WORKSPACE_WITH_ID}
+						path={`${Path.WORKSPACE_WITH_ID}/*`}
 						element={
 							<BundleRouter
 								data={AppSidebarRoutes}
-								path={Path.CHANNEL}
+								path={`${Path.WORKSPACE_WITH_ID}/*`}
 							/>
 						}
 					/>
 				</Route>
 
-				<Route path='/test/*' element={<SubRoutes />} />
+				{/* <Route path='/test/*' element={<SubRoutes />} /> */}
 			</Route>
 		</Routes>
 	);
 };
 
-const Test = () => {
-	return <div>test 123</div>;
-};
+// const Test = () => {
+// 	return <div>test 123</div>;
+// };
 
-const SubRoutes = () => {
-	return (
-		<>
-			<h1>test</h1>
+// const SubRoutes = () => {
+// 	return (
+// 		<>
+// 			<h1>test</h1>
 
-			<Routes>
-				<Route path='/test/bar' element={<Test />} />
-			</Routes>
-		</>
-	);
-};
+// 			<Routes>
+// 				<Route path='/test/bar' element={<Test />} />
+// 			</Routes>
+// 		</>
+// 	);
+// };
 
 const App = () => {
 	const [onboardingTriggered, setOnboardingTriggered] = useState(false);

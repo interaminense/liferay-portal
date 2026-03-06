@@ -11,9 +11,9 @@ const PAGE_MAP = {
 };
 
 const DataSourceOnboarding = () => {
-	const {id} = useParams();
+	const params = useParams();
 
-	const Component = PAGE_MAP[id.toUpperCase()];
+	const Component = PAGE_MAP[params.id.toUpperCase()];
 
 	if (Component) {
 		return <Component />;

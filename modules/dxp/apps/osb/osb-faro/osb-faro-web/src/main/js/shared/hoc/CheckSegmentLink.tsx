@@ -1,25 +1,12 @@
-// TODO Fix checkSegmentLink
-// @ts-nocheck
-
 import * as API from 'shared/api';
 import React, {useEffect, useState} from 'react';
-import {matchPath} from 'react-router';
+import {matchPath, useNavigate, useParams} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
 import {WrapSafeResults} from 'shared/hoc/util';
 
-type Location = {
-	pathname: string;
-};
-
-interface IWrappedComponentProps {
-	groupId: string;
-	navigate: (path: string) => void;
-	location: Location;
-}
-
-const checkSegmentLink = (
-	WrappedComponent: React.ComponentType<IWrappedComponentProps>
-) => ({groupId, navigate, location, ...otherProps}) => {
+const checkSegmentLink = WrappedComponent => props => {
+	const {groupId} = useParams();
+	const navigate = useNavigate();
 	const [error, setError] = useState();
 	const [loading, setLoading] = useState(false);
 
@@ -56,7 +43,7 @@ const checkSegmentLink = (
 	return (
 		<WrapSafeResults error={error} loading={loading} page pageDisplay>
 			<WrappedComponent
-				{...otherProps}
+				{...props}
 				groupId={groupId}
 				navigate={navigate}
 				location={location}
