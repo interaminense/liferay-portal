@@ -10,8 +10,4 @@ import {createRoot} from 'react-dom/client';
 const container = document.getElementById('faroApp');
 const root = createRoot(container);
 
-root.render(
-	<React.StrictMode>
-		<App />
-	</React.StrictMode>
-);
+root.render(<App />);

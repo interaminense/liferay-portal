@@ -157,7 +157,7 @@ const SettingsBasePage: React.FC<ISettingsBasePageProps> = ({
 									<li
 										className={getCN('item', {
 											active: !!matchPath(
-												route,
+												`${route}/*`,
 												location.pathname
 											)
 										})}
@@ -197,8 +197,6 @@ const SettingsBasePage: React.FC<ISettingsBasePageProps> = ({
 							{...notificationResponse}
 							groupId={groupId}
 						/>
-
-						{/* @ts-ignore */}
 
 						<MaintenanceAlert />
 

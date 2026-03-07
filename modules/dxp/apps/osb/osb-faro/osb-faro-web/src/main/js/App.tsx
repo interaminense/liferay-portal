@@ -69,13 +69,10 @@ import OAuthReceive from 'settings/pages/OAuthReceive';
 // };
 
 const RoutesContainer = () => {
+	const {groupId} = useParams();
 	const location = useLocation();
 
-	const matchingPath = matchPath(Path.WORKSPACE_WITH_ID, location.pathname);
-
-	const groupId = matchingPath?.params.groupId ?? '0';
-
-	const project: Project = useSelector<any, any>(state =>
+	const project: Project = useSelector((state: RootState) =>
 		state.getIn(['projects', groupId, 'data'])
 	);
 
@@ -94,7 +91,6 @@ const RoutesContainer = () => {
 	}
 
 	if (location?.state?.notFoundError) {
-		console.log('caiu aqui');
 		return <ErrorPage />;
 	}
 
@@ -113,35 +109,84 @@ const AppRoutes = () => {
 	return (
 		<Routes>
 			<Route element={<RoutesContainer />}>
-				<Route element={<Workspaces />} path={Path.BASE} />
-
-				<Route element={<Workspaces />} path={Path.WORKSPACES} />
-
-				<Route element={<AddWorkspace />} path={Path.WORKSPACE_ADD} />
+				<Route
+					element={
+						<BundleRouter data={Workspaces} path={Path.BASE} />
+					}
+					path={Path.BASE}
+				/>
 
 				<Route
-					element={<SelectWorkspaceAccount />}
+					element={
+						<BundleRouter
+							data={Workspaces}
+							path={Path.WORKSPACES}
+						/>
+					}
+					path={Path.WORKSPACES}
+				/>
+
+				<Route
+					element={
+						<BundleRouter
+							data={AddWorkspace}
+							path={Path.WORKSPACE_ADD}
+						/>
+					}
 					path={Path.WORKSPACE_ADD}
 				/>
 
 				<Route
-					element={<SelectWorkspaceAccount />}
+					element={
+						<BundleRouter
+							data={SelectWorkspaceAccount}
+							path={Path.WORKSPACE_ADD}
+						/>
+					}
+					path={Path.WORKSPACE_ADD}
+				/>
+
+				<Route
+					element={
+						<BundleRouter
+							data={SelectWorkspaceAccount}
+							path={Path.WORKSPACE_SELECT_ACCOUNT}
+						/>
+					}
 					path={Path.WORKSPACE_SELECT_ACCOUNT}
 				/>
 
 				{ENABLE_ADD_TRIAL_WORKSPACE && (
 					<Route
-						element={<AddWorkspace />}
+						element={
+							<BundleRouter
+								data={AddWorkspace}
+								path={Path.WORKSPACE_ADD_TRIAL}
+							/>
+						}
 						path={Path.WORKSPACE_ADD_TRIAL}
 					/>
 				)}
 
 				<Route
-					element={<AddWorkspace />}
+					element={
+						<BundleRouter
+							data={AddWorkspace}
+							path={Path.WORKSPACE_ADD_WITH_CORP_PROJECT_UUID}
+						/>
+					}
 					path={Path.WORKSPACE_ADD_WITH_CORP_PROJECT_UUID}
 				/>
 
-				<Route element={<OAuthReceive />} path={Path.OAUTH_RECEIVE} />
+				<Route
+					element={
+						<BundleRouter
+							data={OAuthReceive}
+							path={Path.OAUTH_RECEIVE}
+						/>
+					}
+					path={Path.OAUTH_RECEIVE}
+				/>
 
 				<Route element={<Loading />} path={Path.LOADING} />
 
@@ -149,7 +194,7 @@ const AppRoutes = () => {
 
 				<Route element={<WorkspaceLayer />}>
 					<Route
-						path={`${Path.SETTINGS}/*`}
+						path={`/workspace/:groupId/settings/*`}
 						element={
 							<BundleRouter
 								data={Settings}

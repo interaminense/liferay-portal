@@ -5,27 +5,19 @@ import ClayNavigationBar from '@clayui/navigation-bar';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
-import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-
-const AttributeList = lazy(
-	() => import(/* webpackChunkName: "AttributeList" */ './AttributeList')
-);
-
-const GlobalAttributeList = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "GlobalAttributeList" */ './GlobalAttributeList'
-		)
-);
+import {getMatchedRoute, Routes as Path, toRoute} from 'shared/util/router';
+import {Route, Routes} from 'react-router';
+import AttributeList from './AttributeList';
+import GlobalAttributeList from './GlobalAttributeList';
 
 const NAV_ITEMS = [
 	{
 		label: Liferay.Language.get('global-attributes'),
-		route: Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
+		route: Path.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
 	},
 	{
 		label: Liferay.Language.get('attributes'),
-		route: Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL
+		route: Path.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL
 	}
 ];
 
@@ -33,7 +25,7 @@ interface ITabsCardProps {
 	groupId: string;
 }
 
-const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
+const TabsCard: React.FC<ITabsCardProps> = ({children, groupId}) => {
 	const matchedRoute = getMatchedRoute(NAV_ITEMS);
 
 	const initialItem =
@@ -62,19 +54,7 @@ const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
 				))}
 			</ClayNavigationBar>
 
-			<Suspense fallback={<Loading />}>
-				<BundleRouter
-					data={AttributeList}
-					path={Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL}
-				/>
-
-				<BundleRouter
-					data={GlobalAttributeList}
-					path={Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL}
-				/>
-
-				<RouteNotFound />
-			</Suspense>
+			{children}
 		</Card>
 	);
 };

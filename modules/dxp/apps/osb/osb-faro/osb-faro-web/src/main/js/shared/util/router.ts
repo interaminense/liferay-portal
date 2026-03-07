@@ -299,7 +299,7 @@ export const Routes = buildRoutes({
 											SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL:
 												'/local',
 											SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_VIEW:
-												'/:attributeId(\\d+)'
+												'/:attributeId'
 										}
 									},
 									SETTINGS_DEFINITIONS_EVENTS: {
@@ -312,7 +312,7 @@ export const Routes = buildRoutes({
 											SETTINGS_DEFINITIONS_EVENTS_DEFAULT:
 												'/default',
 											SETTINGS_DEFINITIONS_EVENTS_VIEW:
-												'/:eventId(\\d+)'
+												'/:eventId'
 										}
 									},
 									SETTINGS_DEFINITIONS_INDIVIDUAL_ATTRIBUTES:
@@ -326,7 +326,7 @@ export const Routes = buildRoutes({
 								path: '/recommendations',
 								routes: {
 									SETTINGS_RECOMMENDATION_MODEL_VIEW: {
-										path: '/:jobId([\\d]+)',
+										path: '/:jobId',
 										routes: {
 											SETTINGS_RECOMMENDATION_EDIT:
 												'/edit'

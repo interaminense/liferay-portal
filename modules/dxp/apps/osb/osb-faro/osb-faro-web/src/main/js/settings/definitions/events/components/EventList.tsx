@@ -37,21 +37,20 @@ import {
 	useSelectionContext,
 	withSelectionProvider
 } from 'shared/context/selection';
+import BasePage from 'settings/components/base-page/BasePage';
+import {getDefinitions} from 'shared/util/breadcrumbs';
+import TabsCard from './TabsCard';
+import {useParams} from 'react-router';
 
 const connector = connect(null, {addAlert, close, open});
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IEventListProps extends PropsFromRedux {
-	groupId: string;
-}
-
-const EventList: React.FC<IEventListProps> = ({
+const EventList: React.FC<ConnectedProps<typeof connector>> = ({
 	addAlert,
 	close,
-	groupId,
 	open
 }) => {
+	const {groupId} = useParams();
+
 	const {selectedItems, selectionDispatch} = useSelectionContext();
 
 	const {delta, orderIOMap, page, query} = useQueryPagination({
@@ -248,77 +247,105 @@ const EventList: React.FC<IEventListProps> = ({
 		events.some(({hidden}) => !hidden);
 
 	return (
-		<CrossPageSelect
-			columns={[
-				eventListColumns.getName({groupId}),
-				eventListColumns.displayName,
-				eventListColumns.description,
-				eventListColumns.hidden
+		<BasePage
+			breadcrumbItems={[
+				getDefinitions({groupId}),
+				{active: true, label: Liferay.Language.get('events')}
 			]}
-			delta={delta}
-			emptyTitle={Liferay.Language.get('there-are-no-events-found')}
-			error={error}
-			items={get(data, ['eventDefinitions', 'eventDefinitions'], [])}
-			loading={loading}
-			noResultsRenderer={
-				<NoResultsDisplay
-					icon={{
-						border: false,
-						size: Sizes.XXXLarge,
-						symbol: 'ac_satellite'
-					}}
+			pageDescription={Liferay.Language.get(
+				'this-is-the-data-model-of-events-sent-to-analytics-cloud'
+			)}
+			pageTitle={Liferay.Language.get('events')}
+		>
+			<TabsCard groupId={groupId}>
+				<CrossPageSelect
+					columns={[
+						eventListColumns.getName({groupId}),
+						eventListColumns.displayName,
+						eventListColumns.description,
+						eventListColumns.hidden
+					]}
+					delta={delta}
+					emptyTitle={Liferay.Language.get(
+						'there-are-no-events-found'
+					)}
+					error={error}
+					items={get(
+						data,
+						['eventDefinitions', 'eventDefinitions'],
+						[]
+					)}
+					loading={loading}
+					noResultsRenderer={
+						<NoResultsDisplay
+							icon={{
+								border: false,
+								size: Sizes.XXXLarge,
+								symbol: 'ac_satellite'
+							}}
+						/>
+					}
+					orderIOMap={orderIOMap}
+					page={page}
+					query={query}
+					refetch={refetch}
+					renderNav={
+						authorized && selectedItems.size
+							? () => (
+									<Nav>
+										<Nav.Item>
+											<ClayButton
+												borderless
+												className='button-root nav-btn'
+												displayType='secondary'
+												onClick={() => {
+													const hideEventFn = hasUnhiddenEvent(
+														selectedItems
+													)
+														? handleHideEvents
+														: handleUnhideEvents;
+
+													hideEventFn(
+														selectedItems.toArray()
+													);
+												}}
+											>
+												<ClayIcon
+													className='mr-2'
+													symbol={
+														hasUnhiddenEvent(
+															selectedItems
+														)
+															? 'ac_hidden'
+															: 'view'
+													}
+												/>
+
+												{hasUnhiddenEvent(selectedItems)
+													? Liferay.Language.get(
+															'hide'
+													  )
+													: Liferay.Language.get(
+															'show'
+													  )}
+											</ClayButton>
+										</Nav.Item>
+									</Nav>
+							  )
+							: null
+					}
+					renderRowActions={renderRowActions}
+					rowIdentifier='id'
+					showCheckbox={authorized}
+					showDropdownRangeKey={false}
+					total={get(data, ['eventDefinitions', 'total'], 0)}
 				/>
-			}
-			orderIOMap={orderIOMap}
-			page={page}
-			query={query}
-			refetch={refetch}
-			renderNav={
-				authorized && selectedItems.size
-					? () => (
-							<Nav>
-								<Nav.Item>
-									<ClayButton
-										borderless
-										className='button-root nav-btn'
-										displayType='secondary'
-										onClick={() => {
-											const hideEventFn = hasUnhiddenEvent(
-												selectedItems
-											)
-												? handleHideEvents
-												: handleUnhideEvents;
-
-											hideEventFn(
-												selectedItems.toArray()
-											);
-										}}
-									>
-										<ClayIcon
-											className='mr-2'
-											symbol={
-												hasUnhiddenEvent(selectedItems)
-													? 'ac_hidden'
-													: 'view'
-											}
-										/>
-
-										{hasUnhiddenEvent(selectedItems)
-											? Liferay.Language.get('hide')
-											: Liferay.Language.get('show')}
-									</ClayButton>
-								</Nav.Item>
-							</Nav>
-					  )
-					: null
-			}
-			renderRowActions={renderRowActions}
-			rowIdentifier='id'
-			showCheckbox={authorized}
-			showDropdownRangeKey={false}
-			total={get(data, ['eventDefinitions', 'total'], 0)}
-		/>
+			</TabsCard>
+		</BasePage>
 	);
 };
 
-export default compose<any>(withSelectionProvider, connector)(EventList);
+export default compose(
+	withSelectionProvider,
+	connector
+)(EventList) as React.ComponentProps<any>;

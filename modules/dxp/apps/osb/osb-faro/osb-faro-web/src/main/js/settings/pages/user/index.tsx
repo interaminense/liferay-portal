@@ -9,17 +9,12 @@ import getCN from 'classnames';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
-import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
+import {getMatchedRoute, Routes as Path, toRoute} from 'shared/util/router';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useParams} from 'react-router';
+import {Routes, Route, useParams} from 'react-router';
 import {UserStatuses} from 'shared/util/constants';
-
-const UserList = lazy(
-	() => import(/* webpackChunkName: "UserManagement" */ './UserList')
-);
-const UserRequest = lazy(
-	() => import(/* webpackChunkName: "UserRequest" */ './UserRequest')
-);
+import UserList from './UserList';
+import UserRequest from './UserRequest';
 
 export const User = ({className}) => {
 	const {groupId} = useParams();
@@ -38,7 +33,7 @@ export const User = ({className}) => {
 	const NAV_ITEMS = [
 		{
 			label: Liferay.Language.get('manage-users'),
-			route: Routes.SETTINGS_USERS
+			route: Path.SETTINGS_USERS
 		},
 		{
 			label: (
@@ -49,7 +44,7 @@ export const User = ({className}) => {
 					)}
 				</>
 			),
-			route: Routes.SETTINGS_USERS_REQUESTS
+			route: Path.SETTINGS_USERS_REQUESTS
 		}
 	];
 
@@ -92,19 +87,25 @@ export const User = ({className}) => {
 				)}
 
 				<Suspense fallback={<Loading />}>
-					<BundleRouter
-						componentProps={{currentUser}}
-						data={UserList}
-						path={Routes.SETTINGS_USERS}
-					/>
+					<Routes>
+						<Route
+							element={<BundleRouter data={UserList} path='*' />}
+							path='*'
+						/>
 
-					<BundleRouter
-						componentProps={{onSetUserRequest}}
-						data={UserRequest}
-						path={Routes.SETTINGS_USERS_REQUESTS}
-					/>
+						<Route
+							element={
+								<BundleRouter
+									componentProps={{onSetUserRequest}}
+									data={UserRequest}
+									path='/requests'
+								/>
+							}
+							path='/requests'
+						/>
+					</Routes>
 
-					<RouteNotFound />
+					{/* <RouteNotFound /> */}
 				</Suspense>
 			</Card>
 		</BasePage>

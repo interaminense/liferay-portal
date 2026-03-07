@@ -6,24 +6,19 @@ import ClayNavigationBar from '@clayui/navigation-bar';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
-import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-
-const CustomEventList = lazy(
-	() => import(/* webpackChunkName: "CustomEventList" */ './CustomEventList')
-);
-
-const EventList = lazy(
-	() => import(/* webpackChunkName: "EventList" */ './EventList')
-);
+import {getMatchedRoute, Routes as Path, toRoute} from 'shared/util/router';
+import {Route, Routes} from 'react-router';
+import EventList from './EventList';
+import CustomEventList from './CustomEventList';
 
 const NAV_ITEMS = [
 	{
 		label: Liferay.Language.get('default-events'),
-		route: Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT
+		route: Path.SETTINGS_DEFINITIONS_EVENTS_DEFAULT
 	},
 	{
 		label: Liferay.Language.get('custom-events'),
-		route: Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM
+		route: Path.SETTINGS_DEFINITIONS_EVENTS_CUSTOM
 	}
 ];
 
@@ -31,11 +26,11 @@ interface ITabsCardProps {
 	groupId: string;
 }
 
-const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
+const TabsCard: React.FC<ITabsCardProps> = ({children, groupId}) => {
 	const matchedRoute = getMatchedRoute(NAV_ITEMS);
 
 	const customEventTab =
-		matchedRoute === Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM;
+		matchedRoute === Path.SETTINGS_DEFINITIONS_EVENTS_CUSTOM;
 
 	const initialItem =
 		NAV_ITEMS.find(item => item.route === matchedRoute) ?? NAV_ITEMS[0];
@@ -66,10 +61,9 @@ const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
 					button
 					className='block-list-button button-root m-3'
 					displayType='secondary'
-					href={toRoute(
-						Routes.SETTINGS_DEFINITIONS_EVENTS_BLOCK_LIST,
-						{groupId}
-					)}
+					href={toRoute(Path.SETTINGS_DEFINITIONS_EVENTS_BLOCK_LIST, {
+						groupId
+					})}
 					small
 				>
 					<ClayIcon className='icon-root mr-2' symbol='ac_block' />
@@ -78,19 +72,7 @@ const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
 				</ClayLink>
 			)}
 
-			<Suspense fallback={<Loading />}>
-				<BundleRouter
-					data={EventList}
-					path={Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT}
-				/>
-
-				<BundleRouter
-					data={CustomEventList}
-					path={Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM}
-				/>
-
-				<RouteNotFound />
-			</Suspense>
+			{children}
 		</Card>
 	);
 };

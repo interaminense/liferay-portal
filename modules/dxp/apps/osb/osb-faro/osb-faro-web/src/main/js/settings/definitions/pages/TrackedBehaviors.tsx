@@ -3,14 +3,10 @@ import React from 'react';
 import TrackedBehaviorsList from '../hocs/TrackedBehaviorsList';
 import {getDefinitions} from 'shared/util/breadcrumbs';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useParams} from 'react-router';
 
-interface ITrackedBehaviorsProps {
-	groupId: string;
-}
-
-export const TrackedBehaviors: React.FC<ITrackedBehaviorsProps> = ({
-	groupId
-}) => {
+export const TrackedBehaviors = () => {
+	const {groupId} = useParams();
 	const currentUser = useCurrentUser();
 
 	return (

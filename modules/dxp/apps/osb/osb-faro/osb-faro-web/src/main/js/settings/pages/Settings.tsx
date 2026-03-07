@@ -5,124 +5,30 @@ import React, {Fragment, lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {compose} from 'shared/hoc';
 import {ENABLE_CSVFILE} from 'shared/util/constants';
-import {Routes} from 'shared/util/router';
-import {useParams} from 'react-router';
+import {Routes as Path} from 'shared/util/router';
+import {Route, Routes, useParams} from 'react-router';
 import {useStore} from 'react-redux';
 import {withOnboarding} from 'shared/hoc';
-
-// APIS
-
-const Apis = lazy(() => import(/* webpackChunkName: "Apis" */ '../apis/pages'));
-
-// CSV data source
-
-const ConfigureCSV = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "ConfigureCSV" */ './data-source/ConfigureCSV'
-		)
-);
-const UploadCSV = lazy(
-	() => import(/* webpackChunkName: "UploadCSV" */ './data-source/UploadCSV')
-);
-
-// Data Privacy
-
-const DataPrivacy = lazy(
-	() => import(/* webpackChunkName: "DataPrivacy" */ '../data-privacy/pages')
-);
-
-// Data source
-
-const DataSource = lazy(
-	() => import(/* webpackChunkName: "DataSource" */ './data-source/View')
-);
-const DataSourceEdit = lazy(
-	() => import(/* webpackChunkName: "DataSourceEdit" */ './data-source/Edit')
-);
-const DataSourceOnboarding = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DataSourceEdit" */ './data-source/Onboarding'
-		)
-);
-const DataSourceList = lazy(
-	() => import(/* webpackChunkName: "DataSourceList" */ './DataSourceList')
-);
-const DeleteDataSource = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DeleteDataSource" */ './data-source/Delete'
-		)
-);
-
-// Definitions
-
-const Definitions = lazy(
-	() => import(/* webpackChunkName: "Definitions" */ '../definitions/pages')
-);
-
-// Channels
-
-const ChannelList = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "ChannelList" */ '../channels/pages/ChannelList'
-		)
-);
-
-const ChannelView = lazy(
-	() => import(/* webpackChunkName: "ChannelView" */ '../channels/pages/View')
-);
-
-// Recommendations
-
-const RecommendationList = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "RecommendationList" */ '../recommendations/pages/Recommendations'
-		)
-);
-
-const RecommendationCreateItemSimilarity = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "RecommendationCreateItemSimilarity" */ '../recommendations/pages/CreateItemSimilarity'
-		)
-);
-
-const RecommendationEdit = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "RecommendationEdit" */ '../recommendations/pages/Edit'
-		)
-);
-
-const RecommendationView = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "RecommendationView" */ '../recommendations/pages/View'
-		)
-);
-
-// Other
-
-const UsageOverview = lazy(
-	() => import(/* webpackChunkName: "UsageOverview" */ './UsageOverview')
-);
-
-const UsageOverviewSaaS = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "UsageOverviewSaaS" */ './UsageOverviewSaaS'
-		)
-);
-
-const Users = lazy(() => import(/* webpackChunkName: "Users" */ './user'));
-
-const WorkspaceSettings = lazy(
-	() => import(/* webpackChunkName: "WorkspaceSettings" */ './Workspace')
-);
+import DataSourceList from './DataSourceList';
+import DataSourceOnboarding from './data-source/Onboarding';
+import DeleteDataSource from 'settings/components/DeleteDataSource';
+import Edit from './data-source/Edit';
+import ConfigureCSV from './data-source/ConfigureCSV';
+import UploadCSV from './data-source/UploadCSV';
+import View from './data-source/View';
+import User from './user';
+import UsageOverview from './UsageOverview';
+import UsageOverviewSaaS from './UsageOverviewSaaS';
+import Definitions from 'settings/definitions/pages';
+import DataPrivacy from 'settings/data-privacy/pages';
+import Workspace from './Workspace';
+import ChannelView from 'settings/channels/pages/View';
+import ChannelList from 'settings/channels/pages/ChannelList';
+import RecommendationList from 'settings/recommendations/hocs/RecommendationList';
+import RecomendationCreateItemSimilarity from 'settings/recommendations/pages/CreateItemSimilarity';
+import RecommendationEdit from 'settings/recommendations/pages/Edit';
+import RecommendationView from 'settings/recommendations/pages/View';
+import AccessTokenList from 'settings/apis/pages/AccessTokenList';
 
 export const Settings = () => {
 	const {groupId} = useParams();
@@ -139,116 +45,215 @@ export const Settings = () => {
 
 	return (
 		<Suspense fallback={<Loading />}>
-			<BundleRouter
-				data={DataSourceList}
-				path={Routes.SETTINGS_DATA_SOURCE_LIST}
-			/>
-
-			<BundleRouter
-				data={DataSourceOnboarding}
-				path={Routes.SETTINGS_DATA_SOURCE_ONBOARDING}
-			/>
-
-			<BundleRouter
-				data={DeleteDataSource}
-				path={Routes.SETTINGS_DATA_SOURCE_DELETE}
-			/>
-
-			<BundleRouter
-				data={DataSourceEdit}
-				path={Routes.SETTINGS_DATA_SOURCE_EDIT}
-			/>
-
-			{ENABLE_CSVFILE && (
-				<BundleRouter
-					data={ConfigureCSV}
-					path={Routes.SETTINGS_CSV_UPLOAD_CONFIGURE}
+			<Routes>
+				<Route
+					path='data-source'
+					element={
+						<BundleRouter
+							data={DataSourceList}
+							path='/data-source'
+						/>
+					}
 				/>
-			)}
 
-			{ENABLE_CSVFILE && (
-				<BundleRouter
-					data={UploadCSV}
-					path={Routes.SETTINGS_CSV_UPLOAD}
+				<Route
+					element={
+						<BundleRouter
+							data={DataSourceOnboarding}
+							path={'/data-source/:id/onboarding'}
+						/>
+					}
+					path={'/data-source/:id/onboarding'}
 				/>
-			)}
 
-			<BundleRouter
-				data={DataSource}
-				path={Routes.SETTINGS_DATA_SOURCE}
-			/>
-
-			<BundleRouter data={Users} path={Routes.SETTINGS_USERS} />
-
-			{!IS_PROJECT_SAAS && (
-				<BundleRouter
-					data={UsageOverview}
-					path={Routes.SETTINGS_USAGE}
+				<Route
+					element={
+						<BundleRouter
+							data={DeleteDataSource}
+							path={'/data-source/:id/delete'}
+						/>
+					}
+					path={'/data-source/:id/delete'}
 				/>
-			)}
 
-			{IS_PROJECT_SAAS && (
-				<BundleRouter
-					data={UsageOverviewSaaS}
-					path={Routes.SETTINGS_USAGE}
+				<Route
+					element={
+						<BundleRouter
+							data={Edit}
+							path={'/data-source/:id/edit'}
+						/>
+					}
+					path={'/data-source/:id/edit'}
 				/>
-			)}
 
-			<BundleRouter
-				data={Definitions}
-				path={Routes.SETTINGS_DEFINITIONS}
-			/>
-
-			<BundleRouter
-				data={DataPrivacy}
-				path={Routes.SETTINGS_DATA_PRIVACY}
-			/>
-
-			<BundleRouter
-				data={WorkspaceSettings}
-				path={Routes.SETTINGS_WORKSPACE}
-			/>
-
-			<BundleRouter
-				data={ChannelView}
-				path={Routes.SETTINGS_CHANNELS_VIEW}
-			/>
-
-			<BundleRouter data={ChannelList} path={Routes.SETTINGS_CHANNELS} />
-
-			<BundleRouter data={Apis} path={Routes.SETTINGS_APIS} />
-
-			{recommendationsEnabled && (
-				<Fragment key='RECOMMENDATIONS'>
-					<BundleRouter
-						data={RecommendationList}
-						destructured={false}
-						path={Routes.SETTINGS_RECOMMENDATIONS}
-					/>
-
-					<BundleRouter
-						data={RecommendationCreateItemSimilarity}
-						destructured={false}
-						path={
-							Routes.SETTINGS_RECOMMENDATIONS_CREATE_ITEM_SIMILARITY_MODEL
+				{ENABLE_CSVFILE && (
+					<Route
+						element={
+							<BundleRouter
+								data={ConfigureCSV}
+								path={'/data-source/csv/:fileVersionId'}
+							/>
 						}
+						path={'/data-source/csv/:fileVersionId'}
 					/>
+				)}
 
-					<BundleRouter
-						data={RecommendationEdit}
-						destructured={false}
-						path={Routes.SETTINGS_RECOMMENDATION_EDIT}
+				{ENABLE_CSVFILE && (
+					<Route
+						element={
+							<BundleRouter
+								data={UploadCSV}
+								path={'/data-source/csv'}
+							/>
+						}
+						path={'/data-source/csv'}
 					/>
+				)}
 
-					<BundleRouter
-						data={RecommendationView}
-						destructured={false}
-						path={Routes.SETTINGS_RECOMMENDATION_MODEL_VIEW}
+				<Route
+					element={
+						<BundleRouter data={View} path={'/data-source/:id?'} />
+					}
+					path={'/data-source/:id?'}
+				/>
+
+				<Route
+					element={<BundleRouter data={User} path='/users/*' />}
+					path='/users/*'
+				/>
+
+				{!IS_PROJECT_SAAS && (
+					<Route
+						element={
+							<BundleRouter
+								data={UsageOverview}
+								path={'/usage'}
+							/>
+						}
+						path={'/usage'}
 					/>
-				</Fragment>
-			)}
+				)}
 
-			<RouteNotFound />
+				{IS_PROJECT_SAAS && (
+					<Route
+						element={
+							<BundleRouter
+								data={UsageOverviewSaaS}
+								path={'/usage'}
+							/>
+						}
+						path={'/usage'}
+					/>
+				)}
+
+				<Route
+					element={
+						<BundleRouter
+							data={Definitions}
+							path={'/definitions/*'}
+						/>
+					}
+					path={'/definitions/*'}
+				/>
+
+				<Route
+					element={
+						<BundleRouter
+							data={DataPrivacy}
+							path={'/data-privacy/*'}
+						/>
+					}
+					path={'/data-privacy/*'}
+				/>
+
+				<Route
+					element={
+						<BundleRouter data={Workspace} path={'/workspace'} />
+					}
+					path={'/workspace'}
+				/>
+
+				<Route
+					element={
+						<BundleRouter
+							data={ChannelView}
+							path={'/properties/:id'}
+						/>
+					}
+					path={'/properties/:id'}
+				/>
+
+				<Route
+					element={
+						<BundleRouter data={ChannelList} path={'/properties'} />
+					}
+					path={'/properties'}
+				/>
+
+				<Route
+					element={
+						<BundleRouter
+							data={AccessTokenList}
+							path='/apis/tokens'
+						/>
+					}
+					path='/apis/tokens'
+				/>
+
+				{recommendationsEnabled && (
+					<Fragment key='RECOMMENDATIONS'>
+						<Route
+							element={
+								<BundleRouter
+									data={RecommendationList}
+									destructured={false}
+									path={'/recommendations'}
+								/>
+							}
+							path={'/recommendations'}
+						/>
+
+						<Route
+							element={
+								<BundleRouter
+									data={RecomendationCreateItemSimilarity}
+									destructured={false}
+									path={
+										'/recommendations/create-item-similarity-model'
+									}
+								/>
+							}
+							path={
+								'/recommendations/create-item-similarity-model'
+							}
+						/>
+
+						<Route
+							element={
+								<BundleRouter
+									data={RecommendationEdit}
+									destructured={false}
+									path={'/recommendations/:jobId/edit'}
+								/>
+							}
+							path={'/recommendations/:jobId/edit'}
+						/>
+
+						<Route
+							element={
+								<BundleRouter
+									data={RecommendationView}
+									destructured={false}
+									path={'/recommendations/:jobId'}
+								/>
+							}
+							path={'/recommendations/:jobId'}
+						/>
+					</Fragment>
+				)}
+
+				{/* <RouteNotFound /> */}
+			</Routes>
 		</Suspense>
 	);
 };
