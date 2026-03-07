@@ -3,7 +3,7 @@ import HelpBlock from './HelpBlock';
 import Input from '../Input';
 import InputList from '../InputList';
 import Label from './Label';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {FieldProps} from 'formik';
 import {IInputListProps as IInputListComponentProps} from 'shared/components/InputList';
 import {isEmpty} from 'lodash';
@@ -19,7 +19,7 @@ interface IInputListProps
 		position: 'after' | 'before';
 	};
 	label?: React.ReactNode;
-	onChangeInputList: (value: string) => void;
+	onChangeInputList: (value: string | undefined) => void;
 	popover?: {
 		content: React.ReactNode;
 		title: React.ReactNode;
@@ -31,61 +31,52 @@ interface IInputListProps
 		content: React.ReactNode;
 		position: 'append' | 'prepend';
 	};
-	validationFn: (string) => boolean;
+	validationFn: (value: string) => boolean;
 }
 
 const renderInput: React.FC<
 	{contentAfter; inset; text} & IInputListComponentProps
 > = ({contentAfter, inset, text, ...props}) => {
 	if (!isEmpty(text)) {
-		if (text.position === 'prepend') {
-			return (
-				<Input.Group>
-					<Input.GroupItem position='prepend' shrink>
-						<Input.Text>{text.content}</Input.Text>
-					</Input.GroupItem>
+		const isPrepend = text.position === 'prepend';
 
-					<Input.GroupItem position='append'>
-						<InputList {...props} />
-					</Input.GroupItem>
-				</Input.Group>
-			);
-		} else {
-			return (
-				<Input.Group>
-					<Input.GroupItem position='prepend'>
-						<InputList {...props} />
-					</Input.GroupItem>
+		return (
+			<Input.Group>
+				<Input.GroupItem
+					position={isPrepend ? 'prepend' : 'append'}
+					shrink
+				>
+					<Input.Text>{text.content}</Input.Text>
+				</Input.GroupItem>
+				<Input.GroupItem position={isPrepend ? 'append' : 'prepend'}>
+					<InputList {...props} />
+				</Input.GroupItem>
+			</Input.Group>
+		);
+	}
 
-					<Input.GroupItem position='append' shrink>
-						<Input.Text>{text.content}</Input.Text>
-					</Input.GroupItem>
-				</Input.Group>
-			);
-		}
-	} else if (!isEmpty(inset)) {
+	if (!isEmpty(inset)) {
 		return (
 			<Input.Group>
 				<Input.GroupItem>
 					<InputList {...props} />
-
 					<Input.Inset position={inset.position}>
 						{inset.content}
 					</Input.Inset>
 				</Input.GroupItem>
 			</Input.Group>
 		);
-	} else if (contentAfter) {
+	}
+
+	if (contentAfter) {
 		return (
 			<Input.Group>
 				<InputList {...props} />
-
 				<Input.GroupItem shrink>{contentAfter}</Input.GroupItem>
 			</Input.Group>
 		);
-	} else {
-		return <InputList {...props} />;
 	}
+	return <InputList {...props} />;
 };
 
 const FormInputList: React.FC<IInputListProps> = ({
@@ -109,28 +100,28 @@ const FormInputList: React.FC<IInputListProps> = ({
 	const hasError = errors[name];
 	const isTouched = touched[name];
 
-	const [items, onItemsChange] = useState(value || []);
-	const [inputValue, onInputChange] = useState<string>();
+	const [inputValue, onInputChange] = useState<string>('');
+
+	const onItemsChange = useCallback(
+		newItems => {
+			setFieldValue(name, newItems);
+		},
+		[name, setFieldValue]
+	);
 
 	useEffect(() => {
-		setFieldValue(name, items);
-	}, [items]);
-
-	useEffect(() => {
-		onItemsChange(value);
-	}, [value]);
+		if (onChangeInputList) {
+			onChangeInputList(inputValue);
+		}
+	}, [inputValue, onChangeInputList]);
 
 	useEffect(() => {
 		if (inputValue) {
-			setFieldTouched(name);
+			setFieldTouched(name, true, false);
 		} else {
-			setFieldError(name, '');
+			setFieldError(name, undefined);
 		}
-	}, [inputValue]);
-
-	useEffect(() => {
-		onChangeInputList(inputValue);
-	}, []);
+	}, [inputValue, name, setFieldTouched, setFieldError]);
 
 	const classes = getCN(className, {
 		'form-inline-group': inline,
@@ -159,7 +150,7 @@ const FormInputList: React.FC<IInputListProps> = ({
 					contentAfter,
 					inputValue,
 					inset,
-					items,
+					items: value || [],
 					onInputChange,
 					onItemsChange,
 					onValidationFail,

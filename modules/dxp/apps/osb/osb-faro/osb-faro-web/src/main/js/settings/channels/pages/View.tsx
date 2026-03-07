@@ -31,6 +31,7 @@ import {UNAUTHORIZED_ACCESS} from 'shared/util/request';
 import {updateDefaultChannelId} from 'shared/actions/preferences';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useRequest} from 'shared/hooks/useRequest';
+import {useNavigate, useParams} from 'react-router';
 
 const {channelPermissionTypes} = Constants;
 
@@ -43,11 +44,8 @@ type Channel = {
 	permissionType: number;
 };
 
-export const ViewContainer: React.FC<Omit<IViewProps, 'channel'>> = ({
-	groupId,
-	id,
-	...otherProps
-}) => {
+export const ViewContainer: React.FC<Omit<IViewProps, 'channel'>> = props => {
+	const {groupId, id} = useParams();
 	const {data, error, loading, refetch} = useRequest({
 		dataSourceFn: API.channels.fetch,
 		variables: {
@@ -74,12 +72,7 @@ export const ViewContainer: React.FC<Omit<IViewProps, 'channel'>> = ({
 			spacer
 		>
 			{(channel: Channel) => (
-				<View
-					{...otherProps}
-					channel={channel}
-					groupId={groupId}
-					id={id}
-				/>
+				<View {...props} channel={channel} id={id} />
 			)}
 		</SafeResults>
 	);
@@ -103,10 +96,7 @@ interface IViewProps
 	extends React.HTMLAttributes<HTMLElement>,
 		PropsFromRedux,
 		IPaginationUnsorted {
-	channel?: Channel;
-	groupId: string;
-	navigate: (value: string) => void;
-	id: string;
+	channel: Channel;
 }
 
 const View: React.FC<IViewProps> = ({
@@ -114,13 +104,13 @@ const View: React.FC<IViewProps> = ({
 	channel,
 	close,
 	defaultChannelId,
-	groupId,
-	navigate,
 	id,
 	open,
 	updateDefaultChannelId,
 	...otherProps
 }) => {
+	const {groupId} = useParams();
+	const navigate = useNavigate();
 	const currentUser = useCurrentUser();
 
 	const [name, setName] = useState(channel.name);

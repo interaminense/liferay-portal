@@ -4,7 +4,11 @@ import Loading from 'shared/components/Loading';
 import React, {Fragment, lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {compose} from 'shared/hoc';
-import {ENABLE_CSVFILE} from 'shared/util/constants';
+import {
+	DEVELOPER_MODE,
+	ENABLE_BLOCKLIST_KEYWORDS,
+	ENABLE_CSVFILE
+} from 'shared/util/constants';
 import {Routes as Path} from 'shared/util/router';
 import {Route, Routes, useParams} from 'react-router';
 import {useStore} from 'react-redux';
@@ -29,6 +33,22 @@ import RecomendationCreateItemSimilarity from 'settings/recommendations/pages/Cr
 import RecommendationEdit from 'settings/recommendations/pages/Edit';
 import RecommendationView from 'settings/recommendations/pages/View';
 import AccessTokenList from 'settings/apis/pages/AccessTokenList';
+import Overview from 'settings/definitions/pages/Overview';
+import InterestTopics from 'settings/definitions/pages/InterestTopics';
+import IndividualAttributes from 'settings/definitions/pages/IndividualAttributes';
+import {Search} from 'settings/definitions/pages/search/Search';
+import TrackedBehaviors from 'settings/definitions/pages/TrackedBehaviors';
+import AttributeView from 'settings/definitions/event-attributes/pages/AttributeView';
+import AttributeList from 'settings/definitions/event-attributes/components/AttributeList';
+import GlobalAttributeList from 'settings/definitions/event-attributes/components/GlobalAttributeList';
+import EventBlockList from 'settings/definitions/events/pages/BlockList';
+import EventView from 'settings/definitions/events/pages/View';
+import EventList from 'settings/definitions/events/components/EventList';
+import CustomEventList from 'settings/definitions/events/components/CustomEventList';
+
+import DataPrivacyOverview from 'settings/data-privacy/pages/Overview';
+import DataPrivacyRequestLog from 'settings/data-privacy/pages/RequestLog';
+import DataPrivacySuppressedUsers from 'settings/data-privacy/pages/SuppressedUsers';
 
 export const Settings = () => {
 	const {groupId} = useParams();
@@ -146,59 +166,88 @@ export const Settings = () => {
 					/>
 				)}
 
+				<Route index element={<Overview />} path='/definitions' />
+
+				{ENABLE_BLOCKLIST_KEYWORDS && (
+					<Route
+						element={<InterestTopics />}
+						path='/definitions/interest-topics'
+					/>
+				)}
+
 				<Route
-					element={
-						<BundleRouter
-							data={Definitions}
-							path={'/definitions/*'}
-						/>
-					}
-					path={'/definitions/*'}
+					element={<IndividualAttributes />}
+					path='/definitions/individual-attributes'
+				/>
+
+				<Route element={<Search />} path='/definitions/search' />
+
+				{DEVELOPER_MODE && (
+					// TODO: LRAC-4511 Remove when new TrackedBehavior page exists
+					<Route
+						element={<TrackedBehaviors />}
+						path='/definitions/behaviors'
+					/>
+				)}
+
+				<Route
+					element={<AttributeView />}
+					path='/definitions/event-attributes/:attributeId'
 				/>
 
 				<Route
-					element={
-						<BundleRouter
-							data={DataPrivacy}
-							path={'/data-privacy/*'}
-						/>
-					}
-					path={'/data-privacy/*'}
+					element={<AttributeList />}
+					path='/definitions/event-attributes/local'
 				/>
 
 				<Route
-					element={
-						<BundleRouter data={Workspace} path={'/workspace'} />
-					}
-					path={'/workspace'}
+					element={<GlobalAttributeList />}
+					path='/definitions/event-attributes/global'
 				/>
 
 				<Route
-					element={
-						<BundleRouter
-							data={ChannelView}
-							path={'/properties/:id'}
-						/>
-					}
-					path={'/properties/:id'}
+					element={<EventView />}
+					path='/definitions/events/:eventId'
 				/>
 
 				<Route
-					element={
-						<BundleRouter data={ChannelList} path={'/properties'} />
-					}
-					path={'/properties'}
+					element={<EventBlockList />}
+					path='/definitions/events/block-list'
 				/>
 
 				<Route
-					element={
-						<BundleRouter
-							data={AccessTokenList}
-							path='/apis/tokens'
-						/>
-					}
-					path='/apis/tokens'
+					element={<EventList />}
+					path='/definitions/events/default'
 				/>
+
+				<Route
+					element={<CustomEventList />}
+					path='/definitions/events/custom'
+				/>
+
+				<Route
+					index
+					element={<DataPrivacyOverview />}
+					path='/data-privacy'
+				/>
+
+				<Route
+					element={<DataPrivacySuppressedUsers />}
+					path='/data-privacy/suppressed-users'
+				/>
+
+				<Route
+					element={<DataPrivacyRequestLog />}
+					path='/data-privacy/request-log'
+				/>
+
+				<Route element={<Workspace />} path={'/workspace'} />
+
+				<Route index element={<ChannelList />} path={'/properties'} />
+
+				<Route element={<ChannelView />} path={'/properties/:id'} />
+
+				<Route element={<AccessTokenList />} path='/apis/tokens' />
 
 				{recommendationsEnabled && (
 					<Fragment key='RECOMMENDATIONS'>

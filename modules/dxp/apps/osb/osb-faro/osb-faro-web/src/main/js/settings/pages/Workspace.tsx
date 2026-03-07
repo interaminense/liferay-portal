@@ -11,6 +11,7 @@ import {Routes, toRoute} from 'shared/util/router';
 import {updateProject} from 'shared/actions/projects';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {withProject} from 'shared/hoc/WithProject';
+import {useNavigate, useParams} from 'react-router';
 
 const connector = connect(null, {
 	addAlert,
@@ -101,8 +102,19 @@ export const Workspace: React.FC<IWorkspaceProps> = ({
 };
 
 export default compose(
+	WrappedComponent => props => {
+		const {groupId} = useParams();
+		const navigate = useNavigate();
+
+		return (
+			<WrappedComponent
+				{...props}
+				groupId={groupId}
+				navigate={navigate}
+			/>
+		);
+	},
 	connector,
-	withNavigate,
 	withProject(true),
 	withQuery(
 		({groupId}) =>
