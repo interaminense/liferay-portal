@@ -26,18 +26,20 @@ import PagePathResolver from './PagePathResolver';
  */
 
 export const resolvers = {
-	assetPages: AssetAppearsOnResolver,
-	dashboards: CustomAssetsListResolver,
-	document: DocumentsAndMediaMetricsResolver,
-	documents: DocumentsAndMediaListResolver,
-	eventAnalysisList: EventAnalysisListResolver,
-	experiment: ExperimentResolver,
-	individualInterests: InterestsResolver,
-	orderAccountAverageCurrencyValues: CommerceAverageRevenuePerAccountResolver,
-	orderAverageCurrencyValues: CommerceAverageOrderValueResolver,
-	orderIncompleteCurrencyValues: CommerceIncompleteOrdersResolver,
-	orderTotalCurrencyValues: CommerceTotalOrderValueResolver,
-	pagePath: PagePathResolver,
-	site: IndividualSiteMetricsResolver,
-	siteInterests: InterestsResolver
+	Query: {
+		assetPages: AssetAppearsOnResolver,
+		dashboards: CustomAssetsListResolver,
+		document: DocumentsAndMediaMetricsResolver,
+		documents: DocumentsAndMediaListResolver,
+		eventAnalysisList: EventAnalysisListResolver,
+		experiment: ExperimentResolver,
+		individualInterests: InterestsResolver,
+		orderAccountAverageCurrencyValues: CommerceAverageRevenuePerAccountResolver,
+		orderAverageCurrencyValues: CommerceAverageOrderValueResolver,
+		orderIncompleteCurrencyValues: CommerceIncompleteOrdersResolver,
+		orderTotalCurrencyValues: CommerceTotalOrderValueResolver,
+		pagePath: PagePathResolver,
+		site: IndividualSiteMetricsResolver,
+		siteInterests: InterestsResolver
+	}
 };

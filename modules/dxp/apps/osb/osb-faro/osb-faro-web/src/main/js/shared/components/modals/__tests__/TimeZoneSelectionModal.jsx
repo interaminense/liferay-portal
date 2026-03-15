@@ -2,10 +2,10 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import TimeZoneSelectionModal from '../TimeZoneSelectionModal';
+import {BrowserRouter} from 'react-router';
 import {mockGetDateNow} from 'test/mock-date';
 import {Provider} from 'react-redux';
 import {render, waitFor} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -15,9 +15,9 @@ describe('TimeZoneSelectionModal', () => {
 	it('should render', async () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<TimeZoneSelectionModal groupId={23} />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 

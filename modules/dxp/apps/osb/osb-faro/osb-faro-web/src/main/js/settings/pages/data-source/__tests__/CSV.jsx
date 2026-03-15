@@ -1,17 +1,17 @@
 import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {CSV} from '../CSV';
 import {DataSource, User} from 'shared/util/records';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 import {UserRoleNames} from 'shared/util/constants';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => ({
 
 const DefaultComponent = props => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<CSV
 				currentUser={new User(data.mockUser())}
 				dataSource={new DataSource(data.mockCSVDataSource())}
@@ -27,7 +27,7 @@ const DefaultComponent = props => (
 				id='test'
 				{...props}
 			/>
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

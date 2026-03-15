@@ -1,15 +1,15 @@
 import React from 'react';
 import SearchableEntitiesTableModal from '../SearchableEntitiesTableModal';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {createOrderIOMap, EMAIL_ADDRESS} from 'shared/util/pagination';
 import {noop} from 'lodash';
 import {OrderByDirections} from 'shared/util/constants';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
 const DefaultComponent = props => (
-	<StaticRouter>
+	<BrowserRouter>
 		<SearchableEntitiesTableModal
 			columns={[
 				{
@@ -27,7 +27,7 @@ const DefaultComponent = props => (
 			onClose={noop}
 			{...props}
 		/>
-	</StaticRouter>
+	</BrowserRouter>
 );
 
 describe('SearchableEntitiesTableModal', () => {

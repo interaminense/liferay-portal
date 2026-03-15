@@ -1,3 +1,4 @@
+import BasePage from 'settings/components/base-page/BasePage';
 import EventAttributeDefinitionsQuery, {
 	EventAttributeDefinitionsData,
 	EventAttributeDefinitionsVariables
@@ -5,6 +6,7 @@ import EventAttributeDefinitionsQuery, {
 import ListComponent from 'shared/hoc/ListComponent';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import React from 'react';
+import TabsCard from './TabsCard';
 import {attributeListColumns} from 'shared/util/table-columns';
 import {AttributeTypes} from 'event-analysis/utils/types';
 import {
@@ -12,9 +14,10 @@ import {
 	getSortFromOrderIOMap,
 	NAME
 } from 'shared/util/pagination';
+import {getDefinitions} from 'shared/util/breadcrumbs';
 import {mapListResultsToProps} from 'shared/util/mappers';
-import {useParams} from 'react-router-dom';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 
 const AttributeList: React.FC = () => {
@@ -38,32 +41,48 @@ const AttributeList: React.FC = () => {
 	});
 
 	return (
-		<ListComponent
-			{...mapListResultsToProps(response, result => ({
-				items:
-					result.eventAttributeDefinitions.eventAttributeDefinitions,
-				total: result.eventAttributeDefinitions.total
-			}))}
-			columns={[
-				attributeListColumns.getName({channelId, groupId}),
-				attributeListColumns.displayName,
-				attributeListColumns.description,
-				attributeListColumns.sampleValue,
-				attributeListColumns.dataType
+		<BasePage
+			breadcrumbItems={[
+				getDefinitions({groupId}),
+				{active: true, label: Liferay.Language.get('event-attributes')}
 			]}
-			delta={delta}
-			entityLabel={Liferay.Language.get('attributes').toLowerCase()}
-			noResultsRenderer={
-				<NoResultsDisplay
-					title={Liferay.Language.get('empty-title-pages')}
+			pageDescription={Liferay.Language.get(
+				'attributes-provide-additional-context-for-events.-they-are-usually-event-specific-but-can-be-used-by-more-than-one.-global-attributes-will-be-sent-with-all-events-without-needing-to-be-configured'
+			)}
+			pageTitle={Liferay.Language.get('event-attributes')}
+		>
+			<TabsCard groupId={groupId}>
+				<ListComponent
+					{...mapListResultsToProps(response, result => ({
+						items:
+							result.eventAttributeDefinitions
+								.eventAttributeDefinitions,
+						total: result.eventAttributeDefinitions.total
+					}))}
+					columns={[
+						attributeListColumns.getName({channelId, groupId}),
+						attributeListColumns.displayName,
+						attributeListColumns.description,
+						attributeListColumns.sampleValue,
+						attributeListColumns.dataType
+					]}
+					delta={delta}
+					entityLabel={Liferay.Language.get(
+						'attributes'
+					).toLowerCase()}
+					noResultsRenderer={
+						<NoResultsDisplay
+							title={Liferay.Language.get('empty-title-pages')}
+						/>
+					}
+					orderIOMap={orderIOMap}
+					page={page}
+					query={query}
+					rowIdentifier='id'
+					showFilterAndOrder={false}
 				/>
-			}
-			orderIOMap={orderIOMap}
-			page={page}
-			query={query}
-			rowIdentifier='id'
-			showFilterAndOrder={false}
-		/>
+			</TabsCard>
+		</BasePage>
 	);
 };
 

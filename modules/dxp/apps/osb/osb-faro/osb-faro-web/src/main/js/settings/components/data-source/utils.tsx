@@ -37,7 +37,7 @@ const useDisconnectDataSource = ({
 					});
 
 					close();
-				} catch (error) {
+				} catch (_error) {
 					addAlert({
 						alertType: Alert.Types.Error,
 						message: Liferay.Language.get(

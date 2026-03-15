@@ -2,15 +2,15 @@ import * as data from 'test/data';
 import LiferayOverview from '../LiferayOverview';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {DataSource} from 'shared/util/records';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23',
 		id: 'test'
@@ -31,9 +31,9 @@ const defaultProps = {
 
 const DefaultComponent = props => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<LiferayOverview {...defaultProps} {...props} />
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

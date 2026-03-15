@@ -9,7 +9,7 @@ import {Alert} from 'shared/types';
 import {close, modalTypes, open} from 'shared/actions/modals';
 import {connect, ConnectedProps} from 'react-redux';
 import {sub} from 'shared/util/lang';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 export enum Frequency {
 	Daily = 'daily',

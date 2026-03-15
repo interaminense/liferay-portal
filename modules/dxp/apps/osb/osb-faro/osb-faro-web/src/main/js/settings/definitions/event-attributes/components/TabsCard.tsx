@@ -1,34 +1,17 @@
-import BundleRouter from 'route-middleware/BundleRouter';
 import Card from 'shared/components/Card';
 import ClayLink from '@clayui/link';
 import ClayNavigationBar from '@clayui/navigation-bar';
-import Loading from 'shared/components/Loading';
-import React, {lazy, Suspense, useState} from 'react';
-import RouteNotFound from 'shared/components/RouteNotFound';
-import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch} from 'react-router';
-
-const AttributeList = lazy(
-	() => import(/* webpackChunkName: "AttributeList" */ './AttributeList')
-);
-
-const GlobalAttributeList = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "GlobalAttributeList" */ './GlobalAttributeList'
-		)
-);
+import React, {PropsWithChildren, useState} from 'react';
+import {getMatchedRoute, Routes as Path, toRoute} from 'shared/util/router';
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('global-attributes'),
-		route: Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
+		route: Path.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('attributes'),
-		route: Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL
+		route: Path.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL
 	}
 ];
 
@@ -36,7 +19,10 @@ interface ITabsCardProps {
 	groupId: string;
 }
 
-const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
+const TabsCard: React.FC<PropsWithChildren<ITabsCardProps>> = ({
+	children,
+	groupId
+}) => {
 	const matchedRoute = getMatchedRoute(NAV_ITEMS);
 
 	const initialItem =
@@ -65,27 +51,7 @@ const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
 				))}
 			</ClayNavigationBar>
 
-			<Suspense fallback={<Loading />}>
-				<Switch>
-					<BundleRouter
-						data={AttributeList}
-						exact
-						path={
-							Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL
-						}
-					/>
-
-					<BundleRouter
-						data={GlobalAttributeList}
-						exact
-						path={
-							Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
-						}
-					/>
-
-					<RouteNotFound />
-				</Switch>
-			</Suspense>
+			{children}
 		</Card>
 	);
 };

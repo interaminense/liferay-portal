@@ -86,19 +86,23 @@ export default class CriteriaSidebar extends React.Component<
 								</ClayButton>
 							}
 						>
-							{propertyGroupsIList.map(({label, propertyKey}) => (
-								<ClayDropdown.Item
-									active={propertyKey === selectedPropertyKey}
-									key={propertyKey}
-									onClick={() =>
-										this.handlePropertyGroupSelect(
-											propertyKey
-										)
-									}
-								>
-									{label}
-								</ClayDropdown.Item>
-							))}
+							{propertyGroupsIList
+								.map(({label, propertyKey}) => (
+									<ClayDropdown.Item
+										active={
+											propertyKey === selectedPropertyKey
+										}
+										key={propertyKey}
+										onClick={() =>
+											this.handlePropertyGroupSelect(
+												propertyKey
+											)
+										}
+									>
+										{label}
+									</ClayDropdown.Item>
+								))
+								.toArray()}
 						</ClayDropdown>
 					) : (
 						Liferay.Language.get('properties')

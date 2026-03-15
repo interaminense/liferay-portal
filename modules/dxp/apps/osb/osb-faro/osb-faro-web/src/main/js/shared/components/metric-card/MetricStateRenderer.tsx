@@ -1,20 +1,17 @@
 import ErrorDisplay from '../ErrorDisplay';
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
-import {ApolloError} from 'apollo-client';
+import {ErrorLike} from '@apollo/client';
 
 interface IMetricStateRendererProps {
-	error: ApolloError;
+	error: ErrorLike;
 	loading: boolean;
 	spacer?: boolean;
 }
 
-const MetricStateRenderer: React.FC<IMetricStateRendererProps> = ({
-	children,
-	error,
-	loading,
-	spacer = false
-}) => (
+const MetricStateRenderer: React.FC<
+	PropsWithChildren<IMetricStateRendererProps>
+> = ({children, error, loading, spacer = false}) => (
 	<StatesRenderer empty={false} error={!!error} loading={loading}>
 		<StatesRenderer.Loading spacer={spacer} />
 		<StatesRenderer.Error apolloError={error}>

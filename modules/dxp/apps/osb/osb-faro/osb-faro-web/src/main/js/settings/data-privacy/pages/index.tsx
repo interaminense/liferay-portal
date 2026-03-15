@@ -1,52 +1,38 @@
 import BundleRouter from 'route-middleware/BundleRouter';
 import Loading from 'shared/components/Loading';
+import Overview from './Overview';
 import React, {lazy, Suspense} from 'react';
+import RequestLog from './RequestLog';
 import RouteNotFound from 'shared/components/RouteNotFound';
-import {Routes} from 'shared/util/router';
-import {Switch} from 'react-router-dom';
+import SuppressedUsers from './SuppressedUsers';
+import {Routes as Path} from 'shared/util/router';
+import {Route, Routes} from 'react-router';
 
-const Overview = lazy(
-	() => import(/* webpackChunkName: "DataPrivacyOverview" */ './Overview')
-);
-
-const RequestLog = lazy(
-	() => import(/* webpackChunkName: "RequestLog" */ './RequestLog')
-);
-
-const SuppressedUsers = lazy(
-	() => import(/* webpackChunkName: "SupressedUsers" */ './SuppressedUsers')
-);
-
-interface IDataPrivacyProps extends React.HTMLAttributes<HTMLDivElement> {
-	groupId: string;
-}
-
-const DataPrivacy: React.FC<IDataPrivacyProps> = ({groupId}) => (
+const DataPrivacy = () => (
 	<Suspense fallback={<Loading />}>
-		<Switch>
-			<BundleRouter
-				data={Overview}
-				exact
-				path={Routes.SETTINGS_DATA_PRIVACY}
+		<Routes>
+			<Route
+				element={<BundleRouter data={Overview} path='*' />}
+				path='*'
 			/>
 
-			<BundleRouter
-				componentProps={{groupId}}
-				data={SuppressedUsers}
-				destructured={false}
-				exact
-				path={Routes.SETTINGS_DATA_PRIVACY_SUPPRESSED_USERS}
+			<Route
+				element={
+					<BundleRouter
+						data={SuppressedUsers}
+						path='/suppressed-users'
+					/>
+				}
+				path='/suppressed-users'
 			/>
 
-			<BundleRouter
-				componentProps={{groupId}}
-				data={RequestLog}
-				destructured={false}
-				path={Routes.SETTINGS_DATA_PRIVACY_REQUEST_LOG}
+			<Route
+				element={<BundleRouter data={RequestLog} path='/request-log' />}
+				path='/request-log'
 			/>
+		</Routes>
 
-			<RouteNotFound />
-		</Switch>
+		{/* <RouteNotFound /> */}
 	</Suspense>
 );
 

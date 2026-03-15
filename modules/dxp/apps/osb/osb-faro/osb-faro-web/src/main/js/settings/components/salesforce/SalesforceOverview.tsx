@@ -31,7 +31,7 @@ import {getDataSourceDisplayObject} from 'shared/util/data-sources';
 import {Text} from '@clayui/core';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDisconnectDataSource} from '../data-source/utils';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useRequest} from 'shared/hooks/useRequest';
 import {withSelectionProvider} from 'shared/context/selection';
 
@@ -96,7 +96,7 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 			});
 
 			setDataSource(new DataSource(newDataSource));
-		} catch (error) {
+		} catch (_error) {
 			addAlert({
 				alertType: Alert.Types.Error,
 				message: Liferay.Language.get(

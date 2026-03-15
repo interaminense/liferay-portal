@@ -1,4 +1,4 @@
-import {gql} from 'apollo-boost';
+import {gql} from '@apollo/client';
 import {SessionEntityTypes} from 'shared/util/constants';
 import {TREND_FRAGMENT_EVENT_METRIC} from 'shared/queries/fragments';
 

@@ -1,7 +1,7 @@
 import Constants, {DataSourceTypes, EntityTypes} from '../util/constants';
 import {compile} from 'shared/util/path-to-regexp';
 import {invert, isEmpty, isString, memoize} from 'lodash';
-import {matchPath} from 'react-router-dom';
+import {matchPath} from 'react-router';
 
 function createURL(href) {
 	try {
@@ -73,16 +73,16 @@ export const Routes = buildRoutes({
 			WORKSPACE_ADD_WITH_CORP_PROJECT_UUID: '/:corpProjectUuid/add',
 			WORKSPACE_SELECT_ACCOUNT: '/select-account',
 			WORKSPACE_WITH_ID: {
-				path: '/:groupId([\\w._-]+)',
+				path: '/:groupId',
 				routes: {
 					CHANNEL: {
-						path: '/:channelId(\\d+)?',
+						path: '/:channelId?',
 						routes: {
 							ASSETS: {
 								path: '/assets',
 								routes: {
 									ASSETS_BLOGS: {
-										path: '/:assetType(blogs)?',
+										path: '/blogs',
 										routes: {
 											ASSETS_BLOGS_KNOWN_INDIVIDUALS:
 												'/:assetId/known-individuals/:touchpoint/:title?',
@@ -277,7 +277,7 @@ export const Routes = buildRoutes({
 										'/suppressed-users'
 								}
 							},
-							SETTINGS_DATA_SOURCE: '/data-source/:id',
+							SETTINGS_DATA_SOURCE: '/data-source/:id?',
 							SETTINGS_DATA_SOURCE_CLEAR_DATA:
 								'/data-source/:id/clear-data',
 							SETTINGS_DATA_SOURCE_DELETE:
@@ -299,7 +299,7 @@ export const Routes = buildRoutes({
 											SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL:
 												'/local',
 											SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_VIEW:
-												'/:attributeId(\\d+)'
+												'/:attributeId'
 										}
 									},
 									SETTINGS_DEFINITIONS_EVENTS: {
@@ -312,7 +312,7 @@ export const Routes = buildRoutes({
 											SETTINGS_DEFINITIONS_EVENTS_DEFAULT:
 												'/default',
 											SETTINGS_DEFINITIONS_EVENTS_VIEW:
-												'/:eventId(\\d+)'
+												'/:eventId'
 										}
 									},
 									SETTINGS_DEFINITIONS_INDIVIDUAL_ATTRIBUTES:
@@ -326,7 +326,7 @@ export const Routes = buildRoutes({
 								path: '/recommendations',
 								routes: {
 									SETTINGS_RECOMMENDATION_MODEL_VIEW: {
-										path: '/:jobId([\\d]+)',
+										path: '/:jobId',
 										routes: {
 											SETTINGS_RECOMMENDATION_EDIT:
 												'/edit'
@@ -447,9 +447,7 @@ export function getDataSourceType(routeName) {
  * @returns {string} Matched path string or null if no match.
  */
 export function getMatchedRoute(routes, pathname = location.pathname) {
-	const matchedRoute = routes.find(({exact = true, route}) =>
-		matchPath(pathname, {exact, path: route})
-	);
+	const matchedRoute = routes.find(({route}) => matchPath(route, pathname));
 
 	return (matchedRoute && matchedRoute.route) || null;
 }

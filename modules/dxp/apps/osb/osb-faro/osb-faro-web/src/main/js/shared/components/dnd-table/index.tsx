@@ -15,6 +15,10 @@ interface IDndTableProps {
 	rowIdentifier?: string | string[];
 }
 
+// TODO: Update react-dnd to remove "any"
+
+const DndProviderAny = DndProvider as any;
+
 const DndTable: React.FC<IDndTableProps> = ({
 	columns,
 	items,
@@ -28,36 +32,41 @@ const DndTable: React.FC<IDndTableProps> = ({
 
 	return (
 		<div className=' dnd-table-root'>
-			<DndProvider backend={HTML5Backend}>
+			<DndProviderAny backend={HTML5Backend}>
 				<ClayTable className='dnd-table-root'>
-					<ClayTable.Head>
-						<ClayTable.Row>
-							<ClayTable.Cell headingCell />
+					<ClayTable className='dnd-table-root'>
+						<ClayTable.Head>
+							<ClayTable.Row>
+								<ClayTable.Cell headingCell />
 
-							{columns.map(({label}, i) => (
-								<ClayTable.Cell headingCell key={i}>
-									<TextTruncate title={label}>
-										{label}
-									</TextTruncate>
-								</ClayTable.Cell>
+								{columns.map(({label}, i) => (
+									<ClayTable.Cell headingCell key={i}>
+										<TextTruncate title={label}>
+											{label}
+										</TextTruncate>
+									</ClayTable.Cell>
+								))}
+							</ClayTable.Row>
+						</ClayTable.Head>
+
+						<ClayTable.Body>
+							{items.map((item, i) => (
+								<Row
+									columns={columns}
+									data={item}
+									draggable={item.draggable}
+									index={i}
+									key={getRowIdentifierValue(
+										item,
+										rowIdentifier
+									)}
+									onMove={handleMove}
+								/>
 							))}
-						</ClayTable.Row>
-					</ClayTable.Head>
-
-					<ClayTable.Body>
-						{items.map((item, i) => (
-							<Row
-								columns={columns}
-								data={item}
-								draggable={item.draggable}
-								index={i}
-								key={getRowIdentifierValue(item, rowIdentifier)}
-								onMove={handleMove}
-							/>
-						))}
-					</ClayTable.Body>
+						</ClayTable.Body>
+					</ClayTable>
 				</ClayTable>
-			</DndProvider>
+			</DndProviderAny>
 		</div>
 	);
 };

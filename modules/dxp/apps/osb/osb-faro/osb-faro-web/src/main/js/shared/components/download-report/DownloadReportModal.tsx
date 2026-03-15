@@ -2,14 +2,14 @@ import ClayAlert from '@clayui/alert';
 import ClayButton from '@clayui/button';
 import ClayForm from '@clayui/form';
 import ClayModal from '@clayui/modal';
-import React, {useState} from 'react';
+import React, {PropsWithChildren, useState} from 'react';
 import {Align} from '@clayui/drop-down';
 import {DropdownRangeKey} from '../dropdown-range-key/DropdownRangeKey';
 import {pickBy} from 'lodash';
 import {RangeSelectors} from 'shared/types';
 import {setUriQueryValues} from 'shared/util/router';
 import {Text} from '@clayui/core';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router';
 
 export enum ReportType {
 	CSV = 'CSV',
@@ -28,7 +28,9 @@ interface IDownloadReportModal {
 	type?: ReportType;
 }
 
-export const DownloadReportModal: React.FC<IDownloadReportModal> = ({
+export const DownloadReportModal: React.FC<
+	PropsWithChildren<IDownloadReportModal>
+> = ({
 	children,
 	dateRangeDescription = Liferay.Language.get(
 		'only-select-a-date-range-if-you-want-to-modify-the-current-date-filter'
@@ -42,7 +44,7 @@ export const DownloadReportModal: React.FC<IDownloadReportModal> = ({
 	showDateRange = true,
 	type
 }) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [openAlert, setOpenAlert] = useState(true);
 	const [submitDisabled, setSubmitDisabled] = useState(false);
 	const [rangeSelectors, setRangeSelectors] = useState<RangeSelectors>(
@@ -115,7 +117,7 @@ export const DownloadReportModal: React.FC<IDownloadReportModal> = ({
 										}
 
 										if (rangeSelectors) {
-											history.push(
+											navigate(
 												setUriQueryValues(
 													pickBy({
 														downloadReport: true,

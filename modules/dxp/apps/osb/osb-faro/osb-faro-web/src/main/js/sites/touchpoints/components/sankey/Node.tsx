@@ -1,6 +1,5 @@
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
-import React from 'react';
 import {
 	EMPTY_NODE_COLOR,
 	getFill,
@@ -11,12 +10,13 @@ import {
 import {getSafeDecodedURIComponent} from 'shared/util/util';
 import {getUrl} from 'shared/util/urls';
 import {Layer, Rectangle} from 'recharts';
-import {Link, useParams} from 'react-router-dom';
+import {Link} from 'react-router';
 import {pickBy} from 'lodash';
 import {Routes} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {TitleKey, Type} from './types';
 import {toThousands} from 'shared/util/numbers';
+import {useParams} from 'react-router';
 
 function truncateText(text: string, limit: number) {
 	if (text.length > limit) {
@@ -96,6 +96,8 @@ export const Node = ({
 			key={`CustomNode${index}`}
 			onMouseEnter={() => onNodeChange(payload.id)}
 			onMouseLeave={() => onNodeChange(null)}
+			onPointerEnterCapture={() => onNodeChange(payload.id)}
+			onPointerLeaveCapture={() => onNodeChange(null)}
 			path={undefined}
 		>
 			{emptyState ? (

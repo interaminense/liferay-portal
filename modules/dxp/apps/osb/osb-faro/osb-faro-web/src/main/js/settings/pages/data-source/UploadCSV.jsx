@@ -73,10 +73,10 @@ export default class UploadCSV extends React.Component {
 
 	@autobind
 	handleNextClick() {
-		const {history} = this.props;
+		const {navigate} = this.props;
 
 		this.setState({editing: false}, () => {
-			history.push(this.getNextButtonUrl());
+			navigate(this.getNextButtonUrl());
 		});
 	}
 

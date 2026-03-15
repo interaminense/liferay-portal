@@ -1,6 +1,7 @@
 import * as API from 'shared/api';
 import AssignSegments from '../AssignSegments';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {ChannelContext} from 'shared/context/channel';
 import {
 	cleanup,
@@ -11,7 +12,6 @@ import {
 import {mockChannelContext} from 'test/mock-channel-context';
 import {mockSegment} from 'test/data';
 import {noop} from 'lodash';
-import {StaticRouter} from 'react-router-dom';
 import {UnassignedSegmentsContext} from 'shared/context/unassignedSegments';
 
 jest.unmock('react-dom');
@@ -28,9 +28,9 @@ const mockedContext = {
 const DefaultComponent = props => (
 	<UnassignedSegmentsContext.Provider value={mockedContext}>
 		<ChannelContext.Provider value={mockChannelContext()}>
-			<StaticRouter>
+			<BrowserRouter>
 				<AssignSegments groupId='123' onClose={noop} {...props} />
-			</StaticRouter>
+			</BrowserRouter>
 		</ChannelContext.Provider>
 	</UnassignedSegmentsContext.Provider>
 );

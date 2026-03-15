@@ -2,12 +2,8 @@ import ErrorPage from 'shared/pages/ErrorPage';
 import React, {useEffect} from 'react';
 import {Channel} from 'shared/components/channels-menu';
 import {getDefaultChannel} from 'shared/components/channels-menu';
-import {matchPath} from 'react-router-dom';
+import {matchPath, useNavigate} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
-
-type History = {
-	replace: (path: string) => void;
-};
 
 type Location = {
 	pathname: string;
@@ -18,8 +14,8 @@ interface IWrappedComponentProps {
 	channels: Array<Channel>;
 	defaultChannelId: string;
 	groupId: string;
-	history: History;
 	location: Location;
+	navigate: (path: string) => void;
 }
 
 const checkValidChannel = (
@@ -29,24 +25,23 @@ const checkValidChannel = (
 	channels,
 	defaultChannelId,
 	groupId,
-	history,
 	location,
 	...otherProps
 }) => {
+	const navigate = useNavigate();
+
 	useEffect(() => {
-		const isHome = matchPath(location.pathname, {
-			exact: true,
-			path: Routes.WORKSPACE_WITH_ID
-		});
+		const isHome = matchPath(Routes.WORKSPACE_WITH_ID, location.pathname);
 
 		if (isHome) {
 			const channel = getDefaultChannel(defaultChannelId, channels);
 
-			history.replace(
+			navigate(
 				toRoute(Routes.SITES, {
 					...(channel && {channelId: channel.id}),
 					groupId
-				})
+				}),
+				{replace: true}
 			);
 		}
 	}, []);
@@ -66,8 +61,8 @@ const checkValidChannel = (
 			channels={channels}
 			defaultChannelId={channelId}
 			groupId={groupId}
-			history={history}
 			location={location}
+			navigate={navigate}
 		/>
 	);
 };

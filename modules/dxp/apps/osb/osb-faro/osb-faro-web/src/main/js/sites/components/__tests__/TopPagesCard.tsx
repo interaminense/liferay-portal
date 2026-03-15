@@ -3,8 +3,9 @@ import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import TopPagesCard from '../TopPagesCard';
-import {ApolloProvider} from '@apollo/react-components';
-import {MockedProvider} from '@apollo/react-testing';
+import {ApolloProvider} from '@apollo/client/react';
+import {BrowserRouter} from 'react-router';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {
 	mockPreferenceReq,
 	mockSitesTopPagesReq,
@@ -13,7 +14,6 @@ import {
 import {Provider} from 'react-redux';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -35,7 +35,7 @@ const DefaultComponent = () => (
 	<Provider store={mockStore()}>
 		<ApolloProvider client={client}>
 			<BasePage.Context.Provider value={MOCK_CONTEXT}>
-				<StaticRouter>
+				<BrowserRouter>
 					<MockedProvider
 						mocks={[
 							mockTimeRangeReq(),
@@ -51,7 +51,7 @@ const DefaultComponent = () => (
 							label='card label'
 						/>
 					</MockedProvider>
-				</StaticRouter>
+				</BrowserRouter>
 			</BasePage.Context.Provider>
 		</ApolloProvider>
 	</Provider>

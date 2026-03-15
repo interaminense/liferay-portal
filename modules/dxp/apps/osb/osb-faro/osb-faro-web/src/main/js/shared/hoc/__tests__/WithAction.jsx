@@ -3,7 +3,7 @@ import withAction from '../WithAction';
 import {compose} from 'redux';
 import {RemoteData} from '../../util/records';
 import {renderWithStore} from 'test/mock-store';
-import {withStaticRouter} from 'test/mock-router';
+import {withBrowserRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -44,7 +44,7 @@ describe('withAction', () => {
 
 	it('should render error if the RemoteData has error', () => {
 		const WrappedComponent = compose(
-			withStaticRouter,
+			withBrowserRouter,
 			withAction(action, () => new RemoteData({error: true}))
 		)(jest.fn());
 
@@ -55,7 +55,7 @@ describe('withAction', () => {
 
 	it('should render a custom error message', () => {
 		const WrappedComponent = compose(
-			withStaticRouter,
+			withBrowserRouter,
 			withAction(action, () => new RemoteData({error: true}), {
 				errorPageProps: {
 					message: 'my fancy message, oh so fancy'
@@ -70,7 +70,7 @@ describe('withAction', () => {
 
 	it('should render the wrapped component if bypassErrorPage is true even if the RemoteData has an error', () => {
 		const WrappedComponent = compose(
-			withStaticRouter,
+			withBrowserRouter,
 			withAction(
 				action,
 				() => new RemoteData({data: {test: 'test'}, error: true}),

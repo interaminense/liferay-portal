@@ -4,14 +4,14 @@ import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
 import ClaySticker from '@clayui/sticker';
 import getCN from 'classnames';
-import React, {useEffect, useState} from 'react';
 import {Alert} from 'shared/types';
 import {ClayCheckbox} from '@clayui/form';
 import {modalTypes} from 'shared/actions/modals';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {Text} from '@clayui/core';
-import {useHistory, useParams} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router';
 import {useWizardPage} from 'settings/components/base-page/WizardPageContext';
 import {WizardPageButtonGroup} from 'settings/components/base-page/WizardPageButtonGroup';
 
@@ -23,7 +23,7 @@ const AssignIndividualsDataToPropertiesStep = ({
 	open,
 	updateDataSourceFn
 }) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const {groupId} = useParams();
 	const [selectedItems, setSelectedItems] = useState([]);
 	const [allChannelsSelected, setAllChannelsSelected] = useState(false);
@@ -72,13 +72,13 @@ const AssignIndividualsDataToPropertiesStep = ({
 
 					onSubmit(dataSource);
 
-					history.push(
+					navigate(
 						toRoute(Routes.SETTINGS_DATA_SOURCE, {
 							groupId,
 							id: dataSource.id
 						})
 					);
-				} catch (error) {
+				} catch (_error) {
 					addAlert({
 						alertType: Alert.Types.Error,
 						message: Liferay.Language.get(

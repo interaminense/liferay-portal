@@ -10,7 +10,7 @@ import {DownloadReportButton} from './DownloadReportButton';
 import {sub} from 'shared/util/lang';
 import {toLocale} from 'shared/util/numbers';
 import {useDispatch} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 interface IDownloadStaticCSVReport {
 	children?: any;
@@ -98,7 +98,7 @@ export const DownloadStaticCSVReport: React.FC<IDownloadStaticCSVReport> = ({
 									})
 								);
 							}
-						} catch (e) {
+						} catch (_error) {
 							dispatch(
 								addAlert({
 									alertType: Alert.Types.Error,

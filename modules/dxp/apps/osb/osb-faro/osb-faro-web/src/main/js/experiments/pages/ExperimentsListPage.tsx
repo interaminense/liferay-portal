@@ -16,8 +16,8 @@ import {Routes, toRoute} from 'shared/util/router';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
-import {useParams} from 'react-router-dom';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 

@@ -2,11 +2,14 @@ import '@clayui/css/lib/css/atlas.css';
 
 // eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
 import '../css/main.scss';
+
 import './external-scripts';
 
 import App from './App';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 
-ReactDOM.render(<App />, document.getElementById('faroApp'));
+const container = document.getElementById('faroApp');
+const root = createRoot(container);
+
+root.render(<App />);

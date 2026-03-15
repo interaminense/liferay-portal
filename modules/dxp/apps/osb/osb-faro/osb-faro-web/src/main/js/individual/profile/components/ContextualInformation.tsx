@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {
 	DataDrivenConfig,
 	GeneralInfoSection
@@ -74,7 +74,9 @@ const CONTEXTUAL_INFO_LABEL_MAP: Record<string, string> = {
 	uuid: 'UUID'
 };
 
-const ContextualInformation: React.FC<IContextualInfoProps> = ({
+const ContextualInformation: React.FC<
+	PropsWithChildren<IContextualInfoProps>
+> = ({
 	children: emptyState,
 	contactId,
 	contextData,

@@ -24,7 +24,7 @@ import {ISegmentEditorCustomInputBase} from '../utils/types';
 import {NAME} from 'shared/util/pagination';
 import {OrderByDirections, SegmentTypes} from 'shared/util/constants';
 import {SafeResults} from 'shared/hoc/util';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 
 type Touched = {
 	attribute: boolean;

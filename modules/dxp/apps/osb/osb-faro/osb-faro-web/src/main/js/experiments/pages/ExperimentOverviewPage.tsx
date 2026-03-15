@@ -20,9 +20,18 @@ import {Status} from 'experiments/components/summary-card/types';
 import {SummaryCard} from 'experiments/components/summary-card/SummaryCard';
 import {useChannelContext} from 'shared/context/channel';
 import {useModal} from '@clayui/modal';
-import {useParams} from 'react-router-dom';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 import {VariantCard} from 'experiments/components/variant-card/VariantCard';
+
+type Experiment = {
+	id: string;
+	name: string;
+	pageURL: string;
+	publishable: boolean;
+	status: string;
+	type: string;
+};
 
 const ExperimentActions = ({experiment}) => {
 	const {id, pageURL, publishable, status} = experiment;
@@ -56,10 +65,13 @@ const ExperimentActions = ({experiment}) => {
 const ExperimentOverviewPage = () => {
 	const {channelId, id} = useParams();
 
-	const {data, error, loading} = useQuery(EXPERIMENT_STATUS_QUERY, {
-		fetchPolicy: 'no-cache',
-		variables: {channelId, experimentId: id}
-	});
+	const {data, error, loading} = useQuery<{experiment: Experiment}>(
+		EXPERIMENT_STATUS_QUERY,
+		{
+			fetchPolicy: 'no-cache',
+			variables: {channelId, experimentId: id}
+		}
+	);
 
 	return (
 		<StatesRenderer error={!!error} loading={loading}>
@@ -90,7 +102,7 @@ const ExperimentOverviewContent = ({status}) => {
 		Query = EXPERIMENT_DRAFT_QUERY;
 	}
 
-	const {data, error, loading} = useQuery(Query, {
+	const {data, error, loading} = useQuery<{experiment: Experiment}>(Query, {
 		fetchPolicy: 'network-only',
 		variables: {channelId, experimentId: id}
 	});
@@ -146,7 +158,6 @@ const ExperimentOverviewContent = ({status}) => {
 							<BasePage.Header.NavBar
 								items={[
 									{
-										exact: true,
 										label: Liferay.Language.get('report'),
 										route: Routes.TESTS_OVERVIEW
 									}

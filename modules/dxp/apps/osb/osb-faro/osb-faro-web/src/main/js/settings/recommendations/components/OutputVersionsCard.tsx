@@ -14,7 +14,7 @@ import {
 import {CUSTOM_DATE_FORMAT} from 'shared/util/date';
 import {getFormattedTitle} from 'shared/components/NoResultsDisplay';
 import {getMapResultToProps} from 'shared/hoc/mappers/metrics';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {
 	JOB_RUN_FREQUENCIES_LABEL_MAP,
 	JOB_RUN_STATUSES_DISPLAY_MAP,

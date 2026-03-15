@@ -8,10 +8,10 @@ import RouteNotFound from 'shared/components/RouteNotFound';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
 import {Routes, toRoute} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
+import {useParams} from 'react-router';
 
 const Overview = lazy(
 	() =>
@@ -20,7 +20,6 @@ const Overview = lazy(
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('overview'),
 		route: Routes.COMMERCE
 	}
@@ -134,19 +133,16 @@ const CommerceDashboard: React.FC<ICommerceDashboardProps> = ({router}) => {
 							/>
 
 							<StatesRenderer.Success>
-								<Switch>
-									<BundleRouter
-										componentProps={{
-											channelName: selectedChannelName
-										}}
-										data={Overview}
-										destructured={false}
-										exact
-										path={Routes.COMMERCE}
-									/>
+								<BundleRouter
+									componentProps={{
+										channelName: selectedChannelName
+									}}
+									data={Overview}
+									destructured={false}
+									path={Routes.COMMERCE}
+								/>
 
-									<RouteNotFound />
-								</Switch>
+								<RouteNotFound />
 							</StatesRenderer.Success>
 						</StatesRenderer>
 					</Suspense>

@@ -1,15 +1,15 @@
 import InterestsCard from '../InterestsCard';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockIndividualInterestsReq} from 'test/graphql-data';
 import {omit} from 'lodash';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '456',
 		groupId: '123'

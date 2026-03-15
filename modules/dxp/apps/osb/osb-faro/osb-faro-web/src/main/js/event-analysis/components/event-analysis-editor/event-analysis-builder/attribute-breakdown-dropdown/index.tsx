@@ -28,7 +28,7 @@ import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import {DISPLAY_NAME} from 'shared/util/pagination';
 import {OrderByDirections} from 'shared/util/constants';
 import {SafeResults} from 'shared/hoc/util';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 
 const connector = connect(null, {close, open});
 

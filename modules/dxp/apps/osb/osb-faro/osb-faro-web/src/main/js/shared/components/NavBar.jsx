@@ -2,7 +2,7 @@ import getCN from 'classnames';
 import omitDefinedProps from 'shared/util/omitDefinedProps';
 import React from 'react';
 import {addContext} from 'shared/util/clay';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {PropTypes} from 'prop-types';
 import {Stack} from 'immutable';
 export const CONTEXT = 'navbar';
@@ -45,10 +45,6 @@ class Brand extends React.Component {
 }
 
 class NavBar extends React.Component {
-	static childContextTypes = {
-		clay: PropTypes.instanceOf(Stack)
-	};
-
 	static defaultProps = {
 		expand: false,
 		managementBar: false,
@@ -63,6 +59,10 @@ class NavBar extends React.Component {
 		managementBar: PropTypes.bool,
 		pageNav: PropTypes.bool,
 		underline: PropTypes.bool
+	};
+
+	static childContextTypes = {
+		clay: PropTypes.instanceOf(Stack)
 	};
 
 	getChildContext() {

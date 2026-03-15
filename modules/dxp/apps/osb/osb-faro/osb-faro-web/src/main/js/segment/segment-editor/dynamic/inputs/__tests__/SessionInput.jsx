@@ -1,10 +1,10 @@
 import client from 'shared/apollo/client';
 import React from 'react';
 import SessionInput from '../SessionInput';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockPreferenceReq} from 'test/graphql-data';
 import {Property} from 'shared/util/records';
 import {PropertyTypes, RelationalOperators} from '../../utils/constants';

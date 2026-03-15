@@ -1,12 +1,12 @@
 import ClayIcon from '@clayui/icon';
 import getCN from 'classnames';
 import Loading from 'shared/components/Loading';
-import React, {FC, useState} from 'react';
+import React, {FC, PropsWithChildren, useState} from 'react';
 import Sticker from './Sticker';
 import TextTruncate from './TextTruncate';
 import {Colors} from 'shared/util/colors-size';
 import {formatDateToTimeZone} from 'shared/util/date';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {UserSessionAttributes} from 'shared/util/activities';
 
 const DEVICE_ICONS_MAP = {
@@ -149,11 +149,13 @@ const TimelineItem: FC<ITimelineItemProps> = ({
 	);
 };
 
-const TimelinePanelBody: FC<{
-	expandable: boolean;
-	expanded: boolean;
-	setExpanded: (expandable: boolean) => void;
-}> = ({children, expandable, expanded, setExpanded}) => {
+const TimelinePanelBody: FC<
+	PropsWithChildren<{
+		expandable: boolean;
+		expanded: boolean;
+		setExpanded: (expandable: boolean) => void;
+	}>
+> = ({children, expandable, expanded, setExpanded}) => {
 	const toggleExpand = () => {
 		if (expandable) {
 			setExpanded(!expanded);

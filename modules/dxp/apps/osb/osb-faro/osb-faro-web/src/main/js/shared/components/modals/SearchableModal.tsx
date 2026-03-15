@@ -87,7 +87,7 @@ const SearchableModal: React.FC<ISearchableModalProps> = ({
 		if (page === 1 && data) {
 			onChange(data?.items);
 		} else if (data) {
-			onChange([...items, ...data?.items]);
+			onChange([...items, ...(data?.items ?? {})]);
 		}
 	}, [data]);
 

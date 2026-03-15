@@ -4,7 +4,7 @@ import InterestTopics from '../InterestTopics';
 import mockStore, {mockStoreData, toRD} from 'test/mock-store';
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';

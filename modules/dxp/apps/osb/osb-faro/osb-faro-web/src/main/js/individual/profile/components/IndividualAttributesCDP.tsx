@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {
 	DataDrivenConfig,
 	GeneralInfoSection
@@ -56,12 +56,9 @@ const contextualInfoConfig: DataDrivenConfig = [
 	}
 ];
 
-const IndividualAttributesCDP: React.FC<IIndividualAttributesProps> = ({
-	children: emptyState,
-	contactId,
-	propertiesData,
-	showEmptyState
-}) => {
+const IndividualAttributesCDP: React.FC<
+	PropsWithChildren<IIndividualAttributesProps>
+> = ({children: emptyState, contactId, propertiesData, showEmptyState}) => {
 	const getValue = (key: string): string | undefined => {
 		if (key === 'birthDate') {
 			const birthDate = propertiesData?.get('birthDate');

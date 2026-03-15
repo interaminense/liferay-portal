@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TypeTrendCard from '../TypeTrendCard';
 import {cleanup, render} from '@testing-library/react';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockIndividualMetricsReq} from 'test/graphql-data';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '123123'
 	})

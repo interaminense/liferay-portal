@@ -1,11 +1,9 @@
-import BasePage from 'shared/components/base-page';
 import Card from 'shared/components/Card';
 import ClayLink from '@clayui/link';
 import CohortAnalysis from 'sites/components/cohort-analysis';
 import CohortQuery from 'shared/queries/CohortQuery';
 import Form from 'shared/components/form';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
-import React, {useContext, useState} from 'react';
 import URLConstants from 'shared/util/url-constants';
 import {compose} from 'shared/hoc';
 import {
@@ -14,10 +12,12 @@ import {
 	VISITORS,
 	VISITORS_TYPE_OPTIONS
 } from 'sites/components/cohort-analysis/utils';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {mapPropsToOptions, mapResultToProps} from './mappers/cohort-query';
 import {Option, Picker} from '@clayui/core';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
+import {useParams} from 'react-router';
+import {useState} from 'react';
 import {withError, withLoading} from 'shared/hoc/util';
 
 const withEmpty = Component => ({empty, ...otherProps}) => {
@@ -64,14 +64,9 @@ const CohortAnalysisWithData = compose(
 )(CohortAnalysis);
 
 const CohortAnalysisCard = () => {
-	const {router} = useContext(BasePage.Context);
-
+	const {channelId} = useParams();
 	const [interval, setInterval] = useState(DAY);
 	const [visitorsType, setVisitorsType] = useState(VISITORS);
-
-	const {
-		params: {channelId}
-	} = router;
 
 	return (
 		<Card

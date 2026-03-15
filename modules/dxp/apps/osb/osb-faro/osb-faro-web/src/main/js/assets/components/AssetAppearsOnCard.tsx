@@ -19,8 +19,8 @@ import {metricsListColumns} from 'shared/util/table-columns';
 import {pickBy} from 'lodash';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {Routes} from 'shared/util/router';
-import {useParams} from 'react-router-dom';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
 
 const {cur, delta, deltaValues} = FaroConstants.pagination;
@@ -92,18 +92,21 @@ const AssetAppearsOnStateRenderer = ({
 		start: (cur - 1) * delta
 	});
 
-	const {data, error, loading} = useQuery(AssetAppearsOnQuery, {
-		fetchPolicy: 'network-only',
-		variables: {
-			assetId,
-			assetType: assetType.toUpperCase(),
-			channelId,
-			selectedMetrics: accessors,
-			title: getSafeDecodedURIComponent(title),
-			...pagination,
-			...getSafeRangeSelectors(rangeSelectors)
+	const {data, error, loading} = useQuery<{assetPages: {total: number}}>(
+		AssetAppearsOnQuery,
+		{
+			fetchPolicy: 'network-only',
+			variables: {
+				assetId,
+				assetType: assetType.toUpperCase(),
+				channelId,
+				selectedMetrics: accessors,
+				title: getSafeDecodedURIComponent(title),
+				...pagination,
+				...getSafeRangeSelectors(rangeSelectors)
+			}
 		}
-	});
+	);
 
 	return (
 		<StatesRenderer

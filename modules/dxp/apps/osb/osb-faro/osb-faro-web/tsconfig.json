@@ -5,14 +5,12 @@
 		"baseUrl": "./src/main/js",
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
-		"jsx": "react",
+		"jsx": "react-jsx",
 		"module": "esnext",
 		"moduleResolution": "node",
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"target": "ES5"
 	},
-	"include": [
-		"./src/main/js/**/*"
-	]
+	"include": ["./src/main/js/**/*"]
 }

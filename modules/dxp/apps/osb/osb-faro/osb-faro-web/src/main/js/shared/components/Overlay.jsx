@@ -63,15 +63,6 @@ const OverlayContent = React.forwardRef(
 );
 
 export default class Overlay extends React.Component {
-	static childContextTypes = {
-		parentOverlay: PropTypes.shape({
-			addChildOverlay: PropTypes.func,
-			onMouseEnter: PropTypes.func,
-			onMouseLeave: PropTypes.func,
-			removeChildOverlay: PropTypes.func
-		})
-	};
-
 	static defaultProps = {
 		alignment: 'bottomLeft',
 		forceAlignment: true,
@@ -92,6 +83,15 @@ export default class Overlay extends React.Component {
 		onOutsideClick: PropTypes.func,
 		showDelay: PropTypes.number,
 		usePortal: PropTypes.bool
+	};
+
+	static childContextTypes = {
+		parentOverlay: PropTypes.shape({
+			addChildOverlay: PropTypes.func,
+			onMouseEnter: PropTypes.func,
+			onMouseLeave: PropTypes.func,
+			removeChildOverlay: PropTypes.func
+		})
 	};
 
 	state = {

@@ -14,7 +14,7 @@ import {
 } from 'shared/util/pagination';
 import {EXCLUDE, INCLUDE} from 'settings/recommendations/utils/utils';
 import {isArray, isString} from 'lodash';
-import {useLazyQuery} from '@apollo/react-hooks';
+import {useLazyQuery} from '@apollo/client/react';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 import {withEmpty, withPaginationBar} from 'shared/hoc';
 
@@ -49,12 +49,11 @@ const NewRuleModal: React.FC<INewRuleModalProps> = ({onClose, onSubmit}) => {
 		setInitialRender(false);
 	}, []);
 
-	const [getPageAssets, {data, loading}] = useLazyQuery(
-		RecommendationPageAssetsQuery,
-		{
-			fetchPolicy: 'network-only'
-		}
-	);
+	const [getPageAssets, {data, loading}] = useLazyQuery<{
+		pageAssets: {pageAssets: any[]; total: number};
+	}>(RecommendationPageAssetsQuery, {
+		fetchPolicy: 'network-only'
+	});
 
 	const filter: string = `${metadata} ${
 		exactMatch ? '=' : '~'

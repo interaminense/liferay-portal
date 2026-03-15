@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {Text} from '@clayui/core';
 
 interface IUsageMetricProps {
@@ -6,7 +6,7 @@ interface IUsageMetricProps {
 	title: string;
 }
 
-export const UsageMetric: React.FC<IUsageMetricProps> = ({
+export const UsageMetric: React.FC<PropsWithChildren<IUsageMetricProps>> = ({
 	children,
 	description,
 	title

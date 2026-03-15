@@ -52,7 +52,7 @@ const ValueInput: React.FC<IValueInputProps> = ({
 						createOption(option, dataType)
 					)}
 					onBlur={handleAttributeValueBlur}
-					onSelectionChange={value => {
+					onSelectionChange={(value: string) => {
 						onChange({
 							criterion: {value},
 							touched: {attributeValue: true},

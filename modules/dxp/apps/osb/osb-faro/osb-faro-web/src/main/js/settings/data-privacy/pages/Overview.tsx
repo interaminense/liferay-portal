@@ -26,7 +26,8 @@ import {Option, Picker} from '@clayui/core';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/client/react';
+import {useParams} from 'react-router';
 
 let RETENTION_OPTIONS = [SEVEN_MONTHS, THIRTEEN_MONTHS];
 
@@ -60,14 +61,14 @@ const fetchDownload = ({fromDate, groupId, toDate, type}) =>
 
 interface IOverviewProps {
 	close: () => void;
-	groupId: string;
 	open: (modalType: string, options: object) => void;
 }
 
-export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
+export const Overview: React.FC<IOverviewProps> = ({close, open}) => {
+	const {groupId} = useParams();
 	const [updatePreference] = useMutation(PreferenceMutation);
 
-	const {data} = useQuery(PreferenceQuery, {
+	const {data} = useQuery<{preference: {value: string}}>(PreferenceQuery, {
 		variables: {key: DATA_RETENTION_PERIOD_KEY}
 	});
 

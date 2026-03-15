@@ -20,6 +20,7 @@ import {connect} from 'react-redux';
 import {Formik} from 'formik';
 import {Modal} from 'shared/types';
 import {Project, TimeZone} from 'shared/util/records';
+import {Routes, toRoute} from 'shared/util/router';
 import {sequence} from 'shared/util/promise';
 import {sub} from 'shared/util/lang';
 import {Text} from '@clayui/core';
@@ -588,6 +589,16 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 					)}
 				</Form>
 			</Sheet>
+
+			<ClayLink
+				button
+				className='mt-4'
+				displayType='secondary'
+				href={toRoute(Routes.BASE)}
+				small
+			>
+				{Liferay.Language.get('go-back-to-your-workspaces')}
+			</ClayLink>
 		</div>
 	);
 };

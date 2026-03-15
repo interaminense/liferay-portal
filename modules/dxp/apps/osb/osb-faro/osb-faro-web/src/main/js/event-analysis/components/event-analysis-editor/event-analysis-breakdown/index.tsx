@@ -31,7 +31,7 @@ import {
 import {OrderedMap} from 'immutable';
 import {SafeResults} from 'shared/hoc/util';
 import {sub} from 'shared/util/lang';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 import {withPaginationBar} from 'shared/hoc';
 import {WithRangeKeyProps} from 'shared/hoc/WithRangeKey';

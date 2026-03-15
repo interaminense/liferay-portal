@@ -16,8 +16,8 @@ import {
 import {RangeSelectors} from 'shared/types';
 import {SANKEY_WIDTH, SECONDARY_NODE_COLOR} from './utils';
 import {TitleKey, Type} from './types';
-import {useParams} from 'react-router-dom';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 import {useResize} from 'shared/hooks/useResize';
 import {v4 as uuidv4} from 'uuid';
 
@@ -108,17 +108,20 @@ const PagePathCard: React.FC<IPagePathCardProps> = ({
 }) => {
 	const cardRef = useRef(null);
 	const {channelId, title, touchpoint} = useParams();
-	const {data, error, loading} = useQuery(PagePathQuery, {
-		variables: {
-			canonicalUrl: getSafeTouchpoint(touchpoint),
-			channelId,
-			title: getSafeDecodedURIComponent(title),
-			...(selectedSegment?.id && {
-				segmentId: selectedSegment.id
-			}),
-			...getSafeRangeSelectors(rangeSelectors)
+	const {data, error, loading} = useQuery<{pagePath: pagePathNode}>(
+		PagePathQuery,
+		{
+			variables: {
+				canonicalUrl: getSafeTouchpoint(touchpoint),
+				channelId,
+				title: getSafeDecodedURIComponent(title),
+				...(selectedSegment?.id && {
+					segmentId: selectedSegment.id
+				}),
+				...getSafeRangeSelectors(rangeSelectors)
+			}
 		}
-	});
+	);
 
 	const formattedData = data ? formatData(data) : {links: [], nodes: []};
 	const emptyState =

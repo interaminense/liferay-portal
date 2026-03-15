@@ -52,6 +52,8 @@ export const Link: React.FC<any> = props => {
 			crossOrigin={undefined}
 			fr={undefined}
 			key={`CUSTOM_LINK_${index}`}
+			onPointerEnterCapture={() => {}}
+			onPointerLeaveCapture={() => {}}
 			opacity={0.2}
 			path={undefined}
 		>

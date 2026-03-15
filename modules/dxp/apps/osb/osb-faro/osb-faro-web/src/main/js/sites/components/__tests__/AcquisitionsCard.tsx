@@ -3,17 +3,17 @@ import BasePage from 'shared/components/base-page';
 import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-components';
+import {ApolloProvider} from '@apollo/client/react';
+import {BrowserRouter} from 'react-router';
 import {CompositionTypes, RangeKeyTimeRanges} from 'shared/util/constants';
 import {
 	mockAcquisitionsReq,
 	mockPreferenceReq,
 	mockTimeRangeReq
 } from 'test/graphql-data';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -35,7 +35,7 @@ const DefaultComponent = () => (
 	<Provider store={mockStore()}>
 		<ApolloProvider client={client}>
 			<BasePage.Context.Provider value={MOCK_CONTEXT}>
-				<StaticRouter>
+				<BrowserRouter>
 					<MockedProvider
 						mocks={[
 							mockTimeRangeReq(),
@@ -48,7 +48,7 @@ const DefaultComponent = () => (
 							label='card label'
 						/>
 					</MockedProvider>
-				</StaticRouter>
+				</BrowserRouter>
 			</BasePage.Context.Provider>
 		</ApolloProvider>
 	</Provider>

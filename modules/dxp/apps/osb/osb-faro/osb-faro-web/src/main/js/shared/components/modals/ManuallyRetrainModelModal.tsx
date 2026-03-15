@@ -16,7 +16,7 @@ import {
 } from 'settings/recommendations/utils/utils';
 import {get} from 'lodash';
 import {JobRunDataPeriods} from 'shared/util/constants';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 
 const ACTIVITIES_THRESHOLD = 1000;
 
@@ -69,7 +69,7 @@ const ManuallyRetrainModelModal: React.FC<IManuallyRetrainModelModalProps> = ({
 					data: {
 						activities: {total}
 					}
-				}) => {
+				}: any) => {
 					if (total < ACTIVITIES_THRESHOLD) {
 						error = Liferay.Language.get(
 							'the-interaction-period-does-not-meet-the-1000-event-minimum-required-to-train-the-model.-please-add-pages-or-increase-the-period'

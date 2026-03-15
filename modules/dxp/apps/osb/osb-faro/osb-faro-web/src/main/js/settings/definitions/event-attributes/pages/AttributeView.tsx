@@ -19,23 +19,19 @@ import {getDefinitions, getEventAttributes} from 'shared/util/breadcrumbs';
 import {getSafeDisplayValue} from 'shared/util/util';
 import {HasModal, Modal} from 'shared/types';
 import {SafeResults} from 'shared/hoc/util';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 
 interface IAttributeViewProps
 	extends React.HTMLAttributes<HTMLElement>,
 		HasModal {
-	attributeId: string;
 	close: Modal.close;
-	groupId: string;
 	open: Modal.open;
 }
 
-const AttributeView: React.FC<IAttributeViewProps> = ({
-	attributeId,
-	close,
-	groupId,
-	open
-}) => {
+const AttributeView: React.FC<IAttributeViewProps> = ({close, open}) => {
+	const {attributeId, groupId} = useParams();
+
 	const result = useQuery<
 		EventAttributeDefinitionData,
 		EventAttributeDefinitionVariables
@@ -163,4 +159,6 @@ const AttributeView: React.FC<IAttributeViewProps> = ({
 	);
 };
 
-export default connect(null, {close, open})(AttributeView);
+export default connect(null, {close, open})(
+	AttributeView
+) as React.ComponentProps<any>;

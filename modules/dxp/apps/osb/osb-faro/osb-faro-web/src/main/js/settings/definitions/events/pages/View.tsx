@@ -12,16 +12,17 @@ import {Event} from 'event-analysis/utils/types';
 import {getDefinitions, getEvents} from 'shared/util/breadcrumbs';
 import {HasModal, Modal} from 'shared/types';
 import {SafeResults} from 'shared/hoc/util';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 
 interface IViewProps extends React.HTMLAttributes<HTMLElement>, HasModal {
 	close: Modal.close;
-	eventId: string;
-	groupId: string;
 	open: Modal.open;
 }
 
-const View: React.FC<IViewProps> = ({close, eventId, groupId, open}) => {
+const View: React.FC<IViewProps> = ({close, open}) => {
+	const {eventId, groupId} = useParams();
+
 	const result = useQuery<EventDefinitionData, EventDefinitionVariables>(
 		EVENT_DEFINITION_QUERY,
 		{

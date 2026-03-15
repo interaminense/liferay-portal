@@ -1,5 +1,4 @@
 import '@testing-library/jest-dom';
-import 'jest-extended';
 import * as pedantic from './pedantic';
 import lang from './lang';
 import {TextDecoder, TextEncoder} from 'util';
@@ -10,6 +9,25 @@ jest.mock('shared/util/svg');
 jest.mock('shared/api');
 jest.mock('shared/components/DocumentTitle');
 jest.mock('react-dom');
+
+jest.mock('jspdf', () => ({
+	__esModule: true,
+	default: jest.fn().mockImplementation(() => ({
+		addImage: jest.fn(),
+		addPage: jest.fn(),
+		internal: {
+			pageSize: {
+				getHeight: () => 841.89,
+				getWidth: () => 595.28
+			}
+		},
+		save: jest.fn(),
+		setFont: jest.fn(),
+		setFontSize: jest.fn(),
+		setProperties: jest.fn(),
+		text: jest.fn()
+	}))
+}));
 
 document.body.className = 'dxp';
 

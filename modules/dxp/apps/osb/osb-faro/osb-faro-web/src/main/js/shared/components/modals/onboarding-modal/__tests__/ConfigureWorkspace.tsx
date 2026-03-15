@@ -1,11 +1,11 @@
 import ConfigureWorkspace from '../ConfigureWorkspace';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render, waitFor} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {noop} from 'lodash';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router-dom';
 import {updateProject} from 'shared/actions/projects';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useRequest} from 'shared/hooks/useRequest';
@@ -52,14 +52,14 @@ const defaultStore = mockStore(
 
 const WrapperComponent = ({store = defaultStore, ...props}) => (
 	<Provider store={store}>
-		<StaticRouter>
+		<BrowserRouter>
 			<ConfigureWorkspace
 				groupId={mockGroupId}
 				onClose={noop}
 				onNext={noop}
 				{...props}
 			/>
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

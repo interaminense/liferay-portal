@@ -10,7 +10,7 @@ import {
 	compose,
 	withAdminPermission,
 	withDataSource,
-	withHistory,
+	withNavigate,
 	withRequest,
 	withSheet
 } from 'shared/hoc';
@@ -31,17 +31,13 @@ const WrappedDeleteDataSource = compose<any>(
 	)
 )(DeleteDataSource);
 
-type History = {
-	push: (path: string) => void;
-};
-
 interface IClearDataProps extends React.HTMLAttributes<HTMLElement> {
 	addAlert: Alert.AddAlert;
 	dataSource: DataSource;
 	entitiesCount: number;
 	groupId: string;
-	history: History;
 	id: string;
+	navigate: (path: string) => void;
 }
 
 export const ClearData: React.FC<IClearDataProps> = ({
@@ -50,8 +46,8 @@ export const ClearData: React.FC<IClearDataProps> = ({
 	dataSource,
 	entitiesCount,
 	groupId,
-	history,
-	id
+	id,
+	navigate
 }) => (
 	<BasePage
 		breadcrumbItems={[
@@ -103,7 +99,7 @@ export const ClearData: React.FC<IClearDataProps> = ({
 								) as string
 							});
 
-							history.push(
+							navigate(
 								toRoute(Routes.SETTINGS_DATA_SOURCE, {
 									groupId,
 									id
@@ -145,7 +141,7 @@ export const ClearData: React.FC<IClearDataProps> = ({
 );
 
 export default compose(
-	withHistory,
+	withNavigate,
 	withAdminPermission,
 	withDataSource,
 	connect(null, {addAlert})

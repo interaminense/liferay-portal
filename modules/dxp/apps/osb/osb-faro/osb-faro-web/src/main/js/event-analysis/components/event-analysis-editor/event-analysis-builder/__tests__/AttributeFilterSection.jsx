@@ -1,11 +1,11 @@
 import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-components';
+import {ApolloProvider} from '@apollo/client/react';
 import {AttributeFilterSection} from '../AttributeFilterSection';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';

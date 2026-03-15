@@ -7,19 +7,13 @@ import ClayLink from '@clayui/link';
 import ClayNavigationBar from '@clayui/navigation-bar';
 import getCN from 'classnames';
 import Loading from 'shared/components/Loading';
-import React, {lazy, Suspense, useState} from 'react';
-import RouteNotFound from 'shared/components/RouteNotFound';
-import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
+import UserList from './UserList';
+import UserRequest from './UserRequest';
+import {getMatchedRoute, Routes as Path, toRoute} from 'shared/util/router';
+import {Route, Routes, useParams} from 'react-router';
+import {Suspense, useState} from 'react';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {UserStatuses} from 'shared/util/constants';
-
-const UserList = lazy(
-	() => import(/* webpackChunkName: "UserManagement" */ './UserList')
-);
-const UserRequest = lazy(
-	() => import(/* webpackChunkName: "UserRequest" */ './UserRequest')
-);
 
 export const User = ({className}) => {
 	const {groupId} = useParams();
@@ -37,12 +31,10 @@ export const User = ({className}) => {
 
 	const NAV_ITEMS = [
 		{
-			exact: true,
 			label: Liferay.Language.get('manage-users'),
-			route: Routes.SETTINGS_USERS
+			route: Path.SETTINGS_USERS
 		},
 		{
-			exact: true,
 			label: (
 				<>
 					{Liferay.Language.get('requests')}
@@ -51,7 +43,7 @@ export const User = ({className}) => {
 					)}
 				</>
 			),
-			route: Routes.SETTINGS_USERS_REQUESTS
+			route: Path.SETTINGS_USERS_REQUESTS
 		}
 	];
 
@@ -94,23 +86,25 @@ export const User = ({className}) => {
 				)}
 
 				<Suspense fallback={<Loading />}>
-					<Switch>
-						<BundleRouter
-							componentProps={{currentUser}}
-							data={UserList}
-							exact
-							path={Routes.SETTINGS_USERS}
+					<Routes>
+						<Route
+							element={<BundleRouter data={UserList} path='*' />}
+							path='*'
 						/>
 
-						<BundleRouter
-							componentProps={{onSetUserRequest}}
-							data={UserRequest}
-							exact
-							path={Routes.SETTINGS_USERS_REQUESTS}
+						<Route
+							element={
+								<BundleRouter
+									componentProps={{onSetUserRequest}}
+									data={UserRequest}
+									path='/requests'
+								/>
+							}
+							path='/requests'
 						/>
+					</Routes>
 
-						<RouteNotFound />
-					</Switch>
+					{/* <RouteNotFound /> */}
 				</Suspense>
 			</Card>
 		</BasePage>

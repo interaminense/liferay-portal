@@ -1,6 +1,6 @@
 import React from 'react';
 import ReadyToGo from '../ReadyToGo';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {noop} from 'lodash';
 

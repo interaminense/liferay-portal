@@ -1,17 +1,17 @@
 import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {Overview} from '../Overview';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router-dom';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		groupId: '23'
 	})
@@ -32,9 +32,9 @@ describe('Data Privacy Overview', () => {
 		const {container, getByText} = render(
 			<ApolloProvider client={client}>
 				<Provider store={mockStore()}>
-					<StaticRouter>
+					<BrowserRouter>
 						<Overview groupId='23' />
-					</StaticRouter>
+					</BrowserRouter>
 				</Provider>
 			</ApolloProvider>
 		);
@@ -56,9 +56,9 @@ describe('Data Privacy Overview', () => {
 		const {getByTestId} = render(
 			<ApolloProvider client={client}>
 				<Provider store={mockStore()}>
-					<StaticRouter>
+					<BrowserRouter>
 						<Overview groupId='23' />
-					</StaticRouter>
+					</BrowserRouter>
 				</Provider>
 			</ApolloProvider>
 		);

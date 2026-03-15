@@ -5,7 +5,7 @@ import {
 	Event,
 	Filter
 } from 'event-analysis/utils/types';
-import {gql} from 'apollo-boost';
+import {gql} from '@apollo/client';
 import {RawRangeSelectors, Sort} from 'shared/types';
 
 interface EventAnalysis extends RawRangeSelectors {

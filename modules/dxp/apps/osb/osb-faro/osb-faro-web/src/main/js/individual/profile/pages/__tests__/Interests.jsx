@@ -1,6 +1,6 @@
 import Interests, {ContributionsCell} from '../Interests';
 import React from 'react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';

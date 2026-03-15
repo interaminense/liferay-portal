@@ -23,7 +23,7 @@ import {
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {sub} from 'shared/util/lang';
 import {toRounded, toThousands} from 'shared/util/numbers';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useRequest} from 'shared/hooks/useRequest';
 
 const connector = connect(null, {

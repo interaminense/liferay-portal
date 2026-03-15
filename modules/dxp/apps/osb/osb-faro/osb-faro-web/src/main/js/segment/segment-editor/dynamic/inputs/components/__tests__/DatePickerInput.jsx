@@ -2,16 +2,16 @@ import client from 'shared/apollo/client';
 import DatePickerInput from '../DatePickerInput';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
 import {cleanup, render} from '@testing-library/react';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockPreferenceReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '456',
 		groupId: '2000',

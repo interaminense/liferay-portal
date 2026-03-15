@@ -4,14 +4,12 @@ import RecommendationList from '../hocs/RecommendationList';
 import {Router} from 'shared/types';
 
 interface IRecommendationsProps {
-	history: {
-		push: (string) => void;
-	};
+	navigate: (string) => void;
 	router: Router;
 }
 
 const Recommendations: React.FC<IRecommendationsProps> = ({
-	history,
+	navigate,
 	router
 }) => {
 	const {groupId} = router.params;
@@ -25,7 +23,7 @@ const Recommendations: React.FC<IRecommendationsProps> = ({
 		>
 			<RecommendationList
 				groupId={groupId}
-				history={history}
+				navigate={navigate}
 				router={router}
 			/>
 		</BasePage>

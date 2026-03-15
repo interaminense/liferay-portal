@@ -234,4 +234,6 @@ const ActivitiesChartTimeline: React.FC<IActivitiesChartTimelineProps> = ({
 	);
 };
 
-export default withSelectedPoint(ActivitiesChartTimeline);
+export default withSelectedPoint(
+	ActivitiesChartTimeline
+) as React.ComponentType<any>;

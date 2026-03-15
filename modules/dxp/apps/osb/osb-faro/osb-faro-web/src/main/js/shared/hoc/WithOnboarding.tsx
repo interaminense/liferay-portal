@@ -3,7 +3,7 @@ import SitesDashboardQuery from 'shared/queries/SitesDashboardQuery';
 import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {isArray} from 'lodash';
 import {OnboardingContext} from 'shared/context/onboarding';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';

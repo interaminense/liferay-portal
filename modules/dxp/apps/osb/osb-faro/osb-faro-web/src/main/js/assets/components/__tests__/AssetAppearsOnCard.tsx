@@ -2,8 +2,9 @@ import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {Accessor, AssetAppearsOnCard} from '../AssetAppearsOnCard';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
 import {AssetTypes} from 'shared/util/constants';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {EmptyStateLink, EmptyStateText} from '../AssetAppearsOnCard';
 import {
@@ -11,16 +12,15 @@ import {
 	mockPreferenceReq,
 	mockTimeRangeReq
 } from 'test/graphql-data';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {Provider} from 'react-redux';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		assetId: 'myBlogId',
 		channelId: '123',
@@ -41,7 +41,7 @@ const WrappedComponent = ({
 }) => (
 	<Provider store={mockStore()}>
 		<ApolloProvider client={client}>
-			<StaticRouter>
+			<BrowserRouter>
 				<MockedProvider
 					mocks={[
 						mockTimeRangeReq(),
@@ -62,7 +62,7 @@ const WrappedComponent = ({
 						emptyStateText={emptyStateText}
 					/>
 				</MockedProvider>
-			</StaticRouter>
+			</BrowserRouter>
 		</ApolloProvider>
 	</Provider>
 );

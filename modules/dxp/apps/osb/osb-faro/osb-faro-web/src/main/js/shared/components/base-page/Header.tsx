@@ -19,7 +19,6 @@ import {pickBy} from 'lodash';
 
 type NavBarItem = {
 	deprecated?: boolean;
-	exact: boolean;
 	label: string;
 	route: string;
 };

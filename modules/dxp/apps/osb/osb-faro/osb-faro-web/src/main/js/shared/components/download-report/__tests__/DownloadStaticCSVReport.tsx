@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render, waitFor} from '@testing-library/react';
 import {CSVType} from '../utils';
 import {DownloadStaticCSVReport} from '../DownloadStaticCSVReport';
@@ -12,8 +12,8 @@ import {Provider} from 'react-redux';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '123',
 		groupId: '456'

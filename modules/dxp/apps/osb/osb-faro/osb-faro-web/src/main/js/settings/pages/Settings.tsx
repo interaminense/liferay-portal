@@ -1,128 +1,49 @@
+import AccessTokenList from 'settings/apis/pages/AccessTokenList';
+import AttributeList from 'settings/definitions/event-attributes/components/AttributeList';
+import AttributeView from 'settings/definitions/event-attributes/pages/AttributeView';
 import BundleRouter from 'route-middleware/BundleRouter';
+import ChannelList from 'settings/channels/pages/ChannelList';
+import ChannelView from 'settings/channels/pages/View';
 import checkProjectState from 'shared/hoc/CheckProjectState';
+import ConfigureCSV from './data-source/ConfigureCSV';
+import CustomEventList from 'settings/definitions/events/components/CustomEventList';
+import DataPrivacyOverview from 'settings/data-privacy/pages/Overview';
+import DataPrivacyRequestLog from 'settings/data-privacy/pages/RequestLog';
+import DataPrivacySuppressedUsers from 'settings/data-privacy/pages/SuppressedUsers';
+import DataSourceList from './DataSourceList';
+import DataSourceOnboarding from './data-source/Onboarding';
+import DeleteDataSource from 'settings/components/DeleteDataSource';
+import Edit from './data-source/Edit';
+import EventBlockList from 'settings/definitions/events/pages/BlockList';
+import EventList from 'settings/definitions/events/components/EventList';
+import EventView from 'settings/definitions/events/pages/View';
+import GlobalAttributeList from 'settings/definitions/event-attributes/components/GlobalAttributeList';
+import IndividualAttributes from 'settings/definitions/pages/IndividualAttributes';
+import InterestTopics from 'settings/definitions/pages/InterestTopics';
 import Loading from 'shared/components/Loading';
-import React, {Fragment, lazy, Suspense} from 'react';
-import RouteNotFound from 'shared/components/RouteNotFound';
+import Overview from 'settings/definitions/pages/Overview';
+import React, {Fragment, Suspense} from 'react';
+import RecomendationCreateItemSimilarity from 'settings/recommendations/pages/CreateItemSimilarity';
+import RecommendationEdit from 'settings/recommendations/pages/Edit';
+import RecommendationList from 'settings/recommendations/hocs/RecommendationList';
+import RecommendationView from 'settings/recommendations/pages/View';
+import TrackedBehaviors from 'settings/definitions/pages/TrackedBehaviors';
+import UploadCSV from './data-source/UploadCSV';
+import UsageOverview from './UsageOverview';
+import UsageOverviewSaaS from './UsageOverviewSaaS';
+import User from './user';
+import View from './data-source/View';
+import Workspace from './Workspace';
 import {compose} from 'shared/hoc';
-import {ENABLE_CSVFILE} from 'shared/util/constants';
-import {Routes} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
+import {
+	DEVELOPER_MODE,
+	ENABLE_BLOCKLIST_KEYWORDS,
+	ENABLE_CSVFILE
+} from 'shared/util/constants';
+import {Route, Routes, useParams} from 'react-router';
+import {Search} from 'settings/definitions/pages/search/Search';
 import {useStore} from 'react-redux';
 import {withOnboarding} from 'shared/hoc';
-
-// APIS
-
-const Apis = lazy(() => import(/* webpackChunkName: "Apis" */ '../apis/pages'));
-
-// CSV data source
-
-const ConfigureCSV = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "ConfigureCSV" */ './data-source/ConfigureCSV'
-		)
-);
-const UploadCSV = lazy(
-	() => import(/* webpackChunkName: "UploadCSV" */ './data-source/UploadCSV')
-);
-
-// Data Privacy
-
-const DataPrivacy = lazy(
-	() => import(/* webpackChunkName: "DataPrivacy" */ '../data-privacy/pages')
-);
-
-// Data source
-
-const DataSource = lazy(
-	() => import(/* webpackChunkName: "DataSource" */ './data-source/View')
-);
-const DataSourceEdit = lazy(
-	() => import(/* webpackChunkName: "DataSourceEdit" */ './data-source/Edit')
-);
-const DataSourceOnboarding = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DataSourceEdit" */ './data-source/Onboarding'
-		)
-);
-const DataSourceList = lazy(
-	() => import(/* webpackChunkName: "DataSourceList" */ './DataSourceList')
-);
-const DeleteDataSource = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DeleteDataSource" */ './data-source/Delete'
-		) as any
-);
-
-// Definitions
-
-const Definitions = lazy(
-	() => import(/* webpackChunkName: "Definitions" */ '../definitions/pages')
-);
-
-// Channels
-
-const ChannelList = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "ChannelList" */ '../channels/pages/ChannelList'
-		)
-);
-
-const ChannelView = lazy(
-	() => import(/* webpackChunkName: "ChannelView" */ '../channels/pages/View')
-);
-
-// Recommendations
-
-const RecommendationList = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "RecommendationList" */ '../recommendations/pages/Recommendations'
-		)
-);
-
-const RecommendationCreateItemSimilarity = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "RecommendationCreateItemSimilarity" */ '../recommendations/pages/CreateItemSimilarity'
-		)
-);
-
-const RecommendationEdit = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "RecommendationEdit" */ '../recommendations/pages/Edit'
-		)
-);
-
-const RecommendationView = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "RecommendationView" */ '../recommendations/pages/View'
-		)
-);
-
-// Other
-
-const UsageOverview = lazy(
-	() => import(/* webpackChunkName: "UsageOverview" */ './UsageOverview')
-);
-
-const UsageOverviewSaaS = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "UsageOverviewSaaS" */ './UsageOverviewSaaS'
-		)
-);
-
-const Users = lazy(() => import(/* webpackChunkName: "Users" */ './user'));
-
-const WorkspaceSettings = lazy(
-	() => import(/* webpackChunkName: "WorkspaceSettings" */ './Workspace')
-);
 
 export const Settings = () => {
 	const {groupId} = useParams();
@@ -139,135 +60,242 @@ export const Settings = () => {
 
 	return (
 		<Suspense fallback={<Loading />}>
-			<Switch>
-				<BundleRouter
-					data={DataSourceList}
-					exact
-					path={Routes.SETTINGS_DATA_SOURCE_LIST}
+			<Routes>
+				<Route
+					element={
+						<BundleRouter
+							data={DataSourceList}
+							path='/data-source'
+						/>
+					}
+					path='data-source'
 				/>
 
-				<BundleRouter
-					data={DataSourceOnboarding}
-					exact
-					path={Routes.SETTINGS_DATA_SOURCE_ONBOARDING}
+				<Route
+					element={
+						<BundleRouter
+							data={DataSourceOnboarding}
+							path='/data-source/:id/onboarding'
+						/>
+					}
+					path='/data-source/:id/onboarding'
 				/>
 
-				<BundleRouter
-					data={DeleteDataSource}
-					path={Routes.SETTINGS_DATA_SOURCE_DELETE}
+				<Route
+					element={
+						<BundleRouter
+							data={DeleteDataSource}
+							path='/data-source/:id/delete'
+						/>
+					}
+					path='/data-source/:id/delete'
 				/>
 
-				<BundleRouter
-					data={DataSourceEdit}
-					exact
-					path={Routes.SETTINGS_DATA_SOURCE_EDIT}
+				<Route
+					element={
+						<BundleRouter
+							data={Edit}
+							path='/data-source/:id/edit'
+						/>
+					}
+					path='/data-source/:id/edit'
 				/>
 
 				{ENABLE_CSVFILE && (
-					<BundleRouter
-						data={ConfigureCSV}
-						exact
-						path={Routes.SETTINGS_CSV_UPLOAD_CONFIGURE}
+					<Route
+						element={
+							<BundleRouter
+								data={ConfigureCSV}
+								path='/data-source/csv/:fileVersionId'
+							/>
+						}
+						path='/data-source/csv/:fileVersionId'
 					/>
 				)}
 
 				{ENABLE_CSVFILE && (
-					<BundleRouter
-						data={UploadCSV}
-						exact
-						path={Routes.SETTINGS_CSV_UPLOAD}
+					<Route
+						element={
+							<BundleRouter
+								data={UploadCSV}
+								path='/data-source/csv'
+							/>
+						}
+						path='/data-source/csv'
 					/>
 				)}
 
-				<BundleRouter
-					data={DataSource}
-					path={Routes.SETTINGS_DATA_SOURCE}
+				<Route
+					element={
+						<BundleRouter data={View} path='/data-source/:id?' />
+					}
+					path='/data-source/:id?'
 				/>
 
-				<BundleRouter data={Users} path={Routes.SETTINGS_USERS} />
+				<Route
+					element={<BundleRouter data={User} path='/users/*' />}
+					path='/users/*'
+				/>
 
 				{!IS_PROJECT_SAAS && (
-					<BundleRouter
-						data={UsageOverview}
-						exact
-						path={Routes.SETTINGS_USAGE}
+					<Route
+						element={
+							<BundleRouter data={UsageOverview} path='/usage' />
+						}
+						path='/usage'
 					/>
 				)}
 
 				{IS_PROJECT_SAAS && (
-					<BundleRouter
-						data={UsageOverviewSaaS}
-						exact
-						path={Routes.SETTINGS_USAGE}
+					<Route
+						element={
+							<BundleRouter
+								data={UsageOverviewSaaS}
+								path='/usage'
+							/>
+						}
+						path='/usage'
 					/>
 				)}
 
-				<BundleRouter
-					data={Definitions}
-					path={Routes.SETTINGS_DEFINITIONS}
+				<Route element={<Overview />} index path='/definitions' />
+
+				{ENABLE_BLOCKLIST_KEYWORDS && (
+					<Route
+						element={<InterestTopics />}
+						path='/definitions/interest-topics'
+					/>
+				)}
+
+				<Route
+					element={<IndividualAttributes />}
+					path='/definitions/individual-attributes'
 				/>
 
-				<BundleRouter
-					data={DataPrivacy}
-					path={Routes.SETTINGS_DATA_PRIVACY}
+				<Route element={<Search />} path='/definitions/search' />
+
+				{DEVELOPER_MODE && (
+					// TODO: LRAC-4511 Remove when new TrackedBehavior page exists
+					<Route
+						element={<TrackedBehaviors />}
+						path='/definitions/behaviors'
+					/>
+				)}
+
+				<Route
+					element={<AttributeView />}
+					path='/definitions/event-attributes/:attributeId'
 				/>
 
-				<BundleRouter
-					data={WorkspaceSettings}
-					path={Routes.SETTINGS_WORKSPACE}
+				<Route
+					element={<AttributeList />}
+					path='/definitions/event-attributes/local'
 				/>
 
-				<BundleRouter
-					data={ChannelView}
-					exact
-					path={Routes.SETTINGS_CHANNELS_VIEW}
+				<Route
+					element={<GlobalAttributeList />}
+					path='/definitions/event-attributes/global'
 				/>
 
-				<BundleRouter
-					data={ChannelList}
-					path={Routes.SETTINGS_CHANNELS}
+				<Route
+					element={<EventView />}
+					path='/definitions/events/:eventId'
 				/>
 
-				<BundleRouter data={Apis} path={Routes.SETTINGS_APIS} />
+				<Route
+					element={<EventBlockList />}
+					path='/definitions/events/block-list'
+				/>
+
+				<Route
+					element={<EventList />}
+					path='/definitions/events/default'
+				/>
+
+				<Route
+					element={<CustomEventList />}
+					path='/definitions/events/custom'
+				/>
+
+				<Route
+					element={<DataPrivacyOverview />}
+					index
+					path='/data-privacy'
+				/>
+
+				<Route
+					element={<DataPrivacySuppressedUsers />}
+					path='/data-privacy/suppressed-users'
+				/>
+
+				<Route
+					element={<DataPrivacyRequestLog />}
+					path='/data-privacy/request-log'
+				/>
+
+				<Route element={<Workspace />} path='/workspace' />
+
+				<Route element={<ChannelList />} index path='/properties' />
+
+				<Route element={<ChannelView />} path='/properties/:id' />
+
+				<Route element={<AccessTokenList />} path='/apis/tokens' />
 
 				{recommendationsEnabled && (
 					<Fragment key='RECOMMENDATIONS'>
-						<BundleRouter
-							data={RecommendationList}
-							destructured={false}
-							exact
-							path={Routes.SETTINGS_RECOMMENDATIONS}
-						/>
-
-						<BundleRouter
-							data={RecommendationCreateItemSimilarity}
-							destructured={false}
-							exact
-							path={
-								Routes.SETTINGS_RECOMMENDATIONS_CREATE_ITEM_SIMILARITY_MODEL
+						<Route
+							element={
+								<BundleRouter
+									data={RecommendationList}
+									destructured={false}
+									path='/recommendations'
+								/>
 							}
+							path='/recommendations'
 						/>
 
-						<BundleRouter
-							data={RecommendationEdit}
-							destructured={false}
-							exact
-							path={Routes.SETTINGS_RECOMMENDATION_EDIT}
+						<Route
+							element={
+								<BundleRouter
+									data={RecomendationCreateItemSimilarity}
+									destructured={false}
+									path='/recommendations/create-item-similarity-model'
+								/>
+							}
+							path='/recommendations/create-item-similarity-model'
 						/>
 
-						<BundleRouter
-							data={RecommendationView}
-							destructured={false}
-							exact
-							path={Routes.SETTINGS_RECOMMENDATION_MODEL_VIEW}
+						<Route
+							element={
+								<BundleRouter
+									data={RecommendationEdit}
+									destructured={false}
+									path='/recommendations/:jobId/edit'
+								/>
+							}
+							path='/recommendations/:jobId/edit'
+						/>
+
+						<Route
+							element={
+								<BundleRouter
+									data={RecommendationView}
+									destructured={false}
+									path='/recommendations/:jobId'
+								/>
+							}
+							path='/recommendations/:jobId'
 						/>
 					</Fragment>
 				)}
 
-				<RouteNotFound />
-			</Switch>
+				{/* <RouteNotFound /> */}
+			</Routes>
 		</Suspense>
 	);
 };
 
-export default compose(checkProjectState, withOnboarding)(Settings);
+export default compose(
+	checkProjectState,
+	withOnboarding
+)(Settings) as React.ComponentType<any>;

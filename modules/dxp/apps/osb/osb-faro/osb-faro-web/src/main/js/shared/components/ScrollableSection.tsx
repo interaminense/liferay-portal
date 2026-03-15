@@ -41,8 +41,6 @@ export default class ScrollableSection extends React.Component<
 		showScroll: false
 	};
 
-	private _containerRef = createRef<HTMLDivElement>();
-
 	componentDidMount() {
 		window.addEventListener('resize', this.handleShowScroll);
 	}
@@ -56,6 +54,8 @@ export default class ScrollableSection extends React.Component<
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.handleShowScroll);
 	}
+
+	private _containerRef = createRef<HTMLDivElement>();
 
 	@autobind
 	handleShowScroll() {

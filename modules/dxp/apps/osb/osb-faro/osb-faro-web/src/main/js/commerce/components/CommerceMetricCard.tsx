@@ -4,8 +4,7 @@ import ErrorDisplay from 'shared/components/ErrorDisplay';
 import React, {useState} from 'react';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import TrendComponent from 'shared/components/Trend';
-import {ApolloError} from 'apollo-client';
-import {DocumentNode} from 'apollo-boost';
+import {ErrorLike} from '@apollo/client';
 import {getIcon, getStatsColor} from 'shared/util/metrics';
 import {getSafeRangeSelectors} from 'shared/util/util';
 import {RangeSelectors, RawRangeSelectors} from 'shared/types';
@@ -13,9 +12,10 @@ import {sub} from 'shared/util/lang';
 import {toRounded} from 'shared/util/numbers';
 import {Trend} from 'commerce/utils/types';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useParams} from 'react-router-dom';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
+import type {DocumentNode} from 'graphql';
 
 type Currency = {
 	currencyCode: string;
@@ -36,7 +36,7 @@ interface ICommerceMetricCardWithStatesRendererProps
 	extends React.HTMLAttributes<HTMLElement> {
 	empty?: boolean;
 	emptyTitle: string;
-	error?: ApolloError;
+	error?: ErrorLike;
 	loading?: boolean;
 }
 

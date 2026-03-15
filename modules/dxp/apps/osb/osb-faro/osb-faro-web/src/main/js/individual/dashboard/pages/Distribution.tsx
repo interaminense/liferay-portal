@@ -16,7 +16,7 @@ import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 const connector = connect(null, {
 	fetchDistribution: fetchIndividualsDistribution
@@ -27,6 +27,10 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 interface IIndividualsDistributionProps extends PropsFromRedux {
 	knownIndividualCount: number | null;
 }
+
+// TODO: Convert Distribution component to typescript
+
+const DistributionAny = Distribution as any;
 
 export const IndividualsDistribution: React.FC<IIndividualsDistributionProps> = ({
 	knownIndividualCount,
@@ -86,7 +90,7 @@ export const IndividualsDistribution: React.FC<IIndividualsDistributionProps> = 
 				<div className='individuals-dashboard-distribution-root container-fluid'>
 					<div className='row'>
 						<div className='col-xl-12'>
-							<Distribution
+							<DistributionAny
 								contextOptions={[CONTEXT_OPTIONS[0]]}
 								distributionsKey={
 									INDIVIDUALS_DASHBOARD_DISTRUBTIONS_KEY

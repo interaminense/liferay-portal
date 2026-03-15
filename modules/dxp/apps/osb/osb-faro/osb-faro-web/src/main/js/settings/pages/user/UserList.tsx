@@ -26,6 +26,8 @@ import {
 } from 'shared/util/pagination';
 import {getDisplayRole, getPluralMessage, sub} from 'shared/util/lang';
 import {UNAUTHORIZED_ACCESS} from 'shared/util/request';
+import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useParams} from 'react-router';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {User} from 'shared/util/records';
 import {useRequest} from 'shared/hooks/useRequest';
@@ -40,20 +42,13 @@ const userRoleOptions = [UserRoleNames.Member, UserRoleNames.Administrator].map(
 
 const connector = connect(null, {addAlert, close, open});
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IUserListProps extends PropsFromRedux {
-	currentUser: User;
-	groupId: string;
-}
-
-const UserList: React.FC<IUserListProps> = ({
+const UserList: React.FC<ConnectedProps<typeof connector>> = ({
 	addAlert,
 	close,
-	currentUser,
-	groupId,
 	open
 }) => {
+	const {groupId} = useParams();
+	const currentUser = useCurrentUser();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
 
 	const {delta, filterBy, orderIOMap, page, query} = useQueryPagination({

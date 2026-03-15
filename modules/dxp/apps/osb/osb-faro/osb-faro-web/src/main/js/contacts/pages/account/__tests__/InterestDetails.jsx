@@ -1,7 +1,7 @@
 import InterestDetails from '../InterestDetails';
 import mockDate from 'test/mock-date';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 

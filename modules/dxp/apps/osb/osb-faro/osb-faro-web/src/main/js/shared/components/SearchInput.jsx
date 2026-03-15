@@ -12,10 +12,6 @@ import {Stack} from 'immutable';
 export const CONTEXT = 'search-input';
 
 export default class SearchInput extends React.Component {
-	static childContextTypes = {
-		clay: PropTypes.instanceOf(Stack)
-	};
-
 	static defaultProps = {
 		disabled: false,
 		onSubmit: noop,
@@ -29,6 +25,10 @@ export default class SearchInput extends React.Component {
 		onSubmit: PropTypes.func,
 		placeholder: PropTypes.string,
 		value: PropTypes.string
+	};
+
+	static childContextTypes = {
+		clay: PropTypes.instanceOf(Stack)
 	};
 
 	constructor(props) {

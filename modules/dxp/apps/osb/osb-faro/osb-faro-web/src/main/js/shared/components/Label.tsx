@@ -2,7 +2,7 @@ import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import getCN from 'classnames';
 import omitDefinedProps from 'shared/util/omitDefinedProps';
-import React, {FC} from 'react';
+import React, {FC, PropsWithChildren} from 'react';
 
 enum Displays {
 	Primary = 'primary',
@@ -19,14 +19,16 @@ enum Sizes {
 	Large = 'lg'
 }
 
-const Label: FC<{
-	className?: string;
-	display?: string;
-	index?: number;
-	onRemove?: (index?: number) => void;
-	size?: string;
-	uppercase?: boolean;
-}> & {Displays: typeof Displays; Sizes: typeof Sizes} = props => {
+const Label: FC<
+	PropsWithChildren<{
+		className?: string;
+		display?: string;
+		index?: number;
+		onRemove?: (index?: number) => void;
+		size?: string;
+		uppercase?: boolean;
+	}>
+> & {Displays: typeof Displays; Sizes: typeof Sizes} = props => {
 	const {
 		children,
 		className,

@@ -17,18 +17,23 @@ import {CriterionGroup} from './utils/types';
 import {DndProvider} from 'react-dnd';
 import {Formik} from 'formik';
 import {HTML5Backend} from 'react-dnd-html5-backend';
+import {Map as ImmutableMap} from 'immutable';
 import {
 	invalidateCriterionWithMissingProperty,
 	validateSegmentInputs
 } from './utils/utils';
 import {List} from 'immutable';
-import {PropertyGroup, Segment} from 'shared/util/records';
+import {Property, PropertyGroup, Segment} from 'shared/util/records';
 import {
 	ReferencedObjectsContext,
 	withReferencedObjectsProvider
 } from './context/referencedObjects';
 import {SegmentEnabledSequentialCard} from 'segment/components/SegmentEnabledSequentialCard';
 import {SegmentStates, SegmentTypes} from 'shared/util/constants';
+
+// TODO: Update react-dnd to remove "any"
+
+const DndProviderAny = DndProvider as any;
 
 /**
  * Returns an error message if the criteria contains an invalid row.
@@ -156,25 +161,26 @@ class SegmentEditor extends React.Component<ISegmentEditorProps> {
 
 	render() {
 		const {
-			context: {referencedProperties},
-			props: {
-				channelId,
-				groupId,
-				id,
-				onDelete,
-				propertyGroupsIList,
-				segment: {
-					criteriaString,
-					includeAnonymousUsers,
-					name,
-					state: segmentState
-				},
-				type
-			}
-		} = this;
+			channelId,
+			groupId,
+			id,
+			onDelete,
+			propertyGroupsIList,
+			segment: {
+				criteriaString,
+				includeAnonymousUsers,
+				name,
+				state: segmentState
+			},
+			type
+		} = this.props;
+
+		const {referencedProperties} = this.context as {
+			referencedProperties: ImmutableMap<string, Property>;
+		};
 
 		return (
-			<DndProvider backend={HTML5Backend}>
+			<DndProviderAny backend={HTML5Backend}>
 				<div className='segment-edit-page-root'>
 					<Form
 						initialValues={{
@@ -310,7 +316,7 @@ class SegmentEditor extends React.Component<ISegmentEditorProps> {
 						}}
 					</Form>
 				</div>
-			</DndProvider>
+			</DndProviderAny>
 		);
 	}
 }

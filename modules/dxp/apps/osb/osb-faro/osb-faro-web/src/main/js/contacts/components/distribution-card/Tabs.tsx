@@ -79,8 +79,6 @@ export default class Tabs extends React.Component<ITabsProps> {
 		itemsIList: List()
 	};
 
-	private _scrollableSectionRef = createRef<ScrollableSection>();
-
 	componentDidUpdate(prevProps) {
 		const {itemsIList} = this.props;
 
@@ -101,6 +99,8 @@ export default class Tabs extends React.Component<ITabsProps> {
 		}
 	}
 
+	private _scrollableSectionRef = createRef<ScrollableSection>();
+
 	render() {
 		const {
 			itemsIList,
@@ -115,7 +115,7 @@ export default class Tabs extends React.Component<ITabsProps> {
 			<div className='tabs-root d-flex align-items-center justify-content-between'>
 				<ScrollableSection ref={this._scrollableSectionRef}>
 					<ul className='d-flex'>
-						{itemsIList.map(({id, title}, i) => (
+						{itemsIList.toArray().map(({id, title}, i) => (
 							<TabItem
 								active={
 									selectedTabIndex === i && !showAddProperty

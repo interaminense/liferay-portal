@@ -1,7 +1,8 @@
 import AudienceReport from '../AudienceReport';
 import client from 'shared/apollo/client';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {MetricName} from 'shared/types/MetricName';
 import {
@@ -9,17 +10,16 @@ import {
 	mockPreferenceReq,
 	mockTimeRangeReq
 } from 'test/graphql-data';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {Name} from '../types';
 import {PageAudienceReportQuery} from '../queries';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '456',
 		query: {
@@ -63,7 +63,7 @@ jest.mock('recharts', () => {
 
 const WrappedComponent = ({queryProps}) => (
 	<ApolloProvider client={client}>
-		<StaticRouter>
+		<BrowserRouter>
 			<MockedProvider
 				mocks={[
 					mockTimeRangeReq(),
@@ -85,7 +85,7 @@ const WrappedComponent = ({queryProps}) => (
 					}}
 				/>
 			</MockedProvider>
-		</StaticRouter>
+		</BrowserRouter>
 	</ApolloProvider>
 );
 

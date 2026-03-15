@@ -19,7 +19,7 @@ import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {User} from 'shared/util/records';
+import {useParams} from 'react-router';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
 
 const SearchableEntityTableHOC = withStatefulPagination(
@@ -32,20 +32,11 @@ const SearchableEntityTableHOC = withStatefulPagination(
 
 const connector = connect(null, {close, open});
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IIndividualAttributesProps
-	extends PropsFromRedux,
-		React.HTMLAttributes<HTMLElement> {
-	currentUser: User;
-	groupId: string;
-}
-
-const IndividualAttributes: React.FC<IIndividualAttributesProps> = ({
+const IndividualAttributes: React.FC<ConnectedProps<typeof connector>> = ({
 	close,
-	groupId,
 	open
 }) => {
+	const {groupId} = useParams();
 	const currentUser = useCurrentUser();
 	const {timeZoneId} = useTimeZone();
 

@@ -42,7 +42,7 @@ import {
 	Sizes
 } from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 import {useSelectedPoint} from 'shared/hooks/useSelectedPoint';
 import {withEmpty} from 'cerebro-shared/hocs/utils';
 import {withError, withLoading, WrapSafeResults} from 'shared/hoc/util';

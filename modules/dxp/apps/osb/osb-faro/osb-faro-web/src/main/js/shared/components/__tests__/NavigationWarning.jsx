@@ -1,7 +1,7 @@
 import NavigationWarning from '../NavigationWarning';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -10,9 +10,9 @@ describe('NavigationWarning', () => {
 
 	it('should render', () => {
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<NavigationWarning when />
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container).toBeTruthy();

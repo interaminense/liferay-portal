@@ -9,8 +9,8 @@ import WorkspaceList from 'shared/components/workspaces/workspace-list';
 import WorkspacesBasePage from 'shared/components/workspaces/BasePage';
 import {ENABLE_ADD_TRIAL_WORKSPACE} from 'shared/util/constants';
 import {isString} from 'lodash';
+import {Navigate} from 'react-router';
 import {PLANS} from 'shared/util/subscriptions';
-import {Redirect} from 'react-router';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {
@@ -140,7 +140,7 @@ const Workspaces: any = () => {
 	const route = routingFn({projects});
 
 	if (isString(route)) {
-		return <Redirect push to={route} />;
+		return <Navigate replace to={route} />;
 	}
 
 	return (

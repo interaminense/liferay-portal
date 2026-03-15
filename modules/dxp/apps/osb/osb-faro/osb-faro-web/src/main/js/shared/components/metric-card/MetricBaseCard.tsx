@@ -3,12 +3,12 @@ import Card from 'shared/components/Card';
 import MetricChart from './MetricChart';
 import MetricTabs from './MetricTabs';
 import React, {createContext, useContext, useReducer} from 'react';
-import {DocumentNode} from 'apollo-boost';
 import {getMetricsChartData} from './util';
 import {Interval, RangeSelectors, Router} from 'shared/types';
 import {Metric} from './metrics';
 import {RawFilters} from 'shared/util/filter';
 import {ReportContainer} from '../download-report/DownloadPDFReport';
+import type {DocumentNode} from 'graphql';
 
 const initialState = {
 	activeItemIndex: 0,

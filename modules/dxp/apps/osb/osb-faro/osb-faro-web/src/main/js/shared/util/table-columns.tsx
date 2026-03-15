@@ -24,6 +24,7 @@ import {
 } from 'shared/components/table/cell-components';
 import {applyTimeZone, formatDateToTimeZone, formatUTCDate} from './date';
 import {Colors} from './colors-size';
+import {Column} from 'shared/components/table';
 import {formatTime} from './time';
 import {get, isNil, noop, pickBy} from 'lodash';
 import {getSafeDecodedURIComponent} from './util';
@@ -400,7 +401,7 @@ export const compositionListColumns = {
 		totalCount
 	}) => ({
 		accessor: 'count',
-		cellRenderer: RelativeMetricBarCell,
+		cellRenderer: RelativeMetricBarCell as Column['cellRenderer'],
 		cellRendererProps: {
 			empty,
 			maxCount,

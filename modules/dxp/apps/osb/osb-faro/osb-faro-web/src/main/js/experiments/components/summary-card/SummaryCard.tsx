@@ -6,7 +6,7 @@ import {SummaryNoWinnerCard} from './SummaryNoWinnerCard';
 import {SummaryRunningCard} from './SummaryRunningCard';
 import {SummaryTerminatedCard} from './SummaryTerminatedCard';
 import {SummaryWinnerCard} from './SummaryWinnerCard';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useStore} from 'react-redux';
 
 const Component = {

@@ -3,14 +3,14 @@ import AttributeView from '../AttributeView';
 import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-components';
+import {ApolloProvider} from '@apollo/client/react';
 import {getISODate} from 'shared/util/date';
 import {MemoryRouter} from 'react-router';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockEventAttributeDefinitionWithRecentValuesReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {Route} from 'react-router-dom';
+import {Route} from 'react-router';
 import {Routes} from 'shared/util/router';
 import {waitForLoading} from 'test/helpers';
 

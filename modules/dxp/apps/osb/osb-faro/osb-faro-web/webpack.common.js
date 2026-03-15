@@ -1,4 +1,5 @@
 const AutoprefixerPlugin = require('autoprefixer');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const NormalizeCharsetPlugin = require('postcss-normalize-charset');
@@ -149,9 +150,18 @@ const config = {
 			filename: 'main.css'
 		}),
 		new ForkTsCheckerWebpackPlugin({
-			eslint: {
-				files: 'src/main/js/**/*.+(js|ts)?(x)'
+			async: true,
+			typescript: {
+				diagnosticOptions: {
+					semantic: true,
+					syntactic: true
+				}
 			}
+		}),
+		new ESLintPlugin({
+			context: 'src/main/js',
+			eslintPath: require.resolve('eslint'),
+			extensions: ['js', 'jsx', 'ts', 'tsx']
 		}),
 		new SpriteLoaderPlugin(),
 		new webpack.DefinePlugin({

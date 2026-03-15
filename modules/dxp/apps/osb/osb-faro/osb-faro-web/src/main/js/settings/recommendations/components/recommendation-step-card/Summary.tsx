@@ -23,7 +23,7 @@ import {
 	JobRunStatuses,
 	JobTypes
 } from 'shared/util/constants';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 
 const {
 	pagination: {orderDescending}

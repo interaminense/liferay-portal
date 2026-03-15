@@ -2,7 +2,7 @@ import EntityList from '../EntityList';
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
 import {mockIndividual, mockSegment} from 'test/data';
-import {withStaticRouter} from 'test/mock-router';
+import {withBrowserRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -14,7 +14,7 @@ const items = [
 
 const segments = [mockSegment(1, {segmentType: 'BATCH'})];
 
-const WrappedComponent = withStaticRouter(EntityList);
+const WrappedComponent = withBrowserRouter(EntityList);
 
 describe('EntityList', () => {
 	afterEach(cleanup);

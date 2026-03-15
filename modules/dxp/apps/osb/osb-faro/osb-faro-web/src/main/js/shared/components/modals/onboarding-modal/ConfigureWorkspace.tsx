@@ -12,7 +12,7 @@ import Modal from 'shared/components/modal';
 import React, {useRef, useState} from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
-import {compose, withHistory} from 'shared/hoc';
+import {compose, withNavigate} from 'shared/hoc';
 import {connect, ConnectedProps, useStore} from 'react-redux';
 import {Formik} from 'formik';
 import {Routes, toRoute} from 'shared/util/router';
@@ -307,4 +307,4 @@ const ConfigureWorkspace: React.FC<IConfigureWorkspaceProps> = props => {
 	);
 };
 
-export default compose(connector, withHistory)(ConfigureWorkspace) as any;
+export default compose(connector, withNavigate)(ConfigureWorkspace) as any;

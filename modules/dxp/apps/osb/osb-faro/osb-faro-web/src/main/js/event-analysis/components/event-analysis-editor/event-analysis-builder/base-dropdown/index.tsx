@@ -4,10 +4,12 @@ import Header from './Header';
 import React, {useEffect, useState} from 'react';
 import SearchableList from './SearchableList';
 
-interface IBaseDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IBaseDropdownProps {
 	alignmentPosition?: typeof Align[keyof typeof Align];
-	trigger: React.ReactElement;
+	children: (args: any) => React.ReactNode;
+	className?: string;
 	onActiveChange?: (active: boolean) => void;
+	trigger: React.ReactElement;
 }
 
 const BaseDropdown: React.FC<IBaseDropdownProps> = ({
@@ -35,7 +37,7 @@ const BaseDropdown: React.FC<IBaseDropdownProps> = ({
 			onActiveChange={setActive}
 			trigger={trigger}
 		>
-			{(children as (bag: any) => React.ReactNode)({active, setActive})}
+			{children({active, setActive})}
 		</ClayDropdown>
 	);
 };

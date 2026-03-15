@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 
 const HUBSPOT_ENDPOINT = '//js.hsforms.net/forms/v2.js';
 const HUBSPOT_ID = 'hubspotForm';
@@ -30,7 +30,7 @@ const loadScript: () => HTMLElement = () => {
 };
 
 const createForm: (
-	props: React.Props<React.HTMLAttributes<HTMLElement>>
+	props: PropsWithChildren<React.HTMLAttributes<HTMLElement>>
 ) => void = props =>
 	window.hbspt.forms.create({
 		...props,

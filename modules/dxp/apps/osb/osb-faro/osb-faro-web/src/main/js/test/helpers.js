@@ -50,6 +50,7 @@ export const waitForLoadingToBeRemoved = async (
 		const loading = container.querySelector(selector);
 
 		return await waitForElementToBeRemoved(loading, {timeout});
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	} catch (e) {
 		// eslint-disable-next-line no-console
 		console.log(

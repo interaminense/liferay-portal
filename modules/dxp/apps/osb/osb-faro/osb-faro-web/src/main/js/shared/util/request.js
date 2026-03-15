@@ -30,7 +30,7 @@ export function parseFromJSON(value) {
 
 	try {
 		result = JSON.parse(value);
-	} catch (err) {}
+	} catch (_error) {}
 
 	return result;
 }

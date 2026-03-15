@@ -14,7 +14,6 @@ import {Attribute, DataTypes, Event} from 'event-analysis/utils/types';
 import {connect, ConnectedProps} from 'react-redux';
 import {DATA_TYPE_LABELS_MAP} from 'event-analysis/utils/utils';
 import {debounce, get} from 'lodash/fp';
-import {DocumentNode} from 'apollo-boost';
 import {
 	EventAttributeDefinitionData,
 	EventAttributeDefinitionVariables,
@@ -29,7 +28,8 @@ import {Modal as ModalType} from 'shared/types/Modal';
 import {SafeResults} from 'shared/hoc/util';
 import {sequence} from 'shared/util/promise';
 import {sub} from 'shared/util/lang';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/client/react';
+import type {DocumentNode} from 'graphql';
 
 const DATA_TYPE_OPTIONS = [
 	DataTypes.Boolean,

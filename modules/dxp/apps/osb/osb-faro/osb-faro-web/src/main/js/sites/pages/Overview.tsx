@@ -11,7 +11,7 @@ import VisitorsByTimeCard from 'sites/hocs/VisitorsByTimeCard';
 import {CompositionTypes} from 'shared/util/constants';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 interface IOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
 	channelName: string;

@@ -5,10 +5,7 @@ import ClayList from '@clayui/list';
 import React from 'react';
 import {ACCOUNTS, Routes, toRoute} from 'shared/util/router';
 import {DEVELOPER_MODE, ENABLE_BLOCKLIST_KEYWORDS} from 'shared/util/constants';
-
-interface IOverviewProps {
-	groupId: string;
-}
+import {useParams} from 'react-router';
 
 type ListItem = {
 	header: string;
@@ -92,66 +89,70 @@ const items = (devMode: boolean = false): ListItem[] => [
 		: null
 ];
 
-export const Overview: React.FC<IOverviewProps> = ({groupId}) => (
-	<BasePage
-		className='definitions-overview-root'
-		pageDescription={Liferay.Language.get(
-			'select-the-entity-to-view-its-data-model'
-		)}
-		pageTitle={Liferay.Language.get('definitions')}
-	>
-		<div className='row'>
-			<div className='col-xl-8'>
-				<Card>
-					<ClayList>
-						{items(DEVELOPER_MODE)
-							.filter(Boolean)
-							.map(({header, items}) => (
-								<React.Fragment key={header}>
-									{header && (
-										<ClayList.Header>
-											{header}
-										</ClayList.Header>
-									)}
+export const Overview = () => {
+	const {groupId} = useParams();
 
-									{items
-										.filter(Boolean)
-										.map(
-											({
-												description,
-												route,
-												routeParams = {},
-												title
-											}) => (
-												<ClayList.Item key={title}>
-													<ClayList.ItemTitle>
-														<ClayLink
-															decoration='none'
-															href={toRoute(
-																route,
-																{
-																	groupId,
-																	...routeParams
-																}
-															)}
-														>
-															{title}
-														</ClayLink>
-													</ClayList.ItemTitle>
-
-													<ClayList.ItemText>
-														{description}
-													</ClayList.ItemText>
-												</ClayList.Item>
-											)
+	return (
+		<BasePage
+			className='definitions-overview-root'
+			pageDescription={Liferay.Language.get(
+				'select-the-entity-to-view-its-data-model'
+			)}
+			pageTitle={Liferay.Language.get('definitions')}
+		>
+			<div className='row'>
+				<div className='col-xl-8'>
+					<Card>
+						<ClayList>
+							{items(DEVELOPER_MODE)
+								.filter(Boolean)
+								.map(({header, items}) => (
+									<React.Fragment key={header}>
+										{header && (
+											<ClayList.Header>
+												{header}
+											</ClayList.Header>
 										)}
-								</React.Fragment>
-							))}
-					</ClayList>
-				</Card>
+
+										{items
+											.filter(Boolean)
+											.map(
+												({
+													description,
+													route,
+													routeParams = {},
+													title
+												}) => (
+													<ClayList.Item key={title}>
+														<ClayList.ItemTitle>
+															<ClayLink
+																decoration='none'
+																href={toRoute(
+																	route,
+																	{
+																		groupId,
+																		...routeParams
+																	}
+																)}
+															>
+																{title}
+															</ClayLink>
+														</ClayList.ItemTitle>
+
+														<ClayList.ItemText>
+															{description}
+														</ClayList.ItemText>
+													</ClayList.Item>
+												)
+											)}
+									</React.Fragment>
+								))}
+						</ClayList>
+					</Card>
+				</div>
 			</div>
-		</div>
-	</BasePage>
-);
+		</BasePage>
+	);
+};
 
 export default Overview;

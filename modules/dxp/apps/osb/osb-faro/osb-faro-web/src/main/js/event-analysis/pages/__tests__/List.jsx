@@ -5,10 +5,10 @@ import client from 'shared/apollo/client';
 import EventAnalysisList from '../List';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-components';
+import {ApolloProvider} from '@apollo/client/react';
 import {fireEvent, render} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
-import {MockedProvider} from '@apollo/react-testing';
+import {MemoryRouter, Route} from 'react-router';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockEmptyState, mockSuccessState} from 'test/__mocks__/mock-objects';
 import {mockEventAnalysisListReq} from 'test/graphql-data';
 import {open} from 'shared/actions/modals';
@@ -18,8 +18,8 @@ import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '456',
 		groupId: '123'

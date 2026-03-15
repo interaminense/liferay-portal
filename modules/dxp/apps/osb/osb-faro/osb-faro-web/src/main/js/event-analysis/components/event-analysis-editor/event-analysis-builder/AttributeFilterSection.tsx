@@ -13,6 +13,10 @@ import {
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 
+// TODO: Update react-dnd to remove "any"
+
+const DndProviderAny = DndProvider as any;
+
 interface IAttributeFilterSectionProps {
 	attributes: Attributes;
 	breakdownOrder: string[];
@@ -42,7 +46,7 @@ export const AttributeFilterSection: React.FC<IAttributeFilterSectionProps> = ({
 
 			{!!eventId && (
 				<div className='attribute-container d-flex align-items-center justify-content-between'>
-					<DndProvider backend={HTML5Backend}>
+					<DndProviderAny backend={HTML5Backend}>
 						<div className='attribute-list d-flex align-items-center'>
 							{filterOrder.map((id, i) => (
 								<AttributeFilterChip
@@ -59,7 +63,7 @@ export const AttributeFilterSection: React.FC<IAttributeFilterSectionProps> = ({
 								/>
 							))}
 						</div>
-					</DndProvider>
+					</DndProviderAny>
 
 					<AttributeFilterDropdown
 						alignmentPosition={Align.LeftTop}

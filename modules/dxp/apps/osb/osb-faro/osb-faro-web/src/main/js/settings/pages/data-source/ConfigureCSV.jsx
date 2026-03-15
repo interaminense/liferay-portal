@@ -64,7 +64,7 @@ class ConfigureCSV extends React.Component {
 	@autobind
 	handleCreateCSVSource(fieldMappings) {
 		const {
-			props: {addAlert, fileVersionId, groupId, history, id},
+			props: {addAlert, fileVersionId, groupId, id, navigate},
 			state: {name}
 		} = this;
 
@@ -87,7 +87,7 @@ class ConfigureCSV extends React.Component {
 
 		request(data)
 			.then(response => {
-				history.push(
+				navigate(
 					toRoute(Routes.SETTINGS_DATA_SOURCE, {
 						groupId,
 						id: response.id

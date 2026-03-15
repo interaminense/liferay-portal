@@ -3,6 +3,7 @@ import 'test/mock-modal';
 import * as data from 'test/data';
 import * as Router from 'shared/util/router';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {
 	cleanup,
 	fireEvent,
@@ -13,7 +14,6 @@ import {DataSource} from 'shared/util/records';
 import {DeleteDataSource} from '../DeleteDataSource';
 import {EntityTypes} from 'shared/util/constants';
 import {open} from 'shared/actions/modals';
-import {StaticRouter} from 'react-router';
 
 Router.navigate = jest.fn();
 
@@ -42,7 +42,7 @@ describe('DeleteDataSource', () => {
 	});
 
 	const DefaultComponent = props => (
-		<StaticRouter>
+		<BrowserRouter>
 			<DeleteDataSource
 				dataSource={dataSource}
 				deleteMessage='Test delete message'
@@ -53,7 +53,7 @@ describe('DeleteDataSource', () => {
 				pageActionText={Liferay.Language.get('delete-data-source')}
 				{...props}
 			/>
-		</StaticRouter>
+		</BrowserRouter>
 	);
 
 	it('should render', () => {

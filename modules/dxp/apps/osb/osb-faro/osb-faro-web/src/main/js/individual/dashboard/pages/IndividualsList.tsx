@@ -18,7 +18,7 @@ import {
 } from 'segment/segment-editor/dynamic/utils/constants';
 import {FilterOptionType} from 'shared/types';
 import {IndividualsListCDPColumns} from 'shared/util/table-columns';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useRequest} from 'shared/hooks/useRequest';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 

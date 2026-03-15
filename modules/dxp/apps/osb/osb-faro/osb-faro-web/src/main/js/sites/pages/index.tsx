@@ -1,68 +1,35 @@
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
 import ClayLink from '@clayui/link';
 import DownloadCSVReport from 'shared/components/download-report/DownloadCSVReport';
 import DownloadPDFReport from 'shared/components/download-report/DownloadPDFReport';
 import getCN from 'classnames';
-import Loading from 'shared/components/Loading';
-import React, {lazy, Suspense} from 'react';
-import RouteNotFound from 'shared/components/RouteNotFound';
+import React from 'react';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
 import {CSVType} from 'shared/components/download-report/utils';
-import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
+import {getMatchedRoute, Routes as Path, toRoute} from 'shared/util/router';
+import {Outlet, useParams} from 'react-router';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
 
-const InterestDetails = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "SitesDashboardInterestDetails" */ './InterestDetails'
-		)
-);
-const Interests = lazy(
-	() =>
-		import(/* webpackChunkName: "SitesDashboardInterests" */ './Interests')
-);
-const Overview = lazy(
-	() => import(/* webpackChunkName: "SitesDashboardOverview" */ './Overview')
-);
-const SearchTermsPage = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "SitesDashboardSearchTerms" */ './SearchTermsPage'
-		)
-);
-const Touchpoints = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "SitesDashboardTouchpoints" */ './Touchpoints'
-		)
-);
-
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('overview'),
-		route: Routes.SITES
+		route: Path.SITES
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('pages'),
-		route: Routes.SITES_TOUCHPOINTS
+		route: Path.SITES_TOUCHPOINTS
 	},
 	{
-		exact: false,
 		label: Liferay.Language.get('interests'),
-		route: Routes.SITES_INTERESTS
+		route: Path.SITES_INTERESTS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('search-terms'),
-		route: Routes.SITES_SEARCH_TERMS
+		route: Path.SITES_SEARCH_TERMS
 	}
 ];
 
@@ -82,6 +49,7 @@ interface IDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Dashboard: React.FC<IDashboardProps> = ({router}) => {
 	const {channelId, groupId} = useParams();
+
 	const dataSourceStates = useDataSource();
 	const {selectedChannel} = useChannelContext();
 	const currentUser = useCurrentUser();
@@ -120,10 +88,10 @@ export const Dashboard: React.FC<IDashboardProps> = ({router}) => {
 				/>
 			</BasePage.Header>
 
-			{matchedRoute !== Routes.SITES_INTERESTS && (
+			{matchedRoute !== Path.SITES_INTERESTS && (
 				<BasePage.SubHeader>
 					<div className='d-flex justify-content-end w-100'>
-						{matchedRoute === Routes.SITES && (
+						{matchedRoute === Path.SITES && (
 							<DownloadPDFReport
 								disabled={dataSourceStates.empty}
 								subtitle={selectedChannelName}
@@ -131,7 +99,7 @@ export const Dashboard: React.FC<IDashboardProps> = ({router}) => {
 							/>
 						)}
 
-						{matchedRoute === Routes.SITES_SEARCH_TERMS && (
+						{matchedRoute === Path.SITES_SEARCH_TERMS && (
 							<DownloadCSVReport
 								disabled={dataSourceStates.empty}
 								type={CSVType.SearchTerms}
@@ -139,7 +107,7 @@ export const Dashboard: React.FC<IDashboardProps> = ({router}) => {
 							/>
 						)}
 
-						{matchedRoute === Routes.SITES_TOUCHPOINTS && (
+						{matchedRoute === Path.SITES_TOUCHPOINTS && (
 							<DownloadCSVReport
 								disabled={dataSourceStates.empty}
 								type={CSVType.Page}
@@ -157,102 +125,58 @@ export const Dashboard: React.FC<IDashboardProps> = ({router}) => {
 				}}
 			>
 				<BasePage.Body>
-					<Suspense fallback={<Loading center />}>
-						<StatesRenderer {...dataSourceStates}>
-							<StatesRenderer.Empty
-								description={
-									<>
-										{authorized
-											? Liferay.Language.get(
-													'connect-a-data-source-with-sites-data'
-											  )
-											: Liferay.Language.get(
-													'please-contact-your-workspace-administrator-to-add-data-sources'
-											  )}
+					<StatesRenderer {...dataSourceStates}>
+						<StatesRenderer.Empty
+							description={
+								<>
+									{authorized
+										? Liferay.Language.get(
+												'connect-a-data-source-with-sites-data'
+										  )
+										: Liferay.Language.get(
+												'please-contact-your-workspace-administrator-to-add-data-sources'
+										  )}
 
+									<ClayLink
+										className='d-block mb-3'
+										href={URLConstants.DataSourceConnection}
+										key='DOCUMENTATION'
+										target='_blank'
+									>
+										{Liferay.Language.get(
+											'access-our-documentation-to-learn-more'
+										)}
+									</ClayLink>
+
+									{authorized && (
 										<ClayLink
-											className='d-block mb-3'
-											href={
-												URLConstants.DataSourceConnection
-											}
-											key='DOCUMENTATION'
-											target='_blank'
+											button
+											className='button-root'
+											displayType='primary'
+											href={toRoute(
+												Path.SETTINGS_DATA_SOURCE_LIST,
+												{
+													groupId
+												}
+											)}
 										>
 											{Liferay.Language.get(
-												'access-our-documentation-to-learn-more'
+												'connect-data-source'
 											)}
 										</ClayLink>
+									)}
+								</>
+							}
+							displayCard
+							title={Liferay.Language.get(
+								'no-sites-synced-from-data-sources'
+							)}
+						/>
 
-										{authorized && (
-											<ClayLink
-												button
-												className='button-root'
-												displayType='primary'
-												href={toRoute(
-													Routes.SETTINGS_DATA_SOURCE_LIST,
-													{
-														groupId
-													}
-												)}
-											>
-												{Liferay.Language.get(
-													'connect-data-source'
-												)}
-											</ClayLink>
-										)}
-									</>
-								}
-								displayCard
-								title={Liferay.Language.get(
-									'no-sites-synced-from-data-sources'
-								)}
-							/>
-
-							<StatesRenderer.Success>
-								<Switch>
-									<BundleRouter
-										data={InterestDetails}
-										destructured={false}
-										exact
-										path={Routes.SITES_INTEREST_DETAILS}
-									/>
-
-									<BundleRouter
-										data={Interests}
-										destructured={false}
-										exact
-										path={Routes.SITES_INTERESTS}
-									/>
-
-									<BundleRouter
-										data={Touchpoints}
-										destructured={false}
-										exact
-										path={Routes.SITES_TOUCHPOINTS}
-									/>
-
-									<BundleRouter
-										componentProps={{
-											channelName: selectedChannelName
-										}}
-										data={Overview}
-										destructured={false}
-										exact
-										path={Routes.SITES}
-									/>
-
-									<BundleRouter
-										data={SearchTermsPage}
-										destructured={false}
-										exact
-										path={Routes.SITES_SEARCH_TERMS}
-									/>
-
-									<RouteNotFound />
-								</Switch>
-							</StatesRenderer.Success>
-						</StatesRenderer>
-					</Suspense>
+						<StatesRenderer.Success>
+							<Outlet />
+						</StatesRenderer.Success>
+					</StatesRenderer>
 				</BasePage.Body>
 			</BasePage.Context.Provider>
 		</BasePage>

@@ -24,9 +24,9 @@ import {
 	GDPRRequestTypes,
 	Sizes
 } from 'shared/util/constants';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {sub} from 'shared/util/lang';
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/client/react';
 import {User} from 'shared/util/records';
 
 const withData = () =>

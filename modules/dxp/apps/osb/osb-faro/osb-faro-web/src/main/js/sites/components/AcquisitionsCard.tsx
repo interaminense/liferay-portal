@@ -3,23 +3,23 @@ import AcquisitionsQuery, {
 	AcquisitionsQueryVariables
 } from 'shared/queries/AcquisitionsQuery';
 import BaseCard from 'shared/components/base-card';
-import BasePage from 'shared/components/base-page';
 import Card from 'shared/components/Card';
 import CardTabs from 'shared/components/CardTabs';
 import ClayLink from '@clayui/link';
 import ErrorDisplay from 'shared/components/ErrorDisplay';
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import Table from 'shared/components/table';
 import URLConstants from 'shared/util/url-constants';
 import {ACQUISITION_LABEL_MAP} from 'shared/util/lang';
 import {AcquisitionTypes, CompositionTypes} from 'shared/util/constants';
-import {ApolloError} from 'apollo-client';
 import {compositionListColumns} from 'shared/util/table-columns';
+import {ErrorLike} from '@apollo/client';
 import {getSafeRangeSelectors} from 'shared/util/util';
 import {RangeSelectors} from 'shared/types';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 
 const ROW_IDENTIFIER = 'name';
 
@@ -28,7 +28,7 @@ const {Channel, Referrer, SourceMedium} = AcquisitionTypes;
 const getColumnsFn = acquisitionType => {
 	const label = ACQUISITION_LABEL_MAP[acquisitionType];
 
-	return ({maxCount, totalCount}) => [
+	return ({maxCount, totalCount}: any) => [
 		compositionListColumns.getName({
 			label,
 			maxWidth: 200,
@@ -103,12 +103,8 @@ const AcquisitionsCardWithData: React.FC<IAcquisitionsCard> = ({
 	compositionBagName,
 	rangeSelectors
 }) => {
+	const {channelId} = useParams();
 	const [activeTabId, setActiveTabId] = useState<string>(tabs[0].tabId);
-	const {
-		router: {
-			params: {channelId}
-		}
-	} = useContext(BasePage.Context);
 	const {data, error, loading} = useQuery<
 		AcquisitionsQueryData,
 		AcquisitionsQueryVariables
@@ -144,12 +140,14 @@ const AcquisitionsCardWithData: React.FC<IAcquisitionsCard> = ({
 			>
 				<Table
 					className='flex-grow-1 table-hover'
-					columns={getColumns({
-						items: compositions,
-						maxCount,
-						total,
-						totalCount
-					} as any)}
+					columns={
+						getColumns({
+							items: compositions,
+							maxCount,
+							total,
+							totalCount
+						}) as any
+					}
 					items={compositions}
 					rowIdentifier={rowIdentifier}
 				/>
@@ -161,7 +159,7 @@ const AcquisitionsCardWithData: React.FC<IAcquisitionsCard> = ({
 interface IAcquisitionsCardWithStatesRendererProps
 	extends React.HTMLAttributes<HTMLElement> {
 	empty?: boolean;
-	error: ApolloError;
+	error: ErrorLike;
 	loading?: boolean;
 }
 

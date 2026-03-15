@@ -1,59 +1,34 @@
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
 import ClayLink from '@clayui/link';
 import DownloadCSVReport from 'shared/components/download-report/DownloadCSVReport';
 import Loading from 'shared/components/Loading';
-import React, {lazy, Suspense} from 'react';
-import RouteNotFound from 'shared/components/RouteNotFound';
+import React, {Suspense} from 'react';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
 import {CSVType} from 'shared/components/download-report/utils';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
+import {Outlet, useParams} from 'react-router';
 import {Router} from 'shared/types';
-import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {User} from 'shared/util/records';
 
-const BlogsList = lazy(
-	() => import(/* webpackChunkName: "BlogsList" */ './BlogsList')
-);
-
-const DocumentsAndMediaList = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DocumentsAndMediaList" */ './DocumentsAndMediaList'
-		)
-);
-
-const FormsList = lazy(
-	() => import(/* webpackChunkName: "FormsList" */ './FormsList')
-);
-
-const WebContentList = lazy(
-	() => import(/* webpackChunkName: "WebContentList" */ './WebContentList')
-);
-
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('blogs'),
 		route: Routes.ASSETS_BLOGS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('documents-and-media'),
 		route: Routes.ASSETS_DOCUMENTS_AND_MEDIA
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('forms'),
 		route: Routes.ASSETS_FORMS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('web-content'),
 		route: Routes.ASSETS_WEB_CONTENT
 	}
@@ -202,37 +177,7 @@ const Assets: React.FC<IAssetsProps> = ({className, router}) => {
 							/>
 
 							<StatesRenderer.Success>
-								<Switch>
-									<BundleRouter
-										data={BlogsList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_BLOGS}
-									/>
-
-									<BundleRouter
-										data={DocumentsAndMediaList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_DOCUMENTS_AND_MEDIA}
-									/>
-
-									<BundleRouter
-										data={FormsList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_FORMS}
-									/>
-
-									<BundleRouter
-										data={WebContentList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_WEB_CONTENT}
-									/>
-
-									<RouteNotFound />
-								</Switch>
+								<Outlet />
 							</StatesRenderer.Success>
 						</StatesRenderer>
 					</Suspense>

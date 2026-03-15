@@ -94,13 +94,13 @@ class CriteriaGroup extends React.Component<ICriteriaGroupProps> {
 		root: false
 	};
 
-	private NestedCriteriaGroupWithDrag;
-
 	constructor(props) {
 		super(props);
 
 		this.NestedCriteriaGroupWithDrag = withDragSource(CriteriaGroup);
 	}
+
+	private NestedCriteriaGroupWithDrag;
 
 	@autobind
 	handleConjunctionClick(event) {

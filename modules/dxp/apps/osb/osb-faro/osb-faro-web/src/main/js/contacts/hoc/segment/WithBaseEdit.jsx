@@ -44,8 +44,8 @@ export default WrappedComponent => {
 			channelId: PropTypes.string,
 			close: PropTypes.func.isRequired,
 			groupId: PropTypes.string.isRequired,
-			history: PropTypes.object.isRequired,
 			id: PropTypes.string,
+			navigate: PropTypes.func,
 			open: PropTypes.func.isRequired,
 			segment: PropTypes.instanceOf(Segment)
 		};
@@ -65,8 +65,8 @@ export default WrappedComponent => {
 				channelId,
 				close,
 				groupId,
-				history,
 				id,
+				navigate,
 				open
 			} = this.props;
 
@@ -104,7 +104,7 @@ export default WrappedComponent => {
 								)
 							});
 
-							history.push(
+							navigate(
 								toRoute(Routes.CONTACTS_LIST_ENTITY, {
 									channelId,
 									groupId,
@@ -144,8 +144,8 @@ export default WrappedComponent => {
 				channelId,
 				close,
 				groupId,
-				history,
 				id,
+				navigate,
 				open
 			} = this.props;
 
@@ -170,7 +170,7 @@ export default WrappedComponent => {
 						(Array.isArray(segment) && segment.length) ||
 						(segment && !Array.isArray(segment))
 					) {
-						history.push(
+						navigate(
 							toRoute(Routes.CONTACTS_ENTITY, {
 								channelId,
 								groupId,

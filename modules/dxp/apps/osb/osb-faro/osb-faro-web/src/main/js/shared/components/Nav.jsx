@@ -4,7 +4,7 @@ import getCN from 'classnames';
 import omitDefinedProps from 'shared/util/omitDefinedProps';
 import React from 'react';
 import {addContext, isIn} from 'shared/util/clay';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {PropTypes} from 'prop-types';
 import {Stack} from 'immutable';
 export const CONTEXT = 'nav';
@@ -91,12 +91,12 @@ class Nav extends React.Component {
 		clay: PropTypes.instanceOf(Stack)
 	};
 
-	static childContextTypes = {
-		clay: PropTypes.instanceOf(Stack)
-	};
-
 	static propTypes = {
 		display: PropTypes.oneOf(DISPLAYS)
+	};
+
+	static childContextTypes = {
+		clay: PropTypes.instanceOf(Stack)
 	};
 
 	getChildContext() {

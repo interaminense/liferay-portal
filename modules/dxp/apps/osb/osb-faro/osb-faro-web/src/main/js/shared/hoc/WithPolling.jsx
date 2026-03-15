@@ -49,8 +49,6 @@ export default (
 				pollingError: null
 			};
 
-			_isMounted = false;
-
 			componentDidMount() {
 				this._isMounted = true;
 
@@ -62,6 +60,8 @@ export default (
 
 				clearTimeout(this._request);
 			}
+
+			_isMounted = false;
 
 			getNextValue() {
 				return this.handleRequest(

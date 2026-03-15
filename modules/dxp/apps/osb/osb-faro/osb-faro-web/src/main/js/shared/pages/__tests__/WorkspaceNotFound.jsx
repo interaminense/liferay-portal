@@ -2,7 +2,7 @@ import * as Router from 'shared/util/router';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import WorkspaceNotFound from '../WorkspaceNotFound';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {Provider} from 'react-redux';
 

@@ -1,7 +1,7 @@
 import mockStore from 'test/mock-store';
 import React from 'react';
 import SegmentActivationCard from '../SegmentActivationCard';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
 import {Provider} from 'react-redux';

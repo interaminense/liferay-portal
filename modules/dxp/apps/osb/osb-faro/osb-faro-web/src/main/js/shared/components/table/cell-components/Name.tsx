@@ -1,25 +1,11 @@
 import getCN from 'classnames';
 import React from 'react';
 import TextTruncate from 'shared/components/TextTruncate';
-import {Link} from 'react-router-dom';
+import {Column} from '../Row';
+import {Link} from 'react-router';
 import {noop} from 'lodash';
 
-interface INameProps {
-	className?: string;
-	data: {
-		id?: string;
-		name: string;
-	};
-	disabled?: boolean;
-	maxWidth?: number;
-	nameKey?: string;
-	renderIcon?: Function;
-	renderSecondaryInfo?: Function;
-	routeFn?: Function;
-	tooltip?: boolean;
-}
-
-const Name: React.FC<INameProps> = ({
+const Name: Column['cellRenderer'] = ({
 	className,
 	data,
 	disabled = false,

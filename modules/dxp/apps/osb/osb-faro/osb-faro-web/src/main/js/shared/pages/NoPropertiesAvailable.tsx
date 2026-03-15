@@ -7,7 +7,7 @@ import React from 'react';
 import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {User} from 'shared/util/records';
+import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {withRequest} from 'shared/hoc';
 
 const {
@@ -17,7 +17,6 @@ const {
 interface INoPropertiesAvailableProps
 	extends React.HTMLAttributes<HTMLDivElement> {
 	close: () => void;
-	currentUser: User;
 	dataSources: boolean;
 	groupId: string;
 	open: (modalType: string, config: object) => void;
@@ -25,11 +24,12 @@ interface INoPropertiesAvailableProps
 
 const NoPropertiesAvailable: React.FC<INoPropertiesAvailableProps> = ({
 	close,
-	currentUser,
 	dataSources,
 	groupId,
 	open
 }) => {
+	const currentUser = useCurrentUser();
+
 	const admin = currentUser.isAdmin();
 
 	const description = admin

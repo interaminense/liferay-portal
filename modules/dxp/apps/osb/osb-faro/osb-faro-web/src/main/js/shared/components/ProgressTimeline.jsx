@@ -1,7 +1,7 @@
 import ClayIcon from '@clayui/icon';
 import getCN from 'classnames';
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 import {PropTypes} from 'prop-types';
 
 class ProgressTimeline extends React.Component {

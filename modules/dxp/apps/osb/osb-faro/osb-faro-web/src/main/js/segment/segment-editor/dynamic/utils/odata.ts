@@ -542,7 +542,7 @@ export const decodeValueFromCriteria = (criteria: Criteria) => {
 
 		try {
 			decodedValue = getSafeDecodedURIComponent(value);
-		} catch (e) {}
+		} catch (_error) {}
 
 		return decodedValue;
 	};
@@ -605,7 +605,7 @@ const translateQueryToCriteria = (queryString: string): Criteria => {
 			: wrapInCriteriaGroup(criteriaArray);
 
 		criteria = decodeValueFromCriteria(criteria);
-	} catch (e) {
+	} catch (_error) {
 		criteria = null;
 	}
 

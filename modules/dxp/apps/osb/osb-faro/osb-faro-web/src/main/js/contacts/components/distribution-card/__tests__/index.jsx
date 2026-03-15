@@ -1,7 +1,7 @@
 import DistributionCard from '../index';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {fetchDistributionTabs} from 'shared/actions/preferences';
 import {Provider} from 'react-redux';

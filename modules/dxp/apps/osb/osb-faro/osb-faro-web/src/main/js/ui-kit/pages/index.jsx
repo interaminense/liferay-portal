@@ -49,14 +49,14 @@ export default class UIKit extends React.Component {
 	}
 
 	render() {
-		const {channelId, groupId, history, name: componentName} = this.props;
+		const {channelId, componentName, groupId, name: navigate} = this.props;
 
 		const {query} = this.state;
 
 		const selectedItem = find(kits, ['name', componentName]) || kits[0];
 
 		if (!componentName) {
-			history.push(
+			navigate(
 				toRoute(Routes.UI_KIT, {name: selectedItem.name.toLowerCase()})
 			);
 		}

@@ -1,7 +1,7 @@
 import Interests from '../Interests';
 import React from 'react';
-import {MemoryRouter, Route} from 'react-router-dom';
-import {MockedProvider} from '@apollo/react-testing';
+import {MemoryRouter, Route} from 'react-router';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockIndividualInterestsReq} from 'test/graphql-data';
 import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';

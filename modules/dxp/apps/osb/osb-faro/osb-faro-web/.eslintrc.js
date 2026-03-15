@@ -47,9 +47,9 @@ module.exports = {
 		'@typescript-eslint/no-unused-vars': [
 			'error',
 			{
-				args: 'after-used',
-				ignoreRestSiblings: false,
-				vars: 'all'
+				argsIgnorePattern: '^_',
+				caughtErrorsIgnorePattern: '^_',
+				varsIgnorePattern: '^_'
 			}
 		],
 		'arrow-body-style': [2, 'as-needed'],
@@ -75,7 +75,13 @@ module.exports = {
 		'no-mixed-spaces-and-tabs': [2, 'smart-tabs'],
 		'no-return-assign': [2, 'always'],
 		'no-undef': 2,
-		'no-unused-vars': 0,
+		'no-unused-vars': [
+			'error',
+			{
+				argsIgnorePattern: '^_',
+				caughtErrorsIgnorePattern: '^_'
+			}
+		],
 		'object-shorthand': 2,
 		'prefer-const': 2,
 		'prefer-template': 2,

@@ -42,7 +42,7 @@ const BasicSettings: React.FC<IBasicSettingsProps> = ({
 					query: RECOMMENDATION_BY_NAME_QUERY,
 					variables: {name}
 				})
-				.then(({data: {jobByName}}) => {
+				.then(({data: {jobByName}}: {data: {jobByName: boolean}}) => {
 					if (jobByName) {
 						error = Liferay.Language.get(
 							'a-recommendation-model-already-exists-with-that-name.-please-enter-a-different-name'

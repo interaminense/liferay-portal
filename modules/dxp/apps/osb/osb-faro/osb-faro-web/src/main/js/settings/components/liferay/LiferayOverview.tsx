@@ -29,7 +29,7 @@ import {ReviewSyncedDataFragment} from './ReviewSyncedDataFragment';
 import {Text} from '@clayui/core';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDisconnectDataSource} from '../data-source/utils';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useRequest} from 'shared/hooks/useRequest';
 
 const TIMEOUT_INTERVAL = 5000;
@@ -93,7 +93,7 @@ const LiferayOverview: React.FC<ILiferayeOverviewProps> = ({
 			});
 
 			setDataSource(new DataSource(newDataSource));
-		} catch (error) {
+		} catch (_error) {
 			addAlert({
 				alertType: Alert.Types.Error,
 				message: Liferay.Language.get(

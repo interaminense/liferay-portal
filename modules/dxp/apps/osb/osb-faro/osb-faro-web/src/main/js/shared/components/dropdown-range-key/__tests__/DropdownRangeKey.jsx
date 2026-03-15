@@ -1,14 +1,14 @@
 import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-components';
+import {ApolloProvider} from '@apollo/client/react';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {createMemoryHistory} from 'history';
 import {DropdownRangeKey} from '../DropdownRangeKey';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
-import {Router} from 'react-router-dom';
+import {Router} from 'react-router';
 import {SEVEN_MONTHS} from 'shared/util/constants';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 

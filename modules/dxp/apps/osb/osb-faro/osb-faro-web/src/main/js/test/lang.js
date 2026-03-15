@@ -36,6 +36,7 @@ function getKeys(langPath) {
 		const buffer = fs.readFileSync(langPath);
 
 		keys = properties.parse(buffer.toString('utf8'));
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	} catch (e) {
 		// eslint-disable-next-line no-console
 		console.error(`Failed to read lang key file: ${langPath}`);

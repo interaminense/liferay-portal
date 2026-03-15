@@ -3,7 +3,7 @@ import KnownIndividuals from '../KnownIndividuals';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {mockEmptyState, mockSuccessState} from 'test/__mocks__/mock-objects';
 import {Provider} from 'react-redux';
 import {Routes} from 'shared/util/router';

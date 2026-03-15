@@ -1,146 +1,79 @@
+import AttributeList from '../event-attributes/components/AttributeList';
+import AttributeView from '../event-attributes/pages/AttributeView';
 import BundleRouter from 'route-middleware/BundleRouter';
+import CustomEventList from '../events/components/CustomEventList';
+import EventBlockList from '../events/pages/BlockList';
+import EventList from '../events/components/EventList';
+import EventView from '../events/pages/View';
+import GlobalAttributeList from '../event-attributes/components/GlobalAttributeList';
+import IndividualAttributes from './IndividualAttributes';
+import InterestTopics from './InterestTopics';
 import Loading from 'shared/components/Loading';
+import Overview from './Overview';
 import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
+import Search from './search/Search';
+import TrackedBehaviors from './TrackedBehaviors';
 import {DEVELOPER_MODE, ENABLE_BLOCKLIST_KEYWORDS} from 'shared/util/constants';
-import {Routes} from 'shared/util/router';
-import {Switch} from 'react-router-dom';
+import {Routes as Path} from 'shared/util/router';
+import {Route, Routes} from 'react-router';
 
-const EventBlockList = lazy(
-	() =>
-		import(/* webpackChunkName: "BlockList" */ '../events/pages/BlockList')
-);
-
-const Overview = lazy(
-	() => import(/* webpackChunkName: "DefinitionsOverview" */ './Overview')
-);
-
-const IndividualAttributes = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DefinitionsIndividualAttributes" */ './IndividualAttributes'
-		)
-);
-
-const InterestTopics = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DefinitionsInterestTopics" */ './InterestTopics'
-		)
-);
-
-const TrackedBehaviors = lazy(
-	() =>
-		import(/* webpackChunkName: "TrackedBehaviors" */ './TrackedBehaviors')
-);
-
-const Search = lazy(
-	() => import(/* webpackChunkName: "DefinitionsSearch" */ './search/Search')
-);
-
-const Events = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DefinitionsEvents" */ '../events/pages/Events'
-		)
-);
-
-const EventAttributes = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DefinitionsEvents" */ '../event-attributes/pages/EventAttributes'
-		)
-);
-
-const EventView = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DefinitionsEventView" */ '../events/pages/View'
-		)
-);
-
-const AttributeView = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DefinitionsEventAttributesView" */ '../event-attributes/pages/AttributeView'
-		)
-);
-
-interface IDefinitionsProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-const Definitions: React.FC<IDefinitionsProps> = () => (
+const Definitions = () => (
 	<Suspense fallback={<Loading />}>
-		<Switch>
-			<BundleRouter
-				data={Overview}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS}
-			/>
+		<Routes>
+			<Route element={<Overview />} index />
 
 			{ENABLE_BLOCKLIST_KEYWORDS && (
-				<BundleRouter
-					data={InterestTopics}
-					exact
-					path={Routes.SETTINGS_DEFINITIONS_INTEREST_TOPICS}
-				/>
+				<Route element={<InterestTopics />} path='/interest-topics' />
 			)}
 
-			<BundleRouter
-				data={IndividualAttributes}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS_INDIVIDUAL_ATTRIBUTES}
+			<Route
+				element={
+					<BundleRouter
+						data={IndividualAttributes}
+						path='/individual-attributes'
+					/>
+				}
+				path='/individual-attributes'
 			/>
 
-			<BundleRouter
-				data={Search}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS_SEARCH}
-			/>
+			<Route element={<Search />} path='/search' />
 
 			{DEVELOPER_MODE && (
 				// TODO: LRAC-4511 Remove when new TrackedBehavior page exists
-				<BundleRouter
-					data={TrackedBehaviors}
-					exact
-					path={Routes.SETTINGS_DEFINITIONS_BEHAVIORS}
-				/>
+				<Route element={<TrackedBehaviors />} path='/behaviors' />
 			)}
 
-			<BundleRouter
-				data={AttributeView}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_VIEW}
+			<Route
+				element={<AttributeView />}
+				path='/event-attributes/:attributeId'
 			/>
 
-			<BundleRouter
-				data={Events}
-				path={[
-					Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM,
-					Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT
-				]}
+			<Route
+				element={
+					<BundleRouter
+						data={AttributeList}
+						path='/event-attributes/local'
+					/>
+				}
+				path='/event-attributes/local'
 			/>
 
-			<BundleRouter
-				data={EventAttributes}
-				path={[
-					Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL,
-					Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
-				]}
+			<Route
+				element={<GlobalAttributeList />}
+				path='/event-attributes/global'
 			/>
 
-			<BundleRouter
-				data={EventBlockList}
-				path={Routes.SETTINGS_DEFINITIONS_EVENTS_BLOCK_LIST}
-			/>
+			<Route element={<EventView />} path='/events/:eventId' />
 
-			<BundleRouter
-				data={EventView}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS_EVENTS_VIEW}
-			/>
+			<Route element={<EventBlockList />} path='/events/block-list' />
 
-			<RouteNotFound />
-		</Switch>
+			<Route element={<EventList />} path='/events/default' />
+
+			<Route element={<CustomEventList />} path='/events/custom' />
+
+			{/* <RouteNotFound /> */}
+		</Routes>
 	</Suspense>
 );
 

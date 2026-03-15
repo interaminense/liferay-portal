@@ -136,8 +136,6 @@ export class DataTransformation extends React.Component {
 		valid: false
 	};
 
-	_staticFieldsIList = new List();
-
 	componentDidMount() {
 		const {initialValue} = this.props;
 
@@ -165,6 +163,8 @@ export class DataTransformation extends React.Component {
 			});
 		}
 	}
+
+	_staticFieldsIList = new List();
 
 	@autoCancel
 	fetchMappings() {

@@ -1,33 +1,31 @@
 import ClayForm from '@clayui/form';
 import client from 'shared/apollo/client';
 import mockStore from 'test/mock-store';
-import React, {useState} from 'react';
+import React, {PropsWithChildren, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {act, cleanup, fireEvent, render} from '@testing-library/react';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client/react';
 import {
 	Checkbox,
 	formattedContainers,
 	ReportContainer
 } from '../DownloadPDFReport';
-import {createMemoryHistory} from 'history';
 import {CSVType, useDownloadCSV} from '../utils';
 import {DownloadReportButton} from '../DownloadReportButton';
 import {DownloadReportModal, ReportType} from '../DownloadReportModal';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {RangeSelectors} from 'shared/types';
-import {Router} from 'react-router-dom';
 import {sub} from 'shared/util/lang';
 import {useModal} from '@clayui/modal';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '456',
 		groupId: '2000',
@@ -114,7 +112,7 @@ interface IWrapperComponent {
 	type: ReportType;
 }
 
-const WrapperComponent: React.FC<IWrapperComponent> = ({
+const WrapperComponent: React.FC<PropsWithChildren<IWrapperComponent>> = ({
 	children,
 	infoMessage,
 	onSubmit,
@@ -123,30 +121,27 @@ const WrapperComponent: React.FC<IWrapperComponent> = ({
 }) => {
 	const [visible, setVisible] = useState(false);
 	const {observer} = useModal({onClose: () => setVisible(false)});
-	const history = createMemoryHistory();
 
 	return (
 		<>
 			{visible && (
 				<ApolloProvider client={client}>
-					<Router history={history}>
-						<MockedProvider
-							mocks={[mockTimeRangeReq(), mockPreferenceReq()]}
-						>
-							<Provider store={mockStore()}>
-								<DownloadReportModal
-									{...otherProps}
-									infoMessage={infoMessage}
-									observer={observer}
-									onClose={jest.fn()}
-									onSubmit={onSubmit}
-									type={type}
-								>
-									{children}
-								</DownloadReportModal>
-							</Provider>
-						</MockedProvider>
-					</Router>
+					<MockedProvider
+						mocks={[mockTimeRangeReq(), mockPreferenceReq()]}
+					>
+						<Provider store={mockStore()}>
+							<DownloadReportModal
+								{...otherProps}
+								infoMessage={infoMessage}
+								observer={observer}
+								onClose={jest.fn()}
+								onSubmit={onSubmit}
+								type={type}
+							>
+								{children}
+							</DownloadReportModal>
+						</Provider>
+					</MockedProvider>
 				</ApolloProvider>
 			)}
 

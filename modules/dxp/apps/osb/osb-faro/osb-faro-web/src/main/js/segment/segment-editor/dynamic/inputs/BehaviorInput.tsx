@@ -101,8 +101,6 @@ interface IBehaviorInputProps extends ISegmentEditorCustomInputBase {
 export class BehaviorInput extends React.Component<IBehaviorInputProps> {
 	static contextType = ReferencedObjectsContext;
 
-	_completedAnalytics = false;
-
 	componentDidMount() {
 		this.initializeRealTimeDefaults();
 	}
@@ -121,6 +119,8 @@ export class BehaviorInput extends React.Component<IBehaviorInputProps> {
 			this._completedAnalytics = true;
 		}
 	}
+
+	_completedAnalytics = false;
 
 	initializeRealTimeDefaults() {
 		const isRealTime = this.props.segmentType === SegmentTypes.RealTime;
@@ -164,9 +164,9 @@ export class BehaviorInput extends React.Component<IBehaviorInputProps> {
 	}
 
 	getAssetFromContext(): Asset | undefined {
-		const {
-			context: {referencedEntities}
-		} = this;
+		const {referencedEntities} = this.context as {
+			referencedEntities: Map<string, any>;
+		};
 
 		const reference = referencedEntities.getIn([
 			EntityType.Assets,
@@ -205,10 +205,17 @@ export class BehaviorInput extends React.Component<IBehaviorInputProps> {
 
 	@autobind
 	handleAssetSelect(items) {
-		const {
-			context: {addEntities, addEntity},
-			props: {onChange, touched, valid, value}
-		} = this;
+		const {addEntities, addEntity} = this.context as {
+			addEntities: (params: {
+				entityType: EntityType;
+				payload: any[];
+			}) => void;
+			addEntity: (params: {
+				entityType: EntityType;
+				payload: Map<string, any>;
+			}) => void;
+		};
+		const {onChange, touched, valid, value} = this.props;
 
 		const asset = items.first();
 

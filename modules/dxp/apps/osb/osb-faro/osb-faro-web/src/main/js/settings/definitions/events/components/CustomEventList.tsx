@@ -1,3 +1,4 @@
+import BasePage from 'settings/components/base-page/BasePage';
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
@@ -18,6 +19,7 @@ import NotificationAlertList, {
 } from 'shared/components/NotificationAlertList';
 import React from 'react';
 import RowActions from 'shared/components/RowActions';
+import TabsCard from './TabsCard';
 import URLConstants from 'shared/util/url-constants';
 import {addAlert, removeAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
@@ -37,6 +39,7 @@ import {
 import {Event, EventTypes} from 'event-analysis/utils/types';
 import {eventListColumns} from 'shared/util/table-columns';
 import {get} from 'lodash';
+import {getDefinitions} from 'shared/util/breadcrumbs';
 import {LIMIT_REACHED_ALERT_ID} from './constants';
 import {NotificationSubtypes} from 'shared/util/records/Notification';
 import {OrderedMap} from 'immutable';
@@ -44,7 +47,8 @@ import {Routes, setUriQueryValues, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/client/react';
+import {useNavigate, useParams} from 'react-router';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {
 	useSelectionContext,
@@ -53,22 +57,16 @@ import {
 
 const connector = connect(null, {addAlert, close, open, removeAlert});
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface ICustomEventListProps extends PropsFromRedux {
-	groupId: string;
-	history: {push: (url: string) => void};
-}
-
-const CustomEventList: React.FC<ICustomEventListProps> = ({
+const CustomEventList: React.FC<ConnectedProps<typeof connector>> = ({
 	addAlert,
 	close,
-	groupId,
-	history,
 	open,
 	removeAlert
 }) => {
+	const {groupId} = useParams();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
+
+	const navigate = useNavigate();
 
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME)
@@ -176,7 +174,7 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 
 							const {field, sortOrder} = orderParams;
 
-							history.push(
+							navigate(
 								setUriQueryValues(
 									{
 										field,
@@ -376,7 +374,16 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 		events.some(({hidden}) => !hidden);
 
 	return (
-		<>
+		<BasePage
+			breadcrumbItems={[
+				getDefinitions({groupId}),
+				{active: true, label: Liferay.Language.get('events')}
+			]}
+			pageDescription={Liferay.Language.get(
+				'this-is-the-data-model-of-events-sent-to-analytics-cloud'
+			)}
+			pageTitle={Liferay.Language.get('events')}
+		>
 			<div className='mx-4'>
 				<NotificationAlertList
 					{...notificationResponse}
@@ -385,125 +392,144 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 				/>
 			</div>
 
-			<CrossPageSelect
-				columns={[
-					eventListColumns.getName({groupId}),
-					eventListColumns.displayName,
-					eventListColumns.description,
-					eventListColumns.hidden
-				]}
-				delta={delta}
-				emptyDescription={Liferay.Language.get(
-					'visit-our-documentation-to-learn-how-to-add-custom-events-on-your-site'
-				)}
-				emptyTitle={Liferay.Language.get('create-some-custom-events')}
-				error={error}
-				items={get(data, ['eventDefinitions', 'eventDefinitions'], [])}
-				loading={loading}
-				noResultsRenderer={
-					<NoResultsDisplay
-						description={
-							<>
-								{Liferay.Language.get(
-									'create-some-custom-events-to-get-started'
-								)}
-
-								<ClayLink
-									className='d-block mb-3'
-									href={
-										URLConstants.CustomEventsDocumentation
-									}
-									key='DOCUMENTATION'
-									target='_blank'
-								>
+			<TabsCard groupId={groupId}>
+				<CrossPageSelect
+					columns={[
+						eventListColumns.getName({groupId}),
+						eventListColumns.displayName,
+						eventListColumns.description,
+						eventListColumns.hidden
+					]}
+					delta={delta}
+					emptyDescription={Liferay.Language.get(
+						'visit-our-documentation-to-learn-how-to-add-custom-events-on-your-site'
+					)}
+					emptyTitle={Liferay.Language.get(
+						'create-some-custom-events'
+					)}
+					error={error}
+					items={get(
+						data,
+						['eventDefinitions', 'eventDefinitions'],
+						[]
+					)}
+					loading={loading}
+					noResultsRenderer={
+						<NoResultsDisplay
+							description={
+								<>
 									{Liferay.Language.get(
-										'learn-how-to-add-custom-events-on-your-site'
+										'create-some-custom-events-to-get-started'
 									)}
-								</ClayLink>
-							</>
-						}
-						icon={{
-							border: false,
-							size: Sizes.XXXLarge,
-							symbol: 'ac_satellite'
-						}}
-						title={Liferay.Language.get('no-custom-events-found')}
-					/>
-				}
-				orderIOMap={orderIOMap}
-				page={page}
-				query={query}
-				refetch={refetch}
-				renderNav={
-					authorized && selectedItems.size
-						? () => (
-								<Nav>
-									<Nav.Item>
-										<ClayButton
-											borderless
-											className='button-root nav-btn'
-											displayType='secondary'
-											onClick={() => {
-												handleBlockEvents(
-													selectedItems.toArray()
-												);
-											}}
-										>
-											<ClayIcon
-												className='icon-root mr-2'
-												symbol='ac_block'
-											/>
 
-											{Liferay.Language.get(
-												'block-events'
-											)}
-										</ClayButton>
+									<ClayLink
+										className='d-block mb-3'
+										href={
+											URLConstants.CustomEventsDocumentation
+										}
+										key='DOCUMENTATION'
+										target='_blank'
+									>
+										{Liferay.Language.get(
+											'learn-how-to-add-custom-events-on-your-site'
+										)}
+									</ClayLink>
+								</>
+							}
+							icon={{
+								border: false,
+								size: Sizes.XXXLarge,
+								symbol: 'ac_satellite'
+							}}
+							title={Liferay.Language.get(
+								'no-custom-events-found'
+							)}
+						/>
+					}
+					orderIOMap={orderIOMap}
+					page={page}
+					query={query}
+					refetch={refetch}
+					renderNav={
+						authorized && selectedItems.size
+							? () => (
+									<Nav>
+										<Nav.Item>
+											<ClayButton
+												borderless
+												className='button-root nav-btn'
+												displayType='secondary'
+												onClick={() => {
+													handleBlockEvents(
+														selectedItems.toArray()
+													);
+												}}
+											>
+												<ClayIcon
+													className='icon-root mr-2'
+													symbol='ac_block'
+												/>
 
-										<ClayButton
-											borderless
-											className='button-root nav-btn'
-											displayType='secondary'
-											onClick={() => {
-												const hideEventFn = hasUnhiddenEvent(
-													selectedItems
-												)
-													? handleHideEvents
-													: handleUnhideEvents;
+												{Liferay.Language.get(
+													'block-events'
+												)}
+											</ClayButton>
 
-												hideEventFn(
-													selectedItems.toArray()
-												);
-											}}
-										>
-											<ClayIcon
-												className='icon-root mr-2'
-												symbol={
-													hasUnhiddenEvent(
+											<ClayButton
+												borderless
+												className='button-root nav-btn'
+												displayType='secondary'
+												onClick={() => {
+													const hideEventFn = hasUnhiddenEvent(
 														selectedItems
 													)
-														? 'ac_hidden'
-														: 'view'
-												}
-											/>
+														? handleHideEvents
+														: handleUnhideEvents;
 
-											{hasUnhiddenEvent(selectedItems)
-												? Liferay.Language.get('hide')
-												: Liferay.Language.get('show')}
-										</ClayButton>
-									</Nav.Item>
-								</Nav>
-						  )
-						: null
-				}
-				renderRowActions={
-					authorized && !selectedItems.size ? renderRowActions : null
-				}
-				rowIdentifier='id'
-				showCheckbox={authorized}
-				total={get(data, ['eventDefinitions', 'total'], 0)}
-			/>
-		</>
+													hideEventFn(
+														selectedItems.toArray()
+													);
+												}}
+											>
+												<ClayIcon
+													className='icon-root mr-2'
+													symbol={
+														hasUnhiddenEvent(
+															selectedItems
+														)
+															? 'ac_hidden'
+															: 'view'
+													}
+												/>
+
+												{hasUnhiddenEvent(selectedItems)
+													? Liferay.Language.get(
+															'hide'
+													  )
+													: Liferay.Language.get(
+															'show'
+													  )}
+											</ClayButton>
+										</Nav.Item>
+									</Nav>
+							  )
+							: null
+					}
+					renderRowActions={
+						authorized && !selectedItems.size
+							? renderRowActions
+							: null
+					}
+					rowIdentifier='id'
+					showCheckbox={authorized}
+					total={get(data, ['eventDefinitions', 'total'], 0)}
+				/>
+			</TabsCard>
+		</BasePage>
 	);
 };
 
-export default compose<any>(withSelectionProvider, connector)(CustomEventList);
+export default compose(
+	withSelectionProvider,
+	connector
+)(CustomEventList) as React.ComponentProps<any>;

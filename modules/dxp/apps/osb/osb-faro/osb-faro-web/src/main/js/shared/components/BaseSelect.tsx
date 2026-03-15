@@ -6,11 +6,11 @@ import Input from './Input';
 import Loading from 'shared/components/Loading';
 import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {ARROW_DOWN, ARROW_UP, ENTER} from '../util/key-constants';
-import {DocumentNode} from 'apollo-boost';
 import {identity, noop} from 'lodash';
 import {useDebounce} from 'shared/hooks/useDebounce';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client/react';
 import {useRequest} from 'shared/hooks/useRequest';
+import type {DocumentNode} from 'graphql';
 
 const DEBOUNCE_DELAY = 250;
 const SELECT_KEYS = [ARROW_DOWN, ARROW_UP, ENTER];
@@ -63,11 +63,11 @@ interface IBaseSelectProps extends React.HTMLAttributes<HTMLInputElement> {
 	dataSourceFn?: (value: string | number) => Promise<any>;
 	disabled?: boolean;
 	emptyInputOnInactive?: boolean;
-	inputName?: string;
 	focusOnInit?: boolean;
 	forwardedRef?: React.Ref<any>;
 	graphqlQuery?: GraphqlQuery;
 	id?: string;
+	inputName?: string;
 	inputSize?: string;
 	inputValue?: string | React.ReactText;
 	inset?: boolean;
@@ -76,6 +76,7 @@ interface IBaseSelectProps extends React.HTMLAttributes<HTMLInputElement> {
 	onFocus?: () => void;
 	onInputValueChange?: (value: string | number) => void;
 	onSelect?: (item: any) => void;
+	placeholder?: string;
 	selectedItem?: any;
 }
 

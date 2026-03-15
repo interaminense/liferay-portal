@@ -2,18 +2,18 @@ import * as data from 'test/data';
 import Form from 'shared/components/form';
 import React from 'react';
 import Summary from '../Summary';
+import {BrowserRouter} from 'react-router';
 import {
 	JobRunDataPeriods,
 	JobRunFrequencies,
 	JobTypes
 } from 'shared/util/constants';
-import {MockedProvider} from '@apollo/react-testing';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {
 	mockRecommendationActivitiesReq,
 	mockRecommendationPageAssetsReq
 } from 'test/graphql-data';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
@@ -27,7 +27,7 @@ describe('Summary', () => {
 					mockRecommendationActivitiesReq([], {rangeKey: 60})
 				]}
 			>
-				<StaticRouter>
+				<BrowserRouter>
 					<Form
 						initialValues={{
 							itemFilters: [
@@ -54,7 +54,7 @@ describe('Summary', () => {
 							</Form.Form>
 						)}
 					</Form>
-				</StaticRouter>
+				</BrowserRouter>
 			</MockedProvider>
 		);
 
@@ -70,7 +70,7 @@ describe('Summary', () => {
 					mockRecommendationActivitiesReq([], {rangeKey: 60})
 				]}
 			>
-				<StaticRouter>
+				<BrowserRouter>
 					<Form
 						initialValues={{
 							includePreviousPeriod: true,
@@ -98,7 +98,7 @@ describe('Summary', () => {
 							</Form.Form>
 						)}
 					</Form>
-				</StaticRouter>
+				</BrowserRouter>
 			</MockedProvider>
 		);
 

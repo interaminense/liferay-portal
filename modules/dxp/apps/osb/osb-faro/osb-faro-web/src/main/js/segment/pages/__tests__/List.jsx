@@ -3,7 +3,7 @@ import List from '../List';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {ChannelContext} from 'shared/context/channel';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {mockChannelContext} from 'test/mock-channel-context';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';

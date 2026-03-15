@@ -1,11 +1,10 @@
 import BaseCard from 'shared/components/base-card';
-import BasePage from 'shared/components/base-page';
 import Card from 'shared/components/Card';
 import CardTabs from 'shared/components/CardTabs';
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import ErrorDisplay from 'shared/components/ErrorDisplay';
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import SitesTopPagesQuery, {
 	SitesTopPagesQueryData,
 	SitesTopPagesQueryVariables
@@ -13,8 +12,8 @@ import SitesTopPagesQuery, {
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import Table from 'shared/components/table';
 import URLConstants from 'shared/util/url-constants';
-import {ApolloError} from 'apollo-client';
 import {ENTRANCES_METRIC, EXIT_RATE_METRIC} from 'shared/util/pagination';
+import {ErrorLike} from '@apollo/client';
 import {getSafeRangeSelectors} from 'shared/util/util';
 import {metricsListColumns} from 'shared/util/table-columns';
 import {NameCell} from 'shared/components/table/cell-components';
@@ -23,7 +22,8 @@ import {pickBy} from 'lodash';
 import {RangeSelectors} from 'shared/types';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {setUriQueryValues} from 'shared/util/router';
-import {useQuery} from '@apollo/react-hooks';
+import {useParams} from 'react-router';
+import {useQuery} from '@apollo/client/react';
 
 const ROW_IDENTIFIER = ['assetId', 'assetTitle'];
 
@@ -125,12 +125,9 @@ const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 	footer,
 	rangeSelectors
 }) => {
+	const {channelId} = useParams();
 	const [activeTabId, setActiveTabId] = useState(tabs[0].tabId);
-	const {
-		router: {
-			params: {channelId}
-		}
-	} = useContext(BasePage.Context);
+
 	const {data, error, loading = false} = useQuery<
 		SitesTopPagesQueryData,
 		SitesTopPagesQueryVariables
@@ -210,7 +207,7 @@ const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 interface ITopPagesCardWithStatesRendererProps
 	extends React.HTMLAttributes<HTMLElement> {
 	empty?: boolean;
-	error: ApolloError;
+	error: ErrorLike;
 	loading?: boolean;
 }
 

@@ -1,15 +1,15 @@
 import * as Constants from 'shared/util/constants';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {Overview} from '../Overview';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+	...jest.requireActual('react-router'),
 	useParams: () => ({
 		channelId: '456',
 		groupId: '2000'
@@ -23,9 +23,9 @@ describe('Definitions Overview', () => {
 
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				<BrowserRouter>
 					<Overview groupId='23' />
-				</StaticRouter>
+				</BrowserRouter>
 			</Provider>
 		);
 

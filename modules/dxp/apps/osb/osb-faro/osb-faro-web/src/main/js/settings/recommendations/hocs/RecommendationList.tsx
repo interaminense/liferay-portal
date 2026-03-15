@@ -44,7 +44,7 @@ import {RootState} from 'shared/store';
 import {Routes, setUriQueryValues, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/client/react';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 
 const {
@@ -68,9 +68,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IRecommendationListProps extends PropsFromRedux {
 	groupId: string;
-	history: {
-		push: (value: string) => void;
-	};
+	navigate: (value: string) => void;
 	router: Router;
 }
 
@@ -78,7 +76,7 @@ const RecommendationList: React.FC<IRecommendationListProps> = ({
 	addAlert,
 	close,
 	groupId,
-	history,
+	navigate,
 	open,
 	timeZoneId
 }: IRecommendationListProps) => {
@@ -147,7 +145,7 @@ const RecommendationList: React.FC<IRecommendationListProps> = ({
 
 				refetch();
 
-				history.push(
+				navigate(
 					setUriQueryValues(
 						{
 							field: NAME,

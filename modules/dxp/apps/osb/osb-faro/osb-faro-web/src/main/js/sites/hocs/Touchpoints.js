@@ -13,13 +13,14 @@ import {
 } from 'shared/hoc';
 import {createOrderIOMap, VISITORS_METRIC} from 'shared/util/pagination';
 import {getRangeSelectorsFromQuery} from 'shared/util/util';
-import {graphql} from '@apollo/react-hoc';
+import {graphql} from 'shared/apollo/compatibility-layer';
 import {
 	metricsListColumns,
 	sitePagesListColumns
 } from 'shared/util/table-columns';
 import {Routes} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
+import {useParams} from 'react-router';
 
 // LRAC-6976 POC TEMP
 const withData = (useDB = false) => () =>
@@ -90,17 +91,18 @@ const getTableWithData = useDB => {
 const TableWithDataNewDB = getTableWithData(true);
 const TableWithDataOldDB = getTableWithData();
 
-// TODO: look intot he default range key
-const Touchpoints = ({router, ...otherProps}) => {
+// TODO: look into the default range key
+const Touchpoints = props => {
+	const {query} = useParams();
+
 	const TableWithData =
-		router.query.useDB === 'true' ? TableWithDataNewDB : TableWithDataOldDB;
+		query.useDB === 'true' ? TableWithDataNewDB : TableWithDataOldDB;
 
 	return (
 		<Card className='site-touchpoints-root' pageDisplay>
 			<TableWithData
-				{...otherProps}
+				{...props}
 				entityLabel={Liferay.Language.get('pages')}
-				router={router}
 			/>
 		</Card>
 	);

@@ -42,7 +42,7 @@ import {Routes, setUriQueryValues, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/client/react';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {
 	useSelectionContext,
@@ -68,7 +68,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IBlockListCardProps extends PropsFromRedux {
 	groupId: string;
-	history: {push: (url: string) => void};
+	navigate: (url: string) => void;
 	timeZoneId: string;
 }
 
@@ -76,7 +76,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 	addAlert,
 	close,
 	groupId,
-	history,
+	navigate,
 	open,
 	removeAlert,
 	timeZoneId
@@ -269,7 +269,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 
 					const {field, sortOrder} = orderParams;
 
-					history.push(
+					navigate(
 						setUriQueryValues(
 							{
 								field,

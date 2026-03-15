@@ -3,6 +3,10 @@ import React from 'react';
 import {DndProvider, useDrop} from 'react-dnd';
 import {HTML5Backend, NativeTypes} from 'react-dnd-html5-backend';
 
+// TODO: Update react-dnd to remove "any"
+
+const DndProviderAny = DndProvider as any;
+
 interface ITargetProps extends React.HTMLAttributes<HTMLElement> {
 	message: React.ReactNode;
 	targetType: string;
@@ -44,9 +48,9 @@ const Target: React.FC<ITargetProps> = ({
 export const TYPES = NativeTypes;
 export default Object.assign(
 	props => (
-		<DndProvider backend={HTML5Backend}>
+		<DndProviderAny backend={HTML5Backend}>
 			<Target {...props} />
-		</DndProvider>
+		</DndProviderAny>
 	),
 	{TYPES: NativeTypes}
 );

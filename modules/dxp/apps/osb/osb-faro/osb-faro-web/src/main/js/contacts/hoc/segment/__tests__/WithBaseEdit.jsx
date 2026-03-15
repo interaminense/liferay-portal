@@ -5,8 +5,8 @@ import React from 'react';
 import withBaseEdit from '../WithBaseEdit';
 import {compose} from 'redux';
 import {renderWithStore} from 'test/mock-store';
+import {withBrowserRouter} from 'test/mock-router';
 import {withChannelProvider} from 'test/mock-channel-context';
-import {withStaticRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -20,7 +20,7 @@ describe('WithBaseEdit', () => {
 	it('should render the wrapped component', () => {
 		const WrappedComponent = compose(
 			withChannelProvider,
-			withStaticRouter,
+			withBrowserRouter,
 			withBaseEdit
 		)(TestComponent);
 

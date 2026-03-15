@@ -8,7 +8,7 @@ import EmbeddedAlertList, {
 import NoResultsDisplay, {
 	INoResultsDisplayProps
 } from 'shared/components/NoResultsDisplay';
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import SearchableEntityTable from 'shared/components/SearchableEntityTable';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
@@ -20,7 +20,7 @@ import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {User} from 'shared/util/records';
 
 interface IBaseListPageProps {
@@ -53,7 +53,7 @@ interface IBaseListPageProps {
 	showCheckbox?: boolean;
 }
 
-const BaseListPage: React.FC<IBaseListPageProps> = ({
+const BaseListPage: React.FC<PropsWithChildren<IBaseListPageProps>> = ({
 	alerts = [],
 	className,
 	columns,
@@ -223,10 +223,11 @@ const BaseListPage: React.FC<IBaseListPageProps> = ({
 	);
 };
 
-export default React.forwardRef<HTMLDivElement, IBaseListPageProps>(
-	(props, ref) => (
-		<BaseListPage {...props} forwardedRef={ref}>
-			{props.children}
-		</BaseListPage>
-	)
-);
+export default React.forwardRef<
+	HTMLDivElement,
+	PropsWithChildren<IBaseListPageProps>
+>(({children, ...props}, ref) => (
+	<BaseListPage {...props} forwardedRef={ref}>
+		{children}
+	</BaseListPage>
+));

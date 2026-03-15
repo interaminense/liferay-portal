@@ -19,7 +19,7 @@ import {
 	SegmentTypes
 } from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 const sanitizeActivation = (activation: any) => {
 	if (!activation) return null;
@@ -148,7 +148,7 @@ const ActivationConfigurationModal: React.FC<
 
 		try {
 			await onSave(formState);
-		} catch (error) {
+		} catch (_error) {
 			addAlert({
 				alertType: Alert.Types.Error,
 				message: Liferay.Language.get(

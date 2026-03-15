@@ -34,8 +34,8 @@ import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {Text} from '@clayui/core';
 import {useInterval} from 'shared/hooks/useInterval';
-import {useLazyQuery} from '@apollo/react-hooks';
-import {withHistory} from 'shared/hoc';
+import {useLazyQuery} from '@apollo/client/react';
+import {withNavigate} from 'shared/hoc';
 
 const TIMEOUT_INTERVAL = 5000;
 
@@ -78,9 +78,7 @@ interface IConnectDXPWrapperProps {
 		groupId: string;
 		id: string;
 	}) => DataSource;
-	history: {
-		push: (path: string) => void;
-	};
+	navigate: (path: string) => void;
 	isUpgrading: boolean;
 	onDxpConnected: (dxpConnected: boolean) => void;
 	onPrevious?: () => void;
@@ -95,7 +93,7 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 	dxpConnected,
 	fetchDataSource,
 	groupId,
-	history,
+	navigate,
 	onboarding,
 	onClose,
 	onDxpConnected,
@@ -107,19 +105,7 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 	const [getDataSources, {data}] = useLazyQuery<DataSourceData>(
 		DataSourceQuery,
 		{
-			fetchPolicy: 'network-only',
-			onCompleted: () => {
-				onDxpConnected(true);
-			},
-			variables: {
-				credentialsType: CredentialTypes.Token,
-				size: 1,
-				sort: {
-					column: CREATE_DATE,
-					type: OrderByDirections.Descending
-				},
-				type: DataSourceTypes.Liferay
-			}
+			fetchPolicy: 'network-only'
 		}
 	);
 
@@ -128,7 +114,7 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 	const getNextToken: (prevToken?: string) => Promise<any> = prevToken =>
 		API.dataSource
 			.fetchToken(groupId, dataSourceId)
-			.then(nextToken => {
+			.then(async nextToken => {
 				if (!prevToken || prevToken === nextToken) {
 					_tokenRequest = setTimeout(
 						() => getNextToken(nextToken),
@@ -144,7 +130,21 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 						fetchDataSource({groupId, id: dataSourceId});
 					}
 
-					getDataSources();
+					const result = await getDataSources({
+						variables: {
+							credentialsType: CredentialTypes.Token,
+							size: 1,
+							sort: {
+								column: CREATE_DATE,
+								type: OrderByDirections.Descending
+							},
+							type: DataSourceTypes.Liferay
+						}
+					});
+
+					if (result.data) {
+						onDxpConnected(true);
+					}
 				}
 
 				return nextToken;
@@ -164,7 +164,7 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 		API.channels.fetchAll({groupId}).then(({items}) => {
 			const channelId = get(items, [0, 'id']);
 
-			history.push(toRoute(Routes.SITES, {channelId, groupId}));
+			navigate(toRoute(Routes.SITES, {channelId, groupId}));
 
 			channelDispatch({
 				payload: getDefaultChannel(channelId, items),
@@ -284,19 +284,24 @@ const DxpSyncTable: FC<React.HTMLAttributes<HTMLElement>> = () => {
 	const [getDataSources, {data}] = useLazyQuery<DataSourceSyncData>(
 		DataSourceQuery,
 		{
-			fetchPolicy: 'network-only',
-			variables: {
-				credentialsType: CredentialTypes.Token,
-				size: 1,
-				sort: {
-					column: CREATE_DATE,
-					type: OrderByDirections.Descending
-				},
-				type: DataSourceTypes.Liferay
-			}
+			fetchPolicy: 'network-only'
 		}
 	);
-	useInterval<void>(getDataSources, TIMEOUT_INTERVAL);
+	useInterval<void>(
+		() =>
+			getDataSources({
+				variables: {
+					credentialsType: CredentialTypes.Token,
+					size: 1,
+					sort: {
+						column: CREATE_DATE,
+						type: OrderByDirections.Descending
+					},
+					type: DataSourceTypes.Liferay
+				}
+			}),
+		TIMEOUT_INTERVAL
+	);
 
 	const getLabelProps = (selected: boolean) =>
 		selected
@@ -504,7 +509,7 @@ const TokenInput: FC<ITokenInputProps> = ({token}) => {
 };
 
 export default compose<any>(
-	withHistory,
+	withNavigate,
 	connect(null, {
 		fetchDataSource
 	})

@@ -41,7 +41,7 @@ export const getSafeDecodedURIComponent = (
 ): string => {
 	try {
 		return decodeURIComponent(encodedURIComponent);
-	} catch (error) {
+	} catch (_error) {
 		return encodedURIComponent;
 	}
 };
@@ -107,7 +107,7 @@ export const getSafeTouchpoint = (touchpoint: string) => {
 		const remainingUrl = url.href.replace(url.origin, '');
 
 		return remainingUrl === '/' ? url.origin : url.origin + remainingUrl;
-	} catch (e) {
+	} catch (_) {
 		return touchpoint !== 'Any'
 			? getSafeDecodedURIComponent(touchpoint)
 			: null;

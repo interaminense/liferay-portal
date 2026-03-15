@@ -1,7 +1,7 @@
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import getCN from 'classnames';
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 
 interface ICollapsibleOverlayProps extends React.HTMLFactory<HTMLElement> {
 	onClose: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -9,12 +9,9 @@ interface ICollapsibleOverlayProps extends React.HTMLFactory<HTMLElement> {
 	visible: boolean;
 }
 
-const CollapsibleOverlay: React.FC<ICollapsibleOverlayProps> = ({
-	children,
-	onClose,
-	title = '',
-	visible = false
-}) => (
+const CollapsibleOverlay: React.FC<
+	PropsWithChildren<ICollapsibleOverlayProps>
+> = ({children, onClose, title = '', visible = false}) => (
 	<div
 		className={getCN('collapsible-overlay-root', {
 			hidden: !visible

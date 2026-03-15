@@ -139,10 +139,10 @@ export class Distribution extends React.Component {
 		fieldMappingFieldName: PropTypes.string,
 		groupId: PropTypes.string.isRequired,
 		hasSelectedPoint: PropTypes.bool,
-		history: PropTypes.object.isRequired,
 		id: PropTypes.string,
 		knownIndividualCount: PropTypes.number,
 		loading: PropTypes.bool,
+		navigate: PropTypes.func,
 		noResultsRenderer: PropTypes.func,
 		numberOfBins: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		onPointSelect: PropTypes.func.isRequired,
@@ -159,9 +159,6 @@ export class Distribution extends React.Component {
 		selectedContext: FieldContexts.Demographics,
 		showIndividualsPreview: false
 	};
-
-	_formRef = React.createRef();
-	_formSelectFieldInputRef = React.createRef();
 
 	componentDidMount() {
 		this.fetchFieldMappings();
@@ -182,6 +179,9 @@ export class Distribution extends React.Component {
 			this.handleFetchDistributionData();
 		}
 	}
+
+	_formRef = React.createRef();
+	_formSelectFieldInputRef = React.createRef();
 
 	@autobind
 	buildNumberFilter([min, max]) {
@@ -272,7 +272,7 @@ export class Distribution extends React.Component {
 
 	@autoCancel
 	fetchFieldMappings() {
-		const {fieldMappingFieldName, groupId, history} = this.props;
+		const {fieldMappingFieldName, groupId, navigate} = this.props;
 
 		const fieldMappingFn = fieldMappingFieldName
 			? () =>
@@ -285,7 +285,7 @@ export class Distribution extends React.Component {
 		return fieldMappingFn()
 			.then(fieldMapping => {
 				if (!fieldMappingFieldName) {
-					history.replace(
+					navigate(
 						setUriQueryValues({
 							fieldMappingFieldName: fieldMapping.id
 						})
@@ -386,7 +386,7 @@ export class Distribution extends React.Component {
 	handleNumberOfBinsChange(event) {
 		const {name, value} = event.target;
 
-		const {history} = this.props;
+		const {navigate} = this.props;
 
 		const {errors} = this._formRef.current.getFormikBag();
 
@@ -395,7 +395,7 @@ export class Distribution extends React.Component {
 		const curNumberOfBins = this.getNumberOfBins();
 
 		if (value && curNumberOfBins !== numberOfBins && !errors[name]) {
-			history.replace(setUriQueryValues({numberOfBins}));
+			navigate(setUriQueryValues({numberOfBins}), {replace: true});
 		}
 	}
 
@@ -403,7 +403,7 @@ export class Distribution extends React.Component {
 	handleBreakdownSelect(fieldMapping) {
 		const {id, rawType} = fieldMapping;
 
-		const {fieldMappingFieldName, history} = this.props;
+		const {fieldMappingFieldName, navigate} = this.props;
 
 		const histogram = rawType === FieldTypes.Number;
 
@@ -415,12 +415,15 @@ export class Distribution extends React.Component {
 		});
 
 		if (fieldMappingFieldName !== id) {
-			history.replace(setUriQueryValues({fieldMappingFieldName: id}));
+			navigate(setUriQueryValues({fieldMappingFieldName: id}), {
+				replace: true
+			});
 		}
 
 		if (histogram) {
-			history.replace(
-				setUriQueryValues({numberOfBins: DEFAULT_NUMBER_OF_BINS})
+			navigate(
+				setUriQueryValues({numberOfBins: DEFAULT_NUMBER_OF_BINS}),
+				{replace: true}
 			);
 		}
 	}

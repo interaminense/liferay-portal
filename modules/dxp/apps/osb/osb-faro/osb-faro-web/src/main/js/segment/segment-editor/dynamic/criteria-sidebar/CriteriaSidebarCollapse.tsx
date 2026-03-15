@@ -19,7 +19,7 @@ import {List} from 'immutable';
 import {Property, PropertyGroup, PropertySubgroup} from 'shared/util/records';
 import {Routes, toRoute} from 'shared/util/router';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 
 /**
  * Returns a default value for a property provided.
@@ -304,43 +304,51 @@ const CriteriaSidebarCollapse: React.FC<ICriteriaSidebarCollapseProps> = ({
 
 	return (
 		<ul className='property-subgroups-list active'>
-			{filteredProperties.map(({label, properties}, i) => (
-				<li key={`${label}-${i}`}>
-					{label && (
-						<div className='property-subgroup-label'>{label}</div>
-					)}
+			{filteredProperties
+				.map(({label, properties}, i) => (
+					<li key={`${label}-${i}`}>
+						{label && (
+							<div className='property-subgroup-label'>
+								{label}
+							</div>
+						)}
 
-					{properties.isEmpty() ? (
-						<div className='empty-message'>
-							{Liferay.Language.get('no-results-were-found')}
-						</div>
-					) : (
-						<ul className='properties-list'>
-							{properties.map((property, i) => {
-								const {
-									label,
-									name,
-									propertyKey,
-									type
-								} = property;
+						{properties.isEmpty() ? (
+							<div className='empty-message'>
+								{Liferay.Language.get('no-results-were-found')}
+							</div>
+						) : (
+							<ul className='properties-list'>
+								{properties
+									.map((property, i) => {
+										const {
+											label,
+											name,
+											propertyKey,
+											type
+										} = property;
 
-								return (
-									<CriteriaSidebarItem
-										className={`color--${propertyKey}`}
-										defaultValue={getDefaultValue(property)}
-										key={`${name}-${i}`}
-										label={label}
-										name={name}
-										property={property}
-										propertyKey={propertyKey}
-										type={type}
-									/>
-								);
-							})}
-						</ul>
-					)}
-				</li>
-			))}
+										return (
+											<CriteriaSidebarItem
+												className={`color--${propertyKey}`}
+												defaultValue={getDefaultValue(
+													property
+												)}
+												key={`${name}-${i}`}
+												label={label}
+												name={name}
+												property={property}
+												propertyKey={propertyKey}
+												type={type}
+											/>
+										);
+									})
+									.toArray()}
+							</ul>
+						)}
+					</li>
+				))
+				.toArray()}
 		</ul>
 	);
 };

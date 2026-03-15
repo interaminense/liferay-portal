@@ -4,17 +4,14 @@ import BasePage from 'settings/components/base-page/BasePage';
 import React from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
-import {compose, withHistory, withQuery} from 'shared/hoc';
+import {compose, withQuery} from 'shared/hoc';
 import {connect, ConnectedProps} from 'react-redux';
 import {Project} from 'shared/util/records';
 import {Routes, toRoute} from 'shared/util/router';
 import {updateProject} from 'shared/actions/projects';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {useNavigate, useParams} from 'react-router';
 import {withProject} from 'shared/hoc/WithProject';
-
-type History = {
-	push: (path: string) => void;
-};
 
 const connector = connect(null, {
 	addAlert,
@@ -29,14 +26,14 @@ interface IWorkspaceProps
 	emailAddressDomains: string[];
 	groupId: string;
 	project: Project;
-	history: History;
+	navigate: (path: string) => void;
 }
 
 export const Workspace: React.FC<IWorkspaceProps> = ({
 	addAlert,
 	emailAddressDomains,
 	groupId,
-	history,
+	navigate,
 	project,
 	updateProject
 }) => {
@@ -59,7 +56,7 @@ export const Workspace: React.FC<IWorkspaceProps> = ({
 		})
 			.then(() => {
 				if (friendlyURL !== groupId) {
-					history.push(
+					navigate(
 						toRoute(Routes.SETTINGS_WORKSPACE, {
 							groupId: friendlyURL || project.groupId
 						})
@@ -105,8 +102,19 @@ export const Workspace: React.FC<IWorkspaceProps> = ({
 };
 
 export default compose(
+	WrappedComponent => props => {
+		const {groupId} = useParams();
+		const navigate = useNavigate();
+
+		return (
+			<WrappedComponent
+				{...props}
+				groupId={groupId}
+				navigate={navigate}
+			/>
+		);
+	},
 	connector,
-	withHistory,
 	withProject(true),
 	withQuery(
 		({groupId}) =>

@@ -9,11 +9,11 @@ import * as API from 'shared/api';
 import mockStore from 'test/mock-store';
 import NoPropertiesAvailable from '../NoPropertiesAvailable';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {getImmutableMock, mockMemberUser, mockUser} from 'test/data';
 import {open} from 'shared/actions/modals';
 import {Provider} from 'react-redux';
-import {StaticRouter} from 'react-router';
 import {User} from 'shared/util/records';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
@@ -21,13 +21,13 @@ jest.unmock('react-dom');
 
 const DefaultComponent = props => (
 	<Provider store={mockStore()}>
-		<StaticRouter>
+		<BrowserRouter>
 			<NoPropertiesAvailable
 				currentUser={getImmutableMock(User, mockUser)}
 				groupId='123123'
 				{...props}
 			/>
-		</StaticRouter>
+		</BrowserRouter>
 	</Provider>
 );
 

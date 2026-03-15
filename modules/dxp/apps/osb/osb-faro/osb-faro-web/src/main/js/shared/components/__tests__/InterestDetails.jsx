@@ -1,10 +1,10 @@
 import client from 'shared/apollo/client';
 import InterestDetails from '../InterestDetails';
 import React from 'react';
-import {ApolloProvider} from '@apollo/react-components';
+import {ApolloProvider} from '@apollo/client/react';
 import {createMemoryHistory} from 'history';
-import {MemoryRouter, Route, Router} from 'react-router-dom';
-import {MockedProvider} from '@apollo/react-testing';
+import {MemoryRouter, Route, Router} from 'react-router';
+import {MockedProvider} from '@apollo/client/testing/react';
 import {
 	mockPreferenceReq,
 	mockTimeRangeReq,

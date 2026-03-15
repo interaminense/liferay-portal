@@ -16,6 +16,10 @@ import {Attributes, Breakdowns, Filters} from 'event-analysis/utils/types';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 
+// TODO: Update react-dnd to remove "any"
+
+const DndProviderAny = DndProvider as any;
+
 const MAX_ATTRIBUTES = 5;
 
 interface IAttributeBreakdownSectionProps {
@@ -60,7 +64,7 @@ export const AttributeBreakdownSection: React.FC<IAttributeBreakdownSectionProps
 
 			{!!eventId && (
 				<div className='attribute-container d-flex align-items-center justify-content-between'>
-					<DndProvider backend={HTML5Backend}>
+					<DndProviderAny backend={HTML5Backend}>
 						<div className='attribute-list d-flex align-items-center'>
 							{breakdownOrder.map((id, i) => (
 								<AttributeBreakdownChip
@@ -79,7 +83,7 @@ export const AttributeBreakdownSection: React.FC<IAttributeBreakdownSectionProps
 								/>
 							))}
 						</div>
-					</DndProvider>
+					</DndProviderAny>
 
 					{breakdownOrder.length < MAX_ATTRIBUTES && (
 						<AttributeBreakdownDropdown

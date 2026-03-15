@@ -3,7 +3,7 @@ import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
 import {DataSource} from 'shared/util/records';
 import {fetch} from 'shared/api/data-source';
-import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router';
 import {useQueryParams} from 'shared/hooks/useQueryParams';
 
 interface IWizardPageContext {
@@ -33,7 +33,7 @@ async function fetchDataSource({
 		});
 
 		setDataSource(new DataSource(dataSource));
-	} catch (error) {
+	} catch (_error) {
 		addAlert({
 			alertType: Alert.Types.Error,
 			message: Liferay.Language.get(

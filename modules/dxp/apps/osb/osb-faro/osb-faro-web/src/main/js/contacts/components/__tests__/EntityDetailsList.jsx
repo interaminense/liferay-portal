@@ -3,7 +3,7 @@ import EntityDetailsList from '../EntityDetailsList';
 import React from 'react';
 import {fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route} from 'react-router';
 import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 

@@ -1,5 +1,5 @@
 import {getSafeDecodedURIComponent} from 'shared/util/util';
-import {useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router';
 
 function decodeQueryParam(param) {
 	return getSafeDecodedURIComponent(param.replace(/\+/g, ' '));
@@ -21,7 +21,7 @@ function queryStringToObject(initialQueryString: string): any {
 	return query;
 }
 
-// TODO: Remove this once we upgrade to react-router-dom v6
+// TODO: Remove this once we upgrade to react-router v6
 export function useQueryParams() {
 	const {search} = useLocation();
 

@@ -7,12 +7,13 @@ import {RangeSelectors} from 'shared/types';
 import {ReportContainer} from '../download-report/DownloadPDFReport';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
 
-interface BaseCardIProps extends React.HTMLAttributes<HTMLElement> {
+interface BaseCardIProps {
+	children: (args: {[key: string]: any}) => React.ReactNode;
 	className?: string;
-	children: (val) => React.ReactNode;
 	description?: string;
 	Header?: React.FC<BaseCardHeaderDefaultIProps>;
 	headerProps?: {[key: string]: any};
+	id?: string;
 	label: string;
 	legacyDropdownRangeKey: boolean;
 	minHeight?: number;

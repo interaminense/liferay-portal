@@ -9,9 +9,9 @@ import {CSVType} from 'shared/components/download-report/utils';
 import {DownloadStaticCSVReport} from 'shared/components/download-report/DownloadStaticCSVReport';
 import {getMatchedRoute, Routes} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
-import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
+import {useParams} from 'react-router';
 
 const Distribution = lazy(
 	() =>
@@ -50,22 +50,18 @@ const Overview = lazy(
 
 const NAV_ITEMS = [
 	{
-		exact: true,
 		label: Liferay.Language.get('overview'),
 		route: Routes.CONTACTS_INDIVIDUALS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('known-individuals'),
 		route: Routes.CONTACTS_INDIVIDUALS_KNOWN_INDIVIDUALS
 	},
 	{
-		exact: false,
 		label: Liferay.Language.get('interests'),
 		route: Routes.CONTACTS_INDIVIDUALS_INTERESTS
 	},
 	{
-		exact: true,
 		label: Liferay.Language.get('distribution'),
 		route: Routes.CONTACTS_INDIVIDUALS_DISTRIBUTION
 	}
@@ -137,41 +133,35 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
 			)}
 
 			<Suspense fallback={<Loading />}>
-				<Switch>
-					<BundleRouter
-						data={Overview}
-						destructured={false}
-						exact
-						path={Routes.CONTACTS_INDIVIDUALS}
-					/>
+				<BundleRouter
+					data={Overview}
+					destructured={false}
+					path={Routes.CONTACTS_INDIVIDUALS}
+				/>
 
-					<BundleRouter
-						data={KnownIndividuals}
-						path={Routes.CONTACTS_INDIVIDUALS_KNOWN_INDIVIDUALS}
-					/>
+				<BundleRouter
+					data={KnownIndividuals}
+					path={Routes.CONTACTS_INDIVIDUALS_KNOWN_INDIVIDUALS}
+				/>
 
-					<BundleRouter
-						data={Distribution}
-						exact
-						path={Routes.CONTACTS_INDIVIDUALS_DISTRIBUTION}
-					/>
+				<BundleRouter
+					data={Distribution}
+					path={Routes.CONTACTS_INDIVIDUALS_DISTRIBUTION}
+				/>
 
-					<BundleRouter
-						data={InterestDetails}
-						destructured={false}
-						exact
-						path={Routes.CONTACTS_INDIVIDUALS_INTEREST_DETAILS}
-					/>
+				<BundleRouter
+					data={InterestDetails}
+					destructured={false}
+					path={Routes.CONTACTS_INDIVIDUALS_INTEREST_DETAILS}
+				/>
 
-					<BundleRouter
-						data={Interests}
-						destructured={false}
-						exact
-						path={Routes.CONTACTS_INDIVIDUALS_INTERESTS}
-					/>
+				<BundleRouter
+					data={Interests}
+					destructured={false}
+					path={Routes.CONTACTS_INDIVIDUALS_INTERESTS}
+				/>
 
-					<RouteNotFound />
-				</Switch>
+				<RouteNotFound />
 			</Suspense>
 		</BasePage>
 	);

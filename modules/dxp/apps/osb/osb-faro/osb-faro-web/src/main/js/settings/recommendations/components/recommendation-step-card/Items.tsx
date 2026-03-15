@@ -5,25 +5,25 @@ import Loading from 'shared/components/Loading';
 import React, {useEffect} from 'react';
 import RecommendationPageAssetsQuery from '../../queries/RecommendationPageAssetsQuery';
 import RuleItem from '../RuleItem';
-import Table from 'shared/components/table';
+import Table, {Column} from 'shared/components/table';
 import {close, modalTypes, open} from 'shared/actions/modals';
 import {connect} from 'react-redux';
 import {FieldArray} from 'formik';
 import {Filter, getPropertiesFromItems} from '../../utils/utils';
 import {get} from 'lodash';
 import {Modal} from 'shared/types';
-import {useLazyQuery, useQuery} from '@apollo/react-hooks';
+import {useLazyQuery, useQuery} from '@apollo/client/react';
 
 const {
 	pagination: {orderDescending}
 } = Constants;
 
-const CountCell: React.FC<{
-	className: string;
-	data: Filter;
-	close: Modal.close;
-	open: Modal.open;
-}> = ({className, close, data: {name, value}, open}) => {
+const CountCell: Column['cellRenderer'] = ({
+	className,
+	close,
+	data: {name, value},
+	open
+}) => {
 	const {data, loading} = useQuery(RecommendationPageAssetsQuery, {
 		variables: {
 			propertyFilters: [
@@ -67,10 +67,7 @@ const CountCell: React.FC<{
 	);
 };
 
-const RuleCell: React.FC<{
-	className: string;
-	data: Filter;
-}> = ({className, data: {name, value}}) => (
+const RuleCell: Column['cellRenderer'] = ({className, data: {name, value}}) => (
 	<td className={className}>
 		<RuleItem name={name} value={value} />
 	</td>

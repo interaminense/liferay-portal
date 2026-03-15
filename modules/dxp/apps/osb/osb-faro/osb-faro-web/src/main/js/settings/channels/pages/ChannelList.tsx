@@ -26,8 +26,7 @@ import {CREATE_TIME, createOrderIOMap} from 'shared/util/pagination';
 import {formatDateToTimeZone} from 'shared/util/date';
 import {FormikActions} from 'formik';
 import {getPluralMessage, sub} from 'shared/util/lang';
-import {IPagination} from 'shared/types';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router';
 import {RootState} from 'shared/store';
 import {Routes, toRoute} from 'shared/util/router';
 import {Sizes} from 'shared/util/constants';
@@ -69,24 +68,15 @@ const connector = connect(
 	{addAlert, close, open, updateDefaultChannelId}
 );
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IChannelListProps extends IPagination, PropsFromRedux {
-	groupId: string;
-	history: {
-		push: (href: string) => void;
-	};
-}
-
-const ChannelList: React.FC<IChannelListProps> = ({
+const ChannelList: React.FC<ConnectedProps<typeof connector>> = ({
 	addAlert,
 	close,
 	defaultChannelId,
-	groupId,
-	history,
 	open,
 	updateDefaultChannelId
 }) => {
+	const {groupId} = useParams();
+	const navigate = useNavigate();
 	const {selectedItems, selectionDispatch} = useSelectionContext();
 
 	const {delta, orderIOMap, page, query} = useQueryPagination({
@@ -302,7 +292,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 
 				close();
 
-				history.push(
+				navigate(
 					toRoute(Routes.SETTINGS_CHANNELS_VIEW, {
 						groupId,
 						id

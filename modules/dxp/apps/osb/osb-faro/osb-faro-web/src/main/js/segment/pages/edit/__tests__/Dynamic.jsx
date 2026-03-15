@@ -2,13 +2,13 @@ import * as data from 'test/data';
 import DynamicSegmentEdit from '../Dynamic';
 import mockStore from 'test/mock-store';
 import React from 'react';
+import {BrowserRouter} from 'react-router';
 import {cleanup, render} from '@testing-library/react';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {List} from 'immutable';
 import {Provider} from 'react-redux';
 import {Segment} from 'shared/util/records';
-import {StaticRouter} from 'react-router';
 
 jest.unmock('react-dom');
 
@@ -33,7 +33,7 @@ describe('DynamicSegmentEdit', () => {
 		);
 
 		const {container} = render(
-			<StaticRouter>
+			<BrowserRouter>
 				<Provider store={mockStore()}>
 					<DndProvider backend={HTML5Backend}>
 						<DynamicSegmentEdit
@@ -44,7 +44,7 @@ describe('DynamicSegmentEdit', () => {
 						/>
 					</DndProvider>
 				</Provider>
-			</StaticRouter>
+			</BrowserRouter>
 		);
 
 		expect(container).toMatchSnapshot();
