@@ -29,7 +29,7 @@ function getObjectEntryPayload({
 	};
 
 	if (dataset.analyticsAssetTitle) {
-		Object.assign(payload, {title: dataset.analyticsAssetTitle.trim()});
+		Object.assign(payload, {assetTitle: dataset.analyticsAssetTitle.trim()});
 	}
 
 	return payload;
