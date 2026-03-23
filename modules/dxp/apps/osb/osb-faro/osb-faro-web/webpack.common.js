@@ -24,6 +24,25 @@ const config = {
 		'whatwg-fetch',
 		resolveModule('main.jsx')
 	],
+	experiments: {
+		outputModule: true
+	},
+	externals: [
+		({request}, callback) => {
+			if (
+				request?.startsWith('@clayui/') &&
+				!request?.startsWith('@clayui/css')
+			) {
+				return callback(null, request);
+			}
+			callback();
+		},
+		{
+			react: 'react',
+			'react-dom': 'react-dom'
+		}
+	],
+	externalsType: 'module',
 	module: {
 		rules: [
 			{
@@ -139,6 +158,7 @@ const config = {
 		]
 	},
 	output: {
+		module: true,
 		filename: 'main.js',
 		path: path.resolve('src/main/resources/META-INF/resources/dist'),
 		pathinfo: false,
