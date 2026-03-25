@@ -7,9 +7,8 @@ import {ReportContainer} from 'shared/components/download-report/DownloadPDFRepo
 import {withDevicesCard} from 'shared/hoc/DevicesCard';
 
 const BROWSER_DEVICE_QUERY = gql`
-	query BlogsMetrics(
+	query ObjectEntryDevicesCardMetric(
 		$assetId: String!
-		$channelId: String
 		$devices: String
 		$location: String
 		$rangeEnd: String
@@ -17,19 +16,16 @@ const BROWSER_DEVICE_QUERY = gql`
 		$rangeStart: String
 		$touchpoint: String
 	) {
-		blog(
+		objectEntry(
 			assetId: $assetId
 			canonicalUrl: $touchpoint
-			channelId: $channelId
 			country: $location
 			deviceType: $devices
 			rangeEnd: $rangeEnd
 			rangeKey: $rangeKey
 			rangeStart: $rangeStart
-			title: $title
 		) {
 			assetId
-			assetTitle
 			viewsMetric {
 				...browserFragment
 				...deviceFragment
@@ -46,19 +42,19 @@ const BROWSER_DEVICE_QUERY = gql`
 
 /**
  * HOC
- * @description Blogs Devices
+ * @description Object Entry Devices
  */
-const withBlogsDevices = () =>
+const withObjectEntry = () =>
 	graphql(
 		BROWSER_DEVICE_QUERY,
-		getDevicesMapper(result => result.blog.viewsMetric)
+		getDevicesMapper(result => result.objectEntry.viewsMetric)
 	);
 
-export default withDevicesCard(withBlogsDevices, {
+export default withDevicesCard(withObjectEntry, {
 	documentationTitle: Liferay.Language.get(
 		'learn-more-about-views-by-technology'
 	),
-	documentationUrl: URLConstants.SitesDashboardBlogsViewsByTechnology,
+	documentationUrl: URLConstants.SitesDashboardPagesViewsByTechnology,
 	reportContainer: ReportContainer.ViewsByTechnologyCard,
 	title: Liferay.Language.get('there-are-no-views-on-the-selected-period')
 });

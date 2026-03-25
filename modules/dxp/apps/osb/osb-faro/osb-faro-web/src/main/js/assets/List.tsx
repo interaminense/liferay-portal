@@ -4,6 +4,7 @@ import Card from 'shared/components/Card';
 import ClayLink from '@clayui/link';
 import React, {useState} from 'react';
 import {DropdownRangeKey} from 'shared/components/dropdown-range-key/DropdownRangeKey';
+import {pagination} from 'shared/util/frontend-data-set';
 import {RangeSelectors} from 'shared/types';
 import {Routes, toRoute} from 'shared/util/router';
 import {toThousands} from 'shared/util/numbers';
@@ -11,7 +12,6 @@ import {useChannelContext} from 'shared/context/channel';
 import {useFrontendDataSet} from 'shared/hooks/useFrontendDataSet';
 import {useParams} from 'react-router-dom';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
-import {pagination} from 'shared/util/frontend-data-set';
 
 const mapRoutes = {
 	blog: Routes.ASSETS_BLOGS_OVERVIEW,
@@ -79,33 +79,31 @@ const List = () => {
 								),
 								assetTitleRenderer: ({itemData, value}) => {
 									const assetTitle = value || itemData.id;
-									const route = mapRoutes[itemData.assetType];
+									const route =
+										mapRoutes?.[itemData.assetType] ??
+										Routes.ASSETS_OBJECT_ENTRY_OVERVIEW;
 
-									if (route) {
-										return (
-											<ClayLink
-												href={toRoute(
-													`${route}?rangeKey=0`,
-													{
-														assetId: itemData.id,
-														channelId,
-														groupId,
-														touchpoint: 'Any',
-														...(assetTitle && {
-															title: encodeURIComponent(
-																assetTitle
-															)
-														})
-													}
-												)}
-												style={{color: '#000'}}
-											>
-												{value || itemData.id}
-											</ClayLink>
-										);
-									}
-
-									return <span>{value || itemData.id}</span>;
+									return (
+										<ClayLink
+											href={toRoute(
+												`${route}?rangeKey=0`,
+												{
+													assetId: itemData.id,
+													channelId,
+													groupId,
+													touchpoint: 'Any',
+													...(assetTitle && {
+														title: encodeURIComponent(
+															assetTitle
+														)
+													})
+												}
+											)}
+											style={{color: '#000'}}
+										>
+											{value || itemData.id}
+										</ClayLink>
+									);
 								}
 							}}
 							pagination={pagination}

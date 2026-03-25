@@ -41,6 +41,7 @@ export enum EmptyStateLink {
 }
 
 export enum EmptyStateText {
+	Assets = Liferay.Language.get('learn-more-about-assets'),
 	Blog = Liferay.Language.get('learn-more-about-blogs'),
 	Document = Liferay.Language.get('learn-more-about-documents-and-media'),
 	Form = Liferay.Language.get('learn-more-about-forms'),
