@@ -1,7 +1,7 @@
 import Card from 'shared/components/Card';
 import ClayLink from '@clayui/link';
 import getMetricsMapper from 'shared/hoc/mappers/metrics';
-import knownIndividualsListAssetQuery from 'shared/queries/knownIndividualsListAssetQuery';
+import ObjectEntryKnownIndividualsListQuery from 'shared/queries/ObjectEntryKnownIndividualsListQuery';
 import React, {useState} from 'react';
 import URLConstants from 'shared/util/url-constants';
 import {
@@ -10,7 +10,7 @@ import {
 	withQueryPagination,
 	withQueryRangeSelectors
 } from 'shared/hoc';
-import {createOrderIOMap, NAME, VIEWS_METRIC} from 'shared/util/pagination';
+import {createOrderIOMap, NAME} from 'shared/util/pagination';
 import {graphql} from '@apollo/react-hoc';
 import {metricsListColumns} from 'shared/util/table-columns';
 import {RangeSelectors} from 'shared/types';
@@ -19,7 +19,7 @@ import {Sizes} from 'shared/util/constants';
 
 const withData = () =>
 	graphql(
-		knownIndividualsListAssetQuery('objectEntry', VIEWS_METRIC),
+		ObjectEntryKnownIndividualsListQuery,
 		getMetricsMapper(result => ({
 			items: result.objectEntry.viewsMetric.individuals.individuals,
 			total: result.objectEntry.viewsMetric.individuals.total
