@@ -159,6 +159,10 @@ const WebContent = lazy(() =>
 	import(/* webpackChunkName: "WebContent" */ 'assets/web-content/pages')
 );
 
+const ObjectEntry = lazy(() =>
+	import(/* webpackChunkName: "ObjectEntry" */ 'assets/object-entry/pages')
+);
+
 /* Commmerce */
 
 const CommerceDashboard = lazy(() =>
@@ -220,6 +224,12 @@ const ROUTES = [
 		destructured: false,
 		exact: false,
 		path: Routes.ASSETS_WEB_CONTENT_ROUTES
+	},
+	{
+		data: ObjectEntry,
+		destructured: false,
+		exact: false,
+		path: Routes.ASSETS_OBJECT_ENTRY_ROUTES
 	},
 	{
 		data: TouchpointRoutes,
