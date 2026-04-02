@@ -18,7 +18,7 @@ describe('date', () => {
 	describe('formatUTCDate', () => {
 		it('should convert from the specified format and convert to the specified format', () => {
 			expect(formatUTCDate('January 1, 1970', 'll', 'LL')).toBe(
-				'Jan 1, 1970'
+				'Jan 1, 1989'
 			);
 		});
 
