@@ -1,0 +1,20 @@
+{
+	"dependencies": {
+		"@clayui/button": "^3.159.0",
+		"@clayui/layout": "^3.159.0",
+		"@liferay/frontend-js-react-web": "*",
+		"classnames": "2.3.1",
+		"react": "18.2.0",
+		"react-dom": "18.2.0"
+	},
+	"devDependencies": {
+		"@liferay/node-scripts": "*"
+	},
+	"main": "js/index.ts",
+	"name": "site-ldp-site-initializer",
+	"scripts": {
+		"build": "node-scripts build",
+		"test": "node-scripts test"
+	},
+	"version": "1.0.0"
+}

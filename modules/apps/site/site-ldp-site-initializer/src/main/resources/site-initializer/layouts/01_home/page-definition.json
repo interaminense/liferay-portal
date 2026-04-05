@@ -1,0 +1,18 @@
+{
+	"pageElement": {
+		"pageElements": [
+			{
+				"definition": {
+					"widgetInstance": {
+						"widgetConfig": {},
+						"widgetName": "com_liferay_site_ldp_site_initializer_portlet_LiferayDataPlatformPortlet"
+					}
+				},
+				"type": "Widget"
+			}
+		],
+		"type": "Root"
+	},
+	"settings": {},
+	"version": 1.1
+}
