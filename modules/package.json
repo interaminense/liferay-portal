@@ -40,6 +40,7 @@
 	"workspaces": {
 		"packages": [
 			"apps/*/*",
+			"!apps/site/site-ldp-site-initializer",
 			"apps/*/*/*",
 			"apps/frontend-js/frontend-js-clay-web/clay/clay-*",
 			"dxp/apps/*/*",

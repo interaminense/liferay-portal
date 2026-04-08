@@ -1,3 +1,38 @@
+import com.liferay.gradle.plugins.node.task.YarnInstallTask
+
+task ldpYarnInstall(type: YarnInstallTask)
+task ldpYarnWebpack(type: Exec)
+
+node {
+	global = false
+	nodeVersion = "18.18.0"
+	useNpm = false
+	yarnVersion = "1.22.19"
+}
+
+ldpYarnInstall {
+	doLast {
+		delete ".yarnrc"
+	}
+
+	workingDir = projectDir
+}
+
+ldpYarnWebpack {
+	args = [ldpYarnInstall.scriptFile, "webpack"]
+	dependsOn ldpYarnInstall
+	executable = new File(ldpYarnInstall.nodeDir, "bin/node")
+	workingDir = projectDir
+}
+
+packageRunWebpack {
+	enabled = false
+}
+
+processResources {
+	dependsOn ldpYarnWebpack
+}
+
 dependencies {
 	compileOnly group: "com.liferay", name: "com.liferay.petra.concurrent", version: "default"
 	compileOnly group: "com.liferay", name: "com.liferay.petra.function", version: "default"
