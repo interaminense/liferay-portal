@@ -71,10 +71,10 @@ export class Segment {
 		);
 	}
 
-	getRealTimeSegmentIds() {
+	getStreamSegmentIds() {
 		return this._fetchSegmentIds(
 			this._getIndividualId(),
-			'real-time-segment-ids'
+			'stream-segment-ids'
 		);
 	}
 

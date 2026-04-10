@@ -435,9 +435,9 @@ describe('Analytics', () => {
 		});
 	});
 
-	describe('getRealTimeSegmentIds()', () => {
+	describe('getStreamSegmentIds()', () => {
 		it('is exposed as an Analytics method', () => {
-			expect(typeof Analytics.getRealTimeSegmentIds).toBe('function');
+			expect(typeof Analytics.getStreamSegmentIds).toBe('function');
 		});
 
 		it('gets real time segment ids and never caches data', async () => {
@@ -447,7 +447,7 @@ describe('Analytics', () => {
 
 			Analytics = AnalyticsClient.create(INITIAL_CONFIG);
 
-			const result1 = await Analytics.getRealTimeSegmentIds();
+			const result1 = await Analytics.getStreamSegmentIds();
 
 			expect(result1).toEqual([1, 2, 3]);
 
@@ -457,7 +457,7 @@ describe('Analytics', () => {
 				Promise.resolve([4, 5, 6])
 			);
 
-			const result2 = await Analytics.getRealTimeSegmentIds();
+			const result2 = await Analytics.getStreamSegmentIds();
 
 			expect(result2).toEqual([4, 5, 6]);
 		});

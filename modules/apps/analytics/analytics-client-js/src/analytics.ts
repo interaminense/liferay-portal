@@ -184,8 +184,8 @@ class Analytics {
 		return this.segment.getBatchSegmentIds();
 	}
 
-	getRealTimeSegmentIds() {
-		return this.segment.getRealTimeSegmentIds();
+	getStreamSegmentIds() {
+		return this.segment.getStreamSegmentIds();
 	}
 
 	/**
