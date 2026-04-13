@@ -83,5 +83,26 @@ global.pendo = {
 global.TextDecoder = TextDecoder;
 global.TextEncoder = TextEncoder;
 
+/**
+ * Force a consistent locale in tests to override
+ * Number.prototype.toLocaleString and Intl.NumberFormat,
+ * forcing them to default to en-US if no locale is provided.
+ */
+
+const OriginalToLocaleString = Number.prototype.toLocaleString;
+
+Number.prototype.toLocaleString = function (locales, options) {
+	return OriginalToLocaleString.call(this, locales || 'en-US', options);
+};
+
+const OriginalNumberFormat = Intl.NumberFormat;
+
+Intl.NumberFormat = function (locales, options) {
+	return new OriginalNumberFormat(locales || 'en-US', options);
+};
+
+Intl.NumberFormat.prototype = OriginalNumberFormat.prototype;
+Intl.NumberFormat.supportedLocalesOf = OriginalNumberFormat.supportedLocalesOf;
+
 require('jest-extended');
 require('jest-canvas-mock');
