@@ -24,7 +24,7 @@ const ExperienceDropdown: React.FC<ExperienceDropdownProps> = ({experiencesDataP
         if (validAnalyticsConnection && typeof experiencesDataProvider === 'function') {
             experiencesDataProvider()             
             .then((data) => {
-                setExperiences([ALL_EXPERIENCES, ...data]);
+                setExperiences([ALL_EXPERIENCES, ...(Array.isArray(data) ? data : [])]);
             });
         }
     }, [experiencesDataProvider, validAnalyticsConnection]);
