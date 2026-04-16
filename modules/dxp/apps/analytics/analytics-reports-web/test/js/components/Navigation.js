@@ -19,6 +19,7 @@ const mockEndpoints = {
 	analyticsReportsTotalReadsURL: '/o/analyticsReportsTotalReadsURL',
 	analyticsReportsTotalViewsURL: '/o/analyticsReportsTotalViewsURL',
 	analyticsReportsTrafficSourcesURL: '/o/analyticsReportsTrafficSourcesURL',
+	analyticsReportsPageExperiencesURL: '/o/analyticsReportsPageExperiencesURL',
 };
 
 const mockLanguageTag = 'en-US';
@@ -73,6 +74,7 @@ describe('Navigation', () => {
 				name: 'John Tester',
 				url: '',
 			},
+			experienceId: null,
 			canonicalURL:
 				'http://localhost:8080/en/web/guest/-/basic-web-content',
 			pagePublishDate: 'Thu Aug 10 08:17:57 GMT 2020',
@@ -96,6 +98,7 @@ describe('Navigation', () => {
 					}}
 				>
 					<ChartStateContextProvider
+						experienceId={testProps.experienceId}
 						publishDate={testProps.pagePublishDate}
 						timeRange={testProps.timeRange}
 						timeSpanKey={testProps.timeSpanKey}
@@ -126,6 +129,7 @@ describe('Navigation', () => {
 				name: 'John Tester',
 				url: '',
 			},
+			experienceId: null,
 			canonicalURL:
 				'http://localhost:8080/en/web/guest/-/basic-web-content',
 			pagePublishDate: 'Thu Aug 10 08:17:57 GMT 2020',
@@ -145,6 +149,7 @@ describe('Navigation', () => {
 				}}
 			>
 				<ChartStateContextProvider
+					experienceId={testProps.experienceId}
 					publishDate={testProps.publishDate}
 					timeRange={testProps.timeRange}
 					timeSpanKey={testProps.timeSpanKey}
@@ -176,6 +181,7 @@ describe('Navigation', () => {
 				name: 'John Tester',
 				url: '',
 			},
+			experienceId: null,
 			canonicalURL:
 				'http://localhost:8080/en/web/guest/-/basic-web-content',
 			pagePublishDate: 'Thu Feb 02 08:17:57 GMT 2020',
@@ -195,6 +201,7 @@ describe('Navigation', () => {
 				}}
 			>
 				<ChartStateContextProvider
+					experienceId={testProps.experienceId}
 					publishDate={testProps.pagePublishDate}
 					timeRange={testProps.timeRange}
 					timeSpanKey={testProps.timeSpanKey}
