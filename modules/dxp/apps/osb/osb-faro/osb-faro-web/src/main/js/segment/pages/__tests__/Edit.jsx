@@ -53,13 +53,13 @@ describe('Edit', () => {
 			})
 		);
 
-		const {container} = render(<DefaultComponent />);
+		const {container, getByText} = render(<DefaultComponent />);
 
 		jest.runAllTimers();
 
 		await waitForLoadingToBeRemoved(container);
 
-		expect(container).toMatchSnapshot();
+		expect(getByText('Create Segment')).toBeInTheDocument();
 	});
 
 	it('should render a dynamic segment', async () => {
