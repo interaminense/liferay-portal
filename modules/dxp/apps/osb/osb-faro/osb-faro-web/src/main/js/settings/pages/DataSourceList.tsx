@@ -12,6 +12,7 @@ import NoResultsDisplay, {
 } from 'shared/components/NoResultsDisplay';
 import React, {useEffect, useState} from 'react';
 import URLConstants from 'shared/util/url-constants';
+import {AlertTypes} from 'shared/components/Alert';
 import {ClayDropDownWithItems} from '@clayui/drop-down';
 import {
 	CREATE_DATE,
@@ -81,7 +82,12 @@ const dateFormatter = (date: string, timeZoneId: string): string =>
 export const disableRow = ({state}: {state: DataSourceStates}): boolean =>
 	state === DataSourceStates.InProgressDeleting;
 
-const getAlertMessage = (dataSource, currentUser, count, groupId) => {
+const getAlertMessage = (
+	dataSource: {[key: string]: any},
+	currentUser: {isAdmin: () => boolean},
+	count: number,
+	groupId: string
+) => {
 	const admin = currentUser.isAdmin();
 
 	const {credentials, id, name} = dataSource;
@@ -144,29 +150,36 @@ interface IDataSourceListProps extends React.HTMLAttributes<HTMLElement> {}
 const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 	const currentUser = useCurrentUser();
 	const history = useHistory();
-	const {groupId} = useParams();
-	const [alerts, setAlerts] = useState([]);
+	const {groupId = ''} = useParams<{groupId: string}>();
+	const [alerts, setAlerts] = useState<
+		{
+			iconSymbol: string;
+			message: React.ReactNode;
+			title: string;
+			type: AlertTypes;
+		}[]
+	>([]);
 	const {timeZoneId} = useTimeZone();
 
 	const {delta, orderIOMap, page, query} = useQueryPagination({
 		initialOrderIOMap: createOrderIOMap(NAME)
 	});
 
-	const {
-		data: invalidDataSources,
-		loading: invalidDataSourcesLoading
-	} = useRequest({
-		dataSourceFn: API.dataSource.search,
-		variables: {
-			delta: 1,
-			groupId,
-			page: 1,
-			states: [
-				DataSourceStates.CredentialsInvalid,
-				DataSourceStates.UrlInvalid
-			]
-		}
-	});
+	const {data: invalidDataSources, loading: invalidDataSourcesLoading} =
+		useRequest({
+			dataSourceFn: API.dataSource.search as (params: {
+				[key: string]: any;
+			}) => Promise<any>,
+			variables: {
+				delta: 1,
+				groupId,
+				page: 1,
+				states: [
+					DataSourceStates.CredentialsInvalid,
+					DataSourceStates.UrlInvalid
+				]
+			}
+		});
 
 	useEffect(() => {
 		if (invalidDataSources?.total) {
@@ -180,14 +193,16 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 						groupId
 					),
 					title: Liferay.Language.get('warning'),
-					type: 'warning'
+					type: AlertTypes.Warning
 				}
 			]);
 		}
 	}, [invalidDataSourcesLoading]);
 
 	const {data, error, loading} = useRequest({
-		dataSourceFn: API.dataSource.search,
+		dataSourceFn: API.dataSource.search as (params: {
+			[key: string]: any;
+		}) => Promise<any>,
 		variables: {
 			delta,
 			groupId,
@@ -228,18 +243,25 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 					}
 				},
 
-				!isDemandbaseOnDataSourceList && {
-					label: Liferay.Language.get('demandbase'),
-					onClick: () => {
-						history.push(
-							toRoute(Routes.SETTINGS_DATA_SOURCE_ONBOARDING, {
-								groupId,
-								id: DataSourceTypes.Demandbase
-							})
-						);
-					}
-				}
-			].filter(Boolean)}
+				...(isDemandbaseOnDataSourceList
+					? []
+					: [
+							{
+								label: Liferay.Language.get('demandbase'),
+								onClick: () => {
+									history.push(
+										toRoute(
+											Routes.SETTINGS_DATA_SOURCE_ONBOARDING,
+											{
+												groupId,
+												id: DataSourceTypes.Demandbase
+											}
+										)
+									);
+								}
+							}
+					  ])
+			]}
 			trigger={
 				<ClayButton displayType='primary' size='sm'>
 					{Liferay.Language.get('add-data-source')}
@@ -318,7 +340,7 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 							accessor: 'name',
 							cellRenderer: DataSourceName,
 							cellRendererProps: {
-								hrefFormatter: dataSource =>
+								hrefFormatter: (dataSource: {id: string}) =>
 									toRoute(Routes.SETTINGS_DATA_SOURCE, {
 										groupId,
 										id: dataSource.id
@@ -338,7 +360,7 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 						},
 						{
 							accessor: CREATE_DATE,
-							dataFormatter: date =>
+							dataFormatter: (date: string) =>
 								dateFormatter(date, timeZoneId),
 							label: Liferay.Language.get('date-added')
 						}
