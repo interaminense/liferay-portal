@@ -25,6 +25,10 @@ import {DataSourceStates, DataSourceTypes, Sizes} from 'shared/util/constants';
 import {formatDateToTimeZone} from 'shared/util/date';
 import {fromJS} from 'immutable';
 import {get} from 'lodash';
+import {
+	getConnectorConfig,
+	listAvailableConnectors
+} from 'settings/components/3rd-party-connector/registry';
 import {getDataSourceDisplayObject} from 'shared/util/data-sources';
 import {Link, useHistory, useParams} from 'react-router-dom';
 import {Routes, toRoute} from 'shared/util/router';
@@ -143,7 +147,7 @@ const typeFormatter = (type: DataSourceTypes): string => {
 		case DataSourceTypes.Salesforce:
 			return Liferay.Language.get('salesforce');
 		default:
-			return '';
+			return getConnectorConfig(type)?.displayName ?? '';
 	}
 };
 
@@ -214,9 +218,24 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 		}
 	});
 
-	const isDemandbaseOnDataSourceList = data?.items?.some(
-		(item: {provider: {type: string}}) =>
-			item.provider.type === 'DEMANDBASE'
+	const existingConnectorTypes = new Set<string>(
+		(data?.items ?? []).map(
+			(item: {provider: {type: string}}) => item.provider.type
+		)
+	);
+
+	const connectorItems = listAvailableConnectors(existingConnectorTypes).map(
+		config => ({
+			label: config.displayName,
+			onClick: () => {
+				history.push(
+					toRoute(Routes.SETTINGS_DATA_SOURCE_ONBOARDING, {
+						groupId,
+						id: config.type
+					})
+				);
+			}
+		})
 	);
 
 	const renderDataSourcesDropdown = () => (
@@ -244,25 +263,7 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 						);
 					}
 				},
-
-				...(isDemandbaseOnDataSourceList
-					? []
-					: [
-							{
-								label: Liferay.Language.get('demandbase'),
-								onClick: () => {
-									history.push(
-										toRoute(
-											Routes.SETTINGS_DATA_SOURCE_ONBOARDING,
-											{
-												groupId,
-												id: DataSourceTypes.Demandbase
-											}
-										)
-									);
-								}
-							}
-					  ])
+				...connectorItems
 			]}
 			trigger={
 				<ClayButton displayType='primary' size='sm'>
