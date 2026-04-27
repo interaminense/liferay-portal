@@ -15,11 +15,10 @@ Bump `@typescript-eslint/{parser,eslint-plugin}` v4 → v5.62 to fix a parser bu
 Replace ~90 `container.firstChild` assertions across 71 files with meaningful queries, migrate `@apollo/react-testing` → `@apollo/client/testing`, extend the `jspdf` mock, and normalize `rangeEnd/rangeStart` across helpers and mapper tests.
 Also fix pre-existing failures (`SuppressedUsers`, `DownloadStaticCSVReport`, `LifecycleContext`, `ExportLogModal`, `DateInput`) by adjusting mocks, moving snapshots to `document.body` for portal-rendered modals, and swapping `@testing-library/react-hooks` for the React 18-compatible `renderHook` from `@testing-library/react`.
 
-## [ ] LPD-87323 — Phase 4 — React Router v5 → v7 Migration
+## [x] LPD-77522 — Phase 4 — React Router v5 → v7 Migration
 
-Migrate `react-router-dom` from v5 to v7, replacing `<Switch>` / `<Route component>` / `useHistory` with the v7 data router APIs (`<Routes>`, element-based routes, `useNavigate`).
-Retire the `custom-types/react-router-dom.d.ts` augmentation once v7 types ship correctly and update all route-middleware and lazy-loaded route definitions.
-Drop `@types/react-router` and `@types/react-router-dom` from `package.json` (v7 ships types in-package) to eliminate 3 of the 4 nested `@types/react` copies that required the `tsconfig.json` `paths` workaround.
+Migrated `react-router-dom` v5.2 → v7.14. Replaced `<Switch>` with `<Routes>` (aliased locally as `RouterRoutes` to avoid colliding with the `Routes` constant in `shared/util/router`); rewrote `BundleRouter` as `BundleElement` (used as `<Route element={<BundleElement ...>} path={...} />`) across ~107 call sites; migrated `useHistory` → `useNavigate`, `<Redirect>` → `<Navigate>`, `<Prompt>` → a new `useUnsavedChangesPrompt` hook backed by `useBlocker`. The `withRouter` HOC was removed from `react-router-dom` imports and replaced by a local hook-based shim at `shared/hoc/WithRouter.tsx`; `withHistory` now delegates to that shim. Inline path-to-regexp constraints (e.g. `/:groupId([\\w._-]+)`) were stripped because v7 no longer supports the `:param(regex)` syntax — validation should now live in components when needed.
+The `@types/react-router-dom` dep is gone (v7 ships types in-package). `custom-types/react-router-dom.d.ts` is kept as a small `useParams` augmentation only — it preserves the v5-style `useParams<{ key: string }>()` generic so call sites compile without changing each one to the v7 `<ParamKey extends string>` shape; this can be deleted once consumers migrate to defensive defaults like `useParams<{ groupId?: string }>()`.
 
 ## [ ] LPD-87324 — Phase 5 — Coverage Improvement & Snapshot Removal
 

@@ -3,13 +3,13 @@ import autobind from 'autobind-decorator';
 import getCN from 'classnames';
 import moment from 'moment';
 import React from 'react';
+import withRouter from 'shared/hoc/WithRouter';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {Project} from 'shared/util/records';
 import {ProjectStates} from 'shared/util/constants';
 import {setMaintenanceSeen} from 'shared/actions/maintenance-seen';
 import {sub} from 'shared/util/lang';
-import {withRouter} from 'react-router-dom';
 
 interface IMaintenanceAlertProps {
 	alertDismissed: boolean;

@@ -4,7 +4,7 @@ import Activities from '../Activities';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import {Account} from 'shared/util/records';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route, Routes as RouterRoutes} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
@@ -18,18 +18,26 @@ const DefaultComponent = props => (
 			'/workspace/23/321321/contacts/accounts/321321/activities'
 		]}
 	>
-		<Route path={Routes.CONTACTS_ACCOUNT_ACTIVITIES}>
-			<Provider store={mockStore()}>
-				<Activities
-					account={data.getImmutableMock(Account, data.mockAccount)}
-					channelId='123123'
-					groupId='23'
-					interval='D'
-					rangeSelectors={{rangeKey: 30}}
-					{...props}
-				/>
-			</Provider>
-		</Route>
+		<RouterRoutes>
+			<Route
+				element={
+					<Provider store={mockStore()}>
+						<Activities
+							account={data.getImmutableMock(
+								Account,
+								data.mockAccount
+							)}
+							channelId='123123'
+							groupId='23'
+							interval='D'
+							rangeSelectors={{rangeKey: 30}}
+							{...props}
+						/>
+					</Provider>
+				}
+				path={Routes.CONTACTS_ACCOUNT_ACTIVITIES}
+			/>
+		</RouterRoutes>
 	</MemoryRouter>
 );
 

@@ -8,7 +8,7 @@ import {cleanup, fireEvent, render, waitFor} from '@testing-library/react';
 import {DISPLAY_NAME} from 'shared/util/pagination';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route, Routes as RouterRoutes} from 'react-router-dom';
 import {MockedProvider} from '@apollo/client/testing';
 import {
 	mockEventDefinitionsReq,
@@ -62,11 +62,16 @@ const WrappedComponent = () => (
 						'/workspace/123/456/event-analysis/create'
 					]}
 				>
-					<Route path={Routes.EVENT_ANALYSIS_CREATE}>
-						<DndProvider backend={HTML5Backend}>
-							<EventAnalysisCreate />
-						</DndProvider>
-					</Route>
+					<RouterRoutes>
+						<Route
+							element={
+								<DndProvider backend={HTML5Backend}>
+									<EventAnalysisCreate />
+								</DndProvider>
+							}
+							path={Routes.EVENT_ANALYSIS_CREATE}
+						/>
+					</RouterRoutes>
 				</MemoryRouter>
 			</MockedProvider>
 		</ApolloProvider>

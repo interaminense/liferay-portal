@@ -1,6 +1,6 @@
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import DownloadCSVReport from 'shared/components/download-report/DownloadCSVReport';
 import DownloadPDFReport from 'shared/components/download-report/DownloadPDFReport';
 import Filter from '../hocs/Filter';
@@ -15,7 +15,6 @@ import {getSafeDecodedURIComponent} from 'shared/util/util';
 import {pickBy} from 'lodash';
 import {Router} from 'shared/types';
 import {sub} from 'shared/util/lang';
-import {Switch} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
@@ -148,23 +147,29 @@ const Form: React.FC<{
 
 				<BasePage.Body>
 					<Suspense fallback={<Loading />}>
-						<Switch>
-							<BundleRouter
-								data={Overview}
-								destructured={false}
-								exact
-								path={Routes.ASSETS_FORMS_OVERVIEW}
-							/>
+						{(() => {
+							const tabId = router.params?.tabId;
 
-							<BundleRouter
-								data={KnownIndividuals}
-								destructured={false}
-								exact
-								path={Routes.ASSETS_FORMS_KNOWN_INDIVIDUALS}
-							/>
+							if (tabId === 'page') {
+								return (
+									<BundleElement
+										data={Overview}
+										destructured={false}
+									/>
+								);
+							}
 
-							<RouteNotFound />
-						</Switch>
+							if (tabId === 'known-individuals') {
+								return (
+									<BundleElement
+										data={KnownIndividuals}
+										destructured={false}
+									/>
+								);
+							}
+
+							return <RouteNotFound />;
+						})()}
 					</Suspense>
 				</BasePage.Body>
 			</BasePage.Context.Provider>

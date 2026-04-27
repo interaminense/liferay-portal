@@ -1,10 +1,14 @@
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {DEVELOPER_MODE, ENABLE_BLOCKLIST_KEYWORDS} from 'shared/util/constants';
-import {Routes} from 'shared/util/router';
-import {Switch} from 'react-router-dom';
+import {relativeRoute, Routes} from 'shared/util/router';
+import {Route, Routes as RouterRoutes} from 'react-router-dom';
+
+// Inside Definitions, paths are relative to /workspace/:groupId/settings/definitions.
+const defRel = (absPath: string) =>
+	relativeRoute(Routes.SETTINGS_DEFINITIONS, absPath);
 
 const EventBlockList = lazy(
 	() =>
@@ -70,77 +74,75 @@ interface IDefinitionsProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Definitions: React.FC<IDefinitionsProps> = () => (
 	<Suspense fallback={<Loading />}>
-		<Switch>
-			<BundleRouter
-				data={Overview}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS}
-			/>
+		<RouterRoutes>
+			<Route element={<BundleElement data={Overview} />} path='' />
 
 			{ENABLE_BLOCKLIST_KEYWORDS && (
-				<BundleRouter
-					data={InterestTopics}
-					exact
-					path={Routes.SETTINGS_DEFINITIONS_INTEREST_TOPICS}
+				<Route
+					element={<BundleElement data={InterestTopics} />}
+					path={defRel(Routes.SETTINGS_DEFINITIONS_INTEREST_TOPICS)}
 				/>
 			)}
 
-			<BundleRouter
-				data={IndividualAttributes}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS_INDIVIDUAL_ATTRIBUTES}
+			<Route
+				element={<BundleElement data={IndividualAttributes} />}
+				path={defRel(Routes.SETTINGS_DEFINITIONS_INDIVIDUAL_ATTRIBUTES)}
 			/>
 
-			<BundleRouter
-				data={Search}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS_SEARCH}
+			<Route
+				element={<BundleElement data={Search} />}
+				path={defRel(Routes.SETTINGS_DEFINITIONS_SEARCH)}
 			/>
 
 			{DEVELOPER_MODE && (
 				// TODO: LRAC-4511 Remove when new TrackedBehavior page exists
-				<BundleRouter
-					data={TrackedBehaviors}
-					exact
-					path={Routes.SETTINGS_DEFINITIONS_BEHAVIORS}
+				<Route
+					element={<BundleElement data={TrackedBehaviors} />}
+					path={defRel(Routes.SETTINGS_DEFINITIONS_BEHAVIORS)}
 				/>
 			)}
 
-			<BundleRouter
-				data={AttributeView}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_VIEW}
+			<Route
+				element={<BundleElement data={AttributeView} />}
+				path={defRel(Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_VIEW)}
 			/>
 
-			<BundleRouter
-				data={Events}
-				path={[
-					Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM,
-					Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT
-				]}
+			<Route
+				element={<BundleElement data={Events} />}
+				path={defRel(Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM)}
 			/>
 
-			<BundleRouter
-				data={EventAttributes}
-				path={[
-					Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL,
+			<Route
+				element={<BundleElement data={Events} />}
+				path={defRel(Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT)}
+			/>
+
+			<Route
+				element={<BundleElement data={EventAttributes} />}
+				path={defRel(
+					Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL
+				)}
+			/>
+
+			<Route
+				element={<BundleElement data={EventAttributes} />}
+				path={defRel(
 					Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
-				]}
+				)}
 			/>
 
-			<BundleRouter
-				data={EventBlockList}
-				path={Routes.SETTINGS_DEFINITIONS_EVENTS_BLOCK_LIST}
+			<Route
+				element={<BundleElement data={EventBlockList} />}
+				path={defRel(Routes.SETTINGS_DEFINITIONS_EVENTS_BLOCK_LIST)}
 			/>
 
-			<BundleRouter
-				data={EventView}
-				exact
-				path={Routes.SETTINGS_DEFINITIONS_EVENTS_VIEW}
+			<Route
+				element={<BundleElement data={EventView} />}
+				path={defRel(Routes.SETTINGS_DEFINITIONS_EVENTS_VIEW)}
 			/>
 
-			<RouteNotFound />
-		</Switch>
+			<Route element={<RouteNotFound />} path='*' />
+		</RouterRoutes>
 	</Suspense>
 );
 

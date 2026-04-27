@@ -11,7 +11,7 @@ import mockStore, {mockStoreData} from 'test/mock-store';
 import React from 'react';
 import {cleanup, fireEvent, render, screen} from '@testing-library/react';
 import {DataSourceStates, DataSourceTypes} from 'shared/util/constants';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route, Routes as RouterRoutes} from 'react-router-dom';
 import {MockedProvider} from '@apollo/client/testing';
 import {Provider} from 'react-redux';
 import {RemoteData} from 'shared/util/records';
@@ -32,9 +32,16 @@ const Wrapper = ({children, queryString = '', store = mockStore()}) => (
 				`/workspace/23/settings/data-source${queryString}`
 			]}
 		>
-			<Route path={Routes.SETTINGS_DATA_SOURCE_LIST}>
-				<MockedProvider addTypename={false}>{children}</MockedProvider>
-			</Route>
+			<RouterRoutes>
+				<Route
+					element={
+						<MockedProvider addTypename={false}>
+							{children}
+						</MockedProvider>
+					}
+					path={Routes.SETTINGS_DATA_SOURCE_LIST}
+				/>
+			</RouterRoutes>
 		</MemoryRouter>
 	</Provider>
 );
@@ -308,13 +315,15 @@ describe('CellRenderers', () => {
 	it('should render as disabled if the datasource is in the process of being deleted', () => {
 		const {container} = render(
 			<MemoryRouter>
-				<DataSourceName
-					data={{
-						name: 'Test DS',
-						state: DataSourceStates.InProgressDeleting
-					}}
-					hrefFormatter={() => '/test'}
-				/>
+				<RouterRoutes>
+					<DataSourceName
+						data={{
+							name: 'Test DS',
+							state: DataSourceStates.InProgressDeleting
+						}}
+						hrefFormatter={() => '/test'}
+					/>
+				</RouterRoutes>
 			</MemoryRouter>
 		);
 

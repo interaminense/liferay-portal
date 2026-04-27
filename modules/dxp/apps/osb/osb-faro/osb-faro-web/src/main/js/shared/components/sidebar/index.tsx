@@ -217,10 +217,8 @@ const Sidebar: React.FC<ISidebarProps> = ({
 											<SidebarItem
 												active={
 													!!matchPath(
-														activePathname,
-														{
-															path: route
-														}
+														{path: route},
+														activePathname
 													)
 												}
 												href={url}
@@ -250,9 +248,7 @@ const Sidebar: React.FC<ISidebarProps> = ({
 
 					<SidebarItem
 						active={
-							!!matchPath(activePathname, {
-								path: Routes.SETTINGS
-							})
+							!!matchPath({path: Routes.SETTINGS}, activePathname)
 						}
 						href={toRoute(Routes.SETTINGS_DATA_SOURCE_LIST, {
 							groupId
@@ -264,9 +260,10 @@ const Sidebar: React.FC<ISidebarProps> = ({
 					{DEVELOPER_MODE && (
 						<SidebarItem
 							active={
-								!!matchPath(activePathname, {
-									path: Routes.UI_KIT
-								})
+								!!matchPath(
+									{path: Routes.UI_KIT},
+									activePathname
+								)
 							}
 							href={toRoute(Routes.UI_KIT, {
 								channelId,

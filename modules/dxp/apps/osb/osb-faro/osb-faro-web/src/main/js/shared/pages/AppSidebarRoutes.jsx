@@ -1,20 +1,27 @@
-import BundleRouter from '../../route-middleware/BundleRouter';
+import BundleElement from '../../route-middleware/BundleRouter';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
+import withRouter from 'shared/hoc/WithRouter';
 import {ChannelContext} from 'shared/context/channel';
 import {connect} from 'react-redux';
 import {DEVELOPER_MODE} from 'shared/util/constants';
 import {DownloadReportProvider} from 'shared/components/download-report/DownloadReportContext';
 import {ENABLE_ASSET_OBJECT_ENTRY} from 'shared/util/constants';
-import {Routes} from 'shared/util/router';
-import {Switch, withRouter} from 'react-router-dom';
+import {relativeRoute, Routes} from 'shared/util/router';
+import {Route, Routes as RouterRoutes} from 'react-router-dom';
 import {
 	withLDPEnabled,
 	withOnboarding,
+	withSidebar,
 	withUnassignedSegments
 } from 'shared/hoc';
-import {withSidebar} from 'shared/hoc';
+
+// Inside AppSidebarRoutes, all <Route> paths are relative to the workspace
+// (Routes.WORKSPACE_WITH_ID = `/workspace/:groupId`). v7 nested <Routes> only
+// matches relative paths, so absolute paths from the Routes constants need to
+// be stripped before being used here.
+const wsRel = absPath => relativeRoute(Routes.WORKSPACE_WITH_ID, absPath);
 
 const UIKit = lazy(() =>
 	import(/* webpackChunkName: "UIKit" */ '../../ui-kit/pages/index')
@@ -304,93 +311,118 @@ export default class AppSidebarRoutes extends React.PureComponent {
 		return (
 			<DownloadReportProvider>
 				<Suspense fallback={<Loading />}>
-					<Switch>
+					<RouterRoutes>
 						{!selectedChannel && (
-							<BundleRouter
-								componentProps={{currentUser, groupId}}
-								data={NoPropertiesAvailable}
-								exact={false}
-								path={Routes.WORKSPACE_WITH_ID}
+							<Route
+								element={
+									<BundleElement
+										componentProps={{currentUser, groupId}}
+										data={NoPropertiesAvailable}
+									/>
+								}
+								path=''
 							/>
 						)}
 
 						{LDPEnabled ? (
-							<BundleRouter
-								data={IndividualProfileRoutesCDP}
-								exact={false}
-								path={Routes.CONTACTS_INDIVIDUAL}
+							<Route
+								element={
+									<BundleElement
+										data={IndividualProfileRoutesCDP}
+									/>
+								}
+								path={`${wsRel(Routes.CONTACTS_INDIVIDUAL)}/*`}
 							/>
 						) : (
-							<BundleRouter
-								data={IndividualProfileRoutes}
-								exact={false}
-								path={Routes.CONTACTS_INDIVIDUAL}
+							<Route
+								element={
+									<BundleElement
+										data={IndividualProfileRoutes}
+									/>
+								}
+								path={`${wsRel(Routes.CONTACTS_INDIVIDUAL)}/*`}
 							/>
 						)}
 
 						{LDPEnabled ? (
-							<BundleRouter
-								data={IndividualsDashboardCDP}
-								destructured={false}
-								exact={false}
-								path={Routes.CONTACTS_INDIVIDUALS}
+							<Route
+								element={
+									<BundleElement
+										data={IndividualsDashboardCDP}
+										destructured={false}
+									/>
+								}
+								path={`${wsRel(Routes.CONTACTS_INDIVIDUALS)}/*`}
 							/>
 						) : (
-							<BundleRouter
-								data={IndividualsDashboard}
-								destructured={false}
-								exact={false}
-								path={Routes.CONTACTS_INDIVIDUALS}
+							<Route
+								element={
+									<BundleElement
+										data={IndividualsDashboard}
+										destructured={false}
+									/>
+								}
+								path={`${wsRel(Routes.CONTACTS_INDIVIDUALS)}/*`}
 							/>
 						)}
 
 						{LDPEnabled && (
-							<BundleRouter
-								data={AccountsList}
-								exact
-								path={Routes.CONTACTS_LIST_ACCOUNT}
+							<Route
+								element={<BundleElement data={AccountsList} />}
+								path={wsRel(Routes.CONTACTS_LIST_ACCOUNT)}
 							/>
 						)}
 
 						{LDPEnabled && (
-							<BundleRouter
-								data={AccountProfileRoutes}
-								exact={false}
-								path={Routes.CONTACTS_ACCOUNT}
+							<Route
+								element={
+									<BundleElement data={AccountProfileRoutes} />
+								}
+								path={`${wsRel(Routes.CONTACTS_ACCOUNT)}/*`}
 							/>
 						)}
 
 						{LDPEnabled && (
-							<BundleRouter
-								data={LifecycleDashboard}
-								destructured={false}
-								exact
-								path={Routes.LIFECYCLE}
+							<Route
+								element={
+									<BundleElement
+										data={LifecycleDashboard}
+										destructured={false}
+									/>
+								}
+								path={wsRel(Routes.LIFECYCLE)}
 							/>
 						)}
 
-						{ROUTES.map(
-							({data, exact = true, path, ...otherProps}) => (
-								<BundleRouter
-									{...otherProps}
-									data={data}
-									exact={exact}
+						{ROUTES.map(({data, path, ...otherProps}) => {
+							// `exact` was a v5 prop on Route; v7 paths are exact
+							// by default. We append /* to non-exact routes so
+							// descendant routers can take over the rest of the
+							// pathname.
+							// eslint-disable-next-line @typescript-eslint/no-unused-vars
+							const {exact = true, ...rest} = otherProps;
+							const relPath = wsRel(path);
+
+							return (
+								<Route
+									element={
+										<BundleElement {...rest} data={data} />
+									}
 									key={path}
-									path={path}
+									path={exact ? relPath : `${relPath}/*`}
 								/>
-							)
-						)}
+							);
+						})}
 
 						{DEVELOPER_MODE && (
-							<BundleRouter
-								data={UIKit}
-								exact
-								path={Routes.UI_KIT}
+							<Route
+								element={<BundleElement data={UIKit} />}
+								path={wsRel(Routes.UI_KIT)}
 							/>
 						)}
 
-						<RouteNotFound />
-					</Switch>
+						<Route element={<RouteNotFound />} path='*' />
+					</RouterRoutes>
 				</Suspense>
 			</DownloadReportProvider>
 		);

@@ -1,16 +1,20 @@
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import getCN from 'classnames';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
+import withRouter from 'shared/hoc/WithRouter';
 import {Account} from 'shared/util/records';
 import {ChannelContext} from 'shared/context/channel';
 import {compose, withAccount} from 'shared/hoc';
-import {getMatchedRoute, Routes} from 'shared/util/router';
+import {getMatchedRoute, relativeRoute, Routes} from 'shared/util/router';
+
+// Inside AccountProfileRoutes, paths are relative to Routes.CONTACTS_ACCOUNT.
+const accountRel = absPath => relativeRoute(Routes.CONTACTS_ACCOUNT, absPath);
 import {PropTypes} from 'prop-types';
-import {Switch, withRouter} from 'react-router-dom';
+import {Route, Routes as RouterRoutes} from 'react-router-dom';
 
 const Activities = lazy(() =>
 	import(/* webpackChunkName: "AccountActivities" */ './hoc/Activities')
@@ -141,59 +145,92 @@ export class AccountProfileRoutes extends React.Component {
 
 				<BasePage.Body>
 					<Suspense fallback={<Loading />}>
-						<Switch>
-							<BundleRouter
-								componentProps={componentProps}
-								data={Activities}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_ACTIVITIES}
+						<RouterRoutes>
+							<Route
+								element={
+									<BundleElement
+										componentProps={componentProps}
+										data={Activities}
+									/>
+								}
+								path={accountRel(
+									Routes.CONTACTS_ACCOUNT_ACTIVITIES
+								)}
 							/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={AssociatedSegments}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_SEGMENTS}
+							<Route
+								element={
+									<BundleElement
+										componentProps={componentProps}
+										data={AssociatedSegments}
+									/>
+								}
+								path={accountRel(
+									Routes.CONTACTS_ACCOUNT_SEGMENTS
+								)}
 							/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={Details}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_DETAILS}
+							<Route
+								element={
+									<BundleElement
+										componentProps={componentProps}
+										data={Details}
+									/>
+								}
+								path={accountRel(
+									Routes.CONTACTS_ACCOUNT_DETAILS
+								)}
 							/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={InterestDetails}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_INTEREST_DETAILS}
+							<Route
+								element={
+									<BundleElement
+										componentProps={componentProps}
+										data={InterestDetails}
+									/>
+								}
+								path={accountRel(
+									Routes.CONTACTS_ACCOUNT_INTEREST_DETAILS
+								)}
 							/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={Interests}
-								destructured={false}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_INTERESTS}
+							<Route
+								element={
+									<BundleElement
+										componentProps={componentProps}
+										data={Interests}
+										destructured={false}
+									/>
+								}
+								path={accountRel(
+									Routes.CONTACTS_ACCOUNT_INTERESTS
+								)}
 							/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={KnownIndividuals}
-								exact
-								path={Routes.CONTACTS_ACCOUNT_INDIVIDUALS}
+							<Route
+								element={
+									<BundleElement
+										componentProps={componentProps}
+										data={KnownIndividuals}
+									/>
+								}
+								path={accountRel(
+									Routes.CONTACTS_ACCOUNT_INDIVIDUALS
+								)}
 							/>
 
-							<BundleRouter
-								componentProps={componentProps}
-								data={Overview}
-								exact
-								path={Routes.CONTACTS_ACCOUNT}
+							<Route
+								element={
+									<BundleElement
+										componentProps={componentProps}
+										data={Overview}
+									/>
+								}
+								path=''
 							/>
 
-							<RouteNotFound />
-						</Switch>
+							<Route element={<RouteNotFound />} path='*' />
+						</RouterRoutes>
 					</Suspense>
 				</BasePage.Body>
 			</BasePage>

@@ -1,12 +1,15 @@
 /**
- * Module augmentation for react-router-dom v5 + React 18 compatibility:
+ * `useParams` augmentation: keep the v5-style generic shape `<{ key: string }>`
+ * because callers across the module rely on it. v7 ships a stricter signature
+ * (`<ParamKey extends string>` returning `Partial<Record<...>>`); the override
+ * below preserves the previous contract until call sites migrate to defensive
+ * defaults like `useParams<{ groupId?: string }>()`.
  *
- * Adds explicit `children` prop to components. React 18 removed implicit
- * children from React.FC/React.Component, so these declarations are required
- * for compatibility.
+ * This file must be a module (not a script) for `declare module` to AUGMENT
+ * rather than REPLACE the react-router-dom typings. Hence the no-op import.
  */
 
-import {ReactNode} from 'react';
+import 'react-router-dom';
 
 declare module 'react-router-dom' {
 	export function useParams<
@@ -15,76 +18,4 @@ declare module 'react-router-dom' {
 			string | undefined
 		>
 	>(): Params;
-
-	interface BrowserRouterProps {
-		children?: ReactNode;
-	}
-
-	interface StaticRouterProps {
-		children?: ReactNode;
-	}
-
-	interface HashRouterProps {
-		children?: ReactNode;
-	}
-
-	interface MemoryRouterProps {
-		children?: ReactNode;
-	}
-
-	interface RouteProps {
-		children?: ReactNode | ((props: any) => ReactNode);
-	}
-
-	interface SwitchProps {
-		children?: ReactNode;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	interface LinkProps<_S = unknown> {
-		children?: ReactNode;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	interface NavLinkProps<_S = unknown> {
-		children?: ReactNode;
-	}
-
-	interface RedirectProps {
-		children?: ReactNode;
-	}
-
-	interface PromptProps {
-		children?: ReactNode;
-	}
-}
-
-declare module 'react-router' {
-	interface RouterProps {
-		children?: ReactNode;
-	}
-
-	interface StaticRouterProps {
-		children?: ReactNode;
-	}
-
-	interface RouteProps {
-		children?: ReactNode | ((props: any) => ReactNode);
-	}
-
-	interface SwitchProps {
-		children?: ReactNode;
-	}
-
-	interface MemoryRouterProps {
-		children?: ReactNode;
-	}
-
-	interface RedirectProps {
-		children?: ReactNode;
-	}
-
-	interface PromptProps {
-		children?: ReactNode;
-	}
 }

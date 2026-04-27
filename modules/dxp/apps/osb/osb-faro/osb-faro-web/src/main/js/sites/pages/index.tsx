@@ -1,6 +1,6 @@
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import ClayLink from '@clayui/link';
 import DownloadCSVReport from 'shared/components/download-report/DownloadCSVReport';
 import DownloadPDFReport from 'shared/components/download-report/DownloadPDFReport';
@@ -11,8 +11,16 @@ import RouteNotFound from 'shared/components/RouteNotFound';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
 import {CSVType} from 'shared/components/download-report/utils';
-import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
+import {
+	getMatchedRoute,
+	relativeRoute,
+	Routes,
+	toRoute
+} from 'shared/util/router';
+
+// Inside SitesDashboard, paths are relative to Routes.SITES.
+const sitesRel = (absPath: string) => relativeRoute(Routes.SITES, absPath);
+import {Route, Routes as RouterRoutes, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
@@ -216,47 +224,72 @@ export const Dashboard: React.FC<IDashboardProps> = ({router}) => {
 							/>
 
 							<StatesRenderer.Success>
-								<Switch>
-									<BundleRouter
-										data={InterestDetails}
-										destructured={false}
-										exact
-										path={Routes.SITES_INTEREST_DETAILS}
+								<RouterRoutes>
+									<Route
+										element={
+											<BundleElement
+												data={InterestDetails}
+												destructured={false}
+											/>
+										}
+										path={sitesRel(
+											Routes.SITES_INTEREST_DETAILS
+										)}
 									/>
 
-									<BundleRouter
-										data={Interests}
-										destructured={false}
-										exact
-										path={Routes.SITES_INTERESTS}
+									<Route
+										element={
+											<BundleElement
+												data={Interests}
+												destructured={false}
+											/>
+										}
+										path={sitesRel(Routes.SITES_INTERESTS)}
 									/>
 
-									<BundleRouter
-										data={Touchpoints}
-										destructured={false}
-										exact
-										path={Routes.SITES_TOUCHPOINTS}
+									<Route
+										element={
+											<BundleElement
+												data={Touchpoints}
+												destructured={false}
+											/>
+										}
+										path={`${sitesRel(
+											Routes.SITES_TOUCHPOINTS
+										)}/*`}
 									/>
 
-									<BundleRouter
-										componentProps={{
-											channelName: selectedChannelName
-										}}
-										data={Overview}
-										destructured={false}
-										exact
-										path={Routes.SITES}
+									<Route
+										element={
+											<BundleElement
+												componentProps={{
+													channelName:
+														selectedChannelName
+												}}
+												data={Overview}
+												destructured={false}
+											/>
+										}
+										path=''
 									/>
 
-									<BundleRouter
-										data={SearchTermsPage}
-										destructured={false}
-										exact
-										path={Routes.SITES_SEARCH_TERMS}
+									<Route
+										element={
+											<BundleElement
+												data={SearchTermsPage}
+												destructured={false}
+											/>
+										}
+										path={sitesRel(
+											Routes.SITES_SEARCH_TERMS
+										)}
 									/>
 
-									<RouteNotFound />
-								</Switch>
+									<Route
+										element={<RouteNotFound />}
+										path='*'
+									/>
+								</RouterRoutes>
 							</StatesRenderer.Success>
 						</StatesRenderer>
 					</Suspense>

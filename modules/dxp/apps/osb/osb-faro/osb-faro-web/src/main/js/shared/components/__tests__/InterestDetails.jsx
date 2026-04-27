@@ -3,7 +3,12 @@ import InterestDetails from '../InterestDetails';
 import React from 'react';
 import {ApolloProvider} from '@apollo/client';
 import {createMemoryHistory} from 'history';
-import {MemoryRouter, Route, Router} from 'react-router-dom';
+import {
+	MemoryRouter,
+	Route,
+	Router,
+	Routes as RouterRoutes
+} from 'react-router-dom';
 import {MockedProvider} from '@apollo/client/testing';
 import {
 	mockPreferenceReq,
@@ -75,9 +80,12 @@ const DefaultComponent = () => {
 							'/workspace/23/321321/contacts/accounts/123123/interests/test'
 						]}
 					>
-						<Route path={Routes.CONTACTS_ACCOUNT_INTEREST_DETAILS}>
-							<InterestDetails {...defaultProps} />
-						</Route>
+						<RouterRoutes>
+							<Route
+								element={<InterestDetails {...defaultProps} />}
+								path={Routes.CONTACTS_ACCOUNT_INTEREST_DETAILS}
+							/>
+						</RouterRoutes>
 					</MemoryRouter>
 				</Router>
 			</MockedProvider>

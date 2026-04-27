@@ -2,9 +2,8 @@ import * as API from 'shared/api';
 
 import IndividualsList from '../IndividualsList';
 import React from 'react';
-import {createMemoryHistory} from 'history';
+import {MemoryRouter} from 'react-router-dom';
 import {render} from '@testing-library/react';
-import {Router} from 'react-router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -71,12 +70,10 @@ describe('Individuals List', () => {
 	);
 
 	it('renders', async () => {
-		const history = createMemoryHistory();
-
 		const {getByText} = render(
-			<Router history={history}>
+			<MemoryRouter>
 				<IndividualsList />
-			</Router>
+			</MemoryRouter>
 		);
 
 		await waitForLoadingToBeRemoved(document.body);

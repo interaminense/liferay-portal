@@ -1,11 +1,11 @@
 import AlertFeed from 'shared/components/AlertFeed';
-import BundleRouter from './route-middleware/BundleRouter';
+import BundleElement from './route-middleware/BundleRouter';
 import ChannelProvider from 'shared/context/channel';
 import client from 'shared/apollo/client';
 import ErrorPage from 'shared/pages/ErrorPage';
 import Loading from 'shared/components/Loading';
 import ModalRenderer from 'shared/components/ModalRenderer';
-import React, {lazy, Suspense, useEffect, useState} from 'react';
+import React, {lazy, Suspense, useEffect, useMemo, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import store from 'shared/store';
 import UnassignedSegmentsProvider from 'shared/context/unassignedSegments';
@@ -17,16 +17,17 @@ import {
 import {ClayIconSpriteContext} from '@clayui/icon';
 import {ClayLinkContext} from '@clayui/link';
 import {ClayTooltipProvider} from '@clayui/tooltip';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {ENABLE_ADD_TRIAL_WORKSPACE} from 'shared/util/constants';
 import {
+	createBrowserRouter,
+	createRoutesFromElements,
 	Link,
 	matchPath,
+	Outlet,
 	Route,
-	BrowserRouter as Router,
-	Switch,
+	RouterProvider,
 	useLocation
 } from 'react-router-dom';
+import {ENABLE_ADD_TRIAL_WORKSPACE} from 'shared/util/constants';
 import {OnboardingContext} from 'shared/context/onboarding';
 import {Pendo} from 'shared/util/pendo';
 import {Project} from 'shared/util/records';
@@ -72,14 +73,17 @@ const OAuthReceive = lazy(
 		)
 );
 
-const RoutesContainer = ({children}: {children: React.ReactNode}) => {
+const RoutesContainerLayout = () => {
 	const location = useLocation();
 
-	const matchingPath = matchPath<any>(location.pathname, {
-		path: Routes.WORKSPACE_WITH_ID
-	});
+	const matchingPath = matchPath(
+		{end: false, path: Routes.WORKSPACE_WITH_ID},
+		location.pathname
+	);
 
-	const groupId = matchingPath?.params.groupId ?? '0';
+	const groupId =
+		(matchingPath?.params as {groupId?: string} | undefined)?.groupId ??
+		'0';
 
 	const project: Project = useSelector<any, any>(state =>
 		state.getIn(['projects', groupId, 'data'])
@@ -103,7 +107,17 @@ const RoutesContainer = ({children}: {children: React.ReactNode}) => {
 		return <ErrorPage />;
 	}
 
-	return children as React.ReactElement;
+	return (
+		<>
+			<AlertFeed />
+
+			<ModalRenderer />
+
+			<Suspense fallback={<Loading />}>
+				<Outlet />
+			</Suspense>
+		</>
+	);
 };
 
 const App = () => {
@@ -113,30 +127,65 @@ const App = () => {
 		store.subscribe(throttle(() => saveState(store.getState()), 1000));
 	}, []);
 
-	const handleUserConfirmation = (
-		message: string,
-		callback: (confirmed: boolean) => void
-	) => {
-		store.dispatch(
-			open(modalTypes.CONFIRMATION_MODAL, {
-				cancelMessage: Liferay.Language.get('stay-on-page'),
-				message,
-				modalVariant: 'modal-warning',
-				onClose: () => {
-					callback(false);
+	const router = useMemo(
+		() =>
+			createBrowserRouter(
+				createRoutesFromElements(
+					<Route element={<RoutesContainerLayout />}>
+						<Route
+							element={<BundleElement data={Workspaces} />}
+							path={Routes.BASE}
+						/>
 
-					store.dispatch(close());
-				},
-				onSubmit: () => {
-					callback(true);
-				},
-				submitButtonDisplay: 'warning',
-				submitMessage: Liferay.Language.get('leave-page'),
-				title: Liferay.Language.get('unsaved-changes'),
-				titleIcon: 'warning-full'
-			})
-		);
-	};
+						<Route
+							element={<BundleElement data={Workspaces} />}
+							path={Routes.WORKSPACES}
+						/>
+
+						<Route
+							element={
+								<BundleElement data={SelectWorkspaceAccount} />
+							}
+							path={Routes.WORKSPACE_ADD}
+						/>
+
+						{ENABLE_ADD_TRIAL_WORKSPACE && (
+							<Route
+								element={<BundleElement data={AddWorkspace} />}
+								path={Routes.WORKSPACE_ADD_TRIAL}
+							/>
+						)}
+
+						<Route
+							element={<BundleElement data={AddWorkspace} />}
+							path={Routes.WORKSPACE_ADD_WITH_CORP_PROJECT_UUID}
+						/>
+
+						<Route
+							element={
+								<BundleElement data={SelectWorkspaceAccount} />
+							}
+							path={Routes.WORKSPACE_SELECT_ACCOUNT}
+						/>
+
+						<Route
+							element={<BundleElement data={OAuthReceive} />}
+							path={Routes.OAUTH_RECEIVE}
+						/>
+
+						<Route element={<Loading />} path={Routes.LOADING} />
+
+						<Route
+							element={<WorkspaceLayer />}
+							path={`${Routes.WORKSPACE_WITH_ID}/*`}
+						/>
+
+						<Route element={<RouteNotFound />} path='*' />
+					</Route>
+				)
+			),
+		[]
+	);
 
 	return (
 		<ApolloProvider client={client}>
@@ -180,110 +229,9 @@ const App = () => {
 									<ChannelProvider>
 										<ClayTooltipProvider>
 											<div>
-												<Router
-													getUserConfirmation={
-														handleUserConfirmation
-													}
-												>
-													<RoutesContainer>
-														<AlertFeed />
-
-														<ModalRenderer />
-
-														<Suspense
-															fallback={
-																<Loading />
-															}
-														>
-															<Switch>
-																<BundleRouter
-																	data={
-																		Workspaces
-																	}
-																	exact
-																	path={
-																		Routes.BASE
-																	}
-																/>
-
-																<BundleRouter
-																	data={
-																		Workspaces
-																	}
-																	exact
-																	path={
-																		Routes.WORKSPACES
-																	}
-																/>
-
-																<BundleRouter
-																	data={
-																		SelectWorkspaceAccount
-																	}
-																	exact
-																	path={
-																		Routes.WORKSPACE_ADD
-																	}
-																/>
-
-																{ENABLE_ADD_TRIAL_WORKSPACE && (
-																	<BundleRouter
-																		data={
-																			AddWorkspace
-																		}
-																		exact
-																		path={
-																			Routes.WORKSPACE_ADD_TRIAL
-																		}
-																	/>
-																)}
-
-																<BundleRouter
-																	data={
-																		AddWorkspace
-																	}
-																	exact
-																	path={
-																		Routes.WORKSPACE_ADD_WITH_CORP_PROJECT_UUID
-																	}
-																/>
-
-																<BundleRouter
-																	data={
-																		SelectWorkspaceAccount
-																	}
-																	exact
-																	path={
-																		Routes.WORKSPACE_SELECT_ACCOUNT
-																	}
-																/>
-
-																<BundleRouter
-																	data={
-																		OAuthReceive
-																	}
-																	exact
-																	path={
-																		Routes.OAUTH_RECEIVE
-																	}
-																/>
-
-																<Route
-																	component={
-																		Loading
-																	}
-																	path={
-																		Routes.LOADING
-																	}
-																/>
-
-																<WorkspaceLayer />
-
-																<RouteNotFound />
-															</Switch>
-														</Suspense>
-													</RoutesContainer>
-												</Router>
+												<RouterProvider
+													router={router}
+												/>
 											</div>
 										</ClayTooltipProvider>
 									</ChannelProvider>

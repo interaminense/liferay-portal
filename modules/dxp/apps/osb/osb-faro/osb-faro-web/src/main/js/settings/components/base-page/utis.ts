@@ -1,10 +1,16 @@
-import {History} from 'history';
+import {useNavigate} from 'react-router-dom';
 
-export function updateSearchParams(history: History, key: string, value: any) {
+type Navigate = ReturnType<typeof useNavigate>;
+
+export function updateSearchParams(
+	navigate: Navigate,
+	key: string,
+	value: any
+) {
 	const params = new URLSearchParams(window.location.search);
 	params.set(key, String(value));
 
-	history.push({
+	navigate({
 		pathname: window.location.pathname,
 		search: params.toString()
 	});

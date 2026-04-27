@@ -1,14 +1,14 @@
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import ClayLink from '@clayui/link';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
+import {Route, Routes as RouterRoutes, useParams} from 'react-router-dom';
 import {Routes, toRoute} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
@@ -134,19 +134,26 @@ const CommerceDashboard: React.FC<ICommerceDashboardProps> = ({router}) => {
 							/>
 
 							<StatesRenderer.Success>
-								<Switch>
-									<BundleRouter
-										componentProps={{
-											channelName: selectedChannelName
-										}}
-										data={Overview}
-										destructured={false}
-										exact
-										path={Routes.COMMERCE}
+								<RouterRoutes>
+									<Route
+										element={
+											<BundleElement
+												componentProps={{
+													channelName:
+														selectedChannelName
+												}}
+												data={Overview}
+												destructured={false}
+											/>
+										}
+										path=''
 									/>
 
-									<RouteNotFound />
-								</Switch>
+									<Route
+										element={<RouteNotFound />}
+										path='*'
+									/>
+								</RouterRoutes>
 							</StatesRenderer.Success>
 						</StatesRenderer>
 					</Suspense>

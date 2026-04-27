@@ -1,6 +1,6 @@
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import ClayLink from '@clayui/link';
 import DownloadCSVReport from 'shared/components/download-report/DownloadCSVReport';
 import DownloadPDFReport from 'shared/components/download-report/DownloadPDFReport';
@@ -18,9 +18,9 @@ import {getSafeDecodedURIComponent} from 'shared/util/util';
 import {pickBy} from 'lodash';
 import {PropTypes} from 'prop-types';
 import {removeUriQueryParam, setUriQueryValues} from 'shared/util/router';
-import {Switch, useHistory} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
+import {useNavigate} from 'react-router-dom';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
 
 const KnownIndividuals = lazy(() =>
@@ -73,7 +73,7 @@ function TouchpointRoutes({className, router}) {
 	const decodedTouchpoint = getSafeDecodedURIComponent(touchpoint);
 	const [selectedSegment, setSelectedSegment] = useState({});
 	const [experienceId, setExperienceId] = useState(experienceIdfromURL);
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setPathRangeSelectors(rangeSelectors);
@@ -127,7 +127,7 @@ function TouchpointRoutes({className, router}) {
 					<ExperienceDropdown
 						groupId={groupId}
 						onChange={experienceId => {
-							history.push(setUriQueryValues({experienceId}));
+							navigate(setUriQueryValues({experienceId}));
 
 							setExperienceId(experienceId);
 						}}
@@ -137,7 +137,7 @@ function TouchpointRoutes({className, router}) {
 						<DropdownRangeKey
 							legacy={false}
 							onRangeSelectorChange={rangeSelectors => {
-								history.push(
+								navigate(
 									setUriQueryValues(
 										pickBy({
 											...rangeSelectors
@@ -206,36 +206,45 @@ function TouchpointRoutes({className, router}) {
 
 				<BasePage.Body>
 					<Suspense fallback={<Loading />}>
-						<Switch>
-							<BundleRouter
-								data={TouchpointOverviewPage}
-								destructured={false}
-								exact
-								path={Routes.SITES_TOUCHPOINTS_OVERVIEW}
-							/>
+						{(() => {
+							// Parent route in AppSidebarRoutes captured :typeId;
+							// v7 nested <Routes> can't differentiate, so
+							// dispatch here.
+							const typeId = router.params?.typeId;
 
-							<BundleRouter
-								data={KnownIndividuals}
-								destructured={false}
-								exact
-								path={
-									Routes.SITES_TOUCHPOINTS_KNOWN_INDIVIDUALS
-								}
-							/>
+							if (typeId === 'overview') {
+								return (
+									<BundleElement
+										data={TouchpointOverviewPage}
+										destructured={false}
+									/>
+								);
+							}
 
-							<BundleRouter
-								componentProps={{
-									rangeSelectors: pathRangeSelectors,
-									selectedSegment
-								}}
-								data={TouchpointPathPage}
-								destructured={false}
-								exact
-								path={Routes.SITES_TOUCHPOINTS_PATH}
-							/>
+							if (typeId === 'known-individuals') {
+								return (
+									<BundleElement
+										data={KnownIndividuals}
+										destructured={false}
+									/>
+								);
+							}
 
-							<RouteNotFound />
-						</Switch>
+							if (typeId === 'path') {
+								return (
+									<BundleElement
+										componentProps={{
+											rangeSelectors: pathRangeSelectors,
+											selectedSegment
+										}}
+										data={TouchpointPathPage}
+										destructured={false}
+									/>
+								);
+							}
+
+							return <RouteNotFound />;
+						})()}
 					</Suspense>
 				</BasePage.Body>
 			</BasePage.Context.Provider>

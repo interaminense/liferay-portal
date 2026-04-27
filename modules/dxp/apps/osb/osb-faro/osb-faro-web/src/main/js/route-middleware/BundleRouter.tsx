@@ -1,57 +1,34 @@
 import React from 'react';
-import {matchPath, Route, RouteProps} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {useQueryParams} from 'shared/hooks/useQueryParams';
 
-interface BundleRouterProps extends RouteProps {
+interface BundleElementProps {
 	componentProps?: Record<string, unknown>;
 	data: React.ComponentType<any>;
 	destructured?: boolean;
 }
 
-const BundleRouter = ({
+const BundleElement = ({
 	componentProps = {},
 	data: Component,
-	destructured = true,
-	...otherRouteProps
-}: BundleRouterProps) => {
+	destructured = true
+}: BundleElementProps) => {
+	const params = useParams();
 	const query = useQueryParams();
 
+	if (destructured) {
+		return <Component {...query} {...params} {...componentProps} />;
+	}
+
 	return (
-		<Route
-			{...otherRouteProps}
-			render={({history, match: {params, path}}) => {
-				if (destructured) {
-					return (
-						<Component
-							history={history}
-							{...query}
-							{...params}
-							{...componentProps}
-						/>
-					);
-				}
-
-				const matchedPath = matchPath<{touchpoint?: string}>(
-					window.location.pathname,
-					{path}
-				);
-
-				return (
-					<Component
-						history={history}
-						router={{
-							params: {
-								...params,
-								touchpoint: matchedPath?.params.touchpoint
-							},
-							query
-						}}
-						{...componentProps}
-					/>
-				);
+		<Component
+			router={{
+				params,
+				query
 			}}
+			{...componentProps}
 		/>
 	);
 };
 
-export default BundleRouter;
+export default BundleElement;

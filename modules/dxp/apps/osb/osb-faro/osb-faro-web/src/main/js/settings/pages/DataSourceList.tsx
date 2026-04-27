@@ -30,7 +30,7 @@ import {
 	listAvailableConnectors
 } from 'settings/components/3rd-party-connector/registry';
 import {getDataSourceDisplayObject} from 'shared/util/data-sources';
-import {Link, useHistory, useParams} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
 import {SubscriptionNames} from 'shared/util/subscriptions';
@@ -190,7 +190,7 @@ interface IDataSourceListProps extends React.HTMLAttributes<HTMLElement> {}
 
 const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 	const currentUser = useCurrentUser();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const {groupId = ''} = useParams<{groupId: string}>();
 	const [alerts, setAlerts] = useState<
 		{
@@ -265,7 +265,7 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 		.map(config => ({
 			label: config.displayName,
 			onClick: () => {
-				history.push(
+				navigate(
 					toRoute(Routes.SETTINGS_DATA_SOURCE_ONBOARDING, {
 						groupId,
 						id: config.type
@@ -278,7 +278,7 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 		{
 			label: Liferay.Language.get('liferay-dxp'),
 			onClick: () => {
-				history.push(
+				navigate(
 					toRoute(Routes.SETTINGS_DATA_SOURCE_ONBOARDING, {
 						groupId,
 						id: DataSourceTypes.Liferay
@@ -290,7 +290,7 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 		{
 			label: Liferay.Language.get('salesforce'),
 			onClick: () => {
-				history.push(
+				navigate(
 					toRoute(Routes.SETTINGS_DATA_SOURCE_ONBOARDING, {
 						groupId,
 						id: DataSourceTypes.Salesforce

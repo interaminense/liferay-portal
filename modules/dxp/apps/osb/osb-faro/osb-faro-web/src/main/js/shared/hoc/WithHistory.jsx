@@ -1,10 +1,8 @@
 import React from 'react';
-import {withRouter} from 'react-router';
+import withRouter from './WithRouter';
 
 /**
- * Adds history prop from WithRouter.
- * @param {function} WrappedComponent
- * @returns {function} - The WrappedComponent with the history prop.
+ * Adds history prop using the local withRouter shim (react-router v7 compatible).
  */
 export default WrappedComponent =>
 	withRouter(({history, ...otherProps}) => (

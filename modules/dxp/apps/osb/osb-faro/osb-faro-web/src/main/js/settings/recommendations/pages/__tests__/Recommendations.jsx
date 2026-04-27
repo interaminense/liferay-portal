@@ -4,7 +4,7 @@ import React from 'react';
 import RecommendationListQuery from '../../queries/RecommendationListQuery';
 import Recommendations from '../Recommendations';
 import {InMemoryCache} from '@apollo/client';
-import {MemoryRouter, Route} from 'react-router-dom';
+import {MemoryRouter, Route, Routes as RouterRoutes} from 'react-router-dom';
 import {MockedProvider} from '@apollo/client/testing';
 import {mockJobBag} from 'test/graphql-data';
 import {Provider} from 'react-redux';
@@ -41,19 +41,24 @@ const DefaultComponent = props => (
 				'/workspace/23/settings/recommendations?delta=10&page=1&sortOrder=DESC&field=name'
 			]}
 		>
-			<MockedProvider
-				cache={
-					new InMemoryCache({
-						addTypename: false,
-						freezeResults: false
-					})
-				}
-				mocks={[mockRecommendationListReq()]}
-			>
-				<Route path={Routes.SETTINGS_RECOMMENDATIONS}>
-					<Recommendations {...defaultProps} {...props} />
-				</Route>
-			</MockedProvider>
+			<RouterRoutes>
+				<MockedProvider
+					cache={
+						new InMemoryCache({
+							addTypename: false,
+							freezeResults: false
+						})
+					}
+					mocks={[mockRecommendationListReq()]}
+				>
+					<Route
+						element={
+							<Recommendations {...defaultProps} {...props} />
+						}
+						path={Routes.SETTINGS_RECOMMENDATIONS}
+					/>
+				</MockedProvider>
+			</RouterRoutes>
 		</MemoryRouter>
 	</Provider>
 );

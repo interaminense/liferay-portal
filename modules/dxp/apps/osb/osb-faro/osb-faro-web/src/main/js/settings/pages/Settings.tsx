@@ -1,12 +1,16 @@
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import checkProjectState from 'shared/hoc/CheckProjectState';
 import Loading from 'shared/components/Loading';
 import React, {Fragment, lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {compose} from 'shared/hoc';
 import {ENABLE_CSVFILE} from 'shared/util/constants';
-import {Routes} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
+import {relativeRoute, Routes} from 'shared/util/router';
+import {Route, Routes as RouterRoutes, useParams} from 'react-router-dom';
+
+// All paths inside this <Routes> are relative to /workspace/:groupId/settings.
+const settingsRel = (absPath: string) =>
+	relativeRoute(Routes.SETTINGS, absPath);
 import {useStore} from 'react-redux';
 import {withOnboarding} from 'shared/hoc';
 
@@ -139,133 +143,147 @@ export const Settings = () => {
 
 	return (
 		<Suspense fallback={<Loading />}>
-			<Switch>
-				<BundleRouter
-					data={DataSourceList}
-					exact
-					path={Routes.SETTINGS_DATA_SOURCE_LIST}
+			<RouterRoutes>
+				<Route
+					element={<BundleElement data={DataSourceList} />}
+					path={settingsRel(Routes.SETTINGS_DATA_SOURCE_LIST)}
 				/>
 
-				<BundleRouter
-					data={DataSourceOnboarding}
-					exact
-					path={Routes.SETTINGS_DATA_SOURCE_ONBOARDING}
+				<Route
+					element={<BundleElement data={DataSourceOnboarding} />}
+					path={settingsRel(Routes.SETTINGS_DATA_SOURCE_ONBOARDING)}
 				/>
 
-				<BundleRouter
-					data={DeleteDataSource}
-					path={Routes.SETTINGS_DATA_SOURCE_DELETE}
+				<Route
+					element={<BundleElement data={DeleteDataSource} />}
+					path={settingsRel(Routes.SETTINGS_DATA_SOURCE_DELETE)}
 				/>
 
-				<BundleRouter
-					data={DataSourceEdit}
-					exact
-					path={Routes.SETTINGS_DATA_SOURCE_EDIT}
+				<Route
+					element={<BundleElement data={DataSourceEdit} />}
+					path={settingsRel(Routes.SETTINGS_DATA_SOURCE_EDIT)}
 				/>
 
 				{ENABLE_CSVFILE && (
-					<BundleRouter
-						data={ConfigureCSV}
-						exact
-						path={Routes.SETTINGS_CSV_UPLOAD_CONFIGURE}
+					<Route
+						element={<BundleElement data={ConfigureCSV} />}
+						path={settingsRel(Routes.SETTINGS_CSV_UPLOAD_CONFIGURE)}
 					/>
 				)}
 
 				{ENABLE_CSVFILE && (
-					<BundleRouter
-						data={UploadCSV}
-						exact
-						path={Routes.SETTINGS_CSV_UPLOAD}
+					<Route
+						element={<BundleElement data={UploadCSV} />}
+						path={settingsRel(Routes.SETTINGS_CSV_UPLOAD)}
 					/>
 				)}
 
-				<BundleRouter
-					data={DataSource}
-					path={Routes.SETTINGS_DATA_SOURCE}
+				<Route
+					element={<BundleElement data={DataSource} />}
+					path={settingsRel(Routes.SETTINGS_DATA_SOURCE)}
 				/>
 
-				<BundleRouter data={Users} path={Routes.SETTINGS_USERS} />
+				<Route
+					element={<BundleElement data={Users} />}
+					path={`${settingsRel(Routes.SETTINGS_USERS)}/*`}
+				/>
 
 				{!IS_PROJECT_SAAS && (
-					<BundleRouter
-						data={UsageOverview}
-						exact
-						path={Routes.SETTINGS_USAGE}
+					<Route
+						element={<BundleElement data={UsageOverview} />}
+						path={settingsRel(Routes.SETTINGS_USAGE)}
 					/>
 				)}
 
 				{IS_PROJECT_SAAS && (
-					<BundleRouter
-						data={UsageOverviewSaaS}
-						exact
-						path={Routes.SETTINGS_USAGE}
+					<Route
+						element={<BundleElement data={UsageOverviewSaaS} />}
+						path={settingsRel(Routes.SETTINGS_USAGE)}
 					/>
 				)}
 
-				<BundleRouter
-					data={Definitions}
-					path={Routes.SETTINGS_DEFINITIONS}
+				<Route
+					element={<BundleElement data={Definitions} />}
+					path={`${settingsRel(Routes.SETTINGS_DEFINITIONS)}/*`}
 				/>
 
-				<BundleRouter
-					data={DataPrivacy}
-					path={Routes.SETTINGS_DATA_PRIVACY}
+				<Route
+					element={<BundleElement data={DataPrivacy} />}
+					path={`${settingsRel(Routes.SETTINGS_DATA_PRIVACY)}/*`}
 				/>
 
-				<BundleRouter
-					data={WorkspaceSettings}
-					path={Routes.SETTINGS_WORKSPACE}
+				<Route
+					element={<BundleElement data={WorkspaceSettings} />}
+					path={settingsRel(Routes.SETTINGS_WORKSPACE)}
 				/>
 
-				<BundleRouter
-					data={ChannelView}
-					exact
-					path={Routes.SETTINGS_CHANNELS_VIEW}
+				<Route
+					element={<BundleElement data={ChannelView} />}
+					path={settingsRel(Routes.SETTINGS_CHANNELS_VIEW)}
 				/>
 
-				<BundleRouter
-					data={ChannelList}
-					path={Routes.SETTINGS_CHANNELS}
+				<Route
+					element={<BundleElement data={ChannelList} />}
+					path={settingsRel(Routes.SETTINGS_CHANNELS)}
 				/>
 
-				<BundleRouter data={Apis} path={Routes.SETTINGS_APIS} />
+				<Route
+					element={<BundleElement data={Apis} />}
+					path={`${settingsRel(Routes.SETTINGS_APIS)}/*`}
+				/>
 
 				{recommendationsEnabled && (
 					<Fragment key='RECOMMENDATIONS'>
-						<BundleRouter
-							data={RecommendationList}
-							destructured={false}
-							exact
-							path={Routes.SETTINGS_RECOMMENDATIONS}
-						/>
-
-						<BundleRouter
-							data={RecommendationCreateItemSimilarity}
-							destructured={false}
-							exact
-							path={
-								Routes.SETTINGS_RECOMMENDATIONS_CREATE_ITEM_SIMILARITY_MODEL
+						<Route
+							element={
+								<BundleElement
+									data={RecommendationList}
+									destructured={false}
+								/>
 							}
+							path={settingsRel(Routes.SETTINGS_RECOMMENDATIONS)}
 						/>
 
-						<BundleRouter
-							data={RecommendationEdit}
-							destructured={false}
-							exact
-							path={Routes.SETTINGS_RECOMMENDATION_EDIT}
+						<Route
+							element={
+								<BundleElement
+									data={RecommendationCreateItemSimilarity}
+									destructured={false}
+								/>
+							}
+							path={settingsRel(
+								Routes.SETTINGS_RECOMMENDATIONS_CREATE_ITEM_SIMILARITY_MODEL
+							)}
 						/>
 
-						<BundleRouter
-							data={RecommendationView}
-							destructured={false}
-							exact
-							path={Routes.SETTINGS_RECOMMENDATION_MODEL_VIEW}
+						<Route
+							element={
+								<BundleElement
+									data={RecommendationEdit}
+									destructured={false}
+								/>
+							}
+							path={settingsRel(
+								Routes.SETTINGS_RECOMMENDATION_EDIT
+							)}
+						/>
+
+						<Route
+							element={
+								<BundleElement
+									data={RecommendationView}
+									destructured={false}
+								/>
+							}
+							path={settingsRel(
+								Routes.SETTINGS_RECOMMENDATION_MODEL_VIEW
+							)}
 						/>
 					</Fragment>
 				)}
 
-				<RouteNotFound />
-			</Switch>
+				<Route element={<RouteNotFound />} path='*' />
+			</RouterRoutes>
 		</Suspense>
 	);
 };

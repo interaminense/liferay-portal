@@ -1,4 +1,4 @@
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import Card from 'shared/components/Card';
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
@@ -7,7 +7,6 @@ import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch} from 'react-router';
 
 const CustomEventList = lazy(
 	() => import(/* webpackChunkName: "CustomEventList" */ './CustomEventList')
@@ -82,21 +81,16 @@ const TabsCard: React.FC<ITabsCardProps> = ({groupId}) => {
 			)}
 
 			<Suspense fallback={<Loading />}>
-				<Switch>
-					<BundleRouter
-						data={EventList}
-						exact
-						path={Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT}
-					/>
+				{matchedRoute ===
+					Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT && (
+					<BundleElement data={EventList} />
+				)}
 
-					<BundleRouter
-						data={CustomEventList}
-						exact
-						path={Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM}
-					/>
+				{matchedRoute === Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM && (
+					<BundleElement data={CustomEventList} />
+				)}
 
-					<RouteNotFound />
-				</Switch>
+				{!matchedRoute && <RouteNotFound />}
 			</Suspense>
 		</Card>
 	);

@@ -29,6 +29,7 @@ export {default as withQueryRangeSelectors} from './WithQueryRangeSelectors';
 export {default as withRangeKey} from './WithRangeKey';
 export {default as withRecommendation} from './WithRecommendation';
 export {default as withRequest} from './WithRequest';
+export {default as withRouter} from './WithRouter';
 export {default as withSegment} from './WithSegment';
 export {default as withSelectedPoint} from './WithSelectedPoint';
 export {default as withSheet} from './WithSheet';

@@ -1,6 +1,6 @@
 import * as API from 'shared/api';
 import BasePage from 'settings/components/base-page/BasePage';
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import Card from 'shared/components/Card';
 import ClayBadge from '@clayui/badge';
 import ClayLink from '@clayui/link';
@@ -9,8 +9,17 @@ import getCN from 'classnames';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useState} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
-import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
-import {Switch, useParams} from 'react-router-dom';
+import {
+	getMatchedRoute,
+	relativeRoute,
+	Routes,
+	toRoute
+} from 'shared/util/router';
+
+// Inside Users, paths are relative to /workspace/:groupId/settings/users.
+const usersRel = (absPath: string) =>
+	relativeRoute(Routes.SETTINGS_USERS, absPath);
+import {Route, Routes as RouterRoutes, useParams} from 'react-router-dom';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {UserStatuses} from 'shared/util/constants';
 
@@ -109,23 +118,29 @@ export const User = ({className}: {className?: string}) => {
 				)}
 
 				<Suspense fallback={<Loading />}>
-					<Switch>
-						<BundleRouter
-							componentProps={{currentUser}}
-							data={UserList}
-							exact
-							path={Routes.SETTINGS_USERS}
+					<RouterRoutes>
+						<Route
+							element={
+								<BundleElement
+									componentProps={{currentUser}}
+									data={UserList}
+								/>
+							}
+							path=''
 						/>
 
-						<BundleRouter
-							componentProps={{onSetUserRequest}}
-							data={UserRequest}
-							exact
-							path={Routes.SETTINGS_USERS_REQUESTS}
+						<Route
+							element={
+								<BundleElement
+									componentProps={{onSetUserRequest}}
+									data={UserRequest}
+								/>
+							}
+							path={usersRel(Routes.SETTINGS_USERS_REQUESTS)}
 						/>
 
-						<RouteNotFound />
-					</Switch>
+						<Route element={<RouteNotFound />} path='*' />
+					</RouterRoutes>
 				</Suspense>
 			</Card>
 		</BasePage>

@@ -12,9 +12,9 @@ import {
 } from 'shared/util/constants';
 import {ReviewSyncedDataFragment} from '../ReviewSyncedDataFragment';
 import {updateSearchParams} from 'settings/components/base-page/utis';
-import {useHistory} from 'react-router-dom';
 import {useInterval} from 'shared/hooks/useInterval';
 import {useLazyQuery} from '@apollo/client';
+import {useNavigate} from 'react-router-dom';
 import {WizardPageButtonGroup} from 'settings/components/base-page/WizardPageButtonGroup';
 
 const TIMEOUT_INTERVAL = 5000;
@@ -25,7 +25,7 @@ interface IReviewSyncedDataStepProps {
 }
 
 const ReviewSyncedDataStep = ({onNext, onPrev}: IReviewSyncedDataStepProps) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [dataSource, setDataSource] = useState<DataSource>({
 		contactsSyncDetails: {selected: false},
 		id: '',
@@ -66,7 +66,7 @@ const ReviewSyncedDataStep = ({onNext, onPrev}: IReviewSyncedDataStepProps) => {
 			onSubmit={async event => {
 				event.preventDefault();
 
-				updateSearchParams(history, 'dataSourceId', dataSource.id);
+				updateSearchParams(navigate, 'dataSourceId', dataSource.id);
 
 				onNext();
 			}}
@@ -79,7 +79,7 @@ const ReviewSyncedDataStep = ({onNext, onPrev}: IReviewSyncedDataStepProps) => {
 			<WizardPageButtonGroup
 				nextButtonLabel={Liferay.Language.get('continue')}
 				onCancel={() => {
-					updateSearchParams(history, 'dataSourceId', dataSource.id);
+					updateSearchParams(navigate, 'dataSourceId', dataSource.id);
 
 					onPrev();
 				}}

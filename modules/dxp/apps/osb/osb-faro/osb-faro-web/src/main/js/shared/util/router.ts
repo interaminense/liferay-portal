@@ -74,10 +74,10 @@ export const Routes = buildRoutes({
 			WORKSPACE_ADD_WITH_CORP_PROJECT_UUID: '/:corpProjectUuid/add',
 			WORKSPACE_SELECT_ACCOUNT: '/select-account',
 			WORKSPACE_WITH_ID: {
-				path: '/:groupId([\\w._-]+)',
+				path: '/:groupId',
 				routes: {
 					CHANNEL: {
-						path: '/:channelId(\\d+)?',
+						path: '/:channelId?',
 						routes: {
 							ASSETS: {
 								path: '/assets',
@@ -90,7 +90,7 @@ export const Routes = buildRoutes({
 											ASSETS_BLOGS_OVERVIEW:
 												'/:assetId/page/:touchpoint/:title?/:type?',
 											ASSETS_BLOGS_ROUTES:
-												'/:assetId/:tabId(page|known-individuals)/:touchpoint/:title?/:type?'
+												'/:assetId/:tabId/:touchpoint/:title?/:type?'
 										}
 									},
 									ASSETS_CUSTOM: {
@@ -108,7 +108,7 @@ export const Routes = buildRoutes({
 											ASSETS_DOCUMENTS_AND_MEDIA_OVERVIEW:
 												'/:assetId/page/:touchpoint/:title?/:type?',
 											ASSETS_DOCUMENTS_AND_MEDIA_ROUTES:
-												'/:assetId/:tabId(page|known-individuals)/:touchpoint/:title?/:type?'
+												'/:assetId/:tabId/:touchpoint/:title?/:type?'
 										}
 									},
 									ASSETS_FORMS: {
@@ -119,7 +119,7 @@ export const Routes = buildRoutes({
 											ASSETS_FORMS_OVERVIEW:
 												'/:assetId/page/:touchpoint/:title?/:type?',
 											ASSETS_FORMS_ROUTES:
-												'/:assetId/:tabId(page|known-individuals)/:touchpoint/:title?/:type?'
+												'/:assetId/:tabId/:touchpoint/:title?/:type?'
 										}
 									},
 									ASSETS_OBJECT_ENTRY: {
@@ -130,7 +130,7 @@ export const Routes = buildRoutes({
 											ASSETS_OBJECT_ENTRY_OVERVIEW:
 												'/:assetId/page/:touchpoint/:title?/:type?',
 											ASSETS_OBJECT_ENTRY_ROUTES:
-												'/:assetId/:tabId(page|known-individuals)/:touchpoint/:title?/:type?'
+												'/:assetId/:tabId/:touchpoint/:title?/:type?'
 										}
 									},
 									ASSETS_WEB_CONTENT: {
@@ -141,7 +141,7 @@ export const Routes = buildRoutes({
 											ASSETS_WEB_CONTENT_OVERVIEW:
 												'/:assetId/page/:touchpoint/:title?/:type?',
 											ASSETS_WEB_CONTENT_ROUTES:
-												'/:assetId/:tabId(page|known-individuals)/:touchpoint/:title?/:type?'
+												'/:assetId/:tabId/:touchpoint/:title?/:type?'
 										}
 									}
 								}
@@ -157,13 +157,14 @@ export const Routes = buildRoutes({
 											CONTACTS_ACCOUNT_DETAILS:
 												'/details',
 											CONTACTS_ACCOUNT_INDIVIDUALS: `/${INDIVIDUALS}`,
-											CONTACTS_ACCOUNT_INTEREST_DETAILS: `/interests/:interestId/:tabId(${INDIVIDUALS}|${PAGES})?`,
+											CONTACTS_ACCOUNT_INTEREST_DETAILS:
+												'/interests/:interestId/:tabId?',
 											CONTACTS_ACCOUNT_INTERESTS:
 												'/interests',
 											CONTACTS_ACCOUNT_SEGMENTS: `/${SEGMENTS}`
 										}
 									},
-									CONTACTS_ENTITY: `/:type(${ACCOUNTS}|${INDIVIDUALS}|${SEGMENTS})/:id`,
+									CONTACTS_ENTITY: '/:type/:id',
 									CONTACTS_INDIVIDUALS: {
 										path: `/${INDIVIDUALS}`,
 										routes: {
@@ -194,26 +195,28 @@ export const Routes = buildRoutes({
 										}
 									},
 									// Deprecated - Prefer the more specific routes for the entity type
-									CONTACTS_INTEREST_DETAILS: `/:type(${ACCOUNTS}|${INDIVIDUALS}|${SEGMENTS})/:id/interests/:interestId`,
+									CONTACTS_INTEREST_DETAILS:
+										'/:type/:id/interests/:interestId',
 									// Deprecated - Prefer the more specific routes for the entity type
-									CONTACTS_INTERESTS: `/:type(${ACCOUNTS}|${INDIVIDUALS}|${SEGMENTS})/:id/interests`,
+									CONTACTS_INTERESTS: '/:type/:id/interests',
 
 									/*
 									 * CONTACTS_LIST_ACCOUNT, CONTACTS_LIST_INDIVIDUAL and CONTACTS_LIST_SEGMENT are
 									 * separate for the sake of keeping two separate Routers.
 									 * CONTACTS_LIST_ENTITY should be used as consumable route.
 									 */
-									CONTACTS_LIST_ACCOUNT: `/:type(${ACCOUNTS})`,
-									CONTACTS_LIST_ENTITY: `/:type(${ACCOUNTS}|${INDIVIDUALS}|${SEGMENTS})`,
-									CONTACTS_LIST_INDIVIDUAL: `/:type(${INDIVIDUALS})`,
-									CONTACTS_LIST_SEGMENT: `/:type(${SEGMENTS})`,
+									CONTACTS_LIST_ACCOUNT: `/${ACCOUNTS}`,
+									CONTACTS_LIST_ENTITY: '/:type',
+									CONTACTS_LIST_INDIVIDUAL: `/${INDIVIDUALS}`,
+									CONTACTS_LIST_SEGMENT: `/${SEGMENTS}`,
 									CONTACTS_SEGMENT: {
 										path: `/${SEGMENTS}/:id`,
 										routes: {
 											CONTACTS_SEGMENT_DISTRIBUTION:
 												'/distribution',
 											CONTACTS_SEGMENT_EDIT: '/edit',
-											CONTACTS_SEGMENT_INTEREST_DETAILS: `/interests/:interestId/:tabId(${INDIVIDUALS}|${PAGES})?`,
+											CONTACTS_SEGMENT_INTEREST_DETAILS:
+												'/interests/:interestId/:tabId?',
 											CONTACTS_SEGMENT_INTERESTS:
 												'/interests',
 											CONTACTS_SEGMENT_MEMBERSHIP:
@@ -316,7 +319,7 @@ export const Routes = buildRoutes({
 											SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL:
 												'/local',
 											SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_VIEW:
-												'/:attributeId(\\d+)'
+												'/:attributeId'
 										}
 									},
 									SETTINGS_DEFINITIONS_EVENTS: {
@@ -329,7 +332,7 @@ export const Routes = buildRoutes({
 											SETTINGS_DEFINITIONS_EVENTS_DEFAULT:
 												'/default',
 											SETTINGS_DEFINITIONS_EVENTS_VIEW:
-												'/:eventId(\\d+)'
+												'/:eventId'
 										}
 									},
 									SETTINGS_DEFINITIONS_INDIVIDUAL_ATTRIBUTES:
@@ -343,7 +346,7 @@ export const Routes = buildRoutes({
 								path: '/recommendations',
 								routes: {
 									SETTINGS_RECOMMENDATION_MODEL_VIEW: {
-										path: '/:jobId([\\d]+)',
+										path: '/:jobId',
 										routes: {
 											SETTINGS_RECOMMENDATION_EDIT:
 												'/edit'
@@ -403,6 +406,32 @@ const getCompiledRoute = memoize(compile);
 
 export function toRoute(route: string, options?: {[key: string]: any}) {
 	return getCompiledRoute(route)(options || {});
+}
+
+/**
+ * Compute the path of an absolute Route constant relative to a parent route.
+ *
+ * v7's nested `<Routes>` only matches paths that are RELATIVE to the parent
+ * route's match. Routes constants in this module are stored as full absolute
+ * paths (e.g. `/workspace/:groupId/:channelId?/sites`); this helper strips the
+ * known parent prefix so the result can be used as a relative `path` prop.
+ *
+ * Example:
+ *   relativeRoute(Routes.WORKSPACE_WITH_ID, Routes.SITES)
+ *   // => ':channelId?/sites'
+ */
+export function relativeRoute(parent: string, child: string): string {
+	if (child === parent) {
+		return '';
+	}
+
+	const prefix = parent.endsWith('/') ? parent : `${parent}/`;
+
+	if (child.startsWith(prefix)) {
+		return child.slice(prefix.length);
+	}
+
+	return child;
 }
 
 const ROUTE_TO_TYPE_MAP = {
@@ -476,7 +505,7 @@ export function getMatchedRoute(
 	pathname = location.pathname
 ) {
 	const matchedRoute = routes.find(({exact = true, route}) =>
-		matchPath(pathname, {exact, path: route})
+		matchPath({end: exact, path: route}, pathname)
 	);
 
 	return (matchedRoute && matchedRoute.route) || null;

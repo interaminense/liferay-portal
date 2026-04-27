@@ -3,7 +3,7 @@ import ClayDropDown, {Align} from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import getCN from 'classnames';
 import moment from 'moment';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Text as ClayText} from '@clayui/core';
 import {Data, DropdownRangeKeyIProps} from './DropdownRangeKey';
 import {DEFAULT_DATE_FORMAT} from 'shared/util/date';
@@ -12,7 +12,7 @@ import {DropdownRangeKeyLegacy} from './DropdownRangeKeyLegacy';
 import {formatTimeRange, getFilteredItems, getSelectedItem} from './utils';
 import {MomentDateRange} from 'shared/components/DateRangeInput';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {useHistory} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {useRetentionPeriod} from 'shared/hooks/useRetentionPeriod';
 
 export const DropdownRangeKeyContent: React.FC<
@@ -43,7 +43,8 @@ export const DropdownRangeKeyContent: React.FC<
 	});
 	const [seeMore, setSeeMore] = useState(false);
 	const [showDatePicker, setShowDatePicker] = useState(false);
-	const history = useHistory();
+	const location = useLocation();
+	const previousSearchRef = useRef<string | null>(null);
 	const retentionPeriod = useRetentionPeriod();
 	const timeRange = formatTimeRange(data.timeRange);
 	const filteredItems = getFilteredItems({
@@ -66,27 +67,26 @@ export const DropdownRangeKeyContent: React.FC<
 		});
 	}
 
+	// Mirror the v5 `history.listen` behavior: fire only on subsequent navigations,
+	// not on the initial mount, so the side effect cannot loop on render.
 	useEffect(() => {
-		const unlisten = history.listen(location => {
-			const query = new URLSearchParams(location.search);
+		const previousSearch = previousSearchRef.current;
+		previousSearchRef.current = location.search;
 
-			if (query.get('downloadReport')) {
-				if (onRangeSelectorChange) {
-					onRangeSelectorChange({
-						rangeEnd: query.get('rangeEnd') || '',
-						rangeKey: query.get(
-							'rangeKey'
-						) as any as RangeKeyTimeRanges,
-						rangeStart: query.get('rangeStart') || ''
-					});
-				}
-			}
-		});
+		if (previousSearch === null) {
+			return;
+		}
 
-		return () => {
-			unlisten();
-		};
-	}, []);
+		const query = new URLSearchParams(location.search);
+
+		if (query.get('downloadReport') && onRangeSelectorChange) {
+			onRangeSelectorChange({
+				rangeEnd: query.get('rangeEnd') || '',
+				rangeKey: query.get('rangeKey') as any as RangeKeyTimeRanges,
+				rangeStart: query.get('rangeStart') || ''
+			});
+		}
+	}, [location.search]);
 
 	useEffect(() => {
 		if (customDateRange && customDateRange.end && customDateRange.start) {

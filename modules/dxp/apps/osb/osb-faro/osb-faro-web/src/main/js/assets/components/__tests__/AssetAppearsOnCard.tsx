@@ -47,7 +47,7 @@ const WrappedComponent = ({
 }) => (
 	<Provider store={mockStore()}>
 		<ApolloProvider client={client}>
-			<StaticRouter>
+			<StaticRouter location='/'>
 				<MockedProvider
 					mocks={[
 						mockTimeRangeReq(),

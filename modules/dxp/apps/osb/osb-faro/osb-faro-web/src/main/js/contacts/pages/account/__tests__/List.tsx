@@ -3,11 +3,9 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import {ChannelContext} from 'shared/context/channel';
 import {cleanup, render, screen} from '@testing-library/react';
-import {createMemoryHistory} from 'history';
+import {MemoryRouter} from 'react-router-dom';
 import {mockChannelContext} from 'test/mock-channel-context';
 import {Provider} from 'react-redux';
-import {Router, useHistory} from 'react-router-dom';
-import {useRequest} from 'shared/hooks/useRequest';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
@@ -22,9 +20,14 @@ jest.mock('shared/hooks/useFrontendDataSet', () => ({
 	}
 }));
 
-jest.mock('shared/hooks/useRequest', () => ({
-	useRequest: jest.fn()
-}));
+// TotalAccounts hits its own useRequest call expecting an array of metrics.
+// The List test isn't about TotalAccounts, so render a stub and avoid coupling
+// to that component's data shape.
+jest.mock('contacts/components/account/TotalAccounts', () => () => (
+	<div data-testid='total-accounts-stub' />
+));
+
+jest.mock('shared/hooks/useRequest');
 
 jest.mock('shared/util/breadcrumbs', () => ({
 	getHome: jest.fn(({label}: {label?: string} = {}) => ({
@@ -35,68 +38,25 @@ jest.mock('shared/util/breadcrumbs', () => ({
 
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
-	useHistory: jest.fn(),
 	useParams: () => ({
 		channelId: '123',
 		groupId: '23'
 	})
 }));
 
-const mockedUseHistory = useHistory as jest.Mock;
-const mockedUseRequest = useRequest as jest.Mock;
-
-const mockHistoryPush = jest.fn();
-
-const buildHistory = (path = '/workspace/23/123/accounts') => {
-	const history = createMemoryHistory({initialEntries: [path]});
-
-	history.push = mockHistoryPush;
-
-	return history;
-};
-
 const store = mockStore();
 
-// `useRequest` is consumed by both `List` (data source search, expects an
-// object with `total`) and `TotalAccounts` (account metrics, expects an array
-// of `IAccountMetric`). Differentiate by `variables.delta`, which is only
-// present in the data source search call.
-
-const accountMetricsMock = [
-	{
-		metricType: 'totalCount',
-		trend: {percentage: 0, trendClassification: 'NEUTRAL'},
-		value: 0
-	},
-	{
-		metricType: 'newCount',
-		trend: {percentage: 0, trendClassification: 'NEUTRAL'},
-		value: 0
-	},
-	{
-		metricType: 'activeCount',
-		trend: {percentage: 0, trendClassification: 'NEUTRAL'},
-		value: 0
-	}
-];
-
-const useRequestImpl =
-	({total = 1}: {total?: number} = {}) =>
-	({variables}: {variables: {[key: string]: any}}) =>
-		variables?.delta !== undefined
-			? {data: {total}}
-			: {data: accountMetricsMock};
-
-const renderList = (
-	{queryString = ''}: {queryString?: string} = {},
-	history = buildHistory(`/workspace/23/123/accounts${queryString}`)
-) =>
+const renderList = ({queryString = ''}: {queryString?: string} = {}) =>
 	render(
 		<Provider store={store}>
 			<ChannelContext.Provider value={mockChannelContext() as any}>
-				<Router history={history}>
+				<MemoryRouter
+					initialEntries={[
+						`/workspace/23/123/accounts${queryString}`
+					]}
+				>
 					<List channelId='123' groupId='23' />
-				</Router>
+				</MemoryRouter>
 			</ChannelContext.Provider>
 		</Provider>
 	);
@@ -105,8 +65,12 @@ describe('List', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 
-		mockedUseHistory.mockReturnValue({push: mockHistoryPush});
-		mockedUseRequest.mockImplementation(useRequestImpl());
+		const useRequest = require('shared/hooks/useRequest');
+		useRequest.useRequest = jest.fn(() => ({
+			data: {
+				total: 1
+			}
+		}));
 	});
 
 	afterEach(cleanup);
@@ -125,7 +89,13 @@ describe('List', () => {
 		});
 
 		it('should render the empty state when there are no data sources connected', () => {
-			mockedUseRequest.mockImplementation(useRequestImpl({total: 0}));
+			const useRequest = require('shared/hooks/useRequest');
+
+			useRequest.useRequest.mockReturnValue({
+				data: {
+					total: 0
+				}
+			});
 
 			renderList();
 		});

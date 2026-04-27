@@ -1,15 +1,19 @@
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import DownloadPDFReport from 'shared/components/download-report/DownloadPDFReport';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {CSVType} from 'shared/components/download-report/utils';
 import {DownloadStaticCSVReport} from 'shared/components/download-report/DownloadStaticCSVReport';
-import {getMatchedRoute, Routes} from 'shared/util/router';
+import {getMatchedRoute, relativeRoute, Routes} from 'shared/util/router';
+
+// Inside IndividualsDashboard, paths are relative to Routes.CONTACTS_INDIVIDUALS.
+const indivRel = (absPath: string) =>
+	relativeRoute(Routes.CONTACTS_INDIVIDUALS, absPath);
+import {Route, Routes as RouterRoutes, useParams} from 'react-router-dom';
 import {sub} from 'shared/util/lang';
-import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSource} from 'shared/hooks/useDataSource';
 
@@ -140,41 +144,55 @@ const Dashboard: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
 			)}
 
 			<Suspense fallback={<Loading />}>
-				<Switch>
-					<BundleRouter
-						data={Overview}
-						destructured={false}
-						exact
-						path={Routes.CONTACTS_INDIVIDUALS}
+				<RouterRoutes>
+					<Route
+						element={
+							<BundleElement
+								data={Overview}
+								destructured={false}
+							/>
+						}
+						path=''
 					/>
 
-					<BundleRouter
-						data={KnownIndividuals}
-						path={Routes.CONTACTS_INDIVIDUALS_KNOWN_INDIVIDUALS}
+					<Route
+						element={<BundleElement data={KnownIndividuals} />}
+						path={`${indivRel(
+							Routes.CONTACTS_INDIVIDUALS_KNOWN_INDIVIDUALS
+						)}/*`}
 					/>
 
-					<BundleRouter
-						data={Distribution}
-						exact
-						path={Routes.CONTACTS_INDIVIDUALS_DISTRIBUTION}
+					<Route
+						element={<BundleElement data={Distribution} />}
+						path={indivRel(
+							Routes.CONTACTS_INDIVIDUALS_DISTRIBUTION
+						)}
 					/>
 
-					<BundleRouter
-						data={InterestDetails}
-						destructured={false}
-						exact
-						path={Routes.CONTACTS_INDIVIDUALS_INTEREST_DETAILS}
+					<Route
+						element={
+							<BundleElement
+								data={InterestDetails}
+								destructured={false}
+							/>
+						}
+						path={indivRel(
+							Routes.CONTACTS_INDIVIDUALS_INTEREST_DETAILS
+						)}
 					/>
 
-					<BundleRouter
-						data={Interests}
-						destructured={false}
-						exact
-						path={Routes.CONTACTS_INDIVIDUALS_INTERESTS}
+					<Route
+						element={
+							<BundleElement
+								data={Interests}
+								destructured={false}
+							/>
+						}
+						path={indivRel(Routes.CONTACTS_INDIVIDUALS_INTERESTS)}
 					/>
 
-					<RouteNotFound />
-				</Switch>
+					<Route element={<RouteNotFound />} path='*' />
+				</RouterRoutes>
 			</Suspense>
 		</BasePage>
 	);

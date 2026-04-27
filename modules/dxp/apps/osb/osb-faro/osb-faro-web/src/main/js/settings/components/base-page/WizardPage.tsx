@@ -10,7 +10,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {Heading, Text} from '@clayui/core';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import {useQueryParams} from 'shared/hooks/useQueryParams';
 import {useWizardPage, WizardPageProvider} from './WizardPageContext';
@@ -44,14 +44,14 @@ function getSafeStepFromURL(steps: Step[], initStep: string | null) {
 }
 
 function updateSearchParams(
-	history: ReturnType<typeof useHistory>,
+	navigate: ReturnType<typeof useNavigate>,
 	key: string,
 	value: any
 ) {
 	const params = new URLSearchParams(window.location.search);
 	params.set(key, String(value));
 
-	history.push({
+	navigate({
 		pathname: window.location.pathname,
 		search: params.toString()
 	});
@@ -63,7 +63,7 @@ interface IWizardStepsProps extends PropsFromRedux {
 
 const WizardSteps = ({addAlert, close, open, steps}: IWizardStepsProps) => {
 	const {groupId = ''} = useParams<{groupId: string}>();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const params = useQueryParams();
 	const {loadingContext, refetchDataSource} = useWizardPage();
 
@@ -74,7 +74,7 @@ const WizardSteps = ({addAlert, close, open, steps}: IWizardStepsProps) => {
 	const currentStep = steps[stepIndex];
 
 	const handleSetStep = async (newStepIndex: number) => {
-		updateSearchParams(history, 'stepIndex', newStepIndex);
+		updateSearchParams(navigate, 'stepIndex', newStepIndex);
 
 		if (params.dataSourceId) {
 			refetchDataSource(params.dataSourceId);

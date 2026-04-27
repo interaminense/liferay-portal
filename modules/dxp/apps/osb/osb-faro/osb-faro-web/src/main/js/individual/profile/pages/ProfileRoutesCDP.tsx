@@ -1,18 +1,23 @@
 import * as API from 'shared/api';
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import DownloadCSVReport from 'shared/components/download-report/DownloadCSVReport';
 import getCN from 'classnames';
 import Loading from 'shared/components/Loading';
 import React, {lazy, Suspense, useContext} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
+import withRouter from 'shared/hoc/WithRouter';
 import {buildHeaderSubtitle} from './utils/utils';
 import {ChannelContext} from 'shared/context/channel';
 import {compose, withIndividual} from 'shared/hoc';
 import {CSVType} from 'shared/components/download-report/utils';
-import {getMatchedRoute, Routes} from 'shared/util/router';
-import {Switch, withRouter} from 'react-router-dom';
+import {getMatchedRoute, relativeRoute, Routes} from 'shared/util/router';
+
+// Inside IndividualProfileRoutesCDP, paths are relative to Routes.CONTACTS_INDIVIDUAL.
+const indRel = (absPath: string) =>
+	relativeRoute(Routes.CONTACTS_INDIVIDUAL, absPath);
+import {Route, Routes as RouterRoutes} from 'react-router-dom';
 import {useDataSource} from 'shared/hooks/useDataSource';
 import {useRequest} from 'shared/hooks/useRequest';
 
@@ -160,44 +165,61 @@ export const IndividualProfileRoutesCDP = ({
 
 			<BasePage.Body>
 				<Suspense fallback={<Loading />}>
-					<Switch>
-						<BundleRouter
-							componentProps={componentProps}
-							data={AssociatedSegments}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_SEGMENTS}
+					<RouterRoutes>
+						<Route
+							element={
+								<BundleElement
+									componentProps={componentProps}
+									data={AssociatedSegments}
+								/>
+							}
+							path={indRel(Routes.CONTACTS_INDIVIDUAL_SEGMENTS)}
 						/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={IndividualProfileCDP}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_DETAILS}
+						<Route
+							element={
+								<BundleElement
+									componentProps={componentProps}
+									data={IndividualProfileCDP}
+								/>
+							}
+							path={indRel(Routes.CONTACTS_INDIVIDUAL_DETAILS)}
 						/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={InterestDetails}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_INTEREST_DETAILS}
+						<Route
+							element={
+								<BundleElement
+									componentProps={componentProps}
+									data={InterestDetails}
+								/>
+							}
+							path={indRel(
+								Routes.CONTACTS_INDIVIDUAL_INTEREST_DETAILS
+							)}
 						/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={Interests}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL_INTERESTS}
+						<Route
+							element={
+								<BundleElement
+									componentProps={componentProps}
+									data={Interests}
+								/>
+							}
+							path={indRel(Routes.CONTACTS_INDIVIDUAL_INTERESTS)}
 						/>
 
-						<BundleRouter
-							componentProps={componentProps}
-							data={OverviewCDP}
-							exact
-							path={Routes.CONTACTS_INDIVIDUAL}
+						<Route
+							element={
+								<BundleElement
+									componentProps={componentProps}
+									data={OverviewCDP}
+								/>
+							}
+							path=''
 						/>
 
-						<RouteNotFound />
-					</Switch>
+						<Route element={<RouteNotFound />} path='*' />
+					</RouterRoutes>
 				</Suspense>
 			</BasePage.Body>
 		</BasePage>

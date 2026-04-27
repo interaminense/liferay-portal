@@ -62,7 +62,7 @@ const variables = {
 const WrappedComponent = ({data}: {data?: any; defaultLanguageId?: string}) => (
 	<Provider store={mockStore()}>
 		<ApolloProvider client={client}>
-			<StaticRouter>
+			<StaticRouter location='/'>
 				<MockedProvider
 					mocks={[
 						mockTimeRangeReq(),

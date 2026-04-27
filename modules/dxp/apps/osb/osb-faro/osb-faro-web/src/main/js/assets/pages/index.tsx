@@ -1,6 +1,6 @@
 import * as breadcrumbs from 'shared/util/breadcrumbs';
 import BasePage from 'shared/components/base-page';
-import BundleRouter from 'route-middleware/BundleRouter';
+import BundleElement from 'route-middleware/BundleRouter';
 import ClayLink from '@clayui/link';
 import DownloadCSVReport from 'shared/components/download-report/DownloadCSVReport';
 import Loading from 'shared/components/Loading';
@@ -9,9 +9,17 @@ import RouteNotFound from 'shared/components/RouteNotFound';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import URLConstants from 'shared/util/url-constants';
 import {CSVType} from 'shared/components/download-report/utils';
-import {getMatchedRoute, Routes, toRoute} from 'shared/util/router';
+import {
+	getMatchedRoute,
+	relativeRoute,
+	Routes,
+	toRoute
+} from 'shared/util/router';
+
+// Inside Assets, paths are relative to /workspace/:groupId/:channelId?/assets.
+const assetsRel = (absPath: string) => relativeRoute(Routes.ASSETS, absPath);
+import {Route, Routes as RouterRoutes, useParams} from 'react-router-dom';
 import {Router} from 'shared/types';
-import {Switch, useParams} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDataSource} from 'shared/hooks/useDataSource';
@@ -205,37 +213,56 @@ const Assets: React.FC<IAssetsProps> = ({className, router}) => {
 							/>
 
 							<StatesRenderer.Success>
-								<Switch>
-									<BundleRouter
-										data={BlogsList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_BLOGS}
+								<RouterRoutes>
+									<Route
+										element={
+											<BundleElement
+												data={BlogsList}
+												destructured={false}
+											/>
+										}
+										path={assetsRel(Routes.ASSETS_BLOGS)}
 									/>
 
-									<BundleRouter
-										data={DocumentsAndMediaList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_DOCUMENTS_AND_MEDIA}
+									<Route
+										element={
+											<BundleElement
+												data={DocumentsAndMediaList}
+												destructured={false}
+											/>
+										}
+										path={assetsRel(
+											Routes.ASSETS_DOCUMENTS_AND_MEDIA
+										)}
 									/>
 
-									<BundleRouter
-										data={FormsList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_FORMS}
+									<Route
+										element={
+											<BundleElement
+												data={FormsList}
+												destructured={false}
+											/>
+										}
+										path={assetsRel(Routes.ASSETS_FORMS)}
 									/>
 
-									<BundleRouter
-										data={WebContentList}
-										destructured={false}
-										exact
-										path={Routes.ASSETS_WEB_CONTENT}
+									<Route
+										element={
+											<BundleElement
+												data={WebContentList}
+												destructured={false}
+											/>
+										}
+										path={assetsRel(
+											Routes.ASSETS_WEB_CONTENT
+										)}
 									/>
 
-									<RouteNotFound />
-								</Switch>
+									<Route
+										element={<RouteNotFound />}
+										path='*'
+									/>
+								</RouterRoutes>
 							</StatesRenderer.Success>
 						</StatesRenderer>
 					</Suspense>

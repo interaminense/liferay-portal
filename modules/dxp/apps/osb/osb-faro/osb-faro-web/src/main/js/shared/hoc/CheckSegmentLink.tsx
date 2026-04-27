@@ -30,13 +30,10 @@ const checkSegmentLink =
 		const [loading, setLoading] = useState(false);
 
 		useEffect(() => {
-			const segment = matchPath<{channelId: string; id: string}>(
-				location.pathname,
-				{
-					exact: true,
-					path: Routes.CONTACTS_SEGMENT
-				}
-			);
+			const segment = matchPath(
+				{end: true, path: Routes.CONTACTS_SEGMENT},
+				location.pathname
+			) as {params: {channelId?: string; id: string}} | null;
 
 			if (segment && !segment.params.channelId) {
 				setLoading(true);

@@ -63,7 +63,7 @@ const NAME = 'form';
 
 const WrappedComponent = ({empty = false}) => (
 	<ApolloProvider client={client}>
-		<StaticRouter>
+		<StaticRouter location='/'>
 			<MockedProvider
 				mocks={[
 					mockTimeRangeReq(),

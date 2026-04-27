@@ -8,8 +8,8 @@ import SalesforceOverview from 'settings/components/salesforce/SalesforceOvervie
 import {compose, withDataSource} from 'shared/hoc';
 import {DataSource} from 'shared/util/records';
 import {DataSourceTypes} from 'shared/util/constants';
+import withRouter from 'shared/hoc/WithRouter';
 import {getConnectorConfig} from 'settings/components/3rd-party-connector/registry';
-import {withRouter} from 'react-router-dom';
 
 const PAGE_MAP: {[type: string]: ComponentType<any>} = {
 	[DataSourceTypes.Csv]: CSV as ComponentType<any>,
