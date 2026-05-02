@@ -1,0 +1,48 @@
+/*
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+analytics-cloud-charts .card-root {
+	background-color: #fff;
+	border: 1px solid #cdd1d8;
+	border-radius: 8px;
+	box-shadow: none;
+	display: flex;
+	flex-direction: column;
+}
+
+analytics-cloud-charts .card-root .card-header {
+	background-color: transparent;
+	border-bottom: 0;
+	padding: 16px 24px;
+}
+
+analytics-cloud-charts .card-root .card-title {
+	color: #272833;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+analytics-cloud-charts .card-root .card-body {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	padding: 24px;
+	position: relative;
+	width: 100%;
+}
+
+analytics-cloud-charts .card-root .card-body.no-padding {
+	padding: 0;
+}
+
+analytics-cloud-charts .card-root .card-header + .card-body:not(.no-padding) {
+	padding: 0 24px 24px;
+}
+
+analytics-cloud-charts .card-root .card-footer {
+	background-color: transparent;
+	border-top: 0;
+	padding: 12px 24px;
+}

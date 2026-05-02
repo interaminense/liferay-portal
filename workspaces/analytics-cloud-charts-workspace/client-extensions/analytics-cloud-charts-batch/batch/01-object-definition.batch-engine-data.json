@@ -1,0 +1,59 @@
+{
+	"configuration": {
+		"className": "com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition",
+		"parameters": {
+			"containsHeaders": "true",
+			"createStrategy": "UPSERT",
+			"onErrorFail": "ON_ERROR_FAIL",
+			"taskItemDelegateName": "DEFAULT",
+			"updateStrategy": "UPDATE"
+		}
+	},
+	"items": [
+		{
+			"active": true,
+			"enableIndexSearch": true,
+			"externalReferenceCode": "ACC_PREFERENCES",
+			"label": {
+				"en_US": "Analytics Cloud Charts Preferences"
+			},
+			"modifiable": true,
+			"name": "AnalyticsCloudChartsPreferences",
+			"objectFields": [
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"externalReferenceCode": "INSTANCE_ID",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Instance ID"
+					},
+					"name": "instanceId",
+					"readOnly": "false",
+					"required": true,
+					"type": "String"
+				},
+				{
+					"DBType": "Clob",
+					"businessType": "LongText",
+					"defaultValue": "{}",
+					"externalReferenceCode": "PREFERENCES",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Preferences"
+					},
+					"name": "preferences",
+					"readOnly": "false",
+					"required": false,
+					"type": "Clob"
+				}
+			],
+			"pluralLabel": {
+				"en_US": "Analytics Cloud Charts Preferences"
+			},
+			"scope": "company"
+		}
+	]
+}

@@ -1,0 +1,13 @@
+assemble:
+    -   from: build/vite
+        into: static
+analytics-cloud-charts:
+    friendlyURLMapping: analytics-cloud-charts
+    htmlElementName: analytics-cloud-charts
+    instanceable: true
+    name: Analytics Cloud Charts
+    portletCategoryName: category.client-extensions
+    type: customElement
+    urls:
+        -   "*.js"
+    useESM: true
