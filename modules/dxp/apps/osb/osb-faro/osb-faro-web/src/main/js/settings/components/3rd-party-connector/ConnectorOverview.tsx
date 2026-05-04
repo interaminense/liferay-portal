@@ -23,7 +23,7 @@ import {DataSourceEditableTitle} from '../data-source/DataSourceEditableTitle';
 import {DataSourceStates, DataSourceStatuses} from 'shared/util/constants';
 import {fetch} from 'shared/api/data-source';
 import {generateConnectorToken, updateConnector} from 'shared/api/connector';
-import {STATUS_DISPLAY} from 'shared/util/data-sources';
+import {getDataSourceDisplayObject} from 'shared/util/data-sources';
 import {Text} from '@clayui/core';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useDisconnectDataSource} from '../data-source/utils';
@@ -66,9 +66,8 @@ const ConnectorOverview: React.FC<IConnectorOverviewProps> = ({
 	const isManuallyDisconnected =
 		!dataSourceActive && dataSource.state === DataSourceStates.Disconnected;
 
-	const displayToken = dataSourceActive
-		? (dataSource.getIn(['credentials', 'privateKey']) as string) || ''
-		: token;
+	const displayToken =
+		(dataSource.getIn(['credentials', 'privateKey']) as string) || token;
 
 	const endpointURL = `${window.location.origin}${config.endpointPath}`;
 
@@ -141,33 +140,6 @@ const ConnectorOverview: React.FC<IConnectorOverviewProps> = ({
 		fetchConnectorTokenForGroup();
 	}, [config.slug, dataSourceActive, groupId, isManuallyDisconnected]);
 
-	const handleGenerateToken = async () => {
-		try {
-			const data = await generateConnectorToken({
-				groupId,
-				type: config.slug
-			});
-
-			if (data?.token) {
-				setToken(data.token);
-
-				await updateConnector(config.slug, {
-					groupId,
-					id,
-					status: DataSourceStatuses.Active
-				});
-
-				await handleUpdateDataSource();
-			}
-		} catch (error) {
-			addAlert({
-				alertType: Alert.Types.Error,
-				message: (error as Error).message,
-				timeout: false
-			});
-		}
-	};
-
 	const {handleDisconnect} = useDisconnectDataSource({
 		addAlert,
 		close,
@@ -180,20 +152,7 @@ const ConnectorOverview: React.FC<IConnectorOverviewProps> = ({
 		open
 	});
 
-	const {display, label} = (() => {
-		if (dataSourceActive) {
-			return STATUS_DISPLAY.active;
-		}
-
-		if (isManuallyDisconnected && !token) {
-			return STATUS_DISPLAY[DataSourceStates.Disconnected];
-		}
-
-		return {
-			display: 'secondary',
-			label: Liferay.Language.get('inactive')
-		};
-	})();
+	const {display, label} = getDataSourceDisplayObject(dataSource);
 
 	const updateDataSourceFn = (params: {[key: string]: any}) =>
 		updateConnector(
@@ -296,74 +255,57 @@ const ConnectorOverview: React.FC<IConnectorOverviewProps> = ({
 						</Text>
 					</div>
 
-					{isManuallyDisconnected && !token ? (
-						<ClayButton
-							className='mt-4'
-							onClick={handleGenerateToken}
-						>
-							{Liferay.Language.get('generate-new-token')}
-						</ClayButton>
-					) : (
-						<>
-							<ClayLayout.Row className='mt-4'>
-								<ClayLayout.Col size={6}>
-									<CopyInputValue
-										addAlert={addAlert}
-										disabled={false}
-										title={Liferay.Language.get(
-											'endpoint-url'
-										)}
-										value={endpointURL}
-									/>
-								</ClayLayout.Col>
+					<ClayLayout.Row className='mt-4'>
+						<ClayLayout.Col size={6}>
+							<CopyInputValue
+								addAlert={addAlert}
+								disabled={false}
+								title={Liferay.Language.get('endpoint-url')}
+								value={endpointURL}
+							/>
+						</ClayLayout.Col>
 
-								<ClayLayout.Col size={6}>
-									<CopyInputValue
-										addAlert={addAlert}
-										disabled={false}
-										title={Liferay.Language.get('token')}
-										value={displayToken}
-									/>
-								</ClayLayout.Col>
-							</ClayLayout.Row>
+						<ClayLayout.Col size={6}>
+							<CopyInputValue
+								addAlert={addAlert}
+								disabled={false}
+								title={Liferay.Language.get('token')}
+								value={displayToken}
+							/>
+						</ClayLayout.Col>
+					</ClayLayout.Row>
 
-							<ClayLayout.Row>
-								<ClayLayout.Col size={6}>
-									<ClayForm.Group className='mb-0'>
-										<label htmlFor='dataSourceType'>
-											{Liferay.Language.get(
-												'data-source-type'
-											)}
-										</label>
+					<ClayLayout.Row>
+						<ClayLayout.Col size={6}>
+							<ClayForm.Group className='mb-0'>
+								<label htmlFor='dataSourceType'>
+									{Liferay.Language.get('data-source-type')}
+								</label>
 
-										<ClayInput
-											id='dataSourceType'
-											readOnly
-											type='text'
-											value={config.displayName}
-										/>
-									</ClayForm.Group>
-								</ClayLayout.Col>
+								<ClayInput
+									id='dataSourceType'
+									readOnly
+									type='text'
+									value={config.displayName}
+								/>
+							</ClayForm.Group>
+						</ClayLayout.Col>
 
-								<ClayLayout.Col size={6}>
-									<ClayForm.Group className='mb-0'>
-										<label htmlFor='dataSourceId'>
-											{Liferay.Language.get(
-												'data-source-id'
-											)}
-										</label>
+						<ClayLayout.Col size={6}>
+							<ClayForm.Group className='mb-0'>
+								<label htmlFor='dataSourceId'>
+									{Liferay.Language.get('data-source-id')}
+								</label>
 
-										<ClayInput
-											id='dataSourceId'
-											readOnly
-											type='text'
-											value={dataSource.id}
-										/>
-									</ClayForm.Group>
-								</ClayLayout.Col>
-							</ClayLayout.Row>
-						</>
-					)}
+								<ClayInput
+									id='dataSourceId'
+									readOnly
+									type='text'
+									value={dataSource.id}
+								/>
+							</ClayForm.Group>
+						</ClayLayout.Col>
+					</ClayLayout.Row>
 				</div>
 
 				{currentUser.isAdmin() && dataSourceActive && (

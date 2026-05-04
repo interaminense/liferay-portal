@@ -195,6 +195,55 @@ describe('data-sources', () => {
 				label: 'Disconnected'
 			});
 		});
+
+		describe('third-party connectors', () => {
+			it.each(['DEMANDBASE', 'HUBSPOT'])(
+				'should return the active display object when %s status is ACTIVE',
+				providerType => {
+					const result = getDataSourceDisplayObject(
+						getMockLiferayDataSource(1, {
+							providerType,
+							state: undefined,
+							status: DataSourceStatuses.Active
+						})
+					);
+
+					expect(result).toEqual(STATUS_DISPLAY.active);
+				}
+			);
+
+			it.each(['DEMANDBASE', 'HUBSPOT'])(
+				'should return the disconnected display object when %s state is DISCONNECTED',
+				providerType => {
+					const result = getDataSourceDisplayObject(
+						getMockLiferayDataSource(1, {
+							providerType,
+							state: DataSourceStates.Disconnected,
+							status: DataSourceStatuses.Inactive
+						})
+					);
+
+					expect(result).toEqual(
+						STATUS_DISPLAY[DataSourceStates.Disconnected]
+					);
+				}
+			);
+
+			it.each(['DEMANDBASE', 'HUBSPOT'])(
+				'should return the default display object when %s status is INACTIVE and not disconnected',
+				providerType => {
+					const result = getDataSourceDisplayObject(
+						getMockLiferayDataSource(1, {
+							providerType,
+							state: undefined,
+							status: DataSourceStatuses.Inactive
+						})
+					);
+
+					expect(result).toEqual(STATUS_DISPLAY.default);
+				}
+			);
+		});
 	});
 
 	describe('getIdsFromConfiguration', () => {

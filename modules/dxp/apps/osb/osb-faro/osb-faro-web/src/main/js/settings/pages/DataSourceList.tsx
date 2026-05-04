@@ -21,12 +21,7 @@ import {
 	PROVIDER_TYPE
 } from 'shared/util/pagination';
 import {DataSource} from 'shared/util/records';
-import {
-	DataSourceStates,
-	DataSourceStatuses,
-	DataSourceTypes,
-	Sizes
-} from 'shared/util/constants';
+import {DataSourceStates, DataSourceTypes, Sizes} from 'shared/util/constants';
 import {formatDateToTimeZone} from 'shared/util/date';
 import {fromJS} from 'immutable';
 import {get} from 'lodash';
@@ -34,10 +29,7 @@ import {
 	getConnectorConfig,
 	listAvailableConnectors
 } from 'settings/components/3rd-party-connector/registry';
-import {
-	getDataSourceDisplayObject,
-	STATUS_DISPLAY
-} from 'shared/util/data-sources';
+import {getDataSourceDisplayObject} from 'shared/util/data-sources';
 import {Link, useHistory, useParams} from 'react-router-dom';
 import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
@@ -75,11 +67,9 @@ export const DataSourceName: React.FC<IDataSourceNameProps> = ({
 );
 
 export const StatusRenderer: React.FC<ICellProps> = ({data}) => {
-	const {display, label} =
-		data.providerType === DataSourceTypes.Demandbase &&
-		data.status === DataSourceStatuses.Active
-			? STATUS_DISPLAY.active
-			: getDataSourceDisplayObject(new DataSource(fromJS(data)));
+	const {display, label} = getDataSourceDisplayObject(
+		new DataSource(fromJS(data))
+	);
 
 	return (
 		<td>

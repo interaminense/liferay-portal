@@ -192,6 +192,18 @@ export function validateUniqueName({
 		});
 }
 
+const THIRD_PARTY_CONNECTOR_TYPES: ReadonlySet<string> = new Set([
+	DataSourceTypes.Demandbase,
+	DataSourceTypes.Hubspot
+]);
+
+function isThirdPartyConnector(providerType: string | undefined): boolean {
+	return (
+		providerType !== undefined &&
+		THIRD_PARTY_CONNECTOR_TYPES.has(providerType)
+	);
+}
+
 /**
  * Utility for getting the display object for a dataSource state in order
  * to display its status.
@@ -201,7 +213,19 @@ export function getDataSourceDisplayObject(dataSource: DataSource) {
 		return STATUS_DISPLAY.default;
 	}
 
-	const {state, status} = dataSource;
+	const {providerType, state, status} = dataSource;
+
+	if (isThirdPartyConnector(providerType)) {
+		if (state === DataSourceStates.Disconnected) {
+			return STATUS_DISPLAY[DataSourceStates.Disconnected];
+		}
+
+		if (status === DataSourceStatuses.Active) {
+			return STATUS_DISPLAY.active;
+		}
+
+		return STATUS_DISPLAY.default;
+	}
 
 	const active = status === DataSourceStatuses.Active;
 

@@ -14,7 +14,6 @@ interface UpdateConnectorParams {
 	groupId: string;
 	id: string;
 	name?: string;
-	status?: string;
 }
 
 export function createConnector(
@@ -45,15 +44,13 @@ export function updateConnector(
 		credentials,
 		groupId,
 		id,
-		name,
-		status
+		name
 	}: UpdateConnectorParams
 ) {
 	const data = pickBy(
 		{
 			channelsConfiguration,
-			credentials,
-			status
+			credentials
 		},
 		Boolean
 	);
