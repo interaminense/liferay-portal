@@ -6,7 +6,7 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 
 // TEMPORARY: dev-mode Anthropic fallback. See src/lib/anthropic-dev.ts for
-// the revert checklist when AI Hub becomes available.
+// the migration checklist when AI Hub becomes ready.
 import {callAnthropicForInsight} from '../lib/anthropic-dev';
 
 export interface UseAIInsightResult {

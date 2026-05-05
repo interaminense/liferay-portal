@@ -7,12 +7,15 @@
  * TEMPORARY — DEVELOPMENT ONLY
  *
  * Direct Anthropic API integration used as a fallback while the
- * Liferay AI Hub project (`ai-hub-liferay` GCP) is not yet provisioned.
+ * Liferay AI Hub project does not have a general-purpose LLM agent
+ * registered (built-ins like L_CHANGE_TONE / L_FIX_SPELLING_AND_GRAMMAR
+ * are specialized and the orchestrator rejects analytics prompts).
  *
- * To revert when AI Hub becomes available:
+ * To migrate when AI Hub gains a general-purpose agent (or when a custom
+ * Kaleo workflow with our system prompt is registered):
  *   1. Delete this file
  *   2. Restore the SSE/AI Hub call inside src/hooks/useAIInsight.ts
- *      (see git history for the previous implementation)
+ *      (see git history for the previous AI Hub implementation)
  *   3. Remove the "Anthropic API key" field from src/components/SettingsModal.tsx
  *      and any references to anthropic-dev imports
  *

@@ -18,6 +18,7 @@ import {PageEngagementCard} from './components/page-engagement-card/PageEngageme
 import {PageOverviewCard} from './components/page-overview-card/PageOverviewCard';
 import {PagePathCard} from './components/page-path-card/PagePathCard';
 import {ScopeBadge} from './components/ScopeBadge';
+import {SetupRequiredEmptyState} from './components/SetupRequiredEmptyState';
 import {SearchTermsCard} from './components/search-terms-card/SearchTermsCard';
 import {SiteOverviewCard} from './components/site-overview-card/SiteOverviewCard';
 import {TopPagesCard} from './components/top-pages-card/TopPagesCard';
@@ -100,6 +101,7 @@ const App: React.FC<AppProps> = ({instanceId}) => {
 		error: preferencesError,
 		loading: preferencesLoading,
 		preferences,
+		setupRequired,
 		updatePreferences,
 	} = usePreferences(instanceId);
 
@@ -360,9 +362,16 @@ const App: React.FC<AppProps> = ({instanceId}) => {
 	const setupLoading =
 		preferencesLoading || (!channelId && channelLoading);
 
-	const setupError = channelId
-		? preferencesError
-		: (preferencesError ?? channelError);
+	// AC unreachable when channel discovery fails AND we have no cached
+	// channelId from preferences. Common when AC isn't connected yet
+	// (HTTP 502 "Unable to reach Analytics Cloud" or HTTP 400 "Host name
+	// may not be null"). Treat as part of the setup wizard, not a hard error.
+	const acUnreachable =
+		!channelId && !channelLoading && !!channelError;
+
+	const showSetupWizard = setupRequired || acUnreachable;
+
+	const setupError = channelId ? preferencesError : preferencesError;
 
 	if (!isSignedIn) {
 		return (
@@ -377,6 +386,23 @@ const App: React.FC<AppProps> = ({instanceId}) => {
 						imgSrc={EMPTY_STATE_IMG_SRC}
 						small
 						title="Sign in required"
+					/>
+				</Card.Body>
+			</Card>
+		);
+	}
+
+	if (showSetupWizard && !setupLoading) {
+		return (
+			<Card className="d-flex flex-column h-100 w-100">
+				<Card.Header>
+					<Card.Title className="mb-0">Analytics</Card.Title>
+				</Card.Header>
+
+				<Card.Body className="d-flex flex-column flex-grow-1 overflow-auto">
+					<SetupRequiredEmptyState
+						acConnected={!acUnreachable}
+						objectCreated={!setupRequired}
 					/>
 				</Card.Body>
 			</Card>

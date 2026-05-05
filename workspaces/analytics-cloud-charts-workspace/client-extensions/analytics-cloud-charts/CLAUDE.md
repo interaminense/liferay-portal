@@ -115,7 +115,7 @@ src/
 
 ### Sibling workspace pieces
 
-- `analytics-cloud-charts-batch/` — batch CE that creates the `AnalyticsCloudChartsPreferences` ObjectDefinition (one-time deploy; required before the widget can persist)
+- (No sibling CEs — the widget self-bootstraps via the in-app `SetupRequiredEmptyState` wizard, which guides admins to create the `AnalyticsCloudChartsPreferences` custom object manually via Control Panel.)
 
 ## Roadmap / suggested improvements
 

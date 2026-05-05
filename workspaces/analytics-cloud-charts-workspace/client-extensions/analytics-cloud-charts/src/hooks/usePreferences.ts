@@ -44,6 +44,7 @@ export interface UsePreferencesResult {
 	error: Error | null;
 	loading: boolean;
 	preferences: Preferences;
+	setupRequired: boolean;
 	updatePreferences: (next: Partial<Preferences>) => Promise<void>;
 }
 
@@ -69,6 +70,7 @@ export function usePreferences(instanceId: string): UsePreferencesResult {
 	const [canEdit, setCanEdit] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
 	const [loading, setLoading] = useState(true);
+	const [setupRequired, setSetupRequired] = useState(false);
 
 	const entryRef = useRef<PreferencesEntry | null>(null);
 
@@ -98,24 +100,46 @@ export function usePreferences(instanceId: string): UsePreferencesResult {
 				catch (caught) {
 					const restError = caught as RestErrorLike;
 
+					// Endpoint missing → ObjectDefinition not deployed.
+					// Surface as setupRequired (distinct from a real error)
+					// so the UI can render setup instructions.
+					if (restError?.endpointMissing) {
+						setSetupRequired(true);
+
+						return;
+					}
+
 					if (restError?.status !== 404) {
 						throw caught;
 					}
 
-					entry = await restFetch<PreferencesEntry>(ENDPOINT, {
-						body: JSON.stringify({
-							externalReferenceCode: instanceId,
-							instanceId,
-							preferences: '{}',
-						}),
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						method: 'POST',
-						signal: controller.signal,
-					});
+					try {
+						entry = await restFetch<PreferencesEntry>(ENDPOINT, {
+							body: JSON.stringify({
+								externalReferenceCode: instanceId,
+								instanceId,
+								preferences: '{}',
+							}),
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							method: 'POST',
+							signal: controller.signal,
+						});
 
-					entryWasCreated = true;
+						entryWasCreated = true;
+					}
+					catch (postCaught) {
+						const postRestError = postCaught as RestErrorLike;
+
+						if (postRestError?.endpointMissing) {
+							setSetupRequired(true);
+
+							return;
+						}
+
+						throw postCaught;
+					}
 				}
 
 				if (
@@ -222,5 +246,12 @@ export function usePreferences(instanceId: string): UsePreferencesResult {
 		[instanceId, preferences]
 	);
 
-	return {canEdit, error, loading, preferences, updatePreferences};
+	return {
+		canEdit,
+		error,
+		loading,
+		preferences,
+		setupRequired,
+		updatePreferences,
+	};
 }

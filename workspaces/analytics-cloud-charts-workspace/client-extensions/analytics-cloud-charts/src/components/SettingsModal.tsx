@@ -5,6 +5,7 @@
 
 import ClayButton from '@clayui/button';
 import {Modal as ClayModal, useModal} from '@clayui/modal';
+import ClayPanel from '@clayui/panel';
 import React, {useEffect, useState} from 'react';
 
 import {useQuery} from '../hooks/useQuery';
@@ -18,7 +19,17 @@ import {
 import {CHART_PALETTE} from '../lib/charts';
 import {formatKey} from '../lib/format';
 import {METRIC_INFO, METRIC_OPTIONS} from '../lib/metric-info';
+import {AIHubSetupSteps} from './AIHubSetupSteps';
 import {ScopeBadge} from './ScopeBadge';
+
+const SPRITEMAP =
+	typeof window !== 'undefined'
+		? (
+				window as unknown as {
+					Liferay?: {Icons?: {spritemap?: string}};
+				}
+			).Liferay?.Icons?.spritemap
+		: undefined;
 
 interface TimeRangeData {
 	timeRange: TimeRange[];
@@ -241,54 +252,70 @@ export const SettingsModal: React.FC<SettingsModalIProps> = ({
 								chart explaining the most notable observation
 								in the data. Currently powered by direct
 								Anthropic API calls (development mode); will
-								switch to Liferay AI Hub once the GCP project
-								is provisioned.
+								switch to <strong>Liferay AI Hub</strong> once
+								the project ships a general-purpose LLM agent.
 							</div>
 						</span>
 					</label>
-				</div>
 
-				{/* TEMPORARY — Anthropic API key field. Remove when AI Hub is ready. */}
-				{aiInsightsEnabled && (
-					<div className="form-group">
-						<label
-							className="form-control-label"
-							htmlFor="settings-anthropic-key"
-						>
-							Anthropic API key{' '}
-							<span
-								className="text-secondary"
-								style={{
-									fontSize: 11,
-									fontWeight: 400,
-								}}
+					{aiInsightsEnabled && (
+						<div className="form-group" style={{marginTop: 12}}>
+							<label
+								className="form-control-label"
+								htmlFor="settings-anthropic-key"
 							>
-								(development only)
-							</span>
-						</label>
+								Anthropic API key{' '}
+								<span
+									className="text-secondary"
+									style={{
+										fontSize: 11,
+										fontWeight: 400,
+									}}
+								>
+									(development only)
+								</span>
+							</label>
 
-						<input
-							autoComplete="off"
-							className="form-control"
-							id="settings-anthropic-key"
-							onChange={(event) =>
-								setAnthropicApiKeyState(event.target.value)
-							}
-							placeholder="sk-ant-..."
-							type="password"
-							value={anthropicApiKey}
-						/>
+							<input
+								autoComplete="off"
+								className="form-control"
+								id="settings-anthropic-key"
+								onChange={(event) =>
+									setAnthropicApiKeyState(
+										event.target.value
+									)
+								}
+								placeholder="sk-ant-..."
+								type="password"
+								value={anthropicApiKey}
+							/>
 
-						<div
-							className="text-secondary mt-1"
-							style={{fontSize: 11, lineHeight: 1.4}}
-						>
-							Stored in your browser&apos;s localStorage only.
-							Never sent to Liferay. This field will be removed
-							once the Liferay AI Hub project is available.
+							<div
+								className="text-secondary mt-1"
+								style={{fontSize: 11, lineHeight: 1.4}}
+							>
+								Stored in your browser&apos;s localStorage
+								only. Never sent to Liferay. This field will
+								be removed once Liferay AI Hub is ready.
+							</div>
 						</div>
+					)}
+
+					<div style={{marginTop: 12}}>
+						<ClayPanel
+							collapsable
+							defaultExpanded={false}
+							displayTitle="How to enable Liferay AI Hub (future)"
+							displayType="secondary"
+							showCollapseIcon
+							spritemap={SPRITEMAP}
+						>
+							<ClayPanel.Body>
+								<AIHubSetupSteps />
+							</ClayPanel.Body>
+						</ClayPanel>
 					</div>
-				)}
+				</div>
 
 				<div className="form-group">
 					<label

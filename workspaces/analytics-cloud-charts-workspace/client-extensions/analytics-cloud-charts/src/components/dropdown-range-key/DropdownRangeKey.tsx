@@ -9,7 +9,6 @@ import {useQuery} from '../../hooks/useQuery';
 import {TIME_RANGE_QUERY, TimeRange} from '../../lib/analytics';
 import {RangeKeyTimeRanges} from '../../lib/constants';
 import {RangeSelectors} from '../../lib/types';
-import ErrorDisplay from '../ErrorDisplay';
 import StatesRenderer from '../states-renderer/StatesRenderer';
 import {DropdownRangeKeyContent} from './DropdownRangeKeyContent';
 
@@ -35,12 +34,15 @@ export const DropdownRangeKey: React.FC<DropdownRangeKeyIProps> = ({
 }) => {
 	const {data, error, loading} = useQuery<Data>(TIME_RANGE_QUERY);
 
-	return (
-		<StatesRenderer error={!!error} loading={loading}>
-			<StatesRenderer.Error apolloError={error}>
-				<ErrorDisplay message={error?.message} />
-			</StatesRenderer.Error>
+	// Silently hide the dropdown when Analytics Cloud is unreachable
+	// (e.g. fresh DXP, no AC connection, 502 from the proxy). The widget
+	// still loads — only this control disappears.
+	if (error) {
+		return null;
+	}
 
+	return (
+		<StatesRenderer error={false} loading={loading}>
 			<StatesRenderer.Loading center={false} />
 
 			<StatesRenderer.Success>

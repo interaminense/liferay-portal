@@ -554,6 +554,7 @@ export const AUDIENCE_COMPOSITION_QUERY = `query AudienceCompositionQuery($chann
 }`;
 
 export interface RestErrorLike extends Error {
+	endpointMissing?: boolean;
 	status: number;
 }
 
@@ -603,6 +604,18 @@ export async function restFetch<T>(
 		) as RestErrorLike;
 
 		error.status = response.status;
+
+		// Detect "endpoint missing" — Liferay returns the standard 404 HTML
+		// page when an OSGi REST route doesn't exist (e.g. ObjectDefinition
+		// not deployed yet). The REST framework's "entry not found" 404
+		// returns a JSON body, not HTML.
+		if (
+			response.status === 404 &&
+			!isObject(parsed) &&
+			text.trimStart().startsWith('<')
+		) {
+			error.endpointMissing = true;
+		}
 
 		throw error;
 	}
