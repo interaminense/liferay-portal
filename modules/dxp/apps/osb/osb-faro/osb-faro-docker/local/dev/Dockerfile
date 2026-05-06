@@ -26,6 +26,8 @@ HEALTHCHECK --interval=3s --timeout=3s CMD curl -f http://localhost:8080 || exit
 RUN mkdir -p $LIFERAY_HOME/tomcat/lib/org/apache/catalina/util && \
     echo "server.info=" > $LIFERAY_HOME/tomcat/lib/org/apache/catalina/util/ServerInfo.properties
 
+RUN sed -i 's|<Connector \([^>]*\)port="8080"|<Connector encodedSolidusHandling="passthrough" \1port="8080"|' $LIFERAY_HOME/tomcat/conf/server.xml
+
 COPY ./common/resources/context.xml $LIFERAY_HOME/tomcat/conf
 COPY ./common/resources/lib/mysql.jar $LIFERAY_HOME/tomcat/webapps/ROOT/WEB-INF/shielded-container-lib
 COPY ./common/resources/portal-ext.properties $LIFERAY_HOME
