@@ -119,7 +119,6 @@ const List: React.FC<IListProps> = ({channelId, groupId}) => {
 						<AccountsDataSet
 							channelId={channelId}
 							groupId={groupId}
-							loading={dataSourceLoading}
 						/>
 					</>
 				) : (

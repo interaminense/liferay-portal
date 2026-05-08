@@ -1,10 +1,13 @@
 import Card from 'shared/components/Card';
 import React from 'react';
 import {columns, pagination, useSnapshots} from 'shared/util/frontend-data-set';
+import {
+	EConfigInURLBehavior,
+	FrontendDataSet
+} from '@liferay/frontend-data-set-web';
 import {LifecycleStages} from 'contacts/pages/account/utils/constants';
 import {Routes} from 'shared/util/router';
 import {toThousands} from 'shared/util/numbers';
-import {useFrontendDataSet} from 'shared/hooks/useFrontendDataSet';
 
 type DisplayType = 'danger' | 'info' | 'secondary' | 'success' | 'warning';
 
@@ -51,7 +54,6 @@ interface IAccountsDataSetProps {
 	groupId: string;
 	industryFilter?: string;
 	lifecycleStageFilter?: LifecycleStages;
-	loading?: boolean;
 }
 
 const buildSelectionPreloadedData = (value?: string, label?: string) =>
@@ -67,22 +69,15 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 	countryFilter,
 	groupId,
 	industryFilter,
-	lifecycleStageFilter,
-	loading
+	lifecycleStageFilter
 }) => {
-	const FrontendDataSet = useFrontendDataSet();
-
 	const snapshots = useSnapshots('accounts-list-dataset');
-
-	if (!FrontendDataSet) {
-		return null;
-	}
 
 	return (
 		<Card>
 			<FrontendDataSet
 				apiURL={`/o/faro/contacts/${groupId}/account/search`}
-				configInURLBehavior='off'
+				configInURLBehavior={EConfigInURLBehavior.OFF}
 				customDataRenderers={{
 					accountLifecycleStageRenderer: ({
 						value
@@ -166,12 +161,11 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 				key={`${countryFilter ?? ''}|${industryFilter ?? ''}|${
 					lifecycleStageFilter ?? ''
 				}`}
-				loading={loading}
 				pagination={pagination}
 				showPagination
 				snapshots={snapshots}
 				snapshotsEnabled
-				sort={[
+				sorts={[
 					{
 						active: true,
 						direction: 'asc',
@@ -188,7 +182,6 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 						schema: {
 							fields: [
 								{
-									_key: 'accountName',
 									contentRenderer: 'accountNameRenderer',
 									fieldName: 'accountName',
 									label: Liferay.Language.get('account'),
@@ -196,13 +189,11 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 									truncate: true
 								},
 								{
-									_key: 'industry',
 									fieldName: 'industry',
 									label: Liferay.Language.get('industry'),
 									sortable: true
 								},
 								{
-									_key: 'lifecycleStage',
 									contentRenderer:
 										'accountLifecycleStageRenderer',
 									fieldName: 'lifecycleStage',
@@ -212,7 +203,6 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 									sortable: true
 								},
 								{
-									_key: 'annualRevenue',
 									contentRenderer: 'annualRevenueRenderer',
 									fieldName: 'annualRevenue',
 									label: Liferay.Language.get(
@@ -221,27 +211,23 @@ const AccountsDataSet: React.FC<IAccountsDataSetProps> = ({
 									sortable: true
 								},
 								{
-									_key: 'country',
 									fieldName: 'country',
 									label: Liferay.Language.get('country'),
 									sortable: true
 								},
 								{
-									_key: 'lastActive',
 									contentRenderer: 'dateRenderer',
 									fieldName: 'lastActive',
 									label: Liferay.Language.get('last-active'),
 									sortable: true
 								},
 								{
-									_key: 'lastEnriched',
 									contentRenderer: 'dateRenderer',
 									fieldName: 'lastEnriched',
 									label: Liferay.Language.get(
 										'last-enriched'
 									),
-									sortable: true,
-									visible: false
+									sortable: true
 								}
 							]
 						},
