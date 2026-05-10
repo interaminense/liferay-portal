@@ -809,6 +809,7 @@ Firefox"
                 >
                   <a
                     class="title"
+                    data-discover="true"
                     href="/www.liferay.com"
                   >
                     <span

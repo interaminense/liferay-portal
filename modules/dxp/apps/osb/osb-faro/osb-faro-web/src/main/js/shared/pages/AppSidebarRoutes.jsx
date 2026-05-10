@@ -376,7 +376,9 @@ export default class AppSidebarRoutes extends React.PureComponent {
 						{LDPEnabled && (
 							<Route
 								element={
-									<BundleElement data={AccountProfileRoutes} />
+									<BundleElement
+										data={AccountProfileRoutes}
+									/>
 								}
 								path={`${wsRel(Routes.CONTACTS_ACCOUNT)}/*`}
 							/>

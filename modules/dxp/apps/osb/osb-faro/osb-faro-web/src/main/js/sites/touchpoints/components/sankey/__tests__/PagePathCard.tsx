@@ -300,7 +300,7 @@ describe('PagePathCard', () => {
 
 		expect(link).toHaveAttribute(
 			'href',
-			'/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.liferay.com/Liferay%20Home%20Page?rangeKey=0'
+			'/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.liferay.com/Liferay%2520Home%2520Page?rangeKey=0'
 		);
 	});
 
@@ -323,7 +323,7 @@ describe('PagePathCard', () => {
 
 		expect(link).toHaveAttribute(
 			'href',
-			'/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.liferay.com/Liferay%20Home%20Page?rangeKey=0'
+			'/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.liferay.com/Liferay%2520Home%2520Page?rangeKey=0'
 		);
 	});
 });

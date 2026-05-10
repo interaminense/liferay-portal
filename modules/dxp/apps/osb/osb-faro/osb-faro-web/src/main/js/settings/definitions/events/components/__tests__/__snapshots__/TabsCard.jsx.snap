@@ -45,7 +45,8 @@ exports[`TabsCard should render 1`] = `
                 class="nav-item"
               >
                 <a
-                  class="nav-link"
+                  aria-current="page"
+                  class="nav-link active"
                   href="/workspace/23/settings/definitions/events/default"
                 >
                   <span>
@@ -70,6 +71,10 @@ exports[`TabsCard should render 1`] = `
         </div>
       </div>
     </nav>
+    <span
+      aria-hidden="true"
+      class="loading-root center loading-animation"
+    />
   </div>
 </div>
 `;

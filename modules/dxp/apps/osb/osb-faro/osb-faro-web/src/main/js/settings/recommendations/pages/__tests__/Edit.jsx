@@ -8,8 +8,8 @@ import {MockedProvider} from '@apollo/client/testing';
 import {mockRecommendationReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoading} from 'test/helpers';
+import {withDataRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -27,7 +27,7 @@ const defaultProps = {
 const DefaultComponent = props => (
 	<ApolloProvider client={client}>
 		<Provider store={mockStore()}>
-			<StaticRouter>
+			{withDataRouter(
 				<MockedProvider
 					mocks={[
 						mockRecommendationReq(data.mockRecommendationJob('321'))
@@ -39,7 +39,7 @@ const DefaultComponent = props => (
 						router={{params: {groupId: '123', jobId: '321'}}}
 					/>
 				</MockedProvider>
-			</StaticRouter>
+			)}
 		</Provider>
 	</ApolloProvider>
 );

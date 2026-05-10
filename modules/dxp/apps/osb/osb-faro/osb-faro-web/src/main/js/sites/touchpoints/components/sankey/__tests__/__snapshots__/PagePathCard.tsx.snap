@@ -304,8 +304,9 @@ exports[`PagePathCard should render 1`] = `
                     34K
                   </text>
                   <a
+                    data-discover="true"
                     data-tooltip-align="right"
-                    href="/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.liferay.com/Liferay%20Home%20Page?rangeKey=30"
+                    href="/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.liferay.com/Liferay%2520Home%2520Page?rangeKey=30"
                     title="Go to Dashboard Page"
                   >
                     <text
@@ -687,8 +688,9 @@ exports[`PagePathCard should render 1`] = `
                     10K
                   </text>
                   <a
+                    data-discover="true"
                     data-tooltip-align="right"
-                    href="/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.site1.com/Site%201?rangeKey=30"
+                    href="/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.site1.com/Site%25201?rangeKey=30"
                     title="Go to Dashboard Page"
                   >
                     <text
@@ -769,8 +771,9 @@ exports[`PagePathCard should render 1`] = `
                     10K
                   </text>
                   <a
+                    data-discover="true"
                     data-tooltip-align="right"
-                    href="/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.site2.com/Site%202?rangeKey=30"
+                    href="/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.site2.com/Site%25202?rangeKey=30"
                     title="Go to Dashboard Page"
                   >
                     <text
@@ -851,8 +854,9 @@ exports[`PagePathCard should render 1`] = `
                     5K
                   </text>
                   <a
+                    data-discover="true"
                     data-tooltip-align="right"
-                    href="/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.site3.com/Site%203?rangeKey=30"
+                    href="/workspace/4567/123/sites/pages/overview/https%3A%2F%2Fwww.site3.com/Site%25203?rangeKey=30"
                     title="Go to Dashboard Page"
                   >
                     <text

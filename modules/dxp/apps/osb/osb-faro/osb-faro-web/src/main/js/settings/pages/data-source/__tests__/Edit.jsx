@@ -5,7 +5,7 @@ import {DataSource} from 'shared/util/records';
 import {Edit} from '../Edit';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
+import {withDataRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -29,12 +29,12 @@ describe('Edit', () => {
 	it('should render a CSV data-source page', () => {
 		const {getByText} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
+				{withDataRouter(
 					<Edit
 						{...csvProps}
 						dataSource={new DataSource(data.mockCSVDataSource())}
 					/>
-				</StaticRouter>
+				)}
 			</Provider>
 		);
 

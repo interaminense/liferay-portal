@@ -3,10 +3,10 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import {addAlert} from 'shared/actions/alerts';
 import {cleanup, render} from '@testing-library/react';
-import {MemoryRouter, Route, Routes as RouterRoutes} from 'react-router-dom';
 import {Project, User} from 'shared/util/records';
 import {Provider} from 'react-redux';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import {withDataRouter} from 'test/mock-router';
 import {Workspace} from '../Workspace';
 
 jest.unmock('react-dom');
@@ -29,14 +29,10 @@ const defaultProps = {
 
 const DefaultComponent = props => (
 	<Provider store={mockStore()}>
-		<MemoryRouter initialEntries={['/workspace/23/settings/workspace']}>
-			<RouterRoutes>
-				<Route
-					element={<Workspace {...defaultProps} {...props} />}
-					path='/workspace/:groupId/settings/workspace'
-				/>
-			</RouterRoutes>
-		</MemoryRouter>
+		{withDataRouter(<Workspace {...defaultProps} {...props} />, {
+			initialEntries: ['/workspace/23/settings/workspace'],
+			path: '/workspace/:groupId/settings/workspace'
+		})}
 	</Provider>
 );
 

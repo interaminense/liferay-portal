@@ -1,12 +1,13 @@
+import * as API from 'shared/api';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
+import {act, cleanup, render, screen} from '@testing-library/react';
 import {ChannelContext} from 'shared/context/channel';
-import {cleanup, render, screen} from '@testing-library/react';
 import {mockChannelContext} from 'test/mock-channel-context';
+import {mockSegment} from 'test/data';
 import {Provider} from 'react-redux';
 import {SegmentProfileRoutes} from '../ProfileRoutes';
-import {waitForLoadingToBeRemoved} from 'test/helpers';
+import {withDataRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -20,26 +21,29 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('SegmentProfileRoutes', () => {
-	afterEach(cleanup);
-
-	beforeAll(() => {
-		delete window.location;
+	beforeEach(() => {
+		API.individualSegment.fetch.mockResolvedValue(
+			mockSegment(0, {
+				criteriaString:
+					"(demographics/middleName/value eq 'additionalName')"
+			})
+		);
 	});
 
-	it('should render', async () => {
-		window.location = {pathname: '/'};
+	afterEach(cleanup);
 
-		const {container} = render(
+	it('should render', async () => {
+		render(
 			<Provider store={mockStore()}>
-				<BrowserRouter>
-					<ChannelContext.Provider value={mockChannelContext()}>
-						<SegmentProfileRoutes />
-					</ChannelContext.Provider>
-				</BrowserRouter>
+				<ChannelContext.Provider value={mockChannelContext()}>
+					{withDataRouter(<SegmentProfileRoutes />)}
+				</ChannelContext.Provider>
 			</Provider>
 		);
 
-		await waitForLoadingToBeRemoved(container);
+		await act(async () => {
+			await jest.runAllTimersAsync();
+		});
 
 		expect(screen.getAllByText('Seattle0').length).toBeGreaterThan(0);
 	});

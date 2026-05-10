@@ -8,7 +8,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 import {List} from 'immutable';
 import {Provider} from 'react-redux';
 import {Segment} from 'shared/util/records';
-import {StaticRouter} from 'react-router';
+import {withDataRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -36,8 +36,8 @@ describe('DynamicSegmentEdit', () => {
 		);
 
 		const {container} = render(
-			<StaticRouter>
-				<Provider store={mockStore()}>
+			<Provider store={mockStore()}>
+				{withDataRouter(
 					<DndProvider backend={HTML5Backend}>
 						<DynamicSegmentEdit
 							groupId={GROUP_ID}
@@ -46,8 +46,8 @@ describe('DynamicSegmentEdit', () => {
 							segment={batchSegmentMock}
 						/>
 					</DndProvider>
-				</Provider>
-			</StaticRouter>
+				)}
+			</Provider>
 		);
 
 		expect(container).toMatchSnapshot();

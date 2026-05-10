@@ -92,7 +92,7 @@ exports[`EventList should render 1`] = `
             >
               <a
                 class="button-root w-100 btn btn-unstyled"
-                href="/?field=name&page=1&sortOrder=DESC"
+                href="/workspace/23/settings/definitions/events/default?delta=1&field=name&page=1&sortOrder=DESC"
               >
                 <div
                   class="align-items-center d-flex justify-content-between"
@@ -124,7 +124,7 @@ exports[`EventList should render 1`] = `
             >
               <a
                 class="button-root w-100 btn btn-unstyled"
-                href="/?field=displayName&page=1&sortOrder=ASC"
+                href="/workspace/23/settings/definitions/events/default?delta=1&field=displayName&page=1&sortOrder=ASC"
               >
                 <div
                   class="align-items-center d-flex justify-content-between"
@@ -200,6 +200,7 @@ exports[`EventList should render 1`] = `
                   >
                     <a
                       class="text-truncate"
+                      data-discover="true"
                       href="/workspace/23/settings/definitions/events/0"
                     >
                       name-0
@@ -290,7 +291,7 @@ exports[`EventList should render 1`] = `
           <a
             class="button-root btn btn-unstyled page-link"
             disabled=""
-            href="/?page=0"
+            href="/workspace/23/settings/definitions/events/default?delta=1&page=0"
           >
             <svg
               class="lexicon-icon lexicon-icon-angle-left-small icon-root"
@@ -307,7 +308,7 @@ exports[`EventList should render 1`] = `
         >
           <a
             class="button-root btn btn-unstyled page-link"
-            href="/?page=1"
+            href="/workspace/23/settings/definitions/events/default?delta=1&page=1"
           >
             1
           </a>
@@ -318,7 +319,7 @@ exports[`EventList should render 1`] = `
           <a
             class="button-root btn btn-unstyled page-link"
             disabled=""
-            href="/?page=2"
+            href="/workspace/23/settings/definitions/events/default?delta=1&page=2"
           >
             <svg
               class="lexicon-icon lexicon-icon-angle-right-small icon-root"

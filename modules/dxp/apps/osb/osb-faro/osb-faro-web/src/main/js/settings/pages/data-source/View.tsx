@@ -5,10 +5,10 @@ import omitDefinedProps from 'shared/util/omitDefinedProps';
 import PropTypes from 'prop-types';
 import React, {ComponentType} from 'react';
 import SalesforceOverview from 'settings/components/salesforce/SalesforceOverview';
+import withRouter from 'shared/hoc/WithRouter';
 import {compose, withDataSource} from 'shared/hoc';
 import {DataSource} from 'shared/util/records';
 import {DataSourceTypes} from 'shared/util/constants';
-import withRouter from 'shared/hoc/WithRouter';
 import {getConnectorConfig} from 'settings/components/3rd-party-connector/registry';
 
 const PAGE_MAP: {[type: string]: ComponentType<any>} = {

@@ -8,7 +8,6 @@ import {cleanup, fireEvent, render, waitFor} from '@testing-library/react';
 import {DISPLAY_NAME} from 'shared/util/pagination';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
-import {MemoryRouter, Route, Routes as RouterRoutes} from 'react-router-dom';
 import {MockedProvider} from '@apollo/client/testing';
 import {
 	mockEventDefinitionsReq,
@@ -18,8 +17,8 @@ import {
 import {OrderByDirections} from 'shared/util/constants';
 import {Provider} from 'react-redux';
 import {range} from 'lodash';
-import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+import {withDataRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -57,22 +56,16 @@ const WrappedComponent = () => (
 					)
 				]}
 			>
-				<MemoryRouter
-					initialEntries={[
-						'/workspace/123/456/event-analysis/create'
-					]}
-				>
-					<RouterRoutes>
-						<Route
-							element={
-								<DndProvider backend={HTML5Backend}>
-									<EventAnalysisCreate />
-								</DndProvider>
-							}
-							path={Routes.EVENT_ANALYSIS_CREATE}
-						/>
-					</RouterRoutes>
-				</MemoryRouter>
+				{withDataRouter(
+					<DndProvider backend={HTML5Backend}>
+						<EventAnalysisCreate />
+					</DndProvider>,
+					{
+						initialEntries: [
+							'/workspace/123/456/event-analysis/create'
+						]
+					}
+				)}
 			</MockedProvider>
 		</ApolloProvider>
 	</Provider>

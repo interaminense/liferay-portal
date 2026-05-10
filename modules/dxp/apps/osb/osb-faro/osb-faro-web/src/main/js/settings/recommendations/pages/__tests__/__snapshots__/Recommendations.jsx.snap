@@ -20,6 +20,7 @@ exports[`Recommendations should render 1`] = `
             <a
               aria-label="Back"
               class="text-secondary"
+              data-discover="true"
               href="/workspace/23"
             >
               <svg
@@ -429,7 +430,7 @@ exports[`Recommendations should render 1`] = `
                         >
                           <a
                             class="button-root w-100 btn btn-unstyled"
-                            href="/?field=name&page=1&sortOrder=ASC"
+                            href="/workspace/23/settings/recommendations?delta=10&field=name&page=1&sortOrder=ASC"
                           >
                             <div
                               class="align-items-center d-flex justify-content-between"
@@ -461,7 +462,7 @@ exports[`Recommendations should render 1`] = `
                         >
                           <a
                             class="button-root w-100 btn btn-unstyled"
-                            href="/?field=type&page=1&sortOrder=ASC"
+                            href="/workspace/23/settings/recommendations?delta=10&field=type&page=1&sortOrder=ASC"
                           >
                             <div
                               class="align-items-center d-flex justify-content-between"
@@ -497,7 +498,7 @@ exports[`Recommendations should render 1`] = `
                         >
                           <a
                             class="button-root w-100 btn btn-unstyled"
-                            href="/?field=runDataPeriod&page=1&sortOrder=ASC"
+                            href="/workspace/23/settings/recommendations?delta=10&field=runDataPeriod&page=1&sortOrder=ASC"
                           >
                             <div
                               class="align-items-center d-flex justify-content-between"
@@ -533,7 +534,7 @@ exports[`Recommendations should render 1`] = `
                         >
                           <a
                             class="button-root w-100 btn btn-unstyled"
-                            href="/?field=runFrequency&page=1&sortOrder=ASC"
+                            href="/workspace/23/settings/recommendations?delta=10&field=runFrequency&page=1&sortOrder=ASC"
                           >
                             <div
                               class="align-items-center d-flex justify-content-between"
@@ -569,7 +570,7 @@ exports[`Recommendations should render 1`] = `
                         >
                           <a
                             class="button-root w-100 btn btn-unstyled"
-                            href="/?field=runDate&page=1&sortOrder=ASC"
+                            href="/workspace/23/settings/recommendations?delta=10&field=runDate&page=1&sortOrder=ASC"
                           >
                             <div
                               class="align-items-center d-flex justify-content-between"
@@ -605,7 +606,7 @@ exports[`Recommendations should render 1`] = `
                         >
                           <a
                             class="button-root w-100 btn btn-unstyled"
-                            href="/?field=status&page=1&sortOrder=ASC"
+                            href="/workspace/23/settings/recommendations?delta=10&field=status&page=1&sortOrder=ASC"
                           >
                             <div
                               class="align-items-center d-flex justify-content-between"
@@ -672,6 +673,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/0"
                                 >
                                   Recommendation Job Name 0
@@ -737,6 +739,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/1"
                                 >
                                   Recommendation Job Name 1
@@ -802,6 +805,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/2"
                                 >
                                   Recommendation Job Name 2
@@ -867,6 +871,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/3"
                                 >
                                   Recommendation Job Name 3
@@ -932,6 +937,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/4"
                                 >
                                   Recommendation Job Name 4
@@ -997,6 +1003,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/5"
                                 >
                                   Recommendation Job Name 5
@@ -1062,6 +1069,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/6"
                                 >
                                   Recommendation Job Name 6
@@ -1127,6 +1135,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/7"
                                 >
                                   Recommendation Job Name 7
@@ -1192,6 +1201,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/8"
                                 >
                                   Recommendation Job Name 8
@@ -1257,6 +1267,7 @@ exports[`Recommendations should render 1`] = `
                               >
                                 <a
                                   class="text-truncate"
+                                  data-discover="true"
                                   href="/workspace/23/settings/recommendations/9"
                                 >
                                   Recommendation Job Name 9
@@ -1333,7 +1344,7 @@ exports[`Recommendations should render 1`] = `
                       <a
                         class="button-root btn btn-unstyled page-link"
                         disabled=""
-                        href="/?page=0"
+                        href="/workspace/23/settings/recommendations?delta=10&sortOrder=DESC&field=name&page=0"
                       >
                         <svg
                           class="lexicon-icon lexicon-icon-angle-left-small icon-root"
@@ -1350,7 +1361,7 @@ exports[`Recommendations should render 1`] = `
                     >
                       <a
                         class="button-root btn btn-unstyled page-link"
-                        href="/?page=1"
+                        href="/workspace/23/settings/recommendations?delta=10&sortOrder=DESC&field=name&page=1"
                       >
                         1
                       </a>
@@ -1361,7 +1372,7 @@ exports[`Recommendations should render 1`] = `
                       <a
                         class="button-root btn btn-unstyled page-link"
                         disabled=""
-                        href="/?page=2"
+                        href="/workspace/23/settings/recommendations?delta=10&sortOrder=DESC&field=name&page=2"
                       >
                         <svg
                           class="lexicon-icon lexicon-icon-angle-right-small icon-root"

@@ -2,12 +2,12 @@ import * as data from 'test/data';
 import IndividualProfileRoutesCDP from '../ProfileRoutesCDP';
 import mockStore from 'test/mock-store';
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
 import {ChannelContext} from 'shared/context/channel';
 import {cleanup, render} from '@testing-library/react';
 import {Individual} from 'shared/util/records';
 import {mockChannelContext} from 'test/mock-channel-context';
 import {Provider} from 'react-redux';
+import {withDataRouter} from 'test/mock-router';
 
 const defaultProps = {
 	channelId: '123',
@@ -20,21 +20,15 @@ const defaultProps = {
 jest.unmock('react-dom');
 
 describe('IndividualProfileRoutes', () => {
-	beforeAll(() => {
-		delete window.location;
-	});
-
 	afterEach(cleanup);
 
 	it('should render', () => {
-		window.location = {pathname: '/'};
-
 		const {container} = render(
 			<Provider store={mockStore()}>
 				<ChannelContext.Provider value={mockChannelContext()}>
-					<BrowserRouter>
+					{withDataRouter(
 						<IndividualProfileRoutesCDP {...defaultProps} />
-					</BrowserRouter>
+					)}
 				</ChannelContext.Provider>
 			</Provider>
 		);

@@ -150,7 +150,8 @@ exports[`AccountOverview should render 1`] = `
                         >
                           <a
                             class="text-truncate"
-                            href="/workspace/456/123/contacts/accounts/test/interests/composition 01"
+                            data-discover="true"
+                            href="/workspace/456/123/contacts/accounts/test/interests/composition%2001"
                           >
                             composition 01
                           </a>
@@ -301,6 +302,7 @@ exports[`AccountOverview should render 1`] = `
                     <strong>
                       <a
                         class="list-group-link"
+                        data-discover="true"
                         href="/workspace/456/123/contacts/segments/0"
                       >
                         Seattle0
@@ -568,6 +570,7 @@ exports[`AccountOverview should render 1`] = `
                         >
                           <a
                             class="text-truncate"
+                            data-discover="true"
                             href="/workspace/456/123/contacts/individuals/known-individuals/0"
                           >
                             Foo Bar

@@ -5,7 +5,7 @@ import React from 'react';
 import {ApolloProvider} from '@apollo/client';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router-dom';
+import {withDataRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -23,9 +23,9 @@ const defaultProps = {
 const DefaultComponent = props => (
 	<ApolloProvider client={client}>
 		<Provider store={mockStore()}>
-			<StaticRouter>
+			{withDataRouter(
 				<CreateItemSimilarity {...defaultProps} {...props} />
-			</StaticRouter>
+			)}
 		</Provider>
 	</ApolloProvider>
 );

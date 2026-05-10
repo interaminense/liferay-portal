@@ -25,6 +25,7 @@ exports[`AccountProfileRoutes should render 1`] = `
             >
               <a
                 class="breadcrumb-text-truncate breadcrumb-link"
+                data-discover="true"
                 href="/workspace/23/123/sites"
               >
                 Channel 1
@@ -35,6 +36,7 @@ exports[`AccountProfileRoutes should render 1`] = `
             >
               <a
                 class="breadcrumb-text-truncate breadcrumb-link"
+                data-discover="true"
                 href="/workspace/23/123/contacts/accounts"
               >
                 Accounts
@@ -194,7 +196,12 @@ exports[`AccountProfileRoutes should render 1`] = `
     >
       <span
         class="children-wrapper"
-      />
+      >
+        <span
+          aria-hidden="true"
+          class="loading-root center loading-animation"
+        />
+      </span>
     </div>
   </div>
 </div>

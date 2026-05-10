@@ -2,13 +2,6 @@ import client from 'shared/apollo/client';
 import InterestDetails from '../InterestDetails';
 import React from 'react';
 import {ApolloProvider} from '@apollo/client';
-import {createMemoryHistory} from 'history';
-import {
-	MemoryRouter,
-	Route,
-	Router,
-	Routes as RouterRoutes
-} from 'react-router-dom';
 import {MockedProvider} from '@apollo/client/testing';
 import {
 	mockPreferenceReq,
@@ -18,6 +11,7 @@ import {
 import {render} from '@testing-library/react';
 import {Routes} from 'shared/util/router';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+import {withDataRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -62,36 +56,24 @@ const defaultProps = {
 	}
 };
 
-const DefaultComponent = () => {
-	const history = createMemoryHistory();
-
-	return (
-		<ApolloProvider client={client}>
-			<MockedProvider
-				mocks={[
-					mockTimeRangeReq(),
-					mockPreferenceReq(),
-					mockTouchpointsReq(mockItems, {size: 2})
-				]}
-			>
-				<Router history={history}>
-					<MemoryRouter
-						initialEntries={[
-							'/workspace/23/321321/contacts/accounts/123123/interests/test'
-						]}
-					>
-						<RouterRoutes>
-							<Route
-								element={<InterestDetails {...defaultProps} />}
-								path={Routes.CONTACTS_ACCOUNT_INTEREST_DETAILS}
-							/>
-						</RouterRoutes>
-					</MemoryRouter>
-				</Router>
-			</MockedProvider>
-		</ApolloProvider>
-	);
-};
+const DefaultComponent = () => (
+	<ApolloProvider client={client}>
+		<MockedProvider
+			mocks={[
+				mockTimeRangeReq(),
+				mockPreferenceReq(),
+				mockTouchpointsReq(mockItems, {size: 2})
+			]}
+		>
+			{withDataRouter(<InterestDetails {...defaultProps} />, {
+				initialEntries: [
+					'/workspace/23/321321/contacts/accounts/123123/interests/test'
+				],
+				path: Routes.CONTACTS_ACCOUNT_INTEREST_DETAILS
+			})}
+		</MockedProvider>
+	</ApolloProvider>
+);
 
 describe('InterestDetails', () => {
 	it('renders', async () => {

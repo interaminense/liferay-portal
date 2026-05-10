@@ -315,15 +315,13 @@ describe('CellRenderers', () => {
 	it('should render as disabled if the datasource is in the process of being deleted', () => {
 		const {container} = render(
 			<MemoryRouter>
-				<RouterRoutes>
-					<DataSourceName
-						data={{
-							name: 'Test DS',
-							state: DataSourceStates.InProgressDeleting
-						}}
-						hrefFormatter={() => '/test'}
-					/>
-				</RouterRoutes>
+				<DataSourceName
+					data={{
+						name: 'Test DS',
+						state: DataSourceStates.InProgressDeleting
+					}}
+					hrefFormatter={() => '/test'}
+				/>
 			</MemoryRouter>
 		);
 

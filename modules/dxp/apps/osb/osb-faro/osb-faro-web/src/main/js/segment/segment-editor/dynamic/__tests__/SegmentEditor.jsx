@@ -2,7 +2,6 @@ import * as data from 'test/data';
 import mockStore from 'test/mock-store';
 import React from 'react';
 import SegmentEditor, {validateSegmentEditor} from '../index';
-import {BrowserRouter} from 'react-router-dom';
 import {
 	cleanup,
 	fireEvent,
@@ -15,6 +14,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 import {Provider} from 'react-redux';
 import {Segment} from 'shared/util/records';
 import {SegmentStates} from 'shared/util/constants';
+import {withDataRouter} from 'test/mock-router';
 
 jest.mock('segment/segment-editor/dynamic/criteria-sidebar/index');
 
@@ -30,7 +30,7 @@ describe('SegmentEditor', () => {
 	it('should render', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<BrowserRouter>
+				{withDataRouter(
 					<DndProvider backend={HTML5Backend}>
 						<SegmentEditor
 							channelId='321'
@@ -38,7 +38,7 @@ describe('SegmentEditor', () => {
 							type='BATCH'
 						/>
 					</DndProvider>
-				</BrowserRouter>
+				)}
 			</Provider>
 		);
 
@@ -48,7 +48,7 @@ describe('SegmentEditor', () => {
 	it('should render with error message', () => {
 		render(
 			<Provider store={mockStore()}>
-				<BrowserRouter>
+				{withDataRouter(
 					<DndProvider backend={HTML5Backend}>
 						<SegmentEditor
 							channelId='321'
@@ -64,7 +64,7 @@ describe('SegmentEditor', () => {
 							type='BATCH'
 						/>
 					</DndProvider>
-				</BrowserRouter>
+				)}
 			</Provider>
 		);
 
@@ -74,7 +74,7 @@ describe('SegmentEditor', () => {
 	it('renders the realtime segment with sequential card disabled', () => {
 		render(
 			<Provider store={mockStore()}>
-				<BrowserRouter>
+				{withDataRouter(
 					<DndProvider backend={HTML5Backend}>
 						<SegmentEditor
 							channelId='321'
@@ -82,7 +82,7 @@ describe('SegmentEditor', () => {
 							type='REAL_TIME'
 						/>
 					</DndProvider>
-				</BrowserRouter>
+				)}
 			</Provider>
 		);
 
@@ -109,7 +109,7 @@ describe('SegmentEditor', () => {
 	it('renders the realtime segment with sequential card and user enable it', async () => {
 		render(
 			<Provider store={mockStore()}>
-				<BrowserRouter>
+				{withDataRouter(
 					<DndProvider backend={HTML5Backend}>
 						<SegmentEditor
 							channelId='321'
@@ -117,7 +117,7 @@ describe('SegmentEditor', () => {
 							type='REAL_TIME'
 						/>
 					</DndProvider>
-				</BrowserRouter>
+				)}
 			</Provider>
 		);
 
@@ -150,7 +150,7 @@ describe('SegmentEditor', () => {
 	it('shows the Segment ERC popover with the description and the slug rule', () => {
 		render(
 			<Provider store={mockStore()}>
-				<BrowserRouter>
+				{withDataRouter(
 					<DndProvider backend={HTML5Backend}>
 						<SegmentEditor
 							channelId='321'
@@ -158,7 +158,7 @@ describe('SegmentEditor', () => {
 							type='BATCH'
 						/>
 					</DndProvider>
-				</BrowserRouter>
+				)}
 			</Provider>
 		);
 

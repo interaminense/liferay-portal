@@ -3,7 +3,8 @@ import mockStore from 'test/mock-store';
 import React from 'react';
 import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
+import {Routes} from 'shared/util/router';
+import {withDataRouter} from 'test/mock-router';
 
 jest.unmock('react-dom');
 
@@ -18,9 +19,12 @@ describe('EventAttributes', () => {
 	it('should render', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
-				<StaticRouter>
-					<Events groupId='23' />
-				</StaticRouter>
+				{withDataRouter(<Events groupId='23' />, {
+					initialEntries: [
+						'/workspace/23/settings/definitions/event-attributes/local'
+					],
+					path: Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL
+				})}
 			</Provider>
 		);
 
