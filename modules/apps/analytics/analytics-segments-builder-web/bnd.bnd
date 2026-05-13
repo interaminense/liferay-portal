@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Analytics Segments Builder Web
+Bundle-SymbolicName: com.liferay.analytics.segments.builder.web
+Bundle-Version: 1.0.0
+Web-ContextPath: /analytics-segments-builder-web
