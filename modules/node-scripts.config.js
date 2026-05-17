@@ -237,6 +237,7 @@ module.exports = {
 		'@liferay/object-dynamic-data-mapping-form-field-type': [],
 		'@liferay/object-js-components-web': [],
 		'@liferay/object-web': [],
+		'@liferay/osb-faro-segment-builder-web': [],
 		'@liferay/osb-patcher-web': [],
 		'@liferay/portal-company-log-web': [],
 		'@liferay/portal-defaultpermissions-web': [],

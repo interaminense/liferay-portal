@@ -225,6 +225,14 @@ configure(project(":dxp:apps:osb:osb-faro:osb-faro-dependencies")) {
 
 subprojects {
 	afterEvaluate {
+		if (project.name in [
+				"osb-faro-segment-builder-poc-site-initializer",
+				"osb-faro-segment-builder-poc-web",
+				"osb-faro-segment-builder-web"]) {
+
+			return
+		}
+
 		task moveToDocker(type: Exec)
 
 		deploy {

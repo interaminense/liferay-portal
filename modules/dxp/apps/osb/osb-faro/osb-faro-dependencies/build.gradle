@@ -12,6 +12,7 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-rest-api")
 	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-rest-client")
 	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-rest-impl")
+	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-segment-builder-web")
 	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-service")
 	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-theme")
 	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-web")
