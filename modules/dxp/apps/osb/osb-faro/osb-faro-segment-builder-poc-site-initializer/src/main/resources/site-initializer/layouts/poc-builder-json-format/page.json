@@ -1,0 +1,9 @@
+{
+	"friendlyURL": "/poc-builder-json-format",
+	"name_i18n": {
+		"en_US": "Poc Builder Json Format"
+	},
+	"private": false,
+	"system": false,
+	"type": "content"
+}

@@ -1,0 +1,6 @@
+Bundle-Name: Liferay OSB Faro Segment Builder PoC Site Initializer
+Bundle-SymbolicName: com.liferay.osb.faro.segment.builder.poc.site.initializer
+Bundle-Version: 1.0.0
+Liferay-Site-Initializer-Name: Segment Builder PoC
+Provide-Capability: liferay.site.initializer
+Web-ContextPath: /osb-faro-segment-builder-poc-site-initializer

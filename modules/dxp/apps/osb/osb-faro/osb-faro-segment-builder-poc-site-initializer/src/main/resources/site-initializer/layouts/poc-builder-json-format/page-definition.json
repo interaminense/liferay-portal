@@ -1,0 +1,15 @@
+{
+	"pageElement": {
+		"pageElements": [
+			{
+				"definition": {
+					"widgetInstance": {
+						"widgetName": "com_liferay_osb_faro_segment_builder_poc_web_PocBuilderJsonPortlet"
+					}
+				},
+				"type": "Widget"
+			}
+		],
+		"type": "Root"
+	}
+}
