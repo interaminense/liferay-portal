@@ -1,0 +1,19 @@
+{
+	"dependencies": {
+		"@liferay/osb-faro-segment-builder-web": "1.0.0",
+		"react": "18.2.0",
+		"react-dnd": "11.1.1",
+		"react-dnd-html5-backend": "11.1.1",
+		"react-dom": "18.2.0"
+	},
+	"main": "src/main/resources/META-INF/resources/js/index.ts",
+	"name": "@liferay/osb-faro-segment-builder-poc-web",
+	"private": true,
+	"scripts": {
+		"build": "node-scripts build",
+		"checkFormat": "node-scripts format --check",
+		"format": "node-scripts format",
+		"test": "node-scripts test"
+	},
+	"version": "1.0.0"
+}
