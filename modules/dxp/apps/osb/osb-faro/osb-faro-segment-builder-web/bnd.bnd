@@ -1,0 +1,5 @@
+Bundle-Name: Liferay OSB Faro Segment Builder Web
+Bundle-SymbolicName: com.liferay.osb.faro.segment.builder.web
+Bundle-Version: 1.0.0
+Liferay-JS-Config: /META-INF/resources/legacy/config.js
+Web-ContextPath: /osb-faro-segment-builder-web

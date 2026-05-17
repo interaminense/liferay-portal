@@ -1,0 +1,567 @@
+$blue: #4b9bff;
+$orange: #ffb46e;
+$purple: #af78ff;
+$red: #ff5f5f;
+$green: #50d2a0;
+
+$criteriaSidebarWidth: 320px;
+
+$error: #da1414;
+$fontSizeExtraSmall: 12px;
+$fontSizeSmall: 14px;
+$fontWeightSemiBold: 600;
+
+// xl breakpoint from Clay admin (1280px), inlined to avoid the cadmin
+// dependency. The criterion-row media query adds $criteriaSidebarWidth on top.
+$gridMaxPageWidth: 1280px;
+
+$lightBackground: #f1f2f5;
+
+$main: #272833;
+$mainLighten28: #6b6c7e;
+$mainLighten52: #a7a9bc;
+$mainLighten65: #cdced9;
+$mainLighten74: #e7e7ed;
+
+$primary: #0b5fff;
+$primaryLighten23: #80acff;
+$primaryLighten45: #f0f5ff;
+$secondary: $mainLighten28;
+$secondaryHover: #f7f8f9;
+
+$white: #fff;
+
+$propertyGroupsColors: (
+	'account': $orange,
+	'disabled': $white,
+	'event': $green,
+	'individual': $blue,
+	'interest': $red,
+	'organization': #5fc8ff,
+	'session': $purple,
+	'web': $green,
+);
+
+// -----------------------------------------------------------------------------
+// Mixins
+// -----------------------------------------------------------------------------
+
+@mixin generatePropertyGroupLoop(
+	$array,
+	$cssProperty,
+	$classPrefix: 'color--'
+) {
+	@each $a in $array {
+		$className: nth($a, 1);
+		$color: nth($a, 2);
+
+		@include generatePropertyGroup(
+			$color,
+			$cssProperty,
+			#{$classPrefix + $className}
+		);
+	}
+}
+
+@mixin generatePropertyGroup($color, $cssProperty, $className) {
+	&.#{$className} {
+		#{$cssProperty}: $color;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Block: .ac-segment-builder-web
+// -----------------------------------------------------------------------------
+
+.ac-segment-builder-web {
+	display: block;
+	height: 100%;
+	min-height: 100vh;
+	position: relative;
+	width: 100%;
+
+	// ---- Top-level layout ----
+
+	&__sidebar-section {
+		height: 100%;
+		overflow: hidden;
+		position: absolute;
+		right: 0;
+		top: 0;
+		visibility: visible;
+		width: $criteriaSidebarWidth;
+		z-index: 10;
+	}
+
+	&__main-section {
+		display: block;
+		flex-direction: column;
+		height: 100%;
+		overflow: auto;
+		padding: 24px;
+		padding-right: calc(#{$criteriaSidebarWidth} + 24px);
+		position: relative;
+
+		> .ac-segment-builder-web__conjunction-button {
+			margin: 16px 0;
+		}
+	}
+
+	&__extras {
+		margin-bottom: 24px;
+	}
+
+	&__empty-contributors {
+		background: $secondaryHover;
+		border: 2px dashed $mainLighten65;
+	}
+
+	// ---- Sidebar ----
+
+	&__sidebar {
+		background-color: $white;
+		border: 1px solid $mainLighten74;
+		border-top-width: 0;
+		display: flex;
+		flex-flow: column;
+		height: 100%;
+		position: absolute;
+		right: 0;
+		width: $criteriaSidebarWidth;
+	}
+
+	&__sidebar-title {
+		font-size: 18px;
+		font-weight: 600;
+		padding: 16px 24px 0;
+	}
+
+	&__sidebar-header {
+		font-size: 16px;
+		font-weight: 600;
+		padding: 16px 24px;
+	}
+
+	&__sidebar-search {
+		padding: 16px 24px;
+	}
+
+	&__sidebar-pagination {
+		flex-shrink: 0;
+		padding: 4px 0;
+	}
+
+	&__sidebar-collapse {
+		flex: 1;
+		overflow-y: auto;
+		position: relative;
+	}
+
+	&__property-subgroup-label {
+		border-bottom: 1px solid $mainLighten74;
+		color: $mainLighten28;
+		font-size: $fontSizeSmall;
+		font-weight: $fontWeightSemiBold;
+		margin: 12px 16px;
+	}
+
+	&__property-subgroups-list {
+		list-style: none;
+		margin: 0;
+		overflow-y: auto;
+		padding: 0;
+		will-change: max-height, min-height;
+	}
+
+	&__properties-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	&__sidebar-item {
+		align-items: center;
+		border-left: 3px solid $blue;
+		cursor: grabbing;
+		display: flex;
+		font-size: 14px;
+		margin: 4px 0;
+		padding: 8px 16px 8px 8px;
+
+		@include generatePropertyGroupLoop(
+			$propertyGroupsColors,
+			'border-left-color',
+			'ac-segment-builder-web__sidebar-item--color-'
+		);
+
+		&:hover {
+			cursor: grab;
+		}
+
+		&--dragging {
+			opacity: 0.4;
+		}
+
+		.lexicon-icon-drag {
+			color: $mainLighten52;
+		}
+	}
+
+	&__sidebar-item-type {
+		background-color: $lightBackground;
+		margin: 0 8px;
+	}
+
+	&__empty-message {
+		align-items: center;
+		display: flex;
+		font-weight: 600;
+		height: 100%;
+		justify-content: center;
+		padding: 16px 24px;
+	}
+
+	// ---- Criteria builder ----
+
+	&__criteria-builder {
+		opacity: 1;
+		transition: opacity 0.2s ease-in-out;
+		will-change: opacity;
+
+		&--read-only {
+			opacity: 0.4;
+		}
+	}
+
+	&__criteria-builder-toolbar {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 16px;
+		width: 100%;
+	}
+
+	&__criteria-model-label {
+		font-weight: 600;
+	}
+
+	// ---- Criteria group ----
+
+	&__criteria-group {
+		border: 1px $mainLighten65 solid;
+		border-radius: 4px;
+		box-shadow: 0 0 8px 1px rgba(33, 34, 35, 0.05);
+		position: relative;
+		width: 100%;
+
+		&--dragging {
+			opacity: 0.4;
+		}
+
+		&--item {
+			margin: 8px;
+
+			.ac-segment-builder-web__criteria-group-drag-icon {
+				align-items: center;
+				display: flex;
+				height: 100%;
+				left: 1px;
+				position: absolute;
+				top: 0;
+			}
+		}
+
+		&--item-root
+			.ac-segment-builder-web__read-only-container
+			.ac-segment-builder-web__criterion-string {
+			margin-left: 8px;
+		}
+	}
+
+	&__criterion {
+		padding: 16px;
+		padding-left: 8px;
+		position: relative;
+	}
+
+	&__color-stripe {
+		background-color: $blue;
+		bottom: 0;
+		content: '';
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 3px;
+
+		@include generatePropertyGroupLoop(
+			$propertyGroupsColors,
+			'background-color',
+			'ac-segment-builder-web__color-stripe--color-'
+		);
+	}
+
+	&__conjunction-container {
+		align-items: center;
+		display: flex;
+		margin-left: 36px;
+		z-index: 1;
+	}
+
+	&__conjunction-button {
+		text-transform: uppercase;
+		z-index: 1;
+	}
+
+	&__conjunction-label + &__drop-zone + &__criterion--group,
+	&__criterion--group + &__drop-zone + &__conjunction-label,
+	&__criterion--group + &__drop-zone + &__conjunction-button {
+		margin-top: 16px;
+	}
+
+	&__conjunction-button + &__drop-zone + &__criterion--group {
+		margin-top: 8px;
+	}
+
+	&__separator {
+		border-bottom: 1px solid $mainLighten74;
+		left: 0;
+		position: absolute;
+		right: 0;
+	}
+
+	// ---- Criterion row ----
+
+	&__criterion-row {
+		border: 2px solid transparent;
+		border-radius: 4px;
+		display: flex;
+		flex: 1;
+		padding: 8px 0;
+
+		&--dragging {
+			opacity: 0.4;
+		}
+
+		&--hover {
+			border: 2px solid $primary;
+		}
+
+		// Legacy class aliases: AC adapter inputs in osb-faro-web still
+		// render `.non-existent-property-message`, `.operator`, and
+		// `.operator-input` with their pre-BEM names. Style them here as
+		// fallbacks instead of forcing a parallel rename across 12+ files.
+
+		.non-existent-property-message {
+			color: $error;
+			flex-grow: 1;
+			font-size: $fontSizeSmall;
+			font-style: italic;
+			font-weight: $fontWeightSemiBold;
+		}
+
+		.operator,
+		.operator-input {
+			text-transform: lowercase;
+		}
+	}
+
+	&__criterion-string {
+		color: $mainLighten28;
+		font-weight: 600;
+
+		b {
+			color: $main;
+			font-weight: bold;
+		}
+	}
+
+	&__drag-icon {
+		margin-right: 8px;
+	}
+
+	&__edit-container {
+		align-items: center;
+		display: flex;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+
+		// Leaky-abstraction styling: AC's adapter inputs render their own
+		// `.criteria-statement` wrapper with assorted descendants. The
+		// engine keeps these rules so AC inputs look right out of the box.
+
+		.criteria-statement {
+			display: flex;
+			flex-direction: column;
+			flex-grow: 1;
+
+			.asset-display-root {
+				overflow: hidden;
+
+				.asset-name {
+					font-size: $fontSizeSmall;
+				}
+
+				.asset-url {
+					font-size: $fontSizeExtraSmall;
+				}
+			}
+
+			.conjunction,
+			.entity-name,
+			.operator,
+			.unit {
+				color: $secondary;
+				font-weight: $fontWeightSemiBold;
+			}
+
+			.criterion-input,
+			.form-control,
+			.input-group {
+				max-width: 336px;
+
+				&.hidden {
+					display: none;
+				}
+			}
+
+			.display-value {
+				font-weight: $fontWeightSemiBold;
+			}
+
+			.form-control {
+				&.boolean-input {
+					max-width: 100px;
+				}
+
+				&.number-input {
+					max-width: 120px;
+				}
+			}
+
+			.form-group {
+				margin-bottom: 8px;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+
+			.select-entity-group {
+				width: auto;
+			}
+
+			@media screen and (max-width: $gridMaxPageWidth + $criteriaSidebarWidth) {
+				.form-group-autofit {
+					flex-wrap: wrap;
+
+					> .form-group-item:not(:last-child) {
+						margin-bottom: 8px;
+					}
+				}
+			}
+
+			&.geolocation-input {
+				.form-group-autofit {
+					flex-wrap: wrap;
+
+					> .form-group-item:not(:last-child) {
+						margin-bottom: 8px;
+					}
+				}
+			}
+		}
+	}
+
+	&__actions {
+		display: flex;
+		margin-left: auto;
+		margin-right: 8px;
+
+		.button-root {
+			color: $secondary;
+
+			&:not(:last-child) {
+				margin-right: 8px;
+			}
+		}
+	}
+
+	&__non-existent-property-message {
+		color: $error;
+		flex-grow: 1;
+		font-size: $fontSizeSmall;
+		font-style: italic;
+		font-weight: $fontWeightSemiBold;
+	}
+
+	&__operator,
+	&__operator-input {
+		text-transform: lowercase;
+	}
+
+	&__read-only-container {
+		display: flex;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+
+		.ac-segment-builder-web__criterion-string {
+			margin-left: 8px;
+		}
+	}
+
+	// ---- Drop zones ----
+
+	&__drop-zone {
+		position: relative;
+	}
+
+	&__drop-zone-target {
+		align-items: center;
+		display: flex;
+		height: 16px;
+		position: absolute;
+		width: 100%;
+		z-index: 1;
+
+		&--before {
+			top: -16px;
+		}
+	}
+
+	&__drop-zone-indicator {
+		background-color: $primary;
+		height: 2px;
+		width: 100%;
+	}
+
+	&__empty-drop-zone-target {
+		border: 2px dashed $mainLighten52;
+		border-radius: 4px;
+		color: $secondary;
+		height: 136px;
+
+		&--hover {
+			background-color: $primaryLighten45;
+			border: 2px solid $primaryLighten23;
+			color: $primary;
+		}
+
+		&--sequential {
+			align-items: center;
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	&__empty-drop-zone-message {
+		align-items: flex-start;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		height: 136px;
+		justify-content: center;
+		padding-left: 45px;
+	}
+}
