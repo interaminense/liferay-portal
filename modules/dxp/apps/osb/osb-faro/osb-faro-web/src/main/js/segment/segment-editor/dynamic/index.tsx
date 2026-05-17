@@ -1,7 +1,6 @@
 import * as API from 'shared/api';
+import AcSegmentBuilder from './adapter/AcSegmentBuilder';
 import autobind from 'autobind-decorator';
-import CriteriaBuilder from './criteria-builder';
-import CriteriaSidebar from './criteria-sidebar';
 import DndProvider from 'shared/components/DndProvider';
 import EmbeddedAlertList from 'shared/components/EmbeddedAlertList';
 import Form, {
@@ -52,37 +51,52 @@ export function validateSegmentEditor(criteria: CriterionGroup | null) {
 
 const CriteriaBuilderForm = withField(
 	({
+		addProperty,
 		channelId,
+		children,
+		criteriaString,
 		field: {name, value},
 		groupId,
+		id,
+		propertyGroupsIList,
+		referencedProperties,
 		segmentType,
 		sequential,
 		...fieldProps
 	}: {
+		addProperty?: (property: any) => void;
 		channelId: string;
+		children?: React.ReactNode;
+		criteriaString?: string;
 		field: {name: string; value: any};
 		groupId: string;
+		id?: string;
+		propertyGroupsIList: List<any>;
+		referencedProperties: any;
 		segmentType: SegmentTypes;
+		sequential: boolean;
 		[key: string]: any;
 	}) => {
 		const handleChange = (criteria: Criteria) => {
-			const {
-				form: {setFieldValue}
-			} = fieldProps;
-
-			setFieldValue(name, criteria);
+			fieldProps.form.setFieldValue(name, criteria);
 		};
 
 		return (
-			<CriteriaBuilder
-				{...fieldProps}
+			<AcSegmentBuilder
+				addProperty={addProperty}
 				channelId={channelId}
-				criteria={value}
+				criteriaString={criteriaString}
 				groupId={groupId}
+				id={id}
 				onChange={handleChange}
+				propertyGroupsIList={propertyGroupsIList}
+				referencedProperties={referencedProperties}
 				segmentType={segmentType}
 				sequential={sequential}
-			/>
+				value={value}
+			>
+				{children}
+			</AcSegmentBuilder>
 		);
 	}
 );
@@ -289,121 +303,101 @@ class SegmentEditor extends React.Component<ISegmentEditorProps> {
 										valid={isValid && hasChanges}
 									/>
 
-									<div className='form-body'>
-										<div className='criteria-builder-section-sidebar'>
-											<CriteriaSidebar
-												channelId={channelId}
-												criteriaString={
-													criteriaString ?? undefined
-												}
-												groupId={groupId}
-												propertyGroupsIList={
-													propertyGroupsIList
-												}
-												type={type}
-											/>
-										</div>
+									<CriteriaBuilderForm
+										addProperty={this.context.addProperty}
+										channelId={channelId}
+										criteriaString={
+											criteriaString ?? undefined
+										}
+										groupId={groupId}
+										id={id}
+										name='criteria'
+										propertyGroupsIList={
+											propertyGroupsIList
+										}
+										referencedProperties={
+											this.context.referencedProperties
+										}
+										segmentType={type}
+										sequential={sequential}
+										validate={validateSegmentEditor}
+									>
+										<div className='ac-segment-builder-web__extras'>
+											<div className='segment-erc'>
+												<Form.Group autoFit>
+													<Form.GroupItem
+														label
+														shrink
+													>
+														<Form.Label
+															htmlFor='externalReferenceCode'
+															popover={{
+																content: (
+																	<>
+																		<span>
+																			{Liferay.Language.get(
+																				'unique-key-for-referencing-the-segment-definition'
+																			)}
+																		</span>
 
-										<div className='criteria-builder-section-main'>
-											<div className='contributor-container'>
-												<div className='container-fluid container-fluid-max-xl'>
-													<div className='content-wrapper'>
-														<div className='segment-erc'>
-															<Form.Group autoFit>
-																<Form.GroupItem
-																	label
-																	shrink
-																>
-																	<Form.Label
-																		htmlFor='externalReferenceCode'
-																		popover={{
-																			content:
-																				(
-																					<>
-																						<span>
-																							{Liferay.Language.get(
-																								'unique-key-for-referencing-the-segment-definition'
-																							)}
-																						</span>
+																		<br />
+																		<br />
 
-																						<br />
-																						<br />
+																		<span>
+																			{Liferay.Language.get(
+																				'erc-must-contain-only-lowercase-letters-numbers-hyphens-and-underscores'
+																			)}
+																		</span>
+																	</>
+																),
+																title: Liferay.Language.get(
+																	'segment-erc'
+																)
+															}}
+															required
+														>
+															{Liferay.Language.get(
+																'segment-erc'
+															)}
+														</Form.Label>
+													</Form.GroupItem>
 
-																						<span>
-																							{Liferay.Language.get(
-																								'erc-must-contain-only-lowercase-letters-numbers-hyphens-and-underscores'
-																							)}
-																						</span>
-																					</>
-																				),
-																			title: Liferay.Language.get(
-																				'segment-erc'
-																			)
-																		}}
-																		required
-																	>
-																		{Liferay.Language.get(
-																			'segment-erc'
-																		)}
-																	</Form.Label>
-																</Form.GroupItem>
-
-																<Form.GroupItem>
-																	<Form.Input
-																		name='externalReferenceCode'
-																		validate={
-																			validateExternalReferenceCode
-																		}
-																	/>
-																</Form.GroupItem>
-															</Form.Group>
-														</div>
-
-														{type ===
-															SegmentTypes.RealTime && (
-															<SegmentEnabledSequentialCard />
-														)}
-
-														{segmentState ===
-															SegmentStates.Disabled && (
-															<EmbeddedAlertList
-																alerts={[
-																	{
-																		iconSymbol:
-																			'exclamation-full',
-																		message:
-																			Liferay.Language.get(
-																				'some-criteria-are-empty-please-update-to-continue-using-this-segment'
-																			),
-																		title: Liferay.Language.get(
-																			'error'
-																		),
-																		type: AlertTypes.Danger
-																	}
-																]}
-															/>
-														)}
-
-														<CriteriaBuilderForm
-															channelId={
-																channelId
-															}
-															groupId={groupId}
-															id={id}
-															name='criteria'
-															segmentType={type}
-															sequential={
-																sequential
-															}
+													<Form.GroupItem>
+														<Form.Input
+															name='externalReferenceCode'
 															validate={
-																validateSegmentEditor
+																validateExternalReferenceCode
 															}
 														/>
-													</div>
-												</div>
+													</Form.GroupItem>
+												</Form.Group>
 											</div>
+
+											{type === SegmentTypes.RealTime && (
+												<SegmentEnabledSequentialCard />
+											)}
+
+											{segmentState ===
+												SegmentStates.Disabled && (
+												<EmbeddedAlertList
+													alerts={[
+														{
+															iconSymbol:
+																'exclamation-full',
+															message:
+																Liferay.Language.get(
+																	'some-criteria-are-empty-please-update-to-continue-using-this-segment'
+																),
+															title: Liferay.Language.get(
+																'error'
+															),
+															type: AlertTypes.Danger
+														}
+													]}
+												/>
+											)}
 										</div>
-									</div>
+									</CriteriaBuilderForm>
 								</Form.Form>
 							);
 						}}

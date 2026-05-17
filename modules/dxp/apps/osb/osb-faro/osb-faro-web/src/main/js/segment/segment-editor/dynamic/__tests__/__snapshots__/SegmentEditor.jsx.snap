@@ -186,11 +186,83 @@ exports[`SegmentEditor should render 1`] = `
         </div>
       </div>
       <div
-        class="form-body"
+        class="segment-builder-root form-body"
       >
         <div
           class="criteria-builder-section-sidebar"
-        />
+        >
+          <div
+            class="criteria-sidebar-root"
+          >
+            <div
+              class="sidebar-title"
+            >
+              Segment Criteria
+            </div>
+            <div
+              class="sidebar-header"
+            >
+              <button
+                aria-activedescendant=""
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                class="form-control form-control-select form-control-select-secondary"
+                role="combobox"
+                tabindex="0"
+                type="button"
+              >
+                Select an option
+              </button>
+            </div>
+            <div
+              class="sidebar-search"
+            >
+              <div
+                class="input-group"
+              >
+                <div
+                  class="input-group-item"
+                >
+                  <div
+                    class="input-group"
+                  >
+                    <div
+                      class="input-group-item"
+                    >
+                      <input
+                        class="input-root form-control input-group-inset input-group-inset-after"
+                        placeholder="Search"
+                        type="text"
+                        value=""
+                      />
+                      <div
+                        class="input-group-inset-item input-group-inset-item-after"
+                      >
+                        <button
+                          aria-label="Search"
+                          class="button-root btn btn-unstyled"
+                          type="button"
+                        >
+                          <svg
+                            class="lexicon-icon lexicon-icon-search icon-root"
+                            role="presentation"
+                          >
+                            <use
+                              href="#search"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="sidebar-collapse"
+            />
+          </div>
+        </div>
         <div
           class="criteria-builder-section-main"
         >
@@ -252,53 +324,53 @@ exports[`SegmentEditor should render 1`] = `
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="criteria-builder-root"
+          >
+            <div
+              class="empty-drop-zone-root"
+            >
+              <div
+                class="empty-drop-zone-target"
+              >
                 <div
-                  class="criteria-builder-root"
+                  class="empty-drop-zone-indicator"
+                />
+                <div
+                  class="empty-drop-zone-message"
                 >
-                  <div
-                    class="empty-drop-zone-root"
-                  >
-                    <div
-                      class="empty-drop-zone-target"
+                  <div>
+                    <svg
+                      class="lexicon-icon lexicon-icon-ac_rule icon-root icon-size-md mr-3"
+                      role="presentation"
                     >
-                      <div
-                        class="empty-drop-zone-indicator"
+                      <use
+                        href="#ac_rule"
                       />
-                      <div
-                        class="empty-drop-zone-message"
-                      >
-                        <div>
-                          <svg
-                            class="lexicon-icon lexicon-icon-ac_rule icon-root icon-size-md mr-3"
-                            role="presentation"
-                          >
-                            <use
-                              href="#ac_rule"
-                            />
-                          </svg>
-                          <span
-                            class="text-4"
-                          >
-                            Drag and drop criterion from the right to add rules.
-                          </span>
-                        </div>
-                        <div>
-                          <svg
-                            class="lexicon-icon lexicon-icon-ac_group icon-root icon-size-md mr-3"
-                            role="presentation"
-                          >
-                            <use
-                              href="#ac_group"
-                            />
-                          </svg>
-                          <span
-                            class="text-4"
-                          >
-                            Drag and drop over an existing criteria to form groups.
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                    </svg>
+                    <span
+                      class="text-4"
+                    >
+                      Drag and drop criterion from the right to add rules.
+                    </span>
+                  </div>
+                  <div>
+                    <svg
+                      class="lexicon-icon lexicon-icon-ac_group icon-root icon-size-md mr-3"
+                      role="presentation"
+                    >
+                      <use
+                        href="#ac_group"
+                      />
+                    </svg>
+                    <span
+                      class="text-4"
+                    >
+                      Drag and drop over an existing criteria to form groups.
+                    </span>
                   </div>
                 </div>
               </div>

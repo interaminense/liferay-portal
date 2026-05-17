@@ -10,6 +10,9 @@
 		"moduleResolution": "node",
 		"outDir": "build",
 		"paths": {
+			"@liferay/osb-faro-segment-builder-web": [
+				"../../../../osb-faro-segment-builder-web/src/main/resources/META-INF/resources/js/index.ts"
+			],
 			"react": [
 				"../../../node_modules/@types/react/index"
 			],

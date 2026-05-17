@@ -1,6 +1,5 @@
 import * as data from 'test/data';
 import * as ODataUtil from '../odata';
-import * as Utils from '../utils';
 import {
 	ALL_APPLICATION_IDS,
 	ALL_EVENT_IDS,
@@ -20,12 +19,16 @@ function testConversionToAndFrom(testQuery, queryConjunction) {
 	expect(translatedString).toEqual(testQuery);
 }
 
-describe('odata', () => {
-	beforeAll(() => {
-		Utils.generateGroupId = jest.fn(() => 'group_01');
-		Utils.generateRowId = jest.fn(() => 'row_01');
-	});
+jest.mock('@liferay/osb-faro-segment-builder-web', () => {
+	const actual = jest.requireActual('@liferay/osb-faro-segment-builder-web');
+	return {
+		...actual,
+		generateGroupId: jest.fn(() => 'group_01'),
+		generateRowId: jest.fn(() => 'row_01')
+	};
+});
 
+describe('odata', () => {
 	describe('convertBetweenToSubstring', () => {
 		it('should convert between to substring', () => {
 			expect(

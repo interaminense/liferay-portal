@@ -1,5 +1,10 @@
 import {TimeSpans} from 'shared/util/constants';
 
+export {
+	Conjunctions,
+	SUPPORTED_CONJUNCTION_OPTIONS
+} from '@liferay/osb-faro-segment-builder-web';
+
 export const EVER = 'ever';
 export const SINCE = 'since';
 
@@ -28,11 +33,6 @@ export const INPUT_DISPLAY_DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
 /**
  * Constants for OData query.
  */
-
-export enum Conjunctions {
-	And = 'and',
-	Or = 'or'
-}
 
 export enum CustomFunctionOperators {
 	AccountsFilter = 'accounts-filter',
@@ -131,19 +131,6 @@ export const CUSTOM_FUNCTION_OPERATOR_KEY_MAP = {
 	['tag.filter']: CustomFunctionOperators.TagsFilter,
 	['vocabulary.filter']: CustomFunctionOperators.VocabulariesFilter
 };
-
-export const SUPPORTED_CONJUNCTION_OPTIONS = [
-	{
-		key: Conjunctions.And,
-		label: Liferay.Language.get('and'),
-		name: Conjunctions.And
-	},
-	{
-		key: Conjunctions.Or,
-		label: Liferay.Language.get('or'),
-		name: Conjunctions.Or
-	}
-];
 
 export const SUPPORTED_OPERATORS_MAP = {
 	[PropertyTypes.AccountDate]: [

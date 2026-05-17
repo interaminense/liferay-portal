@@ -267,7 +267,7 @@ export class BehaviorInput extends React.Component<IBehaviorInputProps> {
 				...params,
 				value: valueIMap.mergeIn(
 					['operator'],
-					criterion.operatorName
+					criterion.operatorName as any
 				) as CustomValue
 			};
 		} else if (!isNil(criterion?.value)) {

@@ -1,12 +1,16 @@
 import React from 'react';
-import {
-	Conjunctions,
-	CustomFunctionOperators,
-	FunctionalOperators,
-	NotOperators,
-	RelationalOperators
-} from './constants';
 import {CustomValue, Property} from 'shared/util/records';
+
+export type {
+	Criteria,
+	Criterion,
+	CriterionGroup,
+	OnCriterionAdd,
+	OnMove,
+	Operator
+} from '@liferay/osb-faro-segment-builder-web';
+
+import type {Criterion} from '@liferay/osb-faro-segment-builder-web';
 
 export type Context = {
 	lastNodeWasGroup?: boolean;
@@ -14,52 +18,12 @@ export type Context = {
 	prevConjunction?: string;
 };
 
-export type CriterionGroup = {
-	conjunctionName: string;
-	criteriaGroupId: string;
-	items: (CriterionGroup | Criterion)[];
-};
-
-export type Criterion = {
-	defaultValue?: string;
-	operatorName?: Conjunctions &
-		CustomFunctionOperators &
-		FunctionalOperators &
-		NotOperators &
-		RelationalOperators;
-	propertyName?: string;
-	rowId?: string;
-	touched?: boolean | object;
-	type?: string;
-	valid?: boolean | object;
-	value?: any;
-};
-
-export type Criteria = Criterion | CriterionGroup;
-
-export type OnCriterionAdd = (index: number, criterion: Criterion) => void;
-
 export type ODataASTNode = {
 	next?: number;
 	position?: number;
 	raw?: string;
 	type: string;
 	value: any;
-};
-
-export type OnMove = (
-	startGroupId: string,
-	startIndex: number,
-	destGroupId: string,
-	destIndex: number,
-	criterion: Criterion | CriterionGroup,
-	replace?: boolean
-) => void;
-
-export type Operator = {
-	key: string;
-	label: string;
-	name: string;
 };
 
 export interface ISegmentEditorInputBase {

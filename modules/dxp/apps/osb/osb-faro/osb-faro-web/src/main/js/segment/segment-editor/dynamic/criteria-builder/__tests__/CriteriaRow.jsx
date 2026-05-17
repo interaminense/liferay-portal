@@ -10,6 +10,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 import {MockedProvider} from '@apollo/client/testing';
 import {mockPreferenceReq} from 'test/graphql-data';
 import {Provider} from 'react-redux';
+import {SegmentBuilderProviders} from '../../adapter/SegmentBuilderProviders';
 
 jest.unmock('react-dom');
 
@@ -17,7 +18,14 @@ const WrapperComponent = ({children}) => (
 	<ApolloProvider client={client}>
 		<Provider store={mockStore()}>
 			<MockedProvider mocks={[mockPreferenceReq()]}>
-				{children}
+				<SegmentBuilderProviders
+					channelId=''
+					groupId=''
+					referencedProperties={Map()}
+					segmentType=''
+				>
+					{children}
+				</SegmentBuilderProviders>
 			</MockedProvider>
 		</Provider>
 	</ApolloProvider>

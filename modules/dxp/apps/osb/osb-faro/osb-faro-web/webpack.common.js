@@ -8,6 +8,14 @@ const webpack = require('webpack');
 
 const PUBLIC_PATH = '/o/osb-faro-web/dist/';
 
+// Liferay portal modules that are provided at runtime via ImportMap entries
+// registered by each module's `DynamicJSImportMapsContributor`. Webpack must
+// leave imports of these packages as bare ES specifiers so the browser
+// resolves them through the ImportMap rather than bundling the source.
+const PORTAL_PROVIDED_MODULES = new Set([
+	'@liferay/osb-faro-segment-builder-web'
+]);
+
 function resolveModule(name = '') {
 	return path.resolve(__dirname, 'src', 'main', 'js', name);
 }
@@ -35,10 +43,17 @@ const config = {
 			) {
 				return callback(null, request);
 			}
+			if (PORTAL_PROVIDED_MODULES.has(request)) {
+				return callback(null, request);
+			}
 			callback();
 		},
 		{
 			react: 'react',
+			'react-dnd':
+				'/o/frontend-js-react-web/__liferay__/exports/react-dnd.js',
+			'react-dnd-html5-backend':
+				'/o/frontend-js-react-web/__liferay__/exports/react-dnd-html5-backend.js',
 			'react-dom': 'react-dom'
 		}
 	],

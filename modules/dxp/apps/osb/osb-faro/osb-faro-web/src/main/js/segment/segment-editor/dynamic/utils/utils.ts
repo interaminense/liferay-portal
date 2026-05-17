@@ -1,4 +1,3 @@
-import dateFns from 'date-fns';
 import {
 	ACCOUNT_PROPERTIES,
 	INDIVIDUAL_PROPERTIES,
@@ -6,8 +5,8 @@ import {
 	SESSION_PROPERTIES,
 	WEB_BEHAVIORS
 } from '../utils/properties';
+import {Criteria, Criterion, Operator} from './types';
 import {
-	Conjunctions,
 	CustomFunctionOperators,
 	isKnown,
 	isUnknown,
@@ -15,17 +14,53 @@ import {
 	PropertyTypes,
 	SUPPORTED_OPERATORS_MAP
 } from './constants';
-import {Criteria, Criterion, CriterionGroup, Operator} from './types';
 import {EntityType, ReferencedEntities} from '../context/referencedObjects';
 import {Event} from 'event-analysis/utils/types';
-import {every, isBoolean, isString, isUndefined} from 'lodash';
 import {FieldContexts, FieldOwnerTypes} from 'shared/util/constants';
 import {fromJS, Map} from 'immutable';
-import {Property} from 'shared/util/records';
-import {v4 as uuidv4} from 'uuid';
+import {
+	getPropertyContextFromRaw,
+	getPropertyNameFromRaw,
+	isCriterionGroup,
+	parseActivityKey
+} from '@liferay/osb-faro-segment-builder-web';
+import {isBoolean} from 'lodash';
 
-const GROUP_ID_NAMESPACE = 'group_';
-const ROW_ID_NAMESPACE = 'row_';
+// Local re-declaration of the `isMap` type guard. Importing the original
+// guard from the path-mapped `@liferay/osb-faro-segment-builder-web` module
+// forces TypeScript to do a structural comparison of the false branch
+// against Immutable's recursive `Map<string, any>` type, which exceeds the
+// instantiation depth limit (TS2589) in this file's many `Map | object`
+// call sites. Wrapping immutable's `Map.isMap` in a same-project predicate
+// gives TS a guard it can resolve inline without the cross-module
+// structural compare.
+function isMap(value: any): value is Map<string, any> {
+	return Map.isMap(value);
+}
+
+// Re-export the local `isMap` so the test file and other consumers can still
+// reach it via `utils.isMap`. The engine module dropped `isMap` from its
+// public API (it was unused externally and pulled `immutable` into the engine
+// for no benefit); the type guard now lives only here, wrapping immutable's
+// `Map.isMap` directly.
+export {isMap};
+
+import {Property} from 'shared/util/records';
+
+export {
+	createNewGroup,
+	generateGroupId,
+	generateRowId,
+	getChildGroupIds,
+	getPropertyContextFromRaw,
+	getPropertyNameFromRaw,
+	isCriterionGroup,
+	isValid,
+	jsDatetoYYYYMMDD,
+	objectToFormData,
+	parseActivityKey,
+	validateSegmentInputs
+} from '@liferay/osb-faro-segment-builder-web';
 
 export const createInterestProperty = (name: string): Property =>
 	new Property({
@@ -68,67 +103,6 @@ export function createTagProperty({
 }
 
 /**
- * Creates a new group object with items.
- */
-export const createNewGroup = (items: Criteria[]): CriterionGroup => ({
-	conjunctionName: Conjunctions.And,
-	criteriaGroupId: generateGroupId(),
-	items
-});
-
-/**
- * Generates a unique group id.
- */
-export const generateGroupId = (): string => `${GROUP_ID_NAMESPACE}${uuidv4()}`;
-
-/**
- * Generates a unique row id.
- */
-export const generateRowId = (): string => `${ROW_ID_NAMESPACE}${uuidv4()}`;
-
-/**
- * Gets a list of group ids from a criteria object.
- * Used for disallowing groups to be moved into its own deeper nested groups.
- * Example of returned value: ['group_02', 'group_03']
- */
-export const getChildGroupIds = (criteria: Criteria): string[] => {
-	let childGroupIds: string[] = [];
-
-	if (isCriterionGroup(criteria) && criteria.items.length) {
-		childGroupIds = criteria.items.reduce(
-			(groupIdList: string[], item) =>
-				isCriterionGroup(item)
-					? [
-							...groupIdList,
-							item.criteriaGroupId,
-							...getChildGroupIds(item)
-					  ]
-					: groupIdList,
-			[] as string[]
-		);
-	}
-
-	return childGroupIds;
-};
-
-/**
- * Gets the property name from the propertyLabel string .
- */
-export const getPropertyNameFromRaw = (propertyLabel: string = ''): string => {
-	const properties = propertyLabel.split('/');
-
-	return properties.length > 1 ? properties[1] : properties[0];
-};
-
-export const getPropertyContextFromRaw = (
-	propertyLabel: string = ''
-): string | null => {
-	const properties = propertyLabel.split('/');
-
-	return properties.length > 1 ? properties[0] : null;
-};
-
-/**
  * Gets the list of operators for a supported type.
  * Used for displaying the operators available for each criteria row.
  */
@@ -138,63 +112,10 @@ export const getSupportedOperatorsFromType = (type: string = ''): Operator[] =>
 	] || [];
 
 /**
- * Checks if value is a CriterionGroup.
- */
-export const isCriterionGroup = (
-	value: CriterionGroup | Criterion
-): value is CriterionGroup =>
-	!!value && (value as CriterionGroup).items !== undefined;
-
-/**
- * Checks if value is an ImmutableMap
- */
-export const isMap = (
-	value: Map<string, any> | object
-): value is Map<string, any> => Map.isMap(value as Map<string, any>);
-
-/**
  * Checks if value is either isKnown or isUnknown.
  */
 export const isOfKnownType = (key: string): boolean =>
 	[isKnown, isUnknown].includes(key);
-
-/**
- * Converts an object of key value pairs to a form data object for passing
- * into a fetch body.
- */
-export const objectToFormData = (
-	dataObject: Record<string, string | Blob>
-): FormData => {
-	const formData = new FormData();
-
-	Object.keys(dataObject).forEach(key => {
-		formData.set(key, dataObject[key]);
-	});
-
-	return formData;
-};
-
-/**
- * Parse an activityKey string into an object.
- */
-export const parseActivityKey = (
-	activityKey: string = ''
-): {eventId: string; id: string; objectType: string} => {
-	const [objectType, eventId, id] = activityKey.split('#');
-
-	return {eventId, id, objectType};
-};
-
-/**
- * Returns a YYYY-MM-DD date
- * based on a JS Date object
- *
- * @export
- */
-export const jsDatetoYYYYMMDD = (dateJsObject: Date): string => {
-	const DATE_FORMAT = 'YYYY-MM-DD';
-	return dateFns.format(dateJsObject, DATE_FORMAT);
-};
 
 /**
  * Finds the matching property based on its Criterion.
@@ -548,14 +469,6 @@ export const convertReferencedObjectsToProperties = (
 };
 
 /**
- * Check to see if the value is a valid input value.
- * The input value cannot be an empty string or undefined.
- * @returns {boolean}
- */
-export const isValid = (value: any): boolean =>
-	!(isUndefined(value) || (isString(value) && !value.length));
-
-/**
  * Recursively check through all criterions and invalidates those
  * that do not have a matching property
  */
@@ -616,25 +529,4 @@ export const parseReferencedEntityId = (
 	}
 
 	return parsedId;
-};
-
-/**
- * Recursively check through all criteria to see if they're valid.
- */
-export const validateSegmentInputs = (criteria: Criteria): boolean => {
-	if (isCriterionGroup(criteria)) {
-		const {items} = criteria;
-
-		if (items.length) {
-			return items.map(validateSegmentInputs).every(Boolean);
-		}
-	} else if (criteria) {
-		if (isBoolean(criteria.valid)) {
-			return criteria.valid;
-		}
-
-		return every(criteria.valid, Boolean);
-	}
-
-	return false;
 };
