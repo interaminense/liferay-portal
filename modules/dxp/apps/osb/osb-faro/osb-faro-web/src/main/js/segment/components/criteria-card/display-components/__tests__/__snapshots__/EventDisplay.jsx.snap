@@ -16,22 +16,5 @@ exports[`EventDisplay renders 1`] = `
   <b>
     Downloaded Document
   </b>
-  <span>
-    at least
-  </span>
-  <b>
-    2
-  </b>
-  <span>
-    time(s)
-  </span>
-  <span>
-    since
-  </span>
-  <span>
-    <strong>
-      Last 24 hours
-    </strong>
-  </span>
 </div>
 `;
