@@ -39,6 +39,7 @@ export const AssetTabsQuery = (metrics: Metric[], name: string) => gql`
 			rangeStart: $rangeStart
 			title: $title
 		) {
+			id
 			${buildAssetTabsBody(metrics)}
 		}
 	}
@@ -70,6 +71,7 @@ export const AssetMetricQuery = (queryName: string) => (metricName: string) =>
 			rangeStart: $rangeStart
 			title: $title
 		) {
+			id
 			${metricName} {
 				...HistogramFragment
 			}
@@ -94,6 +96,7 @@ export const SitesTabsQuery = gql`
 			rangeKey: $rangeKey
 			rangeStart: $rangeStart
 		) {
+			id
 			bounceRateMetric {
 				...TabsFragment
 			}
@@ -127,6 +130,7 @@ const SitesGenericMetricQuery = (metricName: string) => gql`
 			rangeKey: $rangeKey
 			rangeStart: $rangeStart
 		) {
+			id
 			${metricName} {
 				...HistogramFragment
 			}
@@ -151,6 +155,7 @@ const SitesCompositeMetricQuery = gql`
 			rangeKey: $rangeKey
 			rangeStart: $rangeStart
 		) {
+			id
 			visitorsMetric {
 				...HistogramFragment
 			}
@@ -194,6 +199,7 @@ export const PageMetricQuery = (metricName: string) => gql`
 			rangeStart: $rangeStart
 			title: $title
 		) {
+			id
 			${metricName} {
 				...HistogramFragment
 			}
@@ -226,6 +232,7 @@ export const PageMetricTabsQuery = gql`
 			rangeStart: $rangeStart
 			title: $title
 		) {
+			id
 			visitorsMetric {
 				...TabsFragment
 			}
