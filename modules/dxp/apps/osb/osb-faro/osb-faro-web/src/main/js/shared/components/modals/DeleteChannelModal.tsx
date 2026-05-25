@@ -25,7 +25,7 @@ const renderDataSourceMessage = (items: Array<DataSource>, total: number) => {
 		<p>
 			{sub(
 				Liferay.Language.get(
-					'to-reconnect-to-analytics-cloud-with-x,-please-make-sure-x-has-been-updated-with-the-latest-fixpack'
+					'to-reconnect-to-analytics-cloud-with-x-please-make-sure-x-has-been-updated-with-the-latest-fixpack'
 				),
 				[dataSourceNames]
 			)}
@@ -59,7 +59,7 @@ const DeleteChannelModal: React.FC<IDeleteChannelModalProps> = ({
 			onClose={onClose}
 			onSubmit={onSubmit}
 			title={
-				sub(Liferay.Language.get('delete-x?'), [channelName]) as string
+				sub(Liferay.Language.get('delete-x'), [channelName]) as string
 			}
 		>
 			<SafeResults
@@ -78,7 +78,7 @@ const DeleteChannelModal: React.FC<IDeleteChannelModalProps> = ({
 								<strong>
 									{sub(
 										Liferay.Language.get(
-											'to-delete-x,-copy-the-sentence-below-to-confirm-your-intention-to-delete-property'
+											'to-delete-x-copy-the-sentence-below-to-confirm-your-intention-to-delete-property'
 										),
 										[channelName]
 									)}
@@ -87,7 +87,7 @@ const DeleteChannelModal: React.FC<IDeleteChannelModalProps> = ({
 
 							<p>
 								{Liferay.Language.get(
-									'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
+									'this-will-result-in-the-complete-removal-of-this-propertys-historical-events-you-will-not-be-able-to-undo-this-operation'
 								)}
 							</p>
 

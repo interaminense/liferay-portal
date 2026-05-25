@@ -186,7 +186,7 @@ const NewRuleModal: React.FC<INewRuleModalProps> = ({onClose, onSubmit}) => {
 
 						<div className='secondary-info'>
 							{Liferay.Language.get(
-								'item-sets-can-vary-per-period-depending-on-interactions.-metadata-matches-pages-with-at-least-one-view-event'
+								'item-sets-can-vary-per-period-depending-on-interactions-metadata-matches-pages-with-at-least-one-view-event'
 							)}
 						</div>
 

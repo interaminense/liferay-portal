@@ -1,5 +1,6 @@
 const common = require('./webpack.common');
 const {responseInterceptor} = require('http-proxy-middleware');
+const path = require('path');
 const {merge} = require('webpack-merge');
 const webpack = require('webpack');
 
@@ -71,7 +72,13 @@ module.exports = merge(common.config, {
 		rules: [
 			{
 				include: common.include,
-				loader: 'liferay-lang-key-dev-loader',
+				loader: path.resolve(__dirname, 'scripts/lang-loader.js'),
+				options: {
+					path: path.resolve(
+						__dirname,
+						'../../../../../apps/portal-language/portal-language-lang/src/main/resources/content/Language.properties'
+					)
+				},
 				test: /\.(js|ts)x?$/
 			}
 		]

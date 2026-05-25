@@ -44,7 +44,7 @@ const InviteUsersModal: React.FC<IInviteUsersModalProps> = ({
 			<Modal.Body>
 				<div className='description form-text'>
 					{Liferay.Language.get(
-						'enter-the-email-addresses-of-the-people-you-would-like-to-invite-to-analytics-cloud.-separate-each-address-by-space-or-comma'
+						'enter-the-email-addresses-of-the-people-you-would-like-to-invite-to-analytics-cloud-separate-each-address-by-space-or-comma'
 					)}
 				</div>
 

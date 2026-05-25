@@ -31,7 +31,7 @@ const TimeZoneAlert: React.FC<ITimeZoneAlertProps> = ({
 		>
 			{sub(
 				Liferay.Language.get(
-					'workspace-timezone-has-changed-to-x-as-of-x.-please-allow-1-2-days-for-the-data-to-adjust-to-this-new-setting.'
+					'workspace-timezone-has-changed-to-x-as-of-x-please-allow-1-2-days-for-the-data-to-adjust-to-this-new-setting'
 				),
 				[
 					displayTimeZone.replace(TIME_ZONE_COUNTRY_REGEX, ''),

@@ -73,7 +73,7 @@ const EventDetailsCard: React.FC<IEventDetailsCardProps> = ({
 			<Card.Body>
 				<span className='mt-2 mb-4 w-50'>
 					{Liferay.Language.get(
-						'use-this-script-to-start-sending-events-to-analytics-cloud.-you-can-customize-which-attributes-to-send-with-a-specific-event.-selecting-the-attributes-below-will-generate-a-new-sample-script'
+						'use-this-script-to-start-sending-events-to-analytics-cloud-you-can-customize-which-attributes-to-send-with-a-specific-event-selecting-the-attributes-below-will-generate-a-new-sample-script'
 					)}
 				</span>
 

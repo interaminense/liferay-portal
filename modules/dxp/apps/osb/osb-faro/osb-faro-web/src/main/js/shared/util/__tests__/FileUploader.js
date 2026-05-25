@@ -154,7 +154,7 @@ describe('FileUploader', () => {
 		it.each`
 			props                            | files                    | error
 			${{}}                            | ${['img.png']}           | ${INVALID_FILE}
-			${{}}                            | ${['somecsv']}           | ${INVALID_FILE}
+			${{}}                            | ${['somecsv']}          | ${INVALID_FILE}
 			${{}}                            | ${['a.csv', 'b.csv']}    | ${MULTIPLE_FILES}
 			${{maxFileCount: 2}}             | ${['a.c', 'b.c', 'd.c']} | ${FILE_LIMIT}
 			${{maxFileCount: 0}}             | ${['a.csv']}             | ${FILE_LIMIT}

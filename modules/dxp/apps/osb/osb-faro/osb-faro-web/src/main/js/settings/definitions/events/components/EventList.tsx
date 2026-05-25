@@ -125,7 +125,7 @@ const EventList: React.FC<IEventListProps> = ({
 			message: (
 				<p className='text-secondary'>
 					{Liferay.Language.get(
-						'hiding-events-in-the-interface-may-require-reconfiguration-of-segments-and-other-analysis-using-this-event.-hidden-events-will-be-available-for-calculating-metrics'
+						'hiding-events-in-the-interface-may-require-reconfiguration-of-segments-and-other-analysis-using-this-event-hidden-events-will-be-available-for-calculating-metrics'
 					)}
 				</p>
 			),
@@ -160,7 +160,7 @@ const EventList: React.FC<IEventListProps> = ({
 						addAlert({
 							alertType: Alert.Types.Error,
 							message: Liferay.Language.get(
-								'there-was-an-error-processing-your-request.-please-try-again'
+								'there-was-an-error-processing-your-request-please-try-again'
 							),
 							timeout: false
 						})
@@ -211,7 +211,7 @@ const EventList: React.FC<IEventListProps> = ({
 				addAlert({
 					alertType: Alert.Types.Error,
 					message: Liferay.Language.get(
-						'there-was-an-error-processing-your-request.-please-try-again'
+						'there-was-an-error-processing-your-request-please-try-again'
 					),
 					timeout: false
 				})

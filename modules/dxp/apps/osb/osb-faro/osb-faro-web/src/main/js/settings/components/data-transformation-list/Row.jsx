@@ -261,7 +261,7 @@ export class DataTransformationListRow extends React.Component {
 			);
 		} else if (unmatched) {
 			return Liferay.Language.get(
-				'no-fields-matched.-please-select-a-field-from-the-dropdown-or-create-a-new-one'
+				'no-fields-matched-please-select-a-field-from-the-dropdown-or-create-a-new-one'
 			);
 		} else if (!sourceName && !suggestionName) {
 			return Liferay.Language.get(
@@ -270,7 +270,7 @@ export class DataTransformationListRow extends React.Component {
 		} else {
 			return sub(
 				Liferay.Language.get(
-					'best-match-selected.-there-are-x-other-possible-matches'
+					'best-match-selected-there-are-x-other-possible-matches'
 				),
 				[
 					mappingSuggestions[sourceName] &&

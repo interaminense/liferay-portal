@@ -307,7 +307,7 @@ const RequestList: React.FC<IRequestListProps> = ({
 						addAlert({
 							alertType: Alert.Types.Error,
 							message: Liferay.Language.get(
-								'there-was-an-error-processing-your-request.-please-try-again'
+								'there-was-an-error-processing-your-request-please-try-again'
 							),
 							timeout: false
 						})

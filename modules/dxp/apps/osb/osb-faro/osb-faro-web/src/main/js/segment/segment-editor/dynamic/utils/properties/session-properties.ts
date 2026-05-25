@@ -52,7 +52,7 @@ const SESSION_PROPERTIES = List(
 			type: PropertyTypes.SessionText
 		},
 		{
-			label: Liferay.Language.get('date-&-time'),
+			label: Liferay.Language.get('date-and-time'),
 			name: 'completeDate',
 			type: PropertyTypes.SessionDateTime
 		},

@@ -77,7 +77,7 @@ export const ClearData: React.FC<IClearDataProps> = ({
 			]) as string
 		}
 		pageDescription={Liferay.Language.get(
-			'the-following-data-will-be-impacted-and-can-yield-unexpected-results.-this-action-will-not-remove-the-data-source'
+			'the-following-data-will-be-impacted-and-can-yield-unexpected-results-this-action-will-not-remove-the-data-source'
 		)}
 		pageTitle={sub(
 			Liferay.Language.get('confirm-clearing-of-all-data-from-x'),

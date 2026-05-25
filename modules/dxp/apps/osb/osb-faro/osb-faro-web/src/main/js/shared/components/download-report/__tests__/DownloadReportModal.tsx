@@ -71,7 +71,7 @@ const WrapperCSVComponent: React.FC<IWrapperCSVComponentProps> = ({
 			infoMessage={
 				sub(
 					Liferay.Language.get(
-						'the-x-list-will-be-downloaded-respecting-the-current-ordering,-filter,-and-search-results.-please-verify-if-the-desired-changes-are-applied'
+						'the-x-list-will-be-downloaded-respecting-the-current-ordering-filter-and-search-results-please-verify-if-the-desired-changes-are-applied'
 					),
 					[Liferay.Language.get('individuals')]
 				) as string
@@ -103,7 +103,7 @@ const WrapperPDFomponent = ({
 			) as string
 		}
 		infoMessage={Liferay.Language.get(
-			'the-dashboard-will-be-downloaded-exactly-as-it-is-displayed-on-your-screen.-please-verify-if-the-desired-tabs-and-filters-are-selected-before-proceeding'
+			'the-dashboard-will-be-downloaded-exactly-as-it-is-displayed-on-your-screen-please-verify-if-the-desired-tabs-and-filters-are-selected-before-proceeding'
 		)}
 		onSubmit={jest.fn()}
 		type={ReportType.PDF}

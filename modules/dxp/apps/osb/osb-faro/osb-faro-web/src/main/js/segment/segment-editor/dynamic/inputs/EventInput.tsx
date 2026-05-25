@@ -446,7 +446,7 @@ const EventInput: React.FC<IEventInputProps> = ({
 									variant='feedback'
 								>
 									{Liferay.Language.get(
-										'event-date-attributes-may-create-time-conflicts-and-reduce-matching-users.-review-your-criteria-to-ensure-the-segment-behaves-as-expected'
+										'event-date-attributes-may-create-time-conflicts-and-reduce-matching-users-review-your-criteria-to-ensure-the-segment-behaves-as-expected'
 									)}
 								</Alert>
 							)}

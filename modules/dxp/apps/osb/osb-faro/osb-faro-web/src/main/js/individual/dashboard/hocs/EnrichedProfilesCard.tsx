@@ -94,7 +94,7 @@ const EnrichedProfilesCard: React.FC<IEnrichedProfilesCardProps> = ({
 
 					<p>
 						{Liferay.Language.get(
-							'know-your-audience-better-by-connecting-people-data-to-enrich-profiles.-get-started-by-syncing-contacts-from-dxp-or-by-adding-a-data-source-with-people-data'
+							'know-your-audience-better-by-connecting-people-data-to-enrich-profiles-get-started-by-syncing-contacts-from-dxp-or-by-adding-a-data-source-with-people-data'
 						)}
 					</p>
 				</Card.Body>

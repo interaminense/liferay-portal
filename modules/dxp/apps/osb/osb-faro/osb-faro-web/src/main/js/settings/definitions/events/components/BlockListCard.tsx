@@ -159,7 +159,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 			message: (
 				<p className='text-secondary'>
 					{Liferay.Language.get(
-						'hiding-events-in-the-interface-may-require-reconfiguration-of-segments-and-other-analysis-using-this-event.-hidden-events-will-be-available-for-calculating-metrics'
+						'hiding-events-in-the-interface-may-require-reconfiguration-of-segments-and-other-analysis-using-this-event-hidden-events-will-be-available-for-calculating-metrics'
 					)}
 				</p>
 			),
@@ -194,7 +194,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 						addAlert({
 							alertType: Alert.Types.Error,
 							message: Liferay.Language.get(
-								'there-was-an-error-processing-your-request.-please-try-again'
+								'there-was-an-error-processing-your-request-please-try-again'
 							),
 							timeout: false
 						})
@@ -245,7 +245,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 				addAlert({
 					alertType: Alert.Types.Error,
 					message: Liferay.Language.get(
-						'there-was-an-error-processing-your-request.-please-try-again'
+						'there-was-an-error-processing-your-request-please-try-again'
 					),
 					timeout: false
 				})
@@ -313,13 +313,13 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 			})
 			.catch(err => {
 				let message: React.ReactNode = Liferay.Language.get(
-					'there-was-an-error-processing-your-request.-please-try-again'
+					'there-was-an-error-processing-your-request-please-try-again'
 				);
 
 				if (EVENT_LIMIT_REACHED.test(err.message)) {
 					message = sub(
 						Liferay.Language.get(
-							'your-workspace-is-over-the-event-limit.-please-remove-some-events-from-the-allow-list-to-continue.-visit-our-x-to-learn-more'
+							'your-workspace-is-over-the-event-limit-please-remove-some-events-from-the-allow-list-to-continue-visit-our-x-to-learn-more'
 						),
 						[
 							<ClayLink
@@ -406,7 +406,7 @@ const BlockListCard: React.FC<IBlockListCardProps> = ({
 						description={
 							<>
 								{Liferay.Language.get(
-									'to-block-events,-select-one-from-the-events-table'
+									'to-block-events-select-one-from-the-events-table'
 								)}
 
 								<ClayLink

@@ -21,7 +21,9 @@ const FormAbandonmentWithData = compose(
 	withLoading(),
 	withError(),
 	withEmpty({
-		emptyTitle: Liferay.Language.get('empty-message-form-abandoment')
+		emptyTitle: Liferay.Language.get(
+			'there-are-no-interactions-on-the-selected-period'
+		)
 	})
 )(HTMLBarChart);
 

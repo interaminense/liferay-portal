@@ -45,7 +45,7 @@ function salesforceAuthErrorMessage(errMessage: string) {
 				'authorization_pending'
 			],
 			messageKey: Liferay.Language.get(
-				'you-did-not-grant-access-to-the-application.-please-approve-the-request-and-try-again'
+				'you-did-not-grant-access-to-the-application-please-approve-the-request-and-try-again'
 			)
 		},
 		{
@@ -56,7 +56,7 @@ function salesforceAuthErrorMessage(errMessage: string) {
 				'NO_ACCESS'
 			],
 			messageKey: Liferay.Language.get(
-				'your-account-or-organization-is-not-eligible-for-sign-in.-contact-your-administrator-for-assistance'
+				'your-account-or-organization-is-not-eligible-for-sign-in-contact-your-administrator-for-assistance'
 			)
 		},
 		{
@@ -66,7 +66,7 @@ function salesforceAuthErrorMessage(errMessage: string) {
 				'rate_limit_exceeded'
 			],
 			messageKey: Liferay.Language.get(
-				'we-could-not-verify-your-sign-in.-check-your-credentials-and-try-again'
+				'we-could-not-verify-your-sign-in-check-your-credentials-and-try-again'
 			)
 		},
 		{
@@ -77,7 +77,7 @@ function salesforceAuthErrorMessage(errMessage: string) {
 				'unsupported_response_type'
 			],
 			messageKey: Liferay.Language.get(
-				'the-application-credentials-or-configuration-are-invalid.-verify-the-client-settings-and-try-again'
+				'the-application-credentials-or-configuration-are-invalid-verify-the-client-settings-and-try-again'
 			)
 		}
 	];
@@ -89,7 +89,7 @@ function salesforceAuthErrorMessage(errMessage: string) {
 	}
 
 	return Liferay.Language.get(
-		'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+		'there-was-an-error-processing-your-request-try-again-if-the-problem-persists-please-contact-support'
 	);
 }
 
@@ -202,7 +202,7 @@ const ConnectSalesforceAuth: React.FC<IConnectSalesforceAuthProps> = ({
 										addAlert({
 											alertType: Alert.Types.Error,
 											message: Liferay.Language.get(
-												'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+												'there-was-an-error-processing-your-request-try-again-if-the-problem-persists-please-contact-support'
 											)
 										});
 									})
@@ -244,7 +244,7 @@ const ConnectSalesforceAuth: React.FC<IConnectSalesforceAuthProps> = ({
 										addAlert({
 											alertType: Alert.Types.Error,
 											message: Liferay.Language.get(
-												'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+												'there-was-an-error-processing-your-request-try-again-if-the-problem-persists-please-contact-support'
 											)
 										});
 									})

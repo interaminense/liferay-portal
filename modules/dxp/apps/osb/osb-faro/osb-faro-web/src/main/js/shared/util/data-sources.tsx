@@ -24,7 +24,7 @@ export const SERVICE_ERROR_MESSAGE_MAP: Record<number, string> = {
 		'data-source-credentials-invalid-please-contact-your-oauth-administrator'
 	),
 	404: Liferay.Language.get(
-		'there-was-an-error-with-the-servers-connection.-please-try-again-when-data-sources-status-is-active'
+		'there-was-an-error-with-the-servers-connection-please-try-again-when-data-sources-status-is-active'
 	)
 };
 
@@ -65,35 +65,35 @@ export const STATUS_DISPLAY = {
 		display: 'success',
 		label: Liferay.Language.get('active'),
 		message: Liferay.Language.get(
-			'all-data-coming-from-this-data-source-is-up-to-date.-there-are-no-errors-to-report'
+			'all-data-coming-from-this-data-source-is-up-to-date-there-are-no-errors-to-report'
 		)
 	},
 	[DataSourceStates.CredentialsInvalid]: {
 		display: 'warning',
 		label: Liferay.Language.get('invalid-credentials'),
 		message: Liferay.Language.get(
-			'the-authorization-for-this-data-source-has-expired.-please-reauthorize-the-token-in-the-oauth-tab'
+			'the-authorization-for-this-data-source-has-expired-please-reauthorize-the-token-in-the-oauth-tab'
 		)
 	},
 	[DataSourceStates.CredentialsValid]: {
 		display: 'info',
 		label: Liferay.Language.get('authenticated'),
 		message: Liferay.Language.get(
-			'you-have-successfully-authenticated.-you-can-now-configure-your-data'
+			'you-have-successfully-authenticated-you-can-now-configure-your-data'
 		)
 	},
 	default: {
 		display: 'secondary',
 		label: Liferay.Language.get('not-configured'),
 		message: Liferay.Language.get(
-			'data-source-has-not-been-created.-please-authorize-and-save-to-get-started'
+			'data-source-has-not-been-created-please-authorize-and-save-to-get-started'
 		)
 	},
 	[DataSourceStates.Disconnected]: {
 		display: 'secondary',
 		label: Liferay.Language.get('disconnected'),
 		message: Liferay.Language.get(
-			'the-data-source-is-disconnected.-data-is-no-longer-being-synced-from-dxp,-but-you-can-reconnect-to-resume-syncing'
+			'the-data-source-is-disconnected-data-is-no-longer-being-synced-from-dxp-but-you-can-reconnect-to-resume-syncing'
 		)
 	},
 	[DataSourceStates.InProgressDeleting]: {
@@ -114,14 +114,14 @@ export const STATUS_DISPLAY = {
 		display: 'success',
 		label: Liferay.Language.get('connected'),
 		message: Liferay.Language.get(
-			'you-have-successfully-authenticated-your-token-with-your-data-source.-you-can-now-configure-your-data-in-dxp'
+			'you-have-successfully-authenticated-your-token-with-your-data-source-you-can-now-configure-your-data-in-dxp'
 		)
 	},
 	[DataSourceStates.UndefinedError]: {
 		display: 'warning',
 		label: Liferay.Language.get('inactive'),
 		message: Liferay.Language.get(
-			'a-server-error-occurred-while-connected-to-your-data-source.-analytics-cloud-will-attempt-to-automatically-reconnect-during-its-next-regularly-scheduled-sync'
+			'a-server-error-occurred-while-connected-to-your-data-source-analytics-cloud-will-attempt-to-automatically-reconnect-during-its-next-regularly-scheduled-sync'
 		)
 	}
 };
@@ -184,7 +184,7 @@ export function validateUniqueName({
 			let error = '';
 			if (result.total) {
 				error = Liferay.Language.get(
-					'a-data-source-already-exists-with-that-name.-please-enter-a-different-name'
+					'a-data-source-already-exists-with-that-name-please-enter-a-different-name'
 				);
 			}
 

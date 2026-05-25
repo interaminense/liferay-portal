@@ -15,7 +15,7 @@ const DETAILS_MAP = {
 	],
 	[ProjectStates.Maintenance]: [
 		Liferay.Language.get(
-			'analytics-cloud-is-undergoing-scheduled-maintenance.-we-expect-to-be-back-online-in-a-couple-of-hours.-thank-you-for-your-patience'
+			'analytics-cloud-is-undergoing-scheduled-maintenance-we-expect-to-be-back-online-in-a-couple-of-hours-thank-you-for-your-patience'
 		)
 	],
 	[NO_ACCOUNT]: [
@@ -30,7 +30,7 @@ const DETAILS_MAP = {
 	],
 	[ProjectStates.Unavailable]: [
 		Liferay.Language.get(
-			'analytics-cloud-is-temporarily-unavailable.-we-apologize-for-any-inconvenience,-we-plan-to-be-back-up-shortly'
+			'analytics-cloud-is-temporarily-unavailable-we-apologize-for-any-inconvenience-we-plan-to-be-back-up-shortly'
 		)
 	]
 };

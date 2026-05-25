@@ -50,7 +50,7 @@ const EditEmailReportsModal: React.FC<IEditEmailReportsModalProps> = ({
 
 								<div className='text-secondary'>
 									{Liferay.Language.get(
-										'enable-email-reports-to-configure-how-frequently-you-would-like-to-receive-notifications-about-this-property-activities.-other-users-will-not-be-affected-by-this-action'
+										'enable-email-reports-to-configure-how-frequently-you-would-like-to-receive-notifications-about-this-property-activities-other-users-will-not-be-affected-by-this-action'
 									)}
 								</div>
 							</div>

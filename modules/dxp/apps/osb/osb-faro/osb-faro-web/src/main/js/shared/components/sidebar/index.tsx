@@ -2,6 +2,7 @@ import * as API from 'shared/api';
 import ChannelsMenu, {Channel} from '../channels-menu';
 import ClayIcon from '@clayui/icon';
 import getCN from 'classnames';
+import LanguagePicker from 'shared/components/language-picker';
 import React from 'react';
 import SidebarItem from './SidebarItem';
 import UserDropdown, {Menus} from 'shared/components/user-dropdown';
@@ -138,9 +139,22 @@ const Sidebar: React.FC<ISidebarProps> = ({
 				{
 					items: [
 						{
-							childMenuId: 'language',
-							divider: true,
-							label: Liferay.Language.get('language')
+							customContent: (
+								<LanguagePicker
+									languages={LANGUAGES}
+									onSelect={id =>
+										API.user
+											.updateLanguage({
+												languageId: id
+											})
+											.then(() =>
+												window.location.reload()
+											)
+									}
+									selectedLanguageId={languageId}
+								/>
+							),
+							divider: true
 						},
 						{
 							label: Liferay.Language.get('switch-workspaces'),
@@ -153,29 +167,6 @@ const Sidebar: React.FC<ISidebarProps> = ({
 						}
 					],
 					subheaderLabel: emailAddress
-				}
-			],
-			language: [
-				{
-					items: LANGUAGES.map(({id, label}) => {
-						const active = languageId === id;
-
-						return {
-							active,
-							label,
-							onClick: active
-								? undefined
-								: () => {
-										API.user
-											.updateLanguage({
-												languageId: id
-											})
-											.then(() =>
-												window.location.reload()
-											);
-								  }
-						};
-					})
 				}
 			]
 		};

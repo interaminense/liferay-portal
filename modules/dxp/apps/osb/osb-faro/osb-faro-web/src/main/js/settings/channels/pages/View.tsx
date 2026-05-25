@@ -243,7 +243,7 @@ const View: React.FC<IViewProps> = ({
 													<strong>
 														{sub(
 															Liferay.Language.get(
-																'to-clear-data-from-x,-copy-the-sentence-below-to-confirm-your-intention-to-clear-data-from-this-property'
+																'to-clear-data-from-x-copy-the-sentence-below-to-confirm-your-intention-to-clear-data-from-this-property'
 															),
 															[name]
 														)}
@@ -252,7 +252,7 @@ const View: React.FC<IViewProps> = ({
 
 												<p>
 													{Liferay.Language.get(
-														'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
+														'this-will-result-in-the-complete-removal-of-this-propertys-historical-events-you-will-not-be-able-to-undo-this-operation'
 													)}
 												</p>
 											</>
@@ -306,7 +306,7 @@ const View: React.FC<IViewProps> = ({
 										},
 										title: sub(
 											Liferay.Language.get(
-												'clear-x-data?'
+												'clear-x-data'
 											),
 											[name]
 										)
@@ -337,7 +337,7 @@ const View: React.FC<IViewProps> = ({
 													<strong>
 														{sub(
 															Liferay.Language.get(
-																'to-delete-x,-copy-the-sentence-below-to-confirm-your-intention-to-delete-property'
+																'to-delete-x-copy-the-sentence-below-to-confirm-your-intention-to-delete-property'
 															),
 															[name]
 														)}
@@ -346,7 +346,7 @@ const View: React.FC<IViewProps> = ({
 
 												<p>
 													{Liferay.Language.get(
-														'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
+														'this-will-result-in-the-complete-removal-of-this-propertys-historical-events-you-will-not-be-able-to-undo-this-operation'
 													)}
 												</p>
 											</>
@@ -419,7 +419,7 @@ const View: React.FC<IViewProps> = ({
 												);
 										},
 										title: sub(
-											Liferay.Language.get('delete-x?'),
+											Liferay.Language.get('delete-x'),
 											[name]
 										)
 									});
@@ -450,7 +450,7 @@ const View: React.FC<IViewProps> = ({
 									message: (
 										<div className='text-secondary'>
 											{Liferay.Language.get(
-												'property-permissions-will-be-changed-if-you-proceed-to-select-users.-add-users-from-your-workspace-to-give-access-to-this-property'
+												'property-permissions-will-be-changed-if-you-proceed-to-select-users-add-users-from-your-workspace-to-give-access-to-this-property'
 											)}
 										</div>
 									),

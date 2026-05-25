@@ -3,6 +3,7 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import DocumentTitle from 'shared/components/DocumentTitle';
 import getCN from 'classnames';
+import LanguagePicker from 'shared/components/language-picker';
 import React, {createContext} from 'react';
 import UserDropdown from 'shared/components/user-dropdown';
 import withCurrentUser from 'shared/hoc/WithCurrentUser';
@@ -40,9 +41,22 @@ export class WorkspacesBasePage extends React.Component<IWorkspacesBasePageProps
 				{
 					items: [
 						{
-							childMenuId: 'language',
-							divider: true,
-							label: Liferay.Language.get('language')
+							customContent: (
+								<LanguagePicker
+									languages={LANGUAGES}
+									onSelect={id =>
+										API.user
+											.updateLanguage({
+												languageId: id
+											})
+											.then(() =>
+												window.location.reload()
+											)
+									}
+									selectedLanguageId={languageId}
+								/>
+							),
+							divider: true
 						},
 						{
 							externalLink: true,
@@ -56,29 +70,6 @@ export class WorkspacesBasePage extends React.Component<IWorkspacesBasePageProps
 						}
 					],
 					subheaderLabel: emailAddress
-				}
-			],
-			language: [
-				{
-					items: LANGUAGES.map(({id, label}) => {
-						const active = languageId === id;
-
-						return {
-							active,
-							label,
-							onClick: active
-								? undefined
-								: () => {
-										API.user
-											.updateLanguage({
-												languageId: id
-											})
-											.then(() =>
-												window.location.reload()
-											);
-								  }
-						};
-					})
 				}
 			]
 		};

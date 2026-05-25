@@ -314,7 +314,7 @@ export const AccessTokenList: React.FC<IAccessTokenListProps> = ({groupId}) => (
 		className='access-token-list-root'
 		pageDescription={sub(
 			Liferay.Language.get(
-				'access-this-workspaces-data-via-api-using-an-access-token.-a-full-list-of-endpoints-is-available-in-the-x'
+				'access-this-workspaces-data-via-api-using-an-access-token-a-full-list-of-endpoints-is-available-in-the-x'
 			),
 			[
 				<ClayLink

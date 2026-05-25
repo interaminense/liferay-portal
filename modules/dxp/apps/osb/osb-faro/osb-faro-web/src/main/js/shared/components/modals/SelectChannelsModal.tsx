@@ -126,7 +126,7 @@ const SelectChannelsModal: React.FC<ISelectChannelsModalProps> = ({
 								title={Liferay.Language.get('error')}
 							>
 								{Liferay.Language.get(
-									'unable-to-perform-this-action.-select-a-property-to-proceed'
+									'unable-to-perform-this-action-select-a-property-to-proceed'
 								)}
 							</ClayAlert>
 						</div>

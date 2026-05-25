@@ -101,7 +101,7 @@ export const SubscriptionDetails = ({
 						<div className='mb-2'>
 							<Text color='secondary' size={3}>
 								{Liferay.Language.get(
-									'tailor-limits-to-business-needs.-incrementally-increase-individual-or-page-view-limits-as-needed-without-committing-to-a-new-plan'
+									'tailor-limits-to-business-needs-incrementally-increase-individual-or-page-view-limits-as-needed-without-committing-to-a-new-plan'
 								)}
 							</Text>
 						</div>

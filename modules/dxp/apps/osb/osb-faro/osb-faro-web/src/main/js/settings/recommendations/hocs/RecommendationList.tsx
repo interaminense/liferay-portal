@@ -165,7 +165,7 @@ const RecommendationList: React.FC<IRecommendationListProps> = ({
 				addAlert({
 					alertType: Alert.Types.Error,
 					message: Liferay.Language.get(
-						'there-was-an-error-processing-your-request.-please-try-again'
+						'there-was-an-error-processing-your-request-please-try-again'
 					),
 					timeout: false
 				});

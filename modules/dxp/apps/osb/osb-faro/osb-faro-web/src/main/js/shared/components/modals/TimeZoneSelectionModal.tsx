@@ -86,7 +86,7 @@ const TimeZoneSelectionModal: React.FC<ITimeZoneSelectionModal> = ({
 							<Modal.Body>
 								<div className='mb-4'>
 									{Liferay.Language.get(
-										'your-workspace-now-supports-custom-timezones.-setting-timezones-will-only-impact-future-data.-expect-spiked-or-flat-data-for-1-2-days-following-a-change'
+										'your-workspace-now-supports-custom-timezones-setting-timezones-will-only-impact-future-data-expect-spiked-or-flat-data-for-1-2-days-following-a-change'
 									)}
 								</div>
 

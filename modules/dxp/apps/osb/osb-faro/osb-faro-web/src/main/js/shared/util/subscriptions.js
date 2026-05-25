@@ -254,25 +254,25 @@ export function getPlanLabel(name) {
 			return Liferay.Language.get('liferay-data-platform-enterprise');
 
 		case PLANS.lxcCspCustomUserTier.name:
-			return Liferay.Language.get('lxc-csp-custom-user-tier');
+			return Liferay.Language.get('liferay-saas-csp-custom-user-tier');
 
 		case PLANS.lxcCspUpTo100Users.name:
-			return Liferay.Language.get('lxc-csp-up-to-100-user');
+			return Liferay.Language.get('liferay-saas-csp-up-to-100-users');
 
 		case PLANS.lxcCspUpTo500Users.name:
-			return Liferay.Language.get('lxc-csp-up-to-500-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-500-users');
 
 		case PLANS.lxcCspUpTo1kUsers.name:
-			return Liferay.Language.get('lxc-csp-up-to-1k-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-1k-users');
 
 		case PLANS.lxcCspUpTo5kUsers.name:
-			return Liferay.Language.get('lxc-csp-up-to-5k-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-5k-users');
 
 		case PLANS.lxcCspUpTo10kUsers.name:
-			return Liferay.Language.get('lxc-csp-up-to-10k-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-10k-users');
 
 		case PLANS.lxcCspUpTo20kUsers.name:
-			return Liferay.Language.get('lxc-csp-up-to-20k-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-20k-users');
 
 		case PLANS.lxcSubscriptionEngageSite.name:
 			return Liferay.Language.get('lxc-subscription-engage-site');
@@ -334,25 +334,25 @@ export function getPropLabel(name) {
 			return Liferay.Language.get('liferay-data-platform-enterprise');
 
 		case PLANS.lxcCspCustomUserTier.name:
-			return Liferay.Language.get('lxc-csp-custom-user-tier');
+			return Liferay.Language.get('liferay-saas-csp-custom-user-tier');
 
 		case PLANS.lxcCspUpTo100Users.name:
-			return Liferay.Language.get('lxc-csp-up-to-100-user');
+			return Liferay.Language.get('liferay-saas-csp-up-to-100-users');
 
 		case PLANS.lxcCspUpTo500Users.name:
-			return Liferay.Language.get('lxc-csp-up-to-500-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-500-users');
 
 		case PLANS.lxcCspUpTo1kUsers.name:
-			return Liferay.Language.get('lxc-csp-up-to-1k-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-1k-users');
 
 		case PLANS.lxcCspUpTo5kUsers.name:
-			return Liferay.Language.get('lxc-csp-up-to-5k-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-5k-users');
 
 		case PLANS.lxcCspUpTo10kUsers.name:
-			return Liferay.Language.get('lxc-csp-up-to-10k-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-10k-users');
 
 		case PLANS.lxcCspUpTo20kUsers.name:
-			return Liferay.Language.get('lxc-csp-up-to-20k-users');
+			return Liferay.Language.get('liferay-saas-csp-up-to-20k-users');
 
 		case PLANS.lxcSubscriptionEngageSite.name:
 			return Liferay.Language.get('lxc-subscription-engage-site');

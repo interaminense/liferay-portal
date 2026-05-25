@@ -183,7 +183,7 @@ const RecommendationStepCard: React.FC<IRecommendationStepCardProps> = ({
 				addAlert({
 					alertType: Alert.Types.Error,
 					message: Liferay.Language.get(
-						'there-was-an-error-processing-your-request.-please-try-again'
+						'there-was-an-error-processing-your-request-please-try-again'
 					)
 				});
 

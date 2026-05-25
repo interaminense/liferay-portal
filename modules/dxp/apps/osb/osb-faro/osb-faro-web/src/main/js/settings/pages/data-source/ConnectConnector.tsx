@@ -38,7 +38,7 @@ const buildSteps = (config: ConnectorConfig): Step[] => [
 			/>
 		),
 		description: Liferay.Language.get(
-			'properties-allow-you-to-aggregate-data-on-your-users,-sites-and-dxp-commerce-channels.-individuals-data-will-be-available-in-any-property-they-are-assigned-to'
+			'properties-allow-you-to-aggregate-data-on-your-users-sites-and-dxp-commerce-channels-individuals-data-will-be-available-in-any-property-they-are-assigned-to'
 		),
 		title: Liferay.Language.get('assign-individuals-data-to-properties')
 	}

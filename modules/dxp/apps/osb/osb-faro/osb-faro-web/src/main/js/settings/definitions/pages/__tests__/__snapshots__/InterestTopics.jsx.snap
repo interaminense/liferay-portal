@@ -781,6 +781,52 @@ exports[`InterestTopics should render with a message to add keywords if there ar
 </div>
 `;
 
+exports[`InterestTopics should render with a message to add keywords if there are none 2`] = `
+<div
+  class="no-results-root flex-grow-1 no-results-primary"
+>
+  <div
+    class="no-results-content"
+  >
+    <div
+      class="no-results-icon"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-ac_satellite icon-root icon-size-xxxl"
+        role="presentation"
+      >
+        <use
+          href="#ac_satellite"
+        />
+      </svg>
+    </div>
+    <div
+      class="h4 no-results-title"
+    >
+      No Keywords Found
+    </div>
+    <div
+      class="no-results-description"
+    >
+      Add a keyword to be blocked.
+      <a
+        class="d-block mb-3"
+        href="https://learn.liferay.com/w/dxp/personalization/analytics-cloud/workspace-data/definitions"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        Learn more about interest topics.
+        <span
+          class="sr-only"
+        >
+          (Opens a new window)
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`InterestTopics should render with an empty state 1`] = `
 <div
   class="no-results-root flex-grow-1"
@@ -813,3 +859,5 @@ exports[`InterestTopics should render with an empty state 1`] = `
   </div>
 </div>
 `;
+
+exports[`InterestTopics should render without an "add keyword" button if the user role is member 1`] = `null`;

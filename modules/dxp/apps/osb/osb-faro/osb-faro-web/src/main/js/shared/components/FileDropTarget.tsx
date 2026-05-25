@@ -106,7 +106,7 @@ export const FileItem: React.FC<IFileItemProps> = ({file, onCancel}) => {
 					{error && (
 						<div className='error-message'>
 							{Liferay.Language.get(
-								'there-was-an-error-uploading-this-file.-please-remove-and-try-again'
+								'there-was-an-error-uploading-this-file-please-remove-and-try-again'
 							)}
 						</div>
 					)}

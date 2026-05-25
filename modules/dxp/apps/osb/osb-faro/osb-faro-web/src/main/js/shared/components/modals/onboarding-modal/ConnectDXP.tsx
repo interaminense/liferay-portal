@@ -354,7 +354,7 @@ const DxpSyncTable: FC<React.HTMLAttributes<HTMLElement>> = () => {
 			<div className='mt-2'>
 				<Text color='secondary' size={3}>
 					{Liferay.Language.get(
-						'you-can-check-your-data-source-syncing-status-under-settings-in-data-sources,-or-continue-configuring-your-data-source-on-your-dxp-instance'
+						'you-can-check-your-data-source-syncing-status-under-settings-in-data-sources-or-continue-configuring-your-data-source-on-your-dxp-instance'
 					)}
 				</Text>
 			</div>

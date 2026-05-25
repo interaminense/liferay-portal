@@ -17,7 +17,7 @@ const steps: Step[] = [
 	{
 		content: (props: any) => <ReviewSyncedDataStep {...props} />,
 		description: Liferay.Language.get(
-			'while-your-data-continues-syncing-in-the-background,-you-may-proceed-with-the-setup-process.-to-monitor-the-sync-status-at-any-time,-go-to-settings-in-data-sources'
+			'while-your-data-continues-syncing-in-the-background-you-may-proceed-with-the-setup-process-to-monitor-the-sync-status-at-any-time-go-to-settings-in-data-sources'
 		),
 		title: Liferay.Language.get('review-synced-data')
 	},
@@ -33,7 +33,7 @@ const steps: Step[] = [
 						props.addAlert({
 							alertType: Alert.Types.Success,
 							message: Liferay.Language.get(
-								'the-data-source-setup-is-now-complete,-and-you-will-begin-to-see-data-as-activities-occur-on-your-sites'
+								'the-data-source-setup-is-now-complete-and-you-will-begin-to-see-data-as-activities-occur-on-your-sites'
 							)
 						});
 					} else {
@@ -53,7 +53,7 @@ const steps: Step[] = [
 			/>
 		),
 		description: Liferay.Language.get(
-			'properties-allow-you-to-aggregate-data-on-your-users,-sites-and-dxp-commerce-channels.-individuals-data-will-be-available-in-any-property-they-are-assigned-to'
+			'properties-allow-you-to-aggregate-data-on-your-users-sites-and-dxp-commerce-channels-individuals-data-will-be-available-in-any-property-they-are-assigned-to'
 		),
 		title: Liferay.Language.get('assign-individuals-data-to-properties')
 	}

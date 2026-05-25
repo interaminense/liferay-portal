@@ -263,7 +263,7 @@ const IndividualsOverviewCDP = () => {
 											?.totalIndividualsMetric
 									}
 									description={Liferay.Language.get(
-										'this-is-the-total-number-of-individuals,-including-both-known-individuals-and-anonymous-individuals'
+										'this-is-the-total-number-of-individuals-including-both-known-individuals-and-anonymous-individuals'
 									)}
 									title={Liferay.Language.get(
 										'total-individuals'
@@ -278,7 +278,7 @@ const IndividualsOverviewCDP = () => {
 											?.knownIndividualsMetric
 									}
 									description={Liferay.Language.get(
-										'this-is-the-total-number-of-known-individuals.-an-individual-is-considered-known-if-we-have-any-identifiable-information-about-the-individual'
+										'this-is-the-total-number-of-known-individuals-an-individual-is-considered-known-if-we-have-any-identifiable-information-about-the-individual'
 									)}
 									title={Liferay.Language.get(
 										'known-individuals'
@@ -293,7 +293,7 @@ const IndividualsOverviewCDP = () => {
 											?.anonymousIndividualsMetric
 									}
 									description={Liferay.Language.get(
-										'this-is-the-total-number-of-anonymous-individuals.-anonymous-individuals-are-removed-after-30-days-of-inactivity'
+										'this-is-the-total-number-of-anonymous-individuals-anonymous-individuals-are-removed-after-30-days-of-inactivity'
 									)}
 									title={Liferay.Language.get(
 										'anonymous-individuals'

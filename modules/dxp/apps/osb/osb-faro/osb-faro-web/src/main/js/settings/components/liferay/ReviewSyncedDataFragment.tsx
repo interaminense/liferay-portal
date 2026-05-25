@@ -81,7 +81,7 @@ const ReviewSyncedDataFragment: React.FC<IReviewSyncedDataFragmentProps> = ({
 						</ClayList.ItemTitle>
 						<ClayList.ItemText>
 							{Liferay.Language.get(
-								'used-to-aggregate-data-on-your-users,-sites-and-dxp-commerce-channels'
+								'used-to-aggregate-data-on-your-users-sites-and-dxp-commerce-channels'
 							)}
 						</ClayList.ItemText>
 
@@ -116,7 +116,7 @@ const ReviewSyncedDataFragment: React.FC<IReviewSyncedDataFragmentProps> = ({
 						</ClayList.ItemTitle>
 						<ClayList.ItemText>
 							{Liferay.Language.get(
-								'represents-the-sites-synced-from-liferay-portal,-under-dxp-instance-settings-analytics-cloud'
+								'represents-the-sites-synced-from-liferay-portal-under-dxp-instance-settings-analytics-cloud'
 							)}
 						</ClayList.ItemText>
 
@@ -149,7 +149,7 @@ const ReviewSyncedDataFragment: React.FC<IReviewSyncedDataFragmentProps> = ({
 						</ClayList.ItemTitle>
 						<ClayList.ItemText>
 							{Liferay.Language.get(
-								'represents-the-fields-synced-from-the-contact-object-within-liferay-portal,-under-dxp-instance-settings-analytics-cloud'
+								'represents-the-fields-synced-from-the-contact-object-within-liferay-portal-under-dxp-instance-settings-analytics-cloud'
 							)}
 						</ClayList.ItemText>
 

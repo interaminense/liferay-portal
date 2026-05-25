@@ -150,7 +150,7 @@ const getAlertMessage = (
 	if (admin && count === 1) {
 		return sub(
 			Liferay.Language.get(
-				'your-authorization-token-for-x-has-expired.-please-x-your-account-credentials'
+				'your-authorization-token-for-x-has-expired-please-x-your-account-credentials'
 			),
 			[
 				<b key='NAME'>{name}</b>,
@@ -168,19 +168,19 @@ const getAlertMessage = (
 		);
 	} else if (admin && count > 1) {
 		return Liferay.Language.get(
-			'some-of-your-authorization-tokens-have-expired.-please-reauthorize-the-account-credentials-on-these-data-sources-to-prevent-syncing-interruptions'
+			'some-of-your-authorization-tokens-have-expired-please-reauthorize-the-account-credentials-on-these-data-sources-to-prevent-syncing-interruptions'
 		);
 	} else if (count === 1) {
 		return sub(
 			Liferay.Language.get(
-				'your-authorization-token-for-x-has-expired.-please-contact-your-oauth-administrator,-x,-to-reauthorize'
+				'your-authorization-token-for-x-has-expired-please-contact-your-oauth-administrator-x-to-reauthorize'
 			),
 			[<b key='NAME'>{name}</b>, email],
 			false
 		);
 	} else if (count > 1) {
 		return Liferay.Language.get(
-			'some-of-your-authorization-tokens-have-expired.-please-contact-your-oauth-administrator-to-reauthorize'
+			'some-of-your-authorization-tokens-have-expired-please-contact-your-oauth-administrator-to-reauthorize'
 		);
 	}
 };
@@ -188,7 +188,7 @@ const getAlertMessage = (
 const typeFormatter = (type: DataSourceTypes): string => {
 	switch (type) {
 		case DataSourceTypes.Csv:
-			return Liferay.Language.get('.csv');
+			return Liferay.Language.get('csv');
 		case DataSourceTypes.Liferay:
 			return Liferay.Language.get('liferay-portal');
 		case DataSourceTypes.Salesforce:

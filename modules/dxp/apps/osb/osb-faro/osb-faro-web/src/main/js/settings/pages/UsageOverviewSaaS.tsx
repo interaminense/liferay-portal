@@ -67,7 +67,7 @@ export const UsageOverviewSaaS = () => {
 			pageDescription={Liferay.Language.get(
 				'saas-plan-usage-is-determined-by-malus-and-apvs'
 			)}
-			pageTitle={Liferay.Language.get('subscription-&-usage')}
+			pageTitle={Liferay.Language.get('subscription-and-usage')}
 		>
 			<div className='saas-banner p-5 sm:p-8 md:p-10 xl:p-4'>
 				<div className='text-white'>

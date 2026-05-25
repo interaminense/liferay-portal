@@ -436,7 +436,7 @@ const getColumns = ({
 		sortable: false
 	});
 
-	const fullTitleText = sub(Liferay.Language.get('percent-of-x'), [
+	const fullTitleText = sub(Liferay.Language.get('%-of-x'), [
 		event.displayName || event.name
 	]);
 

@@ -264,7 +264,7 @@ const ProfileCardWithDataCDP: React.FC<IProfileCardWithDataCDPProps> = ({
 						<>
 							<span>
 								{Liferay.Language.get(
-									'check-back-later-to-see-if-data-has-been-received-from-your-data-sources,-or-try-a-different-date-range'
+									'check-back-later-to-see-if-data-has-been-received-from-your-data-sources-or-try-a-different-date-range'
 								)}
 							</span>
 

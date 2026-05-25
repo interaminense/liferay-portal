@@ -20,7 +20,7 @@ const ExperimentListCard = props => {
 				<span className='mr-1'>
 					{sub(
 						Liferay.Language.get(
-							'create-a-new-test-from-liferay-dxp-by-clicking-on-the-x-icon-in-the-toolbar-when-viewing-a-page-in-DXP'
+							'create-a-new-test-from-liferay-dxp-by-clicking-on-the-x-icon-in-the-toolbar-when-viewing-a-page-in-dxp'
 						),
 						[
 							<ClayIcon

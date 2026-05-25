@@ -106,7 +106,7 @@ const withQueryOptions =
 											alertType: Alert.Types.Error,
 											message: sub(
 												Liferay.Language.get(
-													'there-was-an-error-unsuppressing-x.-please-try-again'
+													'there-was-an-error-unsuppressing-x-please-try-again'
 												),
 												[emailAddress]
 											) as string,
@@ -178,7 +178,7 @@ const SuppressedUserList: React.FC<ISuppressedUserListProps> = props => (
 					description={
 						<>
 							{Liferay.Language.get(
-								'to-suppress-a-user,-go-to-data-control-&-privacy-under-settings-and-create-a-new-request-on-the-request-log'
+								'to-suppress-a-user-go-to-data-control-and-privacy-under-settings-and-create-a-new-request-on-the-request-log'
 							)}
 
 							<ClayLink

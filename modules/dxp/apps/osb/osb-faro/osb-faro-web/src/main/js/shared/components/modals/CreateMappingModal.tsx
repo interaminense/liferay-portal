@@ -81,7 +81,7 @@ const CreateMappingModal: React.FC<ICreateMappingModalProps> = ({
 					let retVal = '';
 					if (result.total) {
 						retVal = Liferay.Language.get(
-							'a-field-already-exists-with-that-name.-please-enter-a-different-name'
+							'a-field-already-exists-with-that-name-please-enter-a-different-name'
 						);
 					}
 

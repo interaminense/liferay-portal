@@ -27,7 +27,7 @@ export function getConnectorConnectionStatusAlert(
 			return {
 				displayType: 'success',
 				message: Liferay.Language.get(
-					'all-data-coming-from-this-data-source-is-up-to-date.-there-are-no-errors-to-report'
+					'all-data-coming-from-this-data-source-is-up-to-date-there-are-no-errors-to-report'
 				)
 			};
 		}

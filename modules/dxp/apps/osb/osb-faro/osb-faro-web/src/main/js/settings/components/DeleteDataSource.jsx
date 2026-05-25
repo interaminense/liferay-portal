@@ -186,7 +186,7 @@ export class DeleteDataSource extends React.Component {
 
 					<b>
 						{Liferay.Language.get(
-							'you-will-permanently-lose-all-contacts-and-analytics-data-collected-from-this-data-source.-you-will-not-be-able-to-undo-this-action'
+							'you-will-permanently-lose-all-contacts-and-analytics-data-collected-from-this-data-source-you-will-not-be-able-to-undo-this-action'
 						)}
 					</b>
 				</div>
@@ -245,7 +245,7 @@ export class DeleteDataSource extends React.Component {
 				entityType: EntityTypes.Individual,
 				secondaryInfo: sub(
 					Liferay.Language.get(
-						'all-attributes-related-to-an-x-from-this-data-source-will-be-removed,-which-may-result-in-the-removal-of-the-x'
+						'all-attributes-related-to-an-x-from-this-data-source-will-be-removed-which-may-result-in-the-removal-of-the-x'
 					),
 					[Liferay.Language.get('individual')]
 				),

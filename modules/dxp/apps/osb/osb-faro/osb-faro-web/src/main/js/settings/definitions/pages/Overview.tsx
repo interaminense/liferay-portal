@@ -27,7 +27,7 @@ const items = (devMode: boolean = false): (ListItem | null)[] => [
 		items: [
 			{
 				description: Liferay.Language.get(
-					'view-and-manage-the-data-model-of-your-individuals.-this-data-is-mapped-from-your-dxp,-salesforce,-or-csv-datasources'
+					'view-and-manage-the-data-model-of-your-individuals-this-data-is-mapped-from-your-dxp-salesforce-or-csv-datasources'
 				),
 				route: Routes.SETTINGS_DEFINITIONS_INDIVIDUAL_ATTRIBUTES,
 				title: Liferay.Language.get('individuals')
@@ -36,7 +36,7 @@ const items = (devMode: boolean = false): (ListItem | null)[] => [
 				? [
 						{
 							description: Liferay.Language.get(
-								'view-and-manage-the-data-model-of-your-accounts.-this-data-is-automatically-mapped-from-a-salesforce-datasource'
+								'view-and-manage-the-data-model-of-your-accounts-this-data-is-automatically-mapped-from-a-salesforce-datasource'
 							),
 							route: Routes.CONTACTS_LIST_ENTITY,
 							routeParams: {type: ACCOUNTS},
@@ -53,7 +53,7 @@ const items = (devMode: boolean = false): (ListItem | null)[] => [
 				? [
 						{
 							description: Liferay.Language.get(
-								'view-and-manage-the-tracked-behaviors-in-analytics-cloud.-you-will-also-find-instructions-for-tagging-non-liferay-assets-to-track-them-in-analytics-cloud'
+								'view-and-manage-the-tracked-behaviors-in-analytics-cloud-you-will-also-find-instructions-for-tagging-non-liferay-assets-to-track-them-in-analytics-cloud'
 							),
 							route: Routes.SETTINGS_DEFINITIONS_BEHAVIORS,
 							title: Liferay.Language.get('behaviors')
@@ -69,7 +69,7 @@ const items = (devMode: boolean = false): (ListItem | null)[] => [
 			},
 			{
 				description: Liferay.Language.get(
-					'view-and-manage-the-data-model-of-your-event-attributes.-event-attributes-provide-additional-context-to-your-events'
+					'view-and-manage-the-data-model-of-your-event-attributes-event-attributes-provide-additional-context-to-your-events'
 				),
 				route: Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL,
 				title: Liferay.Language.get('event-attributes')
@@ -90,7 +90,7 @@ const items = (devMode: boolean = false): (ListItem | null)[] => [
 				items: [
 					{
 						description: Liferay.Language.get(
-							'view-and-manage-the-blocked-keywords-for-interest-analysis.-blocked-keywords-will-affect-content-recommendations-feature-available-in-liferay-dxp'
+							'view-and-manage-the-blocked-keywords-for-interest-analysis-blocked-keywords-will-affect-content-recommendations-feature-available-in-liferay-dxp'
 						),
 						route: Routes.SETTINGS_DEFINITIONS_INTEREST_TOPICS,
 						title: Liferay.Language.get('interests')

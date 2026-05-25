@@ -3,7 +3,7 @@ import {Prompt} from 'react-router';
 
 const NavigationWarning = ({
 	message = Liferay.Language.get(
-		'you-have-unsaved-changes-that-will-be-discarded-by-navigating-away-from-this-page.-do-you-want-to-leave-and-discard-your-changes'
+		'you-have-unsaved-changes-that-will-be-discarded-by-navigating-away-from-this-page-do-you-want-to-leave-and-discard-your-changes'
 	),
 	...otherProps
 }) => (

@@ -167,7 +167,7 @@ const AssignSegments: React.FC<IAssignSegmentsProps> = ({groupId, onClose}) => {
 
 				<span className='subtitle'>
 					{Liferay.Language.get(
-						'your-existing-segments-will-be-hidden-until-they-have-been-assigned.-a-segment-can-only-belong-to-a-single-property'
+						'your-existing-segments-will-be-hidden-until-they-have-been-assigned-a-segment-can-only-belong-to-a-single-property'
 					)}
 				</span>
 

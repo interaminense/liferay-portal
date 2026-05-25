@@ -139,10 +139,10 @@ const UserList: React.FC<IUserListProps> = ({
 						{
 							getPluralMessage(
 								Liferay.Language.get(
-									'removing-x-from-this-property.-they-will-need-to-be-added-again-to-regain-access-to-this-property'
+									'removing-x-from-this-property-they-will-need-to-be-added-again-to-regain-access-to-this-property'
 								),
 								Liferay.Language.get(
-									'removing-x-users-from-this-property.-they-will-need-to-be-added-again-to-regain-access-to-this-property'
+									'removing-x-users-from-this-property-they-will-need-to-be-added-again-to-regain-access-to-this-property'
 								),
 								userIds.length,
 								true,
@@ -236,7 +236,7 @@ const UserList: React.FC<IUserListProps> = ({
 			entityLabel: Liferay.Language.get('users'),
 			initialOrderIOMap: createOrderIOMap(NAME),
 			instruction: Liferay.Language.get(
-				'select-users-to-add-to-this-property.-users-must-be-previously-invited-to-workspace-to-add-to-a-property'
+				'select-users-to-add-to-this-property-users-must-be-previously-invited-to-workspace-to-add-to-a-property'
 			),
 			noResultsDescription: Liferay.Language.get(
 				'all-users-in-this-workspace-have-already-been-added-to-this-property'
@@ -312,7 +312,7 @@ const UserList: React.FC<IUserListProps> = ({
 			message: (
 				<div className='text-secondary'>
 					{Liferay.Language.get(
-						'property-permissions-have-changed-without-any-users-selected.-do-you-want-to-close-the-modal-without-adding-users'
+						'property-permissions-have-changed-without-any-users-selected-do-you-want-to-close-the-modal-without-adding-users'
 					)}
 				</div>
 			),

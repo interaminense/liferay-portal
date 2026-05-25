@@ -58,7 +58,7 @@ const InvitePeople: React.FC<IInvitePeopleProps> = ({
 					addAlert({
 						alertType: Alert.Types.Error,
 						message: Liferay.Language.get(
-							'unable-to-send-request.-please-try-again-later'
+							'unable-to-send-request-please-try-again-later'
 						),
 						timeout: false
 					});
