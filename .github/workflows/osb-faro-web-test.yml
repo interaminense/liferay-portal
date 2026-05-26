@@ -1,0 +1,33 @@
+name: osb-faro-web tests
+
+on:
+  pull_request_target:
+    branches:
+      - master
+    paths:
+      - 'modules/dxp/apps/osb/osb-faro/osb-faro-web/**'
+
+concurrency:
+  group: faro-web-test-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: modules/dxp/apps/osb/osb-faro/osb-faro-web
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+          cache-dependency-path: modules/dxp/apps/osb/osb-faro/osb-faro-web/yarn.lock
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn test
