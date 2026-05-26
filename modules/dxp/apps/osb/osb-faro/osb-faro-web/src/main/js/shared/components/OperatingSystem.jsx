@@ -133,7 +133,7 @@ class OperatingSystem extends React.Component {
 								position='center'
 								value={sub(
 									Liferay.Language.get(
-										'empty-message-metric'
+										'there-are-no-x-on-the-selected-period'
 									),
 									[metricLabel.toLowerCase()]
 								)}

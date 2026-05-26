@@ -90,7 +90,7 @@ const ConnectLiferayDXPStep = ({
 						addAlert({
 							alertType: Alert.Types.Error,
 							message: Liferay.Language.get(
-								'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+								'there-was-an-error-processing-your-request-try-again-if-the-problem-persists-please-contact-support'
 							)
 						});
 					}
@@ -164,7 +164,7 @@ const ConnectLiferayDXPStep = ({
 							<Text as='p' size={4}>
 								{sub(
 									Liferay.Language.get(
-										'this-action-will-stop-syncing-data-from-your-x-instance-to-this-analytics-cloud-workspace.-the-data-that-was-already-synced-will-remain-available-in-the-properties-the-data-source-was-connected-to.-are-you-sure-you-want-to-continue'
+										'this-action-will-stop-syncing-data-from-your-x-instance-to-this-analytics-cloud-workspace-the-data-that-was-already-synced-will-remain-available-in-the-properties-the-data-source-was-connected-to-are-you-sure-you-want-to-continue'
 									),
 									[Liferay.Language.get('liferay-dxp')]
 								)}

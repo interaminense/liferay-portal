@@ -76,7 +76,7 @@ const BaseDataSourcePage: React.FC<IBaseDataSourcePageProps> = ({
 					<strong>
 						{sub(
 							Liferay.Language.get(
-								'to-delete-x,-copy-the-sentence-below-to-confirm-your-intention-to-delete-data-source'
+								'to-delete-x-copy-the-sentence-below-to-confirm-your-intention-to-delete-data-source'
 							),
 							[name]
 						)}

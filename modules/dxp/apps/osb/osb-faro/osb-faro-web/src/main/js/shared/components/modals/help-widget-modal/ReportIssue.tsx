@@ -49,7 +49,7 @@ const ReportIssue: React.FC<IHelpWidgetScreenProps & PropsFromRedux> = ({
 				addAlert({
 					alertType: Alert.Types.Error,
 					message: Liferay.Language.get(
-						'there-was-an-error-processing-your-request.-please-try-again'
+						'there-was-an-error-processing-your-request-please-try-again'
 					)
 				});
 

@@ -35,7 +35,7 @@ const EventAnalysisToolbar: React.FC<IEventAnalysisToolbarProps> = ({
 					<DownloadPDFReport
 						disabled={!!dataSourceStates.empty}
 						infoMessage={Liferay.Language.get(
-							'the-report-will-be-downloaded-exactly-as-it-is-displayed-on-your-screen.-please-verify-if-the-desired-tabs-and-filters-are-selected-before-proceeding'
+							'the-report-will-be-downloaded-exactly-as-it-is-displayed-on-your-screen-please-verify-if-the-desired-tabs-and-filters-are-selected-before-proceeding'
 						)}
 						subtitle={selectedChannel?.name}
 						title={Liferay.Language.get('event-analysis-report')}

@@ -27,7 +27,7 @@ const WEB_BEHAVIORS = List(
 	[
 		{
 			entityType: AssetTypes.Document,
-			label: Liferay.Language.get('downloaded-document-&-media'),
+			label: Liferay.Language.get('downloaded-document-and-media'),
 			name: AssetNames.DocumentDownloaded
 		},
 		{
@@ -57,7 +57,7 @@ const WEB_BEHAVIORS = List(
 		},
 		{
 			entityType: AssetTypes.Document,
-			label: Liferay.Language.get('viewed-document-&-media'),
+			label: Liferay.Language.get('viewed-document-and-media'),
 			name: AssetNames.DocumentPreviewed
 		},
 		{

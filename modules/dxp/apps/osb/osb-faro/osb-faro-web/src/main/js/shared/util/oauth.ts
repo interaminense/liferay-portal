@@ -329,19 +329,19 @@ export function getOAuthWindowErrorMessage({
 			return message;
 		case ERROR_TYPES.TIMEOUT:
 			return Liferay.Language.get(
-				'you-have-been-timed-out.-please-retry-to-complete-authorization'
+				'you-have-been-timed-out-please-retry-to-complete-authorization'
 			);
 		case ERROR_TYPES.WINDOW_BLOCKED:
 			return Liferay.Language.get(
-				'pop-up-window-blocked,-please-turn-off-any-pop-up-blockers-and-retry-authorization'
+				'pop-up-window-blocked-please-turn-off-any-pop-up-blockers-and-retry-authorization'
 			);
 		case ERROR_TYPES.WINDOW_CLOSED:
 			return Liferay.Language.get(
-				'window-was-closed-without-completing-authorization.-please-retry-authorization'
+				'window-was-closed-without-completing-authorization-please-retry-authorization'
 			);
 		default:
 			return Liferay.Language.get(
-				'unknown-error.-please-retry-authorization'
+				'unknown-error-please-retry-authorization'
 			);
 	}
 }

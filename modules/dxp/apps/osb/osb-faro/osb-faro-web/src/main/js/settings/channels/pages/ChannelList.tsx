@@ -140,7 +140,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 						<strong>
 							{sub(
 								Liferay.Language.get(
-									'to-clear-data-from-x,-copy-the-sentence-below-to-confirm-your-intention-to-clear-data-from-this-property'
+									'to-clear-data-from-x-copy-the-sentence-below-to-confirm-your-intention-to-clear-data-from-this-property'
 								),
 								[message]
 							)}
@@ -149,7 +149,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 
 					<p>
 						{Liferay.Language.get(
-							'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
+							'this-will-result-in-the-complete-removal-of-this-propertys-historical-events-you-will-not-be-able-to-undo-this-operation'
 						)}
 					</p>
 				</>
@@ -201,7 +201,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 							timeout: false
 						})
 					),
-			title: sub(Liferay.Language.get('clear-x-data?'), [message])
+			title: sub(Liferay.Language.get('clear-x-data'), [message])
 		});
 	};
 
@@ -219,7 +219,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 						<strong>
 							{sub(
 								Liferay.Language.get(
-									'to-delete-x,-copy-the-sentence-below-to-confirm-your-intention-to-delete-property'
+									'to-delete-x-copy-the-sentence-below-to-confirm-your-intention-to-delete-property'
 								),
 								[message]
 							)}
@@ -228,7 +228,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 
 					<p>
 						{Liferay.Language.get(
-							'this-will-result-in-the-complete-removal-of-this-propertys-historical-events.-you-will-not-be-able-to-undo-this-operation'
+							'this-will-result-in-the-complete-removal-of-this-propertys-historical-events-you-will-not-be-able-to-undo-this-operation'
 						)}
 					</p>
 				</>
@@ -287,7 +287,7 @@ const ChannelList: React.FC<IChannelListProps> = ({
 							timeout: false
 						})
 					),
-			title: sub(Liferay.Language.get('delete-x?'), [message])
+			title: sub(Liferay.Language.get('delete-x'), [message])
 		});
 	};
 

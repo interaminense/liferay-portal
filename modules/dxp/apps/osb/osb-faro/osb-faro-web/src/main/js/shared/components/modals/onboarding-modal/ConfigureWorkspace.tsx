@@ -186,14 +186,14 @@ const ConfigureWorkspaceWithEmailAddressDomains: React.FC<
 
 								<Text color='secondary' size={3}>
 									{Liferay.Language.get(
-										'define-a-friendly-url-that-others-can-use-to-access-and-share-this-workspace.-this-value-cannot-be-changed-after-it-is-set'
+										'define-a-friendly-url-that-others-can-use-to-access-and-share-this-workspace-this-value-cannot-be-changed-after-it-is-set'
 									)}
 								</Text>
 
 								<div className='mb-1'>
 									<Text color='secondary' size={3}>
 										{sub(
-											Liferay.Language.get('e.g.-x'),
+											Liferay.Language.get('eg-x'),
 											[
 												<React.Fragment key='WORKSPACE_URL'>
 													<span>{faroURL}</span>
@@ -252,7 +252,7 @@ const ConfigureWorkspaceWithEmailAddressDomains: React.FC<
 								<div className='mb-1'>
 									<Text color='secondary' size={3}>
 										{sub(
-											Liferay.Language.get('e.g.-x'),
+											Liferay.Language.get('eg-x'),
 											[
 												<React.Fragment key='EMAIL_DOMAIN'>
 													<span>{'user.name@'}</span>

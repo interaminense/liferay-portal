@@ -145,7 +145,7 @@ const Items: React.FC<IItemsProps> = ({close, groupId, itemFilters, open}) => {
 
 			<div className='secondary-info'>
 				{Liferay.Language.get(
-					'create-rules-to-match-your-urls-and-page-metadata.-if-you-dont-define-rules,-the-recommendation-model-will-use-all-urls-from-this-workspace-to-train-the-recommendations-model'
+					'create-rules-to-match-your-urls-and-page-metadata-if-you-dont-define-rules-the-recommendation-model-will-use-all-urls-from-this-workspace-to-train-the-recommendations-model'
 				)}
 			</div>
 

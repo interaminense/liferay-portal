@@ -542,7 +542,7 @@ export class Distribution extends React.Component {
 
 							<span className='description-secondary'>
 								{Liferay.Language.get(
-									'breakdown-known-members-by-the-top-100-results-or-the-number-of-bins-assigned-for-a-selected-attribute.-only-results-data-will-appear'
+									'breakdown-known-members-by-the-top-100-results-or-the-number-of-bins-assigned-for-a-selected-attribute-only-results-data-will-appear'
 								)}
 							</span>
 						</Card.Header>

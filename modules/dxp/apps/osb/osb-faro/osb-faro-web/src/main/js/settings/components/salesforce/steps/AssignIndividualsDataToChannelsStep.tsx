@@ -96,7 +96,7 @@ const AssignIndividualsDataToPropertiesStep = ({
 					addAlert({
 						alertType: Alert.Types.Error,
 						message: Liferay.Language.get(
-							'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+							'there-was-an-error-processing-your-request-try-again-if-the-problem-persists-please-contact-support'
 						)
 					});
 				} finally {
@@ -177,7 +177,7 @@ const AssignIndividualsDataToPropertiesStep = ({
 				<label className='ml-2' htmlFor='checkAllChannels'>
 					<Text size={3} weight='normal'>
 						{Liferay.Language.get(
-							'make-individual-data-from-this-data-source-available-in-all-properties,-including-those-not-yet-created'
+							'make-individual-data-from-this-data-source-available-in-all-properties-including-those-not-yet-created'
 						)}
 					</Text>
 				</label>

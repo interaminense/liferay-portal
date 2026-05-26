@@ -45,7 +45,7 @@ const BasicSettings: React.FC<IBasicSettingsProps> = ({
 				.then(({data: {jobByName}}) => {
 					if (jobByName) {
 						error = Liferay.Language.get(
-							'a-recommendation-model-already-exists-with-that-name.-please-enter-a-different-name'
+							'a-recommendation-model-already-exists-with-that-name-please-enter-a-different-name'
 						);
 					}
 

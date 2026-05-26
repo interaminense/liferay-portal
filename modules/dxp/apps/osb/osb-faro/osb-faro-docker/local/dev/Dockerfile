@@ -50,3 +50,7 @@ COPY *osb-faro*.war $LIFERAY_HOME/osgi/modules/
 # Modules
 
 COPY *osb.faro*.jar $LIFERAY_HOME/osgi/modules/
+
+# Portal language pack (Faro consumes keys from the global pack)
+
+COPY com.liferay.portal.language.lang.jar $LIFERAY_HOME/osgi/portal/

@@ -71,7 +71,7 @@ const notificationStrategies = new Map<string, Function>([
 				<>
 					<span>
 						{Liferay.Language.get(
-							'100-event-limit-reached,-resulting-in-blocked-events'
+							'100-event-limit-reached-resulting-in-blocked-events'
 						)}
 					</span>
 
@@ -129,7 +129,7 @@ const NotificationAlertList: React.FC<INotificationAlertListProps> = ({
 					addAlert({
 						alertType: Alert.Types.Error,
 						message: Liferay.Language.get(
-							'there-was-an-error-processing-your-request.-please-try-again'
+							'there-was-an-error-processing-your-request-please-try-again'
 						),
 						timeout: false
 					});

@@ -97,7 +97,7 @@ const LiferayOverview: React.FC<ILiferayeOverviewProps> = ({
 			addAlert({
 				alertType: Alert.Types.Error,
 				message: Liferay.Language.get(
-					'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+					'there-was-an-error-processing-your-request-try-again-if-the-problem-persists-please-contact-support'
 				)
 			});
 		} finally {
@@ -109,7 +109,7 @@ const LiferayOverview: React.FC<ILiferayeOverviewProps> = ({
 		const alert: Alert = {
 			displayType: 'success',
 			message: Liferay.Language.get(
-				'you-have-successfully-authenticated-your-token-with-liferay-analytics-cloud.-you-can-now-select-the-data-to-sync'
+				'you-have-successfully-authenticated-your-token-with-liferay-analytics-cloud-you-can-now-select-the-data-to-sync'
 			)
 		};
 
@@ -117,11 +117,11 @@ const LiferayOverview: React.FC<ILiferayeOverviewProps> = ({
 			alert.displayType = 'warning';
 
 			alert.message = Liferay.Language.get(
-				'the-data-source-is-disconnected.-data-is-no-longer-being-synced-from-dxp,-but-you-can-reconnect-to-resume-syncing'
+				'the-data-source-is-disconnected-data-is-no-longer-being-synced-from-dxp-but-you-can-reconnect-to-resume-syncing'
 			);
 		} else if (dataSource?.sitesSelected || dataSource?.contactsSelected) {
 			alert.message = Liferay.Language.get(
-				'all-data-coming-from-this-data-source-is-up-to-date.-there-are-no-errors-to-report'
+				'all-data-coming-from-this-data-source-is-up-to-date-there-are-no-errors-to-report'
 			);
 		}
 
@@ -204,7 +204,7 @@ const LiferayOverview: React.FC<ILiferayeOverviewProps> = ({
 							<div className='mb-4'>
 								<Text color='secondary' size={4}>
 									{Liferay.Language.get(
-										'to-reestablish-the-connection-between-the-liferay-dxp-instance-and-liferay-analytics-cloud,-copy-the-token-below-and-go-to-dxp-instance-settings-analytics-cloud-to-continue-the-data-source-configuration'
+										'to-reestablish-the-connection-between-the-liferay-dxp-instance-and-liferay-analytics-cloud-copy-the-token-below-and-go-to-dxp-instance-settings-analytics-cloud-to-continue-the-data-source-configuration'
 									)}
 								</Text>
 

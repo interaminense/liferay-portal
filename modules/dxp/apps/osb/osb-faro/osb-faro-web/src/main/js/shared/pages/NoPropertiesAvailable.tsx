@@ -37,7 +37,7 @@ const NoPropertiesAvailable: React.FC<INoPropertiesAvailableProps> = ({
 				'to-get-your-workspace-set-up-you-will-need-to-create-a-property-and-sync-your-dxp-sites'
 		  )
 		: Liferay.Language.get(
-				'you-have-not-been-added-to-any-properties.-please-contact-your-analytics-cloud-administrator'
+				'you-have-not-been-added-to-any-properties-please-contact-your-analytics-cloud-administrator'
 		  );
 
 	const title = admin

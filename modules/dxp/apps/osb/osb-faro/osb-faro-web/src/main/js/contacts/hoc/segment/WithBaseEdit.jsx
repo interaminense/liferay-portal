@@ -28,7 +28,7 @@ const ERRORS = {
 	[MessageKeys.ExternalReferenceCodeIsAlreadyUsed]: {
 		alertType: Alert.Types.Warning,
 		message: Liferay.Language.get(
-			'this-segment-erc-is-currently-in-use.-please-try-a-different-one'
+			'this-segment-erc-is-currently-in-use-please-try-a-different-one'
 		)
 	},
 	[MessageKeys.NameCannotBeBlank]: {
@@ -39,7 +39,7 @@ const ERRORS = {
 	[MessageKeys.NameIsAlreadyUsed]: {
 		alertType: Alert.Types.Warning,
 		message: Liferay.Language.get(
-			'this-segment-name-is-currently-in-use.-please-try-a-different-one'
+			'this-segment-name-is-currently-in-use-please-try-a-different-one'
 		)
 	}
 };
@@ -82,7 +82,7 @@ export default WrappedComponent => {
 
 						<p>
 							{Liferay.Language.get(
-								'you-will-lose-all-data-related-to-this-segment.-you-will-not-be-able-to-undo-this-operation'
+								'you-will-lose-all-data-related-to-this-segment-you-will-not-be-able-to-undo-this-operation'
 							)}
 						</p>
 					</div>

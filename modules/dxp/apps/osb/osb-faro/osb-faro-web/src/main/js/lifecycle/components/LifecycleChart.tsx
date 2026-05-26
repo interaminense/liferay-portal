@@ -109,7 +109,7 @@ const StageMetrics = ({
 						<>
 							<span className='mr-4'>{`${averageDaysInStage}`}</span>
 							<span>
-								{Liferay.Language.get('avg.-day').toLowerCase()}
+								{Liferay.Language.get('avg-day').toLowerCase()}
 							</span>
 						</>
 					) : (

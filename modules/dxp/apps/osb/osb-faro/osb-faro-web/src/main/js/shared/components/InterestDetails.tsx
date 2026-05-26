@@ -48,7 +48,9 @@ const {Last7Days, Last30Days, Last90Days, Yesterday} = RangeKeyTimeRanges;
 const TableWithData: React.FC<ITableWithDataProps> = withRangeKey(
 	withBaseResults(withData, {
 		emptyDescription: sub(
-			Liferay.Language.get('empty-message-lists'),
+			Liferay.Language.get(
+				'please-check-back-later-as-there-can-be-a-delay-in-retrieving-your-data-if-this-problem-persists-visit-the-x-for-connecting-data-sources'
+			),
 			[
 				<ClayLink
 					href={URLConstants.DocumentationLink}

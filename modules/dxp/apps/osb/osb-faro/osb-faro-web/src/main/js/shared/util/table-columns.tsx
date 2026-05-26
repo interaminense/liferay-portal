@@ -460,7 +460,7 @@ export const compositionListColumns = {
 		className: 'table-column-text-end',
 		dataFormatter: (data: number) =>
 			`${((data / totalCount) * 100).toFixed(2)}%`,
-		label: sub(Liferay.Language.get('percent-of-x'), [metricName]),
+		label: sub(Liferay.Language.get('%-of-x'), [metricName]),
 		sortable: false,
 		title: true
 	}),
@@ -830,7 +830,7 @@ export const interestListColumns = {
 		className: 'table-column-text-end',
 		dataFormatter: (data: number) =>
 			`${((data / total) * 100).toFixed(2)}%`,
-		label: sub(Liferay.Language.get('percent-of-x'), [metricName]),
+		label: sub(Liferay.Language.get('%-of-x'), [metricName]),
 		sortable: false,
 		title: true
 	}),

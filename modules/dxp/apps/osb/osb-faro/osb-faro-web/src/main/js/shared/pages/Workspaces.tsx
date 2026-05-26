@@ -135,7 +135,7 @@ const Workspaces: any = () => {
 			return [
 				<p key='EMPTY_STATE'>
 					{Liferay.Language.get(
-						'you-are-not-a-part-of-any-workspaces,-lets-create-a-new-one'
+						'you-are-not-a-part-of-any-workspaces-lets-create-a-new-one'
 					)}
 				</p>
 			];

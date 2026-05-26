@@ -41,17 +41,17 @@ const getProjectLocations = (): {label: string; value: string}[] => {
 		case FaroEnv.Staging:
 			return [
 				{
-					label: Liferay.Language.get('location-staging'),
+					label: 'STG',
 					value: STG
 				}
 			];
 		default:
 			return [
-				{label: Liferay.Language.get('location-as1'), value: AS1},
-				{label: Liferay.Language.get('location-eu'), value: EU2},
-				{label: Liferay.Language.get('location-eu2'), value: EU3},
-				{label: Liferay.Language.get('location-sa'), value: SA},
-				{label: Liferay.Language.get('location-us'), value: US}
+				{label: 'Mumbai, India', value: AS1},
+				{label: 'London, England', value: EU2},
+				{label: 'Frankfurt, Germany', value: EU3},
+				{label: 'São Paulo, Brazil', value: SA},
+				{label: 'Oregon, USA', value: US}
 			];
 	}
 };
@@ -143,7 +143,7 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 					<div>
 						<p className='text-secondary'>
 							{Liferay.Language.get(
-								'you-can-only-set-your-friendly-workspace-url-once.-are-you-sure-you-would-like-to-save-it-as-the-following-url'
+								'you-can-only-set-your-friendly-workspace-url-once-are-you-sure-you-would-like-to-save-it-as-the-following-url'
 							)}
 						</p>
 
@@ -254,7 +254,7 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 										name='serverLocation'
 										required
 										secondaryInfo={Liferay.Language.get(
-											'select-a-server-to-store-your-data.-this-could-have-implications-to-your-organizations-policy-on-user-data-storage'
+											'select-a-server-to-store-your-data-this-could-have-implications-to-your-organizations-policy-on-user-data-storage'
 										)}
 									>
 										{getProjectLocations().map(
@@ -277,7 +277,7 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 
 									<Text as='p' size={3}>
 										{Liferay.Language.get(
-											'time-zone-used-for-all-data-reporting-in-this-workspace.-it-is-automatically-set-based-on-your-time-zone-and-cannot-be-changed'
+											'time-zone-used-for-all-data-reporting-in-this-workspace-it-is-automatically-set-based-on-your-time-zone-and-cannot-be-changed'
 										)}
 									</Text>
 
@@ -309,14 +309,14 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 
 									<Text size={3}>
 										{Liferay.Language.get(
-											'define-a-friendly-url-that-others-can-use-to-access-and-share-this-workspace.-this-value-cannot-be-changed-after-it-is-set'
+											'define-a-friendly-url-that-others-can-use-to-access-and-share-this-workspace-this-value-cannot-be-changed-after-it-is-set'
 										)}
 									</Text>
 
 									<div className='mb-1'>
 										<Text color='secondary' size={3}>
 											{sub(
-												Liferay.Language.get('e.g.-x'),
+												Liferay.Language.get('eg-x'),
 												[
 													<React.Fragment key='WORKSPACE_URL'>
 														<span>{faroURL}</span>
@@ -375,7 +375,7 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 									<div className='mb-1'>
 										<Text color='secondary' size={3}>
 											{sub(
-												Liferay.Language.get('e.g.-x'),
+												Liferay.Language.get('eg-x'),
 												[
 													<React.Fragment key='EMAIL_DOMAIN'>
 														<span>
@@ -494,7 +494,7 @@ const AddWorkspaceForm: React.FC<IAddWorkspaceFormProps> = ({
 											<p>
 												{sub(
 													Liferay.Language.get(
-														'by-selecting-i-agree-,-you-agree-to-our-x-including-our-x'
+														'by-selecting-i-agree-you-agree-to-our-x-including-our-x'
 													),
 													[
 														<ClayLink

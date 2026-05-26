@@ -143,7 +143,7 @@ const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
 																			.Error,
 																	message:
 																		Liferay.Language.get(
-																			'there-was-an-error-processing-your-request.-please-try-again'
+																			'there-was-an-error-processing-your-request-please-try-again'
 																		),
 																	timeout:
 																		false
@@ -239,7 +239,7 @@ const View: React.FC<IViewProps> = ({addAlert, close, history, job, open}) => {
 																			.Error,
 																	message:
 																		Liferay.Language.get(
-																			'there-was-an-error-processing-your-request.-please-try-again'
+																			'there-was-an-error-processing-your-request-please-try-again'
 																		),
 																	timeout:
 																		false

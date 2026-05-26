@@ -8,10 +8,10 @@ import {FieldContexts, FieldTypes} from 'shared/util/constants';
 import {PropTypes} from 'prop-types';
 
 const ITEM_DISPLAY_LANG_MAP = {
-	[FieldTypes.Date]: Liferay.Language.get('field-avatar-date'),
-	[FieldTypes.Number]: Liferay.Language.get('field-avatar-number'),
-	[FieldTypes.Boolean]: Liferay.Language.get('field-avatar-boolean'),
-	[FieldTypes.String]: Liferay.Language.get('field-avatar-string')
+	[FieldTypes.Date]: 'date',
+	[FieldTypes.Number]: '123',
+	[FieldTypes.Boolean]: 'bool',
+	[FieldTypes.String]: 'abc'
 };
 
 const STICKER_DISPLAY_MAP = {

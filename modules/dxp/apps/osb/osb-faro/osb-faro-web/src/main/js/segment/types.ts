@@ -24,7 +24,7 @@ export const METRICS_TEXT: Record<MetricNames, string> = {
 		'this-is-the-number-of-unique-profiles-that-no-longer-meet-the-segment-criteria-during-the-past-24-hours'
 	),
 	[MetricNames.TotalMembersMetric]: Liferay.Language.get(
-		'this-is-the-total-number-of-individuals-included-in-this-segment,-whether-known-or-anonymous'
+		'this-is-the-total-number-of-individuals-included-in-this-segment-whether-known-or-anonymous'
 	)
 };
 

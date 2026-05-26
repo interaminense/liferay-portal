@@ -173,7 +173,7 @@ const IndividualsOverviewCDP = () => {
 							<ClayLayout.Col lg={4} md={12}>
 								<MetricCard
 									description={Liferay.Language.get(
-										'this-is-the-total-number-of-individuals,-including-both-known-individuals-and-anonymous-individuals'
+										'this-is-the-total-number-of-individuals-including-both-known-individuals-and-anonymous-individuals'
 									)}
 									loading={loading}
 									minHeight={198}
@@ -195,7 +195,7 @@ const IndividualsOverviewCDP = () => {
 							<ClayLayout.Col lg={4} sm={12}>
 								<MetricCard
 									description={Liferay.Language.get(
-										'this-is-the-total-number-of-known-individuals.-an-individual-is-considered-known-if-we-have-any-identifiable-information-about-the-individual'
+										'this-is-the-total-number-of-known-individuals-an-individual-is-considered-known-if-we-have-any-identifiable-information-about-the-individual'
 									)}
 									loading={loading}
 									minHeight={198}
@@ -217,7 +217,7 @@ const IndividualsOverviewCDP = () => {
 							<ClayLayout.Col lg={4} sm={12}>
 								<MetricCard
 									description={Liferay.Language.get(
-										'this-is-the-total-number-of-anonymous-individuals.-anonymous-individuals-are-removed-after-30-days-of-inactivity'
+										'this-is-the-total-number-of-anonymous-individuals-anonymous-individuals-are-removed-after-30-days-of-inactivity'
 									)}
 									loading={loading}
 									minHeight={198}

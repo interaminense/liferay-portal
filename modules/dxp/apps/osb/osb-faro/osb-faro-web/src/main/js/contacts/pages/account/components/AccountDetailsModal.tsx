@@ -49,7 +49,7 @@ const AccountDetailsModal: React.FC<IAccountDetailsModalProps> = ({
 	return (
 		<ClayModal observer={observer} size='lg'>
 			<ClayModal.Header>
-				{sub(Liferay.Language.get('xs-attributes'), [
+				{sub(Liferay.Language.get('x-s-attributes'), [
 					accountName ?? ''
 				])}
 			</ClayModal.Header>

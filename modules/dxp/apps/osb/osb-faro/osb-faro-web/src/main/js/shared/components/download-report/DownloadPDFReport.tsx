@@ -257,7 +257,7 @@ const DownloadPDFReport: React.FC<IDownloadReport> = ({
 	dateRangeDescription,
 	disabled,
 	infoMessage = Liferay.Language.get(
-		'the-dashboard-will-be-downloaded-exactly-as-it-is-displayed-on-your-screen.-please-verify-if-the-desired-tabs-and-filters-are-selected-before-proceeding'
+		'the-dashboard-will-be-downloaded-exactly-as-it-is-displayed-on-your-screen-please-verify-if-the-desired-tabs-and-filters-are-selected-before-proceeding'
 	),
 	label,
 	showDateRange,
@@ -410,7 +410,7 @@ const DownloadPDFReport: React.FC<IDownloadReport> = ({
 							<p>
 								<Text size={3}>
 									{Liferay.Language.get(
-										'select-the-reports-to-be-exported-as-a-single-PDF-file'
+										'select-the-reports-to-be-exported-as-a-single-pdf-file'
 									)}
 								</Text>
 							</p>

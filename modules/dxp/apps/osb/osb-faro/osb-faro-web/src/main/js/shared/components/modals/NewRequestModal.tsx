@@ -301,9 +301,7 @@ const NewRequestModal: React.FC<INewRequestModalProps> = ({
 													loadingState={networkStatus}
 													onChange={setEmail}
 													onItemsChange={setEmails}
-													placeholder={Liferay.Language.get(
-														'example-email'
-													)}
+													placeholder='example@email.com'
 													sourceItems={items}
 													value={email}
 												/>
@@ -335,7 +333,7 @@ const NewRequestModal: React.FC<INewRequestModalProps> = ({
 												<div className='example-file-text text-secondary'>
 													{sub(
 														Liferay.Language.get(
-															'please-upload-files-in-csv-format.-a-sample-file-can-be-found-x'
+															'please-upload-files-in-csv-format-a-sample-file-can-be-found-x'
 														),
 														[
 															<ClayLink

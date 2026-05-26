@@ -528,3 +528,5 @@ exports[`View Channel should render 1`] = `
   </div>
 </div>
 `;
+
+exports[`View Channel should render w/ Select Users view 1`] = `<div />`;

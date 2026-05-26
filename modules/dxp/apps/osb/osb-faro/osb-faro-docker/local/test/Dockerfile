@@ -53,6 +53,10 @@ COPY *osb-faro*.war /opt/liferay/osgi/modules/
 
 COPY *osb.faro*.jar /opt/liferay/osgi/modules/
 
+# Portal language pack (Faro consumes keys from the global pack)
+
+COPY com.liferay.portal.language.lang.jar /opt/liferay/osgi/portal/
+
 ENTRYPOINT ["/opt/liferay/tomcat/bin/catalina.sh", "run"]
 
 WORKDIR /opt/liferay

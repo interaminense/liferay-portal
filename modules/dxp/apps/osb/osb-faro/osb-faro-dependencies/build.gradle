@@ -1,4 +1,5 @@
 dependencies {
+	compileOnly project(":apps:portal-language:portal-language-lang")
 	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-admin-web")
 	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-api")
 	compileOnly project(":dxp:apps:osb:osb-faro:osb-faro-contacts-api")

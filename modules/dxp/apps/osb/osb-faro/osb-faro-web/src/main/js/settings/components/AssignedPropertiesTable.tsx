@@ -101,7 +101,7 @@ const AssignedPropertiesTable = ({
 				addAlert({
 					alertType: Alert.Types.Error,
 					message: Liferay.Language.get(
-						'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+						'there-was-an-error-processing-your-request-try-again-if-the-problem-persists-please-contact-support'
 					)
 				});
 			} finally {
@@ -128,7 +128,7 @@ const AssignedPropertiesTable = ({
 			<div className='p-4'>
 				<Text as='p' color='secondary' size={4}>
 					{Liferay.Language.get(
-						'properties-allow-you-to-aggregate-data-on-your-users-and-dxp-sites-and-channels.-the-data-source-data-will-be-available-in-any-property-they-are-assigned-to'
+						'properties-allow-you-to-aggregate-data-on-your-users-and-dxp-sites-and-channels-the-data-source-data-will-be-available-in-any-property-they-are-assigned-to'
 					)}
 				</Text>
 
@@ -162,7 +162,7 @@ const AssignedPropertiesTable = ({
 					<ClayRadio
 						disabled={!currentUser.isAdmin() || !dataSourceActive}
 						label={Liferay.Language.get(
-							'make-individual-data-from-this-data-source-available-in-all-properties,-including-those-not-yet-created'
+							'make-individual-data-from-this-data-source-available-in-all-properties-including-those-not-yet-created'
 						)}
 						value='all'
 					/>
@@ -391,7 +391,7 @@ const ToggleRenderer = ({
 						open(modalTypes.CONFIRMATION_MODAL, {
 							cancelMessage: Liferay.Language.get('cancel'),
 							message: Liferay.Language.get(
-								'this-action-will-stop-syncing-new-data-from-your-liferay-dxp-instance-to-this-property.-data-that-was-already-synced-will-remain-available.-are-you-sure-you-want-to-continue'
+								'this-action-will-stop-syncing-new-data-from-your-liferay-dxp-instance-to-this-property-data-that-was-already-synced-will-remain-available-are-you-sure-you-want-to-continue'
 							),
 							modalVariant: 'modal-warning',
 							onClose: close,

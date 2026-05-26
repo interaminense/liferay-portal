@@ -223,7 +223,7 @@ export default class WorkspaceListItem extends React.Component {
 				<div className='workspace-info'>
 					<div className='text-danger'>
 						{Liferay.Language.get(
-							'workspace-has-been-deactivated.-please-click-activate-to-reactivate'
+							'workspace-has-been-deactivated-please-click-activate-to-reactivate'
 						)}
 					</div>
 				</div>
@@ -245,7 +245,7 @@ export default class WorkspaceListItem extends React.Component {
 				{!available ? (
 					<div className='text-danger'>
 						{Liferay.Language.get(
-							'workspace-unavailable-;-click-to-reload'
+							'workspace-unavailable-click-to-reload'
 						)}
 					</div>
 				) : (

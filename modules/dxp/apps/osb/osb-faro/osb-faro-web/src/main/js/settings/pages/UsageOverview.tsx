@@ -26,20 +26,20 @@ const subscriptionStatuses = (admin: boolean) => ({
 	[SubscriptionStatuses.Approaching]: {
 		message: admin
 			? Liferay.Language.get(
-					'usage-limit-is-approaching.-please-contact-your-sales-representative-at-the-earliest-convenience'
+					'usage-limit-is-approaching-please-contact-your-sales-representative-at-the-earliest-convenience'
 			  )
 			: Liferay.Language.get(
-					'usage-limit-is-approaching.-please-contact-your-workspace-administrator-at-the-earliest-convenience'
+					'usage-limit-is-approaching-please-contact-your-workspace-administrator-at-the-earliest-convenience'
 			  ),
 		title: Liferay.Language.get('alert')
 	},
 	[SubscriptionStatuses.Over]: {
 		message: admin
 			? Liferay.Language.get(
-					'usage-limit-exceeded.-please-contact-your-sales-representative-to-upgrade-the-plan'
+					'usage-limit-exceeded-please-contact-your-sales-representative-to-upgrade-the-plan'
 			  )
 			: Liferay.Language.get(
-					'usage-limit-exceeded.-please-contact-your-workspace-administrator-to-upgrade-the-plan'
+					'usage-limit-exceeded-please-contact-your-workspace-administrator-to-upgrade-the-plan'
 			  ),
 		title: Liferay.Language.get('alert')
 	}
@@ -121,7 +121,7 @@ export const UsageOverview = ({
 			pageDescription={Liferay.Language.get(
 				'plans-are-limited-by-the-total-amount-of-individuals-and-page-views'
 			)}
-			pageTitle={Liferay.Language.get('subscription-&-usage')}
+			pageTitle={Liferay.Language.get('subscription-and-usage')}
 		>
 			{showAlert && alertContent && (
 				<ClayLayout.Row>

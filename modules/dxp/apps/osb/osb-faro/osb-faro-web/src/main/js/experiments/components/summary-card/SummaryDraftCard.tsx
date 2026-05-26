@@ -87,7 +87,7 @@ export const SummaryDraftCard: React.FC<{experiment: IExperiment}> = ({
 					)}
 				</span>
 			),
-			title: Liferay.Language.get('review-&-run')
+			title: Liferay.Language.get('review-and-run')
 		}
 	];
 

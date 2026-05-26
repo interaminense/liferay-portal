@@ -154,7 +154,7 @@ export const SegmentProfileRoutes = () => {
 				{
 					alertType: AlertTypes.Danger,
 					message: Liferay.Language.get(
-						'this-segment-is-disabled-because-some-criteria-has-been-affected-by-removal-of-a-data-source.-to-continue-using-this-segment-please-update-the-criteria'
+						'this-segment-is-disabled-because-some-criteria-has-been-affected-by-removal-of-a-data-source-to-continue-using-this-segment-please-update-the-criteria'
 					),
 					stripe: true
 				}

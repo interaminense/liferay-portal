@@ -39,7 +39,7 @@ const SuccessDisplay = ({friendlyURL}: {friendlyURL: string}) => {
 						<p>
 							{sub(
 								Liferay.Language.get(
-									'you-can-also-leave-this-page-open-and-well-notify-you-here.it-should-take-around-x-hour'
+									'you-can-also-leave-this-page-open-and-well-notify-you-hereit-should-take-around-x-hour'
 								),
 								[1]
 							)}

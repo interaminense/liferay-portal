@@ -51,7 +51,7 @@ const SelectWorkspaceAccount = () => {
 					<p key='SELECT'>
 						{sub(
 							Liferay.Language.get(
-								'weve-found-multiple-accounts-associated-with-x-.-you-can-have-one-basic-tier-workspace-of-analytics-cloud-per-account.-please-associate-this-analytics-cloud-workspace-to-an-account'
+								'weve-found-multiple-accounts-associated-with-x-you-can-have-one-basic-tier-workspace-of-analytics-cloud-per-account-please-associate-this-analytics-cloud-workspace-to-an-account'
 							),
 							[
 								<b key='emailAddress'>

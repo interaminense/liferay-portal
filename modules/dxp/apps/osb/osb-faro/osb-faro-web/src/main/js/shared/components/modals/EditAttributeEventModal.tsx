@@ -90,7 +90,7 @@ const EditAttributeEventModal: React.FC<IEditAttributeEventModalProps> = ({
 						if (dataMapper(data)) {
 							error = sub(
 								Liferay.Language.get(
-									'an-x-already-exists-with-that-display-name.-please-enter-a-different-display-name'
+									'an-x-already-exists-with-that-display-name-please-enter-a-different-display-name'
 								),
 								[
 									showTypecast
@@ -108,7 +108,7 @@ const EditAttributeEventModal: React.FC<IEditAttributeEventModalProps> = ({
 					})
 					.catch(() => {
 						error = Liferay.Language.get(
-							'there-was-an-error-processing-your-request.-please-try-again'
+							'there-was-an-error-processing-your-request-please-try-again'
 						);
 
 						return error;
@@ -189,7 +189,7 @@ const EditAttributeEventModal: React.FC<IEditAttributeEventModalProps> = ({
 											addAlert({
 												alertType: Alert.Types.Error,
 												message: Liferay.Language.get(
-													'there-was-an-error-processing-your-request.-please-try-again'
+													'there-was-an-error-processing-your-request-please-try-again'
 												)
 											});
 
@@ -269,13 +269,7 @@ const EditAttributeEventModal: React.FC<IEditAttributeEventModalProps> = ({
 
 													<Form.GroupItem className='text-secondary'>
 														{Liferay.Language.get(
-															'data-typecast-determines-how-attributes-can-be-analyzed'
-														)}
-													</Form.GroupItem>
-
-													<Form.GroupItem className='text-secondary'>
-														{Liferay.Language.get(
-															'e.g.-typecasting-to-number-will-support-greater-than-or-less-than-conditions'
+															'data-typecast-determines-how-attributes-can-be-analyzed-eg-typecasting-to-number-will-support-greater-than-or-less-than-conditions'
 														)}
 													</Form.GroupItem>
 												</Form.Group>

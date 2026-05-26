@@ -123,10 +123,10 @@ const EventAnalysisListCard: React.FC<EventAnalysisListCardProps> = ({
 				<p>
 					{getPluralMessage(
 						Liferay.Language.get(
-							'you-will-lose-all-data-related-to-this-analysis.-you-will-not-be-able-to-undo-this-operation'
+							'you-will-lose-all-data-related-to-this-analysis-you-will-not-be-able-to-undo-this-operation'
 						),
 						Liferay.Language.get(
-							'you-will-lose-all-data-related-to-these-analyses.-you-will-not-be-able-to-undo-this-operation'
+							'you-will-lose-all-data-related-to-these-analyses-you-will-not-be-able-to-undo-this-operation'
 						),
 						eventAnalysisIds.length
 					)}

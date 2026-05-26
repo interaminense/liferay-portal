@@ -1,6 +1,9 @@
+import type {ReactNode} from 'react';
+
 export type MenuItem = {
 	active?: boolean;
 	childMenuId?: string;
+	customContent?: ReactNode;
 	divider?: boolean;
 	externalLink?: boolean;
 	icon?: string;

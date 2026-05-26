@@ -24,7 +24,7 @@ const SequentialEventOrderPopover: React.FC = () => {
 			}
 		>
 			{Liferay.Language.get(
-				'when-this-is-enabled,the-second-event-must-come-after-the-first-event,-with-any-number-of-events-in-between'
+				'when-this-is-enabledthe-second-event-must-come-after-the-first-event-with-any-number-of-events-in-between'
 			)}
 		</ClayPopover>
 	);

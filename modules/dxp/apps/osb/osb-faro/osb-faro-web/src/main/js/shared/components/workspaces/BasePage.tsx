@@ -1,3 +1,5 @@
+import 'shared/util/flag-icons';
+
 import * as API from 'shared/api';
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
@@ -7,6 +9,7 @@ import React, {createContext} from 'react';
 import UserDropdown from 'shared/components/user-dropdown';
 import withCurrentUser from 'shared/hoc/WithCurrentUser';
 import {Align} from '@clayui/drop-down';
+import {getFlagSymbol} from 'shared/util/locale';
 import {LANGUAGES} from 'shared/util/constants';
 import {Routes} from 'shared/util/router';
 import {User} from 'shared/util/records';
@@ -41,7 +44,6 @@ export class WorkspacesBasePage extends React.Component<IWorkspacesBasePageProps
 					items: [
 						{
 							childMenuId: 'language',
-							divider: true,
 							label: Liferay.Language.get('language')
 						},
 						{
@@ -65,6 +67,8 @@ export class WorkspacesBasePage extends React.Component<IWorkspacesBasePageProps
 
 						return {
 							active,
+							icon: getFlagSymbol(id),
+							iconAlignment: 'left',
 							label,
 							onClick: active
 								? undefined

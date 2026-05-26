@@ -11,6 +11,7 @@ const UserMenuDropdownItem: React.FC<
 > = ({
 	active,
 	className,
+	customContent,
 	externalLink,
 	icon,
 	iconAlignment,
@@ -18,6 +19,14 @@ const UserMenuDropdownItem: React.FC<
 	onClick,
 	url
 }) => {
+	if (customContent) {
+		return (
+			<ClayDropDown.Item className={getCN(className, {active})}>
+				{customContent}
+			</ClayDropDown.Item>
+		);
+	}
+
 	const Content = () => {
 		if (iconAlignment === 'left') {
 			return (

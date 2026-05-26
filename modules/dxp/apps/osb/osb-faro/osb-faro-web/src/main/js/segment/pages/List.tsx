@@ -365,10 +365,10 @@ export const List: React.FC<IListProps> = ({
 				  ),
 			subtitle: isMultiple
 				? Liferay.Language.get(
-						'you-will-lose-all-data-related-to-these-segments.-you-will-not-be-able-to-undo-this-operation'
+						'you-will-lose-all-data-related-to-these-segments-you-will-not-be-able-to-undo-this-operation'
 				  )
 				: Liferay.Language.get(
-						'you-will-lose-all-data-related-to-this-segment.-you-will-not-be-able-to-undo-this-operation'
+						'you-will-lose-all-data-related-to-this-segment-you-will-not-be-able-to-undo-this-operation'
 				  ),
 			title: isMultiple
 				? Liferay.Language.get('delete-segments')

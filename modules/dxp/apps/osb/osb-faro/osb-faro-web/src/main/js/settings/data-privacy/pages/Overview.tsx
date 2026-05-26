@@ -118,7 +118,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 						<div className='h5'>
 							{sub(
 								Liferay.Language.get(
-									'you-will-permanently-lose-analytics-data-that-has-been-recorded-over-x-ago.-you-will-not-be-able-to-undo-this-operation'
+									'you-will-permanently-lose-analytics-data-that-has-been-recorded-over-x-ago-you-will-not-be-able-to-undo-this-operation'
 								),
 								[getRetentionLabel(newVal).toLowerCase()]
 							)}
@@ -141,7 +141,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 	const handleOpenRequestModal = () =>
 		open(modalTypes.EXPORT_LOG_MODAL, {
 			description: Liferay.Language.get(
-				'select-a-date-range-to-export-your-request-log.-your-download-may-take-a-couple-minutes-to-process'
+				'select-a-date-range-to-export-your-request-log-your-download-may-take-a-couple-minutes-to-process'
 			),
 			fileName: 'request-log.csv',
 			groupId,
@@ -165,7 +165,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 	const handleOpenSuppressionModal = () =>
 		open(modalTypes.EXPORT_LOG_MODAL, {
 			description: Liferay.Language.get(
-				'select-a-date-range-to-export-your-suppression-list.-your-download-may-take-a-couple-minutes-to-process'
+				'select-a-date-range-to-export-your-suppression-list-your-download-may-take-a-couple-minutes-to-process'
 			),
 			fileName: 'suppression-list.csv',
 			groupId,
@@ -189,7 +189,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 	return (
 		<BasePage
 			className='data-privacy-overview-root'
-			pageTitle={Liferay.Language.get('data-control-&-privacy')}
+			pageTitle={Liferay.Language.get('data-control-and-privacy')}
 		>
 			<div className='row'>
 				<div className='col-xl-8'>
@@ -206,7 +206,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 
 										<p className='text-secondary'>
 											{Liferay.Language.get(
-												'analytics-cloud-stores-event-data-and-inactive-anonymous-individuals-for-the-period-specified.-known-profile-data-will-be-stored-indefinitely-unless-it-is-removed-from-the-source-or-requested-to-be-deleted.-contact-sales-to-customize-retention-period'
+												'analytics-cloud-stores-event-data-and-inactive-anonymous-individuals-for-the-period-specified-known-profile-data-will-be-stored-indefinitely-unless-it-is-removed-from-the-source-or-requested-to-be-deleted-contact-sales-to-customize-retention-period'
 											)}
 										</p>
 									</div>
@@ -247,7 +247,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 
 										<p className='text-secondary'>
 											{Liferay.Language.get(
-												'data-subjects-and-your-organization-can-request-access,-deletion,-and-suppression-of-their-data-in-analytics-cloud.-some-requests-may-take-up-to-7-days-to-complete.-we-will-notify-the-requestor-by-email-once-the-download-is-ready'
+												'data-subjects-and-your-organization-can-request-access-deletion-and-suppression-of-their-data-in-analytics-cloud-some-requests-may-take-up-to-7-days-to-complete-we-will-notify-the-requestor-by-email-once-the-download-is-ready'
 											)}
 										</p>
 									</div>
@@ -289,7 +289,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 
 										<p className='text-secondary'>
 											{Liferay.Language.get(
-												'suppressed-data-subjects-will-be-excluded-in-further-identity-resolution-activity.-deleted-data-subjects-will-automatically-be-suppressed-by-their-user-id-and-their-identity-will-not-be-resolvable'
+												'suppressed-data-subjects-will-be-excluded-in-further-identity-resolution-activity-deleted-data-subjects-will-automatically-be-suppressed-by-their-user-id-and-their-identity-will-not-be-resolvable'
 											)}
 										</p>
 									</div>

@@ -171,7 +171,7 @@ export function validatePattern(
 export const validateProtocol = validatePattern(
 	/^(http[s]?:\/\/)/i,
 	Liferay.Language.get(
-		'your-url-is-missing-the-protocol.-please-include-http-or-https'
+		'your-url-is-missing-the-protocol-please-include-http-or-https'
 	)
 );
 

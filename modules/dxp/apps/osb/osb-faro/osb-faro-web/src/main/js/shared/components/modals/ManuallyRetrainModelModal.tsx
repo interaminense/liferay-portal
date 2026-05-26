@@ -75,7 +75,7 @@ const ManuallyRetrainModelModal: React.FC<IManuallyRetrainModelModalProps> = ({
 				}) => {
 					if (total < ACTIVITIES_THRESHOLD) {
 						error = Liferay.Language.get(
-							'the-interaction-period-does-not-meet-the-1000-event-minimum-required-to-train-the-model.-please-add-pages-or-increase-the-period'
+							'the-interaction-period-does-not-meet-the-1000-event-minimum-required-to-train-the-model-please-add-pages-or-increase-the-period'
 						);
 					}
 

@@ -185,7 +185,7 @@ export const getChannelName = ({
 
 export const getDataPrivacy = ({groupId}: IBasicRouteArgs) => ({
 	href: toRoute(Routes.SETTINGS_DATA_PRIVACY, {groupId}),
-	label: Liferay.Language.get('data-control-&-privacy')
+	label: Liferay.Language.get('data-control-and-privacy')
 });
 
 export const getDataSources = ({groupId}: IBasicRouteArgs) => ({

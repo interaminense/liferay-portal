@@ -103,7 +103,7 @@ export const DownloadStaticCSVReport: React.FC<IDownloadStaticCSVReport> = ({
 								addAlert({
 									alertType: Alert.Types.Error,
 									message: Liferay.Language.get(
-										'it-was-not-possible-to-generate-a-csv-file-at-this-moment.-please-try-again-later'
+										'it-was-not-possible-to-generate-a-csv-file-at-this-moment-please-try-again-later'
 									)
 								})
 							);
@@ -144,7 +144,7 @@ const Modal = ({
 					{
 						sub(
 							Liferay.Language.get(
-								'the-generated-csv-file-supports-up-to-x-entries-per-export-and-it-will-respect-the-current-ordering-and-search-results.-please-ensure-that-any-desired-changes-have-been-successfully-applied-before-downloading-the-x-list'
+								'the-generated-csv-file-supports-up-to-x-entries-per-export-and-it-will-respect-the-current-ordering-and-search-results-please-ensure-that-any-desired-changes-have-been-successfully-applied-before-downloading-the-x-list'
 							),
 							[toLocale(MAX_CSV_ENTRIES), typeLang]
 						) as string

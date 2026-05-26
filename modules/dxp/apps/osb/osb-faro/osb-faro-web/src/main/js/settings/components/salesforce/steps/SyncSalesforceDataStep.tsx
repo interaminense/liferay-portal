@@ -71,7 +71,7 @@ const SyncSalesforceDataStep = ({
 					addAlert({
 						alertType: Alert.Types.Error,
 						message: Liferay.Language.get(
-							'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+							'there-was-an-error-processing-your-request-try-again-if-the-problem-persists-please-contact-support'
 						)
 					});
 				} finally {

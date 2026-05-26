@@ -68,7 +68,7 @@ const CustomAssetsListCard: React.FC<{timeZoneId: string}> = ({timeZoneId}) => {
 							<>
 								<span className='mr-1'>
 									{Liferay.Language.get(
-										'check-back-later-to-verify-if-data-has-been-received-from-your-data-sources,-or-you-can-try-a-different-date-range'
+										'check-back-later-to-verify-if-data-has-been-received-from-your-data-sources-or-you-can-try-a-different-date-range'
 									)}
 								</span>
 

@@ -78,6 +78,8 @@ exports[`AccessTokenList should display the "Generate Token" card  above the tab
 </div>
 `;
 
+exports[`AccessTokenList should open a modal to confirm revoking a token 1`] = `null`;
+
 exports[`AccessTokenList should render 1`] = `
 <div>
   <div

@@ -209,7 +209,7 @@ const ActivityStreamTimeline: React.FC<IActivityStreamTimelineProps> = ({
 		return (
 			<NoResultsDisplay
 				description={Liferay.Language.get(
-					'check-back-later-to-see-if-data-has-been-received-from-your-data-sources,-or-try-a-different-date-range'
+					'check-back-later-to-see-if-data-has-been-received-from-your-data-sources-or-try-a-different-date-range'
 				)}
 				spacer
 				title={Liferay.Language.get('there-is-no-data-found')}

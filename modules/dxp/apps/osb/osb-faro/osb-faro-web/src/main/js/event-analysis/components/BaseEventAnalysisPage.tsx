@@ -46,7 +46,7 @@ const ERRORS = {
 	[MessageKeys.NameIsAlreadyUsed]: {
 		alertType: Alert.Types.Warning,
 		message: Liferay.Language.get(
-			'this-analysis-name-is-currently-in-use.-please-try-a-different-one'
+			'this-analysis-name-is-currently-in-use-please-try-a-different-one'
 		)
 	}
 };

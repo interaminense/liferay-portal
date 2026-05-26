@@ -456,24 +456,12 @@ export const EXPIRATION_DATE_LABELS = {
 	[ExpirationPeriod.Indefinite]: Liferay.Language.get('indefinite')
 };
 
-export const LANGUAGES = [
-	{
-		id: LanguageIds.English,
-		label: Liferay.Language.get('english')
-	},
-	{
-		id: LanguageIds.Japanese,
-		label: Liferay.Language.get('japanese')
-	},
-	{
-		id: LanguageIds.Portuguese,
-		label: Liferay.Language.get('portuguese')
-	},
-	{
-		id: LanguageIds.Spanish,
-		label: Liferay.Language.get('spanish')
-	}
-];
+export const LANGUAGES: {id: string; label: string}[] = Object.entries(
+	(Liferay.Language as unknown as {available?: Record<string, string>})
+		.available || {}
+)
+	.map(([id, label]) => ({id, label}))
+	.sort((a, b) => a.label.localeCompare(b.label));
 
 export const ONE_DAY = '86400000';
 

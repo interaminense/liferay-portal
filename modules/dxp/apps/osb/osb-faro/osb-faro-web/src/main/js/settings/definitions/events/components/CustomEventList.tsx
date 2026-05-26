@@ -148,11 +148,11 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 				<p className='text-secondary'>
 					{eventsCount > 1
 						? Liferay.Language.get(
-								'blocking-events-will-result-in-the-deletion-of-their-display-names-and-descriptions.-you-must-reassign-these-values-if-you-wish-to-unblock-these-events-in-the-future'
+								'blocking-events-will-result-in-the-deletion-of-their-display-names-and-descriptions-you-must-reassign-these-values-if-you-wish-to-unblock-these-events-in-the-future'
 						  )
 						: sub(
 								Liferay.Language.get(
-									'blocking-x-will-result-in-the-deletion-of-its-display-name-and-description.-you-must-reassign-these-values-if-you-wish-to-unblock-the-event-in-the-future'
+									'blocking-x-will-result-in-the-deletion-of-its-display-name-and-description-you-must-reassign-these-values-if-you-wish-to-unblock-the-event-in-the-future'
 								),
 								[events[0].displayName]
 						  )}
@@ -223,7 +223,7 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 						addAlert({
 							alertType: Alert.Types.Error,
 							message: Liferay.Language.get(
-								'there-was-an-error-processing-your-request.-please-try-again'
+								'there-was-an-error-processing-your-request-please-try-again'
 							),
 							timeout: false
 						})
@@ -248,7 +248,7 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 			message: (
 				<p className='text-secondary'>
 					{Liferay.Language.get(
-						'hiding-events-in-the-interface-may-require-reconfiguration-of-segments-and-other-analysis-using-this-event.-hidden-events-will-be-available-for-calculating-metrics'
+						'hiding-events-in-the-interface-may-require-reconfiguration-of-segments-and-other-analysis-using-this-event-hidden-events-will-be-available-for-calculating-metrics'
 					)}
 				</p>
 			),
@@ -283,7 +283,7 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 						addAlert({
 							alertType: Alert.Types.Error,
 							message: Liferay.Language.get(
-								'there-was-an-error-processing-your-request.-please-try-again'
+								'there-was-an-error-processing-your-request-please-try-again'
 							),
 							timeout: false
 						})
@@ -334,7 +334,7 @@ const CustomEventList: React.FC<ICustomEventListProps> = ({
 				addAlert({
 					alertType: Alert.Types.Error,
 					message: Liferay.Language.get(
-						'there-was-an-error-processing-your-request.-please-try-again'
+						'there-was-an-error-processing-your-request-please-try-again'
 					),
 					timeout: false
 				})

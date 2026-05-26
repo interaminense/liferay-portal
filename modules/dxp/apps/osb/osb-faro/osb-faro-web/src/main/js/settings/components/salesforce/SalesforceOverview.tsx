@@ -103,7 +103,7 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 			addAlert({
 				alertType: Alert.Types.Error,
 				message: Liferay.Language.get(
-					'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+					'there-was-an-error-processing-your-request-try-again-if-the-problem-persists-please-contact-support'
 				)
 			});
 		} finally {
@@ -115,7 +115,7 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 		const alert: Alert = {
 			displayType: 'success',
 			message: Liferay.Language.get(
-				'you-have-successfully-authenticated-your-token-with-liferay-analytics-cloud.-you-can-now-select-the-data-to-sync'
+				'you-have-successfully-authenticated-your-token-with-liferay-analytics-cloud-you-can-now-select-the-data-to-sync'
 			)
 		};
 
@@ -123,11 +123,11 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 			alert.displayType = 'warning';
 
 			alert.message = Liferay.Language.get(
-				'the-data-source-is-disconnected.-data-is-no-longer-being-synced-from-salesforce,-but-you-can-reconnect-to-resume-syncing'
+				'the-data-source-is-disconnected-data-is-no-longer-being-synced-from-salesforce-but-you-can-reconnect-to-resume-syncing'
 			);
 		} else if (enabledAllAccounts || enabledAllContacts || enableAllLeads) {
 			alert.message = Liferay.Language.get(
-				'all-data-coming-from-this-data-source-is-up-to-date.-there-are-no-errors-to-report'
+				'all-data-coming-from-this-data-source-is-up-to-date-there-are-no-errors-to-report'
 			);
 		}
 
@@ -193,7 +193,7 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 							<div className='mb-3'>
 								<Text color='secondary' size={4}>
 									{Liferay.Language.get(
-										'to-reestablish-the-connection-between-salesforce-and-liferay-analytics-cloud,-generate-a-token-and-paste-the-code-on-the-input-below'
+										'to-reestablish-the-connection-between-salesforce-and-liferay-analytics-cloud-generate-a-token-and-paste-the-code-on-the-input-below'
 									)}
 								</Text>
 
@@ -393,7 +393,7 @@ const AccountAndIndividuals = ({
 				!enabledAllIndividuals && (
 					<ClayAlert displayType='warning' title='Warning'>
 						{Liferay.Language.get(
-							'the-data-source-setup-is-almost-complete.-sync-data-to-start-seeing-results-as-activities-occur-on-your-sites'
+							'the-data-source-setup-is-almost-complete-sync-data-to-start-seeing-results-as-activities-occur-on-your-sites'
 						)}
 					</ClayAlert>
 				)}
@@ -409,7 +409,7 @@ const AccountAndIndividuals = ({
 			<div className='mb-2'>
 				<Text color='secondary' size={4}>
 					{Liferay.Language.get(
-						'to-configure-your-salesforce-data-source,-go-to-your-salesforce-environment-to-update-this-app-connection'
+						'to-configure-your-salesforce-data-source-go-to-your-salesforce-environment-to-update-this-app-connection'
 					)}
 				</Text>
 			</div>

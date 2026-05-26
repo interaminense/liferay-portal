@@ -59,7 +59,7 @@ export const mapResultToProps = safeResultToProps(
 				id: 'knownIndividualsMetric',
 				info: {
 					content: Liferay.Language.get(
-						'current-total-of-known-individuals-that-are-tracked-by-analytics-cloud.-an-individual-is-considered-known-if-we-have-any-identifiable-information-about-the-individual'
+						'current-total-of-known-individuals-that-are-tracked-by-analytics-cloud-an-individual-is-considered-known-if-we-have-any-identifiable-information-about-the-individual'
 					),
 					title: Liferay.Language.get('known-individuals')
 				},
@@ -70,7 +70,7 @@ export const mapResultToProps = safeResultToProps(
 				id: 'anonymousIndividualsMetric',
 				info: {
 					content: Liferay.Language.get(
-						'current-total-of-anonymous-individuals-that-are-tracked-by-analytics-cloud.-inactive-anonymous-individuals-are-automatically-removed-if-they-dont-have-activities-during-the-retention-period'
+						'current-total-of-anonymous-individuals-that-are-tracked-by-analytics-cloud-inactive-anonymous-individuals-are-automatically-removed-if-they-dont-have-activities-during-the-retention-period'
 					),
 					title: Liferay.Language.get('anonymous-individuals')
 				},

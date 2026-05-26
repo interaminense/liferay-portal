@@ -36,7 +36,7 @@ const EmptyState: React.FC<IEmptyStateProps> = ({
 						})
 				}}
 				description={Liferay.Language.get(
-					'do-more-with-our-business-&-enterprise-plans'
+					'do-more-with-our-business-and-enterprise-plans'
 				)}
 				icon='ac_integration'
 			/>

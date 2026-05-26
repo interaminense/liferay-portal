@@ -27,21 +27,21 @@ const OverviewSection: React.FC<IOverviewSectionProps> = ({
 	const cards = [
 		{
 			description: Liferay.Language.get(
-				'total-new-accounts-that-entered-the-pipeline-stage-within-the-selected-timeframe,-excluding-cross-sells,-upsells,-and-renewals.'
+				'total-new-accounts-that-entered-the-pipeline-stage-within-the-selected-timeframe-excluding-cross-sells-upsells-and-renewals'
 			),
 			metric: netNewPipelineGenerated,
 			title: Liferay.Language.get('net-new-pipeline-generated')
 		},
 		{
 			description: Liferay.Language.get(
-				'the-total-number-of-accounts-specifically-stuck-in-the-engaged-stage-that-have-exceeded-their-designated-time-in-stage-threshold-90-days'
+				'the-total-number-of-accounts-specifically-stuck-in-the-engaged-stage-that-have-exceeded-their-designated-time-in-stage-threshold-greater-than-90-days'
 			),
 			metric: stalledAccounts,
 			title: Liferay.Language.get('stalled-accounts')
 		},
 		{
 			description: Liferay.Language.get(
-				'accounts-with-decreasing-product-usage-or-signs-of-churn-risk.-action-is-required'
+				'accounts-with-decreasing-product-usage-or-signs-of-churn-risk-action-is-required'
 			),
 			metric: atRiskAccounts,
 			title: Liferay.Language.get('at-risk-accounts')

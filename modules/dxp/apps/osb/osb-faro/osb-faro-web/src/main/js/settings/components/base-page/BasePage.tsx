@@ -46,7 +46,7 @@ function getSidebarSections({
 				},
 				{
 					icon: 'data_privacy_lock',
-					label: Liferay.Language.get('data-control-&-privacy'),
+					label: Liferay.Language.get('data-control-and-privacy'),
 					route: Routes.SETTINGS_DATA_PRIVACY,
 					url: toRoute(Routes.SETTINGS_DATA_PRIVACY, {groupId})
 				},
@@ -94,7 +94,7 @@ function getSidebarSections({
 				},
 				{
 					icon: 'usage',
-					label: Liferay.Language.get('subscription-&-usage'),
+					label: Liferay.Language.get('subscription-and-usage'),
 					route: Routes.SETTINGS_USAGE,
 					url: toRoute(Routes.SETTINGS_USAGE, {groupId})
 				},

@@ -508,7 +508,7 @@ export class DataTransformation extends React.Component {
 									'all-fields-have-been-mapped-automatically-to-the-best-possible-match'
 								),
 								Liferay.Language.get(
-									'please-confirm-the-data-mapping-below-and-make-any-changes-if-necessary.-you-may-only-map-one-source-data-field-to-a-single-analytics-cloud-field'
+									'please-confirm-the-data-mapping-below-and-make-any-changes-if-necessary-you-may-only-map-one-source-data-field-to-a-single-analytics-cloud-field'
 								)
 							].join(' ')}
 						</p>

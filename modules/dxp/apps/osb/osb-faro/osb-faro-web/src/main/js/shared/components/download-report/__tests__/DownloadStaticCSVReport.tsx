@@ -199,7 +199,7 @@ describe('DownloadStaticCSVReport', () => {
 			expect(addAlert).toHaveBeenCalledWith({
 				alertType: Alert.Types.Error,
 				message: Liferay.Language.get(
-					'it-was-not-possible-to-generate-a-csv-file-at-this-moment.-please-try-again-later'
+					'it-was-not-possible-to-generate-a-csv-file-at-this-moment-please-try-again-later'
 				)
 			});
 		});
