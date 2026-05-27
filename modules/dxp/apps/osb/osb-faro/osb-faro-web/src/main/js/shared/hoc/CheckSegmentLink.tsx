@@ -1,31 +1,22 @@
 import * as API from 'shared/api';
 import React, {useEffect, useState} from 'react';
-import {matchPath} from 'react-router-dom';
+import {matchPath, useHistory, useLocation} from 'react-router-dom';
 import {Routes, toRoute} from 'shared/util/router';
 import {WrapSafeResults} from 'shared/hoc/util';
 
-type History = {
-	replace: (path: string) => void;
-};
-
-type Location = {
-	pathname: string;
-};
-
 interface IWrappedComponentProps {
 	groupId: string;
-	history: History;
-	location: Location;
 }
 
 const checkSegmentLink =
 	(WrappedComponent: React.ComponentType<IWrappedComponentProps>) =>
 	({
 		groupId,
-		history,
-		location,
 		...otherProps
 	}: IWrappedComponentProps & {[key: string]: any}) => {
+		const history = useHistory();
+		const location = useLocation();
+
 		const [error, setError] = useState();
 		const [loading, setLoading] = useState(false);
 
@@ -63,12 +54,7 @@ const checkSegmentLink =
 
 		return (
 			<WrapSafeResults error={error} loading={loading} page pageDisplay>
-				<WrappedComponent
-					{...otherProps}
-					groupId={groupId}
-					history={history}
-					location={location}
-				/>
+				<WrappedComponent {...otherProps} groupId={groupId} />
 			</WrapSafeResults>
 		);
 	};

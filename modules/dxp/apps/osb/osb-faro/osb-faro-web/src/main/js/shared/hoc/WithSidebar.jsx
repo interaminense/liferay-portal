@@ -19,6 +19,7 @@ import {getDefaultChannel} from 'shared/components/channels-menu';
 import {hasChanges} from 'shared/util/react';
 import {updateDefaultChannelId} from 'shared/actions/preferences';
 import {User} from '../util/records';
+import {useLocation} from 'react-router-dom';
 import {withError, withLoading} from './util';
 
 /**
@@ -189,6 +190,12 @@ export default compose(
 			}
 		}
 
-		return WithSidebar;
+		const WithSidebarWithLocation = props => {
+			const location = useLocation();
+
+			return <WithSidebar {...props} location={location} />;
+		};
+
+		return WithSidebarWithLocation;
 	}
 );

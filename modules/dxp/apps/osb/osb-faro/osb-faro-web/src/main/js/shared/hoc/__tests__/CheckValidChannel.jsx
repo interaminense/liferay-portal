@@ -1,11 +1,18 @@
 import CheckValidChannel from '../CheckValidChannel';
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
-import {StaticRouter} from 'react-router';
+import {createMemoryHistory} from 'history';
+import {Router} from 'react-router-dom';
 
 jest.unmock('react-dom');
 
 const wrappedComponentText = () => 'wrapped component text';
+
+const renderAt = (ui, pathname) => {
+	const history = createMemoryHistory({initialEntries: [pathname]});
+
+	return render(<Router history={history}>{ui}</Router>);
+};
 
 describe('CheckValidChannel', () => {
 	afterEach(cleanup);
@@ -13,12 +20,9 @@ describe('CheckValidChannel', () => {
 	it('should render a wrapped component', () => {
 		const WrappedComponent = CheckValidChannel(wrappedComponentText);
 
-		const {container} = render(
-			<WrappedComponent
-				channelId='123'
-				channels={[{id: '123'}]}
-				location={{pathname: 'test'}}
-			/>
+		const {container} = renderAt(
+			<WrappedComponent channelId='123' channels={[{id: '123'}]} />,
+			'test'
 		);
 
 		expect(container.textContent).toBe('wrapped component text');
@@ -27,14 +31,9 @@ describe('CheckValidChannel', () => {
 	it('should render an error page', () => {
 		const WrappedComponent = CheckValidChannel(wrappedComponentText);
 
-		const {container} = render(
-			<StaticRouter>
-				<WrappedComponent
-					channelId='123'
-					channels={[{id: '456'}]}
-					location={{pathname: 'test'}}
-				/>
-			</StaticRouter>
+		const {container} = renderAt(
+			<WrappedComponent channelId='123' channels={[{id: '456'}]} />,
+			'test'
 		);
 
 		expect(container.textContent).toBe(

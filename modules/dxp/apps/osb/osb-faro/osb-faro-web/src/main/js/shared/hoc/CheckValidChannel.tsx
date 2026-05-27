@@ -2,24 +2,14 @@ import ErrorPage from 'shared/pages/ErrorPage';
 import React, {useEffect} from 'react';
 import {Channel} from 'shared/components/channels-menu';
 import {getDefaultChannel} from 'shared/components/channels-menu';
-import {matchPath} from 'react-router-dom';
+import {matchPath, useHistory, useLocation} from 'react-router-dom';
 import {Routes, toRoute} from 'shared/util/router';
-
-type History = {
-	replace: (path: string) => void;
-};
-
-type Location = {
-	pathname: string;
-};
 
 interface IWrappedComponentProps {
 	channelId: string;
 	channels: Array<Channel>;
 	defaultChannelId: string;
 	groupId: string;
-	history: History;
-	location: Location;
 }
 
 const checkValidChannel =
@@ -29,10 +19,11 @@ const checkValidChannel =
 		channels,
 		defaultChannelId,
 		groupId,
-		history,
-		location,
 		...otherProps
 	}: IWrappedComponentProps & {[key: string]: any}) => {
+		const history = useHistory();
+		const location = useLocation();
+
 		useEffect(() => {
 			const isHome = matchPath(location.pathname, {
 				exact: true,
@@ -66,8 +57,6 @@ const checkValidChannel =
 				channels={channels}
 				defaultChannelId={channelId}
 				groupId={groupId}
-				history={history}
-				location={location}
 			/>
 		);
 	};
