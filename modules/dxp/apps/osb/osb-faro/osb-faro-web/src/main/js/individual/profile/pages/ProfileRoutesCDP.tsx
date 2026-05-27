@@ -9,10 +9,10 @@ import React, {lazy, Suspense, useContext} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {buildHeaderSubtitle} from './utils/utils';
 import {ChannelContext} from 'shared/context/channel';
-import {compose, withIndividual} from 'shared/hoc';
+import {withIndividual} from 'shared/hoc';
 import {CSVType} from 'shared/components/download-report/utils';
 import {getMatchedRoute, Routes} from 'shared/util/router';
-import {Switch, withRouter} from 'react-router-dom';
+import {Switch} from 'react-router-dom';
 import {useDataSources} from 'shared/context/dataSources';
 import {useLDPEnabled} from 'shared/hooks/useLDPEnabled';
 import {useRequest} from 'shared/hooks/useRequest';
@@ -209,4 +209,4 @@ export const IndividualProfileRoutesCDP = ({
 	);
 };
 
-export default compose(withRouter, withIndividual)(IndividualProfileRoutesCDP);
+export default withIndividual(IndividualProfileRoutesCDP);
