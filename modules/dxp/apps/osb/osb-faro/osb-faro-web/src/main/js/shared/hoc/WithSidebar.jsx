@@ -18,8 +18,8 @@ import {get} from 'lodash';
 import {getDefaultChannel} from 'shared/components/channels-menu';
 import {hasChanges} from 'shared/util/react';
 import {updateDefaultChannelId} from 'shared/actions/preferences';
-import {User} from '../util/records';
 import {useLocation} from 'react-router-dom';
+import {User} from '../util/records';
 import {withError, withLoading} from './util';
 
 /**
