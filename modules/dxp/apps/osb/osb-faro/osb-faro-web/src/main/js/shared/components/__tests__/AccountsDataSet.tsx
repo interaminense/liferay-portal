@@ -332,12 +332,13 @@ describe('AccountsDataSet', () => {
 		);
 	});
 
-	it('should render "Active" label for ACTIVE activity status', () => {
+	it('should append queryParams entries to the apiURL query string', () => {
 		render(
 			<AccountsDataSet
 				apiURL='fake-url'
 				channelId='123'
 				groupId='23'
+				queryParams={{channelId: '123'}}
 				rangeSelectors={defaultRangeSelectors}
 			/>
 		);
@@ -357,6 +358,7 @@ describe('AccountsDataSet', () => {
 				apiURL='fake-url'
 				channelId='123'
 				groupId='23'
+				queryParams={{channelId: '123'}}
 				rangeSelectors={defaultRangeSelectors}
 			/>
 		);
@@ -376,6 +378,7 @@ describe('AccountsDataSet', () => {
 				apiURL='fake-url'
 				channelId='123'
 				groupId='23'
+				queryParams={{channelId: '123'}}
 				rangeSelectors={defaultRangeSelectors}
 			/>
 		);
