@@ -48,7 +48,7 @@ pipeline {
 
 							ssh-add ~/.ssh/id_ed25519
 
-							./gradlew dockerDeploy
+							./gradlew createDockerfile
 
 							echo "${LICENSE}" | base64 --decode > build/docker/deploy/license.xml
 						'''
