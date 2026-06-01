@@ -4,6 +4,7 @@ ext.faroImageTag = project.findProperty("docker.image.tag") ?: "latest"
 task buildTheme(type: Exec)
 
 buildTheme {
+	dependsOn yarnInstall
 	commandLine "npm", "run", "build"
 	workingDir "modules/dxp/apps/osb/osb-faro/osb-faro-theme"
 }
