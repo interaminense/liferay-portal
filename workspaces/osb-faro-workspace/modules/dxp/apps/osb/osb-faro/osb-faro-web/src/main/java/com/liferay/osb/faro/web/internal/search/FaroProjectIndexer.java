@@ -253,13 +253,16 @@ public class FaroProjectIndexer extends BaseIndexer<FaroProject> {
 	}
 
 	@Override
-	protected void doReindexCompany(long companyId) throws Exception {
+	protected void doReindex(String[] ids) throws Exception {
 		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setCompanyId(
+			GetterUtil.getLong(ids[0]));
 		indexableActionableDynamicQuery.setPerformActionMethod(
-			(FaroProject faroProject) -> getDocument(faroProject));
+			(FaroProject faroProject) ->
+				indexableActionableDynamicQuery.addDocuments(
+					getDocument(faroProject)));
 
 		indexableActionableDynamicQuery.performActions();
 	}
