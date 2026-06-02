@@ -33,6 +33,6 @@
 	},
 	"include": [
 		"./src/main/js/**/*",
-		"../../../../../../../../modules/global.d.ts"
+		"../../../../../global.d.ts"
 	]
 }
