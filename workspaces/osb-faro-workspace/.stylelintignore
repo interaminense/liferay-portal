@@ -1,9 +1,0 @@
-##
-## Other
-##
-
-    #
-    # LRAC-12941 Temporarily ignore SF on FARO files.
-    #
-    modules/dxp/apps/osb/osb-faro/osb-faro-web/
-    modules/dxp/apps/osb/osb-faro/osb-faro-theme/
