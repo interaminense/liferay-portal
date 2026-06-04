@@ -118,6 +118,10 @@ const UsageOverviewExternal = lazy(
 
 const Users = lazy(() => import(/* webpackChunkName: "Users" */ './user'));
 
+const AiAssistant = lazy(
+	() => import(/* webpackChunkName: "AiAssistant" */ './ai-assistant')
+);
+
 const WorkspaceSettings = lazy(
 	() => import(/* webpackChunkName: "WorkspaceSettings" */ './Workspace')
 );
@@ -171,6 +175,13 @@ export const Settings = () => {
 						element={<BundleRouter data={Users} />}
 						path="users/*"
 					/>
+
+					{FARO_DEV_MODE && (
+						<Route
+							element={<BundleRouter data={AiAssistant} />}
+							path="ai-assistant"
+						/>
+					)}
 
 					{!IS_PROJECT_SAAS && (
 						<Route

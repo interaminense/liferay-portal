@@ -85,6 +85,12 @@ function getSidebarSections({
 						groupId,
 					}),
 				},
+				FARO_DEV_MODE && {
+					icon: 'magic',
+					label: Liferay.Language.get('ai-assistant'),
+					route: Routes.SETTINGS_AI_ASSISTANT,
+					url: toRoute(Routes.SETTINGS_AI_ASSISTANT, {groupId}),
+				},
 				{
 					icon: 'ac_page',
 					label: Liferay.Language.get('properties'),

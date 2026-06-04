@@ -616,6 +616,7 @@ module.exports = {
 			'<rootDir>/src/main/js/test/__mocks__/@liferay/frontend-data-set-web.js',
 		'^@react-dnd/invariant$':
 			'<rootDir>/src/main/js/test/__mocks__/@react-dnd/invariant.js',
+		'^ai-chat(.*)$': '<rootDir>/src/main/js/ai-chat$1',
 		'^assets(.*)$': '<rootDir>/src/main/js/assets$1',
 		'^cerebro-shared(.*)$': '<rootDir>/src/main/js/cerebro-shared$1',
 		'^contacts(.*)$': '<rootDir>/src/main/js/contacts$1',
