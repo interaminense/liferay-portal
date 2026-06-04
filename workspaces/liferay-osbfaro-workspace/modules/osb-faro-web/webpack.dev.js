@@ -1,4 +1,5 @@
 const common = require('./webpack.common');
+const {setupAiChatMiddleware} = require('./ai-chat-server/middleware');
 const {createOnProxyReq, createOnProxyRes} = require('./webpack.dev.proxy');
 const {merge} = require('webpack-merge');
 const webpack = require('webpack');
@@ -32,6 +33,7 @@ module.exports = merge(common.config, {
 				target: TARGET,
 			},
 		],
+		setupMiddlewares: setupAiChatMiddleware,
 	},
 
 	// Non-eval source map: React Router v7's ESM build uses `import.meta.hot`,

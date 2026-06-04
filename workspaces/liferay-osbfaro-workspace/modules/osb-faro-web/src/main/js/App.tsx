@@ -1,3 +1,4 @@
+import AiChatWidget from './ai-chat/AiChatWidget';
 import ChannelProvider from 'shared/context/channel';
 import client from 'shared/apollo/client';
 import React, {useEffect, useState} from 'react';
@@ -49,6 +50,8 @@ const App = () => {
 												<RouterProvider
 													router={router}
 												/>
+
+												{FARO_DEV_MODE && <AiChatWidget />}
 											</div>
 										</ClayTooltipProvider>
 									</ChannelProvider>
