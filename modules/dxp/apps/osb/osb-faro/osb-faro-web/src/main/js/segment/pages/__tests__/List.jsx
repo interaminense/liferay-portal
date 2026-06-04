@@ -16,6 +16,13 @@ import {waitForLoadingToBeRemoved} from 'test/helpers';
 
 jest.unmock('react-dom');
 
+jest.mock('shared/util/feature-flags', () => ({
+	...jest.requireActual('shared/util/feature-flags'),
+	ENABLE_REAL_TIME_SEGMENTS: false
+}));
+
+const featureFlags = jest.requireMock('shared/util/feature-flags');
+
 const MOCK_UNASSIGNED_SEGMENTS_CONTEXT = {
 	showUnassignedAlert: false,
 	unassignedSegments: [],
@@ -57,6 +64,8 @@ describe('List', () => {
 		jest.clearAllMocks();
 
 		jest.useFakeTimers();
+
+		featureFlags.ENABLE_REAL_TIME_SEGMENTS = true;
 	});
 
 	afterEach(() => {
@@ -218,5 +227,73 @@ describe('List', () => {
 		await waitForLoadingToBeRemoved(document.body);
 
 		expect(screen.getByText('Segments')).toBeInTheDocument();
+	});
+
+	describe('when real time segments are disabled', () => {
+		beforeEach(() => {
+			featureFlags.ENABLE_REAL_TIME_SEGMENTS = false;
+		});
+
+		it('creates a batch segment directly without a type dropdown', async () => {
+			API.projects.fetchFeatureUsages.mockResolvedValueOnce([]);
+
+			render(<DefaultComponent />);
+
+			await act(async () => {
+				jest.runAllTimers();
+			});
+
+			expect(
+				screen.getByTestId('batch-segment-button')
+			).toBeInTheDocument();
+
+			expect(
+				screen.queryByTestId('batch-segment-dropdown-item')
+			).not.toBeInTheDocument();
+			expect(
+				screen.queryByTestId('real-time-segment-dropdown-item')
+			).not.toBeInTheDocument();
+		});
+
+		it('disables the new segment button when the batch limit is reached', async () => {
+			API.projects.fetchFeatureUsages.mockReturnValueOnce(
+				Promise.resolve([
+					{
+						currentUsage: 5,
+						limit: 5,
+						name: 'Segment',
+						type: 'Batch'
+					}
+				])
+			);
+
+			render(<DefaultComponent />);
+
+			await act(async () => {
+				jest.runAllTimers();
+			});
+
+			expect(screen.getByTestId('batch-segment-button')).toBeDisabled();
+		});
+	});
+
+	it('shows the segment type dropdown when real time segments are enabled', async () => {
+		API.projects.fetchFeatureUsages.mockResolvedValueOnce([]);
+
+		render(<DefaultComponent />);
+
+		await act(async () => {
+			jest.runAllTimers();
+		});
+
+		expect(
+			screen.getByTestId('batch-segment-dropdown-item')
+		).toBeInTheDocument();
+		expect(
+			screen.getByTestId('real-time-segment-dropdown-item')
+		).toBeInTheDocument();
+		expect(
+			screen.queryByTestId('batch-segment-button')
+		).not.toBeInTheDocument();
 	});
 });
