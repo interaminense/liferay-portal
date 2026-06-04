@@ -1,3 +1,4 @@
+import AiChatWidget from './ai-chat/AiChatWidget';
 import AlertFeed from 'shared/components/AlertFeed';
 import BundleRouter from './route-middleware/BundleRouter';
 import ChannelProvider from 'shared/context/channel';
@@ -284,6 +285,8 @@ const App = () => {
 														</Suspense>
 													</RoutesContainer>
 												</Router>
+
+												{FARO_DEV_MODE && <AiChatWidget />}
 											</div>
 										</ClayTooltipProvider>
 									</ChannelProvider>

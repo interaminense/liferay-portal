@@ -55,6 +55,7 @@ const config = {
 				},
 				resolve: {
 					alias: {
+						'ai-chat': resolveModule('ai-chat'),
 						assets: resolveModule('assets'),
 						'cerebro-shared': resolveModule('cerebro-shared'),
 						commerce: resolveModule('commerce'),

@@ -84,6 +84,12 @@ function getSidebarSections({
 						groupId
 					})
 				},
+				FARO_DEV_MODE && {
+					icon: 'magic',
+					label: Liferay.Language.get('ai-assistant'),
+					route: Routes.SETTINGS_AI_ASSISTANT,
+					url: toRoute(Routes.SETTINGS_AI_ASSISTANT, {groupId})
+				},
 				{
 					icon: 'ac_page',
 					label: Liferay.Language.get('properties'),
@@ -104,7 +110,12 @@ function getSidebarSections({
 					route: Routes.SETTINGS_WORKSPACE,
 					url: toRoute(Routes.SETTINGS_WORKSPACE, {groupId})
 				}
-			],
+			].filter(Boolean) as Array<{
+				icon: string;
+				label: string;
+				route: string;
+				url: string;
+			}>,
 			label: Liferay.Language.get('workspace-settings')
 		}
 	];

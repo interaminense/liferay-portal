@@ -1,4 +1,5 @@
 const common = require('./webpack.common');
+const {setupAiChatMiddleware} = require('./ai-chat-server/middleware');
 const {createOnProxyReq, createOnProxyRes} = require('./webpack.dev.proxy');
 const {merge} = require('webpack-merge');
 const webpack = require('webpack');
@@ -27,7 +28,8 @@ module.exports = merge(common.config, {
 				selfHandleResponse: true,
 				target: TARGET
 			}
-		}
+		},
+		setupMiddlewares: setupAiChatMiddleware
 	},
 	devtool: 'eval-source-map',
 	mode: 'development',
