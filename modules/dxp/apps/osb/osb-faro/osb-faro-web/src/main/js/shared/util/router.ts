@@ -277,6 +277,7 @@ export const Routes = buildRoutes({
 					SETTINGS: {
 						path: '/settings',
 						routes: {
+							SETTINGS_AI_ASSISTANT: '/ai-assistant',
 							SETTINGS_APIS: {
 								path: '/apis',
 								routes: {
