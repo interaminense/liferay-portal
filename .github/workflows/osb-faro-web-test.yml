@@ -1,0 +1,143 @@
+name: osb-faro-web checks
+
+on:
+  pull_request_target:
+    branches:
+      - master
+    paths:
+      - 'modules/dxp/apps/osb/osb-faro/osb-faro-web/**'
+
+concurrency:
+  group: faro-web-checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: modules/dxp/apps/osb/osb-faro/osb-faro-web
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+          cache-dependency-path: modules/dxp/apps/osb/osb-faro/osb-faro-web/yarn.lock
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn format
+
+      - name: Verify no formatting changes
+        run: git diff --exit-code
+
+      - name: Label and comment on format success
+        if: success()
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh pr edit "$PR" --repo "$REPO" --remove-label "format failed" || true
+          gh pr edit "$PR" --repo "$REPO" --add-label "format passed"
+          gh pr comment "$PR" --repo "$REPO" --body "$(cat <<'EOF'
+          > [!TIP]
+          > **Format passed** — code style is clean. Nice work.
+          EOF
+          )"
+
+      - name: Label and comment on format failure
+        if: failure()
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh pr edit "$PR" --repo "$REPO" --remove-label "format passed" || true
+          gh pr edit "$PR" --repo "$REPO" --add-label "format failed"
+          gh pr comment "$PR" --repo "$REPO" --body "$(cat <<'EOF'
+          > [!CAUTION]
+          > **Format failed** — `yarn format` flagged something. Check the workflow logs, fix locally, and push again.
+          EOF
+          )"
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: modules/dxp/apps/osb/osb-faro/osb-faro-web
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+          cache-dependency-path: modules/dxp/apps/osb/osb-faro/osb-faro-web/yarn.lock
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn test
+
+      - name: Label and comment on tests success
+        if: success()
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh pr edit "$PR" --repo "$REPO" --remove-label "unit tests failed" || true
+          gh pr edit "$PR" --repo "$REPO" --add-label "unit tests passed"
+          gh pr comment "$PR" --repo "$REPO" --body "$(cat <<'EOF'
+          > [!TIP]
+          > **Unit tests passed** — all `yarn test` cases are green.
+          EOF
+          )"
+
+      - name: Label and comment on tests failure
+        if: failure()
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh pr edit "$PR" --repo "$REPO" --remove-label "unit tests passed" || true
+          gh pr edit "$PR" --repo "$REPO" --add-label "unit tests failed"
+          gh pr comment "$PR" --repo "$REPO" --body "$(cat <<'EOF'
+          > [!CAUTION]
+          > **Unit tests failed** — `yarn test` reported failures. Check the workflow logs, fix locally, and push again.
+          EOF
+          )"
+
+  pr-ready:
+    needs: [format-check, unit-tests]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Comment ready for /pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh pr comment "$PR" --repo "$REPO" --body "$(cat <<'EOF'
+          > [!IMPORTANT]
+          > All checks passed :tada:. You can now comment /pr to send this PR upstream to liferay-ac/liferay-portal.
+          EOF
+          )"
