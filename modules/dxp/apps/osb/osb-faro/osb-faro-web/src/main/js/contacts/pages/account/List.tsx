@@ -5,10 +5,13 @@ import BasePage from 'shared/components/base-page';
 import Link from '@clayui/link';
 import Loading from 'shared/components/Loading';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
-import React from 'react';
+import React, {useState} from 'react';
 import TotalAccounts from 'contacts/components/account/TotalAccounts';
 import URLConstants from 'shared/util/url-constants';
+import {DropdownRangeKey} from 'shared/components/dropdown-range-key/DropdownRangeKey';
 import {isNil} from 'lodash/fp';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
+import {RangeSelectors} from 'shared/types';
 import {Routes, toRoute} from 'shared/util/router';
 import {SectionHeader} from 'shared/components/SectionHeader';
 import {Sizes} from 'shared/util/constants';
@@ -24,6 +27,12 @@ interface IListProps {
 const List: React.FC<IListProps> = ({channelId, groupId}) => {
 	const currentUser = useCurrentUser();
 	const {selectedChannel} = useChannelContext();
+
+	const [rangeSelectors, setRangeSelectors] = useState<RangeSelectors>({
+		rangeEnd: null,
+		rangeKey: RangeKeyTimeRanges.Last30Days,
+		rangeStart: null
+	});
 
 	const {data: dataSourceData, loading: dataSourceLoading} = useRequest({
 		dataSourceFn: API.dataSource.fetchChannels,
@@ -115,16 +124,27 @@ const List: React.FC<IListProps> = ({channelId, groupId}) => {
 					<>
 						<TotalAccounts groupId={groupId} />
 
-						<SectionHeader
-							icon='box-container'
-							title={Liferay.Language.get('accounts')}
-						/>
+						<div className='align-items-center d-flex justify-content-between mb-3'>
+							<SectionHeader
+								className='mb-0'
+								icon='box-container'
+								title={Liferay.Language.get('accounts')}
+							/>
+
+							<DropdownRangeKey
+								legacy={false}
+								onRangeSelectorChange={setRangeSelectors}
+								rangeSelectors={rangeSelectors}
+							/>
+						</div>
 
 						<AccountsDataSet
+							activityStatusFilter='ACTIVE'
 							apiURL={`/o/faro/contacts/${groupId}/account/search`}
 							channelId={channelId}
 							groupId={groupId}
 							queryParams={{channelId}}
+							rangeSelectors={rangeSelectors}
 						/>
 					</>
 				) : (
