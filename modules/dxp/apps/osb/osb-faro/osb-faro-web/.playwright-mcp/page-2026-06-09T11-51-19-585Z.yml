@@ -1,0 +1,281 @@
+- generic [active] [ref=e2]:
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - link [ref=e12] [cursor=pointer]:
+            - /url: /workspace/liferay.com/420253908131944590/sites
+          - button "Liferay Global" [ref=e14] [cursor=pointer]:
+            - generic [ref=e15]: Liferay Global
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - generic [ref=e20]: Touchpoints
+            - list [ref=e21]:
+              - listitem [ref=e22]:
+                - link "Lifecycles" [ref=e23] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/lifecycle
+                  - generic [ref=e27]: Lifecycles
+              - listitem [ref=e28]:
+                - link "Sites" [ref=e29] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/sites
+                  - generic [ref=e33]: Sites
+              - listitem [ref=e34]:
+                - link "Assets" [ref=e35] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/assets
+                  - generic [ref=e39]: Assets
+              - listitem [ref=e40]:
+                - link "Events" [ref=e41] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/event-analysis
+                  - generic [ref=e45]: Events
+          - generic [ref=e46]:
+            - generic [ref=e47]: People
+            - list [ref=e48]:
+              - listitem [ref=e49]:
+                - link "Segments" [ref=e50] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/contacts/segments
+                  - generic [ref=e54]: Segments
+              - listitem [ref=e55]:
+                - link "Accounts" [ref=e56] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/contacts/accounts
+                  - generic [ref=e60]: Accounts
+              - listitem [ref=e61]:
+                - link "Individuals" [ref=e62] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/contacts/individuals
+                  - generic [ref=e66]: Individuals
+          - generic [ref=e67]:
+            - generic [ref=e68]: Optimize
+            - list [ref=e69]:
+              - listitem [ref=e70]:
+                - link "Tests" [ref=e71] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/tests
+                  - generic [ref=e75]: Tests
+        - list [ref=e78]:
+          - listitem [ref=e79]:
+            - button "AI Adriano Interaminense" [ref=e80] [cursor=pointer]:
+              - generic [ref=e81]:
+                - generic [ref=e82]: AI
+                - text: Adriano Interaminense
+          - listitem [ref=e83]:
+            - link "Settings" [ref=e84] [cursor=pointer]:
+              - /url: /workspace/liferay.com/settings/data-source
+              - generic [ref=e88]: Settings
+          - listitem [ref=e89]:
+            - link "UI Kit" [ref=e90] [cursor=pointer]:
+              - /url: /workspace/liferay.com/420253908131944590/ui-kit
+              - generic [ref=e94]: UI Kit
+          - listitem [ref=e95]:
+            - button [ref=e96] [cursor=pointer]
+      - generic [ref=e100]:
+        - banner [ref=e101]:
+          - generic [ref=e102]:
+            - list [ref=e104]:
+              - listitem [ref=e105]:
+                - button "Menu" [ref=e106] [cursor=pointer]
+              - listitem [ref=e108]:
+                - link "Sites" [ref=e109] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/sites
+              - listitem [ref=e110]:
+                - link "Pages" [ref=e111] [cursor=pointer]:
+                  - /url: /workspace/liferay.com/420253908131944590/sites/pages
+              - listitem [ref=e112]:
+                - generic [ref=e113]: 请选择您的身份提供者。- Liferay DXP
+            - generic [ref=e114]:
+              - heading "请选择您的身份提供者。- Liferay DXP" [level=1] [ref=e116]:
+                - generic [ref=e117]: 请选择您的身份提供者。- Liferay DXP
+              - link "https://www.liferay.com (Opens a new window)" [ref=e120] [cursor=pointer]:
+                - /url: https://www.liferay.com
+                - text: https://www.liferay.com
+                - generic [ref=e121]: (Opens a new window)
+            - navigation [ref=e123]:
+              - list [ref=e127]:
+                - listitem [ref=e128]:
+                  - link "Overview" [ref=e129] [cursor=pointer]:
+                    - /url: /workspace/liferay.com/420253908131944590/sites/pages/overview/https%3A%2F%2Fwww.liferay.com/请选择您的身份提供者。- Liferay DXP?rangeKey=30
+                - listitem [ref=e130]:
+                  - link "Path" [ref=e131] [cursor=pointer]:
+                    - /url: /workspace/liferay.com/420253908131944590/sites/pages/path/https%3A%2F%2Fwww.liferay.com/请选择您的身份提供者。- Liferay DXP?rangeKey=30
+                - listitem [ref=e132]:
+                  - link "Known Individuals" [ref=e133] [cursor=pointer]:
+                    - /url: /workspace/liferay.com/420253908131944590/sites/pages/known-individuals/https%3A%2F%2Fwww.liferay.com/请选择您的身份提供者。- Liferay DXP?rangeKey=30
+        - generic [ref=e135]:
+          - combobox "All Experiences" [ref=e137] [cursor=pointer]
+          - generic [ref=e138]:
+            - button "Last 30 days" [ref=e140] [cursor=pointer]: Last 30 days
+            - button "Download Reports" [ref=e143] [cursor=pointer]: Download Reports
+        - generic [ref=e146]:
+          - generic [ref=e149]:
+            - generic [ref=e152]: Visitors Behavior
+            - generic [ref=e153]:
+              - list [ref=e154]:
+                - listitem [ref=e155]:
+                  - button "Unique Visitors 6.57K 18.7%" [ref=e156] [cursor=pointer]:
+                    - text: Unique Visitors
+                    - generic [ref=e158]:
+                      - generic [ref=e160]: 6.57K
+                      - generic [ref=e163]: 18.7%
+                - listitem [ref=e164]:
+                  - button "Views 10.08K 19.6%" [ref=e165] [cursor=pointer]:
+                    - text: Views
+                    - generic [ref=e167]:
+                      - generic [ref=e169]: 10.08K
+                      - generic [ref=e172]: 19.6%
+                - listitem [ref=e173]:
+                  - button "Bounce Rate 59.8% 9.1%" [ref=e174] [cursor=pointer]:
+                    - text: Bounce Rate
+                    - generic [ref=e176]:
+                      - generic [ref=e178]: 59.8%
+                      - generic [ref=e181]: 9.1%
+                - listitem [ref=e182]:
+                  - button "Time On Page 02m00s 9%" [ref=e183] [cursor=pointer]:
+                    - text: Time On Page
+                    - generic [ref=e185]:
+                      - generic [ref=e187]: 02m00s
+                      - generic [ref=e190]: 9%
+                - listitem [ref=e191]:
+                  - button "Entrances 7.54K 19.3%" [ref=e192] [cursor=pointer]:
+                    - text: Entrances
+                    - generic [ref=e194]:
+                      - generic [ref=e196]: 7.54K
+                      - generic [ref=e199]: 19.3%
+                - listitem [ref=e200]:
+                  - button "Exit Rate 77.7% 2.6%" [ref=e201] [cursor=pointer]:
+                    - text: Exit Rate
+                    - generic [ref=e203]:
+                      - generic [ref=e205]: 77.7%
+                      - generic [ref=e208]: 2.6%
+              - generic [ref=e210]:
+                - generic [ref=e212]:
+                  - img [ref=e213]:
+                    - generic [ref=e217]:
+                      - generic [ref=e219]: May 10
+                      - generic [ref=e221]: May 17
+                      - generic [ref=e223]: May 24
+                      - generic [ref=e225]: May 31
+                      - generic [ref=e227]: Jun 7
+                    - generic [ref=e228]:
+                      - generic [ref=e229]:
+                        - generic [ref=e231]: "0"
+                        - generic [ref=e233]: "350"
+                        - generic [ref=e235]: "700"
+                        - generic [ref=e237]: 1.05K
+                        - generic [ref=e239]: 1.4K
+                      - generic [ref=e240]: Unique Visitors
+                  - list [ref=e244]:
+                    - listitem [ref=e245]:
+                      - img [ref=e246]
+                      - text: Unique Visitors
+                - generic [ref=e249] [cursor=pointer]:
+                  - checkbox "Compare to Previous" [ref=e250]
+                  - generic [ref=e251]: Compare to Previous
+          - generic [ref=e254]:
+            - generic [ref=e257]: Audience
+            - generic [ref=e259]:
+              - generic [ref=e261]:
+                - generic [ref=e262]:
+                  - generic [ref=e264]: Visitors
+                  - generic [ref=e267]:
+                    - img [ref=e268]:
+                      - generic [ref=e269]:
+                        - img [ref=e271]
+                        - img [ref=e273]
+                        - generic [ref=e274]:
+                          - generic [ref=e276]: 97.11%
+                          - generic [ref=e278]: 2.89%
+                        - generic [ref=e279]: 6,571
+                    - list [ref=e281]:
+                      - listitem [ref=e282]:
+                        - img [ref=e283]
+                        - generic [ref=e285]: Anonymous Individuals
+                      - listitem [ref=e286]:
+                        - img [ref=e287]
+                        - generic [ref=e289]: Known Individuals
+                - generic [ref=e290]:
+                  - generic [ref=e292]: Segmented Viewers
+                  - generic [ref=e297]:
+                    - img [ref=e298]:
+                      - generic [ref=e299]:
+                        - img [ref=e301]
+                        - img [ref=e303]
+                        - generic [ref=e304]:
+                          - generic [ref=e306]: 96.32%
+                          - generic [ref=e308]: 3.68%
+                        - generic [ref=e309]: "190"
+                    - list [ref=e311]:
+                      - listitem [ref=e312]:
+                        - img [ref=e313]
+                        - generic [ref=e315]: Segmented
+                      - listitem [ref=e316]:
+                        - img [ref=e317]
+                        - generic [ref=e319]: Unsegmented
+              - generic [ref=e320]:
+                - generic [ref=e322]: Viewer Segments
+                - generic [ref=e326]:
+                  - generic [ref=e327]:
+                    - generic [ref=e329]: 0%
+                    - generic [ref=e331]: 50%
+                    - generic [ref=e333]: 100%
+                    - generic [ref=e335]: 150%
+                  - list [ref=e337]:
+                    - listitem [ref=e338]:
+                      - generic [ref=e344]: "804330050123744518"
+                    - listitem [ref=e345]:
+                      - generic [ref=e351]: "804357143036930828"
+                    - listitem [ref=e352]:
+                      - generic [ref=e358]: Liferayers
+                    - listitem [ref=e359]:
+                      - generic [ref=e365]: "804499337352257076"
+                    - listitem [ref=e366]:
+                      - generic [ref=e372]: "804505002170355043"
+                    - listitem [ref=e373]:
+                      - generic [ref=e379]: 4 More Segments
+          - generic [ref=e380]:
+            - generic [ref=e382]:
+              - generic [ref=e385]: Views by Location
+              - generic [ref=e387]:
+                - img [ref=e390]
+                - table [ref=e573]:
+                  - rowgroup [ref=e574]:
+                    - row "country.united-states 4.32K42.8%" [ref=e575]:
+                      - cell "country.united-states" [ref=e576]
+                      - cell "4.32K42.8%" [ref=e577]
+                    - row "country.india 1.31K13%" [ref=e578]:
+                      - cell "country.india" [ref=e579]
+                      - cell "1.31K13%" [ref=e580]
+                    - row "country.brazil 9179.1%" [ref=e581]:
+                      - cell "country.brazil" [ref=e582]
+                      - cell "9179.1%" [ref=e583]
+                    - row "country.united-kingdom 5325.3%" [ref=e584]:
+                      - cell "country.united-kingdom" [ref=e585]
+                      - cell "5325.3%" [ref=e586]
+                    - row "country.canada 4384.3%" [ref=e587]:
+                      - cell "country.canada" [ref=e588]
+                      - cell "4384.3%" [ref=e589]
+                    - row "Other Regions 2.57K25.5%" [ref=e590]:
+                      - cell "Other Regions" [ref=e591]
+                      - cell "2.57K25.5%" [ref=e592]
+            - generic [ref=e594]:
+              - generic [ref=e597]: Views by Technology
+              - generic [ref=e599]:
+                - list [ref=e600]:
+                  - listitem [ref=e601]:
+                    - button "Devices" [ref=e602] [cursor=pointer]: Devices
+                  - listitem [ref=e603]:
+                    - button "Browsers" [ref=e604] [cursor=pointer]: Browsers
+                - img [ref=e608]:
+                  - generic [ref=e612]:
+                    - generic [ref=e614]: Desktop
+                    - generic [ref=e616]: Phone
+                    - generic [ref=e618]: Unknown
+                    - generic [ref=e620]: Others
+                  - generic [ref=e622]:
+                    - generic [ref=e624]: "0"
+                    - generic [ref=e626]: 2K
+                    - generic [ref=e628]: 4K
+                    - generic [ref=e630]: 6K
+                    - generic [ref=e632]: 8K
+                    - generic [ref=e634]: 10K
+    - button "Help" [ref=e673] [cursor=pointer]
+  - generic [ref=e675]:
+    - log
+    - log
+  - generic [ref=e676]: Others

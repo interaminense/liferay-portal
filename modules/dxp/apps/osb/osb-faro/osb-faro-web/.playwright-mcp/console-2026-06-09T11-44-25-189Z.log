@@ -1,0 +1,39 @@
+[    2283ms] [INFO] [webpack-dev-server] Server started: Hot Module Replacement enabled, Live Reloading enabled, Progress disabled, Overlay enabled. @ webpack-internal:///./node_modules/webpack-dev-server/client/modules/logger/index.js:484
+[    2285ms] [LOG] [HMR] Waiting for update signal from WDS... @ webpack-internal:///./node_modules/webpack/hot/log.js:38
+[    2454ms] [WARNING] An error occurred! For more details, see the full error text at https://go.apollo.dev/c/err#%7B%22version%22%3A%223.14.1%22%2C%22message%22%3A103%2C%22args%22%3A%5B%22ApolloClient%22%2C%22connectToDevTools%22%2C%22Please%20use%20%60devtools.enabled%60%20instead.%22%5D%7D @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    2690ms] [WARNING] [graphql]: The `graphql` higher order component is deprecated and will be removed in Apollo Client 4.0. Please switch to an available React hook such as `useQuery`, `useMutation`, or `useSubscription`. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    2717ms] [WARNING] [graphql]: The `graphql` higher order component is deprecated and will be removed in Apollo Client 4.0. Please switch to an available React hook such as `useQuery`, `useMutation`, or `useSubscription`. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    3127ms] [WARNING] [graphql]: The `graphql` higher order component is deprecated and will be removed in Apollo Client 4.0. Please switch to an available React hook such as `useQuery`, `useMutation`, or `useSubscription`. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    4178ms] [WARNING] [Query]: The `<Query />` component is deprecated and will be removed in Apollo Client 4.0. Please use an available React hook such as `useQuery` instead. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    4489ms] [WARNING] [graphql]: The `graphql` higher order component is deprecated and will be removed in Apollo Client 4.0. Please switch to an available React hook such as `useQuery`, `useMutation`, or `useSubscription`. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    4600ms] [WARNING] [graphql]: The `graphql` higher order component is deprecated and will be removed in Apollo Client 4.0. Please switch to an available React hook such as `useQuery`, `useMutation`, or `useSubscription`. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    4603ms] [WARNING] [graphql]: The `graphql` higher order component is deprecated and will be removed in Apollo Client 4.0. Please switch to an available React hook such as `useQuery`, `useMutation`, or `useSubscription`. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    4603ms] [WARNING] [graphql]: The `graphql` higher order component is deprecated and will be removed in Apollo Client 4.0. Please switch to an available React hook such as `useQuery`, `useMutation`, or `useSubscription`. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    4649ms] [WARNING] [Query]: The `<Query />` component is deprecated and will be removed in Apollo Client 4.0. Please use an available React hook such as `useQuery` instead. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    4651ms] [WARNING] [Query]: The `<Query />` component is deprecated and will be removed in Apollo Client 4.0. Please use an available React hook such as `useQuery` instead. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    4652ms] [WARNING] [Query]: The `<Query />` component is deprecated and will be removed in Apollo Client 4.0. Please use an available React hook such as `useQuery` instead. @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[    5120ms] [ERROR] TypeError: Cannot assign to read only property '0' of object '[object Array]'
+    at Array.sort (<anonymous>)
+    at formatData (webpack-internal:///./src/main/js/shared/components/audience-report/util.ts:187:14)
+    at AudienceReportWithData (webpack-internal:///./src/main/js/shared/components/audience-report/AudienceReport.tsx:60:63)
+    at mu (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:6:19467)
+    at Xa (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:43662)
+    at $a (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:39462)
+    at jd (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:39393)
+    at el (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:39252)
+    at Ui (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:35674)
+    at Zo (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:36475) @ http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:7
+[    5127ms] TypeError: Cannot assign to read only property '0' of object '[object Array]'
+    at Array.sort (<anonymous>)
+    at formatData (webpack-internal:///./src/main/js/shared/components/audience-report/util.ts:187:14)
+    at AudienceReportWithData (webpack-internal:///./src/main/js/shared/components/audience-report/AudienceReport.tsx:60:63)
+    at mu (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:6:19467)
+    at Xa (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:43662)
+    at $a (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:39462)
+    at jd (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:39393)
+    at el (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:39252)
+    at Ui (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:35674)
+    at Zo (http://localhost:3000/o/frontend-js-react-web/__liferay__/exports/react-dom.js:8:36475)
+[   12455ms] [LOG] Download the Apollo DevTools for a better development experience: %s https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm @ webpack-internal:///./node_modules/ts-invariant/lib/invariant.js:42
+[  122630ms] [INFO] [webpack-dev-server] App updated. Recompiling... @ webpack-internal:///./node_modules/webpack-dev-server/client/modules/logger/index.js:484
+[  124716ms] [INFO] [webpack-dev-server] Nothing changed. @ webpack-internal:///./node_modules/webpack-dev-server/client/modules/logger/index.js:484
