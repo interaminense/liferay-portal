@@ -56,7 +56,7 @@ exports[`Items should render 1`] = `
                   class="rule-cell table-cell-expand"
                 >
                   <div
-                    class="rule-item-root d-flex align-items-baseline"
+                    class="align-items-baseline d-flex rule-item-root"
                   >
                     <b>
                       Include:
@@ -115,7 +115,7 @@ exports[`Items should render 1`] = `
         </div>
       </div>
       <div
-        class="total-included-pages d-flex justify-content-between"
+        class="d-flex justify-content-between total-included-pages"
       >
         <div>
           Total Included Pages

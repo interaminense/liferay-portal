@@ -9,7 +9,7 @@ import {mapGrowthHistory} from '../segment';
 
 describe('Segment Mappers', () => {
 	describe('mapGrowthHistory', () => {
-		it('should remap a Segment growth history API response', () => {
+		it('remaps a Segment growth history API response', () => {
 			const mockGrowthAggregation = {
 				addedIndividualsCount: 1,
 				individualsCount: 2,

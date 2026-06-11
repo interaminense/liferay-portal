@@ -67,7 +67,7 @@ exports[`SelectItemsModal should render 1`] = `
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"
@@ -186,7 +186,7 @@ exports[`SelectItemsModal should render items as an entity list 1`] = `
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"
@@ -305,7 +305,7 @@ exports[`SelectItemsModal should render with a blank submit 1`] = `
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"
@@ -436,7 +436,7 @@ exports[`SelectItemsModal should render with a custom submit message 1`] = `
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"
@@ -555,7 +555,7 @@ exports[`SelectItemsModal should render with a custom title 1`] = `
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"
@@ -674,7 +674,7 @@ exports[`SelectItemsModal should render with a successful submit 1`] = `
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"
@@ -801,7 +801,7 @@ exports[`SelectItemsModal should render with an unsuccessful submit 1`] = `
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"
@@ -932,7 +932,7 @@ exports[`SelectItemsModal should render with selectedItems 1`] = `
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"
@@ -1051,7 +1051,7 @@ exports[`SelectItemsModal should render with selectedItems with the disable sele
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"
@@ -1246,7 +1246,7 @@ exports[`SelectItemsModal should render without the sort button 1`] = `
               role="tablist"
             />
             <div
-              class="navbar-form navbar-form-autofit mx-2"
+              class="mx-2 navbar-form navbar-form-autofit"
             >
               <div
                 class="input-group search"

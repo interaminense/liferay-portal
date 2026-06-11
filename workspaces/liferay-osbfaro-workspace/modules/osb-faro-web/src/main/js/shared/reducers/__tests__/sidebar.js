@@ -9,7 +9,7 @@ import {actionTypes} from '../../actions/sidebar';
 import reducer from '../sidebar';
 
 describe('Sidebar Reducer', () => {
-	it('should be a function', () => {
+	it('is a function', () => {
 		expect(reducer).toBeInstanceOf(Function);
 	});
 

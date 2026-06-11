@@ -1,13 +1,13 @@
+import sendRequest from 'shared/util/request';
+
+import {createLiferay, updateLiferay} from '../data-source';
+
 /**
  * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 jest.mock('shared/util/request');
-
-import sendRequest from 'shared/util/request';
-
-import {createLiferay, updateLiferay} from '../data-source';
 
 const commonLiferayArgs = {
 	credentials: {
@@ -21,7 +21,7 @@ const commonLiferayArgs = {
 
 describe('Data Source API', () => {
 	describe('Liferay Data Sources', () => {
-		it('should be called with data to CREATE to a liferay data source', () => {
+		it('is called with data to CREATE to a liferay data source', () => {
 			createLiferay({...commonLiferayArgs, groupId: '23'});
 
 			expect(sendRequest).toHaveBeenCalledWith({
@@ -31,7 +31,7 @@ describe('Data Source API', () => {
 			});
 		});
 
-		it('should be called with data to UPDATE to a liferay data source', () => {
+		it('is called with data to UPDATE to a liferay data source', () => {
 			const dataArgs = {
 				...commonLiferayArgs,
 				analyticsConfiguration: {},

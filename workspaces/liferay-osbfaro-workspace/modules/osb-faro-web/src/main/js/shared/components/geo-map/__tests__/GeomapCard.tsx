@@ -78,13 +78,13 @@ const getTooltip = (container: HTMLElement) =>
 	container.querySelector<HTMLElement>('.popover')!;
 
 describe('GeoMapCard', () => {
-	it('should render', () => {
+	it('renders', () => {
 		const {container} = render(<GeomapCard {...props} />);
 
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render component when working on Local Network', () => {
+	it('renders component when working on Local Network', () => {
 		const dataWithLocalNetwork = [
 			{
 				group: 'Local Network',
@@ -108,7 +108,7 @@ describe('GeoMapCard', () => {
 		expect(getByText('Local Network')).toBeTruthy();
 	});
 
-	it('should highlight the list item when mouse over', () => {
+	it('highlights the list item when mouse over', () => {
 		const {container} = render(<GeomapCard {...props} />);
 
 		const firstRow = container.querySelector(
@@ -122,7 +122,7 @@ describe('GeoMapCard', () => {
 		expect(container.querySelector('.lighten-item')).toBeTruthy();
 	});
 
-	it('should keep the tooltip hidden on first render', () => {
+	it('keeps the tooltip hidden on first render', () => {
 		const {container} = render(<GeomapCard {...props} />);
 
 		const tooltip = getTooltip(container);
@@ -131,7 +131,7 @@ describe('GeoMapCard', () => {
 		expect(tooltip.style.display).toBe('none');
 	});
 
-	it('should show the tooltip with country information on mouseover', async () => {
+	it('shows the tooltip with country information on mouseover', async () => {
 		const {container} = render(<GeomapCard {...props} />);
 
 		const brazilPath = getBrazilPath(container)!;
@@ -154,7 +154,7 @@ describe('GeoMapCard', () => {
 		expect(tooltip).toHaveTextContent('34.3%');
 	});
 
-	it('should hide the tooltip on mouseout', async () => {
+	it('hides the tooltip on mouseout', async () => {
 		const {container} = render(<GeomapCard {...props} />);
 
 		const brazilPath = getBrazilPath(container)!;

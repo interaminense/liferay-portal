@@ -18,7 +18,7 @@ exports[`TrainingItemsCard should render 1`] = `
       class="card-body"
     >
       <div
-        class="training-item-root d-flex align-items-baseline"
+        class="align-items-baseline d-flex training-item-root"
       >
         <button
           aria-label="Watch"
@@ -35,7 +35,7 @@ exports[`TrainingItemsCard should render 1`] = `
           </svg>
         </button>
         <div
-          class="rule-item-root d-flex align-items-baseline"
+          class="align-items-baseline d-flex rule-item-root"
         >
           <b>
             Include:
@@ -57,7 +57,7 @@ exports[`TrainingItemsCard should render 1`] = `
         </div>
       </div>
       <div
-        class="total-training-urls d-flex align-items-center"
+        class="align-items-center d-flex total-training-urls"
       >
         <button
           aria-label="Watch"

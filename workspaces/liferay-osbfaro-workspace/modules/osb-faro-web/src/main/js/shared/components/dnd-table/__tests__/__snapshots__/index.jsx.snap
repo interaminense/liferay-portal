@@ -3,7 +3,7 @@
 exports[`DndTable renders 1`] = `
 <div>
   <div
-    class=" dnd-table-root"
+    class="dnd-table-root"
   >
     <div
       class="table-responsive"

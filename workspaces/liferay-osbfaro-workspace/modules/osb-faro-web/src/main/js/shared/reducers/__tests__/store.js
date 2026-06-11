@@ -25,11 +25,11 @@ describe('store', () => {
 		);
 	});
 
-	it('should be a function', () => {
+	it('is a function', () => {
 		expect(typeof reducer).toBe('function');
 	});
 
-	it('should clear the store to its initial state', () => {
+	it('clears the store to its initial state', () => {
 		const action = {
 			type: actionTypes.CLEAR_STORE,
 		};

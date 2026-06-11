@@ -104,7 +104,7 @@ const data = {
 };
 
 describe('Shared HOCs Mappers - Locations', () => {
-	it('should map locations information', () => {
+	it('maps locations information', () => {
 		const mapper = getLocationsMapper(
 			(result) => result.form.submissionsMetric
 		);
@@ -184,7 +184,7 @@ describe('Shared HOCs Mappers - Locations', () => {
 		});
 	});
 
-	it('should map locations information with region Brazil', () => {
+	it('maps locations information with region Brazil', () => {
 		const mapper = getLocationsMapper(
 			(result) => result.form.submissionsMetric
 		);
@@ -278,7 +278,7 @@ describe('Shared HOCs Mappers - Locations', () => {
 		});
 	});
 
-	it('should map locations information without geolocation', () => {
+	it('maps locations information without geolocation', () => {
 		const mapper = getLocationsMapper(
 			(result) => result.form.submissionsMetric
 		);
@@ -318,7 +318,7 @@ describe('Shared HOCs Mappers - Locations', () => {
 });
 
 describe('Shared HOCs Mappers - Locations Countries', () => {
-	it('should return countries information', () => {
+	it('returns countries information', () => {
 		const mapper = getLocationsMapperCountries(
 			(result) => result.form.submissionsMetric
 		);
@@ -395,7 +395,7 @@ describe('Shared HOCs Mappers - Locations Countries', () => {
 		});
 	});
 
-	it('should return countries information indepent if Brazil is selected', () => {
+	it('returns countries information indepent if Brazil is selected', () => {
 		const mapper = getLocationsMapperCountries(
 			(result) => result.form.submissionsMetric
 		);

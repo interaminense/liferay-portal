@@ -17,7 +17,7 @@ import {
 
 describe('Projects Actions', () => {
 	describe('createProject', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = createProject();
 
 			expect(isFSA(action)).toBe(true);
@@ -26,7 +26,7 @@ describe('Projects Actions', () => {
 	});
 
 	describe('configureProject', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = configureProject({
 				emailAddressDomains: [],
 				friendlyURL: 'ggwp',
@@ -40,7 +40,7 @@ describe('Projects Actions', () => {
 	});
 
 	describe('createTrialProject', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = createTrialProject();
 
 			expect(isFSA(action)).toBe(true);
@@ -49,7 +49,7 @@ describe('Projects Actions', () => {
 	});
 
 	describe('fetchProject', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchProject({groupId: '23'});
 
 			expect(isFSA(action)).toBe(true);
@@ -58,7 +58,7 @@ describe('Projects Actions', () => {
 	});
 
 	describe('fetchProjects', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchProjects();
 
 			expect(isFSA(action)).toBe(true);
@@ -67,7 +67,7 @@ describe('Projects Actions', () => {
 	});
 
 	describe('fetchProjectViaCorpProjectUuid', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchProjectViaCorpProjectUuid({
 				corpProjectUuid: '23-44',
 			});
@@ -78,7 +78,7 @@ describe('Projects Actions', () => {
 	});
 
 	describe('updateProject', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = updateProject({
 				emailAddressDomains: [],
 				friendlyURL: 'bananas',

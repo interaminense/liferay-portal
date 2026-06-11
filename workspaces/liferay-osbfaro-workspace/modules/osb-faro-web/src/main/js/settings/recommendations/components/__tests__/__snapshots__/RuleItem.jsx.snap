@@ -3,7 +3,7 @@
 exports[`RuleItem should render 1`] = `
 <div>
   <div
-    class="rule-item-root d-flex align-items-baseline"
+    class="align-items-baseline d-flex rule-item-root"
   >
     <b>
       Include:

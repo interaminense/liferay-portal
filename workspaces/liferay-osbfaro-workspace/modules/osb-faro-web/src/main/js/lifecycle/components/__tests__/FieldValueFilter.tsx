@@ -31,7 +31,7 @@ const renderFilter = (props = {}) =>
 describe('FieldValueFilter', () => {
 	afterEach(cleanup);
 
-	it('should render the loading state while the request is pending', () => {
+	it('renders the loading state while the request is pending', () => {
 		const useRequest = require('shared/hooks/useRequest');
 		useRequest.useRequest = jest.fn(() => ({loading: true}));
 
@@ -40,7 +40,7 @@ describe('FieldValueFilter', () => {
 		expect(container.querySelector('.loading-root')).toBeInTheDocument();
 	});
 
-	it('should render the "all-x" label when the filter is empty', () => {
+	it('renders the "all-x" label when the filter is empty', () => {
 		const useRequest = require('shared/hooks/useRequest');
 		useRequest.useRequest = jest.fn(() => ({
 			data: {items: ['Tech', 'Finance']},
@@ -52,7 +52,7 @@ describe('FieldValueFilter', () => {
 		expect(getByText('All Industries')).toBeInTheDocument();
 	});
 
-	it('should expose an accessible name on the filter trigger', () => {
+	it('exposes an accessible name on the filter trigger', () => {
 		const useRequest = require('shared/hooks/useRequest');
 		useRequest.useRequest = jest.fn(() => ({
 			data: {items: ['Tech', 'Finance']},
@@ -66,7 +66,7 @@ describe('FieldValueFilter', () => {
 		).toBeInTheDocument();
 	});
 
-	it('should pass the fieldMappingFieldName through to the request', () => {
+	it('passes the fieldMappingFieldName through to the request', () => {
 		const useRequest = require('shared/hooks/useRequest');
 		const spy = jest.fn(() => ({data: {items: []}, loading: false}));
 		useRequest.useRequest = spy;

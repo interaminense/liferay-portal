@@ -3,7 +3,7 @@
 exports[`Sites Dashboard Overview render 1`] = `
 <div>
   <div
-    class="sites-dashboard-overview-root overview-root"
+    class="overview-root sites-dashboard-overview-root"
   >
     <div
       aria-hidden="true"
@@ -87,7 +87,7 @@ exports[`Sites Dashboard Overview render 1`] = `
         class="col-xl-6"
       >
         <div
-          class="card card-root top-pages-card-root table-tabs-root"
+          class="card card-root table-tabs-root top-pages-card-root"
           id="container.report.topPagesCard"
         >
           <div
@@ -113,7 +113,7 @@ exports[`Sites Dashboard Overview render 1`] = `
             </div>
           </div>
           <div
-            class="card-body w-100 d-flex flex-column flex-grow-1 no-padding"
+            class="card-body d-flex flex-column flex-grow-1 w-100 no-padding"
           >
             <ul
               class="card-tabs-root"
@@ -222,7 +222,7 @@ exports[`Sites Dashboard Overview render 1`] = `
             </div>
           </div>
           <div
-            class="card-body w-100 d-flex flex-column flex-grow-1 no-padding"
+            class="card-body d-flex flex-column flex-grow-1 w-100 no-padding"
           >
             <ul
               class="card-tabs-root"

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Normalizer Reducer should update store with normalized entities 1`] = `
+exports[`Normalizer Reducer updates store with normalized entities 1`] = `
 Immutable.Map {
   "accounts": Immutable.Map {
     "1": Immutable.Record {

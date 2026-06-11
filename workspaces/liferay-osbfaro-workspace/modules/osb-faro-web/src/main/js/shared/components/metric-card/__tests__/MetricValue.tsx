@@ -12,13 +12,13 @@ import {MetricType} from '../metrics';
 jest.unmock('react-dom');
 
 describe('MetricValue', () => {
-	it('should render the component', () => {
+	it('renders the component', () => {
 		const {container} = render(<MetricValue value="100K" />);
 
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render the component with number type', () => {
+	it('renders the component with number type', () => {
 		const {container} = render(
 			<MetricValue type={MetricType.Number} value="100K" />
 		);
@@ -26,7 +26,7 @@ describe('MetricValue', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render the component with percentage ', () => {
+	it('renders the component with percentage ', () => {
 		const {container} = render(
 			<MetricValue type={MetricType.Percentage} value="100%" />
 		);
@@ -34,7 +34,7 @@ describe('MetricValue', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render the component with time ', () => {
+	it('renders the component with time ', () => {
 		const {container} = render(
 			<MetricValue type={MetricType.Time} value="12m 40s" />
 		);
@@ -42,7 +42,7 @@ describe('MetricValue', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render the component with ratings ', () => {
+	it('renders the component with ratings ', () => {
 		const {container} = render(
 			<MetricValue type={MetricType.Ratings} value="10/10" />
 		);

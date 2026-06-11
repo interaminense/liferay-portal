@@ -12,31 +12,31 @@ import {
 } from '../lang';
 
 describe('sub', () => {
-	it('should return an array', () => {
+	it('returns an array', () => {
 		const res = sub('hello world', [''], false);
 
 		expect(res).toEqual(['hello world']);
 	});
 
-	it('should return a string', () => {
+	it('returns a string', () => {
 		const res = sub('hello world', ['']);
 
 		expect(res).toEqual('hello world');
 	});
 
-	it('should return with a subbed value for {0}', () => {
+	it('returns with a subbed value for {0}', () => {
 		const res = sub('hello {0}', ['world']);
 
 		expect(res).toEqual('hello world');
 	});
 
-	it('should return with multiple subbed values', () => {
+	it('returns with multiple subbed values', () => {
 		const res = sub('My name is {0} {1}', ['hello', 'world']);
 
 		expect(res).toEqual('My name is hello world');
 	});
 
-	it('should return an array with multiple subbed values', () => {
+	it('returns an array with multiple subbed values', () => {
 		const res = sub('My name is {0} {1}', ['hello', 'world'], false);
 
 		expect(res).toEqual(['My name is ', 'hello', ' ', 'world']);
@@ -44,13 +44,13 @@ describe('sub', () => {
 });
 
 describe('getTypeLangKey', () => {
-	it('should lang key for account', () => {
+	it('langs key for account', () => {
 		expect(getTypeLangKey(EntityTypes.Account)).toBe('Accounts');
 	});
 });
 
 describe('getDataSourceLangKey', () => {
-	it('should return a lang key for a data-source type', () => {
+	it('returns a lang key for a data-source type', () => {
 		expect(getDataSourceLangKey(DataSourceTypes.Liferay)).toBe(
 			'Liferay DXP'
 		);
@@ -76,7 +76,7 @@ describe('getPluralMessage', () => {
 		}
 	);
 
-	it('should return a message with a subArray', () => {
+	it('returns a message with a subArray', () => {
 		const plural = '{0} results found for {1}';
 		const singular = '{0} result found for {1}';
 

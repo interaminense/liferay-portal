@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MembershipMetrics should render 1`] = `
+exports[`MembershipMetrics renders 1`] = `
 <div>
   <div
     class="membership-metrics-root"

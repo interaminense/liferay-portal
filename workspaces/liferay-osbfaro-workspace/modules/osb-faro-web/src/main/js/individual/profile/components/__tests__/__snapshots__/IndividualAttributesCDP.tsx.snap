@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IndividualAttributesCDP should render 1`] = `
+exports[`IndividualAttributesCDP renders 1`] = `
 <div>
   <div
     class="mb-3"
@@ -31,7 +31,7 @@ exports[`IndividualAttributesCDP should render 1`] = `
     class="general-info mb-4"
   >
     <div
-      class="row g-3"
+      class="g-3 row"
     >
       <div
         class="col-12"

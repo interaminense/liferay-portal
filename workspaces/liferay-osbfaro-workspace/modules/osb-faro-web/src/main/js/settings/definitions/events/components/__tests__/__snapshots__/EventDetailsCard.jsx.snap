@@ -18,7 +18,7 @@ exports[`EventDetailsCard should render 1`] = `
       class="card-body"
     >
       <span
-        class="mt-2 mb-4 w-50"
+        class="mb-4 mt-2 w-50"
       >
         Use this script to start sending events to Analytics Cloud. You can customize which attributes to send with a specific event. Selecting the attributes below will generate a new sample script.
       </span>

@@ -91,7 +91,7 @@ describe('ConfigureWorkspace', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should have the next button enabled by default', async () => {
+	it('has the next button enabled by default', async () => {
 		render(<WrapperComponent />);
 
 		expect(screen.getByText('Next').closest('button')).not.toBeDisabled();

@@ -40,7 +40,7 @@ describe('Custom Inputs Util', () => {
 
 		// This unit test is skipped because uuid is generated every time test is run.
 
-		it.skip('should create an immutable valueIMap from a given param array', () => {
+		it.skip('creates an immutable valueIMap from a given param array', () => {
 			expect(
 				createCustomValueMap([
 					{
@@ -64,7 +64,7 @@ describe('Custom Inputs Util', () => {
 	});
 
 	describe('getFilterCriterionIMap', () => {
-		it('should return the Filter Criterion Immutable Map', () => {
+		it('returns the Filter Criterion Immutable Map', () => {
 			expect(
 				getFilterCriterionIMap(mockValue, 1).get('propertyName')
 			).toBe('completeDate');
@@ -72,31 +72,31 @@ describe('Custom Inputs Util', () => {
 	});
 
 	describe('getIndexFromPropertyName', () => {
-		it('should return the index of the first entry in the criterion list that matches the propertyName', () => {
+		it('returns the index of the first entry in the criterion list that matches the propertyName', () => {
 			expect(getIndexFromPropertyName(mockValue, 'completeDate')).toBe(1);
 		});
 	});
 
 	describe('getOperator', () => {
-		it('should return the operator', () => {
+		it('returns the operator', () => {
 			expect(getOperator(mockValue, 0)).toBe(RelationalOperators.EQ);
 		});
 	});
 
 	describe('getCompleteDate', () => {
-		it('should return the time period', () => {
+		it('returns the time period', () => {
 			expect(getCompleteDate(mockValue)).toBe('last7Days');
 		});
 	});
 
 	describe('getPropertyValue', () => {
-		it('should return the value', () => {
+		it('returns the value', () => {
 			expect(getPropertyValue(mockValue, 'value', 0)).toBe('foo');
 		});
 	});
 
 	describe('removeItemsByIndex', () => {
-		it('should remove items by index from the criteria list', () => {
+		it('removes items by index from the criteria list', () => {
 			const indexToRemove = getIndexFromPropertyName(
 				mockValue,
 				'completeDate'
@@ -113,7 +113,7 @@ describe('Custom Inputs Util', () => {
 	});
 
 	describe('setOperator', () => {
-		it('should set the operator', () => {
+		it('sets the operator', () => {
 			const updatedValue = setOperator(
 				mockValue,
 				0,
@@ -125,7 +125,7 @@ describe('Custom Inputs Util', () => {
 	});
 
 	describe('setPropertyValue', () => {
-		it('should update the value', () => {
+		it('updates the value', () => {
 			const newValue = 'new value foo';
 			const updatedValue = setPropertyValue(
 				mockValue,
@@ -139,7 +139,7 @@ describe('Custom Inputs Util', () => {
 	});
 
 	describe('setCompleteDate', () => {
-		it('should update the time period', () => {
+		it('updates the time period', () => {
 			const newTimePeriod = 'fooTimePeriod';
 			const updatedValue = setCompleteDate(mockValue, newTimePeriod);
 

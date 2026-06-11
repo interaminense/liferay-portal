@@ -1,10 +1,3 @@
-/**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
- * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
- */
-
-jest.unmock('react-dom');
-
 import {Map, fromJS} from 'immutable';
 import {Property} from 'shared/util/records';
 import * as data from 'test/data';
@@ -23,6 +16,13 @@ import {
 } from '../constants';
 import * as utils from '../utils';
 
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+jest.unmock('react-dom');
+
 const {
 	AccountsFilter,
 	ActivitiesFilterByCount,
@@ -34,7 +34,7 @@ const {EQ, GT} = RelationalOperators;
 
 describe('utils', () => {
 	describe('createInterestProperty', () => {
-		it('should create an Interest Property', () => {
+		it('creates an Interest Property', () => {
 			const name = 'Some Interest Property';
 			const property = utils.createInterestProperty(name);
 
@@ -47,7 +47,7 @@ describe('utils', () => {
 	});
 
 	describe('createNewGroup', () => {
-		it('should create a new CriterionGroup', () => {
+		it('creates a new CriterionGroup', () => {
 			const items = [];
 
 			const criterionGroup = utils.createNewGroup(items);
@@ -57,7 +57,7 @@ describe('utils', () => {
 			expect(criterionGroup.criteriaGroupId).toBeTruthy();
 		});
 
-		it('should create a new CriterionGroup with the supplied conjunction', () => {
+		it('creates a new CriterionGroup with the supplied conjunction', () => {
 			const items = [];
 
 			const criterionGroup = utils.createNewGroup(items, 'or');
@@ -67,19 +67,19 @@ describe('utils', () => {
 	});
 
 	describe('generateGroupId', () => {
-		it('should generate a group id', () => {
+		it('generates a group id', () => {
 			expect(utils.generateGroupId()).toContain('group_');
 		});
 	});
 
 	describe('generateRowId', () => {
-		it('should generate a row id', () => {
+		it('generates a row id', () => {
 			expect(utils.generateRowId()).toContain('row_');
 		});
 	});
 
 	describe('getChildGroupIds', () => {
-		it('should grab child group ids', () => {
+		it('grabs child group ids', () => {
 			const excluded = 'excluded';
 			const criterionGroup = {
 				criteriaGroupId: excluded,
@@ -101,7 +101,7 @@ describe('utils', () => {
 	});
 
 	describe('getPropertyContextFromRaw', () => {
-		it('should get context name from a raw property string', () => {
+		it('gets context name from a raw property string', () => {
 			const context = 'custom';
 
 			expect(
@@ -109,13 +109,13 @@ describe('utils', () => {
 			).toBe(context);
 		});
 
-		it('should return null if no context exists', () => {
+		it('returns null if no context exists', () => {
 			expect(utils.getPropertyContextFromRaw('Foo')).toBeNull();
 		});
 	});
 
 	describe('getPropertyNameFromRaw', () => {
-		it('should get property name from a raw property string', () => {
+		it('gets property name from a raw property string', () => {
 			const propertyName = 'city';
 
 			expect(
@@ -127,7 +127,7 @@ describe('utils', () => {
 	});
 
 	describe('getSupportedOperatorsFromType', () => {
-		it('should get the supported operators from type', () => {
+		it('gets the supported operators from type', () => {
 			expect(
 				utils.getSupportedOperatorsFromType(PropertyTypes.AccountNumber)
 			).toBe(SUPPORTED_OPERATORS_MAP[PropertyTypes.AccountNumber]);
@@ -135,7 +135,7 @@ describe('utils', () => {
 	});
 
 	describe('isCriterionGroup', () => {
-		it('should return true when value is a CriterionGroup', () => {
+		it('returns true when value is a CriterionGroup', () => {
 			expect(
 				utils.isCriterionGroup({
 					conjunctionName: And,
@@ -145,23 +145,23 @@ describe('utils', () => {
 			).toBeTrue();
 		});
 
-		it('should return false when value is a Criterion', () => {
+		it('returns false when value is a Criterion', () => {
 			expect(utils.isCriterionGroup(data.generateCriterion())).toBe(
 				false
 			);
 		});
 
-		it('should return false when value null', () => {
+		it('returns false when value null', () => {
 			expect(utils.isCriterionGroup(null)).toBeFalse();
 		});
 	});
 
 	describe('isMap', () => {
-		it('should return true when value is an instance of ImmutableMap', () => {
+		it('returns true when value is an instance of ImmutableMap', () => {
 			expect(utils.isMap(new Map())).toBeTrue();
 		});
 
-		it('should return false when value is not an instance of ImmutableMap', () => {
+		it('returns false when value is not an instance of ImmutableMap', () => {
 			expect(utils.isMap({})).toBeFalse();
 		});
 	});
@@ -173,12 +173,12 @@ describe('utils', () => {
 			items: Array.from({length: count}, (_, i) => ({rowId: `r${i}`})),
 		});
 
-		it('should return null for missing criteria', () => {
+		it('returns null for missing criteria', () => {
 			expect(utils.getNestedOrLimitState(null)).toBeNull();
 			expect(utils.getNestedOrLimitState(undefined)).toBeNull();
 		});
 
-		it('should return null for an AND group regardless of items', () => {
+		it('returns null for an AND group regardless of items', () => {
 			const andGroup = {
 				conjunctionName: Conjunctions.And,
 				criteriaGroupId: 'group-1',
@@ -188,15 +188,15 @@ describe('utils', () => {
 			expect(utils.getNestedOrLimitState(andGroup)).toBeNull();
 		});
 
-		it('should return null for an OR group below the limit', () => {
+		it('returns null for an OR group below the limit', () => {
 			expect(utils.getNestedOrLimitState(orWith(2))).toBeNull();
 		});
 
-		it('should return reachedLimit for an OR group at the limit', () => {
+		it('returns reachedLimit for an OR group at the limit', () => {
 			expect(utils.getNestedOrLimitState(orWith(3))).toBe('reachedLimit');
 		});
 
-		it('should return exceedsLimit for an OR group past the limit', () => {
+		it('returns exceedsLimit for an OR group past the limit', () => {
 			expect(utils.getNestedOrLimitState(orWith(4))).toBe('exceedsLimit');
 		});
 	});
@@ -204,12 +204,12 @@ describe('utils', () => {
 	describe('hasNestedOrExceeded', () => {
 		const makeRow = (rowId) => ({rowId});
 
-		it('should return false for missing criteria', () => {
+		it('returns false for missing criteria', () => {
 			expect(utils.hasNestedOrExceeded(null)).toBeFalse();
 			expect(utils.hasNestedOrExceeded(undefined)).toBeFalse();
 		});
 
-		it('should return false for a root group with no nested children', () => {
+		it('returns false for a root group with no nested children', () => {
 			const root = {
 				conjunctionName: Conjunctions.And,
 				criteriaGroupId: 'root',
@@ -219,7 +219,7 @@ describe('utils', () => {
 			expect(utils.hasNestedOrExceeded(root)).toBeFalse();
 		});
 
-		it('should ignore the size of the root OR group itself', () => {
+		it('ignores the size of the root OR group itself', () => {
 			const rootOr = {
 				conjunctionName: Conjunctions.Or,
 				criteriaGroupId: 'root',
@@ -234,7 +234,7 @@ describe('utils', () => {
 			expect(utils.hasNestedOrExceeded(rootOr)).toBeFalse();
 		});
 
-		it('should return false when a nested OR group is at the limit', () => {
+		it('returns false when a nested OR group is at the limit', () => {
 			const root = {
 				conjunctionName: Conjunctions.And,
 				criteriaGroupId: 'root',
@@ -250,7 +250,7 @@ describe('utils', () => {
 			expect(utils.hasNestedOrExceeded(root)).toBeFalse();
 		});
 
-		it('should return true when a nested OR group has more than 3 items', () => {
+		it('returns true when a nested OR group has more than 3 items', () => {
 			const root = {
 				conjunctionName: Conjunctions.And,
 				criteriaGroupId: 'root',
@@ -271,7 +271,7 @@ describe('utils', () => {
 			expect(utils.hasNestedOrExceeded(root)).toBeTrue();
 		});
 
-		it('should return true for an exceeded OR group deeper in the tree', () => {
+		it('returns true for an exceeded OR group deeper in the tree', () => {
 			const root = {
 				conjunctionName: Conjunctions.And,
 				criteriaGroupId: 'root',
@@ -300,18 +300,18 @@ describe('utils', () => {
 	});
 
 	describe('isOfKnownType', () => {
-		it('should return true when value is isKnown or isUnknown', () => {
+		it('returns true when value is isKnown or isUnknown', () => {
 			expect(utils.isOfKnownType(isKnown)).toBeTrue();
 			expect(utils.isOfKnownType(isUnknown)).toBeTrue();
 		});
 
-		it('should return false when value is not isKnown or isUnknown', () => {
+		it('returns false when value is not isKnown or isUnknown', () => {
 			expect(utils.isOfKnownType('foo')).toBeFalse();
 		});
 	});
 
 	describe('objectToFormData', () => {
-		it('should convert input object to FormData', () => {
+		it('converts input object to FormData', () => {
 			expect(utils.objectToFormData({foo: 'bar'})).toBeInstanceOf(
 				FormData
 			);
@@ -319,7 +319,7 @@ describe('utils', () => {
 	});
 
 	describe('parseActivityKey', () => {
-		it('should return an object containing the eventId, id, & objectType from the activityKey', () => {
+		it('returns an object containing the eventId, id, & objectType from the activityKey', () => {
 			expect(utils.parseActivityKey('foo#bar#test')).toMatchObject({
 				eventId: 'bar',
 				id: 'test',
@@ -329,7 +329,7 @@ describe('utils', () => {
 	});
 
 	describe('jsDatetoYYYYMMDD', () => {
-		it('should return Date object as a string in YYYY-MM-DD format', () => {
+		it('returns Date object as a string in YYYY-MM-DD format', () => {
 			expect(utils.jsDatetoYYYYMMDD(new Date('12-31-2012'))).toBe(
 				'2012-12-31'
 			);
@@ -337,7 +337,7 @@ describe('utils', () => {
 	});
 
 	describe('findPropertyByCriterion', () => {
-		it('should return the blog viewed Property when provided with a blog viewed Criterion', () => {
+		it('returns the blog viewed Property when provided with a blog viewed Criterion', () => {
 			const criterion = data.generateCriterion({
 				operatorName: ActivitiesFilterByCount,
 				propertyName: ACTIVITY_KEY,
@@ -372,7 +372,7 @@ describe('utils', () => {
 			expect(property.type).toBe('behavior');
 		});
 
-		it('should return the account name Property when provided with an account name Criterion', () => {
+		it('returns the account name Property when provided with an account name Criterion', () => {
 			const criterion = data.generateCriterion({
 				operatorName: AccountsFilter,
 				propertyName: 'accountName',
@@ -403,7 +403,7 @@ describe('utils', () => {
 			expect(property.get('name')).toEqual(mockProperty.get('name'));
 		});
 
-		it('should return the session url Property when provided with a session url Criterion', () => {
+		it('returns the session url Property when provided with a session url Criterion', () => {
 			const criterion = data.generateCriterion({
 				operatorName: SessionsFilter,
 				propertyName: 'context/url',
@@ -435,7 +435,7 @@ describe('utils', () => {
 			expect(property.type).toBe('session-text');
 		});
 
-		it('should return the interest Property when provided with an interest Criterion', () => {
+		it('returns the interest Property when provided with an interest Criterion', () => {
 			const criterion = data.generateCriterion({
 				operatorName: InterestsFilter,
 				propertyName: 'name',
@@ -467,7 +467,7 @@ describe('utils', () => {
 			expect(property.type).toBe('interest');
 		});
 
-		it('should return the given name Property when provided with a given name Criterion', () => {
+		it('returns the given name Property when provided with a given name Criterion', () => {
 			const criterion = data.generateCriterion({
 				operatorName: EQ,
 				propertyName: 'demographics/givenName/value',
@@ -492,7 +492,7 @@ describe('utils', () => {
 			expect(property).toBe(mockProperty);
 		});
 
-		it('should return a Vocabulary Property whose label uses the name extracted from the criterion group when not in the cache', () => {
+		it('returns a Vocabulary Property whose label uses the name extracted from the criterion group when not in the cache', () => {
 			const criterion = data.generateCriterion({
 				operatorName: CustomFunctionOperators.VocabulariesFilter,
 				propertyName: 'vocab-id',
@@ -524,7 +524,7 @@ describe('utils', () => {
 			expect(property.propertyKey).toBe('vocabulary');
 		});
 
-		it('should return the cached Vocabulary Property when present in referencedPropertiesIMap', () => {
+		it('returns the cached Vocabulary Property when present in referencedPropertiesIMap', () => {
 			const criterion = data.generateCriterion({
 				operatorName: CustomFunctionOperators.VocabulariesFilter,
 				propertyName: 'vocab-id',
@@ -549,7 +549,7 @@ describe('utils', () => {
 			expect(property).toBe(cachedProperty);
 		});
 
-		it('should return a Tag Property whose label uses the name extracted from the criterion group when not in the cache', () => {
+		it('returns a Tag Property whose label uses the name extracted from the criterion group when not in the cache', () => {
 			const criterion = data.generateCriterion({
 				operatorName: CustomFunctionOperators.TagsFilter,
 				propertyName: 'tag-id',
@@ -581,7 +581,7 @@ describe('utils', () => {
 			expect(property.propertyKey).toBe('tag');
 		});
 
-		it('should return the cached Tag Property when present in referencedPropertiesIMap', () => {
+		it('returns the cached Tag Property when present in referencedPropertiesIMap', () => {
 			const criterion = data.generateCriterion({
 				operatorName: CustomFunctionOperators.TagsFilter,
 				propertyName: 'tag-id',
@@ -623,7 +623,7 @@ describe('utils', () => {
 	});
 
 	describe('validateSegmentInputs', () => {
-		it('should validate as false if a criterion is invalid', () => {
+		it('validates as false if a criterion is invalid', () => {
 			expect(
 				utils.validateSegmentInputs(
 					data.mockNewCriteria(10, {valid: false})
@@ -631,7 +631,7 @@ describe('utils', () => {
 			).toBeFalse();
 		});
 
-		it('should validate as true if all criterions are valid', () => {
+		it('validates as true if all criterions are valid', () => {
 			expect(
 				utils.validateSegmentInputs(data.mockNewCriteriaNested())
 			).toBeTrue();
@@ -639,7 +639,7 @@ describe('utils', () => {
 	});
 
 	describe('invalidateCriterionWithMissingProperty', () => {
-		it('should invalidate criterions with missing property', () => {
+		it('invalidates criterions with missing property', () => {
 			const criteria = data.mockNewCriteria(1, {
 				propertyName: 'demographics/firstName/value',
 			});
@@ -654,7 +654,7 @@ describe('utils', () => {
 			).toBeFalse();
 		});
 
-		it('should not invalidate criterions with matched property', () => {
+		it('does not invalidate criterions with matched property', () => {
 			const criteria = data.mockNewCriteria(1, {
 				propertyName: 'demographics/firstName/value',
 				valid: true,
@@ -682,7 +682,7 @@ describe('utils', () => {
 			rawType: 'Text',
 		};
 
-		it('should convert fieldMapping to an Account Property Record', () => {
+		it('converts fieldMapping to an Account Property Record', () => {
 			const result =
 				utils.convertFieldMappingToAccountProperty(accountFieldMapping);
 
@@ -704,7 +704,7 @@ describe('utils', () => {
 			rawType: 'Text',
 		};
 
-		it('should convert fieldMapping to an Individual Property Record', () => {
+		it('converts fieldMapping to an Individual Property Record', () => {
 			const result = utils.convertFieldMappingToIndividualProperty(
 				individualFieldMapping
 			);
@@ -719,7 +719,7 @@ describe('utils', () => {
 	});
 
 	describe('convertFieldMappingsToProperties', () => {
-		it('should convert fieldMappings to Properties', () => {
+		it('converts fieldMappings to Properties', () => {
 			const fieldMappingsIMap = fromJS({
 				account: {
 					organization: {
@@ -790,7 +790,7 @@ describe('utils', () => {
 	});
 
 	describe('parseReferencedEntityId', () => {
-		it('should parse referenced entity id', () => {
+		it('parses referenced entity id', () => {
 			const referencedEntities = new Map({
 				assets: new Map({'123_title': 'test'}),
 			});

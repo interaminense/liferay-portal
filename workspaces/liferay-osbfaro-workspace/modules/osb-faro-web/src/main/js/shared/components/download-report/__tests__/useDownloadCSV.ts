@@ -1,14 +1,14 @@
+import {renderHook} from '@testing-library/react';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
+
+import {CSVType, useDownloadCSV} from '../utils';
+
 /**
  * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 jest.unmock('react-dom');
-
-import {renderHook} from '@testing-library/react';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
-
-import {CSVType, useDownloadCSV} from '../utils';
 
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
@@ -28,7 +28,7 @@ describe('useDownloadCSV', () => {
 		);
 	});
 
-	it('should return the correct URL for default parameters', () => {
+	it('returns the correct URL for default parameters', () => {
 		const {result} = renderHook(() =>
 			useDownloadCSV({type: CSVType.Individual})
 		);
@@ -44,7 +44,7 @@ describe('useDownloadCSV', () => {
 		);
 	});
 
-	it('should include custom date range in the URL', () => {
+	it('includes custom date range in the URL', () => {
 		const {result} = renderHook(() =>
 			useDownloadCSV({type: CSVType.Individual})
 		);
@@ -59,7 +59,7 @@ describe('useDownloadCSV', () => {
 		expect(url).toContain('&toDate=2024-01-31');
 	});
 
-	it('should include optional parameters when provided', () => {
+	it('includes optional parameters when provided', () => {
 		const {result} = renderHook(() =>
 			useDownloadCSV({
 				assetId: '12345',
@@ -81,7 +81,7 @@ describe('useDownloadCSV', () => {
 		);
 	});
 
-	it('should include order by fields if field and sortOrder are present', () => {
+	it('includes order by fields if field and sortOrder are present', () => {
 		(window as {location: unknown}).location = new URL(
 			'https://analytics.liferay.com/workspace/liferay.com/420253908131944590/?field=name&page=1&sortOrder=DESC'
 		);

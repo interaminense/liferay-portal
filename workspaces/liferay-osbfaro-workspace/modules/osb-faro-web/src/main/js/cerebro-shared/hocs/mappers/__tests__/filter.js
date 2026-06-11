@@ -183,7 +183,7 @@ const data = {
 };
 
 describe('Shared HOCs Mappers - Filter', () => {
-	it('should map filter information', () => {
+	it('maps filter information', () => {
 		const mapper = getFiltersMapper((result) => result.forms.submissions);
 
 		const result = mapper.props(data);

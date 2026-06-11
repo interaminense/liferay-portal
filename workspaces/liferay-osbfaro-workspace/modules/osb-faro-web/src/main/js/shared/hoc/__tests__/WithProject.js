@@ -15,7 +15,7 @@ jest.mock(
 );
 
 describe('WithProject', () => {
-	it('should pass the project to the WrappedComponent', () => {
+	it('passes the project to the WrappedComponent', () => {
 		let result = null;
 
 		const MockComponent = (props) => {

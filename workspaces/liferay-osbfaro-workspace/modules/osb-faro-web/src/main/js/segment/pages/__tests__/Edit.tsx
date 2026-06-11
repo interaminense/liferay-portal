@@ -19,13 +19,13 @@ jest.mock('../edit/Dynamic', () => ({
 }));
 
 describe('Edit', () => {
-	it('should render', () => {
+	it('renders', () => {
 		render(<Edit groupId="23" />);
 
 		expect(screen.getByTestId('dynamic-segment')).toBeInTheDocument();
 	});
 
-	it('should render a dynamic segment', () => {
+	it('renders a dynamic segment', () => {
 		render(<Edit groupId="23" type={SegmentTypes.Batch} />);
 
 		const dynamicSegment = screen.getByTestId('dynamic-segment');

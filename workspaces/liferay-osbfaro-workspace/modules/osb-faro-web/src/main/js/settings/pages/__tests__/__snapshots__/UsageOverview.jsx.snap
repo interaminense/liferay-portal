@@ -627,7 +627,7 @@ exports[`UsageOverview should render 1`] = `
                 class="d-flex"
               >
                 <h3
-                  class="title-text text-truncate"
+                  class="text-truncate title-text"
                 >
                   <span
                     class="text-truncate"
@@ -714,7 +714,7 @@ exports[`UsageOverview should render 1`] = `
                       </span>
                     </p>
                     <div
-                      class="mt-4 mb-5"
+                      class="mb-5 mt-4"
                     >
                       <span
                         class="text-3 text-secondary font-weight-semi-bold"

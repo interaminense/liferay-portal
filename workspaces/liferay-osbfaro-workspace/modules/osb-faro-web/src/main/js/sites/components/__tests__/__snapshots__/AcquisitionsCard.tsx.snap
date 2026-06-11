@@ -45,7 +45,7 @@ exports[`AcquisitionsCard renders 1`] = `
       </div>
     </div>
     <div
-      class="card-body w-100 d-flex flex-column flex-grow-1 no-padding"
+      class="card-body d-flex flex-column flex-grow-1 w-100 no-padding"
     >
       <ul
         class="card-tabs-root"
@@ -189,7 +189,7 @@ exports[`AcquisitionsCard renders 1`] = `
                   </div>
                 </td>
                 <td
-                  class="table-cell-expand relative-metric-bar-root"
+                  class="relative-metric-bar-root table-cell-expand"
                 >
                   <div
                     class="metric-bar-root"
@@ -199,7 +199,7 @@ exports[`AcquisitionsCard renders 1`] = `
                       style="width: 100%;"
                     />
                     <div
-                      class="info-wrapper align-items-center d-flex justify-content-between"
+                      class="align-items-center d-flex info-wrapper justify-content-between"
                     >
                       <span
                         class="text-truncate title"

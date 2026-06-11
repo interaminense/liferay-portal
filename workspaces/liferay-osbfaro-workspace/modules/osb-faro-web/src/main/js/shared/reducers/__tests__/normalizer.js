@@ -15,7 +15,7 @@ import {
 import reducer from '../normalizer';
 
 describe('Normalizer Reducer', () => {
-	it('should update store with normalized entities', () => {
+	it('updates store with normalized entities', () => {
 		const action = {
 			payload: {
 				entities: {
@@ -33,7 +33,7 @@ describe('Normalizer Reducer', () => {
 		expect(state).toMatchSnapshot();
 	});
 
-	it('should return the original state if no entities key is found', () => {
+	it('returns the original state if no entities key is found', () => {
 		const initialState = new Map();
 
 		const state = reducer(initialState, {});
@@ -41,7 +41,7 @@ describe('Normalizer Reducer', () => {
 		expect(state).toBe(initialState);
 	});
 
-	it('should return a Map by default', () => {
+	it('returns a Map by default', () => {
 		const state = reducer(undefined, {});
 
 		expect(state).toBeInstanceOf(Map);

@@ -1,14 +1,14 @@
+import {renderHook} from '@testing-library/react';
+import {useLocation} from 'react-router-dom';
+
+import {useQueryParams} from '../useQueryParams';
+
 /**
  * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 jest.unmock('react-dom');
-
-import {renderHook} from '@testing-library/react';
-import {useLocation} from 'react-router-dom';
-
-import {useQueryParams} from '../useQueryParams';
 
 jest.mock('react-router-dom', () => ({
 	useLocation: jest.fn(),

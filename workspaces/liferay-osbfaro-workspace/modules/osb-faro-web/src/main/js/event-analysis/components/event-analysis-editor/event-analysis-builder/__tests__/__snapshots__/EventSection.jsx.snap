@@ -3,7 +3,7 @@
 exports[`EventSection render 1`] = `
 <div>
   <div
-    class="event-section-root d-flex align-items-center"
+    class="align-items-center d-flex event-section-root"
   >
     <div
       class="section-header"
@@ -11,7 +11,7 @@ exports[`EventSection render 1`] = `
       Analyze
     </div>
     <div
-      class="event-container d-flex justify-content-between"
+      class="d-flex event-container justify-content-between"
     >
       <div
         class="event-list"
@@ -23,7 +23,7 @@ exports[`EventSection render 1`] = `
           aria-expanded="false"
           aria-haspopup="true"
           aria-label="Add"
-          class="dropdown-toggle button-root add-event-button btn btn-sm btn-primary"
+          class="dropdown-toggle add-event-button button-root btn btn-sm btn-primary"
           type="button"
         >
           <svg
@@ -44,7 +44,7 @@ exports[`EventSection render 1`] = `
 exports[`EventSection render with event 1`] = `
 <div>
   <div
-    class="event-section-root d-flex align-items-center"
+    class="align-items-center d-flex event-section-root"
   >
     <div
       class="section-header"
@@ -52,7 +52,7 @@ exports[`EventSection render with event 1`] = `
       Analyze
     </div>
     <div
-      class="event-container d-flex justify-content-between"
+      class="d-flex event-container justify-content-between"
     >
       <div
         class="event-list"

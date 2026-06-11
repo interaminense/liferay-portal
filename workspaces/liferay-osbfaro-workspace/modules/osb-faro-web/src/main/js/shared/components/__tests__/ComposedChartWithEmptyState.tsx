@@ -17,7 +17,7 @@ const MockedComposedChart = () => (
 describe('CollapsibleOverlay', () => {
 	afterEach(cleanup);
 
-	it('should render without empty state', () => {
+	it('renders without empty state', () => {
 		const {container, getByTestId, getByText} = render(
 			<ComposedChartWithEmptyState
 				emptyDescription="this is an empty description"
@@ -38,7 +38,7 @@ describe('CollapsibleOverlay', () => {
 		expect(getByText('my composed chart content')).toBeInTheDocument();
 	});
 
-	it('should render empty state', () => {
+	it('renders empty state', () => {
 		const {container, getByTestId, getByText} = render(
 			<ComposedChartWithEmptyState
 				emptyDescription="this is an empty description"
@@ -62,7 +62,7 @@ describe('CollapsibleOverlay', () => {
 		expect(getByText('my composed chart content')).toBeInTheDocument();
 	});
 
-	it('should render empty state and renders a react component on description', () => {
+	it('renders empty state and renders a react component on description', () => {
 		const {container, getByTestId, getByText} = render(
 			<ComposedChartWithEmptyState
 				emptyDescription={

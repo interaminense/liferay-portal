@@ -9,7 +9,7 @@ import {fetchCurrentUser} from '../users';
 
 describe('User Actions', () => {
 	describe('fetchCurrentUser', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchCurrentUser('123');
 
 			expect(isFSA(action)).toBe(true);

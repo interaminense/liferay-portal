@@ -25,7 +25,7 @@ const mockData = {
 
 describe('Individual Metrics Query Mapper', () => {
 	describe('mapPropsToOptions', () => {
-		it('should map props to options', () => {
+		it('maps props to options', () => {
 			const props = {
 				interval: 'day',
 				rangeSelectors: {
@@ -47,7 +47,7 @@ describe('Individual Metrics Query Mapper', () => {
 	});
 
 	describe('mapResultToProps', () => {
-		xit('should map results to props', () => {
+		xit('maps results to props', () => {
 			expect(mapResultToProps(mockData).items).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({

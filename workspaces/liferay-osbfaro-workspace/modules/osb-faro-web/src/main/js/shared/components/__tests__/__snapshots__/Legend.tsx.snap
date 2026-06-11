@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Legend should render a Legend component 1`] = `
+exports[`Legend renders a Legend component 1`] = `
 <div>
   <ul
     class="chart-legend"

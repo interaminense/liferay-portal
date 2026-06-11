@@ -331,7 +331,7 @@ exports[`AttributeView should render 1`] = `
                 class="d-flex"
               >
                 <h3
-                  class="title-text text-truncate"
+                  class="text-truncate title-text"
                 >
                   <span
                     class="text-truncate"
@@ -342,7 +342,7 @@ exports[`AttributeView should render 1`] = `
                   </span>
                 </h3>
                 <span
-                  class="text-truncate subtitle-text ml-2"
+                  class="text-truncate ml-2 subtitle-text"
                   data-tooltip="false"
                   title=""
                 >

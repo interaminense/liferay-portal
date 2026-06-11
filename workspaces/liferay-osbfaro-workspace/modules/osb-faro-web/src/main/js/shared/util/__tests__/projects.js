@@ -49,7 +49,7 @@ const mockProjects = [
 
 describe('projects', () => {
 	describe('getBasicProjects', () => {
-		it('should return only basic projects given a list of projects', () => {
+		it('returns only basic projects given a list of projects', () => {
 			const projects = getBasicProjects(mockProjects);
 
 			projects.map(({faroSubscription}) =>
@@ -57,7 +57,7 @@ describe('projects', () => {
 			);
 		});
 
-		it('should return only basic unconfigured projects given a list of projects and if the unconfigured argument is true', () => {
+		it('returns only basic unconfigured projects given a list of projects and if the unconfigured argument is true', () => {
 			const projects = getBasicProjects(mockProjects, true);
 
 			expect(projects.length).toBe(1);
@@ -67,7 +67,7 @@ describe('projects', () => {
 	});
 
 	describe('getSingleProjectRoute', () => {
-		it('should return the homepage route for a single project that is configured', () => {
+		it('returns the homepage route for a single project that is configured', () => {
 			const route = getSingleProjectRoute(mockProjects[2]);
 
 			expect(route).toEqual(
@@ -75,7 +75,7 @@ describe('projects', () => {
 			);
 		});
 
-		it('should return the create workspace route for a single project that is unconfigured', () => {
+		it('returns the create workspace route for a single project that is unconfigured', () => {
 			const route = getSingleProjectRoute(mockProjects[0]);
 
 			expect(route).toEqual(

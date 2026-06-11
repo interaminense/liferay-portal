@@ -63,7 +63,7 @@ exports[`VerticalTimeline should render with a header and initialExpanded 1`] = 
                 class="sticker sticker-root sticker-static sticker-circle sticker-point sticker-lg"
               />
               <div
-                class="timeline-item-label timeline-time-label label-root"
+                class="label-root timeline-item-label timeline-time-label"
               >
                 <span>
                   10:56pm
@@ -194,7 +194,7 @@ Firefox"
                         class="sticker sticker-root sticker-static sticker-circle sticker-point sticker-lg"
                       />
                       <div
-                        class="timeline-item-label timeline-time-label label-root"
+                        class="label-root timeline-item-label timeline-time-label"
                       >
                         10:56pm
                       </div>
@@ -269,7 +269,7 @@ Firefox"
                         class="sticker sticker-root sticker-static sticker-circle sticker-point sticker-lg"
                       />
                       <div
-                        class="timeline-item-label timeline-time-label label-root"
+                        class="label-root timeline-item-label timeline-time-label"
                       >
                         10:56pm
                       </div>
@@ -382,7 +382,7 @@ Firefox"
                 class="sticker sticker-root sticker-static sticker-circle sticker-point sticker-lg"
               />
               <div
-                class="timeline-item-label timeline-time-label label-root"
+                class="label-root timeline-item-label timeline-time-label"
               >
                 <span>
                   10:56pm
@@ -511,7 +511,7 @@ Firefox"
                         class="sticker sticker-root sticker-static sticker-circle sticker-point sticker-lg"
                       />
                       <div
-                        class="timeline-item-label timeline-time-label label-root"
+                        class="label-root timeline-item-label timeline-time-label"
                       >
                         10:56pm
                       </div>
@@ -586,7 +586,7 @@ Firefox"
                         class="sticker sticker-root sticker-static sticker-circle sticker-point sticker-lg"
                       />
                       <div
-                        class="timeline-item-label timeline-time-label label-root"
+                        class="label-root timeline-item-label timeline-time-label"
                       >
                         10:56pm
                       </div>
@@ -663,7 +663,7 @@ Firefox"
                 class="sticker sticker-root sticker-static sticker-circle sticker-point sticker-lg"
               />
               <div
-                class="timeline-item-label timeline-time-label label-root"
+                class="label-root timeline-item-label timeline-time-label"
               >
                 <span>
                   10:56pm
@@ -797,7 +797,7 @@ Firefox"
                         class="sticker sticker-root sticker-static sticker-circle sticker-point sticker-lg"
                       />
                       <div
-                        class="timeline-item-label timeline-time-label label-root"
+                        class="label-root timeline-item-label timeline-time-label"
                       >
                         10:56pm
                       </div>
@@ -872,7 +872,7 @@ Firefox"
                         class="sticker sticker-root sticker-static sticker-circle sticker-point sticker-lg"
                       />
                       <div
-                        class="timeline-item-label timeline-time-label label-root"
+                        class="label-root timeline-item-label timeline-time-label"
                       >
                         10:56pm
                       </div>

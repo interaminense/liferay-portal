@@ -27,7 +27,7 @@ describe('IndividualAttributesCDP', () => {
 		uuid: 'uuid-123',
 	};
 
-	it('should render', () => {
+	it('renders', () => {
 		const {container} = render(
 			<IndividualAttributesCDP propertiesData={fromJS(mockProperties)} />
 		);
@@ -35,7 +35,7 @@ describe('IndividualAttributesCDP', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render the empty state when showEmptyState is true', () => {
+	it('renders the empty state when showEmptyState is true', () => {
 		const {getByText, queryByText} = render(
 			<IndividualAttributesCDP
 				propertiesData={fromJS(mockProperties)}
@@ -49,7 +49,7 @@ describe('IndividualAttributesCDP', () => {
 		expect(queryByText('screenName')).toBeNull();
 	});
 
-	it('should correctly format the birth date', () => {
+	it('correctlies format the birth date', () => {
 		const {getByText} = render(
 			<IndividualAttributesCDP propertiesData={fromJS(mockProperties)} />
 		);
@@ -57,7 +57,7 @@ describe('IndividualAttributesCDP', () => {
 		expect(getByText('2020-01-01')).toBeTruthy();
 	});
 
-	it('should display the fallback dash for missing values', () => {
+	it('displays the fallback dash for missing values', () => {
 		const {getAllByText} = render(
 			<IndividualAttributesCDP propertiesData={fromJS({})} />
 		);

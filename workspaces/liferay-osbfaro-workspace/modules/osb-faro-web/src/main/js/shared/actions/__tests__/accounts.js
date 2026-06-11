@@ -9,7 +9,7 @@ import {fetchAccount} from '../accounts';
 
 describe('Accounts', () => {
 	describe('fetchAccount', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchAccount('123');
 
 			expect(isFSA(action)).toBe(true);

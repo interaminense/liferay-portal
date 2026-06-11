@@ -106,7 +106,7 @@ describe('IndividualsOverviewCDP', () => {
 		jest.resetAllMocks();
 	});
 
-	it('should render Individuals Metrics Cards', () => {
+	it('renders Individuals Metrics Cards', () => {
 		(useQuery as jest.Mock).mockReturnValue({
 			data: mockedIndividualMetrics.data,
 			loading: false,
@@ -119,7 +119,7 @@ describe('IndividualsOverviewCDP', () => {
 		expect(getByText('Anonymous Individuals')).toBeInTheDocument();
 	});
 
-	it('should render a centered loader inside each metric card while metrics are loading', () => {
+	it('renders a centered loader inside each metric card while metrics are loading', () => {
 		(useQuery as jest.Mock).mockReturnValue({
 			data: undefined,
 			loading: true,

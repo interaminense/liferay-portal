@@ -18,7 +18,7 @@ const mockProps = {
 
 describe('Interests Query Mapper', () => {
 	describe('mapCardPropsToOptions', () => {
-		it('should map interests list query card props to options', () => {
+		it('maps interests list query card props to options', () => {
 			const id = '123';
 
 			expect(mapCardPropsToOptions({id})).toEqual(
@@ -39,7 +39,7 @@ describe('Interests Query Mapper', () => {
 	});
 
 	describe('mapPropsToOptions', () => {
-		it('should map interests list query props to options', () => {
+		it('maps interests list query props to options', () => {
 			const {delta, id, query} = mockProps;
 
 			expect(mapPropsToOptions(mockProps)).toEqual(

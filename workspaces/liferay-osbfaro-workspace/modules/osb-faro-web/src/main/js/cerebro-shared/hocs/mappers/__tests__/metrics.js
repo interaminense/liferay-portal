@@ -100,7 +100,7 @@ const data = {
 };
 
 describe('Shared HOCs Mappers - Metrics', () => {
-	it('should map metrics information', () => {
+	it('maps metrics information', () => {
 		const mapper = getMetricsMapper(
 			(result) => result.forms,
 			[

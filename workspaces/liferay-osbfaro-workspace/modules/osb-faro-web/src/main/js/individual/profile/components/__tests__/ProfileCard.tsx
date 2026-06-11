@@ -41,7 +41,7 @@ const inputValue = 'add to cart';
 const searchKeyword = {keywords: inputValue};
 
 describe('IndividualProfileCard', () => {
-	it('should render', async () => {
+	it('renders', async () => {
 		const {getByPlaceholderText} = render(
 			<DefaultComponent>
 				<MockedProvider
@@ -86,7 +86,7 @@ describe('IndividualProfileCard', () => {
 		expect(getByPlaceholderText('Search')).toBeInTheDocument();
 	});
 
-	it('should clear search input when clear button is clicked', async () => {
+	it('clears search input when clear button is clicked', async () => {
 		const {container, getByPlaceholderText, getByText} = render(
 			<DefaultComponent>
 				<MockedProvider
@@ -159,7 +159,7 @@ describe('IndividualProfileCard', () => {
 		expect(getByPlaceholderText('Search')).toHaveValue('');
 	});
 
-	it('should clear search input when X clear button is clicked', async () => {
+	it('clears search input when X clear button is clicked', async () => {
 		const {container, getByPlaceholderText} = render(
 			<DefaultComponent>
 				<MockedProvider
@@ -239,7 +239,7 @@ describe('IndividualProfileCard', () => {
 		expect(getByPlaceholderText('Search')).toHaveValue('');
 	});
 
-	it('should render w/ an error display', async () => {
+	it('renders w/ an error display', async () => {
 		const {container, getByText} = render(
 			<DefaultComponent>
 				<MockedProvider mocks={[]}>
@@ -275,7 +275,7 @@ describe('IndividualProfileCard', () => {
 		expect(getByText('An unexpected error occurred.')).toBeTruthy();
 	});
 
-	it('should render w/ loading', () => {
+	it('renders w/ loading', () => {
 		const {container} = render(
 			<DefaultComponent>
 				<MockedProvider mocks={[]}>

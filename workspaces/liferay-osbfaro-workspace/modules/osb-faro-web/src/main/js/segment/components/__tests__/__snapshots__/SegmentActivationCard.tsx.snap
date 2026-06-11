@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SegmentActivationCard should render when frequency type is batch 1`] = `
+exports[`SegmentActivationCard renders when frequency type is batch 1`] = `
 <div>
   <div
     class="card card-root card-root"
@@ -78,7 +78,7 @@ exports[`SegmentActivationCard should render when frequency type is batch 1`] = 
 </div>
 `;
 
-exports[`SegmentActivationCard should render when frequency type is real time 1`] = `
+exports[`SegmentActivationCard renders when frequency type is real time 1`] = `
 <div>
   <div
     class="card card-root card-root"
@@ -156,7 +156,7 @@ exports[`SegmentActivationCard should render when frequency type is real time 1`
 </div>
 `;
 
-exports[`SegmentActivationCard should render with dates when frequency type is between 1`] = `
+exports[`SegmentActivationCard renders with dates when frequency type is between 1`] = `
 <div>
   <div
     class="card card-root card-root"

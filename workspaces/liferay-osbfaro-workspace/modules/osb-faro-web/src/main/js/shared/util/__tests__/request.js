@@ -1,10 +1,3 @@
-/**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
- * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
- */
-
-jest.mock('../router');
-
 import 'whatwg-fetch';
 
 import request, {
@@ -17,8 +10,15 @@ import request, {
 } from '../request';
 import {reloadPage} from '../router';
 
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+jest.mock('../router');
+
 describe('addParams', () => {
-	it('should correctly append query string params', () => {
+	it('correctlies append query string params', () => {
 		const result = addParams('http://www.test.com', {
 			name: 'joe',
 			title: 'blogger',
@@ -28,7 +28,7 @@ describe('addParams', () => {
 		expect(result).toContain('blogger');
 	});
 
-	it('should use correct param separator', () => {
+	it('uses correct param separator', () => {
 		const result = addParams('http://www.test.com?parameter=1', {
 			name: 'joe',
 		});
@@ -38,7 +38,7 @@ describe('addParams', () => {
 });
 
 describe('getFormData', () => {
-	it('should return a FormData object', () => {
+	it('returns a FormData object', () => {
 		const formData = getFormData({
 			name: 'test',
 		});
@@ -46,7 +46,7 @@ describe('getFormData', () => {
 		expect(formData instanceof FormData).toBe(true);
 	});
 
-	it('should encode form values', () => {
+	it('encodes form values', () => {
 		const name = 'test~!@#$%^&*()-=+_;:?><,./';
 
 		const formData = getFormData({name});
@@ -56,7 +56,7 @@ describe('getFormData', () => {
 });
 
 describe('parseFromJSON', () => {
-	it('should return a parsed JSON object', () => {
+	it('returns a parsed JSON object', () => {
 		const expected = {foo: 'bar'};
 
 		expect(parseFromJSON(JSON.stringify(expected))).toEqual(expected);
@@ -64,25 +64,25 @@ describe('parseFromJSON', () => {
 });
 
 describe('getServiceError', () => {
-	it('should return a parsed service error', () => {
+	it('returns a parsed service error', () => {
 		const nestedError = {status: 403};
 
-		const err = {message: JSON.stringify(nestedError)};
+		const error = {message: JSON.stringify(nestedError)};
 
-		expect(getServiceError(err)).toEqual(nestedError);
+		expect(getServiceError(error)).toEqual(nestedError);
 	});
 
-	it('should return null if not a service error', () => {
+	it('returns null if not a service error', () => {
 		const nestedError = {status: 500};
 
-		const err = {message: JSON.stringify(nestedError)};
+		const error = {message: JSON.stringify(nestedError)};
 
-		expect(getServiceError(JSON.stringify(err))).toBeNull();
+		expect(getServiceError(JSON.stringify(error))).toBeNull();
 	});
 });
 
 describe('serializeQueryString', () => {
-	it('should contain params', () => {
+	it('contains params', () => {
 		const queryString = serializeQueryString(
 			{
 				name: 'test',
@@ -93,7 +93,7 @@ describe('serializeQueryString', () => {
 		expect(queryString).toContain('name');
 	});
 
-	it('should contain params', () => {
+	it('contains params', () => {
 		const queryString = serializeQueryString({
 			name: 'joe',
 		});
@@ -111,7 +111,7 @@ describe('request', () => {
 		fetch.mockClear();
 	});
 
-	it('should return a Promise', () => {
+	it('returns a Promise', () => {
 		fetch.mockReturnValue(Promise.resolve(new Response()));
 
 		const result = request({}).catch(jest.fn());
@@ -119,7 +119,7 @@ describe('request', () => {
 		expect(result instanceof Promise).toBe(true);
 	});
 
-	it('should correctly create request URL', () => {
+	it('correctlies create request URL', () => {
 		fetch.mockReturnValue(Promise.resolve(new Response('')));
 
 		return request({
@@ -134,7 +134,7 @@ describe('request', () => {
 		});
 	});
 
-	it('should update requestURL if method is GET', () => {
+	it('updates requestURL if method is GET', () => {
 		fetch.mockReturnValue(Promise.resolve(new Response('', {status: 204})));
 
 		return request({
@@ -150,7 +150,7 @@ describe('request', () => {
 		});
 	});
 
-	it('should resolve with the parsed response', () => {
+	it('resolves with the parsed response', () => {
 		const value = 25;
 
 		fetch.mockReturnValue(Promise.resolve(new Response(`{"a": ${value}}`)));
@@ -158,7 +158,7 @@ describe('request', () => {
 		return request({}).then((data) => expect(data.a).toBe(value));
 	});
 
-	it('should throw an error if the response cannot be parsed', () => {
+	it('throws an error if the response cannot be parsed', () => {
 		fetch.mockReturnValue(Promise.resolve(new Response('{test:}')));
 
 		return request({}).catch((error) =>
@@ -166,7 +166,7 @@ describe('request', () => {
 		);
 	});
 
-	it('should reject on a xhr status greater than or equal to 300', () => {
+	it('rejects on a xhr status greater than or equal to 300', () => {
 		fetch.mockReturnValue(Promise.resolve(new Response('', {status: 301})));
 
 		return request({}).catch((error) =>
@@ -174,13 +174,13 @@ describe('request', () => {
 		);
 	});
 
-	it('should handle an xhr status of 204 where the response is empty', () => {
+	it('handles an xhr status of 204 where the response is empty', () => {
 		fetch.mockReturnValue(Promise.resolve(new Response('', {status: 204})));
 
 		return request({}).then((response) => expect(response).toEqual({}));
 	});
 
-	it('should reject on a xhr status equal to 403', () => {
+	it('rejects on a xhr status equal to 403', () => {
 		fetch.mockReturnValue(
 			Promise.resolve(
 				new Response('', {
@@ -194,7 +194,7 @@ describe('request', () => {
 		);
 	});
 
-	it('should reject on a xhr status equal to 500 with a messageKey', () => {
+	it('rejects on a xhr status equal to 500 with a messageKey', () => {
 		fetch.mockReturnValue(
 			Promise.resolve(
 				new Response('{ "messageKey": "test"}', {
@@ -209,7 +209,7 @@ describe('request', () => {
 		});
 	});
 
-	it('should call reloadPage on an xhr status equal to 401', () => {
+	it('calls reloadPage on an xhr status equal to 401', () => {
 		fetch.mockReturnValue(
 			Promise.resolve(
 				new Response('', {
@@ -221,7 +221,7 @@ describe('request', () => {
 		return request({}).then(() => expect(reloadPage).toBeCalled());
 	});
 
-	it('should reject if the response is not valid JSON', () => {
+	it('rejects if the response is not valid JSON', () => {
 		fetch.mockReturnValue(
 			Promise.resolve(new Response('this is definitely not json'))
 		);
@@ -231,16 +231,16 @@ describe('request', () => {
 });
 
 describe('stringifyValues', () => {
-	it('should serialize instances of objects', () => {
-		const arr = ['foo'];
-		const obj = {foo: 'bar'};
+	it('serializes instances of objects', () => {
+		const array = ['foo'];
+		const object = {foo: 'bar'};
 
 		const val = stringifyValues({
-			arr,
-			obj,
+			arr: array,
+			obj: object,
 		});
 
-		expect(val.arr).toBe(JSON.stringify(arr));
-		expect(val.obj).toBe(JSON.stringify(obj));
+		expect(val.arr).toBe(JSON.stringify(array));
+		expect(val.obj).toBe(JSON.stringify(object));
 	});
 });

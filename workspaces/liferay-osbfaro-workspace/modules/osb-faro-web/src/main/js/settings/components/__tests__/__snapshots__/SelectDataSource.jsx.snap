@@ -7,7 +7,7 @@ exports[`SelectDataSource should render 1`] = `
   >
     <section>
       <div
-        class="h4 text-uppercase section-title"
+        class="h4 section-title text-uppercase"
       >
         section 1 title
       </div>
@@ -78,7 +78,7 @@ exports[`SelectDataSource should render 1`] = `
     </section>
     <section>
       <div
-        class="h4 text-uppercase section-title"
+        class="h4 section-title text-uppercase"
       >
         section two title
       </div>

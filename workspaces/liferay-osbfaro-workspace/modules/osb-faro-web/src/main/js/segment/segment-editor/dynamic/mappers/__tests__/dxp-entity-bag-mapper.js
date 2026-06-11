@@ -8,7 +8,7 @@ import {createOrderIOMap} from 'shared/util/pagination';
 import {getMapResultToProps, mapPropsToOptions} from '../dxp-entity-bag-mapper';
 
 describe('DXPEntityBag Mapper', () => {
-	it('should map props to options', () => {
+	it('maps props to options', () => {
 		expect(
 			mapPropsToOptions({
 				channelId: '123',
@@ -30,7 +30,7 @@ describe('DXPEntityBag Mapper', () => {
 		);
 	});
 
-	it('should map results to props', () => {
+	it('maps results to props', () => {
 		expect(
 			getMapResultToProps('organizations')({
 				organizations: {dxpEntities: [], total: 0},

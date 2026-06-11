@@ -27,14 +27,14 @@ describe('Account Membership', () => {
 		state: 'California',
 	};
 
-	it('should render the snapshot', () => {
+	it('renders the snapshot', () => {
 		const {container} = render(
 			<AccountMembership accountData={fromJS(mockData)} />
 		);
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render the empty state when showEmptyState is true', () => {
+	it('renders the empty state when showEmptyState is true', () => {
 		const {getByText, queryByText} = render(
 			<AccountMembership accountData={fromJS(mockData)} showEmptyState>
 				<div>empty state rendered</div>
@@ -45,7 +45,7 @@ describe('Account Membership', () => {
 		expect(queryByText('industry')).toBeNull();
 	});
 
-	it('should correctly format the time entries', () => {
+	it('correctlies format the time entries', () => {
 		const {getByText} = render(
 			<AccountMembership accountData={fromJS(mockData)} />
 		);
@@ -55,7 +55,7 @@ describe('Account Membership', () => {
 		expect(getByText('2020-01-01')).toBeTruthy();
 	});
 
-	it('should display the fallback dash for missing account values', () => {
+	it('displays the fallback dash for missing account values', () => {
 		const {getAllByText} = render(
 			<AccountMembership accountData={fromJS({})} />
 		);
@@ -64,7 +64,7 @@ describe('Account Membership', () => {
 		expect(dashes.length).toBeGreaterThan(0);
 	});
 
-	it('should render annualRevenue without throwing when currencyCode is null', () => {
+	it('renders annualRevenue without throwing when currencyCode is null', () => {
 		expect(() =>
 			render(
 				<AccountMembership

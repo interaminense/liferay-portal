@@ -11,7 +11,7 @@ describe('AccountUserSessionQuery', () => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		(AccountUserSessionQuery as any).loc?.source?.body ?? '';
 
-	it('should include includeWebhookEvents', () => {
+	it('includes includeWebhookEvents', () => {
 		expect(queryString).toContain('includeWebhookEvents: true');
 	});
 });

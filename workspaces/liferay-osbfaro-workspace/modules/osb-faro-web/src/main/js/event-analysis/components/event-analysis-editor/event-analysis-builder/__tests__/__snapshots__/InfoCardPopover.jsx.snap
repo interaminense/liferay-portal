@@ -9,7 +9,7 @@ exports[`InfoCardPopover render 1`] = `
       class="filter-info-root"
     >
       <div
-        class="filter-name d-flex align-items-center justify-content-between"
+        class="align-items-center d-flex filter-name justify-content-between"
       >
         Test Name
         <button

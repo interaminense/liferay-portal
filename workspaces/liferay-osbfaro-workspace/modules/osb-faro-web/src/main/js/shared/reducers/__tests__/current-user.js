@@ -9,7 +9,7 @@ import {RemoteData} from 'shared/util/records';
 import reducer from '../current-user';
 
 describe('currentUser reducer', () => {
-	it('should set current user id', () => {
+	it('sets current user id', () => {
 		const id = 1234;
 
 		const action = {

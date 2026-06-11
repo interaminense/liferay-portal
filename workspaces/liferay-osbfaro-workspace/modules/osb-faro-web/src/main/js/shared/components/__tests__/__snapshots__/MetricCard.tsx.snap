@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MetricCard should render 1`] = `
+exports[`MetricCard renders 1`] = `
 <div>
   <div
     class="card card-root flex-fill p-3 w-100"
@@ -19,7 +19,7 @@ exports[`MetricCard should render 1`] = `
       </div>
     </div>
     <div
-      class="card-body justify-content-between d-flex no-padding"
+      class="card-body d-flex justify-content-between no-padding"
     >
       <div
         class="mt-2"
@@ -49,8 +49,7 @@ exports[`MetricCard should render 1`] = `
           >
             0%
           </span>
-           
-          vs last period
+           vs last period
         </div>
       </div>
     </div>

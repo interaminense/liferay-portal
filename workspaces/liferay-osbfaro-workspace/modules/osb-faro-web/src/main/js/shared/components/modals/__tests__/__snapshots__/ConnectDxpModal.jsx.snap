@@ -60,7 +60,7 @@ exports[`ConnectDXPModal renders 1`] = `
           </svg>
         </div>
         <div
-          class="text-center mb-4"
+          class="mb-4 text-center"
         >
           <span
             class="text-10 font-weight-bold"
@@ -133,7 +133,7 @@ exports[`ConnectDXPModal renders 1`] = `
           </span>
         </div>
         <div
-          class="mt-4 mb-1"
+          class="mb-1 mt-4"
         >
           <label
             class="form-control-label label-root"
@@ -162,7 +162,7 @@ exports[`ConnectDXPModal renders 1`] = `
           </label>
         </div>
         <div
-          class="d-flex align-items-center justify-content-between"
+          class="align-items-center d-flex justify-content-between"
         >
           <div
             class="flex-grow-1 mr-3"

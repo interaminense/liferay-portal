@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`subscriptions formatPlanData should format the plan data when faroSusbcription is null 1`] = `
+exports[`subscriptions formatPlanData formats the plan data when faroSusbcription is null 1`] = `
 Immutable.Record {
   "addOns": Immutable.Map {},
   "endDate": undefined,

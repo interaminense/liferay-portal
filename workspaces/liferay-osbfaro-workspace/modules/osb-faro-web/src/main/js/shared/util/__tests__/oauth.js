@@ -17,13 +17,13 @@ import {
 } from '../oauth';
 
 describe('isOAuthErrorString', () => {
-	it('should return true is the error is considered an OAuth error type', () => {
+	it('returns true is the error is considered an OAuth error type', () => {
 		OAUTH_ERROR_CODES.map((code) => {
 			expect(isOAuthErrorString(code)).toBe(true);
 		});
 	});
 
-	it('should return false if the error is NOT considered to be an OAuth error type', () => {
+	it('returns false if the error is NOT considered to be an OAuth error type', () => {
 		expect(isOAuthErrorString(undefined)).toBe(false);
 
 		expect(isOAuthErrorString(null)).toBe(false);
@@ -56,7 +56,7 @@ describe('oauth-token', () => {
 			delete window.opener;
 		});
 
-		it('should call postMessage on the opener', () => {
+		it('calls postMessage on the opener', () => {
 			const code = 'foobarbaz';
 
 			emitAuthCode({code});
@@ -79,7 +79,7 @@ describe('oauth-token', () => {
 			delete window.opener;
 		});
 
-		it('should call postMessage on the opener', () => {
+		it('calls postMessage on the opener', () => {
 			const errorMessage = 'foobar: bizbaz';
 
 			emitError({message: errorMessage});
@@ -102,7 +102,7 @@ describe('oauth-token', () => {
 			delete window.opener;
 		});
 
-		it('should call postMessage on the opener', () => {
+		it('calls postMessage on the opener', () => {
 			const partialCredentials = {
 				token: 'foobarbaz',
 				verifier: 'bizbaz',
@@ -130,7 +130,7 @@ describe('oauth-token', () => {
 			jest.restoreAllMocks();
 		});
 
-		it('should receive token', () => {
+		it('receives token', () => {
 			expect.assertions(2);
 
 			const baseUrl = 'https://foobar.biz';
@@ -181,7 +181,7 @@ describe('oauth-token', () => {
 			});
 		});
 
-		it('should timeout after a specified duration', () =>
+		it('timeouts after a specified duration', () =>
 			expect(
 				getTempCredentials({
 					authWindow: new MockWindow(),
@@ -196,7 +196,7 @@ describe('oauth-token', () => {
 				})
 			));
 
-		it('should set closed to true if fetchOAuthUrl rejects', () => {
+		it('sets closed to true if fetchOAuthUrl rejects', () => {
 			expect.assertions(1);
 
 			API.dataSource.fetchOAuthUrl.mockReturnValueOnce(
@@ -218,7 +218,7 @@ describe('oauth-token', () => {
 			});
 		});
 
-		it('should reject if the window is closed', () => {
+		it('rejects if the window is closed', () => {
 			const authWindow = new MockWindow();
 
 			authWindow.closed = true;

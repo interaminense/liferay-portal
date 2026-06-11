@@ -39,7 +39,7 @@ const WrapperComponent = ({children, queryString = ''}) => (
 );
 
 describe('useQueryPagination', () => {
-	it('should return initial values', () => {
+	it('returns initial values', () => {
 		const TestComponent = () => {
 			const queryPaginationParams = useQueryPagination({
 				initialDelta: 6,
@@ -62,7 +62,7 @@ describe('useQueryPagination', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should return pagination params from query params values', () => {
+	it('returns pagination params from query params values', () => {
 		const TestComponent = () => {
 			const queryPaginationParams = useQueryPagination({
 				initialDelta: 6,

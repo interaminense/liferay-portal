@@ -9,7 +9,7 @@ exports[`CohortAnalysis should render 1`] = `
       <tr>
         <th />
         <th
-          class="visitors-header table-column-text-end"
+          class="table-column-text-end visitors-header"
         >
           Visitors
         </th>
@@ -32,7 +32,7 @@ exports[`CohortAnalysis should render 1`] = `
       <tr>
         <th />
         <th
-          class="visitors table-column-text-end"
+          class="table-column-text-end visitors"
         >
           0
         </th>
@@ -61,7 +61,7 @@ exports[`CohortAnalysis should render 1`] = `
           August 14
         </td>
         <td
-          class="visitors table-column-text-end"
+          class="table-column-text-end visitors"
         >
           0
         </td>
@@ -102,7 +102,7 @@ exports[`CohortAnalysis should render 1`] = `
           August 15
         </td>
         <td
-          class="visitors table-column-text-end"
+          class="table-column-text-end visitors"
         >
           0
         </td>
@@ -143,7 +143,7 @@ exports[`CohortAnalysis should render 1`] = `
           August 16
         </td>
         <td
-          class="visitors table-column-text-end"
+          class="table-column-text-end visitors"
         >
           0
         </td>

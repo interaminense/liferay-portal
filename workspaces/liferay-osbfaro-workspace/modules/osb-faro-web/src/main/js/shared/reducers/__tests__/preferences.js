@@ -11,7 +11,7 @@ import {DistributionTab, RemoteData} from 'shared/util/records';
 import reducer from '../preferences';
 
 describe('Preferences Reducer', () => {
-	it('should get default channel id', () => {
+	it('gets default channel id', () => {
 		const defaultChannelId = '123';
 
 		const action = {
@@ -27,7 +27,7 @@ describe('Preferences Reducer', () => {
 		).toEqual(defaultChannelId);
 	});
 
-	it('should update default channel id', () => {
+	it('updates default channel id', () => {
 		const defaultChannelId = '123';
 
 		const prevDefaultChannelId = '321';
@@ -63,7 +63,7 @@ describe('Preferences Reducer', () => {
 		).toEqual(defaultChannelId);
 	});
 
-	it('should update upgradeModalSeen', () => {
+	it('updates upgradeModalSeen', () => {
 		const upgradeModalSeen = true;
 
 		const prevUpgradeModalSeen = false;
@@ -99,7 +99,7 @@ describe('Preferences Reducer', () => {
 		).toEqual(upgradeModalSeen);
 	});
 
-	it('should get distribution tabs', () => {
+	it('gets distribution tabs', () => {
 		const id = '123';
 
 		const distributionCardTabPreferencesMap = {
@@ -133,7 +133,7 @@ describe('Preferences Reducer', () => {
 		);
 	});
 
-	it('should add a distribution tab', () => {
+	it('adds a distribution tab', () => {
 		const id = '123';
 
 		const distributionCardTabPreferencesMap = {
@@ -167,7 +167,7 @@ describe('Preferences Reducer', () => {
 		);
 	});
 
-	it('should remove a distribution tab', () => {
+	it('removes a distribution tab', () => {
 		const id = '123';
 
 		const action = {

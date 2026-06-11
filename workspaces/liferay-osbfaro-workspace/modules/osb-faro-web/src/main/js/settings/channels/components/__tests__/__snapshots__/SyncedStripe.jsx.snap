@@ -6,7 +6,7 @@ exports[`SyncedStripe should render 1`] = `
     class="sites-synced-stripe-root empty"
   >
     <div
-      class="title d-flex align-items-center"
+      class="align-items-center d-flex title"
     >
       There are 0 sites and 0 channels synced to this property.
     </div>

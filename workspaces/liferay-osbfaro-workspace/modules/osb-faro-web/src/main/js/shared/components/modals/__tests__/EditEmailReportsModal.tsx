@@ -53,7 +53,7 @@ const DefaultComponent = (
 );
 
 describe('EditEmailReportsModal', () => {
-	it('should render', () => {
+	it('renders', () => {
 		const {container} = render(
 			<DefaultComponent
 				report={{enabled: false, frequency: Frequency.Monthly}}
@@ -63,7 +63,7 @@ describe('EditEmailReportsModal', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should click the toggle switch, check if its value has changed to true and if frequency options are enabled', () => {
+	it('clicks the toggle switch, check if its value has changed to true and if frequency options are enabled', () => {
 		const {container} = render(
 			<DefaultComponent
 				report={{enabled: false, frequency: Frequency.Monthly}}
@@ -93,7 +93,7 @@ describe('EditEmailReportsModal', () => {
 		expect(frequency).not.toHaveAttribute('disabled');
 	});
 
-	it('should configure email reports with the MONTHLY option', async () => {
+	it('configures email reports with the MONTHLY option', async () => {
 		render(
 			<DefaultComponent
 				report={{enabled: true, frequency: Frequency.Monthly}}
@@ -127,7 +127,7 @@ describe('EditEmailReportsModal', () => {
 		await waitFor(() => expect(addAlert).toHaveBeenCalled());
 	});
 
-	it('should configure email reports with the WEEKLY option', async () => {
+	it('configures email reports with the WEEKLY option', async () => {
 		render(
 			<DefaultComponent
 				report={{enabled: true, frequency: Frequency.Weekly}}
@@ -161,7 +161,7 @@ describe('EditEmailReportsModal', () => {
 		await waitFor(() => expect(addAlert).toHaveBeenCalled());
 	});
 
-	it('should configure email reports with the DAILY option', async () => {
+	it('configures email reports with the DAILY option', async () => {
 		render(
 			<DefaultComponent
 				report={{enabled: true, frequency: Frequency.Daily}}

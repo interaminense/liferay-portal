@@ -91,7 +91,7 @@ describe('AccountsDataSet', () => {
 
 	afterEach(cleanup);
 
-	it('should render the FrontendDataSet with id "accounts-list-dataset"', () => {
+	it('renders the FrontendDataSet with id "accounts-list-dataset"', () => {
 		render(
 			<AccountsDataSet apiURL="fake-url" channelId="123" groupId="23" />
 		);
@@ -102,7 +102,7 @@ describe('AccountsDataSet', () => {
 		);
 	});
 
-	it('should pass the apiURL directly to FrontendDataSet without appending range params', () => {
+	it('passes the apiURL directly to FrontendDataSet without appending range params', () => {
 		render(
 			<AccountsDataSet apiURL="fake-url" channelId="123" groupId="23" />
 		);
@@ -110,7 +110,7 @@ describe('AccountsDataSet', () => {
 		expect(lastApiURL).toBe('fake-url');
 	});
 
-	it('should preload the rangeKey filter with Last 30 Days by default', () => {
+	it('preloads the rangeKey filter with Last 30 Days by default', () => {
 		render(
 			<AccountsDataSet apiURL="fake-url" channelId="123" groupId="23" />
 		);
@@ -128,7 +128,7 @@ describe('AccountsDataSet', () => {
 		});
 	});
 
-	it('should include all 8 time range options in the rangeKey filter', () => {
+	it('includes all 8 time range options in the rangeKey filter', () => {
 		render(
 			<AccountsDataSet apiURL="fake-url" channelId="123" groupId="23" />
 		);
@@ -148,7 +148,7 @@ describe('AccountsDataSet', () => {
 		]);
 	});
 
-	it('should leave country and industry filters without preloadedData when no props are passed', () => {
+	it('leaves country and industry filters without preloadedData when no props are passed', () => {
 		render(
 			<AccountsDataSet apiURL="fake-url" channelId="123" groupId="23" />
 		);
@@ -160,7 +160,7 @@ describe('AccountsDataSet', () => {
 		expect(industryFilter?.preloadedData).toBeUndefined();
 	});
 
-	it('should omit the lifecycleStatus filter when accountLifecycleId is not provided', () => {
+	it('omits the lifecycleStatus filter when accountLifecycleId is not provided', () => {
 		render(
 			<AccountsDataSet apiURL="fake-url" channelId="123" groupId="23" />
 		);
@@ -172,7 +172,7 @@ describe('AccountsDataSet', () => {
 		expect(lifecycleStatusFilter).toBeUndefined();
 	});
 
-	it('should preload the country filter when countryFilter prop is provided', () => {
+	it('preloads the country filter when countryFilter prop is provided', () => {
 		render(
 			<AccountsDataSet
 				apiURL="fake-url"
@@ -190,7 +190,7 @@ describe('AccountsDataSet', () => {
 		});
 	});
 
-	it('should preload the industry filter when industryFilter prop is provided', () => {
+	it('preloads the industry filter when industryFilter prop is provided', () => {
 		render(
 			<AccountsDataSet
 				apiURL="fake-url"
@@ -208,7 +208,7 @@ describe('AccountsDataSet', () => {
 		});
 	});
 
-	it('should build the lifecycleStatus items from the fetched stages with localized labels', () => {
+	it('builds the lifecycleStatus items from the fetched stages with localized labels', () => {
 		render(
 			<AccountsDataSet
 				accountLifecycleId="al-1"
@@ -230,7 +230,7 @@ describe('AccountsDataSet', () => {
 		]);
 	});
 
-	it('should preload the lifecycleStatus filter with the stage id and localized label when lifecycleStageFilter prop is provided', () => {
+	it('preloads the lifecycleStatus filter with the stage id and localized label when lifecycleStageFilter prop is provided', () => {
 		render(
 			<AccountsDataSet
 				accountLifecycleId="al-1"
@@ -251,7 +251,7 @@ describe('AccountsDataSet', () => {
 		});
 	});
 
-	it('should leave the lifecycleStatus preloadedData undefined when stages have not loaded yet', () => {
+	it('leaves the lifecycleStatus preloadedData undefined when stages have not loaded yet', () => {
 		mockStages(undefined);
 
 		render(
@@ -271,7 +271,7 @@ describe('AccountsDataSet', () => {
 		expect(lifecycleStatusFilter?.preloadedData).toBeUndefined();
 	});
 
-	it('should render the account name link with channelId in the href', () => {
+	it('renders the account name link with channelId in the href', () => {
 		render(
 			<AccountsDataSet apiURL="fake-url" channelId="123" groupId="23" />
 		);

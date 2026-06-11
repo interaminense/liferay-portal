@@ -112,13 +112,13 @@ describe('AccountDetailsModal', () => {
 
 	afterEach(cleanup);
 
-	it("should render the modal title with the account name's possessive form", () => {
+	it("renders the modal title with the account name's possessive form", () => {
 		renderModal();
 
 		expect(screen.getByText("Acme Corp's Attributes")).toBeInTheDocument();
 	});
 
-	it('should call useRequest with the account, channel, and group ids', () => {
+	it('calls useRequest with the account, channel, and group ids', () => {
 		renderModal();
 
 		expect(mockedUseRequest).toHaveBeenCalledWith(
@@ -128,7 +128,7 @@ describe('AccountDetailsModal', () => {
 		);
 	});
 
-	it('should render a row in the data set for each field returned by the request', () => {
+	it('renders a row in the data set for each field returned by the request', () => {
 		renderModal();
 
 		expect(screen.getByTestId('fds-component')).toBeInTheDocument();
@@ -140,7 +140,7 @@ describe('AccountDetailsModal', () => {
 		expect(items[1]).toHaveTextContent('industry');
 	});
 
-	it('should render no rows when the request has no data yet', () => {
+	it('renders no rows when the request has no data yet', () => {
 		mockedUseRequest.mockReturnValue({data: undefined});
 
 		renderModal();
@@ -148,7 +148,7 @@ describe('AccountDetailsModal', () => {
 		expect(screen.queryAllByTestId('fds-item')).toHaveLength(0);
 	});
 
-	it('should not offer any column as sortable since the data set is fed a static items array', () => {
+	it('does not offer any column as sortable since the data set is fed a static items array', () => {
 		renderModal();
 
 		const fields = lastViews![0].schema.fields;
@@ -156,7 +156,7 @@ describe('AccountDetailsModal', () => {
 		expect(fields.every((field: any) => !field.sortable)).toBe(true);
 	});
 
-	it('should match items by name when the data set search has a query', () => {
+	it('matches items by name when the data set search has a query', () => {
 		renderModal();
 
 		const matches = mockFields.filter((field) =>
@@ -167,7 +167,7 @@ describe('AccountDetailsModal', () => {
 		expect(matches[0].name).toBe('industry');
 	});
 
-	it('should match the name filter case-insensitively', () => {
+	it('matches the name filter case-insensitively', () => {
 		renderModal();
 
 		const matches = mockFields.filter((field) =>

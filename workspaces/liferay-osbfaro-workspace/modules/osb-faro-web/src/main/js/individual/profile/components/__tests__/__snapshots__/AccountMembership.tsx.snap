@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Account Membership should render the snapshot 1`] = `
+exports[`Account Membership renders the snapshot 1`] = `
 <div>
   <div
     class="mb-3"
@@ -31,7 +31,7 @@ exports[`Account Membership should render the snapshot 1`] = `
     class="general-info mb-4"
   >
     <div
-      class="row g-3"
+      class="g-3 row"
     >
       <div
         class="col-12 col-lg-6 mb-3 mb-lg-0"

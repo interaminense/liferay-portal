@@ -262,7 +262,7 @@ exports[`DynamicSegmentEdit should render in BATCH mode 1`] = `
               class="sidebar-collapse"
             >
               <ul
-                class="property-subgroups-list active"
+                class="active property-subgroups-list"
               />
             </div>
           </div>

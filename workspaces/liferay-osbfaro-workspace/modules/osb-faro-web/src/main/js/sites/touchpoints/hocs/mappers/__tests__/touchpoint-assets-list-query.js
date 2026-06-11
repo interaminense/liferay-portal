@@ -105,13 +105,13 @@ const props = {
 };
 
 describe('TouchpointsAssetsListQuery Mappers', () => {
-	it('should extract items from result', () => {
+	it('extracts items from result', () => {
 		const props = mapResultToProps({data});
 
 		expect(props).toMatchSnapshot();
 	});
 
-	it('should include options', () => {
+	it('includes options', () => {
 		const options = mapPropsToOptions(props);
 
 		expect(options).toEqual({
@@ -125,7 +125,7 @@ describe('TouchpointsAssetsListQuery Mappers', () => {
 		});
 	});
 
-	it('should update the touchpoint in variables', () => {
+	it('updates the touchpoint in variables', () => {
 		const options = mapPropsToOptions({
 			...props,
 			touchpoint: 'https://www.liferay.com/about',

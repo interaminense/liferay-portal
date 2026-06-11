@@ -3,10 +3,10 @@
 exports[`DistributionCard Tabs renders 1`] = `
 <div>
   <div
-    class="tabs-root d-flex align-items-center justify-content-between"
+    class="align-items-center d-flex justify-content-between tabs-root"
   >
     <div
-      class="scrollable-section-root d-inline-flex"
+      class="d-inline-flex scrollable-section-root"
     >
       <div
         class="scroll-container"
@@ -18,7 +18,7 @@ exports[`DistributionCard Tabs renders 1`] = `
             class="tab-item d-flex align-items-baseline active"
           >
             <div
-              class="tab-title active"
+              class="active tab-title"
             >
               Tab 1
               <button

@@ -30,7 +30,7 @@ const WrapperComponent = ({children, queryString = ''}) => (
 );
 
 describe('useQueryRangeSelectors', () => {
-	it('should return initial values', () => {
+	it('returns initial values', () => {
 		const TestComponent = () => {
 			const queryRangeSelectorsParams = useQueryRangeSelectors({
 				rangeEnd: 123123,
@@ -52,7 +52,7 @@ describe('useQueryRangeSelectors', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should return RangeSelectors params from query params values', () => {
+	it('returns RangeSelectors params from query params values', () => {
 		const TestComponent = () => {
 			const queryRangeSelectorsParams = useQueryRangeSelectors({
 				rangeEnd: 123123,

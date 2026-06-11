@@ -291,7 +291,7 @@ jest.mock('recharts', () => {
 });
 
 describe('SegmentGrowthChart', () => {
-	it('should render chart and display the tooltip on mouse over', () => {
+	it('renders chart and display the tooltip on mouse over', () => {
 		const {container} = render(
 			<SegmentGrowthChart
 				data={chartData}

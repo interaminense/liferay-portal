@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UserDropdown should render 1`] = `
+exports[`UserDropdown renders 1`] = `
 <div>
   <div>
     <button
@@ -26,7 +26,7 @@ exports[`UserDropdown should render 1`] = `
 </div>
 `;
 
-exports[`UserDropdown should render dropdown menu when clicked 1`] = `
+exports[`UserDropdown renders dropdown menu when clicked 1`] = `
 <body
   class="dxp"
 >
@@ -113,7 +113,7 @@ exports[`UserDropdown should render dropdown menu when clicked 1`] = `
                       role="menuitem"
                     >
                       <a
-                        class="button-root btn btn-block btn-unstyled"
+                        class="btn btn-block btn-unstyled button-root"
                         href="/link-1"
                       >
                         Link 1

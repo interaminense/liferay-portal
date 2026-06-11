@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => ({
 describe('GlobalFilter', () => {
 	afterEach(cleanup);
 
-	it('should render both industry and country filters', () => {
+	it('renders both industry and country filters', () => {
 		const useRequest = require('shared/hooks/useRequest');
 		useRequest.useRequest = jest.fn(() => ({
 			data: {items: []},

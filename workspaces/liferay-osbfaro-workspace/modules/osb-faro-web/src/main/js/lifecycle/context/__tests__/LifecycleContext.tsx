@@ -18,7 +18,7 @@ const wrapper = ({children}: {children: React.ReactNode}) => (
 );
 
 describe('LifecycleContext', () => {
-	it('should default lifecycleStageFilter to AT_RISK and leave other filters empty', () => {
+	it('defaults lifecycleStageFilter to AT_RISK and leave other filters empty', () => {
 		const {result} = renderHook(() => useLifecycle(), {wrapper});
 
 		expect(result.current.filters).toEqual({
@@ -29,7 +29,7 @@ describe('LifecycleContext', () => {
 		});
 	});
 
-	it('should update a single filter and recompute filterString', () => {
+	it('updates a single filter and recompute filterString', () => {
 		const {result} = renderHook(() => useLifecycle(), {wrapper});
 
 		act(() => result.current.updateFilters({industryFilter: 'Tech'}));
@@ -42,7 +42,7 @@ describe('LifecycleContext', () => {
 		});
 	});
 
-	it('should merge partial updates without clearing untouched filters', () => {
+	it('merges partial updates without clearing untouched filters', () => {
 		const {result} = renderHook(() => useLifecycle(), {wrapper});
 
 		act(() => result.current.updateFilters({industryFilter: 'Tech'}));
@@ -53,7 +53,7 @@ describe('LifecycleContext', () => {
 		);
 	});
 
-	it('should swap lifecycleStageFilter to the value provided', () => {
+	it('swaps lifecycleStageFilter to the value provided', () => {
 		const {result} = renderHook(() => useLifecycle(), {wrapper});
 
 		act(() =>
@@ -67,7 +67,7 @@ describe('LifecycleContext', () => {
 		);
 	});
 
-	it('should reset filters to their initial values', () => {
+	it('resets filters to their initial values', () => {
 		const {result} = renderHook(() => useLifecycle(), {wrapper});
 
 		act(() =>

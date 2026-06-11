@@ -37,7 +37,7 @@ describe('time', () => {
 	});
 
 	describe('isHourlyRangeKey', () => {
-		it('should return true if the rangeKey is hourly', () => {
+		it('returns true if the rangeKey is hourly', () => {
 			expect(time.isHourlyRangeKey(RangeKeyTimeRanges.Yesterday)).toBe(
 				true
 			);
@@ -46,7 +46,7 @@ describe('time', () => {
 			);
 		});
 
-		it('should return false if the rangeKey is not hourly', () => {
+		it('returns false if the rangeKey is not hourly', () => {
 			expect(time.isHourlyRangeKey(RangeKeyTimeRanges.Last30Days)).toBe(
 				false
 			);
@@ -54,7 +54,7 @@ describe('time', () => {
 	});
 
 	describe('isMonthlyRangeKey', () => {
-		it('should return true if the rangeKey is monthly', () => {
+		it('returns true if the rangeKey is monthly', () => {
 			expect(time.isMonthlyRangeKey(RangeKeyTimeRanges.Last28Days)).toBe(
 				true
 			);
@@ -66,7 +66,7 @@ describe('time', () => {
 			);
 		});
 
-		it('should return false if the rangeKey is not monthly', () => {
+		it('returns false if the rangeKey is not monthly', () => {
 			expect(time.isMonthlyRangeKey(RangeKeyTimeRanges.Last24Hours)).toBe(
 				false
 			);

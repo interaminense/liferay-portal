@@ -15,7 +15,7 @@ const {cur: DEFAULT_PAGE, delta: DEFAULT_DELTA} = Constants.pagination;
 jest.unmock('react-dom');
 
 describe('useStatefulPagination', () => {
-	it('should return default values', () => {
+	it('returns default values', () => {
 		let result = null;
 
 		const Component = () => {
@@ -40,7 +40,7 @@ describe('useStatefulPagination', () => {
 		expect(typeof result.resetPage).toBe('function');
 	});
 
-	it('should set delta value on onDeltaChange and reset page', () => {
+	it('sets delta value on onDeltaChange and reset page', () => {
 		let result = null;
 
 		const Component = () => {
@@ -76,7 +76,7 @@ describe('useStatefulPagination', () => {
 		expect(result.page).toBe(DEFAULT_PAGE);
 	});
 
-	it('should set page value on onPageChange and page be reseted', () => {
+	it('sets page value on onPageChange and page be reseted', () => {
 		let result = null;
 
 		const Component = () => {
@@ -110,7 +110,7 @@ describe('useStatefulPagination', () => {
 		expect(result.page).toBe(DEFAULT_PAGE);
 	});
 
-	it('should set orderIOMap value on onOrderIOMapChange and page be reseted', () => {
+	it('sets orderIOMap value on onOrderIOMapChange and page be reseted', () => {
 		let result = null;
 
 		const Component = () => {
@@ -147,7 +147,7 @@ describe('useStatefulPagination', () => {
 		expect(result.page).toBe(DEFAULT_PAGE);
 	});
 
-	it('should set query value on onQueryChange and reset page', () => {
+	it('sets query value on onQueryChange and reset page', () => {
 		let result = null;
 
 		const Component = () => {
@@ -183,7 +183,7 @@ describe('useStatefulPagination', () => {
 		expect(result.page).toBe(DEFAULT_PAGE);
 	});
 
-	it('should set filterBy value on onFilterByChange and reset page', () => {
+	it('sets filterBy value on onFilterByChange and reset page', () => {
 		let result = null;
 
 		const Component = () => {

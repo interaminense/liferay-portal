@@ -20,8 +20,8 @@ import {
 	AttributeTypes,
 	DataTypes,
 	DateGroupings,
+	EventTypes,
 } from 'event-analysis/utils/types';
-import {EventTypes} from 'event-analysis/utils/types';
 import {
 	EXPERIMENT_DRAFT_QUERY,
 	EXPERIMENT_QUERY,
@@ -574,8 +574,9 @@ export function mockBlockedCustomEventDefinitionsReq(
 		},
 		result: {
 			data: mockBag({
-				items,
 				itemTypeName: 'BlockedCustomEventDefinition',
+
+				items,
 				name: 'blockedCustomEventDefinitions',
 				typeName: 'BlockedCustomEventDefinitionBag',
 			}),
@@ -606,8 +607,9 @@ export function mockCompositionBag({
 
 export function mockDataControlTaskBag(items) {
 	return mockBag({
-		items,
 		itemTypeName: 'DataControlTask',
+
+		items,
 		name: 'dataControlTasks',
 		typeName: 'DataControlTaskBag',
 	});
@@ -1149,79 +1151,6 @@ export function mockIndividualInterestsReq(getVariables, result) {
 	};
 }
 
-export function mockIndividualMetricsReq() {
-	return {
-		request: {
-			query: IndividualMetricsQuery,
-			variables: {
-				channelId: '123123',
-				interval: INTERVAL_KEY_MAP.week,
-				...getSafeRangeSelectors({
-					rangeKey: RangeKeyTimeRanges.Last30Days,
-				}),
-			},
-		},
-		result: {
-			data: {
-				individualMetric: {
-					__typename: 'IndividualMetric',
-					anonymousIndividualsMetric: mockMetric({
-						histogram: {
-							__typename: 'HistogramMetricBag',
-							asymmetricComparison: false,
-							metrics: [
-								{
-									__typename: 'HistogramMetric',
-									key: '1',
-									value: 1323321,
-									valueKey: '1',
-								},
-							],
-							total: 1,
-						},
-						trend: {percentage: 0},
-						value: 1323321,
-					}),
-					knownIndividualsMetric: mockMetric({
-						histogram: {
-							__typename: 'HistogramMetricBag',
-							asymmetricComparison: false,
-							metrics: [
-								{
-									__typename: 'HistogramMetric',
-									key: '2',
-									value: 11987,
-									valueKey: '1',
-								},
-							],
-							total: 1,
-						},
-						trend: {percentage: 12.5},
-						value: 11987,
-					}),
-					totalIndividualsMetric: mockMetric({
-						histogram: {
-							__typename: 'HistogramMetricBag',
-							asymmetricComparison: false,
-							metrics: [
-								{
-									__typename: 'HistogramMetric',
-									key: '3',
-									value: 1300000000,
-									valueKey: '1',
-								},
-							],
-							total: 1,
-						},
-						trend: {percentage: -25},
-						value: 1300000000,
-					}),
-				},
-			},
-		},
-	};
-}
-
 export function mockDXPEntitiesBag(entityName, items) {
 	return {
 		[entityName]: {
@@ -1585,6 +1514,79 @@ export function mockMetric(metrics = {}) {
 	};
 }
 
+export function mockIndividualMetricsReq() {
+	return {
+		request: {
+			query: IndividualMetricsQuery,
+			variables: {
+				channelId: '123123',
+				interval: INTERVAL_KEY_MAP.week,
+				...getSafeRangeSelectors({
+					rangeKey: RangeKeyTimeRanges.Last30Days,
+				}),
+			},
+		},
+		result: {
+			data: {
+				individualMetric: {
+					__typename: 'IndividualMetric',
+					anonymousIndividualsMetric: mockMetric({
+						histogram: {
+							__typename: 'HistogramMetricBag',
+							asymmetricComparison: false,
+							metrics: [
+								{
+									__typename: 'HistogramMetric',
+									key: '1',
+									value: 1323321,
+									valueKey: '1',
+								},
+							],
+							total: 1,
+						},
+						trend: {percentage: 0},
+						value: 1323321,
+					}),
+					knownIndividualsMetric: mockMetric({
+						histogram: {
+							__typename: 'HistogramMetricBag',
+							asymmetricComparison: false,
+							metrics: [
+								{
+									__typename: 'HistogramMetric',
+									key: '2',
+									value: 11987,
+									valueKey: '1',
+								},
+							],
+							total: 1,
+						},
+						trend: {percentage: 12.5},
+						value: 11987,
+					}),
+					totalIndividualsMetric: mockMetric({
+						histogram: {
+							__typename: 'HistogramMetricBag',
+							asymmetricComparison: false,
+							metrics: [
+								{
+									__typename: 'HistogramMetric',
+									key: '3',
+									value: 1300000000,
+									valueKey: '1',
+								},
+							],
+							total: 1,
+						},
+						trend: {percentage: -25},
+						value: 1300000000,
+					}),
+				},
+			},
+		},
+	};
+}
+
 export function mockRecommendationReq(item = {}, mockVariables = {}) {
 	return {
 		request: {
@@ -1907,344 +1909,348 @@ export function mockTouchpointsReq(items, mockVariables = {}) {
 
 export function mockJobBag(items) {
 	return mockBag({
-		items,
 		itemTypeName: 'Job',
+
+		items,
 		name: 'jobs',
 		typeName: 'JobBag',
 	});
 }
 
-export const mockEventMetrics = (variables) => ({
-	request: {
-		query: EventMetricQuery,
-		variables: {
-			channelId: '123123',
-			entityId: '0',
-			entityType: 'INDIVIDUAL',
-			interval: 'D',
-			keywords: '',
-			rangeEnd: null,
-			rangeKey: 30,
-			rangeStart: null,
-			...variables,
+export const mockEventMetrics = function mockEventMetrics(variables) {
+	return {
+		request: {
+			query: EventMetricQuery,
+			variables: {
+				channelId: '123123',
+				entityId: '0',
+				entityType: 'INDIVIDUAL',
+				interval: 'D',
+				keywords: '',
+				rangeEnd: null,
+				rangeKey: 30,
+				rangeStart: null,
+				...variables,
+			},
 		},
-	},
-	result: {
-		data: {
-			eventMetric: {
-				__typename: 'EventMetric',
-				totalEventsMetric: {
-					__typename: 'Metric',
-					histogram: {
-						__typename: 'HistogramMetricBag',
-						metrics: [
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T14:00',
-								value: 0.0,
-								valueKey: '2021-12-09T14:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T15:00',
-								value: 0.0,
-								valueKey: '2021-12-09T15:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T16:00',
-								value: 0.0,
-								valueKey: '2021-12-09T16:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T17:00',
-								value: 0.0,
-								valueKey: '2021-12-09T17:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T18:00',
-								value: 0.0,
-								valueKey: '2021-12-09T18:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T19:00',
-								value: 0.0,
-								valueKey: '2021-12-09T19:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T20:00',
-								value: 0.0,
-								valueKey: '2021-12-09T20:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T21:00',
-								value: 0.0,
-								valueKey: '2021-12-09T21:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T22:00',
-								value: 0.0,
-								valueKey: '2021-12-09T22:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T23:00',
-								value: 0.0,
-								valueKey: '2021-12-09T23:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T00:00',
-								value: 0.0,
-								valueKey: '2021-12-10T00:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T01:00',
-								value: 0.0,
-								valueKey: '2021-12-10T01:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T02:00',
-								value: 0.0,
-								valueKey: '2021-12-10T02:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T03:00',
-								value: 0.0,
-								valueKey: '2021-12-10T03:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T04:00',
-								value: 0.0,
-								valueKey: '2021-12-10T04:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T05:00',
-								value: 0.0,
-								valueKey: '2021-12-10T05:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T06:00',
-								value: 0.0,
-								valueKey: '2021-12-10T06:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T07:00',
-								value: 0.0,
-								valueKey: '2021-12-10T07:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T08:00',
-								value: 0.0,
-								valueKey: '2021-12-10T08:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T09:00',
-								value: 0.0,
-								valueKey: '2021-12-10T09:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T10:00',
-								value: 0.0,
-								valueKey: '2021-12-10T10:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T11:00',
-								value: 0.0,
-								valueKey: '2021-12-10T11:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T12:00',
-								value: 0.0,
-								valueKey: '2021-12-10T12:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T13:00',
-								value: 0.0,
-								valueKey: '2021-12-10T13:00',
-							},
-						],
-						total: 24,
+
+		result: {
+			data: {
+				eventMetric: {
+					__typename: 'EventMetric',
+					totalEventsMetric: {
+						__typename: 'Metric',
+						histogram: {
+							__typename: 'HistogramMetricBag',
+							metrics: [
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T14:00',
+									value: 0.0,
+									valueKey: '2021-12-09T14:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T15:00',
+									value: 0.0,
+									valueKey: '2021-12-09T15:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T16:00',
+									value: 0.0,
+									valueKey: '2021-12-09T16:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T17:00',
+									value: 0.0,
+									valueKey: '2021-12-09T17:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T18:00',
+									value: 0.0,
+									valueKey: '2021-12-09T18:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T19:00',
+									value: 0.0,
+									valueKey: '2021-12-09T19:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T20:00',
+									value: 0.0,
+									valueKey: '2021-12-09T20:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T21:00',
+									value: 0.0,
+									valueKey: '2021-12-09T21:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T22:00',
+									value: 0.0,
+									valueKey: '2021-12-09T22:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T23:00',
+									value: 0.0,
+									valueKey: '2021-12-09T23:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T00:00',
+									value: 0.0,
+									valueKey: '2021-12-10T00:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T01:00',
+									value: 0.0,
+									valueKey: '2021-12-10T01:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T02:00',
+									value: 0.0,
+									valueKey: '2021-12-10T02:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T03:00',
+									value: 0.0,
+									valueKey: '2021-12-10T03:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T04:00',
+									value: 0.0,
+									valueKey: '2021-12-10T04:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T05:00',
+									value: 0.0,
+									valueKey: '2021-12-10T05:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T06:00',
+									value: 0.0,
+									valueKey: '2021-12-10T06:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T07:00',
+									value: 0.0,
+									valueKey: '2021-12-10T07:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T08:00',
+									value: 0.0,
+									valueKey: '2021-12-10T08:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T09:00',
+									value: 0.0,
+									valueKey: '2021-12-10T09:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T10:00',
+									value: 0.0,
+									valueKey: '2021-12-10T10:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T11:00',
+									value: 0.0,
+									valueKey: '2021-12-10T11:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T12:00',
+									value: 0.0,
+									valueKey: '2021-12-10T12:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T13:00',
+									value: 0.0,
+									valueKey: '2021-12-10T13:00',
+								},
+							],
+							total: 24,
+						},
+						value: 0.0,
 					},
-					value: 0.0,
-				},
-				totalSessionsMetric: {
-					__typename: 'Metric',
-					histogram: {
-						__typename: 'HistogramMetricBag',
-						metrics: [
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T14:00',
-								value: 0.0,
-								valueKey: '2021-12-09T14:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T15:00',
-								value: 0.0,
-								valueKey: '2021-12-09T15:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T16:00',
-								value: 0.0,
-								valueKey: '2021-12-09T16:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T17:00',
-								value: 0.0,
-								valueKey: '2021-12-09T17:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T18:00',
-								value: 0.0,
-								valueKey: '2021-12-09T18:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T19:00',
-								value: 0.0,
-								valueKey: '2021-12-09T19:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T20:00',
-								value: 0.0,
-								valueKey: '2021-12-09T20:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T21:00',
-								value: 0.0,
-								valueKey: '2021-12-09T21:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T22:00',
-								value: 0.0,
-								valueKey: '2021-12-09T22:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-09T23:00',
-								value: 0.0,
-								valueKey: '2021-12-09T23:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T00:00',
-								value: 0.0,
-								valueKey: '2021-12-10T00:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T01:00',
-								value: 0.0,
-								valueKey: '2021-12-10T01:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T02:00',
-								value: 0.0,
-								valueKey: '2021-12-10T02:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T03:00',
-								value: 0.0,
-								valueKey: '2021-12-10T03:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T04:00',
-								value: 0.0,
-								valueKey: '2021-12-10T04:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T05:00',
-								value: 0.0,
-								valueKey: '2021-12-10T05:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T06:00',
-								value: 0.0,
-								valueKey: '2021-12-10T06:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T07:00',
-								value: 0.0,
-								valueKey: '2021-12-10T07:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T08:00',
-								value: 0.0,
-								valueKey: '2021-12-10T08:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T09:00',
-								value: 0.0,
-								valueKey: '2021-12-10T09:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T10:00',
-								value: 0.0,
-								valueKey: '2021-12-10T10:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T11:00',
-								value: 0.0,
-								valueKey: '2021-12-10T11:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T12:00',
-								value: 0.0,
-								valueKey: '2021-12-10T12:00',
-							},
-							{
-								__typename: 'HistogramMetric',
-								key: '2021-12-10T13:00',
-								value: 0.0,
-								valueKey: '2021-12-10T13:00',
-							},
-						],
-						total: 24,
+					totalSessionsMetric: {
+						__typename: 'Metric',
+						histogram: {
+							__typename: 'HistogramMetricBag',
+							metrics: [
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T14:00',
+									value: 0.0,
+									valueKey: '2021-12-09T14:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T15:00',
+									value: 0.0,
+									valueKey: '2021-12-09T15:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T16:00',
+									value: 0.0,
+									valueKey: '2021-12-09T16:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T17:00',
+									value: 0.0,
+									valueKey: '2021-12-09T17:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T18:00',
+									value: 0.0,
+									valueKey: '2021-12-09T18:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T19:00',
+									value: 0.0,
+									valueKey: '2021-12-09T19:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T20:00',
+									value: 0.0,
+									valueKey: '2021-12-09T20:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T21:00',
+									value: 0.0,
+									valueKey: '2021-12-09T21:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T22:00',
+									value: 0.0,
+									valueKey: '2021-12-09T22:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-09T23:00',
+									value: 0.0,
+									valueKey: '2021-12-09T23:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T00:00',
+									value: 0.0,
+									valueKey: '2021-12-10T00:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T01:00',
+									value: 0.0,
+									valueKey: '2021-12-10T01:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T02:00',
+									value: 0.0,
+									valueKey: '2021-12-10T02:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T03:00',
+									value: 0.0,
+									valueKey: '2021-12-10T03:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T04:00',
+									value: 0.0,
+									valueKey: '2021-12-10T04:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T05:00',
+									value: 0.0,
+									valueKey: '2021-12-10T05:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T06:00',
+									value: 0.0,
+									valueKey: '2021-12-10T06:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T07:00',
+									value: 0.0,
+									valueKey: '2021-12-10T07:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T08:00',
+									value: 0.0,
+									valueKey: '2021-12-10T08:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T09:00',
+									value: 0.0,
+									valueKey: '2021-12-10T09:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T10:00',
+									value: 0.0,
+									valueKey: '2021-12-10T10:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T11:00',
+									value: 0.0,
+									valueKey: '2021-12-10T11:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T12:00',
+									value: 0.0,
+									valueKey: '2021-12-10T12:00',
+								},
+								{
+									__typename: 'HistogramMetric',
+									key: '2021-12-10T13:00',
+									value: 0.0,
+									valueKey: '2021-12-10T13:00',
+								},
+							],
+							total: 24,
+						},
+						value: 0.0,
 					},
-					value: 0.0,
 				},
 			},
 		},
-	},
-});
+	};
+};
 
 export function mockCommerceTotalOrderValueReq({Query, data, variables}) {
 	return {
@@ -2258,63 +2264,66 @@ export function mockCommerceTotalOrderValueReq({Query, data, variables}) {
 	};
 }
 
-export const mockSessions = (variables) => ({
-	request: {
-		query: UserSessionQuery,
-		variables: {
-			channelId: '123123',
-			entityId: '0',
-			entityType: 'INDIVIDUAL',
-			keywords: '',
-			page: 0,
-			rangeEnd: null,
-			rangeKey: 30,
-			rangeStart: null,
-			size: 50,
-			...variables,
-		},
-	},
-	result: {
-		data: {
-			eventsByUserSessions: {
-				__typename: 'EventsByUserSession',
-				totalEvents: 14314,
-				userSessions: [
-					{
-						__typename: 'UserSession',
-						browserName: 'Chrome',
-						completeDate: 'Mon Dec 06 18:02:32 GMT 2021',
-						contentLanguageId: 'en-US',
-						createDate: 'Mon Dec 06 17:01:27 GMT 2021',
-						devicePixelRatio: '0.8999999761581421',
-						deviceType: 'Desktop',
-						events: [
-							{
-								__typename: 'Event',
-								applicationId: 'Page',
-								assetTitle: 'Home - Liferay DXP',
-								canonicalUrl: 'http://localhost:8080',
-								createDate: 'Mon Dec 06 17:28:48 GMT 2021',
-								name: 'tabBlurred',
-								pageDescription: '',
-								pageKeywords: '',
-								pageTitle: 'Home - Liferay DXP',
-								referrer: '',
-								url: 'http://localhost:8080/',
-							},
-						],
-						languageId: 'en-US',
-						screenHeight: '1080',
-						screenWidth: '2132',
-						timezoneOffset: '-03:00',
-						userAgent:
-							'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36',
-					},
-				],
+export const mockSessions = function mockSessions(variables) {
+	return {
+		request: {
+			query: UserSessionQuery,
+			variables: {
+				channelId: '123123',
+				entityId: '0',
+				entityType: 'INDIVIDUAL',
+				keywords: '',
+				page: 0,
+				rangeEnd: null,
+				rangeKey: 30,
+				rangeStart: null,
+				size: 50,
+				...variables,
 			},
 		},
-	},
-});
+
+		result: {
+			data: {
+				eventsByUserSessions: {
+					__typename: 'EventsByUserSession',
+					totalEvents: 14314,
+					userSessions: [
+						{
+							__typename: 'UserSession',
+							browserName: 'Chrome',
+							completeDate: 'Mon Dec 06 18:02:32 GMT 2021',
+							contentLanguageId: 'en-US',
+							createDate: 'Mon Dec 06 17:01:27 GMT 2021',
+							devicePixelRatio: '0.8999999761581421',
+							deviceType: 'Desktop',
+							events: [
+								{
+									__typename: 'Event',
+									applicationId: 'Page',
+									assetTitle: 'Home - Liferay DXP',
+									canonicalUrl: 'http://localhost:8080',
+									createDate: 'Mon Dec 06 17:28:48 GMT 2021',
+									name: 'tabBlurred',
+									pageDescription: '',
+									pageKeywords: '',
+									pageTitle: 'Home - Liferay DXP',
+									referrer: '',
+									url: 'http://localhost:8080/',
+								},
+							],
+							languageId: 'en-US',
+							screenHeight: '1080',
+							screenWidth: '2132',
+							timezoneOffset: '-03:00',
+							userAgent:
+								'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36',
+						},
+					],
+				},
+			},
+		},
+	};
+};
 
 const ACCOUNT_HISTOGRAM_KEYS = [
 	'2024-04-01T00:00',
@@ -2322,14 +2331,14 @@ const ACCOUNT_HISTOGRAM_KEYS = [
 	'2024-04-03T00:00',
 ];
 
-export const mockAccountEventMetricsReq = ({
+export const mockAccountEventMetricsReq = function mockAccountEventMetricsReq({
 	accountId = 'abc',
 	channelId = '123123',
 	empty = false,
 	interval = 'D',
 	keywords = '',
 	rangeKey = 30,
-} = {}) => {
+} = {}) {
 	const buildHistogram = (value) =>
 		ACCOUNT_HISTOGRAM_KEYS.map((key) => ({
 			__typename: 'HistogramMetric',
@@ -2400,7 +2409,7 @@ export const mockAccountEventMetricsReq = ({
 	};
 };
 
-export const mockAccountEventsTrendReq = ({
+export const mockAccountEventsTrendReq = function mockAccountEventsTrendReq({
 	accountId = 'abc',
 	channelId = '123123',
 	keywords = '',
@@ -2408,38 +2417,41 @@ export const mockAccountEventsTrendReq = ({
 	rangeKey = 30,
 	trendClassification = 'POSITIVE',
 	value = 56,
-} = {}) => ({
-	request: {
-		query: AccountEventsTrendQuery,
-		variables: {
-			accountId,
-			channelId,
-			entityId: '',
-			entityType: 'INDIVIDUAL',
-			keywords,
-			rangeEnd: null,
-			rangeKey,
-			rangeStart: null,
+} = {}) {
+	return {
+		request: {
+			query: AccountEventsTrendQuery,
+			variables: {
+				accountId,
+				channelId,
+				entityId: '',
+				entityType: 'INDIVIDUAL',
+				keywords,
+				rangeEnd: null,
+				rangeKey,
+				rangeStart: null,
+			},
 		},
-	},
-	result: {
-		data: {
-			eventsByUserSessions: {
-				__typename: 'EventsByUserSession',
-				totalEventsMetric: {
-					__typename: 'Metric',
-					previousValue: 45,
-					trend: {
-						__typename: 'Trend',
-						percentage,
-						trendClassification,
+
+		result: {
+			data: {
+				eventsByUserSessions: {
+					__typename: 'EventsByUserSession',
+					totalEventsMetric: {
+						__typename: 'Metric',
+						previousValue: 45,
+						trend: {
+							__typename: 'Trend',
+							percentage,
+							trendClassification,
+						},
+						value,
 					},
-					value,
 				},
 			},
 		},
-	},
-});
+	};
+};
 
 const DEFAULT_ACCOUNT_USER_SESSIONS = [
 	{
@@ -2474,7 +2486,7 @@ const DEFAULT_ACCOUNT_USER_SESSIONS = [
 	},
 ];
 
-export const mockAccountUserSessionsReq = ({
+export const mockAccountUserSessionsReq = function mockAccountUserSessionsReq({
 	accountId = 'abc',
 	channelId = '123123',
 	keywords = '',
@@ -2483,32 +2495,35 @@ export const mockAccountUserSessionsReq = ({
 	sessions = DEFAULT_ACCOUNT_USER_SESSIONS,
 	size = 2,
 	totalEvents = 1,
-} = {}) => ({
-	request: {
-		query: AccountUserSessionQuery,
-		variables: {
-			accountId,
-			channelId,
-			entityId: '',
-			entityType: 'INDIVIDUAL',
-			keywords,
-			page,
-			rangeEnd: null,
-			rangeKey,
-			rangeStart: null,
-			size,
-		},
-	},
-	result: {
-		data: {
-			eventsByUserSessions: {
-				__typename: 'EventsByUserSession',
-				totalEventsMetric: {
-					__typename: 'Metric',
-					value: totalEvents,
-				},
-				userSessions: sessions,
+} = {}) {
+	return {
+		request: {
+			query: AccountUserSessionQuery,
+			variables: {
+				accountId,
+				channelId,
+				entityId: '',
+				entityType: 'INDIVIDUAL',
+				keywords,
+				page,
+				rangeEnd: null,
+				rangeKey,
+				rangeStart: null,
+				size,
 			},
 		},
-	},
-});
+
+		result: {
+			data: {
+				eventsByUserSessions: {
+					__typename: 'EventsByUserSession',
+					totalEventsMetric: {
+						__typename: 'Metric',
+						value: totalEvents,
+					},
+					userSessions: sessions,
+				},
+			},
+		},
+	};
+};

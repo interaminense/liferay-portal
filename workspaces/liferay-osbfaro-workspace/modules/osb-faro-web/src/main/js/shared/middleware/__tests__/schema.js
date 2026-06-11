@@ -22,7 +22,7 @@ import {
 } from 'test/data';
 
 describe('Schema', () => {
-	it('should normalize an individual', () => {
+	it('normalizes an individual', () => {
 		const action = mockIndividual('foo');
 
 		const result = normalize(action, individual);
@@ -42,7 +42,7 @@ describe('Schema', () => {
 		});
 	});
 
-	it('should normalize an array of individuals', () => {
+	it('normalizes an array of individuals', () => {
 		const action = [mockIndividual('foo'), mockIndividual('bar')];
 
 		const result = normalize(action, individuals);
@@ -62,7 +62,7 @@ describe('Schema', () => {
 		});
 	});
 
-	it('should normalize a segment', () => {
+	it('normalizes a segment', () => {
 		const action = mockSegment('foo');
 
 		const result = normalize(action, segment);
@@ -81,7 +81,7 @@ describe('Schema', () => {
 		});
 	});
 
-	it('should normalize an array of segments', () => {
+	it('normalizes an array of segments', () => {
 		const action = [mockSegment('foo'), mockSegment('bar')];
 
 		const result = normalize(action, segments);
@@ -101,7 +101,7 @@ describe('Schema', () => {
 		});
 	});
 
-	it('should normalize a liferay data-source', () => {
+	it('normalizes a liferay data-source', () => {
 		const payload = mockLiferayDataSource(2);
 
 		expect(normalize(payload, dataSource)).toMatchObject({
@@ -116,7 +116,7 @@ describe('Schema', () => {
 	});
 
 	describe('getLayoutSchema', () => {
-		it('should normalize a layout schema with a faroEntity of individual', () => {
+		it('normalizes a layout schema with a faroEntity of individual', () => {
 			const action = mockLayout(1, mockIndividual());
 
 			const result = normalize(
@@ -140,7 +140,7 @@ describe('Schema', () => {
 			});
 		});
 
-		it('should normalize a layout schema with a faroEntity of segment', () => {
+		it('normalizes a layout schema with a faroEntity of segment', () => {
 			const action = mockLayout(2);
 
 			const result = normalize(
@@ -166,7 +166,7 @@ describe('Schema', () => {
 	});
 
 	describe('getDistributionSchema', () => {
-		it('should normalize distribution data', () => {
+		it('normalizes distribution data', () => {
 			const payload = [{count: 2, values: ['foo', 'bar']}];
 
 			expect(normalize(payload, getDistributionSchema(3))).toMatchObject({

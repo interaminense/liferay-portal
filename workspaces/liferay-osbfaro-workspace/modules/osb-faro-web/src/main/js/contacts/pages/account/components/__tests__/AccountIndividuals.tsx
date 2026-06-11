@@ -34,13 +34,13 @@ describe('AccountIndividuals', () => {
 
 	afterEach(cleanup);
 
-	it('should render the card title', () => {
+	it('renders the card title', () => {
 		render(<AccountIndividuals />);
 
 		expect(screen.getByText('Account Individuals')).toBeInTheDocument();
 	});
 
-	it('should render the card description', () => {
+	it('renders the card description', () => {
 		render(<AccountIndividuals />);
 
 		expect(
@@ -50,7 +50,7 @@ describe('AccountIndividuals', () => {
 		).toBeInTheDocument();
 	});
 
-	it('should render the FrontendDataSet with the dataset id', () => {
+	it('renders the FrontendDataSet with the dataset id', () => {
 		render(<AccountIndividuals />);
 
 		expect(screen.getByTestId('fds-component')).toHaveAttribute(
@@ -59,7 +59,7 @@ describe('AccountIndividuals', () => {
 		);
 	});
 
-	it('should call the account individuals api with the group and account ids', () => {
+	it('calls the account individuals api with the group and account ids', () => {
 		render(<AccountIndividuals />);
 
 		expect(lastFDSProps.apiURL).toBe(
@@ -67,14 +67,14 @@ describe('AccountIndividuals', () => {
 		);
 	});
 
-	it('should configure the dataset with pagination shown', () => {
+	it('configures the dataset with pagination shown', () => {
 		render(<AccountIndividuals />);
 
 		expect(lastFDSProps.showPagination).toBe(true);
 		expect(lastFDSProps.pagination).toBeDefined();
 	});
 
-	it('should declare the four expected sortable columns', () => {
+	it('declares the four expected sortable columns', () => {
 		render(<AccountIndividuals />);
 
 		const fields = lastFDSProps.views[0].schema.fields;
@@ -91,7 +91,7 @@ describe('AccountIndividuals', () => {
 		);
 	});
 
-	it('should label the columns from the language bundle', () => {
+	it('labels the columns from the language bundle', () => {
 		render(<AccountIndividuals />);
 
 		const fields = lastFDSProps.views[0].schema.fields;
@@ -102,7 +102,7 @@ describe('AccountIndividuals', () => {
 		expect(fields[3].label).toBe('Last Active');
 	});
 
-	it('should wire the individual name renderer to the contacts individual route', () => {
+	it('wires the individual name renderer to the contacts individual route', () => {
 		render(<AccountIndividuals />);
 
 		const renderer =
@@ -119,7 +119,7 @@ describe('AccountIndividuals', () => {
 		expect(link.props.children).toBe('Ada Lovelace');
 	});
 
-	it('should format the last active date', () => {
+	it('formats the last active date', () => {
 		render(<AccountIndividuals />);
 
 		const renderer = lastFDSProps.customDataRenderers.lastActiveRenderer;

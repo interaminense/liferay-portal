@@ -27,7 +27,7 @@ import {
 } from '../router';
 
 describe('setUriFilterValues', () => {
-	it('should add filter queries to url and return as a string', () => {
+	it('adds filter queries to url and return as a string', () => {
 		const mockFilterBy = new Map({
 			biz: new Set(['buz']),
 			foo: new Set(['bar', 'baz']),
@@ -42,7 +42,7 @@ describe('setUriFilterValues', () => {
 });
 
 describe('setUriQueryValue', () => {
-	it('should add query to url and return as a string', () => {
+	it('adds query to url and return as a string', () => {
 		const url = 'http://www.liferay.com';
 
 		expect(setUriQueryValue(url, 'foo', 'bar')).toBe('/?foo=bar');
@@ -52,7 +52,7 @@ describe('setUriQueryValue', () => {
 });
 
 describe('setUriQueryValues', () => {
-	it('should add multiple queries to url and return as a string', () => {
+	it('adds multiple queries to url and return as a string', () => {
 		const url = 'http://www.liferay.com';
 
 		expect(setUriQueryValues({baz: 'qux', foo: 'bar'}, url)).toBe(
@@ -62,19 +62,19 @@ describe('setUriQueryValues', () => {
 });
 
 describe('getType', () => {
-	it('should return type for a given route name', () => {
+	it('returns type for a given route name', () => {
 		expect(getType(ACCOUNTS)).toBe(EntityTypes.Account);
 	});
 });
 
 describe('getDataSourceType', () => {
-	it('should return a data-source type for a given route name', () => {
+	it('returns a data-source type for a given route name', () => {
 		expect(getDataSourceType(LIFERAY)).toBe(DataSourceTypes.Liferay);
 	});
 });
 
 describe('getMatchedRoute', () => {
-	it('should return the matched route', () => {
+	it('returns the matched route', () => {
 		expect(
 			getMatchedRoute(
 				[{route: '/foo/:id'}, {route: '/bar/:id'}],
@@ -85,23 +85,23 @@ describe('getMatchedRoute', () => {
 });
 
 describe('getRouteName', () => {
-	it('should return route name for a given type', () => {
+	it('returns route name for a given type', () => {
 		expect(getRouteName(EntityTypes.Account)).toBe(ACCOUNTS);
 	});
 
-	it('should return route name for the segment types', () => {
+	it('returns route name for the segment types', () => {
 		expect(getRouteName(EntityTypes.IndividualsSegment)).toBe(SEGMENTS);
 	});
 });
 
 describe('removePageParam', () => {
-	it('should remove page query string', () => {
+	it('removes page query string', () => {
 		const url = 'http://www.liferay.com/';
 
 		expect(removePageParam(null, `${url}?page=3`)).toBe('/');
 	});
 
-	it('should remove page query string and set new path', () => {
+	it('removes page query string and set new path', () => {
 		const url = 'http://www.liferay.com/';
 
 		expect(removePageParam('/bar', `${url}foo?page=3`)).toBe('/bar');
@@ -109,7 +109,7 @@ describe('removePageParam', () => {
 });
 
 describe('removeUriQueryParam', () => {
-	it('should remove uri query param', () => {
+	it('removes uri query param', () => {
 		const href =
 			'http://localhost:3000/project/33551/touchpoints/?sortField=views';
 		const name = 'sortField';
@@ -120,7 +120,7 @@ describe('removeUriQueryParam', () => {
 });
 
 describe('resetPaginationParams', () => {
-	it('should reset the pagination parameters to the default value', () => {
+	it('resets the pagination parameters to the default value', () => {
 		const url = 'http://www.liferay.com/';
 
 		expect(
@@ -130,7 +130,7 @@ describe('resetPaginationParams', () => {
 });
 
 describe('setUriFilterValues', () => {
-	it('should set the uri filter params from the filterBy Map', () => {
+	it('sets the uri filter params from the filterBy Map', () => {
 		const url = 'http://www.liferay.com';
 
 		const mockFilterBy = new Map({
@@ -145,7 +145,7 @@ describe('setUriFilterValues', () => {
 });
 
 describe('Routes', () => {
-	it('should match Routes snapshot', () => {
+	it('matches Routes snapshot', () => {
 		expect(Routes).toBeDefined();
 		expect(typeof Routes).toBe('object');
 		expect(Routes.BASE).toBe('/');
@@ -162,7 +162,7 @@ describe('Routes', () => {
 });
 
 describe('toRoute', () => {
-	it('should create a url for specific options', () => {
+	it('creates a url for specific options', () => {
 		const id = 123;
 
 		const groupId = 456;
@@ -178,7 +178,7 @@ describe('toRoute', () => {
 });
 
 describe('buildRoutes', () => {
-	it('should return an object with keys that map to route strings', () => {
+	it('returns an object with keys that map to route strings', () => {
 		const routes = buildRoutes({
 			BAR: '/bar',
 			FOO: '/foo',
@@ -190,7 +190,7 @@ describe('buildRoutes', () => {
 		});
 	});
 
-	it('should allow for nesting of routes using route objects', () => {
+	it('allows for nesting of routes using route objects', () => {
 		const routes = buildRoutes({
 			BAR: {
 				path: '/bar',

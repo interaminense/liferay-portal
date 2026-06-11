@@ -3,7 +3,7 @@
 exports[`BarComparisonCell render 1`] = `
 <div>
   <div
-    class="table-responsive table-root bar-comparison-root"
+    class="bar-comparison-root table-responsive table-root"
   >
     <table
       class="table"
@@ -11,7 +11,7 @@ exports[`BarComparisonCell render 1`] = `
       <thead>
         <tr>
           <th
-            class="table-head-title table-column-event-name"
+            class="table-column-event-name table-head-title"
           >
             <span
               class="text-truncate"
@@ -50,7 +50,7 @@ exports[`BarComparisonCell render 1`] = `
                 style="width: 100%; background-color: rgb(24, 127, 255);"
               />
               <div
-                class="info-wrapper align-items-center d-flex justify-content-between"
+                class="align-items-center d-flex info-wrapper justify-content-between"
               >
                 <span>
                   3,367
@@ -68,7 +68,7 @@ exports[`BarComparisonCell render 1`] = `
 exports[`BarComparisonCell render two tables when comparing segment and event 1`] = `
 <div>
   <div
-    class="table-responsive table-root bar-comparison-root"
+    class="bar-comparison-root table-responsive table-root"
   >
     <table
       class="table"
@@ -76,7 +76,7 @@ exports[`BarComparisonCell render two tables when comparing segment and event 1`
       <thead>
         <tr>
           <th
-            class="table-head-title table-column-event-name"
+            class="table-column-event-name table-head-title"
           >
             <span
               class="text-truncate"
@@ -115,7 +115,7 @@ exports[`BarComparisonCell render two tables when comparing segment and event 1`
                 style="width: 100%; background-color: rgb(24, 127, 255);"
               />
               <div
-                class="info-wrapper align-items-center d-flex justify-content-between"
+                class="align-items-center d-flex info-wrapper justify-content-between"
               >
                 <span>
                   1,717
@@ -145,7 +145,7 @@ exports[`BarComparisonCell render two tables when comparing segment and event 1`
                 style="width: 96%; background-color: rgb(75, 155, 255);"
               />
               <div
-                class="info-wrapper align-items-center d-flex justify-content-between"
+                class="align-items-center d-flex info-wrapper justify-content-between"
               >
                 <span>
                   1,650
@@ -162,7 +162,7 @@ exports[`BarComparisonCell render two tables when comparing segment and event 1`
       <thead>
         <tr>
           <th
-            class="table-head-title table-column-event-name"
+            class="table-column-event-name table-head-title"
           >
             <span
               class="text-truncate"
@@ -201,7 +201,7 @@ exports[`BarComparisonCell render two tables when comparing segment and event 1`
                 style="width: 41%; background-color: rgb(49, 190, 136);"
               />
               <div
-                class="info-wrapper align-items-center d-flex justify-content-between"
+                class="align-items-center d-flex info-wrapper justify-content-between"
               >
                 <span>
                   700
@@ -231,7 +231,7 @@ exports[`BarComparisonCell render two tables when comparing segment and event 1`
                 style="width: 29%; background-color: rgb(60, 205, 149);"
               />
               <div
-                class="info-wrapper align-items-center d-flex justify-content-between"
+                class="align-items-center d-flex info-wrapper justify-content-between"
               >
                 <span>
                   500

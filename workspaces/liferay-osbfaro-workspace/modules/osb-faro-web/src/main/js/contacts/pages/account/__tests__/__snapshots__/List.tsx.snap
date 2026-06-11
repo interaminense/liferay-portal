@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`List rendering should match the snapshot 1`] = `
+exports[`List rendering matches the snapshot 1`] = `
 <div>
   <div
     class="index-root"
@@ -42,7 +42,7 @@ exports[`List rendering should match the snapshot 1`] = `
               class="align-items-center d-flex"
             >
               <h1
-                class="title text-truncate"
+                class="text-truncate title"
               >
                 <span
                   class="text-truncate"
@@ -90,7 +90,7 @@ exports[`List rendering should match the snapshot 1`] = `
                 </div>
               </div>
               <div
-                class="card-body justify-content-between d-flex no-padding"
+                class="card-body d-flex justify-content-between no-padding"
               >
                 <div
                   class="mt-2"
@@ -147,7 +147,7 @@ exports[`List rendering should match the snapshot 1`] = `
                 </div>
               </div>
               <div
-                class="card-body justify-content-between d-flex no-padding"
+                class="card-body d-flex justify-content-between no-padding"
               >
                 <div
                   class="mt-2"
@@ -204,7 +204,7 @@ exports[`List rendering should match the snapshot 1`] = `
                 </div>
               </div>
               <div
-                class="card-body justify-content-between d-flex no-padding"
+                class="card-body d-flex justify-content-between no-padding"
               >
                 <div
                   class="mt-2"

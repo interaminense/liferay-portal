@@ -9,7 +9,7 @@ exports[`FilterOptions should render 1`] = `
       class="options-header"
     >
       <button
-        class="button-root back-to-attributes-button btn btn-sm btn-unstyled"
+        class="back-to-attributes-button button-root btn btn-sm btn-unstyled"
         type="button"
       >
         <svg
@@ -26,7 +26,7 @@ exports[`FilterOptions should render 1`] = `
         class="filter-info-root"
       >
         <div
-          class="filter-name d-flex align-items-center justify-content-between"
+          class="align-items-center d-flex filter-name justify-content-between"
         >
           Filed Ticket
           <button

@@ -27,7 +27,7 @@ const mockBestVariant = {
 };
 
 describe('getStatusColor', () => {
-	it('should return display property based on status', () => {
+	it('returns display property based on status', () => {
 		expect(getStatusColor('COMPLETED')).toEqual('success');
 		expect(getStatusColor('DRAFT')).toEqual('secondary');
 		expect(getStatusColor('FINISHED_NO_WINNER')).toEqual('secondary');
@@ -39,7 +39,7 @@ describe('getStatusColor', () => {
 });
 
 describe('getMetricName', () => {
-	it('should return status name', () => {
+	it('returns status name', () => {
 		expect(getStatusName('COMPLETED')).toEqual('COMPLETE');
 		expect(getStatusName('DRAFT')).toEqual('DRAFT');
 		expect(getStatusName('FINISHED_NO_WINNER')).toEqual('NO WINNER');
@@ -51,7 +51,7 @@ describe('getMetricName', () => {
 });
 
 describe('getMetricName', () => {
-	it('should return metric name', () => {
+	it('returns metric name', () => {
 		expect(getMetricName('BOUNCE_RATE')).toEqual('Bounce Rate');
 		expect(getMetricName('CLICK_RATE')).toEqual('Click-Through Rate');
 		expect(getMetricName('MAX_SCROLL_DEPTH')).toEqual('Max Scroll Depth');
@@ -60,7 +60,7 @@ describe('getMetricName', () => {
 });
 
 describe('getMetricUnit', () => {
-	it('should return metric name', () => {
+	it('returns metric name', () => {
 		expect(getMetricUnit('BOUNCE_RATE')).toEqual('%');
 		expect(getMetricUnit('CLICK_RATE')).toEqual('%');
 		expect(getMetricUnit('MAX_SCROLL_DEPTH')).toEqual('%');
@@ -69,65 +69,65 @@ describe('getMetricUnit', () => {
 });
 
 describe('formatYAxis', () => {
-	it('should return formatted Y axis for BOUNCE_RATE metric', () => {
+	it('returns formatted Y axis for BOUNCE_RATE metric', () => {
 		expect(formatYAxis(getMetricUnit('BOUNCE_RATE'))(100)).toEqual('100%');
 	});
 
-	it('should return formatted Y axis for CLICK_RATE metric', () => {
+	it('returns formatted Y axis for CLICK_RATE metric', () => {
 		expect(formatYAxis(getMetricUnit('CLICK_RATE'))(100)).toEqual('100%');
 	});
 
-	it('should return formatted Y axis for MAX_SCROLL_DEPTH metric', () => {
+	it('returns formatted Y axis for MAX_SCROLL_DEPTH metric', () => {
 		expect(formatYAxis(getMetricUnit('MAX_SCROLL_DEPTH'))(100)).toEqual(
 			'100%'
 		);
 	});
 
-	it('should return formatted Y axis for TIME_ON_PAGE metric', () => {
+	it('returns formatted Y axis for TIME_ON_PAGE metric', () => {
 		expect(formatYAxis(getMetricUnit('TIME_ON_PAGE'))(100)).toEqual('100s');
 	});
 });
 
 describe('getFormattedMedian', () => {
-	it('should return formatted median using BOUNCE_RATE metric', () => {
+	it('returns formatted median using BOUNCE_RATE metric', () => {
 		expect(getFormattedMedian(50.4321, 'BOUNCE_RATE')).toEqual('50.43');
 	});
 
-	it('should return formatted median using CLICK_RATE metric', () => {
+	it('returns formatted median using CLICK_RATE metric', () => {
 		expect(getFormattedMedian(50.4321, 'CLICK_RATE')).toEqual('50.432');
 	});
 
-	it('should return formatted median using MAX_SCROLL_DEPTH metric', () => {
+	it('returns formatted median using MAX_SCROLL_DEPTH metric', () => {
 		expect(getFormattedMedian(50.4321, 'MAX_SCROLL_DEPTH')).toEqual(
 			'50.43'
 		);
 	});
 
-	it('should return formatted median using TIME_ON_PAGE metric', () => {
+	it('returns formatted median using TIME_ON_PAGE metric', () => {
 		expect(getFormattedMedian(50.4321, 'TIME_ON_PAGE')).toEqual('50.43');
 	});
 });
 
 describe('getFormattedMedianLabel', () => {
-	it('should return formatted median using BOUNCE_RATE metric', () => {
+	it('returns formatted median using BOUNCE_RATE metric', () => {
 		expect(getFormattedMedianLabel('BOUNCE_RATE')).toEqual(
 			'Bounce Rate Median'
 		);
 	});
 
-	it('should return formatted median using CLICK_RATE metric', () => {
+	it('returns formatted median using CLICK_RATE metric', () => {
 		expect(getFormattedMedianLabel('CLICK_RATE')).toEqual(
 			'Median Click-Through Rate'
 		);
 	});
 
-	it('should return formatted median using MAX_SCROLL_DEPTH metric', () => {
+	it('returns formatted median using MAX_SCROLL_DEPTH metric', () => {
 		expect(getFormattedMedianLabel('MAX_SCROLL_DEPTH')).toEqual(
 			'Max Scroll Depth Median'
 		);
 	});
 
-	it('should return formatted median using TIME_ON_PAGE metric', () => {
+	it('returns formatted median using TIME_ON_PAGE metric', () => {
 		expect(getFormattedMedianLabel('TIME_ON_PAGE')).toEqual(
 			'View Duration Median'
 		);
@@ -135,21 +135,21 @@ describe('getFormattedMedianLabel', () => {
 });
 
 describe('getFormattedProbabilityToWin', () => {
-	it('should return formatted probability to win', () => {
+	it('returns formatted probability to win', () => {
 		expect(getFormattedProbabilityToWin(50.4321)).toEqual('50.4');
 	});
 
-	it('should return formatted probability to win when value is less than 0.1', () => {
+	it('returns formatted probability to win when value is less than 0.1', () => {
 		expect(getFormattedProbabilityToWin(0.05)).toEqual('< 0.1');
 	});
 
-	it('should return formatted probability to win when value is greater than 99.9', () => {
+	it('returns formatted probability to win when value is greater than 99.9', () => {
 		expect(getFormattedProbabilityToWin(100)).toEqual('> 99.9');
 	});
 });
 
 describe('getVariantLabels', () => {
-	it('should return a label in especific cases', () => {
+	it('returns a label in especific cases', () => {
 		expect(
 			getVariantLabels({
 				bestVariant: mockBestVariant,
@@ -190,7 +190,7 @@ describe('getVariantLabels', () => {
 		]);
 	});
 
-	it('should return an empty array', () => {
+	it('returns an empty array', () => {
 		expect(
 			getVariantLabels({
 				dxpVariantId: 'DEFAULT',
@@ -221,45 +221,45 @@ describe('getVariantLabels', () => {
 });
 
 describe('getTicks', () => {
-	it('should not return intervals with max value 40', () => {
+	it('does not return intervals with max value 40', () => {
 		expect(getTicks(40)).toStrictEqual([1, 6, 11, 16, 21, 26, 31, 36]);
 	});
 
-	it('should not return intervals with max value 20', () => {
+	it('does not return intervals with max value 20', () => {
 		expect(getTicks(20)).toStrictEqual([1, 4, 7, 10, 13, 16, 19]);
 	});
 
-	it('should not return intervals with max value 21', () => {
+	it('does not return intervals with max value 21', () => {
 		expect(getTicks(21)).toStrictEqual([1, 4, 7, 10, 13, 16, 19]);
 	});
 
-	it('should not return intervals with max value 30', () => {
+	it('does not return intervals with max value 30', () => {
 		expect(getTicks(30)).toStrictEqual([1, 5, 9, 13, 17, 21, 25, 29]);
 	});
 
-	it('should not return intervals with max value 34', () => {
+	it('does not return intervals with max value 34', () => {
 		expect(getTicks(34)).toStrictEqual([1, 5, 9, 13, 17, 21, 25, 29, 33]);
 	});
 
-	it('should not return intervals with max value 12', () => {
+	it('does not return intervals with max value 12', () => {
 		expect(getTicks(12)).toStrictEqual([1, 3, 5, 7, 9, 11]);
 	});
 
-	it('should not return intervals with max value 16', () => {
+	it('does not return intervals with max value 16', () => {
 		expect(getTicks(16)).toStrictEqual([1, 3, 5, 7, 9, 11, 13, 15]);
 	});
 
-	it('should return intervals with max value 15', () => {
+	it('returns intervals with max value 15', () => {
 		expect(getTicks(15)).toStrictEqual([1, 3, 5, 7, 9, 11, 13, 15]);
 	});
 
-	it('should not return intervals with max value 12', () => {
+	it('does not return intervals with max value 12', () => {
 		expect(getTicks(12)).toStrictEqual([1, 3, 5, 7, 9, 11]);
 	});
 });
 
 describe('toThousandsABTesting', () => {
-	it('should return the number truncate', () => {
+	it('returns the number truncate', () => {
 		expect(toThousandsABTesting(0.1)).toEqual('0.1');
 		expect(toThousandsABTesting(1.4)).toEqual('1.4');
 		expect(toThousandsABTesting(1.5)).toEqual('1.5');

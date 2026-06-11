@@ -6,7 +6,7 @@
 import {getDevicesMapper} from '../devices';
 
 describe('Shared HOCs Mappers - Devices', () => {
-	it('should map devices information', () => {
+	it('maps devices information', () => {
 		const mapper = getDevicesMapper(
 			(result) => result.form.submissionsMetric
 		);
@@ -264,7 +264,7 @@ describe('Shared HOCs Mappers - Devices', () => {
 		});
 	});
 
-	it('should map devices information in correct order', () => {
+	it('maps devices information in correct order', () => {
 		const mapper = getDevicesMapper(
 			(result) => result.form.submissionsMetric
 		);

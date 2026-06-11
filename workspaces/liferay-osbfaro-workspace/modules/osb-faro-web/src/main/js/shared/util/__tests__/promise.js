@@ -6,7 +6,7 @@
 import {sequence} from '../promise';
 
 describe('sequence', () => {
-	it('should resolve with the first truthy error and skip remaining validators', () => {
+	it('resolves with the first truthy error and skip remaining validators', () => {
 		expect.assertions(1);
 
 		const errorVal = 'error';
@@ -23,7 +23,7 @@ describe('sequence', () => {
 		});
 	});
 
-	it('should resolve with a falsy value when all validators pass', () => {
+	it('resolves with a falsy value when all validators pass', () => {
 		expect.assertions(1);
 
 		const response = sequence([

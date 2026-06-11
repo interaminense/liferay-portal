@@ -10,7 +10,7 @@ import {actionTypes} from '../../actions/maintenance-seen';
 import reducer from '../maintenance-seen';
 
 describe('Maintenance Seen Reducer', () => {
-	it('should be a function', () => {
+	it('is a function', () => {
 		expect(reducer).toBeInstanceOf(Function);
 	});
 

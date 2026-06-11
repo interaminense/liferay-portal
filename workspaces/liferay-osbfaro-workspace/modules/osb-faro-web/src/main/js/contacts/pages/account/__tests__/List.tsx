@@ -128,37 +128,37 @@ describe('List', () => {
 	afterEach(cleanup);
 
 	describe('rendering', () => {
-		it('should render without crashing', () => {
+		it('renders without crashing', () => {
 			const {container} = renderList();
 
 			expect(container).toBeInTheDocument();
 		});
 
-		it('should render the page title "Accounts"', () => {
+		it('renders the page title "Accounts"', () => {
 			renderList();
 
 			expect(screen.getByText('Accounts')).toBeInTheDocument();
 		});
 
-		it('should render the empty state when there are no data sources connected', () => {
+		it('renders the empty state when there are no data sources connected', () => {
 			mockedUseRequest.mockImplementation(useRequestImpl({total: 0}));
 
 			renderList();
 		});
 
-		it('should render the FrontendDataSet component', () => {
+		it('renders the FrontendDataSet component', () => {
 			renderList();
 
 			expect(screen.getByTestId('fds-component')).toBeInTheDocument();
 		});
 
-		it('should render the FrontendDataSet with id "accounts-list-dataset"', () => {
+		it('renders the FrontendDataSet with id "accounts-list-dataset"', () => {
 			renderList();
 
 			expect(screen.getByTestId('fds-component')).toHaveAttribute('id');
 		});
 
-		it('should preload the rangeKey filter with Last 30 Days by default', () => {
+		it('preloads the rangeKey filter with Last 30 Days by default', () => {
 			renderList();
 
 			const rangeKeyFilter = lastFilters?.find(
@@ -171,7 +171,7 @@ describe('List', () => {
 			});
 		});
 
-		it('should match the snapshot', async () => {
+		it('matches the snapshot', async () => {
 			const {container} = renderList();
 
 			await waitForLoadingToBeRemoved();

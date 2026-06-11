@@ -25,7 +25,7 @@ exports[`AttributeBreakdownChip render 1`] = `
           </svg>
         </div>
         <button
-          class="button-root edit-attribute-button d-flex btn btn-unstyled"
+          class="button-root d-flex edit-attribute-button btn btn-unstyled"
           type="button"
         >
           <div

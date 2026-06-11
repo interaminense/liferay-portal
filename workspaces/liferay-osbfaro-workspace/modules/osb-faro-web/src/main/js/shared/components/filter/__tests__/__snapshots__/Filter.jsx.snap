@@ -6,11 +6,11 @@ exports[`Filter should render 1`] = `
     class="analytics-filter"
   >
     <div
-      class="analytics-dropdown dropdown btn-group border-0"
+      class="analytics-dropdown border-0 btn-group dropdown"
     >
       <button
         aria-label="Dropdown Filter"
-        class="dropdown-toggle btn-outline-borderless btn btn-sm btn-secondary"
+        class="btn-outline-borderless dropdown-toggle btn btn-sm btn-secondary"
         type="button"
       >
         Filter

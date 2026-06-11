@@ -15,14 +15,14 @@ import {
 
 describe('Filter Utils', () => {
 	describe('getFilters', () => {
-		it('should return all filters with default value of "Any" as a fallback when filters is empty', () => {
+		it('returns all filters with default value of "Any" as a fallback when filters is empty', () => {
 			expect(getFilters()).toEqual({
 				devices: 'Any',
 				location: 'Any',
 			});
 		});
 
-		it('should map filters from key:array to key:string', () => {
+		it('maps filters from key:array to key:string', () => {
 			const filters = {
 				devices: ['Desktop'],
 				location: ['Brazil'],
@@ -34,7 +34,7 @@ describe('Filter Utils', () => {
 			});
 		});
 
-		it('should set a default value of "Any" for the location filter if no value was given', () => {
+		it('sets a default value of "Any" for the location filter if no value was given', () => {
 			const filters = {
 				devices: ['Desktop'],
 			};
@@ -45,7 +45,7 @@ describe('Filter Utils', () => {
 			});
 		});
 
-		it('should set a default value of "Any" for the devices filter if no value was given', () => {
+		it('sets a default value of "Any" for the devices filter if no value was given', () => {
 			const filters = {
 				location: ['Brazil'],
 			};
@@ -56,7 +56,7 @@ describe('Filter Utils', () => {
 			});
 		});
 
-		it('should return all filters with default value of "Any" as a fallback when filter keys are empty', () => {
+		it('returns all filters with default value of "Any" as a fallback when filter keys are empty', () => {
 			const filters = {
 				devices: [],
 				location: [],
@@ -68,7 +68,7 @@ describe('Filter Utils', () => {
 			});
 		});
 
-		it('should set default value of "Any" for all filters if the filter object passed contains no matching keys', () => {
+		it('sets default value of "Any" for all filters if the filter object passed contains no matching keys', () => {
 			const filters = {
 				others: [],
 			};
@@ -81,7 +81,7 @@ describe('Filter Utils', () => {
 	});
 
 	describe('getFilterItem', () => {
-		it('should return a filter item from a list of filter values', () => {
+		it('returns a filter item from a list of filter values', () => {
 			expect(
 				getFilterItem(
 					[
@@ -116,7 +116,7 @@ describe('Filter Utils', () => {
 	});
 
 	describe('hasCategoryFilters', () => {
-		it('should return false if there is no category in a filter', () => {
+		it('returns false if there is no category in a filter', () => {
 			expect(
 				hasCategoryFilters(
 					{
@@ -128,7 +128,7 @@ describe('Filter Utils', () => {
 			).toBeFalsy();
 		});
 
-		it('should return true if it contains category in a filter', () => {
+		it('returns true if it contains category in a filter', () => {
 			expect(
 				hasCategoryFilters(
 					{
@@ -143,18 +143,18 @@ describe('Filter Utils', () => {
 	});
 
 	describe('hasSearch', () => {
-		it('should return false when there are less than or equal to 15 filter items', () => {
+		it('returns false when there are less than or equal to 15 filter items', () => {
 			expect(hasSearch(range(15))).toBeFalse();
 			expect(hasSearch(range(10))).toBeFalse();
 		});
 
-		it('should return true when there are more than 15 filter items', () => {
+		it('returns true when there are more than 15 filter items', () => {
 			expect(hasSearch(range(16))).toBeTrue();
 		});
 	});
 
 	describe('isClearFilterVisible', () => {
-		it('should return false if there is no filter', () => {
+		it('returns false if there is no filter', () => {
 			expect(isClearFilterVisible()).toBeFalsy();
 			expect(isClearFilterVisible([])).toBeFalsy();
 			expect(isClearFilterVisible({})).toBeFalsy();
@@ -166,7 +166,7 @@ describe('Filter Utils', () => {
 			).toBeFalsy();
 		});
 
-		it('should return false if it contains only one filter', () => {
+		it('returns false if it contains only one filter', () => {
 			expect(
 				isClearFilterVisible({
 					Devices: ['Desktop'],
@@ -174,7 +174,7 @@ describe('Filter Utils', () => {
 			).toBeFalsy();
 		});
 
-		it('should return false if it contains only one valid filter', () => {
+		it('returns false if it contains only one valid filter', () => {
 			expect(
 				isClearFilterVisible({
 					Devices: ['Desktop'],
@@ -183,7 +183,7 @@ describe('Filter Utils', () => {
 			).toBeFalsy();
 		});
 
-		it('should return true if it contains more than one filter', () => {
+		it('returns true if it contains more than one filter', () => {
 			expect(
 				isClearFilterVisible({
 					Devices: ['Desktop'],

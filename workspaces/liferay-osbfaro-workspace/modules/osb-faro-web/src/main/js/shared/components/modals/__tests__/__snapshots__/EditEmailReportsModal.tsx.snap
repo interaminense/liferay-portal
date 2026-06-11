@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditEmailReportsModal should render 1`] = `
+exports[`EditEmailReportsModal renders 1`] = `
 <div>
   <div
     aria-modal="true"

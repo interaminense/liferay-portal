@@ -30,7 +30,7 @@ const WrapperComponent: React.FC<{children: React.ReactNode}> = ({
 jest.mock(
 	'shared/components/DateRangeInput',
 	() =>
-		function MockDateInput({value}: {value: {start: string; end: string}}) {
+		function MockDateInput({value}: {value: {end: string; start: string}}) {
 			return (
 				<div data-testid="mock-date-input">
 					{value.start} - {value.end}
@@ -40,7 +40,7 @@ jest.mock(
 );
 
 describe('SegmentActivationCard', () => {
-	it('should render when frequency type is batch', () => {
+	it('renders when frequency type is batch', () => {
 		const {container} = render(
 			<WrapperComponent>
 				<SegmentActivationCard
@@ -56,7 +56,7 @@ describe('SegmentActivationCard', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render when frequency type is real time', () => {
+	it('renders when frequency type is real time', () => {
 		const {container} = render(
 			<WrapperComponent>
 				<SegmentActivationCard
@@ -72,7 +72,7 @@ describe('SegmentActivationCard', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render with dates when frequency type is between', () => {
+	it('renders with dates when frequency type is between', () => {
 		const {container} = render(
 			<WrapperComponent>
 				<SegmentActivationCard
@@ -89,7 +89,7 @@ describe('SegmentActivationCard', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render the modal if the edit button is clicked', async () => {
+	it('renders the modal if the edit button is clicked', async () => {
 		const {findByTestId, findByText, getByTestId} = render(
 			<WrapperComponent>
 				<SegmentActivationCard
@@ -113,7 +113,7 @@ describe('SegmentActivationCard', () => {
 		expect(modalHeader).toBeInTheDocument();
 	});
 
-	it('should render the modal with the expected configurations - indefinitely', async () => {
+	it('renders the modal with the expected configurations - indefinitely', async () => {
 		const {findByTestId, findByText, getByTestId} = render(
 			<WrapperComponent>
 				<SegmentActivationCard
@@ -140,7 +140,7 @@ describe('SegmentActivationCard', () => {
 		expect(await findByText('Real-Time')).toBeInTheDocument();
 	});
 
-	it('should render the modal with the expected configurations - between', async () => {
+	it('renders the modal with the expected configurations - between', async () => {
 		const {findByTestId, findByText, getByTestId} = render(
 			<WrapperComponent>
 				<SegmentActivationCard

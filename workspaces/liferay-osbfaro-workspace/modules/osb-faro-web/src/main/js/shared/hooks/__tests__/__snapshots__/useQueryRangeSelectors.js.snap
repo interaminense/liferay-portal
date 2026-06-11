@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`useQueryRangeSelectors should return RangeSelectors params from query params values 1`] = `
+exports[`useQueryRangeSelectors returns RangeSelectors params from query params values 1`] = `
 <div>
   rangeEnd 9087
   rangeKey: 90
@@ -8,7 +8,7 @@ exports[`useQueryRangeSelectors should return RangeSelectors params from query p
 </div>
 `;
 
-exports[`useQueryRangeSelectors should return initial values 1`] = `
+exports[`useQueryRangeSelectors returns initial values 1`] = `
 <div>
   rangeEnd null
   rangeKey: 30

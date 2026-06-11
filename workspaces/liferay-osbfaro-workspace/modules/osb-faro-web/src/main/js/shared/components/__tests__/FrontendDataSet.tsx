@@ -26,7 +26,7 @@ let lastProps: {[key: string]: unknown} | undefined;
 
 jest.mock('@liferay/frontend-data-set-web', () => ({
 	...jest.requireActual('@liferay/frontend-data-set-web'),
-	FrontendDataSet: (props: {[key: string]: unknown; id: string}) => {
+	FrontendDataSet: (props: {id: string; [key: string]: unknown}) => {
 		lastProps = props;
 
 		return <div data-testid="base-fds" id={props.id} />;
@@ -58,7 +58,7 @@ afterEach(() => {
 });
 
 describe('columns.nameAndLinkRenderer', () => {
-	it('should generate an href that includes the channelId path segment', () => {
+	it('generates an href that includes the channelId path segment', () => {
 		render(
 			columns.nameAndLinkRenderer({
 				channelId: '123',
@@ -75,7 +75,7 @@ describe('columns.nameAndLinkRenderer', () => {
 		);
 	});
 
-	it('should use value as the link text when provided', () => {
+	it('uses value as the link text when provided', () => {
 		render(
 			columns.nameAndLinkRenderer({
 				channelId: '123',
@@ -89,7 +89,7 @@ describe('columns.nameAndLinkRenderer', () => {
 		expect(screen.getByRole('link')).toHaveTextContent('Acme Corp');
 	});
 
-	it('should fall back to itemData.id as the link text when value is empty', () => {
+	it('falls back to itemData.id as the link text when value is empty', () => {
 		render(
 			columns.nameAndLinkRenderer({
 				channelId: '123',
@@ -107,7 +107,7 @@ describe('columns.nameAndLinkRenderer', () => {
 describe('useSnapshots', () => {
 	beforeEach(enableSnapshotsFeatureFlags);
 
-	it('should return null while the snapshots are still loading', () => {
+	it('returns null while the snapshots are still loading', () => {
 		mockFetch([]);
 
 		const {result} = renderHook(() =>
@@ -117,7 +117,7 @@ describe('useSnapshots', () => {
 		expect(result.current).toBeNull();
 	});
 
-	it('should wrap saved views in a single headerless group', async () => {
+	it('wraps saved views in a single headerless group', async () => {
 		mockFetch([
 			{
 				externalReferenceCode: 'erc-1',
@@ -146,7 +146,7 @@ describe('useSnapshots', () => {
 		);
 	});
 
-	it('should return an empty array when there are no saved views', async () => {
+	it('returns an empty array when there are no saved views', async () => {
 		mockFetch([]);
 
 		const {result} = renderHook(() =>
@@ -156,7 +156,7 @@ describe('useSnapshots', () => {
 		await waitFor(() => expect(result.current).toEqual([]));
 	});
 
-	it('should not fetch when the feature flags are disabled', () => {
+	it('does not fetch when the feature flags are disabled', () => {
 		Liferay.FeatureFlags['LPD-34594'] = false;
 
 		const fetch = mockFetch([]);
@@ -169,7 +169,7 @@ describe('useSnapshots', () => {
 		expect(result.current).toEqual([]);
 	});
 
-	it('should return an empty array and not fetch when disabled through the second argument', () => {
+	it('returns an empty array and not fetch when disabled through the second argument', () => {
 		const fetch = mockFetch([]);
 
 		const {result} = renderHook(() =>
@@ -183,7 +183,7 @@ describe('useSnapshots', () => {
 
 describe('FrontendDataSet (snapshots wrapper)', () => {
 	describe('when snapshotsEnabled is not set', () => {
-		it('should render the base FrontendDataSet directly with the given props', () => {
+		it('renders the base FrontendDataSet directly with the given props', () => {
 			render(<FrontendDataSet id="assetTable" views={[]} />);
 
 			expect(screen.getByTestId('base-fds')).toHaveAttribute(
@@ -192,7 +192,7 @@ describe('FrontendDataSet (snapshots wrapper)', () => {
 			);
 		});
 
-		it('should not fetch snapshots and disable them on the base FrontendDataSet', () => {
+		it('does not fetch snapshots and disable them on the base FrontendDataSet', () => {
 			enableSnapshotsFeatureFlags();
 
 			const fetch = mockFetch([]);
@@ -207,7 +207,7 @@ describe('FrontendDataSet (snapshots wrapper)', () => {
 	describe('when snapshotsEnabled is true', () => {
 		beforeEach(enableSnapshotsFeatureFlags);
 
-		it('should render the loading indicator while the snapshots are still loading', () => {
+		it('renders the loading indicator while the snapshots are still loading', () => {
 			Liferay.Util = {
 				fetch: jest.fn(() => new Promise(() => {})),
 			} as unknown as typeof Liferay.Util;
@@ -222,7 +222,7 @@ describe('FrontendDataSet (snapshots wrapper)', () => {
 			expect(screen.queryByTestId('base-fds')).not.toBeInTheDocument();
 		});
 
-		it('should render the base FrontendDataSet with snapshots enabled once they are ready', async () => {
+		it('renders the base FrontendDataSet with snapshots enabled once they are ready', async () => {
 			mockFetch([]);
 
 			render(
@@ -238,7 +238,7 @@ describe('FrontendDataSet (snapshots wrapper)', () => {
 	});
 
 	describe('configInURLBehavior', () => {
-		it('should default configInURLBehavior to OFF when it is not provided', () => {
+		it('defaults configInURLBehavior to OFF when it is not provided', () => {
 			render(<FrontendDataSet id="assetTable" views={[]} />);
 
 			expect(lastProps?.configInURLBehavior).toBe(
@@ -246,7 +246,7 @@ describe('FrontendDataSet (snapshots wrapper)', () => {
 			);
 		});
 
-		it('should let configInURLBehavior be overridden through props', () => {
+		it('lets configInURLBehavior be overridden through props', () => {
 			render(
 				<FrontendDataSet
 					configInURLBehavior={EConfigInURLBehavior.PUSH}

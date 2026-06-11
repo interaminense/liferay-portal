@@ -12,7 +12,7 @@ import {EntityTypes} from 'shared/util/constants';
 import reducer from '../cards';
 
 describe('Card Reducer', () => {
-	it('should add card on fetch card success', () => {
+	it('adds card on fetch card success', () => {
 		const cardId = 'cardId';
 		const foo = 'foo';
 		const id = 'testId';
@@ -36,7 +36,7 @@ describe('Card Reducer', () => {
 		expect(state.getIn([id, cardId, foo])).toBe(foo);
 	});
 
-	it('should add cards on fetch layouts success', () => {
+	it('adds cards on fetch layouts success', () => {
 		const cardId = 'cardId';
 		const cardId1 = 'cardId1';
 		const foo = 'foo';

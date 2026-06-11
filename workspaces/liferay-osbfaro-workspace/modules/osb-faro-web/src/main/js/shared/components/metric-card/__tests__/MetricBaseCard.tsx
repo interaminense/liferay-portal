@@ -84,8 +84,8 @@ describe('MetricBaseCard', () => {
 					metrics={metrics}
 					queries={{
 						MetricQuery: SitesMetricQuery,
-						name: 'site',
 						TabsQuery: SitesTabsQuery,
+						name: 'site',
 					}}
 					variables={() => ({
 						channelId: '456',
@@ -123,8 +123,8 @@ describe('MetricBaseCard', () => {
 					metrics={metrics}
 					queries={{
 						MetricQuery: SitesMetricQuery,
-						name: 'site',
 						TabsQuery: SitesTabsQuery,
+						name: 'site',
 					}}
 					variables={() => ({
 						channelId: '456',

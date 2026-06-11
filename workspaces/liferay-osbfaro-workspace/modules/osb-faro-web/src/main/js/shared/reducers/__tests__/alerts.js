@@ -11,11 +11,11 @@ import reducer from '../alerts';
 describe('Alerts Reducer', () => {
 	const message = 'Hello World!';
 
-	it('should be a function', () => {
+	it('is a function', () => {
 		expect(typeof reducer).toBe('function');
 	});
 
-	it('should add an alert to the alerts state', () => {
+	it('adds an alert to the alerts state', () => {
 		const id = '1';
 
 		const action = {
@@ -36,7 +36,7 @@ describe('Alerts Reducer', () => {
 		expect(state.has(id)).toBe(true);
 	});
 
-	it('should change an alert in the alerts state', () => {
+	it('changes an alert in the alerts state', () => {
 		const id = '2';
 
 		const action = {
@@ -61,7 +61,7 @@ describe('Alerts Reducer', () => {
 		expect(prevState.getIn([id, 'alertType'])).toBe('pending');
 	});
 
-	it('should remove an alert from the alerts state', () => {
+	it('removes an alert from the alerts state', () => {
 		const id = '2';
 
 		const action = {

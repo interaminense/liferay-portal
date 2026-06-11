@@ -194,14 +194,14 @@ const data = {
 };
 
 describe('FormAbandonmentQuery mapper', () => {
-	it('should extract items from result', () => {
+	it('extracts items from result', () => {
 		const props = mapResultToProps({data});
 
 		expect(props).toHaveProperty('header');
 		expect(props).toHaveProperty('items');
 	});
 
-	it('should return a object with empty true when formPageMetrics is not present in parameters', () => {
+	it('returns a object with empty true when formPageMetrics is not present in parameters', () => {
 		const props = mapResultToProps({
 			data: {
 				form: {
@@ -227,7 +227,7 @@ describe('FormAbandonmentQuery mapper', () => {
 		});
 	});
 
-	it('should include options', () => {
+	it('includes options', () => {
 		const options = mapPropsToOptions({
 			filters: {},
 			rangeSelectors: {rangeKey: '7'},

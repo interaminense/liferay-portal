@@ -9,7 +9,7 @@ import {fetchLayout} from '../layouts';
 
 describe('Layout Actions', () => {
 	describe('fetchLayout', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchLayout({contactsEntityId: '123', type: 1});
 
 			expect(isFSA(action)).toBe(true);

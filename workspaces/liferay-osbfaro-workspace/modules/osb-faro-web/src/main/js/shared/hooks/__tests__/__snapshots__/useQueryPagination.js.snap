@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`useQueryPagination should return initial values 1`] = `
+exports[`useQueryPagination returns initial values 1`] = `
 <div>
   delta: 6
   field: initial orderIOMap
@@ -10,7 +10,7 @@ exports[`useQueryPagination should return initial values 1`] = `
 </div>
 `;
 
-exports[`useQueryPagination should return pagination params from query params values 1`] = `
+exports[`useQueryPagination returns pagination params from query params values 1`] = `
 <div>
   delta: 5
   field: name

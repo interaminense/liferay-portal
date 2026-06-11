@@ -73,8 +73,8 @@ const WrappedComponent = ({data}: {data?: any; defaultLanguageId?: string}) => (
 						mockTimeRangeReq(),
 						mockPreferenceReq(),
 						mockCommerceTotalOrderValueReq({
-							data,
 							Query: CommerceTotalOrderValueQuery,
+							data,
 							variables,
 						}),
 					]}
@@ -95,7 +95,7 @@ const WrappedComponent = ({data}: {data?: any; defaultLanguageId?: string}) => (
 describe('CommerceMetricCard', () => {
 	afterEach(cleanup);
 
-	it('should render', async () => {
+	it('renders', async () => {
 		const {getByText} = render(<WrappedComponent data={getData({})} />);
 
 		await waitForLoadingToBeRemoved(document.body);
@@ -109,7 +109,7 @@ describe('CommerceMetricCard', () => {
 		expect(getByText(`${COMMERCE_TREND_PERCENTAGE}%`)).toBeInTheDocument();
 	});
 
-	it('should render with empty state message', async () => {
+	it('renders with empty state message', async () => {
 		const {container, getByText} = render(<WrappedComponent data={[]} />);
 
 		await waitForLoadingToBeRemoved(container);
@@ -128,7 +128,7 @@ describe('CommerceMetricCard', () => {
 describe('CommerceMetricCard Classifications', () => {
 	afterEach(cleanup);
 
-	it('should render with POSITIVE classification', async () => {
+	it('renders with POSITIVE classification', async () => {
 		const {container} = render(
 			<WrappedComponent data={getData({classification: 'POSITIVE'})} />
 		);
@@ -144,7 +144,7 @@ describe('CommerceMetricCard Classifications', () => {
 		).toBeInTheDocument();
 	});
 
-	it('should render with NEGATIVE classification', async () => {
+	it('renders with NEGATIVE classification', async () => {
 		const {container} = render(
 			<WrappedComponent data={getData({classification: 'NEGATIVE'})} />
 		);
@@ -160,7 +160,7 @@ describe('CommerceMetricCard Classifications', () => {
 		).toBeInTheDocument();
 	});
 
-	it('should render with NEUTRAL classification', async () => {
+	it('renders with NEUTRAL classification', async () => {
 		const {container} = render(
 			<WrappedComponent data={getData({classification: 'NEUTRAL'})} />
 		);
@@ -180,7 +180,7 @@ describe('CommerceMetricCard Classifications', () => {
 describe('CommerceMetricCard Trend', () => {
 	afterEach(cleanup);
 
-	it('should render with POSITIVE trend', async () => {
+	it('renders with POSITIVE trend', async () => {
 		const {container} = render(
 			<WrappedComponent
 				data={getData({classification: 'POSITIVE', percentage: 50})}
@@ -195,7 +195,7 @@ describe('CommerceMetricCard Trend', () => {
 		).toBeInTheDocument();
 	});
 
-	it('should render with NEGATIVE trend', async () => {
+	it('renders with NEGATIVE trend', async () => {
 		const {container} = render(
 			<WrappedComponent
 				data={getData({classification: 'NEGATIVE', percentage: -50})}
@@ -210,7 +210,7 @@ describe('CommerceMetricCard Trend', () => {
 		).toBeInTheDocument();
 	});
 
-	it('should render with NEUTRAL trend', async () => {
+	it('renders with NEUTRAL trend', async () => {
 		const {container} = render(
 			<WrappedComponent
 				data={getData({classification: 'NEUTRAL', percentage: 0})}
@@ -232,7 +232,7 @@ describe('CommerceMetricCard Trend', () => {
 describe('CommerceMetricCard Format Currency', () => {
 	afterEach(cleanup);
 
-	it('should format currency and display it in BRL', async () => {
+	it('formats currency and display it in BRL', async () => {
 		const {container} = render(
 			<WrappedComponent
 				data={getData({currencyCode: 'BRL'})}
@@ -249,7 +249,7 @@ describe('CommerceMetricCard Format Currency', () => {
 		expect(currencyValue.textContent!.includes('R$')).toBeTruthy();
 	});
 
-	it('should format currency and display it in USD', async () => {
+	it('formats currency and display it in USD', async () => {
 		const {container} = render(
 			<WrappedComponent
 				data={getData({currencyCode: 'USD'})}
@@ -266,7 +266,7 @@ describe('CommerceMetricCard Format Currency', () => {
 		expect(currencyValue.textContent!.includes('$')).toBeTruthy();
 	});
 
-	it('should format currency and display it in EUR', async () => {
+	it('formats currency and display it in EUR', async () => {
 		const {container} = render(
 			<WrappedComponent
 				data={getData({currencyCode: 'EUR'})}

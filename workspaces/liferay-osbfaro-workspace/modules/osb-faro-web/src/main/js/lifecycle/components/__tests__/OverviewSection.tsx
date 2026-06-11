@@ -27,7 +27,7 @@ const buildMetric = (
 describe('OverviewSection', () => {
 	afterEach(cleanup);
 
-	it('should render the overview header and all three card titles', () => {
+	it('renders the overview header and all three card titles', () => {
 		const {getByText} = render(<OverviewSection />);
 
 		expect(getByText('OVERVIEW')).toBeInTheDocument();
@@ -36,13 +36,13 @@ describe('OverviewSection', () => {
 		expect(getByText('At Risk Accounts')).toBeInTheDocument();
 	});
 
-	it('should fall back to 0 for each card when no metrics are provided', () => {
+	it('falls back to 0 for each card when no metrics are provided', () => {
 		const {getAllByText} = render(<OverviewSection />);
 
 		expect(getAllByText('0')).toHaveLength(3);
 	});
 
-	it('should map each metric to its card by metricType', () => {
+	it('maps each metric to its card by metricType', () => {
 		const metrics = [
 			buildMetric(OverviewMetricType.NewPipeline, 11),
 			buildMetric(OverviewMetricType.Stalled, 22),
@@ -60,7 +60,7 @@ describe('OverviewSection', () => {
 		expect(cardOf('At Risk Accounts').textContent).toContain('33');
 	});
 
-	it('should fall back to 0 for a card without a matching metric', () => {
+	it('falls back to 0 for a card without a matching metric', () => {
 		const metrics = [buildMetric(OverviewMetricType.NewPipeline, 11)];
 
 		const {getAllByText, getByText} = render(
@@ -71,14 +71,14 @@ describe('OverviewSection', () => {
 		expect(getAllByText('0')).toHaveLength(2);
 	});
 
-	it('should render the trend label comparing against the last 90 days', () => {
+	it('renders the trend label comparing against the last 90 days', () => {
 		const {container} = render(<OverviewSection />);
 
 		expect(container.textContent).toContain('vs. Last 90 Days');
 		expect(container.textContent).not.toContain('Months');
 	});
 
-	it('should render a loading spinner in each card when loading is true', () => {
+	it('renders a loading spinner in each card when loading is true', () => {
 		const {container, queryByText} = render(<OverviewSection loading />);
 
 		expect(container.querySelectorAll('.loading-root')).toHaveLength(3);

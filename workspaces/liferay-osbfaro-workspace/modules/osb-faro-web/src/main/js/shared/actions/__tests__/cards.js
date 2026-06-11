@@ -9,7 +9,7 @@ import {fetchCard} from '../cards';
 
 describe('Card Actions', () => {
 	describe('fetchCard', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchCard({
 				contactsCardTemplateId: 'test',
 				contactsEntityId: '123',

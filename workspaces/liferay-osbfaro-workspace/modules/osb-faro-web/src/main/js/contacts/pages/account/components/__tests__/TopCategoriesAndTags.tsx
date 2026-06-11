@@ -128,7 +128,7 @@ describe('TopCategoriesAndTags', () => {
 	afterEach(cleanup);
 
 	describe('rendering', () => {
-		it('should render the card title', () => {
+		it('renders the card title', () => {
 			render(<TopCategoriesAndTags />);
 
 			expect(
@@ -136,7 +136,7 @@ describe('TopCategoriesAndTags', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render both tab labels', () => {
+		it('renders both tab labels', () => {
 			render(<TopCategoriesAndTags />);
 
 			expect(
@@ -145,7 +145,7 @@ describe('TopCategoriesAndTags', () => {
 			expect(screen.getByRole('tab', {name: 'Tag'})).toBeInTheDocument();
 		});
 
-		it('should render the Group By dropdown with the default metric (Impressions)', () => {
+		it('renders the Group By dropdown with the default metric (Impressions)', () => {
 			render(<TopCategoriesAndTags />);
 
 			expect(screen.getAllByText('Group By').length).toBeGreaterThan(0);
@@ -156,7 +156,7 @@ describe('TopCategoriesAndTags', () => {
 	});
 
 	describe('data rendering', () => {
-		it('should render the name of every item returned', () => {
+		it('renders the name of every item returned', () => {
 			render(<TopCategoriesAndTags />);
 
 			expect(
@@ -176,7 +176,7 @@ describe('TopCategoriesAndTags', () => {
 			).toBeGreaterThan(0);
 		});
 
-		it('should render the metric values for the default Impressions metric', () => {
+		it('renders the metric values for the default Impressions metric', () => {
 			render(<TopCategoriesAndTags />);
 
 			expect(screen.getAllByText('12K').length).toBeGreaterThan(0);
@@ -186,7 +186,7 @@ describe('TopCategoriesAndTags', () => {
 			expect(screen.getAllByText('3.1K').length).toBeGreaterThan(0);
 		});
 
-		it('should render the Category Name and Vocabulary column headers on the Category tab', () => {
+		it('renders the Category Name and Vocabulary column headers on the Category tab', () => {
 			const {container} = render(<TopCategoriesAndTags />);
 
 			const tabPanel = container.querySelector(
@@ -201,7 +201,7 @@ describe('TopCategoriesAndTags', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render the vocabulary name of every category returned', () => {
+		it('renders the vocabulary name of every category returned', () => {
 			render(<TopCategoriesAndTags />);
 
 			expect(screen.getAllByText('Department').length).toBeGreaterThan(0);
@@ -213,7 +213,7 @@ describe('TopCategoriesAndTags', () => {
 			).toBeGreaterThan(0);
 		});
 
-		it('should use the Tag Name header and omit the Vocabulary column on the Tag tab', () => {
+		it('uses the Tag Name header and omit the Vocabulary column on the Tag tab', () => {
 			const {container} = render(<TopCategoriesAndTags />);
 
 			mockUseRequestWith({
@@ -240,7 +240,7 @@ describe('TopCategoriesAndTags', () => {
 	});
 
 	describe('group by dropdown', () => {
-		it('should refetch with viewsMetric when the user picks Views', () => {
+		it('refetches with viewsMetric when the user picks Views', () => {
 			render(<TopCategoriesAndTags />);
 
 			fireEvent.click(
@@ -259,7 +259,7 @@ describe('TopCategoriesAndTags', () => {
 			expect(lastCall.variables.selectedMetric).toBe('viewsMetric');
 		});
 
-		it('should refetch with downloadsMetric when the user picks Downloads', () => {
+		it('refetches with downloadsMetric when the user picks Downloads', () => {
 			render(<TopCategoriesAndTags />);
 
 			fireEvent.click(
@@ -280,7 +280,7 @@ describe('TopCategoriesAndTags', () => {
 	});
 
 	describe('tab switching', () => {
-		it('should query the categories data source on initial render', () => {
+		it('queries the categories data source on initial render', () => {
 			const API = jest.requireMock('shared/api');
 
 			render(<TopCategoriesAndTags />);
@@ -295,7 +295,7 @@ describe('TopCategoriesAndTags', () => {
 			expect(API.tags.fetchAccountTopTags).not.toHaveBeenCalled();
 		});
 
-		it('should query the tags data source when the Tag tab is clicked', () => {
+		it('queries the tags data source when the Tag tab is clicked', () => {
 			const API = jest.requireMock('shared/api');
 
 			render(<TopCategoriesAndTags />);
@@ -317,7 +317,7 @@ describe('TopCategoriesAndTags', () => {
 			).not.toHaveBeenCalled();
 		});
 
-		it('should change the request variables when switching tabs so the request refetches', () => {
+		it('changes the request variables when switching tabs so the request refetches', () => {
 			render(<TopCategoriesAndTags />);
 
 			const categoryVariables =
@@ -335,7 +335,7 @@ describe('TopCategoriesAndTags', () => {
 			expect(tagVariables.isCategory).toBe(false);
 		});
 
-		it('should render tag items after switching to the Tag tab', () => {
+		it('renders tag items after switching to the Tag tab', () => {
 			render(<TopCategoriesAndTags />);
 
 			mockUseRequestWith({
@@ -357,7 +357,7 @@ describe('TopCategoriesAndTags', () => {
 	});
 
 	describe('request shape', () => {
-		it('should forward accountId, channelId, and groupId to the data source', () => {
+		it('forwards accountId, channelId, and groupId to the data source', () => {
 			render(<TopCategoriesAndTags />);
 
 			const firstCall = mockedUseRequest.mock.calls[0][0];
@@ -369,7 +369,7 @@ describe('TopCategoriesAndTags', () => {
 	});
 
 	describe('loading state', () => {
-		it('should render the loading indicator while the request is in flight', () => {
+		it('renders the loading indicator while the request is in flight', () => {
 			mockUseRequestWith({loading: true});
 
 			const {container} = render(<TopCategoriesAndTags />);
@@ -379,7 +379,7 @@ describe('TopCategoriesAndTags', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should not render rows while loading', () => {
+		it('does not render rows while loading', () => {
 			mockUseRequestWith({loading: true});
 
 			render(<TopCategoriesAndTags />);
@@ -389,7 +389,7 @@ describe('TopCategoriesAndTags', () => {
 	});
 
 	describe('empty state', () => {
-		it('should render the categories empty message on the Category tab when no items are returned', () => {
+		it('renders the categories empty message on the Category tab when no items are returned', () => {
 			mockUseRequestWith({data: {items: []}});
 
 			render(<TopCategoriesAndTags />);
@@ -404,7 +404,7 @@ describe('TopCategoriesAndTags', () => {
 			).toBeGreaterThan(0);
 		});
 
-		it('should render the tags empty message on the Tag tab when no items are returned', () => {
+		it('renders the tags empty message on the Tag tab when no items are returned', () => {
 			mockUseRequestWith({data: {items: []}});
 
 			render(<TopCategoriesAndTags />);
@@ -420,7 +420,7 @@ describe('TopCategoriesAndTags', () => {
 			).toBeGreaterThan(0);
 		});
 
-		it('should keep tabs visible in the empty state', () => {
+		it('keeps tabs visible in the empty state', () => {
 			mockUseRequestWith({data: {items: []}});
 
 			render(<TopCategoriesAndTags />);
@@ -431,7 +431,7 @@ describe('TopCategoriesAndTags', () => {
 			expect(screen.getByRole('tab', {name: 'Tag'})).toBeInTheDocument();
 		});
 
-		it('should not render rows when no items are returned', () => {
+		it('does not render rows when no items are returned', () => {
 			mockUseRequestWith({data: {items: []}});
 
 			render(<TopCategoriesAndTags />);
@@ -441,7 +441,7 @@ describe('TopCategoriesAndTags', () => {
 	});
 
 	describe('metric column', () => {
-		it('should show the selected metric value in the metric column', () => {
+		it('shows the selected metric value in the metric column', () => {
 			mockUseRequestWith({
 				data: {
 					items: [

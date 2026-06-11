@@ -23,13 +23,13 @@ describe('MetricCard', () => {
 		value: 42,
 	};
 
-	it('should render', () => {
+	it('renders', () => {
 		const {container} = render(<MetricCard {...defaultProps} />);
 
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render the title, description, and value', () => {
+	it('renders the title, description, and value', () => {
 		const {getByText} = render(<MetricCard {...defaultProps} />);
 
 		expect(getByText('Test title')).toBeTruthy();
@@ -37,7 +37,7 @@ describe('MetricCard', () => {
 		expect(getByText('42')).toBeTruthy();
 	});
 
-	it('should render Loading when loading is true', () => {
+	it('renders Loading when loading is true', () => {
 		const {container, queryByText} = render(
 			<MetricCard {...defaultProps} loading />
 		);
@@ -47,7 +47,7 @@ describe('MetricCard', () => {
 		expect(container.querySelector('.loading-root')).toBeTruthy();
 	});
 
-	it('should render a positive trend with the up caret icon', () => {
+	it('renders a positive trend with the up caret icon', () => {
 		const {container, getByText} = render(
 			<MetricCard
 				{...defaultProps}
@@ -65,7 +65,7 @@ describe('MetricCard', () => {
 		expect(getByText('vs last period')).toBeTruthy();
 	});
 
-	it('should render a negative trend with the down caret icon', () => {
+	it('renders a negative trend with the down caret icon', () => {
 		const {container, getByText} = render(
 			<MetricCard
 				{...defaultProps}
@@ -82,7 +82,7 @@ describe('MetricCard', () => {
 		expect(getByText('5%')).toBeTruthy();
 	});
 
-	it('should render a neutral trend without an icon', () => {
+	it('renders a neutral trend without an icon', () => {
 		const {container, getByText} = render(
 			<MetricCard
 				{...defaultProps}
@@ -100,7 +100,7 @@ describe('MetricCard', () => {
 		expect(getByText('0%')).toBeTruthy();
 	});
 
-	it('should not render a trend icon when trend is undefined', () => {
+	it('does not render a trend icon when trend is undefined', () => {
 		const {container} = render(<MetricCard {...defaultProps} />);
 
 		expect(container.querySelector('.lexicon-icon-caret-top-l')).toBeNull();
@@ -109,7 +109,7 @@ describe('MetricCard', () => {
 		).toBeNull();
 	});
 
-	it('should apply className and trendClassName', () => {
+	it('applies className and trendClassName', () => {
 		const {container} = render(
 			<MetricCard
 				{...defaultProps}
@@ -126,7 +126,7 @@ describe('MetricCard', () => {
 		expect(container.querySelector('.custom-trend')).toBeTruthy();
 	});
 
-	it('should render a ReactNode value', () => {
+	it('renders a ReactNode value', () => {
 		const {getByTestId} = render(
 			<MetricCard
 				{...defaultProps}
@@ -137,7 +137,7 @@ describe('MetricCard', () => {
 		expect(getByTestId('custom-value')).toBeTruthy();
 	});
 
-	it('should round the percentage to one decimal', () => {
+	it('rounds the percentage to one decimal', () => {
 		const {getByText} = render(
 			<MetricCard
 				{...defaultProps}

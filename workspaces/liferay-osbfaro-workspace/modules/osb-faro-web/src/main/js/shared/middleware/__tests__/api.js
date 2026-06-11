@@ -1,3 +1,7 @@
+import sendRequest from 'shared/util/request';
+
+import api, {CALL_API, toAction} from '../api';
+
 /**
  * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
@@ -5,12 +9,8 @@
 
 jest.mock('shared/util/request');
 
-import sendRequest from 'shared/util/request';
-
-import api, {CALL_API, toAction} from '../api';
-
 describe('API Middleware', () => {
-	it('should call next middleware if not an API call', () => {
+	it('calls next middleware if not an API call', () => {
 		sendRequest.setResponseData({foo: 'bar'});
 
 		const next = jest.fn();
@@ -24,7 +24,7 @@ describe('API Middleware', () => {
 		expect(next).toBeCalledWith(action);
 	});
 
-	it('should return a promise', () => {
+	it('returns a promise', () => {
 		const action = {
 			meta: {
 				[CALL_API]: {
@@ -45,7 +45,7 @@ describe('API Middleware', () => {
 		expect(result instanceof Promise).toBe(true);
 	});
 
-	it('should call the next middleware with an action', () => {
+	it('calls the next middleware with an action', () => {
 		const action = {
 			meta: {
 				[CALL_API]: {
@@ -66,7 +66,7 @@ describe('API Middleware', () => {
 		expect(next.mock.calls[0][0].type).toBeTruthy();
 	});
 
-	it('should call the next middleware with the successful action', () => {
+	it('calls the next middleware with the successful action', () => {
 		const action = {
 			meta: {
 				[CALL_API]: {
@@ -87,7 +87,7 @@ describe('API Middleware', () => {
 		);
 	});
 
-	it('should call the next middleware with the failure action', () => {
+	it('calls the next middleware with the failure action', () => {
 		const action = {
 			meta: {
 				[CALL_API]: {
@@ -108,7 +108,7 @@ describe('API Middleware', () => {
 		);
 	});
 
-	it('should call requestFn if requestFn exists', () => {
+	it('calls requestFn if requestFn exists', () => {
 		const requestFn = jest.fn().mockReturnValue(Promise.resolve(''));
 
 		const action = {
@@ -125,12 +125,12 @@ describe('API Middleware', () => {
 
 		const next = jest.fn();
 
-		api()(next)(action).then(() => expect(requestFn).toBeCalled());
+		return api()(next)(action).then(() => expect(requestFn).toBeCalled());
 	});
 });
 
 describe('toAction', () => {
-	it('should return an action object', () => {
+	it('returns an action object', () => {
 		const actionType = 'TEST';
 
 		const action = toAction(actionType, {meta: {}});
@@ -138,7 +138,7 @@ describe('toAction', () => {
 		expect(action.type).toBe(actionType);
 	});
 
-	it('should not contain api call data', () => {
+	it('does not contain api call data', () => {
 		const action = toAction('TEST', {
 			meta: {
 				[CALL_API]: 1,

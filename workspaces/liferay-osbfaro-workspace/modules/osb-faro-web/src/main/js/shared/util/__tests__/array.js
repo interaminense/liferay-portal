@@ -59,7 +59,7 @@ describe('array utils', () => {
 	});
 
 	describe('replaceWithMultipleAtIndex', () => {
-		it('should replace the item at the index and insert remaining items after the index', () => {
+		it('replaces the item at the index and insert remaining items after the index', () => {
 			expect(
 				ArrayUtils.replaceWithMultipleAtIndex([4, 5, 6], [1, 2, 3], 1)
 			).toEqual(expect.arrayContaining([1, 4, 5, 6, 3]));
@@ -67,13 +67,13 @@ describe('array utils', () => {
 	});
 
 	describe('getDifferences', () => {
-		it('should return the difference between two arrays of numbers', () => {
+		it('returns the difference between two arrays of numbers', () => {
 			expect(
 				ArrayUtils.getDifferences([1, 2, 3, 4, 5], [3, 4, 5, 6])
 			).toEqual(expect.arrayContaining([1, 2, 6]));
 		});
 
-		it('should return the difference between two array of string', () => {
+		it('returns the difference between two array of string', () => {
 			expect(
 				ArrayUtils.getDifferences(
 					['banana', 'coconut', 'lime', 'melon'],

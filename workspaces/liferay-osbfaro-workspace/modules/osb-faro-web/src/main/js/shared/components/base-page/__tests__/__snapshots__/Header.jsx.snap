@@ -225,7 +225,7 @@ exports[`BasePage.Header TitleSection renders TitleSection w/ Title 1`] = `
       class="align-items-center d-flex"
     >
       <h1
-        class="title text-truncate"
+        class="text-truncate title"
       >
         <span
           class="text-truncate"
@@ -248,7 +248,7 @@ exports[`BasePage.Header TitleSection renders TitleSection w/ label & no subtitl
       class="align-items-center d-flex"
     >
       <h1
-        class="title text-truncate"
+        class="text-truncate title"
       >
         <span
           class="text-truncate"
@@ -271,7 +271,7 @@ exports[`BasePage.Header TitleSection renders TitleSection w/ subtitle & label 1
       class="align-items-center d-flex"
     >
       <h1
-        class="title text-truncate"
+        class="text-truncate title"
       >
         <span
           class="text-truncate"
@@ -303,7 +303,7 @@ exports[`BasePage.Header TitleSection renders TitleSection w/ subtitle 1`] = `
       class="align-items-center d-flex"
     >
       <h1
-        class="title text-truncate"
+        class="text-truncate title"
       >
         <span
           class="text-truncate"
@@ -331,7 +331,7 @@ exports[`BasePage.Header TitleSection renders TitleSection w/ title & no childre
       class="align-items-center d-flex"
     >
       <h1
-        class="title text-truncate"
+        class="text-truncate title"
       >
         <span
           class="text-truncate"

@@ -15,7 +15,7 @@ import {
 } from '../numbers';
 
 describe('toLocale', () => {
-	it('should be return the number to locale', () => {
+	it('is return the number to locale', () => {
 		expect(toLocale(0.3)).toEqual('0.3');
 		expect(toLocale(0.123456)).toEqual('0.123456');
 		expect(toLocale(123456.123456789)).toEqual('123,456.123457');
@@ -23,7 +23,7 @@ describe('toLocale', () => {
 });
 
 describe('toThousands', () => {
-	it('should return the number truncate', () => {
+	it('returns the number truncate', () => {
 		expect(toThousands(0.1)).toEqual('0.1');
 		expect(toThousands(1.4)).toEqual('1.4');
 		expect(toThousands(1.5)).toEqual('1.5');
@@ -45,7 +45,7 @@ describe('toThousands', () => {
 		expect(toThousands(1500000000000)).toEqual('1.5T');
 	});
 
-	it('should return the number formatted', () => {
+	it('returns the number formatted', () => {
 		expect(toThousands(0)).toEqual('0');
 		expect(toThousands(1)).toEqual('1');
 		expect(toThousands(10)).toEqual('10');
@@ -62,7 +62,7 @@ describe('toThousands', () => {
 		expect(toThousands(1000000000000)).toEqual('1T');
 	});
 
-	it('should return an empty string if parameter it is not a number', () => {
+	it('returns an empty string if parameter it is not a number', () => {
 		expect(toThousands('test')).toEqual('');
 		expect(toThousands([])).toEqual('');
 		expect(toThousands({})).toEqual('');
@@ -70,14 +70,14 @@ describe('toThousands', () => {
 });
 
 describe('toFixedPoint', () => {
-	it('should return the same number if the number is less than 999', () => {
+	it('returns the same number if the number is less than 999', () => {
 		expect(toFixedPoint(10)).toEqual('10');
 		expect(toFixedPoint(100)).toEqual('100');
 		expect(toFixedPoint(555)).toEqual('555');
 		expect(toFixedPoint(999)).toEqual('999');
 	});
 
-	it('should return the number formatted', () => {
+	it('returns the number formatted', () => {
 		expect(toFixedPoint(1000)).toEqual('1,000');
 		expect(toFixedPoint(10000)).toEqual('10,000');
 		expect(toFixedPoint(100000)).toEqual('100,000');
@@ -91,19 +91,19 @@ describe('toFixedPoint', () => {
 });
 
 describe('toRounded', () => {
-	it('should return the rounded without decimal', () => {
+	it('returns the rounded without decimal', () => {
 		expect(toRounded(20.567, 0)).toEqual('21');
 		expect(toRounded(1.123, 0)).toEqual('1');
 		expect(toRounded(1.543, 0)).toEqual('2');
 	});
 
-	it('should be return the rounded single precision', () => {
+	it('is return the rounded single precision', () => {
 		expect(toRounded(20.5678)).toEqual('20.6');
 		expect(toRounded(1.123)).toEqual('1.1');
 		expect(toRounded(1.543)).toEqual('1.5');
 	});
 
-	it('should return the rounded with two decimals', () => {
+	it('returns the rounded with two decimals', () => {
 		expect(toRounded(20.5678, 2)).toEqual('20.57');
 		expect(toRounded(1.123, 2)).toEqual('1.12');
 		expect(toRounded(1.543, 2)).toEqual('1.54');
@@ -113,7 +113,7 @@ describe('toRounded', () => {
 });
 
 describe('toInt', () => {
-	it('should be return the int', () => {
+	it('is return the int', () => {
 		const number = toInt('1000');
 
 		expect(number).toEqual(1000);
@@ -121,19 +121,19 @@ describe('toInt', () => {
 });
 
 describe('toDuration', () => {
-	it('should return the time formatted', () => {
+	it('returns the time formatted', () => {
 		const number = toDuration(1000, undefined, 'seconds');
 
 		expect(number).toEqual('16m 40s');
 	});
 
-	it('should return the time formatted displaying milliseconds', () => {
+	it('returns the time formatted displaying milliseconds', () => {
 		const number = toDuration(12101989, 'DD[days] hh[h] mm[m] ss[s] S[ms]');
 
 		expect(number).toEqual('03h 21m 41s 989ms');
 	});
 
-	it('should return the time in the default format', () => {
+	it('returns the time in the default format', () => {
 		const number = toDuration(99999999);
 
 		expect(number).toEqual('01d 03h 46m 40s');
@@ -158,14 +158,14 @@ describe('getFinitePercent', () => {
 });
 
 describe('undoThousands', () => {
-	it('should return a number aproximation for a formatted number', () => {
+	it('returns a number aproximation for a formatted number', () => {
 		expect(undoThousands('145')).toEqual(145);
 		expect(undoThousands('23.5B')).toEqual(23500000000);
 		expect(undoThousands('23.5K')).toEqual(23500);
 		expect(undoThousands('23.5M')).toEqual(23500000);
 	});
 
-	it('should return the sum two numbers using method toThousand', () => {
+	it('returns the sum two numbers using method toThousand', () => {
 		const formattedA = '1.5K';
 		const formattedB = '2.5K';
 		const formattedC = '140';
@@ -178,15 +178,15 @@ describe('undoThousands', () => {
 		expect(toThousands(numberA + numberC)).toEqual('1.64K');
 	});
 
-	it('should return zero when no formatted value is specified', () => {
+	it('returns zero when no formatted value is specified', () => {
 		expect(undoThousands()).toEqual(0);
 	});
 
-	it('should return zero when formatted value no matches', () => {
+	it('returns zero when formatted value no matches', () => {
 		expect(undoThousands('E$')).toEqual(0);
 	});
 
-	it('should return the number without multiplier when formatted doesnt have multipliter declared', () => {
+	it('returns the number without multiplier when formatted doesnt have multipliter declared', () => {
 		expect(undoThousands('50X')).toEqual(50);
 		expect(undoThousands('100Y')).toEqual(100);
 		expect(undoThousands('150Z')).toEqual(150);

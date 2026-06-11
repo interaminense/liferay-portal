@@ -7,7 +7,7 @@ import {getUrl} from '../urls';
 
 describe('Url Utils', () => {
 	describe('getUrl', () => {
-		it('should return the url for touchpoint', () => {
+		it('returns the url for touchpoint', () => {
 			const path =
 				'/workspace/:groupId/pages/known-individuals/:touchpoint/:title';
 			const router = {
@@ -26,7 +26,7 @@ describe('Url Utils', () => {
 			);
 		});
 
-		it('should return the url for assets', () => {
+		it('returns the url for assets', () => {
 			const path =
 				'/workspace/:groupId/assets/blogs/:assetId/known-individuals/:touchpoint/:title';
 			const router = {

@@ -21,14 +21,14 @@ import {tagCriterionType} from '../tagCriterionType';
 import {vocabularyCriterionType} from '../vocabularyCriterionType';
 
 describe('criterion-types/registry', () => {
-	it('should expose vocabulary and tag in REMOTE_CRITERION_TYPES', () => {
+	it('exposes vocabulary and tag in REMOTE_CRITERION_TYPES', () => {
 		expect(REMOTE_CRITERION_TYPES).toContain(vocabularyCriterionType);
 		expect(REMOTE_CRITERION_TYPES).toContain(tagCriterionType);
 		expect(REMOTE_CRITERION_TYPES).toHaveLength(2);
 	});
 
 	describe('vocabularyCriterionType', () => {
-		it('should advertise vocabulary-specific identifiers and behavior', () => {
+		it('advertises vocabulary-specific identifiers and behavior', () => {
 			expect(vocabularyCriterionType.propertyKey).toBe('vocabulary');
 			expect(vocabularyCriterionType.idProperty).toBe('vocabularies/id');
 			expect(vocabularyCriterionType.nameProperty).toBe(
@@ -54,7 +54,7 @@ describe('criterion-types/registry', () => {
 			).toBe(true);
 		});
 
-		it('should wire the Vocabulary Input and Display components', () => {
+		it('wires the Vocabulary Input and Display components', () => {
 			expect(vocabularyCriterionType.InputComponent).toBe(
 				VocabularyInput
 			);
@@ -63,7 +63,7 @@ describe('criterion-types/registry', () => {
 			);
 		});
 
-		it('should wire the Vocabulary API and property factory', () => {
+		it('wires the Vocabulary API and property factory', () => {
 			expect(vocabularyCriterionType.api).toBe(API.vocabularies.search);
 			expect(vocabularyCriterionType.createProperty).toBe(
 				createVocabularyProperty
@@ -72,7 +72,7 @@ describe('criterion-types/registry', () => {
 	});
 
 	describe('tagCriterionType', () => {
-		it('should advertise tag-specific identifiers and behavior', () => {
+		it('advertises tag-specific identifiers and behavior', () => {
 			expect(tagCriterionType.propertyKey).toBe('tag');
 			expect(tagCriterionType.idProperty).toBe('tags/id');
 			expect(tagCriterionType.nameProperty).toBe('tags/name');
@@ -94,31 +94,31 @@ describe('criterion-types/registry', () => {
 			).toBe(true);
 		});
 
-		it('should wire the Tag Input and Display components', () => {
+		it('wires the Tag Input and Display components', () => {
 			expect(tagCriterionType.InputComponent).toBe(TagInput);
 			expect(tagCriterionType.DisplayComponent).toBe(TagDisplay);
 		});
 
-		it('should wire the Tag API and property factory', () => {
+		it('wires the Tag API and property factory', () => {
 			expect(tagCriterionType.api).toBe(API.tags.search);
 			expect(tagCriterionType.createProperty).toBe(createTagProperty);
 		});
 	});
 
 	describe('getRemoteCriterionTypeByPropertyKey', () => {
-		it('should return the vocabulary type for "vocabulary"', () => {
+		it('returns the vocabulary type for "vocabulary"', () => {
 			expect(getRemoteCriterionTypeByPropertyKey('vocabulary')).toBe(
 				vocabularyCriterionType
 			);
 		});
 
-		it('should return the tag type for "tag"', () => {
+		it('returns the tag type for "tag"', () => {
 			expect(getRemoteCriterionTypeByPropertyKey('tag')).toBe(
 				tagCriterionType
 			);
 		});
 
-		it('should return undefined for any other key', () => {
+		it('returns undefined for any other key', () => {
 			expect(getRemoteCriterionTypeByPropertyKey('individual')).toBe(
 				undefined
 			);
@@ -131,7 +131,7 @@ describe('criterion-types/registry', () => {
 	});
 
 	describe('getRemoteCriterionTypeByOperator', () => {
-		it('should return vocabulary for both vocabulary operators', () => {
+		it('returns vocabulary for both vocabulary operators', () => {
 			expect(
 				getRemoteCriterionTypeByOperator(
 					CustomFunctionOperators.VocabulariesFilter
@@ -144,7 +144,7 @@ describe('criterion-types/registry', () => {
 			).toBe(vocabularyCriterionType);
 		});
 
-		it('should return tag for both tag operators', () => {
+		it('returns tag for both tag operators', () => {
 			expect(
 				getRemoteCriterionTypeByOperator(
 					CustomFunctionOperators.TagsFilter
@@ -155,7 +155,7 @@ describe('criterion-types/registry', () => {
 			).toBe(tagCriterionType);
 		});
 
-		it('should return undefined for any other operator', () => {
+		it('returns undefined for any other operator', () => {
 			expect(
 				getRemoteCriterionTypeByOperator(
 					CustomFunctionOperators.AccountsFilter
@@ -169,7 +169,7 @@ describe('criterion-types/registry', () => {
 	});
 
 	describe('isRemoteCriterionOperator', () => {
-		it('should return true for all remote operators', () => {
+		it('returns true for all remote operators', () => {
 			expect(
 				isRemoteCriterionOperator(
 					CustomFunctionOperators.VocabulariesFilter
@@ -186,7 +186,7 @@ describe('criterion-types/registry', () => {
 			);
 		});
 
-		it('should return false for non-remote operators and empty inputs', () => {
+		it('returns false for non-remote operators and empty inputs', () => {
 			expect(
 				isRemoteCriterionOperator(
 					CustomFunctionOperators.AccountsFilter

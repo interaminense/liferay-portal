@@ -11,11 +11,11 @@ import {actionTypes} from '../../actions/projects';
 import reducer from '../projects';
 
 describe('Projects Reducer', () => {
-	it('should be a function', () => {
+	it('is a function', () => {
 		expect(typeof reducer).toBe('function');
 	});
 
-	it('should update the project key on UPDATE_PROJECT_SUCCESS', () => {
+	it('updates the project key on UPDATE_PROJECT_SUCCESS', () => {
 		const newId = 'bar';
 		const prevId = 'foo';
 

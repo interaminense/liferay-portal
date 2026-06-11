@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PagePathCard should render 1`] = `
+exports[`PagePathCard renders 1`] = `
 <div>
   <div
     class="card card-root"
@@ -17,7 +17,7 @@ exports[`PagePathCard should render 1`] = `
     </div>
     <div>
       <div
-        class="card-body d-flex align-items-center justify-content-center"
+        class="card-body align-items-center d-flex justify-content-center"
       >
         <div
           class="recharts-wrapper analytics-sankey"

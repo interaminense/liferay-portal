@@ -68,7 +68,7 @@ const data = {
 };
 
 describe('TouchpointsListQuery Mappers', () => {
-	it('should extract items from result', () => {
+	it('extracts items from result', () => {
 		const props = mapResultToProps({data}, context);
 
 		expect(props).toMatchObject({
@@ -129,7 +129,7 @@ describe('TouchpointsListQuery Mappers', () => {
 		});
 	});
 
-	it('should include assetId in options', () => {
+	it('includes assetId in options', () => {
 		const options = mapPropsToOptions({
 			assetType: 'forms',
 			filters: {},

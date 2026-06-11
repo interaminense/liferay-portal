@@ -3,7 +3,7 @@
 exports[`AttributeBreakdownSection renders 1`] = `
 <div>
   <div
-    class="attribute-breakdown-section-root d-flex align-items-center"
+    class="align-items-center attribute-breakdown-section-root d-flex"
   >
     <div
       class="section-header"
@@ -17,7 +17,7 @@ exports[`AttributeBreakdownSection renders 1`] = `
 exports[`AttributeBreakdownSection renders w/ breakdowns 1`] = `
 <div>
   <div
-    class="attribute-breakdown-section-root d-flex align-items-center"
+    class="align-items-center attribute-breakdown-section-root d-flex"
   >
     <div
       class="section-header"
@@ -25,10 +25,10 @@ exports[`AttributeBreakdownSection renders w/ breakdowns 1`] = `
       Breakdown
     </div>
     <div
-      class="attribute-container d-flex align-items-center justify-content-between"
+      class="align-items-center attribute-container d-flex justify-content-between"
     >
       <div
-        class="attribute-list d-flex align-items-center"
+        class="align-items-center attribute-list d-flex"
       >
         <div
           class="dropdown"
@@ -53,7 +53,7 @@ exports[`AttributeBreakdownSection renders w/ breakdowns 1`] = `
                 </svg>
               </div>
               <button
-                class="button-root edit-attribute-button d-flex btn btn-unstyled"
+                class="button-root d-flex edit-attribute-button btn btn-unstyled"
                 type="button"
               >
                 <div
@@ -119,7 +119,7 @@ exports[`AttributeBreakdownSection renders w/ breakdowns 1`] = `
                 </svg>
               </div>
               <button
-                class="button-root edit-attribute-button d-flex btn btn-unstyled"
+                class="button-root d-flex edit-attribute-button btn btn-unstyled"
                 type="button"
               >
                 <div
@@ -170,7 +170,7 @@ exports[`AttributeBreakdownSection renders w/ breakdowns 1`] = `
           aria-expanded="false"
           aria-haspopup="true"
           aria-label="Add"
-          class="dropdown-toggle button-root add-attribute btn btn-outline-borderless btn-sm btn-outline-secondary"
+          class="dropdown-toggle add-attribute button-root btn btn-outline-borderless btn-sm btn-outline-secondary"
           type="button"
         >
           <svg

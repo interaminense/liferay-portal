@@ -53,7 +53,7 @@ const Wrapper = ({children}: {children: React.ReactNode}) => (
 describe('UserDropdown', () => {
 	afterEach(cleanup);
 
-	it('should render', () => {
+	it('renders', () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown
@@ -67,7 +67,7 @@ describe('UserDropdown', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render dropdown menu when clicked', () => {
+	it('renders dropdown menu when clicked', () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown
@@ -86,7 +86,7 @@ describe('UserDropdown', () => {
 		expect(document.body).toMatchSnapshot();
 	});
 
-	it('should descend into nested menu when child button is clicked', async () => {
+	it('descends into nested menu when child button is clicked', async () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown
@@ -113,7 +113,7 @@ describe('UserDropdown', () => {
 		expect(screen.getByText('Japanese')).toBeInTheDocument();
 	});
 
-	it('should ascend from nested menu when back button is clicked', async () => {
+	it('ascends from nested menu when back button is clicked', async () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown
@@ -149,7 +149,7 @@ describe('UserDropdown', () => {
 		expect(screen.getByText('Language')).toBeInTheDocument();
 	});
 
-	it('should go back to the initialActiveMenu on close', async () => {
+	it('goes back to the initialActiveMenu on close', async () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown

@@ -14,7 +14,7 @@ describe('data-sources', () => {
 		return reducer(initialiState, action).get(String(id));
 	}
 
-	it('should handle fetch data source request', () => {
+	it('handles fetch data source request', () => {
 		const id = 'foo';
 
 		const action = {
@@ -27,7 +27,7 @@ describe('data-sources', () => {
 		expect(getResult(action, id)).toMatchObject(new RemoteData());
 	});
 
-	it('should handle fetch data source failure', () => {
+	it('handles fetch data source failure', () => {
 		const id = 'foo';
 
 		const action = {
@@ -42,7 +42,7 @@ describe('data-sources', () => {
 		);
 	});
 
-	it('should handle delete data source success', () => {
+	it('handles delete data source success', () => {
 		const id = 'foo';
 
 		const action = {

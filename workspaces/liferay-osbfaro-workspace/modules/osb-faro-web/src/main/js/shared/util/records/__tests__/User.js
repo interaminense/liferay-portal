@@ -14,13 +14,13 @@ const memberUser = new User({roleName: UserRoleNames.Member});
 const ownerUser = new User({roleName: UserRoleNames.Owner});
 
 describe('User', () => {
-	it('should return a new User', () => {
+	it('returns a new User', () => {
 		const user = new User();
 
 		expect(user).toBeTruthy();
 	});
 
-	it('should be able to determine if a user has a permission, given an array of roles or a single role', () => {
+	it('is able to determine if a user has a permission, given an array of roles or a single role', () => {
 		const user = new User({roleName: UserRoleNames.Member});
 
 		expect(
@@ -41,7 +41,7 @@ describe('User', () => {
 		expect(user.hasPermission(UserRoleNames.Member)).toBe(true);
 	});
 
-	it('should be able to determine if a user is a member', () => {
+	it('is able to determine if a user is a member', () => {
 		expect(memberUser.isMember()).toBe(true);
 
 		expect(adminUser.isMember()).toBe(false);
@@ -49,7 +49,7 @@ describe('User', () => {
 		expect(ownerUser.isMember()).toBe(false);
 	});
 
-	it('should be able to determine if a user is an owner', () => {
+	it('is able to determine if a user is an owner', () => {
 		expect(ownerUser.isOwner()).toBe(true);
 
 		expect(adminUser.isOwner()).toBe(false);
@@ -57,7 +57,7 @@ describe('User', () => {
 		expect(memberUser.isOwner()).toBe(false);
 	});
 
-	it('should be able to determine if a user has an administrative level of access', () => {
+	it('is able to determine if a user has an administrative level of access', () => {
 		expect(adminUser.isAdmin()).toBe(true);
 
 		expect(ownerUser.isAdmin()).toBe(true);

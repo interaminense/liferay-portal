@@ -9,7 +9,7 @@ import * as actions from '../sidebar';
 
 describe('Sidebar Actions', () => {
 	describe('collapseSidebar', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = actions.collapseSidebar();
 
 			expect(isFSA(action)).toBe(true);

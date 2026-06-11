@@ -9,7 +9,7 @@ exports[`CohortChart should render 1`] = `
       <tr>
         <th />
         <th
-          class="visitors-header table-column-text-end"
+          class="table-column-text-end visitors-header"
         >
           Visitors
         </th>
@@ -27,7 +27,7 @@ exports[`CohortChart should render 1`] = `
       <tr>
         <th />
         <th
-          class="visitors table-column-text-end"
+          class="table-column-text-end visitors"
         >
           10
         </th>
@@ -51,7 +51,7 @@ exports[`CohortChart should render 1`] = `
           February
         </td>
         <td
-          class="visitors table-column-text-end"
+          class="table-column-text-end visitors"
         >
           10
         </td>
@@ -83,7 +83,7 @@ exports[`CohortChart should render 1`] = `
           March
         </td>
         <td
-          class="visitors table-column-text-end"
+          class="table-column-text-end visitors"
         >
           60
         </td>

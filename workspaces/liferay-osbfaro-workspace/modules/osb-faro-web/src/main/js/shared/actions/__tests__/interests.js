@@ -9,7 +9,7 @@ import {searchInterests} from '../interests';
 
 describe('Interests', () => {
 	describe('searchInterests', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = searchInterests({});
 
 			expect(isFSA(action)).toBe(true);

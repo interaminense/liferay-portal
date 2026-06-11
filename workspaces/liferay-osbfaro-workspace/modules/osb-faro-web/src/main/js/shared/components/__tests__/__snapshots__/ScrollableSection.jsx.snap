@@ -3,7 +3,7 @@
 exports[`ScrollableSection renders 1`] = `
 <div>
   <div
-    class="scrollable-section-root d-inline-flex"
+    class="d-inline-flex scrollable-section-root"
   >
     <div
       class="scroll-container"

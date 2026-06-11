@@ -305,7 +305,7 @@ exports[`View should render 1`] = `
                     class="d-flex"
                   >
                     <h3
-                      class="title-text text-truncate"
+                      class="text-truncate title-text"
                     >
                       <span
                         class="text-truncate"
@@ -523,7 +523,7 @@ exports[`View should render 1`] = `
                     class="card-body"
                   >
                     <div
-                      class="total-training-urls d-flex align-items-center"
+                      class="align-items-center d-flex total-training-urls"
                     >
                       <button
                         aria-label="Watch"

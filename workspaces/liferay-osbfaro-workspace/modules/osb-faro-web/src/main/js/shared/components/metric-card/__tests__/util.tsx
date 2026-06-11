@@ -1,12 +1,4 @@
-/**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
- * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
- */
-
-jest.unmock('react-dom');
-
-import {CHART_COLOR_NAMES} from 'shared/util/charts';
-import {getIntervals} from 'shared/util/charts';
+import {CHART_COLOR_NAMES, getIntervals} from 'shared/util/charts';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {toUnix} from 'shared/util/date';
 import * as data from 'test/data';
@@ -19,10 +11,17 @@ import {
 	getSiteMetricsChartData,
 } from '../util';
 
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+jest.unmock('react-dom');
+
 const {stark: CHART_BLUE, starkL2: CHART_BLUE_L2} = CHART_COLOR_NAMES;
 
 describe('convertHistogramKeysToDate', () => {
-	it('should convert the histogram date key strings to Date types', () => {
+	it('converts the histogram date key strings to Date types', () => {
 		expect(
 			[
 				{
@@ -37,7 +36,7 @@ describe('convertHistogramKeysToDate', () => {
 });
 
 describe('getMetricsChartData', () => {
-	it('should return data formatted for use in a Metrics chart', () => {
+	it('returns data formatted for use in a Metrics chart', () => {
 		const mockParameters = {
 			histogram: data
 				.mockMetricFragment(10)
@@ -53,7 +52,7 @@ describe('getMetricsChartData', () => {
 });
 
 describe('getMetricsData', () => {
-	it('should return the chart items', () => {
+	it('returns the chart items', () => {
 		const rangeKey = 30;
 		const keyDate = '2018-07-16T00:00';
 		const valueKeyDate = '1531699200000';
@@ -218,7 +217,7 @@ describe('getMetricsData', () => {
 });
 
 describe('getSiteMetricsChartData', () => {
-	it('should return data formatted for use in a Site Metrics chart', () => {
+	it('returns data formatted for use in a Site Metrics chart', () => {
 		const {name, title, tooltipTitle, type} = CompositeMetric;
 
 		const mockParameters = {

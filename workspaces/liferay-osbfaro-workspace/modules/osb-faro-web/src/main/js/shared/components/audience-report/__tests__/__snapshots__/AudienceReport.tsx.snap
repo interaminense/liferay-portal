@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AudienceReport should render 1`] = `
+exports[`AudienceReport renders 1`] = `
 <div>
   <div
     class="audience-report-chart row w-100"

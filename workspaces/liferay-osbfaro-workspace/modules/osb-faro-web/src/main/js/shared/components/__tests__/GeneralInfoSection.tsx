@@ -27,7 +27,7 @@ describe('GeneralInfoSection', () => {
 		userName: 'Full Name',
 	};
 
-	it('should render', () => {
+	it('renders', () => {
 		const {container} = render(
 			<GeneralInfoSection
 				config={mockConfig}
@@ -39,7 +39,7 @@ describe('GeneralInfoSection', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should display values returned by the getValue function', () => {
+	it('displays values returned by the getValue function', () => {
 		const mockGetValue = jest.fn((key) => {
 			if (key === 'userName') {
 				return 'John Doe';
@@ -63,7 +63,7 @@ describe('GeneralInfoSection', () => {
 		expect(mockGetValue).toHaveBeenCalledWith('userEmail');
 	});
 
-	it('should display a dash "-" when getValue returns a falsy value', () => {
+	it('displays a dash "-" when getValue returns a falsy value', () => {
 		const mockGetValue = jest.fn((key) => {
 			if (key === 'userName') {
 				return 'John Doe';
@@ -84,7 +84,7 @@ describe('GeneralInfoSection', () => {
 		expect(getByText('-')).toBeTruthy();
 	});
 
-	it('should render the correct section title', () => {
+	it('renders the correct section title', () => {
 		const {getByText} = render(
 			<GeneralInfoSection
 				config={mockConfig}
@@ -96,7 +96,7 @@ describe('GeneralInfoSection', () => {
 		expect(getByText('User Profile')).toBeTruthy();
 	});
 
-	it('should render multiple sections with their respective items', () => {
+	it('renders multiple sections with their respective items', () => {
 		const multiSectionConfig = [
 			{
 				columnClass: 'section-1-column',

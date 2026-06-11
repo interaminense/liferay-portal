@@ -6,7 +6,7 @@
 import DataSourceQuery from '../DataSourceQuery';
 
 describe('DataSourceQuery', () => {
-	it('should not include credentialsType', () => {
+	it('does not include credentialsType', () => {
 		const queryString =
 
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any

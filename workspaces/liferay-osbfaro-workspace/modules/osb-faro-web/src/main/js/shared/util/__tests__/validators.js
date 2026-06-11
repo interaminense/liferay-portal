@@ -20,7 +20,7 @@ import {
 } from '../validators';
 
 describe('toPromise', () => {
-	it('should resolve if the result is another Promise', () => {
+	it('resolves if the result is another Promise', () => {
 		expect.assertions(1);
 
 		const result = Promise;
@@ -30,13 +30,13 @@ describe('toPromise', () => {
 		).resolves.toEqual('');
 	});
 
-	it('should resolve if the result is an empty string', () => {
+	it('resolves if the result is an empty string', () => {
 		expect.assertions(1);
 
 		return expect(toPromise('')).resolves.toEqual('');
 	});
 
-	it('should resolve with the error if the result is not valid', () => {
+	it('resolves with the error if the result is not valid', () => {
 		expect.assertions(1);
 
 		const result = 'errors';
@@ -46,7 +46,7 @@ describe('toPromise', () => {
 });
 
 describe('validateInputMessage', () => {
-	it('should validate input message as not valid', () => {
+	it('validates input message as not valid', () => {
 		expect.assertions(1);
 
 		const response = validateInputMessage('bbb')('aaa');
@@ -54,7 +54,7 @@ describe('validateInputMessage', () => {
 		return expect(response).toEqual('String does not match.');
 	});
 
-	it('should validate input message as valid', () => {
+	it('validates input message as valid', () => {
 		expect.assertions(1);
 
 		const response = validateInputMessage('aa')('aa');
@@ -64,7 +64,7 @@ describe('validateInputMessage', () => {
 });
 
 describe('validateMinDuration', () => {
-	it('should validate min duration as not valid', () => {
+	it('validates min duration as not valid', () => {
 		expect.assertions(1);
 
 		const response = validateMinDuration('00:00:01')('00:00:00');
@@ -74,7 +74,7 @@ describe('validateMinDuration', () => {
 		);
 	});
 
-	it('should validate min duration as valid', () => {
+	it('validates min duration as valid', () => {
 		expect.assertions(1);
 
 		const response = validateMinDuration('00:01:00')('00:10:00');
@@ -84,7 +84,7 @@ describe('validateMinDuration', () => {
 });
 
 describe('validateMaxLength', () => {
-	it('should validate max length as not valid', () => {
+	it('validates max length as not valid', () => {
 		expect.assertions(1);
 
 		const response = validateMaxLength(2)('aaa');
@@ -92,7 +92,7 @@ describe('validateMaxLength', () => {
 		return expect(response).resolves.toEqual('Exceeds maximum length.');
 	});
 
-	it('should validate max length as valid', () => {
+	it('validates max length as valid', () => {
 		expect.assertions(1);
 
 		const response = validateMaxLength(2)('aa');
@@ -102,7 +102,7 @@ describe('validateMaxLength', () => {
 });
 
 describe('validateMinLength', () => {
-	it('should validate min length as not valid', () => {
+	it('validates min length as not valid', () => {
 		expect.assertions(1);
 
 		const response = validateMinLength(2)('a');
@@ -112,7 +112,7 @@ describe('validateMinLength', () => {
 		);
 	});
 
-	it('should validate min length as valid', () => {
+	it('validates min length as valid', () => {
 		expect.assertions(1);
 
 		const response = validateMinLength(2)('aa');
@@ -122,7 +122,7 @@ describe('validateMinLength', () => {
 });
 
 describe('validateGreaterThanZero', () => {
-	it('should validate value as invalid', () => {
+	it('validates value as invalid', () => {
 		expect.assertions(1);
 
 		const response = validateGreaterThanZero(0);
@@ -130,7 +130,7 @@ describe('validateGreaterThanZero', () => {
 		return expect(response).resolves.toEqual('Must be greater than 0.');
 	});
 
-	it('should validate value as valid', () => {
+	it('validates value as valid', () => {
 		expect.assertions(1);
 
 		const response = validateGreaterThanZero(0.01);
@@ -140,7 +140,7 @@ describe('validateGreaterThanZero', () => {
 });
 
 describe('validateIsInteger', () => {
-	it('should validate value as invalid', () => {
+	it('validates value as invalid', () => {
 		expect.assertions(1);
 
 		const response = validateIsInteger(1.001);
@@ -148,7 +148,7 @@ describe('validateIsInteger', () => {
 		return expect(response).resolves.toEqual('Must be an integer.');
 	});
 
-	it('should validate value as valid', () => {
+	it('validates value as valid', () => {
 		expect.assertions(1);
 
 		const response = validateIsInteger(123123);
@@ -158,7 +158,7 @@ describe('validateIsInteger', () => {
 });
 
 describe('validateMinValue', () => {
-	it('should validate min value as not valid', () => {
+	it('validates min value as not valid', () => {
 		expect.assertions(1);
 
 		const response = validateMinValue(30)(10);
@@ -166,7 +166,7 @@ describe('validateMinValue', () => {
 		return expect(response).resolves.toEqual('Must be greater than 29.');
 	});
 
-	it('should validate min value as valid', () => {
+	it('validates min value as valid', () => {
 		expect.assertions(1);
 
 		const response = validateMinValue(5)(10);
@@ -176,7 +176,7 @@ describe('validateMinValue', () => {
 });
 
 describe('validatePattern', () => {
-	it('should validate a regex pattern as not valid', () => {
+	it('validates a regex pattern as not valid', () => {
 		expect.assertions(1);
 
 		const message = 'can only be a number';
@@ -186,7 +186,7 @@ describe('validatePattern', () => {
 		return expect(response).resolves.toBe(message);
 	});
 
-	it('should validate a regex pattern as valid', () => {
+	it('validates a regex pattern as valid', () => {
 		expect.assertions(1);
 
 		const response = validatePattern(/^\d+$/, 'can only be a number')('1');
@@ -196,7 +196,7 @@ describe('validatePattern', () => {
 });
 
 describe('validateProtocol', () => {
-	it('should validate protocol as not valid', () => {
+	it('validates protocol as not valid', () => {
 		expect.assertions(1);
 
 		const response = validateProtocol('liferay.com');
@@ -206,7 +206,7 @@ describe('validateProtocol', () => {
 		);
 	});
 
-	it('should validate protocol as valid', () => {
+	it('validates protocol as valid', () => {
 		expect.assertions(1);
 
 		const response = validateProtocol('https://liferay.com');
@@ -216,7 +216,7 @@ describe('validateProtocol', () => {
 });
 
 describe('validateRequired', () => {
-	it('should validate required as not valid', () => {
+	it('validates required as not valid', () => {
 		expect.assertions(1);
 
 		const response = validateRequired('');
@@ -224,7 +224,7 @@ describe('validateRequired', () => {
 		return expect(response).resolves.toEqual('Required');
 	});
 
-	it('should validate required as valid', () => {
+	it('validates required as valid', () => {
 		expect.assertions(1);
 
 		const response = validateRequired('test');
@@ -232,7 +232,7 @@ describe('validateRequired', () => {
 		return expect(response).resolves.toBe('');
 	});
 
-	it('should validate required as valid when validating array with value', () => {
+	it('validates required as valid when validating array with value', () => {
 		expect.assertions(1);
 
 		const response = validateRequired(['test']);
@@ -240,7 +240,7 @@ describe('validateRequired', () => {
 		return expect(response).resolves.toBe('');
 	});
 
-	it('should validate required as not valid if the value is a string with only spaces', () => {
+	it('validates required as not valid if the value is a string with only spaces', () => {
 		expect.assertions(1);
 
 		const response = validateRequired('   ');

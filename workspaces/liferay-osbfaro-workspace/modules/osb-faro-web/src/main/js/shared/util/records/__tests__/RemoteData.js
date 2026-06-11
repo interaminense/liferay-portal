@@ -8,14 +8,14 @@ import {isArray, range} from 'lodash';
 import RemoteData, {remoteDataFromList} from '../RemoteData';
 
 describe('RemoteData', () => {
-	it('should return a new RemoteData', () => {
+	it('returns a new RemoteData', () => {
 		const remoteData = new RemoteData();
 
 		expect(remoteData).toBeTruthy();
 	});
 
 	describe('remoteDataFromList', () => {
-		it('should return a single RemoteData from an array of RemoteDatas', () => {
+		it('returns a single RemoteData from an array of RemoteDatas', () => {
 			const remoteDatas = range(5).map(() => new RemoteData({data: []}));
 
 			const remoteData = remoteDataFromList(remoteDatas);
@@ -25,7 +25,7 @@ describe('RemoteData', () => {
 			remoteData.data.map((item) => expect(isArray(item)).toBe(true));
 		});
 
-		it('should return a RemoteData with loading as true if any RemoteDatas are loading', () => {
+		it('returns a RemoteData with loading as true if any RemoteDatas are loading', () => {
 			const remoteDatas = [
 				new RemoteData({data: [], loading: true}),
 				new RemoteData({data: [], loading: false}),
@@ -36,7 +36,7 @@ describe('RemoteData', () => {
 			expect(remoteData.loading).toBe(true);
 		});
 
-		it('should return a RemoteData with error as true if any RemoteDatas have an error', () => {
+		it('returns a RemoteData with error as true if any RemoteDatas have an error', () => {
 			const remoteDatas = [
 				new RemoteData({data: [], error: true}),
 				new RemoteData({data: [], error: false}),

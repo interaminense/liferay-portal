@@ -115,13 +115,13 @@ describe('TopAssets', () => {
 	afterEach(cleanup);
 
 	describe('rendering', () => {
-		it('should render the card title', () => {
+		it('renders the card title', () => {
 			render(<TopAssets />);
 
 			expect(screen.getByText('TOP ASSETS')).toBeInTheDocument();
 		});
 
-		it('should render both tab labels', () => {
+		it('renders both tab labels', () => {
 			render(<TopAssets />);
 
 			expect(
@@ -132,7 +132,7 @@ describe('TopAssets', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render the View All button', () => {
+		it('renders the View All button', () => {
 			render(<TopAssets />);
 
 			expect(
@@ -140,7 +140,7 @@ describe('TopAssets', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render the Group By dropdown with the default metric (Impressions)', () => {
+		it('renders the Group By dropdown with the default metric (Impressions)', () => {
 			render(<TopAssets />);
 
 			expect(screen.getAllByText('Group By').length).toBeGreaterThan(0);
@@ -151,7 +151,7 @@ describe('TopAssets', () => {
 	});
 
 	describe('data rendering', () => {
-		it('should render an asset link for every item returned', () => {
+		it('renders an asset link for every item returned', () => {
 			render(<TopAssets />);
 
 			expect(
@@ -171,7 +171,7 @@ describe('TopAssets', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render the metric values for the default Impressions metric', () => {
+		it('renders the metric values for the default Impressions metric', () => {
 			render(<TopAssets />);
 
 			expect(screen.getAllByText('100').length).toBeGreaterThan(0);
@@ -181,7 +181,7 @@ describe('TopAssets', () => {
 			expect(screen.getAllByText('10').length).toBeGreaterThan(0);
 		});
 
-		it('should route blog assets through the Blogs overview path', () => {
+		it('routes blog assets through the Blogs overview path', () => {
 			render(<TopAssets />);
 
 			const link = screen.getAllByRole('link', {
@@ -191,7 +191,7 @@ describe('TopAssets', () => {
 			expect(link.getAttribute('href')).toContain('/assets/blogs/');
 		});
 
-		it('should route document assets through the Documents and Media path', () => {
+		it('routes document assets through the Documents and Media path', () => {
 			render(<TopAssets />);
 
 			const link = screen.getAllByRole('link', {
@@ -203,7 +203,7 @@ describe('TopAssets', () => {
 			);
 		});
 
-		it('should route form assets through the Forms path', () => {
+		it('routes form assets through the Forms path', () => {
 			render(<TopAssets />);
 
 			const link = screen.getAllByRole('link', {
@@ -213,7 +213,7 @@ describe('TopAssets', () => {
 			expect(link.getAttribute('href')).toContain('/assets/forms/');
 		});
 
-		it('should route web content assets through the Web Content path', () => {
+		it('routes web content assets through the Web Content path', () => {
 			render(<TopAssets />);
 
 			const link = screen.getAllByRole('link', {
@@ -223,7 +223,7 @@ describe('TopAssets', () => {
 			expect(link.getAttribute('href')).toContain('/assets/web-content/');
 		});
 
-		it('should route unknown asset types through the Object Entry path', () => {
+		it('routes unknown asset types through the Object Entry path', () => {
 			render(<TopAssets />);
 
 			const link = screen.getAllByRole('link', {
@@ -237,7 +237,7 @@ describe('TopAssets', () => {
 	});
 
 	describe('group by dropdown', () => {
-		it('should refetch with viewsMetric when the user picks Views', () => {
+		it('refetches with viewsMetric when the user picks Views', () => {
 			render(<TopAssets />);
 
 			fireEvent.click(
@@ -256,7 +256,7 @@ describe('TopAssets', () => {
 			expect(lastCall.variables.selectedMetric).toBe('viewsMetric');
 		});
 
-		it('should refetch with downloadsMetric when the user picks Downloads on the Files tab', () => {
+		it('refetches with downloadsMetric when the user picks Downloads on the Files tab', () => {
 			render(<TopAssets />);
 
 			fireEvent.click(screen.getByRole('tab', {name: 'Files'}));
@@ -277,7 +277,7 @@ describe('TopAssets', () => {
 			expect(lastCall.variables.selectedMetric).toBe('downloadsMetric');
 		});
 
-		it('should not offer the Downloads metric on the Content tab', () => {
+		it('does not offer the Downloads metric on the Content tab', () => {
 			render(<TopAssets />);
 
 			fireEvent.click(
@@ -295,7 +295,7 @@ describe('TopAssets', () => {
 			).toBeGreaterThan(0);
 		});
 
-		it('should offer the Downloads metric on the Files tab', () => {
+		it('offers the Downloads metric on the Files tab', () => {
 			render(<TopAssets />);
 
 			fireEvent.click(screen.getByRole('tab', {name: 'Files'}));
@@ -309,7 +309,7 @@ describe('TopAssets', () => {
 			).toBeGreaterThan(0);
 		});
 
-		it('should reset to impressionsMetric when switching to Content while Downloads is selected', () => {
+		it('resets to impressionsMetric when switching to Content while Downloads is selected', () => {
 			render(<TopAssets />);
 
 			fireEvent.click(screen.getByRole('tab', {name: 'Files'}));
@@ -335,7 +335,7 @@ describe('TopAssets', () => {
 	});
 
 	describe('tab switching', () => {
-		it('should request the Content objectType on initial render', () => {
+		it('requests the Content objectType on initial render', () => {
 			render(<TopAssets />);
 
 			const firstCall = mockedUseRequest.mock.calls[0][0];
@@ -343,7 +343,7 @@ describe('TopAssets', () => {
 			expect(firstCall.variables.objectType).toBe('content');
 		});
 
-		it('should request the File objectType after clicking the Files tab', () => {
+		it('requests the File objectType after clicking the Files tab', () => {
 			render(<TopAssets />);
 
 			fireEvent.click(screen.getByRole('tab', {name: 'Files'}));
@@ -358,7 +358,7 @@ describe('TopAssets', () => {
 	});
 
 	describe('request shape', () => {
-		it('should forward accountId, channelId, and groupId to the data source', () => {
+		it('forwards accountId, channelId, and groupId to the data source', () => {
 			render(<TopAssets />);
 
 			const firstCall = mockedUseRequest.mock.calls[0][0];
@@ -370,7 +370,7 @@ describe('TopAssets', () => {
 	});
 
 	describe('view all', () => {
-		it('should navigate to the asset list when the View All button is clicked', () => {
+		it('navigates to the asset list when the View All button is clicked', () => {
 			render(<TopAssets />);
 
 			fireEvent.click(screen.getByRole('button', {name: 'View All'}));
@@ -381,7 +381,7 @@ describe('TopAssets', () => {
 	});
 
 	describe('loading state', () => {
-		it('should render the loading indicator while the request is in flight', () => {
+		it('renders the loading indicator while the request is in flight', () => {
 			mockUseRequestWith({loading: true});
 
 			const {container} = render(<TopAssets />);
@@ -391,7 +391,7 @@ describe('TopAssets', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should not render asset rows while loading', () => {
+		it('does not render asset rows while loading', () => {
 			mockUseRequestWith({loading: true});
 
 			render(<TopAssets />);
@@ -401,7 +401,7 @@ describe('TopAssets', () => {
 			).toBeNull();
 		});
 
-		it('should not render the View All button while loading', () => {
+		it('does not render the View All button while loading', () => {
 			mockUseRequestWith({loading: true});
 
 			render(<TopAssets />);
@@ -411,7 +411,7 @@ describe('TopAssets', () => {
 	});
 
 	describe('view all visibility', () => {
-		it('should not render the View All button when there are no assets', () => {
+		it('does not render the View All button when there are no assets', () => {
 			mockUseRequestWith({data: {items: []}});
 
 			render(<TopAssets />);
@@ -419,7 +419,7 @@ describe('TopAssets', () => {
 			expect(screen.queryByRole('button', {name: 'View All'})).toBeNull();
 		});
 
-		it('should render the View All button when assets are returned', () => {
+		it('renders the View All button when assets are returned', () => {
 			render(<TopAssets />);
 
 			expect(
@@ -429,7 +429,7 @@ describe('TopAssets', () => {
 	});
 
 	describe('empty state', () => {
-		it('should render the Content empty state when no assets are returned on the Content tab', () => {
+		it('renders the Content empty state when no assets are returned on the Content tab', () => {
 			mockUseRequestWith({data: {items: []}});
 
 			render(<TopAssets />);
@@ -439,7 +439,7 @@ describe('TopAssets', () => {
 			).toBeGreaterThan(0);
 		});
 
-		it('should render the Files empty state when no assets are returned on the Files tab', () => {
+		it('renders the Files empty state when no assets are returned on the Files tab', () => {
 			mockUseRequestWith({data: {items: []}});
 
 			render(<TopAssets />);
@@ -451,7 +451,7 @@ describe('TopAssets', () => {
 			).toBeGreaterThan(0);
 		});
 
-		it('should not render asset rows when no assets are returned', () => {
+		it('does not render asset rows when no assets are returned', () => {
 			mockUseRequestWith({data: {items: []}});
 
 			render(<TopAssets />);
@@ -463,7 +463,7 @@ describe('TopAssets', () => {
 	});
 
 	describe('metric column', () => {
-		it('should show the selected metric value in the metric column', () => {
+		it('shows the selected metric value in the metric column', () => {
 			mockUseRequestWith({
 				data: {
 					items: [

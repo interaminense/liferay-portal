@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FieldPreviewModal should render 1`] = `
+exports[`FieldPreviewModal renders 1`] = `
 <div>
   <div
     aria-modal="true"

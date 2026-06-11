@@ -30,8 +30,8 @@ jest.mock('shared/actions/alerts', () => ({
 
 jest.mock('shared/api', () => ({
 	csv: {
-		fetchCount: jest.fn(),
 		fetchCSV: jest.fn(),
+		fetchCount: jest.fn(),
 	},
 }));
 

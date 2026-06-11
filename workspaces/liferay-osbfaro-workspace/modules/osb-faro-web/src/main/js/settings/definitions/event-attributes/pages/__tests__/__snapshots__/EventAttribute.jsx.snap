@@ -321,7 +321,7 @@ exports[`EventAttributes should render 1`] = `
                 class="d-flex"
               >
                 <h3
-                  class="title-text text-truncate"
+                  class="text-truncate title-text"
                 >
                   <span
                     class="text-truncate"
@@ -347,7 +347,7 @@ exports[`EventAttributes should render 1`] = `
               class="card card-root page-display"
             >
               <nav
-                class="page-subnav mx-4 my-3 navbar navbar-collapse-relative navbar-expand-md navbar-underline navigation-bar navigation-bar-light"
+                class="mx-4 my-3 page-subnav navbar navbar-collapse-relative navbar-expand-md navbar-underline navigation-bar navigation-bar-light"
               >
                 <div
                   class="container-fluid container-fluid-max-xl"

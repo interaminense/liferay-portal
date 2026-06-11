@@ -21,31 +21,31 @@ import {
 
 describe('util', () => {
 	describe('getSafeDecodedURIComponent', () => {
-		it('should decode a URI component', () => {
+		it('decodes a URI component', () => {
 			expect(getSafeDecodedURIComponent('test%20test')).toEqual(
 				'test test'
 			);
 		});
 
-		it('should return the original string if decoding fails', () => {
+		it('returns the original string if decoding fails', () => {
 			expect(getSafeDecodedURIComponent('%E0%A4%A')).toEqual('%E0%A4%A');
 		});
 
-		it('should return an empty string if value is undefined', () => {
+		it('returns an empty string if value is undefined', () => {
 			expect(getSafeDecodedURIComponent(undefined)).toEqual('');
 		});
 
-		it('should return an empty string if value is null', () => {
+		it('returns an empty string if value is null', () => {
 			expect(getSafeDecodedURIComponent(null)).toEqual('');
 		});
 
-		it('should return an empty string if value is not a string', () => {
+		it('returns an empty string if value is not a string', () => {
 			expect(getSafeDecodedURIComponent(123)).toEqual('');
 		});
 	});
 
 	describe('formatStringToLowercase', () => {
-		it('should format a string to lowercase', () => {
+		it('formats a string to lowercase', () => {
 			const text = '   THIS IS A NOT LOWERCASE TEXT   ';
 			const lowercaseText = formatStringToLowercase(text);
 
@@ -54,14 +54,14 @@ describe('util', () => {
 	});
 
 	describe('getAlignPosition', () => {
-		it('should return an align position top when it dont have a suggested position', () => {
+		it('returns an align position top when it dont have a suggested position', () => {
 			const source = document.createElement('div');
 			const target = document.createElement('div');
 
 			expect(getAlignPosition(source, target)).toEqual('top');
 		});
 
-		it('should return an align position bottom when it have a suggested position', () => {
+		it('returns an align position bottom when it have a suggested position', () => {
 			const source = document.createElement('div');
 			const target = document.createElement('div');
 
@@ -72,29 +72,29 @@ describe('util', () => {
 	});
 
 	describe('getInitials', () => {
-		it('should return uppercased initials for a full name', () => {
+		it('returns uppercased initials for a full name', () => {
 			expect(getInitials('Adriano Interaminense')).toEqual('AI');
 		});
 
-		it('should cap the result at three initials', () => {
+		it('caps the result at three initials', () => {
 			expect(getInitials('Foo Bar Baz Qux')).toEqual('FBB');
 		});
 
-		it('should return an empty string when name is undefined', () => {
+		it('returns an empty string when name is undefined', () => {
 			expect(getInitials(undefined)).toEqual('');
 		});
 
-		it('should return an empty string when name is null', () => {
+		it('returns an empty string when name is null', () => {
 			expect(getInitials(null)).toEqual('');
 		});
 
-		it('should return an empty string when no argument is provided', () => {
+		it('returns an empty string when no argument is provided', () => {
 			expect(getInitials()).toEqual('');
 		});
 	});
 
 	describe('getPercentage', () => {
-		it('should convert number to percent passing current number and total number', () => {
+		it('converts number to percent passing current number and total number', () => {
 			const number1 = 50;
 			const number2 = 1000;
 			const percent = getPercentage(number1, number2);
@@ -102,7 +102,7 @@ describe('util', () => {
 			expect(percent).toEqual(5);
 		});
 
-		it('should return number 0 if number is invalid, passing current number and total number', () => {
+		it('returns number 0 if number is invalid, passing current number and total number', () => {
 			const number1 = 0;
 			const number2 = 0;
 			const percent = getPercentage(number1, number2);
@@ -171,7 +171,7 @@ describe('util', () => {
 	});
 
 	describe('isEllipisActive', () => {
-		it('should return true if is an ellipsis', () => {
+		it('returns true if is an ellipsis', () => {
 			const event = {
 				target: {
 					offsetWidth: 100,
@@ -184,21 +184,21 @@ describe('util', () => {
 	});
 
 	describe('truncateText', () => {
-		it('should truncate the text', () => {
+		it('truncates the text', () => {
 			const text = 'this is a text that should be truncate';
 			const truncatedText = truncateText(text, 25);
 
 			expect(truncatedText).toEqual('this is a text that sh...');
 		});
 
-		it('should truncate the text by adding a dot at the end of the text', () => {
+		it('truncates the text by adding a dot at the end of the text', () => {
 			const text = 'this is a text that should be truncate';
 			const truncatedText = truncateText(text, 25, '.');
 
 			expect(truncatedText).toEqual('this is a text that shou.');
 		});
 
-		it('should truncate the text when it reaches 100 letters', () => {
+		it('truncates the text when it reaches 100 letters', () => {
 			const text =
 				'this is a text that should be truncate, this is a text that should be truncate, this is a text that should be truncate';
 			const truncatedText = truncateText(text);
@@ -208,7 +208,7 @@ describe('util', () => {
 			);
 		});
 
-		it('should not truncate text', () => {
+		it('does not truncate text', () => {
 			const text = 'this is a not truncate text';
 			const truncatedText = truncateText(text, 30);
 

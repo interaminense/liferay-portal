@@ -18,7 +18,8 @@ const AC_LANG_PATH = path.resolve(
 );
 
 const DXP_LANG_PATH = path.resolve(
-	'../../../../../',
+	'../../../../',
+	'modules',
 	'apps',
 	'portal-language',
 	'portal-language-lang',
@@ -37,7 +38,7 @@ function getKeys(langPath) {
 
 		keys = properties.parse(buffer.toString('utf8'));
 	}
-	catch (e) {
+	catch (error) {
 
 		// eslint-disable-next-line no-console
 		console.error(`Failed to read lang key file: ${langPath}`);

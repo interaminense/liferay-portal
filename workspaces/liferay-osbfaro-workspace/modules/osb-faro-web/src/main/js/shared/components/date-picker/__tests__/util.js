@@ -9,7 +9,7 @@ import * as Util from '../util';
 
 describe('Util', () => {
 	describe('isAboveMaxRange', () => {
-		it('should return true if the date is above the max range', () => {
+		it('returns true if the date is above the max range', () => {
 			expect(
 				Util.isAboveMaxRange(
 					{
@@ -21,7 +21,7 @@ describe('Util', () => {
 			).toBe(true);
 		});
 
-		it('should return false if the date is below the max range', () => {
+		it('returns false if the date is below the max range', () => {
 			expect(
 				Util.isAboveMaxRange(
 					{
@@ -33,11 +33,11 @@ describe('Util', () => {
 			).toBe(false);
 		});
 
-		it('should return false if the date is not a range', () => {
+		it('returns false if the date is not a range', () => {
 			expect(Util.isAboveMaxRange(moment(0), 365)).toBe(false);
 		});
 
-		it('should return false if maxRange is not provided', () => {
+		it('returns false if maxRange is not provided', () => {
 			expect(Util.isAboveMaxRange(moment(0))).toBe(false);
 		});
 	});
@@ -60,7 +60,7 @@ describe('Util', () => {
 	});
 
 	describe('isInRange', () => {
-		it('should return true if the date is in the range', () => {
+		it('returns true if the date is in the range', () => {
 			expect(
 				Util.isInRange(
 					{
@@ -72,7 +72,7 @@ describe('Util', () => {
 			).toBe(true);
 		});
 
-		it('should return false if the date is not in the range', () => {
+		it('returns false if the date is not in the range', () => {
 			expect(
 				Util.isInRange(
 					{
@@ -111,7 +111,7 @@ describe('Util', () => {
 	});
 
 	describe('updateRange', () => {
-		it('should update an empty range object with a new value', () => {
+		it('updates an empty range object with a new value', () => {
 			expect(
 				Util.updateRange({end: null, start: null}, moment(0))
 			).toMatchObject({
@@ -120,7 +120,7 @@ describe('Util', () => {
 			});
 		});
 
-		it('should update a half range object with an end', () => {
+		it('updates a half range object with an end', () => {
 			expect(
 				Util.updateRange({end: null, start: moment(0)}, moment(23))
 			).toMatchObject({
@@ -129,7 +129,7 @@ describe('Util', () => {
 			});
 		});
 
-		it('should set the new start of the range', () => {
+		it('sets the new start of the range', () => {
 			const newRange = Util.updateRange(
 				{end: moment(200), start: moment(100)},
 				moment(50)
@@ -139,7 +139,7 @@ describe('Util', () => {
 			expect(newRange.start.milliseconds()).toBe(50);
 		});
 
-		it('should swap the start to end if the new end is before', () => {
+		it('swaps the start to end if the new end is before', () => {
 			const newRange = Util.updateRange(
 				{end: null, start: moment(100)},
 				moment(50)

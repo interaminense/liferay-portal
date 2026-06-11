@@ -51,7 +51,7 @@ const Wrapper = ({
 );
 
 describe('ReviewSyncedDataStep', () => {
-	it('should render', () => {
+	it('renders', () => {
 		const {container} = render(
 			<Wrapper>
 				<ReviewSyncedDataStep onNext={jest.fn()} onPrev={jest.fn()} />

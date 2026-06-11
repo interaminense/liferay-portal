@@ -624,8 +624,8 @@ export function mockMembershipChange(seed = 0, data = {}) {
 		individualEmail: 'test@faro.io',
 		individualId: `id${seed}`,
 		individualName: `Test${seed}`,
-		individualsCount: 1,
 		individualSegmentId: `segmentid${seed}`,
+		individualsCount: 1,
 		operation: 'ADDED',
 		...data,
 	};
@@ -1116,80 +1116,87 @@ export function getDummyBreakdownData(event, breakdowns, order) {
 	};
 }
 
-export const mockBreakdownData = (
+export const mockBreakdownData = function mockBreakdownData(
 	comparePrevious = false,
 	compareSegment = false,
 	compareEvent = false
-) => ({
-	breakdownItems: [
-		{
-			breakdownItems: [
-				{
-					breakdownItems: [
-						{
-							name: 'All Individuals',
-							value: 1717,
-							...(comparePrevious ? {previousValue: 2633} : {}),
-						},
-						...(compareSegment
-							? [
-									{
-										name: 'Segmented',
-										value: 1650,
-										...(comparePrevious
-											? {previousValue: 2400}
-											: {}),
-									},
-								]
-							: []),
-					],
-					leafNode: true,
-					name: 'View Article',
-					value: 3367,
-					...(comparePrevious ? {previousValue: 5033} : {}),
-				},
-
-				...(compareEvent
-					? [
+) {
+	return {
+		breakdownItems: [
+			{
+				breakdownItems: [
+					{
+						breakdownItems: [
 							{
-								breakdownItems: [
-									{
-										name: 'All Individuals',
-										value: 700,
-										...(comparePrevious
-											? {previousValue: 800}
-											: {}),
-									},
-									...(compareSegment
-										? [
-												{
-													name: 'Segmented',
-													value: 500,
-													...(comparePrevious
-														? {previousValue: 700}
-														: {}),
-												},
-											]
-										: []),
-								],
-								leafNode: true,
-								name: 'Read Article',
-								value: 1200,
+								name: 'All Individuals',
+								value: 1717,
 								...(comparePrevious
-									? {previousValue: 1500}
+									? {previousValue: 2633}
 									: {}),
 							},
-						]
-					: []),
-			],
-			leafNode: false,
-			name: 'articleTitle [0]',
-			value: 3367,
-			...(comparePrevious ? {previousValue: 5033} : {}),
-		},
-	],
-	count: 1,
-	page: 1,
-	value: 5033,
-	...(comparePrevious ? {previousValue: 2400} : {}),
-});
+							...(compareSegment
+								? [
+										{
+											name: 'Segmented',
+											value: 1650,
+											...(comparePrevious
+												? {previousValue: 2400}
+												: {}),
+										},
+									]
+								: []),
+						],
+						leafNode: true,
+						name: 'View Article',
+						value: 3367,
+						...(comparePrevious ? {previousValue: 5033} : {}),
+					},
+
+					...(compareEvent
+						? [
+								{
+									breakdownItems: [
+										{
+											name: 'All Individuals',
+											value: 700,
+											...(comparePrevious
+												? {previousValue: 800}
+												: {}),
+										},
+										...(compareSegment
+											? [
+													{
+														name: 'Segmented',
+														value: 500,
+														...(comparePrevious
+															? {
+																	previousValue: 700,
+																}
+															: {}),
+													},
+												]
+											: []),
+									],
+									leafNode: true,
+									name: 'Read Article',
+									value: 1200,
+									...(comparePrevious
+										? {previousValue: 1500}
+										: {}),
+								},
+							]
+						: []),
+				],
+				leafNode: false,
+				name: 'articleTitle [0]',
+				value: 3367,
+				...(comparePrevious ? {previousValue: 5033} : {}),
+			},
+		],
+
+		count: 1,
+		page: 1,
+		value: 5033,
+		...(comparePrevious ? {previousValue: 2400} : {}),
+	};
+};

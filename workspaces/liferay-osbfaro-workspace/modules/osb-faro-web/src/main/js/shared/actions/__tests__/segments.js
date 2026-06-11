@@ -9,7 +9,7 @@ import {fetchSegment} from '../segments';
 
 describe('Segments', () => {
 	describe('fetchSegment', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchSegment('123');
 
 			expect(isFSA(action)).toBe(true);

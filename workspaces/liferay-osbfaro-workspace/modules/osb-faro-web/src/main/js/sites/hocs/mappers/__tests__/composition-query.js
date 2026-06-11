@@ -35,7 +35,7 @@ const mockProps = {
 
 describe('Composition Query Mapper', () => {
 	describe('getMapResultToProps', () => {
-		it('should map interests list query result to props', () => {
+		it('maps interests list query result to props', () => {
 			expect(
 				getMapResultToProps(CompositionTypes.SiteInterests)({
 					data: mockData,
@@ -52,7 +52,7 @@ describe('Composition Query Mapper', () => {
 	});
 
 	describe('mapCardPropsToOptions', () => {
-		it('should map interests list query card props to options', () => {
+		it('maps interests list query card props to options', () => {
 			const rangeKey = '30';
 			const channelId = '321';
 
@@ -68,7 +68,7 @@ describe('Composition Query Mapper', () => {
 					variables: expect.objectContaining({
 						channelId,
 						rangeEnd: null,
-						rangeKey: parseInt(rangeKey),
+						rangeKey: parseInt(rangeKey, 10),
 						rangeStart: null,
 						size: 5,
 						start: 0,
@@ -79,7 +79,7 @@ describe('Composition Query Mapper', () => {
 	});
 
 	describe('mapPropsToOptions', () => {
-		it('should map interests list query props to options', () => {
+		it('maps interests list query props to options', () => {
 			const {
 				delta,
 				rangeSelectors: {rangeKey},
@@ -89,8 +89,8 @@ describe('Composition Query Mapper', () => {
 				expect.objectContaining({
 					variables: expect.objectContaining({
 						channelId,
-						rangeKey: parseInt(rangeKey),
-						size: parseInt(delta),
+						rangeKey: parseInt(rangeKey, 10),
+						size: parseInt(delta, 10),
 						start: 5,
 					}),
 				})

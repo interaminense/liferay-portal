@@ -40,8 +40,8 @@ jest.mock('recharts', () => {
 			children,
 			...props
 		}: {
-			children: React.ReactNode;
 			active?: boolean;
+			children: React.ReactNode;
 		}) => {
 			if (props.active) {
 				tooltipEnabled();
@@ -92,7 +92,7 @@ const WrappedComponent = ({queryProps}: {queryProps: any}) => (
 );
 
 describe('AudienceReport', () => {
-	it('should render', async () => {
+	it('renders', async () => {
 		const {container} = render(
 			<WrappedComponent
 				queryProps={{
@@ -107,7 +107,7 @@ describe('AudienceReport', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render a tooltip when donuts mouse over', async () => {
+	it('renders a tooltip when donuts mouse over', async () => {
 		const {container} = render(
 			<WrappedComponent
 				queryProps={{

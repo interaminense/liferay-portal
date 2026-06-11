@@ -12,7 +12,7 @@ exports[`AttributeFilterChip render 1`] = `
         class="chip-root d-flex align-items-center justify-content-between attribute-chip-root"
       >
         <button
-          class="button-root edit-attribute-button d-flex btn btn-unstyled"
+          class="button-root d-flex edit-attribute-button btn btn-unstyled"
           type="button"
         >
           <div

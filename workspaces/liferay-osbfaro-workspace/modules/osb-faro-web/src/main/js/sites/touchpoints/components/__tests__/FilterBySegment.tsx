@@ -47,7 +47,7 @@ const Wrapper = ({
 describe('FilterBySegment', () => {
 	afterEach(cleanup);
 
-	it('should render', async () => {
+	it('renders', async () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [MOCK_SEGMENT('123', 'Viewed Page')],
@@ -77,7 +77,7 @@ describe('FilterBySegment', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should open dropdown w/ no segments empty state', async () => {
+	it('opens dropdown w/ no segments empty state', async () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [],
@@ -108,7 +108,7 @@ describe('FilterBySegment', () => {
 		expect(screen.getByText('There are no segments.')).toBeInTheDocument();
 	});
 
-	it('should open dropdown w/ a list of segments', async () => {
+	it('opens dropdown w/ a list of segments', async () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [
@@ -149,7 +149,7 @@ describe('FilterBySegment', () => {
 		expect(screen.getByText('Viewed Web Content')).toBeInTheDocument();
 	});
 
-	it('should open dropdown w/ no segments found empty state', async () => {
+	it('opens dropdown w/ no segments found empty state', async () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [MOCK_SEGMENT('123', 'Viewed Page')],
@@ -188,7 +188,7 @@ describe('FilterBySegment', () => {
 		).toBeInTheDocument();
 	});
 
-	it('should open dropdown w/ segments and select one of them', async () => {
+	it('opens dropdown w/ segments and select one of them', async () => {
 		const onFilterChange = jest.fn();
 
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
@@ -227,7 +227,7 @@ describe('FilterBySegment', () => {
 		expect(container.querySelector('.label')).toBeInTheDocument();
 	});
 
-	it('should open dropdown w/ segments, select one of them, and then, remove filter', async () => {
+	it('opens dropdown w/ segments, select one of them, and then, remove filter', async () => {
 		const onFilterChange = jest.fn();
 
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
@@ -270,7 +270,7 @@ describe('FilterBySegment', () => {
 		expect(onFilterChange).toHaveBeenCalledWith(null);
 	});
 
-	it('should open dropdown w/ segment disabled if there are no views', async () => {
+	it('opens dropdown w/ segment disabled if there are no views', async () => {
 		const onFilterChange = jest.fn();
 
 		(API.individualSegment.search as jest.Mock).mockReturnValue(

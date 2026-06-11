@@ -41,7 +41,7 @@ exports[`AccessTokenList should display the "Generate Token" card  above the tab
             data-testid="row-token-4ABC"
           >
             <span
-              class="text-secondary mr-1"
+              class="mr-1 text-secondary"
             >
               Token Ending In
             </span>
@@ -376,7 +376,7 @@ exports[`AccessTokenList should render 1`] = `
                 class="d-flex"
               >
                 <h3
-                  class="title-text text-truncate"
+                  class="text-truncate title-text"
                 >
                   <span
                     class="text-truncate"
@@ -481,7 +481,7 @@ exports[`AccessTokenList should render 1`] = `
                             data-testid="row-token-4ABC"
                           >
                             <span
-                              class="text-secondary mr-1"
+                              class="mr-1 text-secondary"
                             >
                               Token Ending In
                             </span>
@@ -605,7 +605,7 @@ exports[`AccessTokenList should show the generated token in a list and the "Gene
             data-testid="row-token-4ABC"
           >
             <span
-              class="text-secondary mr-1"
+              class="mr-1 text-secondary"
             >
               Token Ending In
             </span>

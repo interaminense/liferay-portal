@@ -38,7 +38,7 @@ const WrappedComponent = ({reports, ...otherProps}: any) => {
 };
 
 describe('EmailReports', () => {
-	it('should render', async () => {
+	it('renders', async () => {
 		const {container} = render(<WrappedComponent />);
 
 		await waitForLoadingToBeRemoved(container);
@@ -46,7 +46,7 @@ describe('EmailReports', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render with config btn enabled', async () => {
+	it('renders with config btn enabled', async () => {
 		const {container} = render(<WrappedComponent sitesSynced />);
 
 		await waitForLoadingToBeRemoved(container);
@@ -58,7 +58,7 @@ describe('EmailReports', () => {
 		expect(configBtn).toBeEnabled();
 	});
 
-	it('should render email report message w/ status disabled', async () => {
+	it('renders email report message w/ status disabled', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				reports={{
@@ -69,10 +69,10 @@ describe('EmailReports', () => {
 
 		await waitForLoadingToBeRemoved(container);
 
-		expect(getByText('Email Reports: Disabled'));
+		expect(getByText('Email Reports: Disabled')).toBeInTheDocument();
 	});
 
-	it('should render email report message w/ status enabled', async () => {
+	it('renders email report message w/ status enabled', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				reports={{
@@ -83,10 +83,10 @@ describe('EmailReports', () => {
 
 		await waitForLoadingToBeRemoved(container);
 
-		expect(getByText('Email Reports: Enabled'));
+		expect(getByText('Email Reports: Enabled')).toBeInTheDocument();
 	});
 
-	it('should render with config btn disabled', async () => {
+	it('renders with config btn disabled', async () => {
 		const {container} = render(<WrappedComponent />);
 
 		await waitForLoadingToBeRemoved(container);

@@ -11,7 +11,7 @@ describe('AccountEventMetricQuery', () => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		(AccountEventMetricQuery as any).loc?.source?.body ?? '';
 
-	it('should include includeWebhookEvents', () => {
+	it('includes includeWebhookEvents', () => {
 		expect(queryString).toContain('includeWebhookEvents: true');
 	});
 });

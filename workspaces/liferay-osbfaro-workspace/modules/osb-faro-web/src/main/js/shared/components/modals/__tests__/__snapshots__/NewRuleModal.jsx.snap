@@ -126,7 +126,7 @@ exports[`NewRuleModal should render 1`] = `
                 </div>
               </div>
               <div
-                class="find-matches-button-container d-flex flex-column justify-content-center"
+                class="d-flex find-matches-button-container flex-column justify-content-center"
               >
                 <button
                   class="button-root btn btn-secondary"

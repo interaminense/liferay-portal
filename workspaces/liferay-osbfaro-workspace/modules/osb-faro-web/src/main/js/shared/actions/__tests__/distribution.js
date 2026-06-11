@@ -12,7 +12,7 @@ import {
 
 describe('Distribution', () => {
 	describe('fetchDistribution', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchDistribution({});
 
 			expect(isFSA(action)).toBe(true);
@@ -21,7 +21,7 @@ describe('Distribution', () => {
 	});
 
 	describe('fetchIndividualsDistribution', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchIndividualsDistribution({});
 
 			expect(isFSA(action)).toBe(true);

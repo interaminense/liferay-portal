@@ -28,7 +28,7 @@ const data = [
 describe('Legend', () => {
 	afterEach(cleanup);
 
-	it('should render a Legend component', () => {
+	it('renders a Legend component', () => {
 		const {container} = render(<Legend data={data} />);
 
 		expect(container).toMatchSnapshot();

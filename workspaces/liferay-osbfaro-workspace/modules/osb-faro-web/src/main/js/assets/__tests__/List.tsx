@@ -16,6 +16,10 @@ import {ChannelContext} from 'shared/context/channel';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {mockChannelContext} from 'test/mock-channel-context';
 
+// Obtain the mocked useHistory so we can configure it per test.
+
+import mockStore from 'test/mock-store';
+
 jest.unmock('react-dom');
 
 jest.mock('@liferay/frontend-data-set-web', () => ({
@@ -253,10 +257,6 @@ const renderList = (
 		</Provider>
 	);
 
-// Obtain the mocked useHistory so we can configure it per test.
-
-import mockStore from 'test/mock-store';
-
 describe('List', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -267,7 +267,7 @@ describe('List', () => {
 	afterEach(cleanup);
 
 	describe('empty state', () => {
-		it('should pass the correct title to the FDS empty state', () => {
+		it('passes the correct title to the FDS empty state', () => {
 			renderList();
 
 			expect(
@@ -275,7 +275,7 @@ describe('List', () => {
 			).toHaveTextContent('There are no assets found.');
 		});
 
-		it('should include the check-back-later text in the empty state description', () => {
+		it('includes the check-back-later text in the empty state description', () => {
 			renderList();
 
 			expect(
@@ -285,7 +285,7 @@ describe('List', () => {
 			);
 		});
 
-		it('should render a learn-more-about-assets link in the empty state description', () => {
+		it('renders a learn-more-about-assets link in the empty state description', () => {
 			renderList();
 
 			const link = screen.getByRole('link', {
@@ -302,25 +302,25 @@ describe('List', () => {
 	});
 
 	describe('rendering', () => {
-		it('should render without crashing', () => {
+		it('renders without crashing', () => {
 			const {container} = renderList();
 
 			expect(container).toBeInTheDocument();
 		});
 
-		it('should render the page title "Assets"', () => {
+		it('renders the page title "Assets"', () => {
 			renderList();
 
 			expect(screen.getByText('Assets')).toBeInTheDocument();
 		});
 
-		it('should render the FrontendDataSet component', () => {
+		it('renders the FrontendDataSet component', () => {
 			renderList();
 
 			expect(screen.getByTestId('fds-component')).toBeInTheDocument();
 		});
 
-		it('should render the FrontendDataSet with id "assetTable"', () => {
+		it('renders the FrontendDataSet with id "assetTable"', () => {
 			renderList();
 
 			expect(screen.getByTestId('fds-component')).toHaveAttribute(
@@ -329,7 +329,7 @@ describe('List', () => {
 			);
 		});
 
-		it('should pass the mimeType filter to FrontendDataSet', () => {
+		it('passes the mimeType filter to FrontendDataSet', () => {
 			renderList();
 
 			const filters = JSON.parse(
@@ -346,7 +346,7 @@ describe('List', () => {
 			expect(mimeTypeFilter.apiURL).toContain('asset-summary-mime-types');
 		});
 
-		it('should render the DropdownRangeKey', () => {
+		it('renders the DropdownRangeKey', () => {
 			renderList();
 
 			expect(
@@ -354,7 +354,7 @@ describe('List', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should match the snapshot', () => {
+		it('matches the snapshot', () => {
 			const {container} = renderList();
 
 			expect(container).toMatchSnapshot();
@@ -362,7 +362,7 @@ describe('List', () => {
 	});
 
 	describe('initial range selector state', () => {
-		it('should default to Last30Days when no query string is present', () => {
+		it('defaults to Last30Days when no query string is present', () => {
 			renderList();
 
 			expect(screen.getByTestId('current-range-key')).toHaveTextContent(
@@ -370,7 +370,7 @@ describe('List', () => {
 			);
 		});
 
-		it('should pick up rangeKey from the URL query string', () => {
+		it('picks up rangeKey from the URL query string', () => {
 
 			// The real useQueryRangeSelectors reads from the URL; we provide a
 			// URL carrying a rangeKey to verify the initial state is seeded
@@ -387,7 +387,7 @@ describe('List', () => {
 	});
 
 	describe('onRangeSelectorChange', () => {
-		it('should call history.push when the range selector changes', () => {
+		it('calls history.push when the range selector changes', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('change-range-btn'));
@@ -395,7 +395,7 @@ describe('List', () => {
 			expect(mockHistoryPush).toHaveBeenCalledTimes(1);
 		});
 
-		it('should update the displayed range key after a change', () => {
+		it('updates the displayed range key after a change', () => {
 
 			// List calls setRangeSelectors in the onRangeSelectorChange
 			// handler, which causes a re-render passing the new rangeSelectors
@@ -411,7 +411,7 @@ describe('List', () => {
 			);
 		});
 
-		it('should include the new rangeKey in the URL pushed to history', () => {
+		it('includes the new rangeKey in the URL pushed to history', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('change-range-btn'));
@@ -421,7 +421,7 @@ describe('List', () => {
 			expect(pushedPath).toContain(RangeKeyTimeRanges.Last7Days);
 		});
 
-		it('should reset page to DEFAULT_CUR (1) when the range changes', () => {
+		it('resets page to DEFAULT_CUR (1) when the range changes', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('change-range-btn'));
@@ -433,7 +433,7 @@ describe('List', () => {
 			expect(pushedPath).toContain('page=1');
 		});
 
-		it('should strip rangeEnd and rangeStart from the URL when switching to a preset range', () => {
+		it('strips rangeEnd and rangeStart from the URL when switching to a preset range', () => {
 
 			// Start with a custom range in the URL so the strip logic is
 			// exercised by removeUriQueryParam.
@@ -451,7 +451,7 @@ describe('List', () => {
 			expect(pushedPath).not.toContain('rangeStart=2024-01-01');
 		});
 
-		it('should include rangeEnd and rangeStart in the URL for a custom range', () => {
+		it('includes rangeEnd and rangeStart in the URL for a custom range', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('change-range-custom-btn'));
@@ -465,7 +465,7 @@ describe('List', () => {
 			expect(pushedPath).toContain('rangeStart=2024-01-01');
 		});
 
-		it('should update the displayed range key to CustomRange after a custom range change', () => {
+		it('updates the displayed range key to CustomRange after a custom range change', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('change-range-custom-btn'));
@@ -477,7 +477,7 @@ describe('List', () => {
 	});
 
 	describe('breadcrumbs', () => {
-		it('should build the home breadcrumb using the selected channel name', () => {
+		it('builds the home breadcrumb using the selected channel name', () => {
 
 			// mockChannelContext() returns selectedChannel = mockChannel(1),
 			// whose name is "Channel 1".
@@ -496,7 +496,7 @@ describe('List', () => {
 			);
 		});
 
-		it('should pass null label when no channel is selected', () => {
+		it('passes null label when no channel is selected', () => {
 
 			// eslint-disable-next-line @typescript-eslint/no-var-requires
 			const breadcrumbs = require('shared/util/breadcrumbs');
@@ -527,7 +527,7 @@ describe('List', () => {
 	});
 
 	describe('FDS remount key', () => {
-		it('should reflect the updated rangeKey in component state after change, triggering FDS remount', () => {
+		it('reflects the updated rangeKey in component state after change, triggering FDS remount', () => {
 
 			// List passes key={Object.values(rangeSelectors).join()} to FDS.
 			// After setRangeSelectors is called the key changes, forcing FDS
@@ -545,7 +545,7 @@ describe('List', () => {
 	});
 
 	describe('info panel', () => {
-		it('should display the asset title in the panel header when opened', () => {
+		it('displays the asset title in the panel header when opened', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('trigger-info-panel'));
@@ -553,7 +553,7 @@ describe('List', () => {
 			expect(screen.getByText('Test Asset Title')).toBeInTheDocument();
 		});
 
-		it('should fall back to asset id when assetTitle is absent', () => {
+		it('falls back to asset id when assetTitle is absent', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('trigger-info-panel-no-title'));
@@ -563,7 +563,7 @@ describe('List', () => {
 			);
 		});
 
-		it('should render AssetIcon when mimeType is present', () => {
+		it('renders AssetIcon when mimeType is present', () => {
 			const {container} = renderList();
 
 			fireEvent.click(screen.getByTestId('trigger-info-panel'));
@@ -574,7 +574,7 @@ describe('List', () => {
 			expect(container.querySelector('.sticker')).toBeInTheDocument();
 		});
 
-		it('should render a default AssetIcon when mimeType is absent', () => {
+		it('renders a default AssetIcon when mimeType is absent', () => {
 			const {container} = renderList();
 
 			fireEvent.click(screen.getByTestId('trigger-info-panel-no-mime'));
@@ -582,7 +582,7 @@ describe('List', () => {
 			expect(container.querySelector('.sticker')).toBeInTheDocument();
 		});
 
-		it('should add the sidebar-opened class to the page when the panel is open', () => {
+		it('adds the sidebar-opened class to the page when the panel is open', () => {
 			const {container} = renderList();
 
 			fireEvent.click(screen.getByTestId('trigger-info-panel'));
@@ -592,13 +592,13 @@ describe('List', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should not have the sidebar-opened class before the panel is opened', () => {
+		it('does not have the sidebar-opened class before the panel is opened', () => {
 			const {container} = renderList();
 
 			expect(container.querySelector('.sidebar-opened')).toBeNull();
 		});
 
-		it('should remove the sidebar-opened class after the panel is closed', () => {
+		it('removes the sidebar-opened class after the panel is closed', () => {
 			const {container} = renderList();
 
 			fireEvent.click(screen.getByTestId('trigger-info-panel'));
@@ -621,7 +621,7 @@ describe('List', () => {
 			}
 		});
 
-		it('should render the Categorization tab', () => {
+		it('renders the Categorization tab', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('trigger-info-panel'));
@@ -631,7 +631,7 @@ describe('List', () => {
 	});
 
 	describe('CategoriesInfoPanelContent', () => {
-		it('should display empty state when there are no categories', () => {
+		it('displays empty state when there are no categories', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('trigger-info-panel'));
@@ -642,7 +642,7 @@ describe('List', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should group categories under their vocabulary name', () => {
+		it('groups categories under their vocabulary name', () => {
 			renderList();
 
 			fireEvent.click(
@@ -655,7 +655,7 @@ describe('List', () => {
 			expect(screen.getByText('Category Two')).toBeInTheDocument();
 		});
 
-		it('should not render a vocabulary that has no matching categories', () => {
+		it('does not render a vocabulary that has no matching categories', () => {
 			renderList();
 
 			fireEvent.click(
@@ -667,7 +667,7 @@ describe('List', () => {
 			expect(screen.queryByText('Genres')).not.toBeInTheDocument();
 		});
 
-		it('should group all categories from the same vocabulary under one header', () => {
+		it('groups all categories from the same vocabulary under one header', () => {
 			renderList();
 
 			fireEvent.click(
@@ -680,7 +680,7 @@ describe('List', () => {
 			expect(screen.getByText('Category Two')).toBeInTheDocument();
 		});
 
-		it('should not show empty state when categories are present', () => {
+		it('does not show empty state when categories are present', () => {
 			renderList();
 
 			fireEvent.click(
@@ -695,7 +695,7 @@ describe('List', () => {
 	});
 
 	describe('TagsInfoPanelContent', () => {
-		it('should display empty state when there are no tags', () => {
+		it('displays empty state when there are no tags', () => {
 			renderList();
 
 			fireEvent.click(screen.getByTestId('trigger-info-panel'));
@@ -706,7 +706,7 @@ describe('List', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render tags as labels', () => {
+		it('renders tags as labels', () => {
 			renderList();
 
 			fireEvent.click(
@@ -717,7 +717,7 @@ describe('List', () => {
 			expect(screen.getByText('Tag One')).toBeInTheDocument();
 		});
 
-		it('should not show empty state when tags are present', () => {
+		it('does not show empty state when tags are present', () => {
 			renderList();
 
 			fireEvent.click(

@@ -9,7 +9,7 @@ import {actionTypes, clearStore} from '../store';
 
 describe('store', () => {
 	describe('clearStore', () => {
-		it('should return a clearStore action', () => {
+		it('returns a clearStore action', () => {
 			const action = clearStore();
 
 			expect(isFSA(action)).toBeTrue();

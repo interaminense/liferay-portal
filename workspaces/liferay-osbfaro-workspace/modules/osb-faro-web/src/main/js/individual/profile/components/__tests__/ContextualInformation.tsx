@@ -21,7 +21,7 @@ describe('ContextualInformation', () => {
 		timezoneOffset: '-03:00',
 	};
 
-	it('should render the snapshot', () => {
+	it('renders the snapshot', () => {
 		const {container} = render(
 			<ContextualInformation
 				contactId="contact-1"
@@ -34,7 +34,7 @@ describe('ContextualInformation', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should correctly format the time zone offset string', () => {
+	it('formats the time zone offset string correctly', () => {
 		const {getByText} = render(
 			<ContextualInformation contextData={fromJS(mockContext)} />
 		);
@@ -42,7 +42,7 @@ describe('ContextualInformation', () => {
 		expect(getByText('UTC -03:00 (AEST)')).toBeTruthy();
 	});
 
-	it('should show email and uuid when passed as props', () => {
+	it('shows email and uuid when passed as props', () => {
 		const {getByText} = render(
 			<ContextualInformation
 				contextData={fromJS({})}
@@ -55,7 +55,7 @@ describe('ContextualInformation', () => {
 		expect(getByText('1234-abcde-67890')).toBeTruthy();
 	});
 
-	it('should display the fallback dash for missing context values', () => {
+	it('displays the fallback dash for missing context values', () => {
 		const {getAllByText} = render(
 			<ContextualInformation contextData={fromJS({})} />
 		);

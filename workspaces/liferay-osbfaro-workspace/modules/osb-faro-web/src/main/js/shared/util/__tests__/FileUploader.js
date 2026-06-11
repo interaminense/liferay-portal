@@ -40,7 +40,7 @@ describe('FileUploader', () => {
 		expect(document.body.innerHTML).toContain('hidden');
 	});
 
-	it('should remove input', () => {
+	it('removes input', () => {
 		uploader = new FileUploader().render();
 
 		uploader.destroy();
@@ -48,19 +48,19 @@ describe('FileUploader', () => {
 		expect(document.body.innerHTML).toBe('');
 	});
 
-	it('should set multiple if maxFileCount is more than one', () => {
+	it('sets multiple if maxFileCount is more than one', () => {
 		uploader = new FileUploader({maxFileCount: 2}).render();
 
 		expect(uploader._inputNode.multiple).toBe(true);
 	});
 
-	it('should not set multiple if maxFileCount is one', () => {
+	it('does not set multiple if maxFileCount is one', () => {
 		uploader = new FileUploader({maxFileCount: 1}).render();
 
 		expect(uploader._inputNode.multiple).toBe(false);
 	});
 
-	it('should set constants from config', () => {
+	it('sets constants from config', () => {
 		const CONSTANTS = {
 			onChange: jest.fn(),
 			onError: jest.fn(),
@@ -74,7 +74,7 @@ describe('FileUploader', () => {
 		expect(uploader.uploadURL).toBe(CONSTANTS.uploadURL);
 	});
 
-	it('should trigger file selector', () => {
+	it('triggers file selector', () => {
 		const spy = jest.fn();
 
 		uploader = new FileUploader().render();
@@ -86,7 +86,7 @@ describe('FileUploader', () => {
 		expect(spy).toBeCalled();
 	});
 
-	it('should not call onError', () => {
+	it('does not call onError', () => {
 		const file = mockFile('test.jpg');
 
 		const spy = jest.fn();
@@ -100,7 +100,7 @@ describe('FileUploader', () => {
 		expect(spy).not.toBeCalled();
 	});
 
-	it('should call `onChange`', () => {
+	it('calls `onChange`', () => {
 		uploader = new FileUploader({
 			onChange: jest.fn(),
 		}).render();
@@ -110,7 +110,7 @@ describe('FileUploader', () => {
 		expect(uploader.onChange).toHaveBeenCalled();
 	});
 
-	it('should call `onChange`', () => {
+	it('calls `onChange`', () => {
 		uploader = new FileUploader({
 			onChange: jest.fn(),
 		}).render();
@@ -120,7 +120,7 @@ describe('FileUploader', () => {
 		expect(uploader.onChange).toHaveBeenCalled();
 	});
 
-	it('should clear the FileUploaders value on openDialog', () => {
+	it('clears the FileUploaders value on openDialog', () => {
 		const uploaderValue = 'tests';
 
 		uploader = new FileUploader().render();
@@ -138,7 +138,7 @@ describe('FileUploader', () => {
 	});
 
 	describe('onProgress', () => {
-		it('should call onChange', () => {
+		it('calls onChange', () => {
 			const spy = jest.fn();
 
 			uploader = new FileUploader({

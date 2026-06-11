@@ -12,7 +12,7 @@ exports[`AppliedFilters should render 1`] = `
         class="font-weight-semibold mr-2 text-secondary text-uppercase"
       />
       <span
-        class="label label-secondary label-dismissible label-lg"
+        class="label label-dismissible label-lg label-secondary"
       >
         <span
           class="label-item label-item-expand"
@@ -46,7 +46,7 @@ exports[`AppliedFilters should render 1`] = `
         class="font-weight-semibold mr-2 text-secondary text-uppercase"
       />
       <span
-        class="label label-secondary label-dismissible label-lg"
+        class="label label-dismissible label-lg label-secondary"
       >
         <span
           class="label-item label-item-expand"

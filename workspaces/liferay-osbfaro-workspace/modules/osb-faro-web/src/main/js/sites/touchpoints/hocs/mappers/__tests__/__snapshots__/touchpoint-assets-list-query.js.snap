@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TouchpointsAssetsListQuery Mappers should extract items from result 1`] = `
+exports[`TouchpointsAssetsListQuery Mappers extracts items from result 1`] = `
 {
   "error": null,
   "items": [

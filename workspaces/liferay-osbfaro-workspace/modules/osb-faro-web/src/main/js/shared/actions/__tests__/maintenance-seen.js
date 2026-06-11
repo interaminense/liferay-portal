@@ -9,7 +9,7 @@ import * as actions from '../maintenance-seen';
 
 describe('Maintenance Seen Actions', () => {
 	describe('setMaintenanceSeen', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = actions.setMaintenanceSeen();
 
 			expect(isFSA(action)).toBe(true);

@@ -331,7 +331,7 @@ exports[`Event View page should render 1`] = `
                 class="d-flex"
               >
                 <h3
-                  class="title-text text-truncate"
+                  class="text-truncate title-text"
                 >
                   <span
                     class="text-truncate"
@@ -342,7 +342,7 @@ exports[`Event View page should render 1`] = `
                   </span>
                 </h3>
                 <span
-                  class="text-truncate subtitle-text ml-2"
+                  class="text-truncate ml-2 subtitle-text"
                   data-tooltip="false"
                   title=""
                 >
@@ -383,7 +383,7 @@ exports[`Event View page should render 1`] = `
                 class="card-body"
               >
                 <span
-                  class="mt-2 mb-4 w-50"
+                  class="mb-4 mt-2 w-50"
                 >
                   Use this script to start sending events to Analytics Cloud. You can customize which attributes to send with a specific event. Selecting the attributes below will generate a new sample script.
                 </span>

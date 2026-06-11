@@ -93,7 +93,7 @@ const WrappedComponent = ({empty = false}) => (
 describe('WebContentMetricCard', () => {
 	afterEach(cleanup);
 
-	it('should render', async () => {
+	it('renders', async () => {
 		const {getAllByText, getByText} = render(<WrappedComponent />);
 
 		await waitForLoadingToBeRemoved(document.body);
@@ -102,7 +102,7 @@ describe('WebContentMetricCard', () => {
 		expect(getAllByText('Views').length).toBeGreaterThan(0);
 	});
 
-	it('should render with empty state', async () => {
+	it('renders with empty state', async () => {
 		const {container, getByText} = render(<WrappedComponent empty />);
 
 		await waitForLoadingToBeRemoved(container);

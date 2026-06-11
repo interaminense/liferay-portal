@@ -39,7 +39,7 @@ exports[`Individuals Dashboard renders 1`] = `
             class="align-items-center d-flex"
           >
             <h1
-              class="title text-truncate"
+              class="text-truncate title"
             >
               <span
                 class="text-truncate"

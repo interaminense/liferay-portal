@@ -39,7 +39,7 @@ describe('AccountInfo', () => {
 	afterEach(cleanup);
 
 	describe('rendering', () => {
-		it('should render the card title', () => {
+		it('renders the card title', () => {
 			render(<AccountInfo account={mockAccount} />);
 
 			expect(
@@ -47,7 +47,7 @@ describe('AccountInfo', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render every info label', () => {
+		it('renders every info label', () => {
 			render(<AccountInfo account={mockAccount} />);
 
 			expect(screen.getByText('Account Type')).toBeInTheDocument();
@@ -57,7 +57,7 @@ describe('AccountInfo', () => {
 			expect(screen.getByText('Website')).toBeInTheDocument();
 		});
 
-		it('should render the values from the mock', () => {
+		it('renders the values from the mock', () => {
 			render(<AccountInfo account={mockAccount} />);
 
 			expect(screen.getByText('Customer')).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('AccountInfo', () => {
 			expect(screen.getByText('https://acme.com')).toBeInTheDocument();
 		});
 
-		it('should render the website value as an external link', () => {
+		it('renders the website value as an external link', () => {
 			render(<AccountInfo account={mockAccount} />);
 
 			const link = screen.getByRole('link', {
@@ -79,7 +79,7 @@ describe('AccountInfo', () => {
 			expect(link).toHaveAttribute('rel', 'noreferrer noopener');
 		});
 
-		it('should render the View All button', () => {
+		it('renders the View All button', () => {
 			render(<AccountInfo account={mockAccount} />);
 
 			expect(
@@ -89,7 +89,7 @@ describe('AccountInfo', () => {
 	});
 
 	describe('loading', () => {
-		it('should render the loading indicator and hide the content when loading is true', () => {
+		it('renders the loading indicator and hide the content when loading is true', () => {
 			const {container} = render(
 				<AccountInfo account={mockAccount} loading />
 			);
@@ -104,7 +104,7 @@ describe('AccountInfo', () => {
 	});
 
 	describe('empty state', () => {
-		it('should render the empty title and description when no account is provided', () => {
+		it('renders the empty title and description when no account is provided', () => {
 			render(<AccountInfo />);
 
 			expect(
@@ -117,7 +117,7 @@ describe('AccountInfo', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should not render the View All button when there are no attributes', () => {
+		it('does not render the View All button when there are no attributes', () => {
 			render(<AccountInfo />);
 
 			expect(
@@ -125,7 +125,7 @@ describe('AccountInfo', () => {
 			).not.toBeInTheDocument();
 		});
 
-		it('should render the empty state when the account has no resolvable attributes', () => {
+		it('renders the empty state when the account has no resolvable attributes', () => {
 			render(<AccountInfo account={{}} />);
 
 			expect(
@@ -135,7 +135,7 @@ describe('AccountInfo', () => {
 	});
 
 	describe('details modal', () => {
-		it('should not render the modal until the View All button is clicked', () => {
+		it('does not render the modal until the View All button is clicked', () => {
 			render(<AccountInfo account={mockAccount} />);
 
 			expect(
@@ -143,7 +143,7 @@ describe('AccountInfo', () => {
 			).not.toBeInTheDocument();
 		});
 
-		it('should open the modal when the View All button is clicked', () => {
+		it('opens the modal when the View All button is clicked', () => {
 			render(<AccountInfo account={mockAccount} />);
 
 			fireEvent.click(screen.getByRole('button', {name: 'View All'}));
@@ -153,7 +153,7 @@ describe('AccountInfo', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should close the modal when onClose is called', () => {
+		it('closes the modal when onClose is called', () => {
 			render(<AccountInfo account={mockAccount} />);
 
 			fireEvent.click(screen.getByRole('button', {name: 'View All'}));

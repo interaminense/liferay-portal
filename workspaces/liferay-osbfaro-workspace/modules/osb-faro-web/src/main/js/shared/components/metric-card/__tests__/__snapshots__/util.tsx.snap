@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`convertHistogramKeysToDate should convert the histogram date key strings to Date types 1`] = `
+exports[`convertHistogramKeysToDate converts the histogram date key strings to Date types 1`] = `
 [
   {
     "key": 1531699200000,
@@ -15,7 +15,7 @@ exports[`convertHistogramKeysToDate should convert the histogram date key string
 ]
 `;
 
-exports[`getMetricsChartData should return data formatted for use in a Metrics chart 1`] = `
+exports[`getMetricsChartData returns data formatted for use in a Metrics chart 1`] = `
 [
   {
     "color": "#4B9BFF",
@@ -130,7 +130,7 @@ exports[`getMetricsChartData should return data formatted for use in a Metrics c
 ]
 `;
 
-exports[`getSiteMetricsChartData should return data formatted for use in a Site Metrics chart 1`] = `
+exports[`getSiteMetricsChartData returns data formatted for use in a Site Metrics chart 1`] = `
 [
   {
     "color": "#4B9BFF",

@@ -148,7 +148,7 @@ const WrapperComponent = ({
 describe('PagePathCard', () => {
 	afterEach(cleanup);
 
-	it('should render', async () => {
+	it('renders', async () => {
 		const {container} = render(<WrapperComponent data={DATA} />);
 
 		await waitForLoadingToBeRemoved(container);
@@ -156,7 +156,7 @@ describe('PagePathCard', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render empty state', async () => {
+	it('renders empty state', async () => {
 		const {container, getByText} = render(
 			<WrapperComponent data={EMPTY_STATE_DATA} />
 		);
@@ -176,7 +176,7 @@ describe('PagePathCard', () => {
 		);
 	});
 
-	it('should render node and path with correct colors', async () => {
+	it('renders node and path with correct colors', async () => {
 		const {container} = render(<WrapperComponent data={DATA} />);
 
 		await waitForLoadingToBeRemoved(container);
@@ -231,7 +231,7 @@ describe('PagePathCard', () => {
 		});
 	});
 
-	it('should render popover when a URL is hovered', async () => {
+	it('renders popover when a URL is hovered', async () => {
 		const {container, getByText} = render(<WrapperComponent data={DATA} />);
 
 		await waitForLoadingToBeRemoved(container);
@@ -259,7 +259,7 @@ describe('PagePathCard', () => {
 		expect(getByText('5,000')).toBeInTheDocument();
 	});
 
-	it('should check if tooltip are rendered', async () => {
+	it('checks if tooltip are rendered', async () => {
 		const {container} = render(<WrapperComponent data={DATA} />);
 
 		await waitForLoadingToBeRemoved(container);
@@ -283,7 +283,7 @@ describe('PagePathCard', () => {
 		expect(nodes).toHaveLength(11);
 	});
 
-	it('should create the link with the rangeKey from dropdown', async () => {
+	it('creates the link with the rangeKey from dropdown', async () => {
 		const {container} = render(
 			<WrapperComponent
 				data={DATA}
@@ -306,7 +306,7 @@ describe('PagePathCard', () => {
 		);
 	});
 
-	it('should create the link with the rangeKey from dropdown even in a empty state', async () => {
+	it('creates the link with the rangeKey from dropdown even in a empty state', async () => {
 		const {container} = render(
 			<WrapperComponent
 				data={EMPTY_STATE_DATA}

@@ -421,7 +421,7 @@ exports[`View Channel should render 1`] = `
                 class="sites-synced-stripe-root empty"
               >
                 <div
-                  class="title d-flex align-items-center"
+                  class="align-items-center d-flex title"
                 >
                   There are  sites and  channels synced to this property.
                 </div>

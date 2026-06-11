@@ -59,7 +59,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('MembershipMetrics', () => {
-	it('should render', () => {
+	it('renders', () => {
 		const {container} = render(
 			<Provider store={mockStore()}>
 				<BrowserRouter>

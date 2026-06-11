@@ -14,26 +14,26 @@ describe('alerts', () => {
 	const timeout = false;
 
 	describe('addAlert', () => {
-		it('should return an addAlert action', () => {
+		it('returns an addAlert action', () => {
 			const action = addAlert({alertType, timeout});
 
 			expect(isFSA(action)).toBe(true);
 			expect(action.type).toBe(actionTypes.ADD_ALERT);
 		});
 
-		it('should apply a default timeout', () => {
+		it('applies a default timeout', () => {
 			const action = addAlert({alertType});
 
 			expect(typeof action).toBe('function');
 		});
 
-		it('should return a defult id', () => {
+		it('returns a defult id', () => {
 			const action = addAlert({alertType, timeout});
 
 			expect(action.payload.id).toBe('3');
 		});
 
-		it('should allow for a custom id', () => {
+		it('allows for a custom id', () => {
 			const action = addAlert({alertType, id: 'customId', timeout});
 
 			expect(action.payload.id).toBe('customId');
@@ -41,14 +41,14 @@ describe('alerts', () => {
 	});
 
 	describe('updateAlert', () => {
-		it('should return a updateAlert action', () => {
+		it('returns a updateAlert action', () => {
 			const action = updateAlert({alertType, id, timeout});
 
 			expect(isFSA(action)).toBe(true);
 			expect(action.type).toBe(actionTypes.UPDATE_ALERT);
 		});
 
-		it('should apply a default timeout', () => {
+		it('applies a default timeout', () => {
 			const action = updateAlert({alertType});
 
 			expect(typeof action).toBe('function');
@@ -56,7 +56,7 @@ describe('alerts', () => {
 	});
 
 	describe('removeAlert', () => {
-		it('should return a removeAlert action', () => {
+		it('returns a removeAlert action', () => {
 			const action = removeAlert(id);
 
 			expect(isFSA(action)).toBe(true);
@@ -64,7 +64,7 @@ describe('alerts', () => {
 		});
 	});
 
-	it('should dispatch the action after a timeout', () => {
+	it('dispatches the action after a timeout', () => {
 		const action = addAlert({alertType});
 
 		const dispatchSpy = jest.fn();
@@ -78,7 +78,7 @@ describe('alerts', () => {
 		expect(dispatchSpy).toHaveBeenCalledTimes(2);
 	});
 
-	it('should allow for a custom timeout', () => {
+	it('allows for a custom timeout', () => {
 		const action = addAlert({alertType, timeout: 300});
 
 		expect(typeof action).toBe('function');

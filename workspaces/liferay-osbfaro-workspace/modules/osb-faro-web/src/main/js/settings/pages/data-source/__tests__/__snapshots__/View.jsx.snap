@@ -1344,7 +1344,7 @@ exports[`View should render a Liferay data-source page 1`] = `
                         </li>
                       </ul>
                       <div
-                        class="navbar-form navbar-form-autofit mx-2"
+                        class="mx-2 navbar-form navbar-form-autofit"
                       >
                         <div
                           class="input-group search"
@@ -2283,7 +2283,7 @@ exports[`View should render a Salesforce data-source page 1`] = `
                         </li>
                       </ul>
                       <div
-                        class="navbar-form navbar-form-autofit mx-2"
+                        class="mx-2 navbar-form navbar-form-autofit"
                       >
                         <div
                           class="input-group search"

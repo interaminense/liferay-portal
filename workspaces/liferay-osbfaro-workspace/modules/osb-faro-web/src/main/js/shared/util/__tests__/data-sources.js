@@ -34,7 +34,7 @@ function getMockLiferayDataSource(id, config) {
 
 describe('data-sources', () => {
 	describe('dataSourceRedirectFn', () => {
-		it('should return the SETTINGS_DATA_SOURCE route if the data source state is NOT VALID', () => {
+		it('returns the SETTINGS_DATA_SOURCE route if the data source state is NOT VALID', () => {
 			const groupId = '23';
 			const id = '123';
 
@@ -50,7 +50,7 @@ describe('data-sources', () => {
 			);
 		});
 
-		it('should return null if the data source state is VALID', () => {
+		it('returns null if the data source state is VALID', () => {
 			const groupId = '23';
 			const id = '123';
 
@@ -86,7 +86,7 @@ describe('data-sources', () => {
 	});
 
 	describe('getDataSourceDisplayObject', () => {
-		it('should return the active state display object if credentials are valid, at least one configuration is valid, and active is true', () => {
+		it('returns the active state display object if credentials are valid, at least one configuration is valid, and active is true', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
 					provider: {
@@ -99,7 +99,7 @@ describe('data-sources', () => {
 			expect(result).toEqual(STATUS_DISPLAY.active);
 		});
 
-		it('should return the active display object if credentials are valid, and only analytics are configured', () => {
+		it('returns the active display object if credentials are valid, and only analytics are configured', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
 					provider: {
@@ -113,7 +113,7 @@ describe('data-sources', () => {
 			expect(result).toEqual(STATUS_DISPLAY.active);
 		});
 
-		it('should return the authenticated state display object if credentials are valid but active is false', () => {
+		it('returns the authenticated state display object if credentials are valid but active is false', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
 					state: DataSourceStates.CredentialsValid,
@@ -126,7 +126,7 @@ describe('data-sources', () => {
 			);
 		});
 
-		it('should return the invalid credentials state display object if credentials are invalid', () => {
+		it('returns the invalid credentials state display object if credentials are invalid', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
 					state: DataSourceStates.CredentialsInvalid,
@@ -138,7 +138,7 @@ describe('data-sources', () => {
 			);
 		});
 
-		it('should return the invalid credentials state display object if the state is ANALYTICS_CLIENT_CONFIGURATION_FAILURE', () => {
+		it('returns the invalid credentials state display object if the state is ANALYTICS_CLIENT_CONFIGURATION_FAILURE', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
 					state: DataSourceStates.AnalyticsClientConfigurationFailure,
@@ -150,7 +150,7 @@ describe('data-sources', () => {
 			);
 		});
 
-		it('should return the "in-progress deletion" state display object if the data source state is in deletion', () => {
+		it('returns the "in-progress deletion" state display object if the data source state is in deletion', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
 					state: DataSourceStates.InProgressDeleting,
@@ -162,7 +162,7 @@ describe('data-sources', () => {
 			);
 		});
 
-		it('should return the not configured state display object if the state does match any of the state types', () => {
+		it('returns the not configured state display object if the state does match any of the state types', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
 					state: undefined,
@@ -173,7 +173,7 @@ describe('data-sources', () => {
 			expect(result).toEqual(STATUS_DISPLAY.default);
 		});
 
-		it('should return the undefined error state display object if the state is UNDEFINED_ERROR', () => {
+		it('returns the undefined error state display object if the state is UNDEFINED_ERROR', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
 					state: DataSourceStates.UndefinedError,
@@ -188,7 +188,7 @@ describe('data-sources', () => {
 			expect(Array.isArray(result.message)).toBe(true);
 		});
 
-		it('should return the disconnected state display object if the state is DISCONNECTED', () => {
+		it('returns the disconnected state display object if the state is DISCONNECTED', () => {
 			const result = getDataSourceDisplayObject(
 				getMockLiferayDataSource(1, {
 					state: DataSourceStates.Disconnected,
@@ -204,7 +204,7 @@ describe('data-sources', () => {
 	});
 
 	describe('getIdsFromConfiguration', () => {
-		it('should return an array of numerical ids from a Map.<List.<Map>>', () => {
+		it('returns an array of numerical ids from a Map.<List.<Map>>', () => {
 			const expectedArray = range(5);
 
 			const testKey = 'testKey';
@@ -220,7 +220,7 @@ describe('data-sources', () => {
 	});
 
 	describe('getServiceAlertConfig', () => {
-		it('should return a service permission related alert props', () => {
+		it('returns a service permission related alert props', () => {
 			const result = getServiceAlertConfig(403);
 
 			expect(result).toMatchObject({
@@ -231,7 +231,7 @@ describe('data-sources', () => {
 			expect(result.message.length).toBeGreaterThan(0);
 		});
 
-		it('should return a service unresponsive related alert props', () => {
+		it('returns a service unresponsive related alert props', () => {
 			const result = getServiceAlertConfig(404);
 
 			expect(result).toMatchObject({
@@ -244,7 +244,7 @@ describe('data-sources', () => {
 	});
 
 	describe('validateUniqueName', () => {
-		it('should return a success assertion if the data source name does NOT already exist', () => {
+		it('returns a success assertion if the data source name does NOT already exist', () => {
 			expect.assertions(1);
 
 			const uniqueDataSourceName = 'barbaz';
@@ -261,7 +261,7 @@ describe('data-sources', () => {
 			});
 		});
 
-		it('should return a failure assertion if the data source name already exists', () => {
+		it('returns a failure assertion if the data source name already exists', () => {
 			expect.assertions(1);
 
 			const existingDataSourceName = 'foo';
@@ -288,7 +288,7 @@ describe('data-sources', () => {
 	});
 
 	describe('validAnalyticsConfig', () => {
-		it('should return false for csv data source types since they only have contacts', () => {
+		it('returns false for csv data source types since they only have contacts', () => {
 			const mockCSVDataSource = data.getImmutableMock(
 				DataSource,
 				data.mockCSVDataSource,
@@ -298,7 +298,7 @@ describe('data-sources', () => {
 			expect(validAnalyticsConfig(mockCSVDataSource)).toBe(false);
 		});
 
-		it('should return be able to determine if a liferay data source has a valid analyticsConfiguration', () => {
+		it('returns be able to determine if a liferay data source has a valid analyticsConfiguration', () => {
 			const withValidAnalytics = getMockLiferayDataSource(1, {
 				provider: {
 					analyticsConfiguration: {sites: [{id: '1'}]},
@@ -312,7 +312,7 @@ describe('data-sources', () => {
 			expect(validAnalyticsConfig(withInvalidAnalytics)).toBe(false);
 		});
 
-		it('should return be able to determine if a salesforce data source has a valid analyticsConfiguration', () => {
+		it('returns be able to determine if a salesforce data source has a valid analyticsConfiguration', () => {
 			const withInvalidAnalytics = data.getImmutableMock(
 				DataSource,
 				data.mockSalesforceDataSource,
@@ -324,7 +324,7 @@ describe('data-sources', () => {
 	});
 
 	describe('validContactsConfig', () => {
-		it('should return true for csv types if the status is ACTIVE', () => {
+		it('returns true for csv types if the status is ACTIVE', () => {
 			const mockCSVDataSource = data.getImmutableMock(
 				DataSource,
 				data.mockCSVDataSource,
@@ -334,7 +334,7 @@ describe('data-sources', () => {
 			expect(validContactsConfig(mockCSVDataSource)).toBe(true);
 		});
 
-		it('should return be able to determine if a liferay data source has a valid contactsConfiguration', () => {
+		it('returns be able to determine if a liferay data source has a valid contactsConfiguration', () => {
 			const withValidContacts = getMockLiferayDataSource(1, {
 				provider: {
 					contactsConfiguration: {enableAllContacts: true},
@@ -348,7 +348,7 @@ describe('data-sources', () => {
 			expect(validContactsConfig(withInvalidContacts)).toBe(false);
 		});
 
-		it('should return be able to determine if a salesforce data source has a valid contactsConfiguration', () => {
+		it('returns be able to determine if a salesforce data source has a valid contactsConfiguration', () => {
 			const withInvalidContacts = data.getImmutableMock(
 				DataSource,
 				data.mockSalesforceDataSource,

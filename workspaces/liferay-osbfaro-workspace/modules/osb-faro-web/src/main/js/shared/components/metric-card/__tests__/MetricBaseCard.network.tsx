@@ -43,7 +43,7 @@ const sharedRequestVariables = {
 	interval: 'D',
 	location: 'Any',
 	rangeEnd: null,
-	rangeKey: parseInt(RangeKeyTimeRanges.Last30Days),
+	rangeKey: parseInt(RangeKeyTimeRanges.Last30Days, 10),
 	rangeStart: null,
 };
 
@@ -144,7 +144,7 @@ const compositeMetricResult = {
 	},
 };
 
-const buildMocks = (counter: {tabs: number; metric: number}) => [
+const buildMocks = (counter: {metric: number; tabs: number}) => [
 	{
 		newData: () => {
 			counter.tabs += 1;
@@ -197,8 +197,8 @@ const renderWithProviders = (
 								metrics={metrics}
 								queries={{
 									MetricQuery: SitesMetricQuery,
-									name: 'site',
 									TabsQuery: SitesTabsQuery,
+									name: 'site',
 								}}
 								variables={() => ({
 									...sharedRequestVariables,

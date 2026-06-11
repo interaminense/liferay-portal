@@ -24,7 +24,7 @@ const {orderDescending} = FaroConstants.pagination;
 
 describe('pagination', () => {
 	describe('buildOrderByFields', () => {
-		it('should build an array of orderByField objects for an individual name', () => {
+		it('builds an array of orderByField objects for an individual name', () => {
 			expect(
 				buildOrderByFields(
 					{field: NAME, sortOrder: OrderByDirections.Descending},
@@ -44,7 +44,7 @@ describe('pagination', () => {
 			]);
 		});
 
-		it('should build an array of orderByField objects for a segment name', () => {
+		it('builds an array of orderByField objects for a segment name', () => {
 			expect(
 				buildOrderByFields(
 					{field: NAME, sortOrder: OrderByDirections.Descending},
@@ -59,7 +59,7 @@ describe('pagination', () => {
 			]);
 		});
 
-		it('should build an array of orderByField objects for an account name', () => {
+		it('builds an array of orderByField objects for an account name', () => {
 			expect(
 				buildOrderByFields(
 					{field: NAME, sortOrder: OrderByDirections.Descending},
@@ -74,7 +74,7 @@ describe('pagination', () => {
 			]);
 		});
 
-		it('should build an array of orderByField objects', () => {
+		it('builds an array of orderByField objects', () => {
 			expect(
 				buildOrderByFields({
 					field: ACTIVITIES_COUNT,
@@ -91,7 +91,7 @@ describe('pagination', () => {
 	});
 
 	describe('createOrderByField', () => {
-		it('should create an orderByField object', () => {
+		it('creates an orderByField object', () => {
 			expect(
 				createOrderByField(ACCOUNT_NAME, OrderByDirections.Descending)
 			).toEqual({
@@ -101,7 +101,7 @@ describe('pagination', () => {
 			});
 		});
 
-		it('should create an orderByField object w/ system as true if fieldName is a system field', () => {
+		it('creates an orderByField object w/ system as true if fieldName is a system field', () => {
 			expect(
 				createOrderByField(
 					ACTIVITIES_COUNT,
@@ -116,7 +116,7 @@ describe('pagination', () => {
 	});
 
 	describe('invertSortOrder', () => {
-		it('should return the opposite order from what was received', () => {
+		it('returns the opposite order from what was received', () => {
 			expect(invertSortOrder(OrderByDirections.Ascending)).toEqual(
 				OrderByDirections.Descending
 			);
@@ -126,7 +126,7 @@ describe('pagination', () => {
 			);
 		});
 
-		it('should return the default order is the current order is falsey', () => {
+		it('returns the default order is the current order is falsey', () => {
 			const result = invertSortOrder(null);
 
 			expect(result).toEqual(OrderByDirections.Ascending);
@@ -134,13 +134,13 @@ describe('pagination', () => {
 	});
 
 	describe('getDefaultSortOrder', () => {
-		it('should return Descending for a fieldName in the INVERTED_SORT_FIELDS array', () => {
+		it('returns Descending for a fieldName in the INVERTED_SORT_FIELDS array', () => {
 			expect(getDefaultSortOrder(ACTIVITIES_COUNT)).toEqual(
 				OrderByDirections.Descending
 			);
 		});
 
-		it('should return Ascending for a fieldName NOT in the INVERTED_SORT_FIELDS array', () => {
+		it('returns Ascending for a fieldName NOT in the INVERTED_SORT_FIELDS array', () => {
 			expect(getDefaultSortOrder(ACCOUNT_NAME)).toEqual(
 				OrderByDirections.Ascending
 			);
@@ -148,13 +148,13 @@ describe('pagination', () => {
 	});
 
 	describe('createOrderIOMap', () => {
-		it('should create an Immutable OrderedMap with an OrderParams record inside', () => {
+		it('creates an Immutable OrderedMap with an OrderParams record inside', () => {
 			expect(createOrderIOMap('name')).toMatchSnapshot();
 		});
 	});
 
 	describe('getSortFromOrderIOMap', () => {
-		it('should return an object in sort format from an orderIOMap', () => {
+		it('returns an object in sort format from an orderIOMap', () => {
 			expect(getSortFromOrderIOMap(createOrderIOMap('name'))).toEqual({
 				column: 'name',
 				type: 'ASC',
@@ -163,7 +163,7 @@ describe('pagination', () => {
 	});
 
 	describe('getGraphQLVariablesFromPagination', () => {
-		it('should return the pagination params in our standard graphql format', () => {
+		it('returns the pagination params in our standard graphql format', () => {
 			expect(
 				getGraphQLVariablesFromPagination({
 					delta: 10,

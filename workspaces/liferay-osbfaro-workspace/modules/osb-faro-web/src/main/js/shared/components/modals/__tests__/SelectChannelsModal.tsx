@@ -45,7 +45,7 @@ describe('SelectChannelsModal', () => {
 		});
 	});
 
-	it('should auto-select channels with synced sites on first data load', () => {
+	it('auto-selects channels with synced sites on first data load', () => {
 		const onSelect = jest.fn();
 
 		render(<SelectChannelsModal {...defaultProps} onSelect={onSelect} />);
@@ -57,7 +57,7 @@ describe('SelectChannelsModal', () => {
 		);
 	});
 
-	it('should not auto-select channels without synced sites', () => {
+	it('does not auto-select channels without synced sites', () => {
 		const onSelect = jest.fn();
 
 		render(<SelectChannelsModal {...defaultProps} onSelect={onSelect} />);
@@ -67,7 +67,7 @@ describe('SelectChannelsModal', () => {
 		expect(onSelect.mock.calls[0][0]).not.toContain('channel-2');
 	});
 
-	it('should not duplicate channels already present in initialItems', () => {
+	it('does not duplicate channels already present in initialItems', () => {
 		const onSelect = jest.fn();
 
 		render(

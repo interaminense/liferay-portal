@@ -17,7 +17,7 @@ import {
 
 describe('DataSources', () => {
 	describe('createLiferayDataSource', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = createLiferayDataSource({});
 
 			expect(isFSA(action)).toBe(true);
@@ -26,7 +26,7 @@ describe('DataSources', () => {
 	});
 
 	describe('createSalesforceDataSource', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = createSalesforceDataSource({});
 
 			expect(isFSA(action)).toBe(true);
@@ -35,7 +35,7 @@ describe('DataSources', () => {
 	});
 
 	describe('deleteDataSource', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = deleteDataSource({});
 
 			expect(isFSA(action)).toBe(true);
@@ -44,7 +44,7 @@ describe('DataSources', () => {
 	});
 
 	describe('fetchDataSource', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchDataSource({});
 
 			expect(isFSA(action)).toBe(true);
@@ -53,7 +53,7 @@ describe('DataSources', () => {
 	});
 
 	describe('updateCSVDataSource', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = updateCSVDataSource({});
 
 			expect(isFSA(action)).toBe(true);
@@ -62,7 +62,7 @@ describe('DataSources', () => {
 	});
 
 	describe('updateLiferayDataSource', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = updateLiferayDataSource({});
 
 			expect(isFSA(action)).toBe(true);
@@ -71,7 +71,7 @@ describe('DataSources', () => {
 	});
 
 	describe('updateSalesforceDataSource', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = updateSalesforceDataSource({});
 
 			expect(isFSA(action)).toBe(true);

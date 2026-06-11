@@ -321,7 +321,7 @@ exports[`InterestTopics should render 1`] = `
                 class="d-flex"
               >
                 <h3
-                  class="title-text text-truncate"
+                  class="text-truncate title-text"
                 >
                   <span
                     class="text-truncate"
@@ -393,7 +393,7 @@ exports[`InterestTopics should render 1`] = `
                       </li>
                     </ul>
                     <div
-                      class="navbar-form navbar-form-autofit mx-2"
+                      class="mx-2 navbar-form navbar-form-autofit"
                     >
                       <div
                         class="input-group search"

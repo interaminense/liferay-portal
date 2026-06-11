@@ -19,7 +19,7 @@ const mapResultToProps = safeResultToProps(({myData}) => {
 
 describe('mappers', () => {
 	describe('mapListResultsToProps', () => {
-		it('should map the query results to props for ListComponent', () => {
+		it('maps the query results to props for ListComponent', () => {
 			const refetch = jest.fn;
 			const moreStuff = [{name: 'test'}, {name: 'test2'}];
 			const total = 2;
@@ -47,7 +47,7 @@ describe('mappers', () => {
 			});
 		});
 
-		it('should return default props for ListComponent if data is null', () => {
+		it('returns default props for ListComponent if data is null', () => {
 			const refetch = jest.fn;
 
 			const props = mapListResultsToProps(
@@ -75,7 +75,7 @@ describe('mappers', () => {
 	});
 
 	describe('safeResultToProps', () => {
-		it("should not extract data when there's an error in the result", () => {
+		it("does not extract data when there's an error in the result", () => {
 			const props = mapResultToProps({
 				data: {
 					error: {
@@ -91,7 +91,7 @@ describe('mappers', () => {
 			});
 		});
 
-		it('should not extract data while result is still loading', () => {
+		it('does not extract data while result is still loading', () => {
 			const props = mapResultToProps({
 				data: {
 					loading: true,
@@ -103,7 +103,7 @@ describe('mappers', () => {
 			});
 		});
 
-		it('should return with an error when exception is thrown', () => {
+		it('returns with an error when exception is thrown', () => {
 			const error = new Error('error');
 			const errorMapResultToProps = safeResultToProps(() => {
 				throw error;
@@ -133,7 +133,7 @@ describe('mappers', () => {
 
 		const rangeKey = '7';
 
-		it('should include variables passing all necessary parameters', () => {
+		it('includes variables passing all necessary parameters', () => {
 			const variables = getVariables({
 				filters,
 				params,
@@ -154,7 +154,7 @@ describe('mappers', () => {
 			});
 		});
 
-		it('should include variables without filter parameter', () => {
+		it('includes variables without filter parameter', () => {
 			const variables = getVariables({
 				params,
 				rangeSelectors: {rangeKey},
@@ -172,7 +172,7 @@ describe('mappers', () => {
 			});
 		});
 
-		it('should include variables passing filter parameter as empty object', () => {
+		it('includes variables passing filter parameter as empty object', () => {
 			const variables = getVariables({
 				filters: {},
 				params,
@@ -193,7 +193,7 @@ describe('mappers', () => {
 			});
 		});
 
-		it('should include variables without params parameter', () => {
+		it('includes variables without params parameter', () => {
 			const variables = getVariables({
 				filters,
 				params: {touchpoint: 'https://liferay.com'},
@@ -213,7 +213,7 @@ describe('mappers', () => {
 			});
 		});
 
-		it('should include variables passing params parameter without assetId', () => {
+		it('includes variables passing params parameter without assetId', () => {
 			const variables = getVariables({
 				filters,
 				params: {title: 'Liferay', touchpoint: 'https://liferay.com'},
@@ -233,7 +233,7 @@ describe('mappers', () => {
 			});
 		});
 
-		it('should include variables passing params parameter without title', () => {
+		it('includes variables passing params parameter without title', () => {
 			const variables = getVariables({
 				filters,
 				params: {assetId: '12345', touchpoint: 'Any'},
@@ -254,7 +254,7 @@ describe('mappers', () => {
 			});
 		});
 
-		it('should include interval when returning variables', () => {
+		it('includes interval when returning variables', () => {
 			const {variables} = getVariables({
 				filters,
 				interval: 'foo',
@@ -265,7 +265,7 @@ describe('mappers', () => {
 			expect(variables.interval).toBe('foo');
 		});
 
-		it('should include channelId in the variables object if it was passed', () => {
+		it('includes channelId in the variables object if it was passed', () => {
 			const {variables} = getVariables({
 				filters,
 				params: {assetId: '12345', channelId: '12345'},

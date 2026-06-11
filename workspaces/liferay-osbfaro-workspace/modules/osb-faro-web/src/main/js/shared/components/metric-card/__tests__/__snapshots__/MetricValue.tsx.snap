@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MetricValue should render the component 1`] = `
+exports[`MetricValue renders the component 1`] = `
 <div>
   <div
     class="metric-value"
@@ -15,7 +15,7 @@ exports[`MetricValue should render the component 1`] = `
 </div>
 `;
 
-exports[`MetricValue should render the component with number type 1`] = `
+exports[`MetricValue renders the component with number type 1`] = `
 <div>
   <div
     class="metric-value"
@@ -30,7 +30,7 @@ exports[`MetricValue should render the component with number type 1`] = `
 </div>
 `;
 
-exports[`MetricValue should render the component with percentage  1`] = `
+exports[`MetricValue renders the component with percentage  1`] = `
 <div>
   <div
     class="metric-value"
@@ -45,7 +45,7 @@ exports[`MetricValue should render the component with percentage  1`] = `
 </div>
 `;
 
-exports[`MetricValue should render the component with ratings  1`] = `
+exports[`MetricValue renders the component with ratings  1`] = `
 <div>
   <div
     class="metric-value"
@@ -60,7 +60,7 @@ exports[`MetricValue should render the component with ratings  1`] = `
 </div>
 `;
 
-exports[`MetricValue should render the component with time  1`] = `
+exports[`MetricValue renders the component with time  1`] = `
 <div>
   <div
     class="metric-value"

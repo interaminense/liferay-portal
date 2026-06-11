@@ -26,7 +26,7 @@ exports[`IssueSubmitted should render 1`] = `
     </button>
   </div>
   <div
-    class="modal-body d-flex flex-column align-items-center"
+    class="modal-body align-items-center d-flex flex-column"
   >
     <svg
       class="lexicon-icon lexicon-icon-ac_no_sites icon-root icon-size-xxxl my-5"

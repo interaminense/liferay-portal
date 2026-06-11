@@ -14,7 +14,7 @@ exports[`UnassignedSegmentsModal renders 1`] = `
         class="welcome"
       >
         <div
-          class="modal-body d-flex flex-column align-items-center"
+          class="modal-body align-items-center d-flex flex-column"
         >
           <div
             class="ac-property-buildings"

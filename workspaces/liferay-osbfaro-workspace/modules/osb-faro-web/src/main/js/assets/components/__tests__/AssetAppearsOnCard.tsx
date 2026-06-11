@@ -10,8 +10,7 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import {StaticRouter} from 'react-router-dom';
 import client from 'shared/apollo/client';
-import {AssetTypes} from 'shared/util/constants';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
+import {AssetTypes, RangeKeyTimeRanges} from 'shared/util/constants';
 import {
 	mockAssetAppearsOnReq,
 	mockPreferenceReq,
@@ -20,8 +19,12 @@ import {
 import {waitForLoadingToBeRemoved} from 'test/helpers';
 import mockStore from 'test/mock-store';
 
-import {Accessor, AssetAppearsOnCard} from '../AssetAppearsOnCard';
-import {EmptyStateLink, EmptyStateText} from '../AssetAppearsOnCard';
+import {
+	Accessor,
+	AssetAppearsOnCard,
+	EmptyStateLink,
+	EmptyStateText,
+} from '../AssetAppearsOnCard';
 
 jest.unmock('react-dom');
 
@@ -82,7 +85,7 @@ const WrappedComponent = ({
 describe('AssetAppearsOnCard', () => {
 	afterEach(cleanup);
 
-	it('should render', async () => {
+	it('renders', async () => {
 		const {getByText} = render(
 			<WrappedComponent
 				accessors={[Accessor.ViewsMetric]}
@@ -98,7 +101,7 @@ describe('AssetAppearsOnCard', () => {
 		expect(getByText('Views')).toBeInTheDocument();
 	});
 
-	it('should have a Views column for Blog', async () => {
+	it('has a Views column for Blog', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				accessors={[Accessor.ViewsMetric]}
@@ -113,7 +116,7 @@ describe('AssetAppearsOnCard', () => {
 		expect(getByText('Views')).toBeInTheDocument();
 	});
 
-	it('should have [Downloads, Impressions] columns for Document', async () => {
+	it('has [Downloads, Impressions] columns for Document', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				accessors={[
@@ -132,7 +135,7 @@ describe('AssetAppearsOnCard', () => {
 		expect(getByText('Impressions')).toBeInTheDocument();
 	});
 
-	it('should have a [Submissions, Views] column for Forms', async () => {
+	it('has a [Submissions, Views] column for Forms', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				accessors={[Accessor.SubmissionsMetric, Accessor.ViewsMetric]}
@@ -148,7 +151,7 @@ describe('AssetAppearsOnCard', () => {
 		expect(getByText('Views')).toBeInTheDocument();
 	});
 
-	it('should have a Views column for WebContent', async () => {
+	it('has a Views column for WebContent', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				accessors={[Accessor.ViewsMetric]}
@@ -163,7 +166,7 @@ describe('AssetAppearsOnCard', () => {
 		expect(getByText('Views')).toBeInTheDocument();
 	});
 
-	it('should render empty state for Blog', async () => {
+	it('renders empty state for Blog', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				accessors={[Accessor.ImpressionMadeMetric]}
@@ -190,7 +193,7 @@ describe('AssetAppearsOnCard', () => {
 		expect(linkText).toHaveAttribute('href', EmptyStateLink.Blog);
 	});
 
-	it('should render empty state for Documents and Media', async () => {
+	it('renders empty state for Documents and Media', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				accessors={[Accessor.ImpressionMadeMetric]}
@@ -217,7 +220,7 @@ describe('AssetAppearsOnCard', () => {
 		expect(linkText).toHaveAttribute('href', EmptyStateLink.Document);
 	});
 
-	it('should render empty state for Forms', async () => {
+	it('renders empty state for Forms', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				accessors={[Accessor.ImpressionMadeMetric]}
@@ -244,7 +247,7 @@ describe('AssetAppearsOnCard', () => {
 		expect(linkText).toHaveAttribute('href', EmptyStateLink.Form);
 	});
 
-	it('should render empty state for Web content', async () => {
+	it('renders empty state for Web content', async () => {
 		const {container, getByText} = render(
 			<WrappedComponent
 				accessors={[Accessor.ImpressionMadeMetric]}

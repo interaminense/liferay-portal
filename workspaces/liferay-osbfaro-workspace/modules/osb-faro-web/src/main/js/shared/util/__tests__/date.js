@@ -22,25 +22,25 @@ import {
 
 describe('date', () => {
 	describe('formatUTCDate', () => {
-		it('should convert from the specified format and convert to the specified format', () => {
+		it('converts from the specified format and convert to the specified format', () => {
 			expect(formatUTCDate('January 1, 1970', 'll', 'LL')).toBe(
 				'Jan 1, 1970'
 			);
 		});
 
-		it('should convert from ISO_8601 format to the specified format', () => {
+		it('converts from ISO_8601 format to the specified format', () => {
 			expect(formatUTCDate('1970-01-01', 'll')).toBe('Jan 1, 1970');
 		});
 	});
 
 	describe('formatUTCDateFromUnix', () => {
-		it('should convert and format a timestamp to the default format', () => {
+		it('converts and format a timestamp to the default format', () => {
 			expect(formatUTCDateFromUnix(1574288551000)).toBe(
 				'November 20, 2019'
 			);
 		});
 
-		it('should convert and format a timestamp to the specified format', () => {
+		it('converts and format a timestamp to the specified format', () => {
 			expect(formatUTCDateFromUnix(1574288551000, 'll')).toBe(
 				'Nov 20, 2019'
 			);
@@ -65,7 +65,7 @@ describe('date', () => {
 		const date1 = '2018-04-05T00:00';
 		const date2 = '2018-04-05T00:00';
 
-		xit('should return the date1 with timezone from Etc/GMT', () => {
+		xit('returns the date1 with timezone from Etc/GMT', () => {
 			const date = getDate(date1);
 
 			expect(date).toEqualWithoutType(
@@ -73,7 +73,7 @@ describe('date', () => {
 			);
 		});
 
-		xit('should return the date2 with timezone from Etc/GMT', () => {
+		xit('returns the date2 with timezone from Etc/GMT', () => {
 			const date = getDate(date2);
 
 			expect(date).toEqualWithoutType(
@@ -83,13 +83,13 @@ describe('date', () => {
 	});
 
 	describe('getDateNow', () => {
-		it('should execute without any errors', () => {
+		it('executes without any errors', () => {
 			expect(getDateNow()).toBeTruthy();
 		});
 	});
 
 	describe('getISODate', () => {
-		it('should return the date as an ISO String', () => {
+		it('returns the date as an ISO String', () => {
 			const expected = '2018-07-10T23:01:06.366Z';
 
 			expect(getISODate(data.getTimestamp())).toEqual(expected);
@@ -104,7 +104,7 @@ describe('date', () => {
 		 * @param {string} argument
 		 */
 		toEqualWithoutType(received, argument) {
-			const pass = received == argument;
+			const pass = received === argument;
 			if (pass) {
 				return {
 					message: () =>
@@ -122,7 +122,7 @@ describe('date', () => {
 	});
 
 	describe('getDateRangeLabel', () => {
-		it('should get the date range label from an array of objects', () => {
+		it('gets the date range label from an array of objects', () => {
 			const dates = [
 				{intervalInitDate: data.getTimestamp(-2)},
 				{intervalInitDate: data.getTimestamp(-1)},
@@ -144,7 +144,7 @@ describe('date', () => {
 	});
 
 	describe('getDateRangeLabelFromDate', () => {
-		it('should get the date range label from a date and interval', () => {
+		it('gets the date range label from a date and interval', () => {
 			expect(
 				getDateRangeLabelFromDate(data.getTimestamp(), 'D')
 			).toMatchSnapshot();
@@ -172,7 +172,7 @@ describe('date', () => {
 	});
 
 	describe('getFirstDate', () => {
-		it('should return the date from the first item in the history array', () => {
+		it('returns the date from the first item in the history array', () => {
 			const {activityAggregations} = data.mockActivityHistory();
 
 			expect(
@@ -182,7 +182,7 @@ describe('date', () => {
 	});
 
 	describe('getLastDate', () => {
-		it('should return the date from the last item in the history array', () => {
+		it('returns the date from the last item in the history array', () => {
 			const {activityAggregations} = data.mockActivityHistory();
 
 			expect(

@@ -9,7 +9,7 @@ import {actionTypes} from '../../actions/modals';
 import reducer from '../modals';
 
 describe('Modals Reducer', () => {
-	it('should be a function', () => {
+	it('is a function', () => {
 		expect(reducer).toBeInstanceOf(Function);
 	});
 
@@ -40,7 +40,7 @@ describe('Modals Reducer', () => {
 		);
 	});
 
-	it('should not deeply convert modal props', () => {
+	it('does not deeply convert modal props', () => {
 		const action = {
 			payload: {
 				closeOnBlur: true,

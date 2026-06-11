@@ -3,7 +3,7 @@
 exports[`Label should render 1`] = `
 <div>
   <span
-    class="label label-secondary label-dismissible label-lg"
+    class="label label-dismissible label-lg label-secondary"
   >
     <span
       class="label-item label-item-expand"

@@ -1,13 +1,13 @@
+import sendRequest from 'shared/util/request';
+
+import {create, update} from '../individual-segment';
+
 /**
  * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 jest.mock('shared/util/request');
-
-import sendRequest from 'shared/util/request';
-
-import {create, update} from '../individual-segment';
 
 const createArgs = {
 	channelId: '123',
@@ -39,7 +39,7 @@ const updateRequestParams = {
 
 describe('Individual Segment API', () => {
 	describe('Create Segment', () => {
-		it('should not pass individualIds in the data object to sendRequest if the segmentType is BATCH', () => {
+		it('does not pass individualIds in the data object to sendRequest if the segmentType is BATCH', () => {
 			const segmentType = 'BATCH';
 
 			create({...createArgs, segmentType});
@@ -58,7 +58,7 @@ describe('Individual Segment API', () => {
 			});
 		});
 
-		it('should forward externalReferenceCode to sendRequest when provided', () => {
+		it('forwards externalReferenceCode to sendRequest when provided', () => {
 			const externalReferenceCode = 'vip-users_2026';
 
 			create({
@@ -83,7 +83,7 @@ describe('Individual Segment API', () => {
 	});
 
 	describe('Update Segment', () => {
-		it('should pass filter in data object to sendRequest if the segmentType is BATCH', () => {
+		it('passes filter in data object to sendRequest if the segmentType is BATCH', () => {
 			const segmentType = 'BATCH';
 
 			const data = {
@@ -103,7 +103,7 @@ describe('Individual Segment API', () => {
 			});
 		});
 
-		it('should forward externalReferenceCode to sendRequest when provided', () => {
+		it('forwards externalReferenceCode to sendRequest when provided', () => {
 			const externalReferenceCode = 'vip-users_2026';
 
 			update({

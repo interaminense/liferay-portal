@@ -49,12 +49,12 @@ function makeFilterCriterion({
 }
 
 describe('criterion-types/extractRemoteCriterionEntries', () => {
-	it('should return an empty array for null or undefined criteria', () => {
+	it('returns an empty array for null or undefined criteria', () => {
 		expect(extractRemoteCriterionEntries(null)).toEqual([]);
 		expect(extractRemoteCriterionEntries(undefined)).toEqual([]);
 	});
 
-	it('should return an empty array for criteria with a non-remote operator', () => {
+	it('returns an empty array for criteria with a non-remote operator', () => {
 		const criterion = makeFilterCriterion({
 			idProperty: 'name',
 			idValue: 'foo',
@@ -65,7 +65,7 @@ describe('criterion-types/extractRemoteCriterionEntries', () => {
 		expect(extractRemoteCriterionEntries(criterion)).toEqual([]);
 	});
 
-	it('should extract a vocabulary entry when the criterion uses VocabulariesFilter', () => {
+	it('extracts a vocabulary entry when the criterion uses VocabulariesFilter', () => {
 		const criterion = makeFilterCriterion({
 			idProperty: 'vocabularies/id',
 			idValue: 'vocab-id',
@@ -84,7 +84,7 @@ describe('criterion-types/extractRemoteCriterionEntries', () => {
 		]);
 	});
 
-	it('should extract a vocabulary entry when the criterion uses NotVocabulariesFilter', () => {
+	it('extracts a vocabulary entry when the criterion uses NotVocabulariesFilter', () => {
 		const criterion = makeFilterCriterion({
 			idProperty: 'vocabularies/id',
 			idValue: 'vocab-id',
@@ -103,7 +103,7 @@ describe('criterion-types/extractRemoteCriterionEntries', () => {
 		]);
 	});
 
-	it('should extract a tag entry when the criterion uses TagsFilter', () => {
+	it('extracts a tag entry when the criterion uses TagsFilter', () => {
 		const criterion = makeFilterCriterion({
 			idProperty: 'tags/id',
 			idValue: 'tag-id',
@@ -118,7 +118,7 @@ describe('criterion-types/extractRemoteCriterionEntries', () => {
 		]);
 	});
 
-	it('should extract a tag entry when the criterion uses NotTagsFilter', () => {
+	it('extracts a tag entry when the criterion uses NotTagsFilter', () => {
 		const criterion = makeFilterCriterion({
 			idProperty: 'tags/id',
 			idValue: 'tag-id',
@@ -133,7 +133,7 @@ describe('criterion-types/extractRemoteCriterionEntries', () => {
 		]);
 	});
 
-	it('should fall back to propertyName when the name item is missing', () => {
+	it('falls back to propertyName when the name item is missing', () => {
 		const criterion = makeFilterCriterion({
 			operatorName: CustomFunctionOperators.VocabulariesFilter,
 			propertyName: 'vocab-id-fallback',
@@ -148,7 +148,7 @@ describe('criterion-types/extractRemoteCriterionEntries', () => {
 		]);
 	});
 
-	it('should recurse into nested groups and return all matching entries', () => {
+	it('recurses into nested groups and return all matching entries', () => {
 		const vocab = makeFilterCriterion({
 			idProperty: 'vocabularies/id',
 			idValue: 'vocab-id',

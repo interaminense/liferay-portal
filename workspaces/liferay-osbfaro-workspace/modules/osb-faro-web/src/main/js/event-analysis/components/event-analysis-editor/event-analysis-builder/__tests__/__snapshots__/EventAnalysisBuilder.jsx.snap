@@ -3,10 +3,10 @@
 exports[`Event Analysis Builder render 1`] = `
 <div>
   <div
-    class="event-analysis-builder-root d-flex flex-column"
+    class="d-flex event-analysis-builder-root flex-column"
   >
     <div
-      class="event-section-root d-flex align-items-center"
+      class="align-items-center d-flex event-section-root"
     >
       <div
         class="section-header"
@@ -14,7 +14,7 @@ exports[`Event Analysis Builder render 1`] = `
         Analyze
       </div>
       <div
-        class="event-container d-flex justify-content-between"
+        class="d-flex event-container justify-content-between"
       >
         <div
           class="event-list"
@@ -26,7 +26,7 @@ exports[`Event Analysis Builder render 1`] = `
             aria-expanded="false"
             aria-haspopup="true"
             aria-label="Add"
-            class="dropdown-toggle button-root add-event-button btn btn-sm btn-primary"
+            class="dropdown-toggle add-event-button button-root btn btn-sm btn-primary"
             type="button"
           >
             <svg
@@ -42,7 +42,7 @@ exports[`Event Analysis Builder render 1`] = `
       </div>
     </div>
     <div
-      class="attribute-breakdown-section-root d-flex align-items-center"
+      class="align-items-center attribute-breakdown-section-root d-flex"
     >
       <div
         class="section-header"
@@ -51,7 +51,7 @@ exports[`Event Analysis Builder render 1`] = `
       </div>
     </div>
     <div
-      class="attribute-filter-section-root d-flex align-items-center"
+      class="align-items-center attribute-filter-section-root d-flex"
     >
       <div
         class="section-header"
@@ -66,10 +66,10 @@ exports[`Event Analysis Builder render 1`] = `
 exports[`Event Analysis Builder render with filters & breakdowns 1`] = `
 <div>
   <div
-    class="event-analysis-builder-root d-flex flex-column"
+    class="d-flex event-analysis-builder-root flex-column"
   >
     <div
-      class="event-section-root d-flex align-items-center"
+      class="align-items-center d-flex event-section-root"
     >
       <div
         class="section-header"
@@ -77,7 +77,7 @@ exports[`Event Analysis Builder render with filters & breakdowns 1`] = `
         Analyze
       </div>
       <div
-        class="event-container d-flex justify-content-between"
+        class="d-flex event-container justify-content-between"
       >
         <div
           class="event-list"
@@ -114,7 +114,7 @@ exports[`Event Analysis Builder render with filters & breakdowns 1`] = `
       </div>
     </div>
     <div
-      class="attribute-breakdown-section-root d-flex align-items-center"
+      class="align-items-center attribute-breakdown-section-root d-flex"
     >
       <div
         class="section-header"
@@ -122,10 +122,10 @@ exports[`Event Analysis Builder render with filters & breakdowns 1`] = `
         Breakdown
       </div>
       <div
-        class="attribute-container d-flex align-items-center justify-content-between"
+        class="align-items-center attribute-container d-flex justify-content-between"
       >
         <div
-          class="attribute-list d-flex align-items-center"
+          class="align-items-center attribute-list d-flex"
         />
         <div
           class="dropdown"
@@ -134,7 +134,7 @@ exports[`Event Analysis Builder render with filters & breakdowns 1`] = `
             aria-expanded="false"
             aria-haspopup="true"
             aria-label="Add"
-            class="dropdown-toggle button-root add-attribute btn btn-outline-borderless btn-sm btn-outline-secondary"
+            class="dropdown-toggle add-attribute button-root btn btn-outline-borderless btn-sm btn-outline-secondary"
             type="button"
           >
             <svg
@@ -150,7 +150,7 @@ exports[`Event Analysis Builder render with filters & breakdowns 1`] = `
       </div>
     </div>
     <div
-      class="attribute-filter-section-root d-flex align-items-center"
+      class="align-items-center attribute-filter-section-root d-flex"
     >
       <div
         class="section-header"
@@ -158,10 +158,10 @@ exports[`Event Analysis Builder render with filters & breakdowns 1`] = `
         Filter
       </div>
       <div
-        class="attribute-container d-flex align-items-center justify-content-between"
+        class="align-items-center attribute-container d-flex justify-content-between"
       >
         <div
-          class="attribute-list d-flex align-items-center"
+          class="align-items-center attribute-list d-flex"
         />
         <div
           class="dropdown"
@@ -170,7 +170,7 @@ exports[`Event Analysis Builder render with filters & breakdowns 1`] = `
             aria-expanded="false"
             aria-haspopup="true"
             aria-label="Add"
-            class="dropdown-toggle button-root add-attribute btn btn-outline-borderless btn-sm btn-outline-secondary"
+            class="dropdown-toggle add-attribute button-root btn btn-outline-borderless btn-sm btn-outline-secondary"
             type="button"
           >
             <svg

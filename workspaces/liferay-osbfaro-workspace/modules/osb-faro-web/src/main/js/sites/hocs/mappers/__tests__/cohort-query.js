@@ -15,7 +15,7 @@ const mockData = {
 
 describe('Cohort Query Mapper', () => {
 	describe('mapPropsToOptions', () => {
-		it('should map cohort query props to options', () => {
+		it('maps cohort query props to options', () => {
 			const interval = 'D';
 			const channelId = '123';
 
@@ -31,7 +31,7 @@ describe('Cohort Query Mapper', () => {
 	});
 
 	describe('mapResultToProps', () => {
-		it('should map cohort query result to props', () => {
+		it('maps cohort query result to props', () => {
 			expect(mapResultToProps({data: mockData})).toEqual(
 				expect.objectContaining({
 					data: {
@@ -50,7 +50,7 @@ describe('Cohort Query Mapper', () => {
 			);
 		});
 
-		it('should receive empty as true', () => {
+		it('receives empty as true', () => {
 			expect(
 				mapResultToProps({
 					data: {

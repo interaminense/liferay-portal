@@ -27,7 +27,7 @@ jest.mock('shared/hooks/useTimeZone', () => ({
 
 describe('subscriptions', () => {
 	describe('getPlanAddOns', () => {
-		it('should return the correct plan addons', () => {
+		it('returns the correct plan addons', () => {
 			const planAddOns = getPlanAddOns(
 				formatPlanData(
 					fromJS(
@@ -46,7 +46,7 @@ describe('subscriptions', () => {
 			});
 		});
 
-		it('should not have addons for LXC customers', () => {
+		it('does not have addons for LXC customers', () => {
 			const planAddOns = getPlanAddOns(
 				formatPlanData(
 					fromJS(
@@ -64,31 +64,31 @@ describe('subscriptions', () => {
 	});
 
 	describe('getPlanLabel', () => {
-		it('should return the label for the Liferay Data Platform plan', () => {
+		it('returns the label for the Liferay Data Platform plan', () => {
 			expect(getPlanLabel(SubscriptionNames.LiferayDataPlatform)).toEqual(
 				'Liferay Data Platform'
 			);
 		});
 
-		it('should return the label for the Liferay Data Platform Private Beta plan', () => {
+		it('returns the label for the Liferay Data Platform Private Beta plan', () => {
 			expect(
 				getPlanLabel(SubscriptionNames.LiferayDataPlatformPrivateBeta)
 			).toEqual('Liferay Data Platform (Private Beta)');
 		});
 
-		it('should return the label for the Liferay Data Platform Enterprise plan', () => {
+		it('returns the label for the Liferay Data Platform Enterprise plan', () => {
 			expect(
 				getPlanLabel(SubscriptionNames.LiferayDataPlatformEnterprise)
 			).toEqual('Liferay Data Platform Enterprise');
 		});
 
-		it('should return an empty string for an unknown plan', () => {
+		it('returns an empty string for an unknown plan', () => {
 			expect(getPlanLabel('something-unknown')).toEqual('');
 		});
 	});
 
 	describe('getPropIcon', () => {
-		it('should return the prop icon symbol', () => {
+		it('returns the prop icon symbol', () => {
 			const symbol = getPropIcon(INDIVIDUALS);
 
 			expect(symbol).toEqual('ac_individual');
@@ -96,7 +96,7 @@ describe('subscriptions', () => {
 	});
 
 	describe('getPropLabel', () => {
-		it('should return the correct prop label', () => {
+		it('returns the correct prop label', () => {
 			const label = getPropLabel(PAGEVIEWS);
 
 			expect(label).toEqual('Page Views');
@@ -104,7 +104,7 @@ describe('subscriptions', () => {
 	});
 
 	describe('formatPlanData', () => {
-		it('should format the plan data as a basic Plan record', () => {
+		it('formats the plan data as a basic Plan record', () => {
 			const plan = formatPlanData(
 				fromJS(
 					mockSubscription({
@@ -126,7 +126,7 @@ describe('subscriptions', () => {
 			expect(pageViewsMetrics.count).toEqual(100023);
 		});
 
-		it('should format the plan data as an enterprise Plan record', () => {
+		it('formats the plan data as an enterprise Plan record', () => {
 			const plan = formatPlanData(fromJS(mockSubscription()));
 
 			expect(plan).toBeInstanceOf(Plan);
@@ -142,7 +142,7 @@ describe('subscriptions', () => {
 			expect(pageViewsMetrics.count).toEqual(100023);
 		});
 
-		it('should format the plan data when faroSusbcription is null', () => {
+		it('formats the plan data when faroSusbcription is null', () => {
 			const plan = formatPlanData(null);
 
 			expect(plan).toMatchSnapshot();

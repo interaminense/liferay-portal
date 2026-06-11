@@ -80,14 +80,14 @@ const renderChart = (props: Parameters<typeof LifecycleChart>[0] = {}) =>
 describe('LifecycleChart', () => {
 	afterEach(cleanup);
 
-	it('should render a loading spinner while the request is in flight', () => {
+	it('renders a loading spinner while the request is in flight', () => {
 		const {container, queryByText} = renderChart({loading: true});
 
 		expect(container.querySelector('.loading-root')).toBeInTheDocument();
 		expect(queryByText('Aware')).toBeNull();
 	});
 
-	it('should render every stage title in the empty state when the request errors', () => {
+	it('renders every stage title in the empty state when the request errors', () => {
 		const {getByText} = renderChart({error: true});
 
 		expect(getByText('Aware')).toBeInTheDocument();
@@ -97,7 +97,7 @@ describe('LifecycleChart', () => {
 		expect(getByText('Established')).toBeInTheDocument();
 	});
 
-	it('should omit bar and trapezium visuals in the empty state', () => {
+	it('omits bar and trapezium visuals in the empty state', () => {
 		const {container, getAllByText} = renderChart({error: true});
 
 		expect(getAllByText('no activity')).toHaveLength(5);
@@ -109,13 +109,13 @@ describe('LifecycleChart', () => {
 		expect(container.querySelector('.stage-progression__fill')).toBeNull();
 	});
 
-	it('should fall back to the empty state when the stages array is empty', () => {
+	it('falls back to the empty state when the stages array is empty', () => {
 		const {getAllByText} = renderChart({stages: []});
 
 		expect(getAllByText('no activity')).toHaveLength(5);
 	});
 
-	it('should render each stage with its metrics when stages are provided', () => {
+	it('renders each stage with its metrics when stages are provided', () => {
 		const {container, getByText} = renderChart({stages: sampleStages});
 
 		expect(getByText('13')).toBeInTheDocument();
@@ -135,14 +135,14 @@ describe('LifecycleChart', () => {
 		).toHaveLength(4);
 	});
 
-	it('should show "avg. day" for non-zero averages and "no activity" otherwise', () => {
+	it('shows "avg. day" for non-zero averages and "no activity" otherwise', () => {
 		const {getAllByText, getByText} = renderChart({stages: sampleStages});
 
 		expect(getAllByText('avg. day')).toHaveLength(4);
 		expect(getByText('no activity')).toBeInTheDocument();
 	});
 
-	it('should render avg. day values rounded to two decimals', () => {
+	it('renders avg. day values rounded to two decimals', () => {
 		const stagesWithLongDecimals: ILifecycleStage[] = [
 			{
 				accountCount: 1,
@@ -199,12 +199,12 @@ describe('LifecycleChart', () => {
 		expect(queryByText('4.6789')).toBeNull();
 	});
 
-	it('should render progression labels from conversionRateToNextStage', () => {
+	it('renders progression labels from conversionRateToNextStage', () => {
 		const {container} = renderChart({stages: sampleStages});
 
 		const labels = Array.from(
 			container.querySelectorAll('.label-info')
-		).map((el) => el.textContent);
+		).map((element) => element.textContent);
 
 		expect(labels[0]).toContain('492%');
 		expect(labels[1]).toContain('64%');
@@ -212,7 +212,7 @@ describe('LifecycleChart', () => {
 		expect(labels[3]).toContain('0%');
 	});
 
-	it('should default the context lifecycleStageFilter to AT_RISK on mount', () => {
+	it('defaults the context lifecycleStageFilter to AT_RISK on mount', () => {
 		const {getByTestId} = renderChart({stages: sampleStages});
 
 		expect(getByTestId('lifecycle-filter').textContent).toBe(
@@ -220,7 +220,7 @@ describe('LifecycleChart', () => {
 		);
 	});
 
-	it('should update the context lifecycleStageFilter when a stage filter button is clicked', () => {
+	it('updates the context lifecycleStageFilter when a stage filter button is clicked', () => {
 		const {getAllByRole, getByTestId} = renderChart({stages: sampleStages});
 
 		const filterButtons = getAllByRole('button');
@@ -237,7 +237,7 @@ describe('LifecycleChart', () => {
 		);
 	});
 
-	it('should render a "filter by stage" tooltip on each stage filter button', () => {
+	it('renders a "filter by stage" tooltip on each stage filter button', () => {
 		const {getAllByRole} = renderChart({stages: sampleStages});
 
 		const filterButtons = getAllByRole('button');

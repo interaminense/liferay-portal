@@ -3,7 +3,7 @@
 exports[`AttributeFilterSection renders 1`] = `
 <div>
   <div
-    class="attribute-filter-section-root d-flex align-items-center"
+    class="align-items-center attribute-filter-section-root d-flex"
   >
     <div
       class="section-header"
@@ -17,7 +17,7 @@ exports[`AttributeFilterSection renders 1`] = `
 exports[`AttributeFilterSection renders w/ filter 1`] = `
 <div>
   <div
-    class="attribute-filter-section-root d-flex align-items-center"
+    class="align-items-center attribute-filter-section-root d-flex"
   >
     <div
       class="section-header"
@@ -25,10 +25,10 @@ exports[`AttributeFilterSection renders w/ filter 1`] = `
       Filter
     </div>
     <div
-      class="attribute-container d-flex align-items-center justify-content-between"
+      class="align-items-center attribute-container d-flex justify-content-between"
     >
       <div
-        class="attribute-list d-flex align-items-center"
+        class="align-items-center attribute-list d-flex"
       >
         <div
           class="dropdown"
@@ -40,7 +40,7 @@ exports[`AttributeFilterSection renders w/ filter 1`] = `
               class="chip-root d-flex align-items-center justify-content-between attribute-chip-root"
             >
               <button
-                class="button-root edit-attribute-button d-flex btn btn-unstyled"
+                class="button-root d-flex edit-attribute-button btn btn-unstyled"
                 type="button"
               >
                 <div
@@ -93,7 +93,7 @@ exports[`AttributeFilterSection renders w/ filter 1`] = `
           aria-expanded="false"
           aria-haspopup="true"
           aria-label="Add"
-          class="dropdown-toggle button-root add-attribute btn btn-outline-borderless btn-sm btn-outline-secondary"
+          class="dropdown-toggle add-attribute button-root btn btn-outline-borderless btn-sm btn-outline-secondary"
           type="button"
         >
           <svg

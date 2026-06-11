@@ -8,7 +8,7 @@ import {schema} from 'normalizr';
 import normalizer from '../normalizer';
 
 describe('Normalizer Middleware', () => {
-	it('Should normalize a response with a schema', () => {
+	it('normalizes a response with a schema', () => {
 		const id = '123';
 		const name = 'foo';
 		const account = {id, name};

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EmailReports should render 1`] = `
+exports[`EmailReports renders 1`] = `
 <div>
   <span
     class="font-weight-semibold mr-2"

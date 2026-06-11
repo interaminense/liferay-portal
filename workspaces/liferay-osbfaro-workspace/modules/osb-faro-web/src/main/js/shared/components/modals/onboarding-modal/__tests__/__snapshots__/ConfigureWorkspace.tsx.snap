@@ -40,7 +40,7 @@ exports[`ConfigureWorkspace renders 1`] = `
         </svg>
       </div>
       <div
-        class="text-center mb-4"
+        class="mb-4 text-center"
       >
         <span
           class="text-10 font-weight-bold"

@@ -27,7 +27,7 @@ exports[`InvitePeople renders 1`] = `
       class="analytics-invite-user-icon icon"
     />
     <div
-      class="text-center mb-4"
+      class="mb-4 text-center"
     >
       <span
         class="text-10 font-weight-bold"

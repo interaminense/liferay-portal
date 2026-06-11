@@ -103,7 +103,7 @@ const WrappedComponent = ({empty = false}) => (
 describe('FormMetricCard', () => {
 	afterEach(cleanup);
 
-	it('should render', async () => {
+	it('renders', async () => {
 		const {getAllByText, getByText} = render(<WrappedComponent />);
 
 		await waitForLoadingToBeRemoved(document.body);
@@ -112,7 +112,7 @@ describe('FormMetricCard', () => {
 		expect(getAllByText('Submissions').length).toBeGreaterThan(0);
 	});
 
-	it('should render with empty state', async () => {
+	it('renders with empty state', async () => {
 		const {container, getByText} = render(<WrappedComponent empty />);
 
 		await waitForLoadingToBeRemoved(container);

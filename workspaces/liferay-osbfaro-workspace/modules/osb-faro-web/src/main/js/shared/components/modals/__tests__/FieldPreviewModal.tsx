@@ -23,13 +23,13 @@ const DefaultComponent = (
 );
 
 describe('FieldPreviewModal', () => {
-	it('should render', () => {
+	it('renders', () => {
 		const {container} = render(<DefaultComponent />);
 
 		expect(container).toMatchSnapshot();
 	});
 
-	it('should render with fieldname', () => {
+	it('renders with fieldname', () => {
 		const fieldName = 'bar';
 
 		const {getByText} = render(<DefaultComponent fieldName={fieldName} />);

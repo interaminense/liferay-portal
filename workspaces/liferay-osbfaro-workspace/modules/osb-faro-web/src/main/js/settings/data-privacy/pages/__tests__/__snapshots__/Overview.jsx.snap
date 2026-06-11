@@ -306,7 +306,7 @@ exports[`Data Privacy Overview should render 1`] = `
                 class="d-flex"
               >
                 <h3
-                  class="title-text text-truncate"
+                  class="text-truncate title-text"
                 >
                   <span
                     class="text-truncate"
@@ -339,7 +339,7 @@ exports[`Data Privacy Overview should render 1`] = `
                       class="container"
                     >
                       <div
-                        class="row justify-content-between"
+                        class="justify-content-between row"
                       >
                         <div
                           aria-hidden="true"
@@ -358,7 +358,7 @@ exports[`Data Privacy Overview should render 1`] = `
                           </p>
                         </div>
                         <div
-                          class="col-lg-auto align-self-center"
+                          class="align-self-center col-lg-auto"
                         >
                           <button
                             aria-activedescendant="86400000"
@@ -383,7 +383,7 @@ exports[`Data Privacy Overview should render 1`] = `
                       />
                       <div
                         aria-hidden="true"
-                        class="row mt-3 justify-content-between"
+                        class="justify-content-between mt-3 row"
                         data-aria-hidden="true"
                       >
                         <div
@@ -423,7 +423,7 @@ exports[`Data Privacy Overview should render 1`] = `
                       />
                       <div
                         aria-hidden="true"
-                        class="row mt-3 justify-content-between"
+                        class="justify-content-between mt-3 row"
                         data-aria-hidden="true"
                       >
                         <div

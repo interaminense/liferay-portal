@@ -6,7 +6,7 @@
 import {mapPropsToOptions, mapResultToProps} from '../visitors-by-time-query';
 
 describe('VisitorsByTimeQuery Mappers', () => {
-	it('should map results to props', () => {
+	it('maps results to props', () => {
 		const mockResult = {
 			data: {siteVisitorHeatMap: []},
 		};
@@ -16,7 +16,7 @@ describe('VisitorsByTimeQuery Mappers', () => {
 		);
 	});
 
-	it('should map empty results', () => {
+	it('maps empty results', () => {
 		const mockResult = {
 			data: {siteVisitorHeatMap: [{value: 0}]},
 		};
@@ -26,7 +26,7 @@ describe('VisitorsByTimeQuery Mappers', () => {
 		);
 	});
 
-	it('should map props to options', () => {
+	it('maps props to options', () => {
 		const mockProps = {
 			rangeSelectors: {rangeKey: '30'},
 			router: {params: {channelId: 123}},
@@ -37,7 +37,7 @@ describe('VisitorsByTimeQuery Mappers', () => {
 				variables: {
 					channelId: 123,
 					rangeEnd: null,
-					rangeKey: parseInt('30'),
+					rangeKey: parseInt('30', 10),
 					rangeStart: null,
 				},
 			})

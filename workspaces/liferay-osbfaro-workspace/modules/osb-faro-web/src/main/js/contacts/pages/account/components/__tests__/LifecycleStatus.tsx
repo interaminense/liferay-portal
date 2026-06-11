@@ -148,7 +148,7 @@ describe('LifecycleStatus', () => {
 	afterEach(cleanup);
 
 	describe('rendering', () => {
-		it('should render the card title and description', () => {
+		it('renders the card title and description', () => {
 			render(<LifecycleStatus />);
 
 			expect(screen.getByText('LIFECYCLE STATUS')).toBeInTheDocument();
@@ -159,7 +159,7 @@ describe('LifecycleStatus', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render every progression stage label in the multistep view', () => {
+		it('renders every progression stage label in the multistep view', () => {
 			const {container} = render(<LifecycleStatus />);
 
 			const multistep = container.querySelector(
@@ -177,7 +177,7 @@ describe('LifecycleStatus', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render numeric indicators 1 through 5 in the multistep view', () => {
+		it('renders numeric indicators 1 through 5 in the multistep view', () => {
 			const {container} = render(<LifecycleStatus />);
 
 			const multistep = container.querySelector(
@@ -189,7 +189,7 @@ describe('LifecycleStatus', () => {
 			}
 		});
 
-		it('should render the start date below stages that have one', () => {
+		it('renders the start date below stages that have one', () => {
 			const {container} = render(<LifecycleStatus />);
 
 			const multistep = container.querySelector(
@@ -204,20 +204,20 @@ describe('LifecycleStatus', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should mark the in-progress stage as active and completed stages as complete', () => {
+		it('marks the in-progress stage as active and completed stages as complete', () => {
 			const {container} = render(<LifecycleStatus />);
 
-			const items = container.querySelectorAll(
+			const items = container.querySelectorAll<HTMLElement>(
 				'.lifecycle-status-multistep li'
 			);
 
 			expect(items[0].dataset.state).toBe('complete');
 			expect(items[1].dataset.active).toBe('true');
-			expect(items[1].dataset.state).toBeNull();
-			expect(items[2].dataset.state).toBeNull();
+			expect(items[1].dataset.state).toBeUndefined();
+			expect(items[2].dataset.state).toBeUndefined();
 		});
 
-		it('should render the At-Risk stage with a sticker and icon in the multistep view', () => {
+		it('renders the At-Risk stage with a sticker and icon in the multistep view', () => {
 			const {container} = render(<LifecycleStatus />);
 
 			const multistep = container.querySelector(
@@ -233,7 +233,7 @@ describe('LifecycleStatus', () => {
 	});
 
 	describe('summary view', () => {
-		it('should render the active stage label and step counter', () => {
+		it('renders the active stage label and step counter', () => {
 			const {container} = render(<LifecycleStatus />);
 
 			const summary = container.querySelector(
@@ -246,7 +246,7 @@ describe('LifecycleStatus', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render the active stage start date', () => {
+		it('renders the active stage start date', () => {
 			const {container} = render(<LifecycleStatus />);
 
 			const summary = container.querySelector(
@@ -258,7 +258,7 @@ describe('LifecycleStatus', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render the at-risk row as No when the account is not at risk', () => {
+		it('renders the at-risk row as No when the account is not at risk', () => {
 			const {container} = render(<LifecycleStatus />);
 
 			const summary = container.querySelector(
@@ -269,7 +269,7 @@ describe('LifecycleStatus', () => {
 			expect(within(summary).getByText('No')).toBeInTheDocument();
 		});
 
-		it('should render the at-risk row when no progression stage is active', () => {
+		it('renders the at-risk row when no progression stage is active', () => {
 			mockedUseRequest.mockImplementation(
 				useRequestImpl({
 					lifecyclesData: [{accountId: 'acc-1', id: 'al-1'}],
@@ -305,7 +305,7 @@ describe('LifecycleStatus', () => {
 			expect(within(summary).queryByText('Aware')).toBeNull();
 		});
 
-		it('should not render the summary when the lifecycle has no at-risk stage and no active stage', () => {
+		it('does not render the summary when the lifecycle has no at-risk stage and no active stage', () => {
 			mockedUseRequest.mockImplementation(
 				useRequestImpl({
 					lifecyclesData: [{accountId: 'acc-1', id: 'al-1'}],
@@ -332,7 +332,7 @@ describe('LifecycleStatus', () => {
 	});
 
 	describe('request', () => {
-		it('should render the fetched status when the backend returns data', () => {
+		it('renders the fetched status when the backend returns data', () => {
 			mockedUseRequest.mockImplementation(
 				useRequestImpl({
 					lifecyclesData: [{accountId: 'acc-1', id: 'al-1'}],
@@ -392,7 +392,7 @@ describe('LifecycleStatus', () => {
 			).toBeInTheDocument();
 		});
 
-		it('should render the empty state when no lifecycles are returned', () => {
+		it('renders the empty state when no lifecycles are returned', () => {
 			mockedUseRequest.mockImplementation(
 				useRequestImpl({lifecyclesData: []})
 			);
@@ -413,7 +413,7 @@ describe('LifecycleStatus', () => {
 			).toBeNull();
 		});
 
-		it('should render the empty state when the matching status has no stages', () => {
+		it('renders the empty state when the matching status has no stages', () => {
 			mockedUseRequest.mockImplementation(
 				useRequestImpl({
 					lifecyclesData: [{accountId: 'acc-1', id: 'al-1'}],
@@ -434,7 +434,7 @@ describe('LifecycleStatus', () => {
 	});
 
 	describe('loading', () => {
-		it('should render the loading indicator while the lifecycles list is loading', () => {
+		it('renders the loading indicator while the lifecycles list is loading', () => {
 			mockedUseRequest.mockImplementation(
 				useRequestImpl({lifecyclesLoading: true})
 			);
@@ -449,7 +449,7 @@ describe('LifecycleStatus', () => {
 			).toBeNull();
 		});
 
-		it('should render the loading indicator while the matching status is loading', () => {
+		it('renders the loading indicator while the matching status is loading', () => {
 			mockedUseRequest.mockImplementation(
 				useRequestImpl({
 					lifecyclesData: [{accountId: 'acc-1', id: 'al-1'}],
@@ -467,7 +467,7 @@ describe('LifecycleStatus', () => {
 			).toBeNull();
 		});
 
-		it('should not render the loading indicator when no lifecycles are returned', () => {
+		it('does not render the loading indicator when no lifecycles are returned', () => {
 			mockedUseRequest.mockImplementation(
 				useRequestImpl({
 					lifecyclesData: [],

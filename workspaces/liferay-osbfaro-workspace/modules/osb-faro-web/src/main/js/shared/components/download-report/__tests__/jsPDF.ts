@@ -30,7 +30,7 @@ describe('fontMapper', () => {
 });
 
 describe('JSPDFExtension', () => {
-	it('should create a new instance of JSPDFExtension', () => {
+	it('creates a new instance of JSPDFExtension', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -44,7 +44,7 @@ describe('JSPDFExtension', () => {
 		expect(jsPDFExtension).toBeInstanceOf(JSPDFExtension);
 	});
 
-	it('should add text to the textList', () => {
+	it('adds text to the textList', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -65,7 +65,7 @@ describe('JSPDFExtension', () => {
 		expect(jsPDFExtension.textList).toHaveLength(1);
 	});
 
-	it('should add float text to the floatTextList', () => {
+	it('adds float text to the floatTextList', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -88,7 +88,7 @@ describe('JSPDFExtension', () => {
 		expect(jsPDFExtension.floatTextList).toHaveLength(1);
 	});
 
-	it('should truncate text if it is too long', () => {
+	it('truncates text if it is too long', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -106,7 +106,7 @@ describe('JSPDFExtension', () => {
 		);
 	});
 
-	it('should get the name of the PDF file', () => {
+	it('gets the name of the PDF file', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -121,7 +121,7 @@ describe('JSPDFExtension', () => {
 		expect(fileName).toBe('analytics-cloud-test-1970-01-01.pdf');
 	});
 
-	it('should get the X position of the text', () => {
+	it('gets the X position of the text', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -136,7 +136,7 @@ describe('JSPDFExtension', () => {
 		expect(posX).toBe(10);
 	});
 
-	it('should set the extra font', () => {
+	it('sets the extra font', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -152,7 +152,7 @@ describe('JSPDFExtension', () => {
 		expect(jsPDFExtension.doc.getFontList()).toHaveProperty('NotoSansJP');
 	});
 
-	it('should set the font', () => {
+	it('sets the font', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -177,7 +177,7 @@ describe('JSPDFExtension', () => {
 		expect(jsPDFExtension.doc.getTextColor()).toBe('#000000');
 	});
 
-	it('should get the data for the PDF', () => {
+	it('gets the data for the PDF', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -200,7 +200,7 @@ describe('JSPDFExtension', () => {
 		expect(data).toHaveLength(1);
 	});
 
-	it('should render the containers', () => {
+	it('renders the containers', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';
@@ -217,7 +217,7 @@ describe('JSPDFExtension', () => {
 		expect(jsPDFExtension.doc.getNumberOfPages()).toBe(1);
 	});
 
-	it('should render the PDF', () => {
+	it('renders the PDF', () => {
 		const containers: any[] = [];
 		const fontFamily = 'Helvetica';
 		const name = 'test';

@@ -9,7 +9,7 @@ import {fetchIndividual} from '../individuals';
 
 describe('Individuals', () => {
 	describe('fetchIndividual', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = fetchIndividual('123');
 
 			expect(isFSA(action)).toBe(true);

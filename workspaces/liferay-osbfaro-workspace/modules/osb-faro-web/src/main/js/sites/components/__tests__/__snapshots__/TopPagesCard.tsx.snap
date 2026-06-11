@@ -45,7 +45,7 @@ exports[`TopPagesCard renders 1`] = `
       </div>
     </div>
     <div
-      class="card-body w-100 d-flex flex-column flex-grow-1 no-padding"
+      class="card-body d-flex flex-column flex-grow-1 w-100 no-padding"
     >
       <ul
         class="card-tabs-root"

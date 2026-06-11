@@ -9,7 +9,7 @@ import * as actions from '../preferences';
 
 describe('Preferences Actions', () => {
 	describe('addDistributionTabs', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = actions.addDistributionTab({
 				distributionKey: '123',
 				distributionTab: {},
@@ -24,7 +24,7 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('fetchDistributionTabs', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = actions.fetchDistributionTabs({
 				distributionKey: '321',
 				groupId: '123',
@@ -37,7 +37,7 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('removeDistributionTabs', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = actions.removeDistributionTab({
 				distributionKey: '123',
 				distributionTabId: 'Test Tab',
@@ -51,7 +51,7 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('fetchDefaultChannelId', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = actions.fetchDefaultChannelId('321');
 
 			expect(isFSA(action)).toBe(true);
@@ -60,7 +60,7 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('fetchUpgradeModalSeen', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = actions.fetchUpgradeModalSeen();
 
 			expect(isFSA(action)).toBe(true);
@@ -69,7 +69,7 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('updateDefaultChannelId', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = actions.updateDefaultChannelId({
 				defaultChannelId: '122',
 				groupId: '321',
@@ -81,7 +81,7 @@ describe('Preferences Actions', () => {
 	});
 
 	describe('updateUpgradeModalSeen', () => {
-		it('should return an action', () => {
+		it('returns an action', () => {
 			const action = actions.updateUpgradeModalSeen({
 				groupId: '321',
 				upgradeModalSeen: true,

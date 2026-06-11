@@ -63,7 +63,7 @@ exports[`UserRequest should render 1`] = `
           </li>
         </ul>
         <div
-          class="navbar-form navbar-form-autofit mx-2"
+          class="mx-2 navbar-form navbar-form-autofit"
         >
           <div
             class="input-group search"

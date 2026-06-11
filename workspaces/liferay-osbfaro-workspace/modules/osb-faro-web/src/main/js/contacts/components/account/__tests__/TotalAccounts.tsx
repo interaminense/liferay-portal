@@ -18,7 +18,7 @@ jest.mock('react-router', () => ({
 }));
 
 describe('TotalAccounts', () => {
-	it('should render', () => {
+	it('renders', () => {
 		const useRequest = require('shared/hooks/useRequest');
 		useRequest.useRequest = jest.fn(() => ({
 			data: [
@@ -54,7 +54,7 @@ describe('TotalAccounts', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	it("should load with empty values when there's no data", () => {
+	it("loads with empty values when there's no data", () => {
 		const useRequest = require('shared/hooks/useRequest');
 		useRequest.useRequest = jest.fn(() => ({}));
 

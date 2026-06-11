@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Records should return a Project Record 1`] = `
+exports[`Records returns a Project Record 1`] = `
 Immutable.Record {
   "accountKey": null,
   "accountName": "",
@@ -25,7 +25,7 @@ Immutable.Record {
 }
 `;
 
-exports[`Records should return a Segment Record 1`] = `
+exports[`Records returns a Segment Record 1`] = `
 Immutable.Record {
   "activation": null,
   "activeIndividualCount": 0,
@@ -58,7 +58,7 @@ Immutable.Record {
 }
 `;
 
-exports[`Records should return an Account Record 1`] = `
+exports[`Records returns an Account Record 1`] = `
 Immutable.Record {
   "activitiesCount": 0,
   "createTime": null,
@@ -72,7 +72,7 @@ Immutable.Record {
 }
 `;
 
-exports[`Records should return an EntityLayout Record 1`] = `
+exports[`Records returns an EntityLayout Record 1`] = `
 Immutable.Record {
   "contactsCardTemplatesList": Immutable.List [],
   "headerContactsCardTemplates": Immutable.List [],
@@ -82,7 +82,7 @@ Immutable.Record {
 }
 `;
 
-exports[`Records should return an Individual Record 1`] = `
+exports[`Records returns an Individual Record 1`] = `
 Immutable.Record {
   "accountName": null,
   "accounts": Immutable.List [],

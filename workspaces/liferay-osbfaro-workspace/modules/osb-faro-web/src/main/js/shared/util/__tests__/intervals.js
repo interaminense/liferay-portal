@@ -46,13 +46,13 @@ const mockData = [
 ];
 
 describe('createDateKeysIMap', () => {
-	it('should create an dateKeysIMap', () => {
+	it('creates an dateKeysIMap', () => {
 		const dateKeysIMap = createDateKeysIMap('D', mockData);
 
 		expect(dateKeysIMap).toBeInstanceOf(Map);
 	});
 
-	it('should create an dateKeysIMap with two date when interval is week', () => {
+	it('creates an dateKeysIMap with two date when interval is week', () => {
 		const dateKeysIMap = createDateKeysIMap(
 			'W',
 			mockData,
@@ -67,19 +67,19 @@ describe('createDateKeysIMap', () => {
 });
 
 describe('getNext Functions', () => {
-	it('should get next sunday from a given date', () => {
+	it('gets next sunday from a given date', () => {
 		const nextSunday = getNextSunday(currentDate);
 
 		expect(moment.utc(nextSunday).get('day')).toEqual(0);
 	});
 
-	it('should get next first day of a month from a given date', () => {
+	it('gets next first day of a month from a given date', () => {
 		const nextFirst = getNextFirst(currentDate);
 
 		expect(moment.utc(nextFirst).get('date')).toEqual(1);
 	});
 
-	it('should get next first or fifteenth day of a month from a given date', () => {
+	it('gets next first or fifteenth day of a month from a given date', () => {
 		const mockToFifteenthDate = moment.utc('2020-06-12').valueOf();
 		const mockToFirstDate = moment.utc('2020-06-16').valueOf();
 
@@ -179,37 +179,37 @@ describe('getDates functions', () => {
 });
 
 describe('get functions to handle custom range key', () => {
-	it('should return undefined if the duration is less than 14 days', () => {
+	it('returns undefined if the duration is less than 14 days', () => {
 		const handleFn = getByCustomRangeKey(13, INTERVAL_KEY_MAP.day);
 
 		expect(handleFn).toEqual(undefined);
 	});
 
-	it('should return getSundays with day interval if the duration is more or equal 14 and less or equal 30 days', () => {
+	it('returns getSundays with day interval if the duration is more or equal 14 and less or equal 30 days', () => {
 		const handleFn = getByCustomRangeKey(30, INTERVAL_KEY_MAP.day);
 
 		expect(handleFn).toBe(getSundays);
 	});
 
-	it('should return getFirstAndFifteenthsDays with day interval if the duration is more than 30 and less or equal 180 days', () => {
+	it('returns getFirstAndFifteenthsDays with day interval if the duration is more than 30 and less or equal 180 days', () => {
 		const handleFn = getByCustomRangeKey(180, INTERVAL_KEY_MAP.day);
 
 		expect(handleFn).toBe(getFirstAndFifteenthsDays);
 	});
 
-	it('should return getFirstDays with day interval if the duration is more than 180', () => {
+	it('returns getFirstDays with day interval if the duration is more than 180', () => {
 		const handleFn = getByCustomRangeKey(365, INTERVAL_KEY_MAP.day);
 
 		expect(handleFn).toBe(getFirstDays);
 	});
 
-	it('should return getByEvenOrOddIndexes with week interval if the duration is more than 30 and less or equal 180 days', () => {
+	it('returns getByEvenOrOddIndexes with week interval if the duration is more than 30 and less or equal 180 days', () => {
 		const handleFn = getByCustomRangeKey(180, INTERVAL_KEY_MAP.week);
 
 		expect(handleFn).toBe(getByEvenOrOddIndexes);
 	});
 
-	it('should return getByIndexesMultipleOfFour with day interval if the duration is more than 180', () => {
+	it('returns getByIndexesMultipleOfFour with day interval if the duration is more than 180', () => {
 		const handleFn = getByCustomRangeKey(365, INTERVAL_KEY_MAP.week);
 
 		expect(handleFn).toBe(getByIndexesMultipleOfFour);
@@ -217,7 +217,7 @@ describe('get functions to handle custom range key', () => {
 });
 
 describe('getIntervalHandle functions', () => {
-	it('should return undefined if a interval or rangeKey is not mapped', () => {
+	it('returns undefined if a interval or rangeKey is not mapped', () => {
 		let handleFn = getIntervalHandle(
 			RangeKeyTimeRanges.Last30Days,
 			[],
@@ -235,7 +235,7 @@ describe('getIntervalHandle functions', () => {
 		expect(handleFn).toEqual(undefined);
 	});
 
-	it('should return a map object when a interval is mapped', () => {
+	it('returns a map object when a interval is mapped', () => {
 		const intervalMaps = getIntervalsFromMap(30);
 
 		expect(intervalMaps).toHaveProperty(INTERVAL_KEY_MAP.day);
@@ -249,7 +249,7 @@ describe('getIntervalHandle functions', () => {
 		);
 	});
 
-	it('should return a map object with rangeKeys which have handle functions in day interval', () => {
+	it('returns a map object with rangeKeys which have handle functions in day interval', () => {
 		const dayIntervalMap = getDayIntervalsMap(30);
 
 		expect(dayIntervalMap).toHaveProperty(RangeKeyTimeRanges.CustomRange);
@@ -262,7 +262,7 @@ describe('getIntervalHandle functions', () => {
 		expect(dayIntervalMap).toHaveProperty(RangeKeyTimeRanges.Yesterday);
 	});
 
-	it('should return a map object with rangeKeys which have handle functions in week interval', () => {
+	it('returns a map object with rangeKeys which have handle functions in week interval', () => {
 		const weekIntervalMap = getWeekIntervalsMap(30);
 
 		expect(weekIntervalMap).toHaveProperty(RangeKeyTimeRanges.CustomRange);
@@ -273,7 +273,7 @@ describe('getIntervalHandle functions', () => {
 });
 
 describe('handleDayInterval', () => {
-	it('should extract an array of dates from a start and end date using the handleFn argument as step', () => {
+	it('extracts an array of dates from a start and end date using the handleFn argument as step', () => {
 
 		// function to step two days
 

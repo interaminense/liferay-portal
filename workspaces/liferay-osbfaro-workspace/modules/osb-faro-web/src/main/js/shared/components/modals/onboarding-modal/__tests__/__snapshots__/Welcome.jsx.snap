@@ -24,7 +24,7 @@ exports[`Welcome renders 1`] = `
     class="modal-body"
   >
     <div
-      class="icon analytics-onboarding-welcome-usage-icon"
+      class="analytics-onboarding-welcome-usage-icon icon"
     />
     <div
       class="text-center"
