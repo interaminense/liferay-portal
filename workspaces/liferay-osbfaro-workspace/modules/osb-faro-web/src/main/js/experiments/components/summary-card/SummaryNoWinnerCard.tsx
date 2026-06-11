@@ -1,19 +1,25 @@
-import React from 'react';
-import {formatDateToTimeZone} from 'shared/util/date';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {
 	getBestVariant,
 	getMetricName,
-	toThousandsABTesting
+	toThousandsABTesting,
 } from 'experiments/util/experiments';
-import {IExperiment} from './types';
 import {MetricName} from 'experiments/util/types';
+import React from 'react';
+import {formatDateToTimeZone} from 'shared/util/date';
 import {sub} from 'shared/util/lang';
+import {toRounded} from 'shared/util/numbers';
+
 import {SummaryAlert} from './SummaryAlert';
 import {SummaryBaseCard} from './SummaryBaseCard';
 import {SummaryParagraph} from './SummaryParagraph';
 import {SummarySection} from './SummarySection';
 import {SummaryTitle} from './SummaryTitle';
-import {toRounded} from 'shared/util/numbers';
+import {IExperiment} from './types';
 
 export const SummaryNoWinnerCard: React.FC<{
 	experiment: IExperiment & {
@@ -36,13 +42,13 @@ export const SummaryNoWinnerCard: React.FC<{
 		sessions,
 		startedDate,
 		status,
-		type
+		type,
 	} = experiment;
 
 	const bestVariant = getBestVariant({
 		dxpVariants: experiment.dxpVariants,
 		goal: goal as {metric: MetricName} | undefined,
-		metrics: experiment.metrics
+		metrics: experiment.metrics,
 	});
 
 	return (
@@ -50,15 +56,15 @@ export const SummaryNoWinnerCard: React.FC<{
 			<SummaryBaseCard.Header
 				Description={() =>
 					sub(Liferay.Language.get('started-x'), [
-						formatDateToTimeZone(startedDate, 'll', timeZoneId)
+						formatDateToTimeZone(startedDate, 'll', timeZoneId),
 					]) as any
 				}
 				title={Liferay.Language.get('no-clear-winner')}
 			/>
 
-			<SummaryAlert symbol='exclamation-circle'>
+			<SummaryAlert symbol="exclamation-circle">
 				<SummaryTitle
-					className='font-weight-bold mb-1'
+					className="font-weight-bold mb-1"
 					label={Liferay.Language.get('there-is-no-clear-winner')}
 				/>
 
@@ -70,13 +76,13 @@ export const SummaryNoWinnerCard: React.FC<{
 			</SummaryAlert>
 
 			<SummaryBaseCard.Body>
-				<div className='w-100 mt-4'>
+				<div className="mt-4 w-100">
 					<SummaryParagraph
 						description={description}
 						title={Liferay.Language.get('summary')}
 					/>
 
-					<div className='analytics-summary-card-sections'>
+					<div className="analytics-summary-card-sections">
 						<SummarySection
 							title={Liferay.Language.get('test-completion')}
 						>
@@ -124,7 +130,7 @@ export const SummaryNoWinnerCard: React.FC<{
 												bestVariant.improvement,
 												2
 											)}%`}
-											status='up'
+											status="up"
 										/>
 									)}
 							</SummarySection>

@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {
 	act,
 	fireEvent,
@@ -5,19 +10,19 @@ import {
 	getByPlaceholderText,
 	getByTestId,
 	getByText,
-	waitFor
+	waitFor,
 } from '@testing-library/react';
 
 export const inputSearchText = (container, searchText) => {
 	const searchBarInput = getByPlaceholderText(container, 'Search');
 	fireEvent.change(searchBarInput, {
-		target: {value: searchText}
+		target: {value: searchText},
 	});
 	fireEvent.keyDown(searchBarInput, {code: 13, key: 'Enter'});
 	jest.runAllTimers();
 };
 
-export const selectAllAndToggle = container => {
+export const selectAllAndToggle = (container) => {
 	fireEvent.click(getByTestId(container, 'select-all-checkbox'));
 	jest.runAllTimers();
 	fireEvent.click(getByTestId(container, 'view-selected'));
@@ -32,20 +37,23 @@ export const selectFilterDropdownItem = (container, labelText) => {
 	jest.runAllTimers();
 };
 
-export const waitForTable = async container => {
+export const waitForTable = async (container) => {
 	await waitFor(() =>
 		expect(container.querySelector('.table-root')).toBeTruthy()
 	);
 };
 
-export const waitForLoading = async container => {
+export const waitForLoading = async (container) => {
+
 	// Wait for loading indicator to appear first
+
 	await waitFor(() =>
 		expect(container.querySelector('.loading-root')).toBeTruthy()
 	);
 
 	// Advance fake timers and flush React state updates.
 	// Guard against calling timer functions when real timers are active.
+
 	if (jest.isMockFunction(global.setTimeout)) {
 		await act(async () => {
 			await jest.advanceTimersByTimeAsync(300);
@@ -68,7 +76,9 @@ export const waitForLoadingToBeRemoved = async (
 	const loading = container.querySelector(selector);
 
 	if (!loading) {
+
 		// Loading element is not present — no need to wait.
+
 		return Promise.resolve();
 	}
 
@@ -81,6 +91,7 @@ export const waitForLoadingToBeRemoved = async (
 	// polling timers are not triggered.
 	// Only run when fake timers are installed — with real timers the
 	// async work resolves naturally without advancement.
+
 	if (jest.isMockFunction(global.setTimeout)) {
 		await act(async () => {
 			await jest.advanceTimersByTimeAsync(0);
@@ -91,13 +102,14 @@ export const waitForLoadingToBeRemoved = async (
 	// state updates (including those from async operations like Apollo
 	// queries). waitForElementToBeRemoved uses MutationObserver and may
 	// miss updates that React batches outside of act().
+
 	return await waitFor(
 		() => expect(container.querySelector(selector)).not.toBeInTheDocument(),
 		{timeout}
 	);
 };
 
-export const selectDropdownItem = labelText => {
+export const selectDropdownItem = (labelText) => {
 	const overlay = getByTestId(document.body, 'overlay');
 	fireEvent.click(getByText(overlay, labelText));
 	fireEvent.click(document.body);

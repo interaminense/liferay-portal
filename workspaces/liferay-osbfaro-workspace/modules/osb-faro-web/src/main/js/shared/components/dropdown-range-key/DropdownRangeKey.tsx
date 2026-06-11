@@ -1,11 +1,17 @@
-import ErrorDisplay from '../ErrorDisplay';
-import React from 'react';
-import StatesRenderer from '../states-renderer/StatesRenderer';
-import TimeRangeQuery from 'shared/queries/TimeRangeQuery';
-import {DropdownRangeKeyContent} from './DropdownRangeKeyContent';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {RangeSelectors} from 'shared/types';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {useQuery} from '@apollo/client';
+import React from 'react';
+import TimeRangeQuery from 'shared/queries/TimeRangeQuery';
+import {RangeSelectors} from 'shared/types';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
+
+import ErrorDisplay from '../ErrorDisplay';
+import StatesRenderer from '../states-renderer/StatesRenderer';
+import {DropdownRangeKeyContent} from './DropdownRangeKeyContent';
 
 export interface DropdownRangeKeyIProps
 	extends React.HTMLAttributes<HTMLElement> {
@@ -32,7 +38,7 @@ export const DropdownRangeKey: React.FC<DropdownRangeKeyIProps> = ({
 	legacy,
 	onRangeSelectorChange,
 	rangeKeys,
-	rangeSelectors
+	rangeSelectors,
 }) => {
 	const {data, error, loading} = useQuery<Data>(TimeRangeQuery);
 

@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {buildLanguages} from '../buildLanguages';
 
 describe('buildLanguages', () => {
@@ -10,7 +15,7 @@ describe('buildLanguages', () => {
 				'connectTitle',
 				'endpointHelper',
 				'endpointLabel',
-				'tokenLabel'
+				'tokenLabel',
 			].sort()
 		);
 	});
@@ -33,7 +38,7 @@ describe('buildLanguages', () => {
 	it('returns string values for every key', () => {
 		const languages = buildLanguages('Acme');
 
-		Object.values(languages).forEach(value => {
+		Object.values(languages).forEach((value) => {
 			expect(typeof value).toBe('string');
 		});
 	});

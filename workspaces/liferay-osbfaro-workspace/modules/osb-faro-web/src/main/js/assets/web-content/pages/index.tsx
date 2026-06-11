@@ -1,22 +1,27 @@
-import * as breadcrumbs from 'shared/util/breadcrumbs';
-import BasePage from 'shared/components/base-page';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import getCN from 'classnames';
+import {pickBy} from 'lodash';
+import React, {Suspense, lazy, useState} from 'react';
+import {Switch} from 'react-router-dom';
 import BundleRouter from 'route-middleware/BundleRouter';
+import Loading from 'shared/components/Loading';
+import RouteNotFound from 'shared/components/RouteNotFound';
+import BasePage from 'shared/components/base-page';
 import DownloadCSVReport from 'shared/components/download-report/DownloadCSVReport';
 import DownloadPDFReport from 'shared/components/download-report/DownloadPDFReport';
-import getCN from 'classnames';
-import Loading from 'shared/components/Loading';
-import React, {lazy, Suspense, useState} from 'react';
-import RouteNotFound from 'shared/components/RouteNotFound';
 import {CSVType} from 'shared/components/download-report/utils';
-import {getMatchedRoute, Routes} from 'shared/util/router';
-import {getSafeDecodedURIComponent} from 'shared/util/util';
-import {pickBy} from 'lodash';
-import {Router} from 'shared/types';
-import {sub} from 'shared/util/lang';
-import {Switch} from 'react-router-dom';
 import {useChannelContext} from 'shared/context/channel';
 import {useDataSources} from 'shared/context/dataSources';
 import {useQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
+import {Router} from 'shared/types';
+import * as breadcrumbs from 'shared/util/breadcrumbs';
+import {sub} from 'shared/util/lang';
+import {Routes, getMatchedRoute} from 'shared/util/router';
+import {getSafeDecodedURIComponent} from 'shared/util/util';
 
 const Overview = lazy(
 	() => import(/* webpackChunkName: "WebContentOverview" */ './Overview')
@@ -24,6 +29,7 @@ const Overview = lazy(
 const KnownIndividuals = lazy(
 	() =>
 		import(
+
 			/* webpackChunkName: "WebContentKnownIndividuals" */ './KnownIndividuals'
 		)
 );
@@ -32,13 +38,13 @@ const NAV_ITEMS = [
 	{
 		exact: true,
 		label: Liferay.Language.get('overview'),
-		route: Routes.ASSETS_WEB_CONTENT_OVERVIEW
+		route: Routes.ASSETS_WEB_CONTENT_OVERVIEW,
 	},
 	{
 		exact: true,
 		label: Liferay.Language.get('known-individuals'),
-		route: Routes.ASSETS_WEB_CONTENT_KNOWN_INDIVIDUALS
-	}
+		route: Routes.ASSETS_WEB_CONTENT_KNOWN_INDIVIDUALS,
+	},
 ];
 
 const WebContent: React.FC<{
@@ -52,8 +58,8 @@ const WebContent: React.FC<{
 			groupId = '',
 			title = '',
 			touchpoint,
-			type = ''
-		}
+			type = '',
+		},
 	} = router;
 
 	const [filters] = useState({});
@@ -77,10 +83,10 @@ const WebContent: React.FC<{
 					breadcrumbs.getHome({
 						channelId,
 						groupId,
-						label: selectedChannel?.name
+						label: selectedChannel?.name,
 					}),
 					breadcrumbs.getAssets({channelId, groupId}),
-					breadcrumbs.getEntityName({label: decodedTitle})
+					breadcrumbs.getEntityName({label: decodedTitle}),
 				]}
 				groupId={groupId}
 			>
@@ -100,7 +106,7 @@ const WebContent: React.FC<{
 						groupId,
 						title,
 						touchpoint,
-						type
+						type,
 					}}
 					routeQueries={pickBy(rangeSelectorsFromQuery)}
 				/>
@@ -109,13 +115,13 @@ const WebContent: React.FC<{
 			{getMatchedRoute(NAV_ITEMS) ===
 				Routes.ASSETS_WEB_CONTENT_OVERVIEW && (
 				<BasePage.SubHeader>
-					<div className='d-flex justify-content-end w-100'>
+					<div className="d-flex justify-content-end w-100">
 						<DownloadPDFReport
 							disabled={!!dataSourceStates.empty}
 							subtitle={selectedChannel?.name}
 							title={
 								sub(Liferay.Language.get('x-dashboard'), [
-									decodedTitle
+									decodedTitle,
 								]) as string
 							}
 						/>
@@ -126,10 +132,10 @@ const WebContent: React.FC<{
 			{getMatchedRoute(NAV_ITEMS) ===
 				Routes.ASSETS_WEB_CONTENT_KNOWN_INDIVIDUALS && (
 				<BasePage.SubHeader>
-					<div className='d-flex justify-content-end w-100'>
+					<div className="d-flex justify-content-end w-100">
 						<DownloadCSVReport
 							assetId={assetId}
-							assetType='journal'
+							assetType="journal"
 							disabled={!!dataSourceStates.empty}
 							type={CSVType.Individual}
 							typeLang={Liferay.Language.get('known-individuals')}

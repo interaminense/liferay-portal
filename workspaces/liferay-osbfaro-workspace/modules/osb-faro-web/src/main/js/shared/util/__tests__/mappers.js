@@ -1,14 +1,19 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {
 	getVariables,
 	mapListResultsToProps,
-	safeResultToProps
+	safeResultToProps,
 } from '../mappers';
 
 const mapResultToProps = safeResultToProps(({myData}) => {
 	const {myValue} = myData;
 
 	return {
-		myValue
+		myValue,
 	};
 });
 
@@ -24,11 +29,11 @@ describe('mappers', () => {
 					data: {stuff: {moreStuff, total}},
 					error: false,
 					loading: false,
-					refetch
+					refetch,
 				},
-				data => ({
+				(data) => ({
 					items: data.stuff.moreStuff,
-					total: data.stuff.total
+					total: data.stuff.total,
 				})
 			);
 
@@ -38,7 +43,7 @@ describe('mappers', () => {
 				items: moreStuff,
 				loading: false,
 				refetch,
-				total
+				total,
 			});
 		});
 
@@ -50,11 +55,11 @@ describe('mappers', () => {
 					data: null,
 					error: false,
 					loading: true,
-					refetch
+					refetch,
 				},
-				data => ({
+				(data) => ({
 					items: data.stuff.moreStuff,
-					total: data.stuff.total
+					total: data.stuff.total,
 				})
 			);
 
@@ -64,7 +69,7 @@ describe('mappers', () => {
 				items: [],
 				loading: true,
 				refetch,
-				total: 0
+				total: 0,
 			});
 		});
 	});
@@ -74,27 +79,27 @@ describe('mappers', () => {
 			const props = mapResultToProps({
 				data: {
 					error: {
-						message: 'fake error message'
-					}
-				}
+						message: 'fake error message',
+					},
+				},
 			});
 
 			expect(props).toEqual({
 				error: {
-					message: 'fake error message'
-				}
+					message: 'fake error message',
+				},
 			});
 		});
 
 		it('should not extract data while result is still loading', () => {
 			const props = mapResultToProps({
 				data: {
-					loading: true
-				}
+					loading: true,
+				},
 			});
 
 			expect(props).toEqual({
-				loading: true
+				loading: true,
 			});
 		});
 
@@ -105,11 +110,11 @@ describe('mappers', () => {
 			});
 
 			const props = errorMapResultToProps({
-				data: {}
+				data: {},
 			});
 
 			expect(props).toEqual({
-				error
+				error,
 			});
 		});
 	});
@@ -117,13 +122,13 @@ describe('mappers', () => {
 	describe('getVariables', () => {
 		const filters = {
 			devices: ['Desktop'],
-			location: ['Brazil']
+			location: ['Brazil'],
 		};
 
 		const params = {
 			assetId: '12345',
 			title: 'Liferay',
-			touchpoint: 'Any'
+			touchpoint: 'Any',
 		};
 
 		const rangeKey = '7';
@@ -132,7 +137,7 @@ describe('mappers', () => {
 			const variables = getVariables({
 				filters,
 				params,
-				rangeSelectors: {rangeKey}
+				rangeSelectors: {rangeKey},
 			});
 
 			expect(variables).toEqual({
@@ -144,15 +149,15 @@ describe('mappers', () => {
 					rangeKey: 7,
 					rangeStart: null,
 					title: 'Liferay',
-					touchpoint: null
-				}
+					touchpoint: null,
+				},
 			});
 		});
 
 		it('should include variables without filter parameter', () => {
 			const variables = getVariables({
 				params,
-				rangeSelectors: {rangeKey}
+				rangeSelectors: {rangeKey},
 			});
 
 			expect(variables).toEqual({
@@ -162,8 +167,8 @@ describe('mappers', () => {
 					rangeKey: 7,
 					rangeStart: null,
 					title: 'Liferay',
-					touchpoint: null
-				}
+					touchpoint: null,
+				},
 			});
 		});
 
@@ -171,7 +176,7 @@ describe('mappers', () => {
 			const variables = getVariables({
 				filters: {},
 				params,
-				rangeSelectors: {rangeKey}
+				rangeSelectors: {rangeKey},
 			});
 
 			expect(variables).toEqual({
@@ -183,8 +188,8 @@ describe('mappers', () => {
 					rangeKey: 7,
 					rangeStart: null,
 					title: 'Liferay',
-					touchpoint: null
-				}
+					touchpoint: null,
+				},
 			});
 		});
 
@@ -192,7 +197,7 @@ describe('mappers', () => {
 			const variables = getVariables({
 				filters,
 				params: {touchpoint: 'https://liferay.com'},
-				rangeSelectors: {rangeKey}
+				rangeSelectors: {rangeKey},
 			});
 
 			expect(variables).toEqual({
@@ -203,8 +208,8 @@ describe('mappers', () => {
 					rangeKey: 7,
 					rangeStart: null,
 					title: '',
-					touchpoint: 'https://liferay.com'
-				}
+					touchpoint: 'https://liferay.com',
+				},
 			});
 		});
 
@@ -212,7 +217,7 @@ describe('mappers', () => {
 			const variables = getVariables({
 				filters,
 				params: {title: 'Liferay', touchpoint: 'https://liferay.com'},
-				rangeSelectors: {rangeKey}
+				rangeSelectors: {rangeKey},
 			});
 
 			expect(variables).toEqual({
@@ -223,8 +228,8 @@ describe('mappers', () => {
 					rangeKey: 7,
 					rangeStart: null,
 					title: 'Liferay',
-					touchpoint: 'https://liferay.com'
-				}
+					touchpoint: 'https://liferay.com',
+				},
 			});
 		});
 
@@ -232,7 +237,7 @@ describe('mappers', () => {
 			const variables = getVariables({
 				filters,
 				params: {assetId: '12345', touchpoint: 'Any'},
-				rangeSelectors: {rangeKey}
+				rangeSelectors: {rangeKey},
 			});
 
 			expect(variables).toEqual({
@@ -244,8 +249,8 @@ describe('mappers', () => {
 					rangeKey: 7,
 					rangeStart: null,
 					title: '',
-					touchpoint: null
-				}
+					touchpoint: null,
+				},
 			});
 		});
 
@@ -254,7 +259,7 @@ describe('mappers', () => {
 				filters,
 				interval: 'foo',
 				params: {},
-				rangeSelectors: {rangeKey}
+				rangeSelectors: {rangeKey},
 			});
 
 			expect(variables.interval).toBe('foo');
@@ -264,7 +269,7 @@ describe('mappers', () => {
 			const {variables} = getVariables({
 				filters,
 				params: {assetId: '12345', channelId: '12345'},
-				rangeSelectors: {rangeKey}
+				rangeSelectors: {rangeKey},
 			});
 
 			expect(variables.channelId).toEqual('12345');

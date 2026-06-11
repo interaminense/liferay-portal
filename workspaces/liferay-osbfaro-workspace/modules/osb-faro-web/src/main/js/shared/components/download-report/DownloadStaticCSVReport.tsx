@@ -1,16 +1,22 @@
-import * as API from 'shared/api';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayButton from '@clayui/button';
 import ClayForm from '@clayui/form';
 import ClayModal, {useModal} from '@clayui/modal';
 import React from 'react';
-import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {CSVType, MAX_CSV_ENTRIES, useDownloadCSV} from './utils';
-import {DownloadReportButton} from './DownloadReportButton';
-import {sub} from 'shared/util/lang';
-import {toLocale} from 'shared/util/numbers';
 import {useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
+import {addAlert} from 'shared/actions/alerts';
+import * as API from 'shared/api';
+import {Alert} from 'shared/types';
+import {sub} from 'shared/util/lang';
+import {toLocale} from 'shared/util/numbers';
+
+import {DownloadReportButton} from './DownloadReportButton';
+import {CSVType, MAX_CSV_ENTRIES, useDownloadCSV} from './utils';
 
 interface IDownloadStaticCSVReport {
 	children?: any;
@@ -25,7 +31,7 @@ export const DownloadStaticCSVReport: React.FC<IDownloadStaticCSVReport> = ({
 	disabled,
 	segmentId,
 	type,
-	typeLang
+	typeLang,
 }) => {
 	const dispatch = useDispatch();
 	const generateURL = useDownloadCSV({segmentId, type});
@@ -37,7 +43,7 @@ export const DownloadStaticCSVReport: React.FC<IDownloadStaticCSVReport> = ({
 			{children ? (
 				React.cloneElement(children, {
 					disabled,
-					onClick: () => onOpenChange(true)
+					onClick: () => onOpenChange(true),
 				})
 			) : (
 				<DownloadReportButton
@@ -69,7 +75,7 @@ export const DownloadStaticCSVReport: React.FC<IDownloadStaticCSVReport> = ({
 											'the-x-file-is-being-generated-and-your-download-will-start-soon'
 										),
 										['CSV']
-									) as string
+									) as string,
 								})
 							);
 
@@ -82,7 +88,7 @@ export const DownloadStaticCSVReport: React.FC<IDownloadStaticCSVReport> = ({
 								channelId: channelId!,
 								groupId: groupId!,
 								segmentId,
-								type: CSVType.Individual
+								type: CSVType.Individual,
 							});
 
 							if (count > MAX_CSV_ENTRIES) {
@@ -94,17 +100,18 @@ export const DownloadStaticCSVReport: React.FC<IDownloadStaticCSVReport> = ({
 												'the-csv-file-reached-x-entries'
 											),
 											[toLocale(MAX_CSV_ENTRIES)]
-										)
+										),
 									})
 								);
 							}
-						} catch (e) {
+						}
+						catch (e) {
 							dispatch(
 								addAlert({
 									alertType: Alert.Types.Error,
 									message: Liferay.Language.get(
 										'it-was-not-possible-to-generate-a-csv-file-at-this-moment.-please-try-again-later'
-									)
+									),
 								})
 							);
 						}
@@ -120,7 +127,7 @@ const Modal = ({
 	observer,
 	onClose,
 	onSubmit,
-	typeLang
+	typeLang,
 }: {
 	observer: any;
 	onClose: () => void;
@@ -129,7 +136,7 @@ const Modal = ({
 }) => (
 	<ClayModal observer={observer}>
 		<ClayForm
-			onSubmit={event => {
+			onSubmit={(event) => {
 				event.preventDefault();
 
 				onSubmit();
@@ -156,14 +163,14 @@ const Modal = ({
 				last={
 					<ClayButton.Group spaced>
 						<ClayButton
-							data-testid='cancel'
-							displayType='secondary'
+							data-testid="cancel"
+							displayType="secondary"
 							onClick={onClose}
 						>
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
 
-						<ClayButton data-testid='submit' type='submit'>
+						<ClayButton data-testid="submit" type="submit">
 							{Liferay.Language.get('download')}
 						</ClayButton>
 					</ClayButton.Group>

@@ -1,9 +1,14 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {
+	PathToken,
 	compile,
 	escapeGroup,
 	escapeString,
 	parse,
-	PathToken
 } from 'shared/util/path-to-regexp';
 
 type PathTokenObject = Exclude<PathToken, string>;
@@ -56,8 +61,8 @@ describe('parse(str)', () => {
 				partial: true,
 				pattern: '[^\\/]+?',
 				prefix: '/',
-				repeat: false
-			}
+				repeat: false,
+			},
 		]);
 	});
 
@@ -93,8 +98,8 @@ describe('parse(str)', () => {
 				partial: true,
 				pattern: '\\d{4}',
 				prefix: '/',
-				repeat: false
-			}
+				repeat: false,
+			},
 		]);
 	});
 
@@ -106,7 +111,7 @@ describe('parse(str)', () => {
 		expect(result[1]).toMatchObject({
 			name: 0,
 			optional: false,
-			pattern: 'users|admins'
+			pattern: 'users|admins',
 		});
 	});
 
@@ -122,8 +127,8 @@ describe('parse(str)', () => {
 				partial: true,
 				pattern: '[^\\/]+?',
 				prefix: '.',
-				repeat: false
-			}
+				repeat: false,
+			},
 		]);
 	});
 
@@ -138,7 +143,7 @@ describe('parse(str)', () => {
 				partial: true,
 				pattern: '[^\\/]+?',
 				prefix: '/',
-				repeat: false
+				repeat: false,
 			},
 			'/book',
 			{
@@ -148,7 +153,7 @@ describe('parse(str)', () => {
 				partial: true,
 				pattern: '[^\\/]+?',
 				prefix: '/',
-				repeat: false
+				repeat: false,
 			},
 			'-',
 			{
@@ -158,8 +163,8 @@ describe('parse(str)', () => {
 				partial: false,
 				pattern: '[^\\/]+?',
 				prefix: '',
-				repeat: false
-			}
+				repeat: false,
+			},
 		]);
 	});
 
@@ -252,7 +257,7 @@ describe('compile(path) and tokensToFunction', () => {
 		const params = {
 			id: 42,
 			lang: 'en',
-			slug: 'the-book'
+			slug: 'the-book',
 		};
 
 		expect(toPath(params)).toBe('/en/book/42-the-book');
@@ -262,7 +267,7 @@ describe('compile(path) and tokensToFunction', () => {
 		const toPath = compile('/:lang/book/:id-:slug?');
 		const params = {
 			id: 101,
-			lang: 'pt'
+			lang: 'pt',
 		};
 
 		expect(toPath(params)).toBe('/pt/book/101-');

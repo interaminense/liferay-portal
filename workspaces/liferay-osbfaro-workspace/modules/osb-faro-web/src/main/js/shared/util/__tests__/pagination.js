@@ -1,17 +1,23 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import FaroConstants, {OrderByDirections} from 'shared/util/constants';
+
 import {
 	ACCOUNT_NAME,
 	ACTIVITIES_COUNT,
+	FAMILY_NAME,
+	GIVEN_NAME,
+	NAME,
 	buildOrderByFields,
 	createOrderByField,
 	createOrderIOMap,
-	FAMILY_NAME,
 	getDefaultSortOrder,
 	getGraphQLVariablesFromPagination,
 	getSortFromOrderIOMap,
-	GIVEN_NAME,
 	invertSortOrder,
-	NAME
 } from '../pagination';
 
 const {orderDescending} = FaroConstants.pagination;
@@ -28,13 +34,13 @@ describe('pagination', () => {
 				{
 					fieldName: GIVEN_NAME,
 					orderBy: orderDescending,
-					system: false
+					system: false,
 				},
 				{
 					fieldName: FAMILY_NAME,
 					orderBy: orderDescending,
-					system: false
-				}
+					system: false,
+				},
 			]);
 		});
 
@@ -48,8 +54,8 @@ describe('pagination', () => {
 				{
 					fieldName: NAME,
 					orderBy: orderDescending,
-					system: true
-				}
+					system: true,
+				},
 			]);
 		});
 
@@ -63,8 +69,8 @@ describe('pagination', () => {
 				{
 					fieldName: ACCOUNT_NAME,
 					orderBy: orderDescending,
-					system: false
-				}
+					system: false,
+				},
 			]);
 		});
 
@@ -72,14 +78,14 @@ describe('pagination', () => {
 			expect(
 				buildOrderByFields({
 					field: ACTIVITIES_COUNT,
-					sortOrder: OrderByDirections.Descending
+					sortOrder: OrderByDirections.Descending,
 				})
 			).toEqual([
 				{
 					fieldName: ACTIVITIES_COUNT,
 					orderBy: orderDescending,
-					system: true
-				}
+					system: true,
+				},
 			]);
 		});
 	});
@@ -91,7 +97,7 @@ describe('pagination', () => {
 			).toEqual({
 				fieldName: ACCOUNT_NAME,
 				orderBy: orderDescending,
-				system: false
+				system: false,
 			});
 		});
 
@@ -104,7 +110,7 @@ describe('pagination', () => {
 			).toEqual({
 				fieldName: ACTIVITIES_COUNT,
 				orderBy: orderDescending,
-				system: true
+				system: true,
 			});
 		});
 	});
@@ -151,7 +157,7 @@ describe('pagination', () => {
 		it('should return an object in sort format from an orderIOMap', () => {
 			expect(getSortFromOrderIOMap(createOrderIOMap('name'))).toEqual({
 				column: 'name',
-				type: 'ASC'
+				type: 'ASC',
 			});
 		});
 	});
@@ -163,16 +169,16 @@ describe('pagination', () => {
 					delta: 10,
 					orderIOMap: createOrderIOMap('name'),
 					page: 2,
-					query: 'test'
+					query: 'test',
 				})
 			).toEqual({
 				keywords: 'test',
 				size: 10,
 				sort: {
 					column: 'name',
-					type: 'ASC'
+					type: 'ASC',
 				},
-				start: 10
+				start: 10,
 			});
 		});
 	});

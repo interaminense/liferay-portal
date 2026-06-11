@@ -1,5 +1,8 @@
-import Breadcrumbs from 'shared/components/Breadcrumbs';
-import classNames from 'classnames';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayBadge from '@clayui/badge';
 import ClayButton from '@clayui/button';
 import ClayDropDown, {Align} from '@clayui/drop-down';
@@ -7,16 +10,19 @@ import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
 import ClayLink from '@clayui/link';
 import ClayNavigationBar from '@clayui/navigation-bar';
+import classNames from 'classnames';
 import getCN from 'classnames';
-import NotificationAlertList, {
-	useNotificationsAPI
-} from '../NotificationAlertList';
-import React, {useState} from 'react';
-import Row from './Row';
-import TextTruncate from 'shared/components/TextTruncate';
-import {getMatchedRoute, setUriQueryValues, toRoute} from 'shared/util/router';
-import {IBreadcrumbArgs} from 'shared/util/breadcrumbs';
 import {pickBy} from 'lodash';
+import React, {useState} from 'react';
+import Breadcrumbs from 'shared/components/Breadcrumbs';
+import TextTruncate from 'shared/components/TextTruncate';
+import {IBreadcrumbArgs} from 'shared/util/breadcrumbs';
+import {getMatchedRoute, setUriQueryValues, toRoute} from 'shared/util/router';
+
+import NotificationAlertList, {
+	useNotificationsAPI,
+} from '../NotificationAlertList';
+import Row from './Row';
 
 type NavBarItem = {
 	deprecated?: boolean;
@@ -34,17 +40,17 @@ interface INavBarProps extends React.HTMLAttributes<HTMLDivElement> {
 const NavBar: React.FC<INavBarProps> = ({
 	items,
 	routeParams = {},
-	routeQueries = {}
+	routeQueries = {},
 }) => {
 	const matchedRoute = getMatchedRoute(items);
 
 	const initialItem =
-		items.find(item => item.route === matchedRoute) ?? items[0];
+		items.find((item) => item.route === matchedRoute) ?? items[0];
 
 	const [activeLabel, setActiveLabel] = useState(initialItem.label);
 
 	return (
-		<div className='row'>
+		<div className="row">
 			<ClayNavigationBar triggerLabel={activeLabel}>
 				{items.map(({deprecated, label, route}) => (
 					<ClayNavigationBar.Item
@@ -62,8 +68,8 @@ const NavBar: React.FC<INavBarProps> = ({
 
 							{deprecated && (
 								<ClayBadge
-									className='ml-1'
-									displayType='warning'
+									className="ml-1"
+									displayType="warning"
 									label={Liferay.Language.get(
 										'deprecated'
 									).toUpperCase()}
@@ -100,7 +106,7 @@ const PageActions: React.FC<IPageActionsProps> = ({
 	actions = [],
 	actionsDisplayLimit = 1,
 	disabled = false,
-	label = ''
+	label = '',
 }) => (
 	<>
 		{actions.length <= actionsDisplayLimit &&
@@ -112,15 +118,15 @@ const PageActions: React.FC<IPageActionsProps> = ({
 						button
 						className={classNames(
 							getCN('button-root', {
-								disabled: props.disabled
+								disabled: props.disabled,
 							})
 						)}
-						displayType='secondary'
+						displayType="secondary"
 						key={label}
 						{...props}
 					>
 						{icon && (
-							<ClayIcon className='mr-2' symbol={icon.symbol} />
+							<ClayIcon className="mr-2" symbol={icon.symbol} />
 						)}
 
 						{label}
@@ -142,14 +148,14 @@ const PageActions: React.FC<IPageActionsProps> = ({
 								<span>{label}</span>
 
 								<ClayIcon
-									className='icon-root ml-2'
-									symbol='caret-bottom'
+									className="icon-root ml-2"
+									symbol="caret-bottom"
 								/>
 							</>
 						) : (
 							<ClayIcon
-								className='icon-root'
-								symbol='ellipsis-v'
+								className="icon-root"
+								symbol="ellipsis-v"
 							/>
 						)}
 					</ClayButton>
@@ -161,8 +167,8 @@ const PageActions: React.FC<IPageActionsProps> = ({
 
 						{deprecated && (
 							<ClayBadge
-								className='ml-1'
-								displayType='warning'
+								className="ml-1"
+								displayType="warning"
 								label={Liferay.Language.get(
 									'deprecated'
 								).toUpperCase()}
@@ -178,7 +184,7 @@ const PageActions: React.FC<IPageActionsProps> = ({
 
 const Section: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 	children,
-	className
+	className,
 }) => <div className={getCN('header-section', className)}>{children}</div>;
 
 interface ITitleSectionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -203,11 +209,11 @@ const TitleSection: React.FC<ITitleSectionProps> = ({
 	className,
 	label = false,
 	subtitle,
-	title
+	title,
 }) => (
 	<Section className={getCN('title-section', className, {subtitle})}>
-		<span className='align-items-center d-flex'>
-			<h1 className='title text-truncate'>
+		<span className="align-items-center d-flex">
+			<h1 className="text-truncate title">
 				<TextTruncate title={title} />
 			</h1>
 
@@ -216,32 +222,32 @@ const TitleSection: React.FC<ITitleSectionProps> = ({
 
 		{subtitle &&
 			(label ? (
-				<ClayLabel className='mb-4' displayType='info'>
+				<ClayLabel className="mb-4" displayType="info">
 					{subtitle}
 				</ClayLabel>
 			) : (
-				<div className='subtitle'>{subtitle}</div>
+				<div className="subtitle">{subtitle}</div>
 			))}
 	</Section>
 );
 
 const Actions: React.FC<IActionsProps> = ({actions = []}) => (
-	<div className='header-actions'>
+	<div className="header-actions">
 		{actions.map(({displayType, label, onClick, redirectURL}, index) =>
 			redirectURL ? (
 				<ClayLink
 					className={getCN(`btn btn-${displayType}`, 'ml-2')}
 					href={redirectURL}
 					key={index}
-					target='_blank'
+					target="_blank"
 				>
-					<ClayIcon className='mr-2' symbol='shortcut' />
+					<ClayIcon className="mr-2" symbol="shortcut" />
 
 					{label}
 				</ClayLink>
 			) : (
 				<ClayButton
-					className='ml-2'
+					className="ml-2"
 					displayType={displayType as any}
 					key={index}
 					onClick={onClick}
@@ -270,8 +276,8 @@ const Header: React.FC<IHeaderProps> & {
 
 	if (fluid) {
 		return (
-			<header className='header-root'>
-				<div className='mx-5'>
+			<header className="header-root">
+				<div className="mx-5">
 					{breadcrumbs && (
 						<Row>
 							<Breadcrumbs items={breadcrumbs} />
@@ -291,8 +297,8 @@ const Header: React.FC<IHeaderProps> & {
 	}
 
 	return (
-		<header className='header-root'>
-			<div className='header-container'>
+		<header className="header-root">
+			<div className="header-container">
 				{breadcrumbs && (
 					<Row>
 						<Breadcrumbs items={breadcrumbs} />

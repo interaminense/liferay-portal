@@ -1,5 +1,11 @@
-import {DataSource} from 'shared/util/records';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {DataSourceStates, DataSourceStatuses} from 'shared/util/constants';
+import {DataSource} from 'shared/util/records';
+
 import {getConnectorAvailableDataAlert} from '../getConnectorAvailableDataAlert';
 
 const PREVIOUSLY_SYNCED_MESSAGE =
@@ -12,7 +18,7 @@ describe('getConnectorAvailableDataAlert', () => {
 	describe('ACTIVE', () => {
 		const activeDataSource = new DataSource({
 			state: DataSourceStates.CredentialsValid,
-			status: DataSourceStatuses.Active
+			status: DataSourceStatuses.Active,
 		});
 
 		it('zero data: no alert', () => {
@@ -27,7 +33,7 @@ describe('getConnectorAvailableDataAlert', () => {
 			).toEqual({
 				displayType: 'info',
 				kind: 'syncing',
-				message: SYNCING_COMPLETES_MESSAGE
+				message: SYNCING_COMPLETES_MESSAGE,
 			});
 		});
 	});
@@ -35,7 +41,7 @@ describe('getConnectorAvailableDataAlert', () => {
 	describe('INACTIVE (not disconnected)', () => {
 		const inactiveDataSource = new DataSource({
 			state: DataSourceStates.CredentialsValid,
-			status: DataSourceStatuses.Inactive
+			status: DataSourceStatuses.Inactive,
 		});
 
 		it('without data: no alert', () => {
@@ -50,7 +56,7 @@ describe('getConnectorAvailableDataAlert', () => {
 			).toEqual({
 				displayType: 'info',
 				kind: 'previously-synced',
-				message: PREVIOUSLY_SYNCED_MESSAGE
+				message: PREVIOUSLY_SYNCED_MESSAGE,
 			});
 		});
 	});
@@ -58,7 +64,7 @@ describe('getConnectorAvailableDataAlert', () => {
 	describe('DISCONNECTED', () => {
 		const disconnectedDataSource = new DataSource({
 			state: DataSourceStates.Disconnected,
-			status: DataSourceStatuses.Inactive
+			status: DataSourceStatuses.Inactive,
 		});
 
 		it('with data: previously-synced kind / "Previously synced data remains available" message', () => {
@@ -67,7 +73,7 @@ describe('getConnectorAvailableDataAlert', () => {
 			).toEqual({
 				displayType: 'info',
 				kind: 'previously-synced',
-				message: PREVIOUSLY_SYNCED_MESSAGE
+				message: PREVIOUSLY_SYNCED_MESSAGE,
 			});
 		});
 
@@ -77,7 +83,7 @@ describe('getConnectorAvailableDataAlert', () => {
 			).toEqual({
 				displayType: 'info',
 				kind: 'previously-synced',
-				message: PREVIOUSLY_SYNCED_MESSAGE
+				message: PREVIOUSLY_SYNCED_MESSAGE,
 			});
 		});
 	});

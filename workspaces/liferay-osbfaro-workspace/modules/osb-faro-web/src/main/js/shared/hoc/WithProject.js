@@ -1,8 +1,13 @@
-import withAction from './WithAction';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {
 	fetchProject,
-	fetchProjectViaCorpProjectUuid
+	fetchProjectViaCorpProjectUuid,
 } from '../actions/projects';
+import withAction from './WithAction';
 
 /**
  * HOC for wrapping a component with the current Project.
@@ -24,7 +29,7 @@ export const withProject = (bypassErrorPage = false) =>
 					state
 						.get('projects')
 						.find(
-							project =>
+							(project) =>
 								String(project.getIn(['data', 'groupId'])) ===
 								groupId
 						) || state.getIn(['projects', groupId])

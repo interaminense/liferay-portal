@@ -1,28 +1,33 @@
-import {getGraphQLVariablesFromPagination} from 'shared/util/pagination';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {IPagination} from 'shared/types';
+import {getGraphQLVariablesFromPagination} from 'shared/util/pagination';
 
 export const mapPropsToOptions = ({
 	channelId,
 	delta,
 	orderIOMap,
 	page,
-	query
+	query,
 }: IPagination & {channelId: string}) => ({
 	variables: {
 		...getGraphQLVariablesFromPagination({
 			delta,
 			orderIOMap,
 			page,
-			query
+			query,
 		}),
-		channelId
-	}
+		channelId,
+	},
 });
 
 export const getMapResultToProps =
 	(graphqlEntityType: string) =>
 	({
-		[graphqlEntityType]: {dxpEntities, total}
+		[graphqlEntityType]: {dxpEntities, total},
 	}: {
 		[key: string]: {
 			dxpEntities: {id: string; name: string}[];
@@ -31,5 +36,5 @@ export const getMapResultToProps =
 	}) => ({
 		empty: !total,
 		items: dxpEntities,
-		total
+		total,
 	});

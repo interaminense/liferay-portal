@@ -1,24 +1,29 @@
-import * as API from 'shared/api';
-import * as breadcrumbs from 'shared/util/breadcrumbs';
-import BasePage from 'settings/components/base-page/BasePage';
-import DeleteDataSource from 'settings/components/DeleteDataSource';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import getCN from 'classnames';
+import {truncate} from 'lodash';
 import React from 'react';
+import {connect} from 'react-redux';
+import DeleteDataSource from 'settings/components/DeleteDataSource';
+import BasePage from 'settings/components/base-page/BasePage';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
+import * as API from 'shared/api';
 import {
 	compose,
 	withAdminPermission,
 	withDataSource,
 	withHistory,
 	withRequest,
-	withSheet
+	withSheet,
 } from 'shared/hoc';
-import {connect} from 'react-redux';
+import {Alert} from 'shared/types';
+import * as breadcrumbs from 'shared/util/breadcrumbs';
+import {sub} from 'shared/util/lang';
 import {DataSource} from 'shared/util/records';
 import {Routes, toRoute} from 'shared/util/router';
-import {sub} from 'shared/util/lang';
-import {truncate} from 'lodash';
 
 const WrappedDeleteDataSource = compose<any>(
 	withSheet(),
@@ -26,7 +31,7 @@ const WrappedDeleteDataSource = compose<any>(
 		API.dataSource.fetchDeletePreview,
 		(data: any) => ({entitiesCount: data}),
 		{
-			page: false
+			page: false,
 		}
 	)
 )(DeleteDataSource);
@@ -51,7 +56,7 @@ export const ClearData: React.FC<IClearDataProps> = ({
 	entitiesCount,
 	groupId,
 	history,
-	id
+	id,
 }) => (
 	<BasePage
 		breadcrumbItems={[
@@ -60,20 +65,20 @@ export const ClearData: React.FC<IClearDataProps> = ({
 				groupId,
 				href: toRoute(Routes.SETTINGS_DATA_SOURCE, {
 					groupId,
-					id
+					id,
 				}),
 				id,
-				label: dataSource.name ?? ''
+				label: dataSource.name ?? '',
 			}),
 			{
 				active: true,
-				label: Liferay.Language.get('clear-data')
-			}
+				label: Liferay.Language.get('clear-data'),
+			},
 		]}
 		className={getCN('data-source-clear-data-root', className)}
 		documentTitle={
 			sub(Liferay.Language.get('confirm-clearing-of-all-data-from-x'), [
-				dataSource.name
+				dataSource.name,
 			]) as string
 		}
 		pageDescription={Liferay.Language.get(
@@ -84,13 +89,13 @@ export const ClearData: React.FC<IClearDataProps> = ({
 			[dataSource.name]
 		)}
 	>
-		<div className='page-container'>
+		<div className="page-container">
 			<WrappedDeleteDataSource
 				actionRequestFn={() =>
 					API.dataSource
 						.clearData({
 							groupId,
-							id
+							id,
 						})
 						.then(() => {
 							addAlert({
@@ -100,13 +105,13 @@ export const ClearData: React.FC<IClearDataProps> = ({
 										'data-from-x-is-currently-being-removed-from-analytics-cloud'
 									),
 									[truncate(dataSource.name, {length: 50})]
-								) as string
+								) as string,
 							});
 
 							history.push(
 								toRoute(Routes.SETTINGS_DATA_SOURCE, {
 									groupId,
-									id
+									id,
 								})
 							);
 						})
@@ -114,7 +119,7 @@ export const ClearData: React.FC<IClearDataProps> = ({
 							addAlert({
 								alertType: Alert.Types.Error,
 								message: Liferay.Language.get('error'),
-								timeout: false
+								timeout: false,
 							});
 						})
 				}

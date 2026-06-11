@@ -1,9 +1,15 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import React from 'react';
-import {MAIN_NODE_HEIGHT, MAIN_NODE_WIDTH} from './utils';
-import {Node} from './Node';
+import {Sankey as SankeyChart, Tooltip as RechartsTooltip} from 'recharts';
 import {RangeSelectors} from 'shared/types';
-import {Tooltip as RechartsTooltip, Sankey as SankeyChart} from 'recharts';
+
+import {Node} from './Node';
 import {Tooltip} from './Tooltip';
+import {MAIN_NODE_HEIGHT, MAIN_NODE_WIDTH} from './utils';
 
 interface IEmptySankeyProps {
 	data: any;
@@ -14,7 +20,7 @@ interface IEmptySankeyProps {
 export const EmptySankey: React.FC<IEmptySankeyProps> = ({
 	data,
 	emptyState,
-	rangeSelectors
+	rangeSelectors,
 }) => {
 	const marginTop = 60;
 

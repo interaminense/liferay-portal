@@ -1,15 +1,6 @@
 /**
- * Feature flags for osb-faro-web.
- *
- * Analytics Cloud ships on its own release cadence, decoupled from the portal
- * master branch, so we cannot rely on `Liferay.Util.FeatureFlags` (which tracks
- * portal master). Instead, flags live here as a registry and are resolved at
- * module load time from `localStorage`, falling back to each flag's default.
- *
- * They can be toggled at runtime through the hidden panel at
- * `/workspace/:groupId/settings/feature-flags`. Because the exported `const`
- * values below are resolved once when this module is first imported, toggling a
- * flag requires a page reload to take effect (the panel prompts for it).
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 export const FEATURE_FLAGS_STORAGE_KEY = 'faro:feature-flags';
@@ -31,14 +22,17 @@ export const FEATURE_FLAGS: FeatureFlagDefinition[] = [
 	{defaultValue: false, key: 'ENABLE_BLOCKLIST_KEYWORDS'},
 	{defaultValue: false, key: 'ENABLE_COMMERCE'},
 	{defaultValue: false, key: 'ENABLE_FORM_ABANDONMENT'},
-	{defaultValue: false, key: 'ENABLE_REAL_TIME_SEGMENTS'}
+	{defaultValue: false, key: 'ENABLE_REAL_TIME_SEGMENTS'},
 ];
 
-const DEFAULTS = FEATURE_FLAGS.reduce((acc, {defaultValue, key}) => {
-	acc[key] = defaultValue;
+const DEFAULTS = FEATURE_FLAGS.reduce(
+	(acc, {defaultValue, key}) => {
+		acc[key] = defaultValue;
 
-	return acc;
-}, {} as Record<FeatureFlagKey, boolean>);
+		return acc;
+	},
+	{} as Record<FeatureFlagKey, boolean>
+);
 
 type FeatureFlagOverrides = Partial<Record<FeatureFlagKey, boolean>>;
 
@@ -49,7 +43,8 @@ function readOverrides(): FeatureFlagOverrides {
 				window.localStorage.getItem(FEATURE_FLAGS_STORAGE_KEY) || '{}'
 			) || {}
 		);
-	} catch (error) {
+	}
+	catch (error) {
 		return {};
 	}
 }

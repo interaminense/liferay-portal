@@ -1,12 +1,18 @@
-import * as API from 'shared/api';
-import FilterBySegment from '../FilterBySegment';
-import React from 'react';
-import {cleanup, fireEvent, render, screen} from '@testing-library/react';
-import {MemoryRouter, Route} from 'react-router-dom';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {MockedProvider} from '@apollo/client/testing';
-import {mockSegmentPageViewsReq} from 'test/graphql-data';
+import {cleanup, fireEvent, render, screen} from '@testing-library/react';
+import React from 'react';
+import {MemoryRouter, Route} from 'react-router-dom';
+import * as API from 'shared/api';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
+import {mockSegmentPageViewsReq} from 'test/graphql-data';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+
+import FilterBySegment from '../FilterBySegment';
 
 jest.unmock('react-dom');
 
@@ -15,22 +21,22 @@ const MOCK_SEGMENT = (id: string, name: string) => ({
 	name,
 	segmentType: 'BATCH',
 	state: 'READY',
-	status: 'ACTIVE'
+	status: 'ACTIVE',
 });
 
 const Wrapper = ({
 	children,
-	mocks = []
+	mocks = [],
 }: {
 	children: React.ReactNode;
 	mocks?: any[];
 }) => (
 	<MemoryRouter
 		initialEntries={[
-			'/workspace/123/456/sites/touchpoints/http%3A%2F%2Fliferay.com/Liferay%20DXP%20-%20Home'
+			'/workspace/123/456/sites/touchpoints/http%3A%2F%2Fliferay.com/Liferay%20DXP%20-%20Home',
 		]}
 	>
-		<Route path='/workspace/:groupId/:channelId/sites/touchpoints/:touchpoint/:title'>
+		<Route path="/workspace/:groupId/:channelId/sites/touchpoints/:touchpoint/:title">
 			<MockedProvider addTypename={false} mocks={mocks}>
 				{children}
 			</MockedProvider>
@@ -45,7 +51,7 @@ describe('FilterBySegment', () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [MOCK_SEGMENT('123', 'Viewed Page')],
-				total: 1
+				total: 1,
 			})
 		);
 
@@ -59,7 +65,7 @@ describe('FilterBySegment', () => {
 					rangeSelectors={{
 						rangeEnd: '',
 						rangeKey: RangeKeyTimeRanges.Last24Hours,
-						rangeStart: ''
+						rangeStart: '',
 					}}
 				/>
 			</Wrapper>
@@ -75,7 +81,7 @@ describe('FilterBySegment', () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [],
-				total: 0
+				total: 0,
 			})
 		);
 
@@ -86,7 +92,7 @@ describe('FilterBySegment', () => {
 					rangeSelectors={{
 						rangeEnd: '',
 						rangeKey: RangeKeyTimeRanges.Last24Hours,
-						rangeStart: ''
+						rangeStart: '',
 					}}
 				/>
 			</Wrapper>
@@ -108,16 +114,16 @@ describe('FilterBySegment', () => {
 				items: [
 					MOCK_SEGMENT('123', 'Viewed Page'),
 					MOCK_SEGMENT('456', 'Viewed Form'),
-					MOCK_SEGMENT('789', 'Viewed Web Content')
+					MOCK_SEGMENT('789', 'Viewed Web Content'),
 				],
-				total: 3
+				total: 3,
 			})
 		);
 
 		const segmentPageViews = [
 			{segmentId: '123', views: 100},
 			{segmentId: '456', views: 100},
-			{segmentId: '789', views: 100}
+			{segmentId: '789', views: 100},
 		];
 		const mocks = [mockSegmentPageViewsReq({segmentPageViews})];
 
@@ -128,7 +134,7 @@ describe('FilterBySegment', () => {
 					rangeSelectors={{
 						rangeEnd: '',
 						rangeKey: RangeKeyTimeRanges.Last24Hours,
-						rangeStart: ''
+						rangeStart: '',
 					}}
 				/>
 			</Wrapper>
@@ -147,7 +153,7 @@ describe('FilterBySegment', () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [MOCK_SEGMENT('123', 'Viewed Page')],
-				total: 1
+				total: 1,
 			})
 		);
 
@@ -161,7 +167,7 @@ describe('FilterBySegment', () => {
 					rangeSelectors={{
 						rangeEnd: '',
 						rangeKey: RangeKeyTimeRanges.Last24Hours,
-						rangeStart: ''
+						rangeStart: '',
 					}}
 				/>
 			</Wrapper>
@@ -174,7 +180,7 @@ describe('FilterBySegment', () => {
 		expect(screen.getByText('Viewed Page')).toBeInTheDocument();
 
 		fireEvent.change(screen.getByRole('textbox'), {
-			target: {value: 'Viewed Form'}
+			target: {value: 'Viewed Form'},
 		});
 
 		expect(
@@ -188,7 +194,7 @@ describe('FilterBySegment', () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [MOCK_SEGMENT('123', 'Viewed Page')],
-				total: 1
+				total: 1,
 			})
 		);
 
@@ -202,7 +208,7 @@ describe('FilterBySegment', () => {
 					rangeSelectors={{
 						rangeEnd: '',
 						rangeKey: RangeKeyTimeRanges.Last24Hours,
-						rangeStart: ''
+						rangeStart: '',
 					}}
 				/>
 			</Wrapper>
@@ -227,7 +233,7 @@ describe('FilterBySegment', () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [MOCK_SEGMENT('123', 'Viewed Page')],
-				total: 1
+				total: 1,
 			})
 		);
 
@@ -241,7 +247,7 @@ describe('FilterBySegment', () => {
 					rangeSelectors={{
 						rangeEnd: '',
 						rangeKey: RangeKeyTimeRanges.Last24Hours,
-						rangeStart: ''
+						rangeStart: '',
 					}}
 				/>
 			</Wrapper>
@@ -270,7 +276,7 @@ describe('FilterBySegment', () => {
 		(API.individualSegment.search as jest.Mock).mockReturnValue(
 			Promise.resolve({
 				items: [MOCK_SEGMENT('123', 'Viewed Page')],
-				total: 1
+				total: 1,
 			})
 		);
 
@@ -284,7 +290,7 @@ describe('FilterBySegment', () => {
 					rangeSelectors={{
 						rangeEnd: '',
 						rangeKey: RangeKeyTimeRanges.Last24Hours,
-						rangeStart: ''
+						rangeStart: '',
 					}}
 				/>
 			</Wrapper>

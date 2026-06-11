@@ -1,6 +1,8 @@
-import moment from 'moment';
-import React from 'react';
-import {DEFAULT_ACTIVITY_MAX} from 'shared/api/activities';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {
 	flattenDepth,
 	flow,
@@ -8,13 +10,17 @@ import {
 	map,
 	mapValues,
 	orderBy,
-	toPairs
+	toPairs,
 } from 'lodash/fp';
-import {getSafeDecodedURIComponent} from './util';
-import {RangeSelectors} from 'shared/types';
-import {sub} from 'shared/util/lang';
-import {TimeIntervals} from 'shared/util/constants';
+import moment from 'moment';
+import React from 'react';
+import {DEFAULT_ACTIVITY_MAX} from 'shared/api/activities';
 import {UserSession, UserSessionEvent} from 'shared/queries/UserSessionQuery';
+import {RangeSelectors} from 'shared/types';
+import {TimeIntervals} from 'shared/util/constants';
+import {sub} from 'shared/util/lang';
+
+import {getSafeDecodedURIComponent} from './util';
 
 export const CHART_ACTIVITY_ID = 'activities';
 export const CHART_ID = 'individualActivity';
@@ -22,7 +28,7 @@ export const CHART_ID = 'individualActivity';
 export const INTERVAL_MAP = {
 	D: TimeIntervals.Day,
 	M: TimeIntervals.Month,
-	W: TimeIntervals.Week
+	W: TimeIntervals.Week,
 };
 
 type SessionEvent = {
@@ -72,7 +78,7 @@ export type VerticalTimelineSession = {
  */
 export const buildLegendItems = ({
 	activityChange,
-	activityCount
+	activityCount,
 }: {
 	activityChange: number;
 	activityCount: number;
@@ -81,12 +87,12 @@ export const buildLegendItems = ({
 		change: activityChange,
 		id: CHART_ACTIVITY_ID,
 		secondaryInfo: sub(Liferay.Language.get('x-day-change'), [
-			DEFAULT_ACTIVITY_MAX
+			DEFAULT_ACTIVITY_MAX,
 		]) as string,
 		title: sub(Liferay.Language.get('total-activity-count-x'), [
-			activityCount.toLocaleString()
-		]) as string
-	}
+			activityCount.toLocaleString(),
+		]) as string,
+	},
 ];
 
 /**
@@ -109,7 +115,7 @@ export const formatEvents = (
 			eventDate,
 			eventId,
 			name,
-			properties
+			properties,
 		}) => ({
 			attributes: {
 				applicationId,
@@ -119,17 +125,17 @@ export const formatEvents = (
 					properties: Object.fromEntries(
 						properties.map(({name: propName, value}) => [
 							propName,
-							value
+							value,
 						])
-					)
-				})
+					),
+				}),
 			},
 			description: assetTitle,
 			subtitle: !isWebhook
 				? getSafeDecodedURIComponent(canonicalUrl)
 				: undefined,
 			time: moment(createDate),
-			title: name
+			title: name,
 		})
 	);
 };
@@ -175,7 +181,7 @@ export const formatSessions = (
 					screenHeight,
 					screenWidth,
 					timezoneOffset,
-					userAgent
+					userAgent,
 				}) => ({
 					applicationId:
 						(events as unknown as UserSessionEvent[])[0]
@@ -188,7 +194,7 @@ export const formatSessions = (
 						screenHeight,
 						screenWidth,
 						timezoneOffset,
-						userAgent
+						userAgent,
 					},
 					browserName,
 					device: deviceType,
@@ -198,7 +204,7 @@ export const formatSessions = (
 						userAgent
 					),
 					time: createDate,
-					userAgent
+					userAgent,
 				})
 			)
 		),
@@ -214,9 +220,9 @@ export const formatSessions = (
 						currentValue: {nestedItems: unknown[]}
 					) => previousValue + currentValue.nestedItems.length,
 					0
-				)
+				),
 			},
-			items
+			items,
 		]),
 		flattenDepth(3)
 	)(sessions);
@@ -231,7 +237,7 @@ export const getActivityLabel = (totalEvents: number): React.ReactNode[] =>
 		totalEvents === 1
 			? Liferay.Language.get('event-x')
 			: Liferay.Language.get('events-x'),
-		[<b key='ACTIVITIES'>{totalEvents}</b>],
+		[<b key="ACTIVITIES">{totalEvents}</b>],
 		false
 	) as React.ReactNode[];
 

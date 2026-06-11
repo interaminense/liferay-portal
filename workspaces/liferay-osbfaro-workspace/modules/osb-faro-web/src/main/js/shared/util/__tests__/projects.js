@@ -1,9 +1,15 @@
-import * as data from 'test/data';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {fromJS} from 'immutable';
-import {getBasicProjects, getSingleProjectRoute} from '../projects';
-import {PLANS, SubscriptionNames} from 'shared/util/subscriptions';
 import {Project} from 'shared/util/records';
 import {Routes, toRoute} from 'shared/util/router';
+import {PLANS, SubscriptionNames} from 'shared/util/subscriptions';
+import * as data from 'test/data';
+
+import {getBasicProjects, getSingleProjectRoute} from '../projects';
 
 const corpProjectUuid = 'corpProjectUuid';
 
@@ -13,9 +19,9 @@ const mockProjects = [
 			data.mockProject(0, {
 				corpProjectUuid,
 				faroSubscription: data.mockSubscription({
-					name: SubscriptionNames.LiferayAnalyticsCloudBasic
+					name: SubscriptionNames.LiferayAnalyticsCloudBasic,
 				}),
-				name: ''
+				name: '',
 			})
 		)
 	),
@@ -23,9 +29,9 @@ const mockProjects = [
 		fromJS(
 			data.mockProject(124, {
 				faroSubscription: data.mockSubscription({
-					name: SubscriptionNames.LiferayAnalyticsCloudBusiness
+					name: SubscriptionNames.LiferayAnalyticsCloudBusiness,
 				}),
-				name: 'Project B'
+				name: 'Project B',
 			})
 		)
 	),
@@ -33,12 +39,12 @@ const mockProjects = [
 		fromJS(
 			data.mockProject(125, {
 				faroSubscription: data.mockSubscription({
-					name: SubscriptionNames.LiferayAnalyticsCloudBasic
+					name: SubscriptionNames.LiferayAnalyticsCloudBasic,
 				}),
-				name: 'Project C'
+				name: 'Project C',
 			})
 		)
-	)
+	),
 ];
 
 describe('projects', () => {
@@ -74,7 +80,7 @@ describe('projects', () => {
 
 			expect(route).toEqual(
 				toRoute(Routes.WORKSPACE_ADD_WITH_CORP_PROJECT_UUID, {
-					corpProjectUuid
+					corpProjectUuid,
 				})
 			);
 		});

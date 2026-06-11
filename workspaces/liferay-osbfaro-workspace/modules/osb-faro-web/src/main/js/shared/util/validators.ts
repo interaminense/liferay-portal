@@ -1,7 +1,12 @@
-import {formatStringToLowercase} from 'shared/util/util';
-import {formatTime, getMillisecondsFromTime} from 'shared/util/time';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {isArray, isNil, isObject, isString} from 'lodash';
 import {sub} from 'shared/util/lang';
+import {formatTime, getMillisecondsFromTime} from 'shared/util/time';
+import {formatStringToLowercase} from 'shared/util/util';
 
 /**
  * Wraps a validator result with a Promise.
@@ -37,7 +42,7 @@ export function validateInputMessage(messageValue: string) {
 
 export function validateDateRangeRequired({
 	end,
-	start
+	start,
 }: {
 	end: string;
 	start: string;
@@ -56,7 +61,7 @@ export const validateGreaterThanZero = (value: string) => {
 
 	if (Number(value) <= 0) {
 		error = sub(Liferay.Language.get('must-be-greater-than-x'), [
-			'0'
+			'0',
 		]) as string;
 	}
 
@@ -105,7 +110,7 @@ export function validateMinDuration(minDuration: string) {
 
 		if (valueInMilliseconds < minDurationInMilliseconds) {
 			error = sub(Liferay.Language.get('must-be-greater-than-x'), [
-				formatTime(minDurationInMilliseconds - 1000)
+				formatTime(minDurationInMilliseconds - 1000),
 			]) as string;
 		}
 
@@ -133,7 +138,7 @@ export function validateMinValue(minValue: number) {
 
 		if (Number(value) < minValue) {
 			error = sub(Liferay.Language.get('must-be-greater-than-x'), [
-				minValue - 1
+				minValue - 1,
 			]) as string;
 		}
 

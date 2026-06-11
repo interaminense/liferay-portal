@@ -1,35 +1,42 @@
-import * as API from 'shared/api';
-import Alerts, {AlertTypes} from 'shared/components/Alert';
-import BasePage from 'settings/components/base-page/BasePage';
-import Card from 'shared/components/Card';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayButton from '@clayui/button';
 import ClayLink from '@clayui/link';
-import CopyButton from 'shared/components/CopyButton';
-import GenerateTokenCard from '../components/GenerateTokenCard';
-import Loading, {Align} from 'shared/components/Loading';
 import moment from 'moment';
 import React, {useState} from 'react';
-import Table from 'shared/components/table';
-import TokenCell from '../components/TokenCell';
-import URLConstants from 'shared/util/url-constants';
-import {AccessToken} from '../types';
-import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {ApisPath} from 'shared/util/url-constants';
-import {close, modalTypes, open} from 'shared/actions/modals';
+import {ConnectedProps, connect} from 'react-redux';
 import {compose} from 'redux';
-import {connect, ConnectedProps} from 'react-redux';
-import {CUSTOM_DATE_FORMAT} from 'shared/util/date';
-import {ExpirationPeriod} from 'shared/util/constants';
-import {formatDateToTimeZone, getDateNow} from 'shared/util/date';
-import {RootState} from 'shared/store';
-import {sub} from 'shared/util/lang';
+import BasePage from 'settings/components/base-page/BasePage';
+import {addAlert} from 'shared/actions/alerts';
+import {close, modalTypes, open} from 'shared/actions/modals';
+import * as API from 'shared/api';
+import Alerts, {AlertTypes} from 'shared/components/Alert';
+import Card from 'shared/components/Card';
+import CopyButton from 'shared/components/CopyButton';
+import Loading, {Align} from 'shared/components/Loading';
+import Table from 'shared/components/table';
 import {
 	withAdminPermission,
 	withError,
 	withLoading,
-	withQuery
+	withQuery,
 } from 'shared/hoc';
+import {RootState} from 'shared/store';
+import {Alert} from 'shared/types';
+import {ExpirationPeriod} from 'shared/util/constants';
+import {CUSTOM_DATE_FORMAT} from 'shared/util/date';
+import {formatDateToTimeZone, getDateNow} from 'shared/util/date';
+import {sub} from 'shared/util/lang';
+import URLConstants from 'shared/util/url-constants';
+import {ApisPath} from 'shared/util/url-constants';
+
+import GenerateTokenCard from '../components/GenerateTokenCard';
+import TokenCell from '../components/TokenCell';
+import {AccessToken} from '../types';
+
 import type {Column} from 'shared/components/table/Row';
 
 export const isExpired = (expirationDate: string) =>
@@ -40,7 +47,7 @@ const getTimestamp = (date: string | Date) =>
 
 const isIndefinite = ({
 	createDate,
-	expirationDate
+	expirationDate,
 }: {
 	createDate: string;
 	expirationDate: string;
@@ -55,8 +62,8 @@ const connector = connect(
 			groupId,
 			'data',
 			'timeZone',
-			'timeZoneId'
-		])
+			'timeZoneId',
+		]),
 	}),
 	{addAlert, close, open}
 );
@@ -79,7 +86,7 @@ const TokenList: React.FC<
 		addAlert({
 			alertType: Alert.Types.Error,
 			message: Liferay.Language.get('error'),
-			timeout: false
+			timeout: false,
 		});
 	};
 
@@ -88,21 +95,21 @@ const TokenList: React.FC<
 
 		addAlert({
 			alertType: Alert.Types.Success,
-			message
+			message,
 		});
 
 		refetch();
 	};
 
 	const hasActiveToken = tokens.find(
-		token => !isExpired(token.expirationDate)
+		(token) => !isExpired(token.expirationDate)
 	);
 
 	return (
-		<div className='col-xl-8 pl-0'>
+		<div className="col-xl-8 pl-0">
 			{!!tokens.length && !hasActiveToken && !onCloseAlert && (
 				<Alerts
-					iconSymbol='warning-full'
+					iconSymbol="warning-full"
 					onClose={() => setOnCloseAlert(true)}
 					title={Liferay.Language.get('warning')}
 					type={AlertTypes.Warning}
@@ -122,16 +129,16 @@ const TokenList: React.FC<
 
 			<Card>
 				<Card.Body>
-					<div className='align-items-start d-flex flex-column justify-content-between'>
-						<div className='h4 mb-4'>
+					<div className="align-items-start d-flex flex-column justify-content-between">
+						<div className="h4 mb-4">
 							{Liferay.Language.get('token-information')}
 						</div>
 
-						<div className='h5'>
+						<div className="h5">
 							{Liferay.Language.get('root-endpoint')}
 						</div>
 
-						<span className='text-secondary'>
+						<span className="text-secondary">
 							{window.location.origin + ApisPath}
 						</span>
 					</div>
@@ -139,14 +146,14 @@ const TokenList: React.FC<
 
 				{!!tokens.length && (
 					<Table
-						className='mb-0'
+						className="mb-0"
 						columns={
 							[
 								{
 									accessor: 'token',
 									cellRenderer: TokenCell,
 									label: Liferay.Language.get('token'),
-									sortable: false
+									sortable: false,
 								},
 								{
 									accessor: 'createDate',
@@ -157,12 +164,12 @@ const TokenList: React.FC<
 											timeZoneId
 										),
 									label: Liferay.Language.get('date-created'),
-									sortable: false
+									sortable: false,
 								},
 								{
 									accessor: 'expirationDate',
 									cellRenderer: ({
-										data
+										data,
 									}: {
 										data: AccessToken;
 									}) => {
@@ -187,33 +194,35 @@ const TokenList: React.FC<
 										);
 									},
 									label: Liferay.Language.get('expiration'),
-									sortable: false
-								}
+									sortable: false,
+								},
 							].filter(Boolean) as Column[]
 						}
 						items={tokens}
 						renderInlineRowActions={({
-							data: {expirationDate, token}
+							data: {expirationDate, token},
 						}) => {
-							if (isExpired(expirationDate)) return null;
+							if (isExpired(expirationDate)) {
+								return null;
+							}
 
 							return (
 								<>
 									<CopyButton
-										displayType='secondary'
+										displayType="secondary"
 										text={token}
 									/>
 
 									<ClayButton
-										className='button-root'
+										className="button-root"
 										disabled={loading}
-										displayType='secondary'
+										displayType="secondary"
 										onClick={() => {
 											open(
 												modalTypes.CONFIRMATION_MODAL,
 												{
 													message: (
-														<div className='text-secondary'>
+														<div className="text-secondary">
 															<div>
 																<strong>
 																	{Liferay.Language.get(
@@ -236,7 +245,7 @@ const TokenList: React.FC<
 														API.apiTokens
 															.revoke({
 																groupId,
-																token
+																token,
 															})
 															.then(() =>
 																handleSuccess(
@@ -252,7 +261,7 @@ const TokenList: React.FC<
 													title: Liferay.Language.get(
 														'revoke-token'
 													),
-													titleIcon: 'warning-full'
+													titleIcon: 'warning-full',
 												}
 											);
 										}}
@@ -266,7 +275,7 @@ const TokenList: React.FC<
 								</>
 							);
 						}}
-						rowIdentifier='token'
+						rowIdentifier="token"
 					/>
 				)}
 			</Card>
@@ -287,7 +296,7 @@ const ListWithData = compose<any>(
 			[key: string]: any;
 		}) => ({
 			tokens: data,
-			...otherParams
+			...otherParams,
 		})
 	),
 	withLoading(),
@@ -300,7 +309,7 @@ interface IAccessTokenListProps {
 
 export const AccessTokenList: React.FC<IAccessTokenListProps> = ({groupId}) => (
 	<BasePage
-		className='access-token-list-root'
+		className="access-token-list-root"
 		pageDescription={sub(
 			Liferay.Language.get(
 				'access-this-workspaces-data-via-api-using-an-access-token.-a-full-list-of-endpoints-is-available-in-the-x'
@@ -308,11 +317,11 @@ export const AccessTokenList: React.FC<IAccessTokenListProps> = ({groupId}) => (
 			[
 				<ClayLink
 					href={URLConstants.APIOverviewDocumentationLink}
-					key='API_OVERVIEW_DOCUMENTATION'
-					target='_blank'
+					key="API_OVERVIEW_DOCUMENTATION"
+					target="_blank"
 				>
 					{Liferay.Language.get('documentation').toLowerCase()}
-				</ClayLink>
+				</ClayLink>,
 			],
 			false
 		)}

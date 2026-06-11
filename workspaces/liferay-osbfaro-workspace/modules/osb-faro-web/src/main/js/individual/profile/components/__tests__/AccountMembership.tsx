@@ -1,7 +1,13 @@
-import AccountMembership from '../AccountMembership';
-import React from 'react';
-import {fromJS} from 'immutable';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {render} from '@testing-library/react';
+import {fromJS} from 'immutable';
+import React from 'react';
+
+import AccountMembership from '../AccountMembership';
 
 jest.unmock('react-dom');
 
@@ -18,7 +24,7 @@ describe('Account Membership', () => {
 		industry: 'Manufacturing',
 		lastActivityDate: '2021-12-01T00:00:00.000Z',
 		numberOfEmployees: '500',
-		state: 'California'
+		state: 'California',
 	};
 
 	it('should render the snapshot', () => {
@@ -31,7 +37,7 @@ describe('Account Membership', () => {
 	it('should render the empty state when showEmptyState is true', () => {
 		const {getByText, queryByText} = render(
 			<AccountMembership accountData={fromJS(mockData)} showEmptyState>
-				<div>{'empty state rendered'}</div>
+				<div>empty state rendered</div>
 			</AccountMembership>
 		);
 
@@ -64,7 +70,7 @@ describe('Account Membership', () => {
 				<AccountMembership
 					accountData={fromJS({
 						...mockData,
-						currencyCode: null
+						currencyCode: null,
 					})}
 				/>
 			)

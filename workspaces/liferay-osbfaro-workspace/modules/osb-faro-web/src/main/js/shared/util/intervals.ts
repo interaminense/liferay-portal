@@ -1,8 +1,13 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {Map} from 'immutable';
 import moment from 'moment';
 import {Interval, RangeSelectors} from 'shared/types';
-import {INTERVAL_KEY_MAP} from 'shared/util/time';
-import {Map} from 'immutable';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
+import {INTERVAL_KEY_MAP} from 'shared/util/time';
 
 export const createDateKeysIMap = (
 	interval: Interval,
@@ -39,7 +44,7 @@ export const getIntervalHandle = (
 
 export const getIntervalsFromMap = (duration: number) => ({
 	[INTERVAL_KEY_MAP.day]: getDayIntervalsMap(duration),
-	[INTERVAL_KEY_MAP.week]: getWeekIntervalsMap(duration)
+	[INTERVAL_KEY_MAP.week]: getWeekIntervalsMap(duration),
 });
 
 export const getDayIntervalsMap = (duration: number) => ({
@@ -53,7 +58,7 @@ export const getDayIntervalsMap = (duration: number) => ({
 	[RangeKeyTimeRanges.Last30Days]: getSundays,
 	[RangeKeyTimeRanges.Last90Days]: getFirstAndFifteenthsDays,
 	[RangeKeyTimeRanges.LastYear]: getFirstDays,
-	[RangeKeyTimeRanges.Yesterday]: getByIndexesMultipleOfSix
+	[RangeKeyTimeRanges.Yesterday]: getByIndexesMultipleOfSix,
 });
 
 export const getWeekIntervalsMap = (duration: number) => ({
@@ -63,7 +68,7 @@ export const getWeekIntervalsMap = (duration: number) => ({
 	),
 	[RangeKeyTimeRanges.Last180Days]: getByEvenOrOddIndexes,
 	[RangeKeyTimeRanges.Last90Days]: getByEvenOrOddIndexes,
-	[RangeKeyTimeRanges.LastYear]: getByIndexesMultipleOfFour
+	[RangeKeyTimeRanges.LastYear]: getByIndexesMultipleOfFour,
 });
 
 export const handleDayInterval = (
@@ -95,7 +100,7 @@ export const getByIndexesMultipleOfFour = (arr: number[]): number[] =>
 
 export const getByIndexesMultipleOfSix = (arr: number[]): number[] => [
 	...arr.filter((_, index) => index % 6 === 0),
-	arr[arr.length - 1]
+	arr[arr.length - 1],
 ];
 
 export const getSundays = (arr: number[]): number[] => {
@@ -143,22 +148,28 @@ export const getByCustomRangeKey = (
 	if (timeInterval === INTERVAL_KEY_MAP.day) {
 		if (duration >= 14 && duration <= 30) {
 			return getSundays;
-		} else if (duration > 30 && duration <= 180) {
+		}
+		else if (duration > 30 && duration <= 180) {
 			return getFirstAndFifteenthsDays;
-		} else if (duration > 180) {
+		}
+		else if (duration > 180) {
 			return getFirstDays;
 		}
-	} else if (timeInterval === INTERVAL_KEY_MAP.week) {
+	}
+	else if (timeInterval === INTERVAL_KEY_MAP.week) {
 		if (duration > 90 && duration <= 180) {
 			return getByEvenOrOddIndexes;
-		} else if (duration > 180) {
+		}
+		else if (duration > 180) {
 			return getByIndexesMultipleOfFour;
 		}
 	}
 };
 
 export const getNextSunday = (date: number): number =>
+
 	// TIMEZONE
+
 	moment.utc(date).day(7).startOf('day').valueOf();
 
 export const getNextFirstOrFifteenth = (date: number): number => {
@@ -168,7 +179,9 @@ export const getNextFirstOrFifteenth = (date: number): number => {
 
 	return (
 		moment
+
 			// TIMEZONE
+
 			.utc(date)
 			.date(15)
 			.startOf('day')

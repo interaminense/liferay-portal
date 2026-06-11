@@ -1,8 +1,13 @@
-import moment from 'moment';
-import {getSafeRangeSelectors} from 'shared/util/util';
-import {Interval, RangeSelectors} from 'shared/types';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {Map} from 'immutable';
+import moment from 'moment';
+import {Interval, RangeSelectors} from 'shared/types';
 import {safeResultToProps} from 'shared/util/mappers';
+import {getSafeRangeSelectors} from 'shared/util/util';
 
 interface IHistogramMetric {
 	key: string;
@@ -28,7 +33,7 @@ interface ISiteMetricsDataRow {
 export const mapPropsToOptions = ({
 	channelId,
 	interval,
-	rangeSelectors
+	rangeSelectors,
 }: {
 	channelId: string;
 	interval: Interval;
@@ -37,13 +42,13 @@ export const mapPropsToOptions = ({
 	variables: {
 		channelId,
 		interval,
-		...getSafeRangeSelectors(rangeSelectors)
-	}
+		...getSafeRangeSelectors(rangeSelectors),
+	},
 });
 
 export const mapResultToProps = safeResultToProps(
 	({
-		site: {anonymousVisitorsMetric, knownVisitorsMetric, visitorsMetric}
+		site: {anonymousVisitorsMetric, knownVisitorsMetric, visitorsMetric},
 	}: ISiteMetricsResult) => ({
 		data: anonymousVisitorsMetric.histogram.metrics.reduce<
 			ISiteMetricsDataRow[]
@@ -55,8 +60,8 @@ export const mapResultToProps = safeResultToProps(
 					intervalInitDate: moment.utc(key).valueOf(),
 					knownVisitors:
 						knownVisitorsMetric.histogram.metrics[i].value,
-					visitors: visitorsMetric.histogram.metrics[i].value
-				}
+					visitors: visitorsMetric.histogram.metrics[i].value,
+				},
 			],
 			[]
 		),
@@ -67,8 +72,8 @@ export const mapResultToProps = safeResultToProps(
 					.split('/')
 					.map((valueKeyHalf: string) =>
 						moment.utc(valueKeyHalf).valueOf()
-					)
+					),
 			])
-		)
+		),
 	})
 );

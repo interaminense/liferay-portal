@@ -1,10 +1,15 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import getCN from 'classnames';
 import React from 'react';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {connect} from 'react-redux';
+import {close, modalTypes, open} from 'shared/actions/modals';
 import {DisplayType} from 'shared/types';
 import {ENABLE_ADD_TRIAL_WORKSPACE, FaroEnv} from 'shared/util/constants';
 import {Routes, toRoute} from 'shared/util/router';
@@ -32,27 +37,27 @@ const EmptyState: React.FC<IEmptyStateProps> = ({
 					label: Liferay.Language.get('contact-sales'),
 					onClick: () =>
 						open(modalTypes.CONTACT_SALES_MODAL, {
-							onClose: close
-						})
+							onClose: close,
+						}),
 				}}
 				description={Liferay.Language.get(
 					'do-more-with-our-business-&-enterprise-plans'
 				)}
-				icon='ac_integration'
+				icon="ac_integration"
 			/>
 		</div>
 
 		{ENABLE_ADD_TRIAL_WORKSPACE && (
-			<div className='col-xl-6'>
+			<div className="col-xl-6">
 				<CardEmpty
 					buttonProps={{
 						href: toRoute(Routes.WORKSPACE_ADD_TRIAL),
-						label: Liferay.Language.get('start-free-trial')
+						label: Liferay.Language.get('start-free-trial'),
 					}}
 					description={Liferay.Language.get(
 						'90-day-full-feature-trial'
 					)}
-					icon='ac_page_analytics'
+					icon="ac_page_analytics"
 				/>
 			</div>
 		)}
@@ -73,7 +78,7 @@ interface ICardItemProps extends React.HTMLAttributes<HTMLElement> {
 export const CardEmpty: React.FC<ICardItemProps> = ({
 	buttonProps,
 	description,
-	icon
+	icon,
 }) => {
 	const {
 		displayType = 'secondary',
@@ -83,13 +88,13 @@ export const CardEmpty: React.FC<ICardItemProps> = ({
 	} = buttonProps;
 
 	return (
-		<div className='empty-card'>
-			<ClayIcon className='icon-root' symbol={icon} />
+		<div className="empty-card">
+			<ClayIcon className="icon-root" symbol={icon} />
 			<p>{description}</p>
 			{href ? (
 				<ClayLink
 					button
-					displayType='secondary'
+					displayType="secondary"
 					href={href}
 					{...otherButtonProps}
 				>

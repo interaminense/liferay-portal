@@ -1,35 +1,41 @@
-import React from 'react';
-import TopCategoriesAndTags, {
-	ITopCategory,
-	ITopTag
-} from '../TopCategoriesAndTags';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {
 	cleanup,
 	fireEvent,
 	render,
 	screen,
-	within
+	within,
 } from '@testing-library/react';
+import React from 'react';
 import {useRequest} from 'shared/hooks/useRequest';
+
+import TopCategoriesAndTags, {
+	ITopCategory,
+	ITopTag,
+} from '../TopCategoriesAndTags';
 
 jest.unmock('react-dom');
 
 jest.mock('shared/api', () => ({
 	categories: {
-		fetchAccountTopCategories: jest.fn()
+		fetchAccountTopCategories: jest.fn(),
 	},
 	tags: {
-		fetchAccountTopTags: jest.fn()
-	}
+		fetchAccountTopTags: jest.fn(),
+	},
 }));
 
 jest.mock('shared/hooks/useRequest', () => ({
-	useRequest: jest.fn()
+	useRequest: jest.fn(),
 }));
 
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
-	useParams: () => ({channelId: '5', groupId: '23', id: 'acc-1'})
+	useParams: () => ({channelId: '5', groupId: '23', id: 'acc-1'}),
 }));
 
 const mockedUseRequest = useRequest as jest.Mock;
@@ -44,7 +50,7 @@ const buildCategory = (
 	viewsMetric: {value: 0},
 	vocabularyId: 'v-1',
 	vocabularyName: 'Vocabulary',
-	...overrides
+	...overrides,
 });
 
 const buildTag = (overrides: Partial<ITopTag> = {}): ITopTag => ({
@@ -53,7 +59,7 @@ const buildTag = (overrides: Partial<ITopTag> = {}): ITopTag => ({
 	impressionsMetric: {value: 0},
 	name: 'Tag',
 	viewsMetric: {value: 0},
-	...overrides
+	...overrides,
 });
 
 const DEFAULT_CATEGORIES: ITopCategory[] = [
@@ -63,7 +69,7 @@ const DEFAULT_CATEGORIES: ITopCategory[] = [
 		impressionsMetric: {value: 12000},
 		name: 'Department Names',
 		viewsMetric: {value: 9000},
-		vocabularyName: 'Department'
+		vocabularyName: 'Department',
 	}),
 	buildCategory({
 		downloadsMetric: {value: 6700},
@@ -71,7 +77,7 @@ const DEFAULT_CATEGORIES: ITopCategory[] = [
 		impressionsMetric: {value: 9500},
 		name: 'Specialties',
 		viewsMetric: {value: 7000},
-		vocabularyName: 'Specialty'
+		vocabularyName: 'Specialty',
 	}),
 	buildCategory({
 		downloadsMetric: {value: 3400},
@@ -79,7 +85,7 @@ const DEFAULT_CATEGORIES: ITopCategory[] = [
 		impressionsMetric: {value: 6000},
 		name: 'Document Types',
 		viewsMetric: {value: 4500},
-		vocabularyName: 'Document Type'
+		vocabularyName: 'Document Type',
 	}),
 	buildCategory({
 		downloadsMetric: {value: 2900},
@@ -87,7 +93,7 @@ const DEFAULT_CATEGORIES: ITopCategory[] = [
 		impressionsMetric: {value: 4800},
 		name: 'Employment Status',
 		viewsMetric: {value: 3200},
-		vocabularyName: 'Employment Type'
+		vocabularyName: 'Employment Type',
 	}),
 	buildCategory({
 		downloadsMetric: {value: 1500},
@@ -95,13 +101,13 @@ const DEFAULT_CATEGORIES: ITopCategory[] = [
 		impressionsMetric: {value: 3100},
 		name: 'Facility Status',
 		viewsMetric: {value: 2000},
-		vocabularyName: 'Category'
-	})
+		vocabularyName: 'Category',
+	}),
 ];
 
 const mockUseRequestWith = ({
 	data,
-	loading = false
+	loading = false,
 }: {
 	data?: {items: Array<ITopCategory | ITopTag>};
 	loading?: boolean;
@@ -109,7 +115,7 @@ const mockUseRequestWith = ({
 	mockedUseRequest.mockImplementation(() => ({
 		data,
 		loading,
-		refetch: jest.fn()
+		refetch: jest.fn(),
 	}));
 };
 
@@ -216,10 +222,10 @@ describe('TopCategoriesAndTags', () => {
 						buildTag({
 							id: 't-promo',
 							impressionsMetric: {value: 250},
-							name: 'promo'
-						})
-					]
-				}
+							name: 'promo',
+						}),
+					],
+				},
 			});
 
 			fireEvent.click(screen.getByRole('tab', {name: 'Tag'}));
@@ -338,10 +344,10 @@ describe('TopCategoriesAndTags', () => {
 						buildTag({
 							id: 't-promo',
 							impressionsMetric: {value: 250},
-							name: 'promo'
-						})
-					]
-				}
+							name: 'promo',
+						}),
+					],
+				},
 			});
 
 			fireEvent.click(screen.getByRole('tab', {name: 'Tag'}));
@@ -444,10 +450,10 @@ describe('TopCategoriesAndTags', () => {
 							id: 'c-solo',
 							impressionsMetric: {value: 999},
 							name: 'Solo',
-							viewsMetric: {value: 333}
-						})
-					]
-				}
+							viewsMetric: {value: 333},
+						}),
+					],
+				},
 			});
 
 			const {container} = render(<TopCategoriesAndTags />);

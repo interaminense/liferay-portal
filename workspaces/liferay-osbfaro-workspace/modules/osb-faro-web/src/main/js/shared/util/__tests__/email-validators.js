@@ -1,8 +1,13 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {
 	validateEmail,
 	validateEmailArr,
 	validateEmailDomain,
-	validateEmailDomainArr
+	validateEmailDomainArr,
 } from '../email-validators';
 
 describe('email-validators', () => {
@@ -59,7 +64,7 @@ describe('email-validators', () => {
 
 		it('should return an error message when an email is not valid', () => {
 			validateEmailArr(['test@liferay.com', 'liferay.com']).catch(
-				error => {
+				(error) => {
 					expect(error).toEqual(
 						'Please enter the email in this format: sample@email.com'
 					);

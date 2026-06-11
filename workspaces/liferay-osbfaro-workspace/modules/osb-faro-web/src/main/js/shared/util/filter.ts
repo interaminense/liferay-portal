@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {orderBy} from 'lodash';
 import {toThousands} from 'shared/util/numbers';
 
@@ -27,7 +32,7 @@ type FilterItem = {
 
 export const filterLangMap = {
 	devices: Liferay.Language.get('devices'),
-	location: Liferay.Language.get('location')
+	location: Liferay.Language.get('location'),
 };
 
 /**
@@ -53,7 +58,7 @@ export const hasCategoryFilters = (
 ) => {
 	const categoryFilters = filters[category];
 
-	return categoryFilters && categoryFilters.length > 0;
+	return categoryFilters && !!categoryFilters.length;
 };
 
 /**
@@ -78,12 +83,12 @@ export const isClearFilterVisible = (filters: RawFilters) => {
  */
 export const mapEntryToFilterItem = ({
 	metrics,
-	valueKey
+	valueKey,
 }: RawFilterEntry): Omit<FilterInput, 'category'> => ({
 	checked: false,
 	inputType: 'radio',
 	label: valueKey,
-	value: toThousands(metrics.length)
+	value: toThousands(metrics.length),
 });
 
 /**
@@ -99,7 +104,7 @@ export const getFilterItem = (
 	data: RawFilterEntry[],
 	category: FilterTypes
 ): FilterItem => {
-	let items = data.map(item => ({...mapEntryToFilterItem(item), category}));
+	let items = data.map((item) => ({...mapEntryToFilterItem(item), category}));
 
 	items = orderBy(items, [({label}) => label.toLowerCase()]);
 
@@ -108,6 +113,6 @@ export const getFilterItem = (
 		items,
 		label: filterLangMap[category],
 		name: filterLangMap[category],
-		value: toThousands(items.length)
+		value: toThousands(items.length),
 	};
 };

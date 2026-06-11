@@ -1,5 +1,11 @@
-import * as Util from '../util';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import moment from 'moment';
+
+import * as Util from '../util';
 
 describe('Util', () => {
 	describe('isAboveMaxRange', () => {
@@ -8,7 +14,7 @@ describe('Util', () => {
 				Util.isAboveMaxRange(
 					{
 						end: moment(0).add(13, 'months'),
-						start: moment(0)
+						start: moment(0),
 					},
 					365
 				)
@@ -20,7 +26,7 @@ describe('Util', () => {
 				Util.isAboveMaxRange(
 					{
 						end: moment(0).add(11, 'months'),
-						start: moment(0)
+						start: moment(0),
 					},
 					365
 				)
@@ -59,7 +65,7 @@ describe('Util', () => {
 				Util.isInRange(
 					{
 						end: moment(0).add(3, 'days'),
-						start: moment(0)
+						start: moment(0),
 					},
 					moment(0).add(1, 'days')
 				)
@@ -71,7 +77,7 @@ describe('Util', () => {
 				Util.isInRange(
 					{
 						end: moment(0).add(3, 'days'),
-						start: moment(0)
+						start: moment(0),
 					},
 					moment(0).add(10, 'days')
 				)
@@ -81,7 +87,7 @@ describe('Util', () => {
 				Util.isInRange(
 					{
 						end: moment(0).add(3, 'days'),
-						start: moment(0)
+						start: moment(0),
 					},
 					moment(0)
 				)
@@ -110,7 +116,7 @@ describe('Util', () => {
 				Util.updateRange({end: null, start: null}, moment(0))
 			).toMatchObject({
 				end: null,
-				start: expect.anything()
+				start: expect.anything(),
 			});
 		});
 
@@ -119,7 +125,7 @@ describe('Util', () => {
 				Util.updateRange({end: null, start: moment(0)}, moment(23))
 			).toMatchObject({
 				end: expect.anything(),
-				start: expect.anything()
+				start: expect.anything(),
 			});
 		});
 

@@ -1,7 +1,13 @@
-import reducer from '../data-sources';
-import {actionTypes} from '../../actions/data-sources';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {Map} from 'immutable';
 import {RemoteData} from 'shared/util/records';
+
+import {actionTypes} from '../../actions/data-sources';
+import reducer from '../data-sources';
 
 describe('data-sources', () => {
 	function getResult(action, id, initialiState) {
@@ -13,9 +19,9 @@ describe('data-sources', () => {
 
 		const action = {
 			payload: {
-				id
+				id,
 			},
-			type: actionTypes.FETCH_DATA_SOURCE_REQUEST
+			type: actionTypes.FETCH_DATA_SOURCE_REQUEST,
 		};
 
 		expect(getResult(action, id)).toMatchObject(new RemoteData());
@@ -26,9 +32,9 @@ describe('data-sources', () => {
 
 		const action = {
 			payload: {
-				id
+				id,
 			},
-			type: actionTypes.FETCH_DATA_SOURCE_FAILURE
+			type: actionTypes.FETCH_DATA_SOURCE_FAILURE,
 		};
 
 		expect(getResult(action, id)).toMatchObject(
@@ -42,9 +48,9 @@ describe('data-sources', () => {
 		const action = {
 			meta: {id},
 			payload: {
-				id
+				id,
 			},
-			type: actionTypes.DELETE_DATA_SOURCE_SUCCESS
+			type: actionTypes.DELETE_DATA_SOURCE_SUCCESS,
 		};
 
 		expect(getResult(action, id, new Map({[id]: {id}}))).toBeFalsy();

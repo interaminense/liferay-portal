@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {
 	formatStringToLowercase,
 	getAlignPosition,
@@ -11,7 +16,7 @@ import {
 	isBlank,
 	isEllipisActive,
 	normalizeRangeSelectors,
-	truncateText
+	truncateText,
 } from '../util';
 
 describe('util', () => {
@@ -170,8 +175,8 @@ describe('util', () => {
 			const event = {
 				target: {
 					offsetWidth: 100,
-					scrollWidth: 200
-				}
+					scrollWidth: 200,
+				},
 			};
 
 			expect(isEllipisActive(event)).toBeTruthy();

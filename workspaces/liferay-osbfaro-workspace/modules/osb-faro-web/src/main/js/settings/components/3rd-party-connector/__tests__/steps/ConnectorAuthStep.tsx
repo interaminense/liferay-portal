@@ -1,7 +1,13 @@
-import {ConnectorAuthStep} from '../../steps/ConnectorAuthStep';
-import {ConnectorConfig} from '../../types';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {render} from '@testing-library/react';
 import {updateSearchParams} from 'settings/components/base-page/utis';
+
+import {ConnectorAuthStep} from '../../steps/ConnectorAuthStep';
+import {ConnectorConfig} from '../../types';
 
 jest.unmock('react-dom');
 
@@ -10,15 +16,15 @@ const useWizardPageMock = jest.fn();
 
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
-	useHistory: () => useHistoryMock()
+	useHistory: () => useHistoryMock(),
 }));
 
 jest.mock('settings/components/base-page/WizardPageContext', () => ({
-	useWizardPage: () => useWizardPageMock()
+	useWizardPage: () => useWizardPageMock(),
 }));
 
 jest.mock('settings/components/base-page/utis', () => ({
-	updateSearchParams: jest.fn()
+	updateSearchParams: jest.fn(),
 }));
 
 const connectorAuthSpy = jest.fn();
@@ -27,8 +33,9 @@ jest.mock('settings/components/3rd-party-connector/ConnectorAuth', () => ({
 	__esModule: true,
 	default: (props: any) => {
 		connectorAuthSpy(props);
+
 		return null;
-	}
+	},
 }));
 
 const buildConfig = (
@@ -43,12 +50,12 @@ const buildConfig = (
 		connectTitle: 'connectTitle',
 		endpointHelper: 'endpointHelper',
 		endpointLabel: 'endpointLabel',
-		tokenLabel: 'tokenLabel'
+		tokenLabel: 'tokenLabel',
 	},
 	singleton: false,
 	slug: 'acme',
 	type: 'ACME',
-	...overrides
+	...overrides,
 });
 
 describe('ConnectorAuthStep', () => {
@@ -68,7 +75,7 @@ describe('ConnectorAuthStep', () => {
 			<ConnectorAuthStep
 				addAlert={jest.fn() as any}
 				config={buildConfig()}
-				groupId='23'
+				groupId="23"
 				onNext={jest.fn()}
 			/>
 		);
@@ -87,7 +94,7 @@ describe('ConnectorAuthStep', () => {
 			<ConnectorAuthStep
 				addAlert={jest.fn() as any}
 				config={buildConfig()}
-				groupId='23'
+				groupId="23"
 				onNext={onNext}
 			/>
 		);
@@ -114,7 +121,7 @@ describe('ConnectorAuthStep', () => {
 			<ConnectorAuthStep
 				addAlert={jest.fn() as any}
 				config={buildConfig()}
-				groupId='23'
+				groupId="23"
 				onNext={onNext}
 			/>
 		);
@@ -130,7 +137,7 @@ describe('ConnectorAuthStep', () => {
 			<ConnectorAuthStep
 				addAlert={jest.fn() as any}
 				config={buildConfig()}
-				groupId='23'
+				groupId="23"
 				onNext={jest.fn()}
 			/>
 		);

@@ -1,24 +1,30 @@
-import client from 'shared/apollo/client';
-import FormMetricCard from '../FormMetricCard';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {ApolloProvider} from '@apollo/client';
+import {MockedProvider} from '@apollo/client/testing';
+import {cleanup, render} from '@testing-library/react';
 import React from 'react';
+import {StaticRouter} from 'react-router-dom';
+import client from 'shared/apollo/client';
 import {
 	AbandonmentsMetric,
 	CompletionTimeMetric,
 	SubmissionsMetric,
-	ViewsMetric
+	ViewsMetric,
 } from 'shared/components/metric-card/metrics';
-import {ApolloProvider} from '@apollo/client';
-import {cleanup, render} from '@testing-library/react';
+import {RangeKeyTimeRanges, THIRTEEN_MONTHS} from 'shared/util/constants';
 import {
 	mockAssetMetricReq,
 	mockAssetTabsReq,
 	mockPreferenceReq,
-	mockTimeRangeReq
+	mockTimeRangeReq,
 } from 'test/graphql-data';
-import {MockedProvider} from '@apollo/client/testing';
-import {RangeKeyTimeRanges, THIRTEEN_MONTHS} from 'shared/util/constants';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+
+import FormMetricCard from '../FormMetricCard';
 
 jest.unmock('react-dom');
 
@@ -29,11 +35,11 @@ jest.mock('react-router-dom', () => ({
 		channelId: '456',
 		groupId: '2000',
 		query: {
-			rangeKey: RangeKeyTimeRanges.Last30Days
+			rangeKey: RangeKeyTimeRanges.Last30Days,
 		},
 		title: 'My awesome asset',
-		touchpoint: 'https://liferay.com'
-	})
+		touchpoint: 'https://liferay.com',
+	}),
 }));
 
 /**
@@ -55,7 +61,7 @@ jest.mock('recharts', () => {
 			<OriginalModule.Tooltip {...props} active>
 				{children}
 			</OriginalModule.Tooltip>
-		)
+		),
 	};
 });
 
@@ -73,17 +79,17 @@ const WrappedComponent = ({empty = false}) => (
 							SubmissionsMetric,
 							ViewsMetric,
 							AbandonmentsMetric,
-							CompletionTimeMetric
+							CompletionTimeMetric,
 						],
 						name: NAME,
-						rangeKey: Number(RangeKeyTimeRanges.Last30Days)
+						rangeKey: Number(RangeKeyTimeRanges.Last30Days),
 					}),
 					mockAssetMetricReq({
 						empty,
 						metricName: SubmissionsMetric.name,
 						queryName: NAME,
-						rangeKey: Number(RangeKeyTimeRanges.Last30Days)
-					})
+						rangeKey: Number(RangeKeyTimeRanges.Last30Days),
+					}),
 				]}
 			>
 				<FormMetricCard

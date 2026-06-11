@@ -1,16 +1,22 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {LifecycleStages} from 'contacts/pages/account/utils/constants';
 import React, {
-	createContext,
 	ReactNode,
+	createContext,
 	useCallback,
 	useContext,
 	useMemo,
-	useState
+	useState,
 } from 'react';
+
 import {
+	ILifecycleFilterValues,
 	buildQueryString,
-	ILifecycleFilterValues
 } from '../utils/buildQueryString';
-import {LifecycleStages} from 'contacts/pages/account/utils/constants';
 
 interface ILifecycleFilters extends ILifecycleFilterValues {
 	filterString: string;
@@ -28,11 +34,11 @@ const LifecycleContext = createContext<ILifecycleContext>({
 		countryFilter: '',
 		filterString: '',
 		industryFilter: '',
-		lifecycleStageFilter: LifecycleStages.AT_RISK
+		lifecycleStageFilter: LifecycleStages.AT_RISK,
 	},
 	lifecycleId: '',
 	resetFilters: () => {},
-	updateFilters: () => {}
+	updateFilters: () => {},
 });
 
 export const useLifecycle = (): ILifecycleContext =>
@@ -41,7 +47,7 @@ export const useLifecycle = (): ILifecycleContext =>
 const initialValues: ILifecycleFilterValues = {
 	countryFilter: '',
 	industryFilter: '',
-	lifecycleStageFilter: LifecycleStages.AT_RISK
+	lifecycleStageFilter: LifecycleStages.AT_RISK,
 };
 
 interface ILifecycleContextProviderProps {
@@ -51,7 +57,7 @@ interface ILifecycleContextProviderProps {
 
 export const LifecycleContextProvider = ({
 	children,
-	lifecycleId
+	lifecycleId,
 }: ILifecycleContextProviderProps) => {
 	const [filterValues, setFilterValues] =
 		useState<ILifecycleFilterValues>(initialValues);
@@ -59,14 +65,14 @@ export const LifecycleContextProvider = ({
 	const filters = useMemo<ILifecycleFilters>(
 		() => ({
 			...filterValues,
-			filterString: buildQueryString(filterValues)
+			filterString: buildQueryString(filterValues),
 		}),
 		[filterValues]
 	);
 
 	const updateFilters = useCallback(
 		(newValues: Partial<ILifecycleFilterValues>) =>
-			setFilterValues(prev => ({...prev, ...newValues})),
+			setFilterValues((prev) => ({...prev, ...newValues})),
 		[]
 	);
 

@@ -1,8 +1,13 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import getCN from 'classnames';
+import {get, noop} from 'lodash';
+import React, {useEffect, useState} from 'react';
 import ListGroup from 'shared/components/list-group';
 import Modal from 'shared/components/modal';
-import React, {useEffect, useState} from 'react';
-import {get, noop} from 'lodash';
 import {sub} from 'shared/util/lang';
 
 interface IFieldPreviewModalProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,7 +32,7 @@ const FieldPreviewModal: React.FC<IFieldPreviewModalProps> = ({
 	}, []);
 
 	const getFieldData = () =>
-		dataSourceFn().then(fieldData => {
+		dataSourceFn().then((fieldData) => {
 			setFieldData(get(fieldData, [0, 'values'], []));
 		});
 
@@ -35,12 +40,12 @@ const FieldPreviewModal: React.FC<IFieldPreviewModalProps> = ({
 		<Modal
 			{...otherProps}
 			className={getCN('field-preview-modal-root', className)}
-			size='lg'
+			size="lg"
 		>
 			<Modal.Header
 				onClose={onClose}
 				title={sub(Liferay.Language.get('field-preview-x'), [
-					sourceName
+					sourceName,
 				])}
 			/>
 

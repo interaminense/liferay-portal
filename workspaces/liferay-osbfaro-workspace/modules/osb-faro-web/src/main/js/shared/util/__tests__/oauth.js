@@ -1,18 +1,24 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import * as API from 'shared/api';
+
 import {
+	ERROR_TYPES,
+	EVENT_TYPES,
+	OAUTH_ERROR_CODES,
 	emitAuthCode,
 	emitError,
 	emitToken,
-	ERROR_TYPES,
-	EVENT_TYPES,
 	getTempCredentials,
 	isOAuthErrorString,
-	OAUTH_ERROR_CODES
 } from '../oauth';
 
 describe('isOAuthErrorString', () => {
 	it('should return true is the error is considered an OAuth error type', () => {
-		OAUTH_ERROR_CODES.map(code => {
+		OAUTH_ERROR_CODES.map((code) => {
 			expect(isOAuthErrorString(code)).toBe(true);
 		});
 	});
@@ -31,7 +37,7 @@ describe('oauth-token', () => {
 		closed = false;
 		focus = jest.fn();
 		location = {
-			href: ''
+			href: '',
 		};
 
 		close() {
@@ -42,7 +48,7 @@ describe('oauth-token', () => {
 	describe('emitAuthCode', () => {
 		beforeAll(() => {
 			window.opener = {
-				postMessage: jest.fn()
+				postMessage: jest.fn(),
 			};
 		});
 
@@ -65,7 +71,7 @@ describe('oauth-token', () => {
 	describe('emitError', () => {
 		beforeAll(() => {
 			window.opener = {
-				postMessage: jest.fn()
+				postMessage: jest.fn(),
 			};
 		});
 
@@ -88,7 +94,7 @@ describe('oauth-token', () => {
 	describe('emitToken', () => {
 		beforeAll(() => {
 			window.opener = {
-				postMessage: jest.fn()
+				postMessage: jest.fn(),
 			};
 		});
 
@@ -99,7 +105,7 @@ describe('oauth-token', () => {
 		it('should call postMessage on the opener', () => {
 			const partialCredentials = {
 				token: 'foobarbaz',
-				verifier: 'bizbaz'
+				verifier: 'bizbaz',
 			};
 
 			emitToken(partialCredentials);
@@ -133,7 +139,7 @@ describe('oauth-token', () => {
 			const consumerSecret = 'foo';
 			const partialCredentials = {
 				token: 'foobarbaz',
-				verifier: 'bizbaz'
+				verifier: 'bizbaz',
 			};
 
 			const originalAddEventListener = window.addEventListener;
@@ -147,7 +153,7 @@ describe('oauth-token', () => {
 					event.origin = location.origin;
 					event.data = {
 						...partialCredentials,
-						type: EVENT_TYPES.AC_RECEIVE_OAUTH_TOKEN
+						type: EVENT_TYPES.AC_RECEIVE_OAUTH_TOKEN,
 					};
 
 					dispatchEvent(event);
@@ -161,15 +167,15 @@ describe('oauth-token', () => {
 				baseUrl,
 				callbackUrl,
 				consumerKey,
-				consumerSecret
-			}).then(receivedTempCredentials => {
+				consumerSecret,
+			}).then((receivedTempCredentials) => {
 				expect(receivedTempCredentials).toEqual({
 					oAuthAuthorizationURL: baseUrl,
 					oAuthCallbackURL: callbackUrl,
 					oAuthCode: undefined,
 					oAuthToken: partialCredentials.token,
 					oAuthTokenSecret: 'bizzybuzz',
-					oAuthVerifier: partialCredentials.verifier
+					oAuthVerifier: partialCredentials.verifier,
 				});
 				expect(authWindow.closed).toBe(true);
 			});
@@ -182,11 +188,11 @@ describe('oauth-token', () => {
 					baseUrl: 'http://foobar.biz',
 					consumerKey: 'bar',
 					consumerSeceret: 'foo',
-					timeout: 250
+					timeout: 250,
 				})
 			).rejects.toThrow(
 				expect.objectContaining({
-					type: ERROR_TYPES.TIMEOUT
+					type: ERROR_TYPES.TIMEOUT,
 				})
 			));
 
@@ -206,7 +212,7 @@ describe('oauth-token', () => {
 				baseUrl: 'http://foobar.biz',
 				consumerKey: 'bar',
 				consumerSeceret: 'foo',
-				timeout: 250
+				timeout: 250,
 			}).catch(() => {
 				expect(authWindow.close).toBeCalled();
 			});
@@ -223,11 +229,11 @@ describe('oauth-token', () => {
 					baseUrl: 'http://foobar.biz',
 					consumerKey: 'bar',
 					consumerSeceret: 'foo',
-					timeout: 250
+					timeout: 250,
 				})
 			).rejects.toThrow(
 				expect.objectContaining({
-					type: ERROR_TYPES.WINDOW_CLOSED
+					type: ERROR_TYPES.WINDOW_CLOSED,
 				})
 			);
 		});

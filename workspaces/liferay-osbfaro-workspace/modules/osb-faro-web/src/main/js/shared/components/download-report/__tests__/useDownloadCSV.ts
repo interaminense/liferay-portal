@@ -1,16 +1,22 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 jest.unmock('react-dom');
 
-import {CSVType, useDownloadCSV} from '../utils';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {renderHook} from '@testing-library/react';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
+
+import {CSVType, useDownloadCSV} from '../utils';
 
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
 	useParams: jest.fn(() => ({
 		channelId: '123',
 		groupId: '456',
-		title: 'my asset title'
-	}))
+		title: 'my asset title',
+	})),
 }));
 
 describe('useDownloadCSV', () => {
@@ -30,7 +36,7 @@ describe('useDownloadCSV', () => {
 		const url = result.current({
 			rangeEnd: '',
 			rangeKey: RangeKeyTimeRanges.Last30Days,
-			rangeStart: ''
+			rangeStart: '',
 		});
 
 		expect(url).toBe(
@@ -46,7 +52,7 @@ describe('useDownloadCSV', () => {
 		const url = result.current({
 			rangeEnd: '2024-01-31',
 			rangeKey: RangeKeyTimeRanges.CustomRange,
-			rangeStart: '2024-01-01'
+			rangeStart: '2024-01-01',
 		});
 		expect(url).toContain('&rangeKey=CUSTOM');
 		expect(url).toContain('&fromDate=2024-01-01');
@@ -60,14 +66,14 @@ describe('useDownloadCSV', () => {
 				assetType: 'blog',
 				individualId: '67890',
 				segmentId: 'segment123',
-				type: CSVType.Individual
+				type: CSVType.Individual,
 			})
 		);
 
 		const url = result.current({
 			rangeEnd: '',
 			rangeKey: RangeKeyTimeRanges.Last30Days,
-			rangeStart: ''
+			rangeStart: '',
 		});
 
 		expect(url).toBe(
@@ -87,7 +93,7 @@ describe('useDownloadCSV', () => {
 		const url = result.current({
 			rangeEnd: '',
 			rangeKey: RangeKeyTimeRanges.Last30Days,
-			rangeStart: ''
+			rangeStart: '',
 		});
 
 		expect(url).toBe(

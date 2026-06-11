@@ -1,5 +1,10 @@
-import {fetchPreferences} from 'shared/api/preferences';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {useEffect, useState} from 'react';
+import {fetchPreferences} from 'shared/api/preferences';
 
 export const useIncidentAlert = () => {
 	const [data, setData] = useState({incidentAlertEnabled: false});
@@ -11,11 +16,13 @@ export const useIncidentAlert = () => {
 				const response = await fetchPreferences();
 
 				setData(response.preferences || {incidentAlertEnabled: false});
-			} catch (error) {
+			}
+			catch (error) {
 				throw new Error(
 					`Failed to fetch incident alert status: ${error}`
 				);
-			} finally {
+			}
+			finally {
 				setLoading(false);
 			}
 		};
@@ -26,6 +33,6 @@ export const useIncidentAlert = () => {
 	return {
 		data,
 		loading,
-		onClose: () => setData({incidentAlertEnabled: false})
+		onClose: () => setData({incidentAlertEnabled: false}),
 	};
 };

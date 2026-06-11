@@ -1,15 +1,20 @@
-import {createOrderIOMap, paginationDefaults} from 'shared/util/pagination';
-import {FilterByType, Pagination} from 'shared/types';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {Map, OrderedMap, Set} from 'immutable';
-import {OrderParams} from 'shared/util/records';
 import {pick} from 'lodash';
 import {useQueryParams} from 'shared/hooks/useQueryParams';
+import {FilterByType, Pagination} from 'shared/types';
+import {createOrderIOMap, paginationDefaults} from 'shared/util/pagination';
+import {OrderParams} from 'shared/util/records';
 
 const {
 	delta: defaultDelta,
 	filterBy: defaultFilterBy,
 	page: defaultPage,
-	query: defaultQuery
+	query: defaultQuery,
 } = paginationDefaults;
 
 type QueryPaginationParams = {
@@ -27,7 +32,7 @@ export const useQueryPagination = ({
 	initialFilterBy = defaultFilterBy,
 	initialOrderIOMap,
 	initialPage = defaultPage,
-	initialQuery = defaultQuery
+	initialQuery = defaultQuery,
 }: QueryPaginationParams): Pagination => {
 	const {
 		delta = initialDelta,
@@ -74,6 +79,6 @@ export const useQueryPagination = ({
 		filterBy,
 		orderIOMap,
 		page: parseInt(page as string),
-		query: query as string
+		query: query as string,
 	};
 };

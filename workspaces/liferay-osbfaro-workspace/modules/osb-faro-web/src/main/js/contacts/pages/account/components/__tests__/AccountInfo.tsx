@@ -1,23 +1,29 @@
-import AccountInfo from '../AccountInfo';
-import React from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {cleanup, fireEvent, render, screen} from '@testing-library/react';
+import React from 'react';
+
+import AccountInfo from '../AccountInfo';
 
 jest.unmock('react-dom');
 
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
-	useParams: () => ({id: 'acc-123'})
+	useParams: () => ({id: 'acc-123'}),
 }));
 
 jest.mock('../AccountDetailsModal', () => ({
 	__esModule: true,
 	default: ({onClose}: {onClose: () => void}) => (
-		<div data-testid='account-details-modal'>
-			<button onClick={onClose} type='button'>
-				{'close'}
+		<div data-testid="account-details-modal">
+			<button onClick={onClose} type="button">
+				close
 			</button>
 		</div>
-	)
+	),
 }));
 
 const mockAccount = {
@@ -26,7 +32,7 @@ const mockAccount = {
 	id: 'acc-123',
 	industry: 'Technology',
 	numberOfEmployees: 250,
-	website: 'https://acme.com'
+	website: 'https://acme.com',
 };
 
 describe('AccountInfo', () => {
@@ -65,7 +71,7 @@ describe('AccountInfo', () => {
 			render(<AccountInfo account={mockAccount} />);
 
 			const link = screen.getByRole('link', {
-				name: /https:\/\/acme\.com/
+				name: /https:\/\/acme\.com/,
 			});
 
 			expect(link).toHaveAttribute('href', 'https://acme.com');

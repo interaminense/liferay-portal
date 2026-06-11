@@ -1,6 +1,12 @@
-import reducer from '../modals';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {List, Map, Set, fromJS} from 'immutable';
+
 import {actionTypes} from '../../actions/modals';
-import {fromJS, List, Map, Set} from 'immutable';
+import reducer from '../modals';
 
 describe('Modals Reducer', () => {
 	it('should be a function', () => {
@@ -12,11 +18,11 @@ describe('Modals Reducer', () => {
 			payload: {
 				closeOnBlur: true,
 				props: {
-					foo: 'bar'
+					foo: 'bar',
 				},
-				type: 'MyModal'
+				type: 'MyModal',
 			},
-			type: actionTypes.OPEN_MODAL
+			type: actionTypes.OPEN_MODAL,
 		};
 
 		const state = reducer(new List(), action);
@@ -26,10 +32,10 @@ describe('Modals Reducer', () => {
 				new Map({
 					closeOnBlur: true,
 					props: new Map({
-						foo: 'bar'
+						foo: 'bar',
 					}),
-					type: 'MyModal'
-				})
+					type: 'MyModal',
+				}),
 			])
 		);
 	});
@@ -40,10 +46,10 @@ describe('Modals Reducer', () => {
 				closeOnBlur: true,
 				name: 'MyModal',
 				props: {
-					foo: Set.of(1)
-				}
+					foo: Set.of(1),
+				},
 			},
-			type: actionTypes.OPEN_MODAL
+			type: actionTypes.OPEN_MODAL,
 		};
 
 		const state = reducer(new List(), action);
@@ -55,16 +61,16 @@ describe('Modals Reducer', () => {
 		const intitialState = fromJS([
 			{
 				name: 'Foo',
-				props: {}
+				props: {},
 			},
 			{
 				name: 'Bar',
-				props: {}
-			}
+				props: {},
+			},
 		]);
 
 		const action = {
-			type: actionTypes.CLOSE_MODAL
+			type: actionTypes.CLOSE_MODAL,
 		};
 
 		const state = reducer(intitialState, action);
@@ -73,8 +79,8 @@ describe('Modals Reducer', () => {
 			fromJS([
 				{
 					name: 'Foo',
-					props: {}
-				}
+					props: {},
+				},
 			])
 		);
 	});
@@ -83,16 +89,16 @@ describe('Modals Reducer', () => {
 		const intitialState = fromJS([
 			{
 				name: 'Foo',
-				props: {}
+				props: {},
 			},
 			{
 				name: 'Bar',
-				props: {}
-			}
+				props: {},
+			},
 		]);
 
 		const action = {
-			type: actionTypes.CLOSE_ALL_MODALS
+			type: actionTypes.CLOSE_ALL_MODALS,
 		};
 
 		const state = reducer(intitialState, action);

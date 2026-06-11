@@ -1,20 +1,26 @@
-import AudienceReport from '../AudienceReport';
-import mockStore from 'test/mock-store';
-import React from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {MockedProvider} from '@apollo/client/testing';
 import {fireEvent, render} from '@testing-library/react';
+import React from 'react';
+import {Provider} from 'react-redux';
 import {MemoryRouter, Route} from 'react-router-dom';
 import {MetricName} from 'shared/types/MetricName';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {
 	mockAudienceReportReq,
 	mockPreferenceReq,
-	mockTimeRangeReq
+	mockTimeRangeReq,
 } from 'test/graphql-data';
-import {MockedProvider} from '@apollo/client/testing';
-import {Name} from '../types';
-import {PageAudienceReportQuery} from '../queries';
-import {Provider} from 'react-redux';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+import mockStore from 'test/mock-store';
+
+import AudienceReport from '../AudienceReport';
+import {PageAudienceReportQuery} from '../queries';
+import {Name} from '../types';
 
 jest.unmock('react-dom');
 
@@ -46,7 +52,7 @@ jest.mock('recharts', () => {
 					{children}
 				</OriginalModule.Tooltip>
 			);
-		}
+		},
 	};
 });
 
@@ -54,29 +60,29 @@ const WrappedComponent = ({queryProps}: {queryProps: any}) => (
 	<Provider store={mockStore()}>
 		<MemoryRouter
 			initialEntries={[
-				'/workspace/123/456/Home%20Page/https%3A%2F%2Fwww.liferay.com'
+				'/workspace/123/456/Home%20Page/https%3A%2F%2Fwww.liferay.com',
 			]}
 		>
-			<Route path='/workspace/:groupId/:channelId/:title/:touchpoint'>
+			<Route path="/workspace/:groupId/:channelId/:title/:touchpoint">
 				<MockedProvider
 					{...({freezeResults: false} as any)}
 					mocks={[
 						mockTimeRangeReq(),
 						mockPreferenceReq(),
-						mockAudienceReportReq({queryProps})
+						mockAudienceReportReq({queryProps}),
 					]}
 				>
 					<AudienceReport
+						Query={PageAudienceReportQuery(queryProps)}
 						filters={{devices: [], location: []}}
 						mapper={(result: any) =>
 							result?.[queryProps.name]?.[queryProps.metricName]
 						}
 						name={Name.Page}
-						Query={PageAudienceReportQuery(queryProps)}
 						rangeSelectors={{
 							rangeEnd: '',
 							rangeKey: RangeKeyTimeRanges.Last30Days,
-							rangeStart: ''
+							rangeStart: '',
 						}}
 					/>
 				</MockedProvider>
@@ -91,7 +97,7 @@ describe('AudienceReport', () => {
 			<WrappedComponent
 				queryProps={{
 					metricName: MetricName.Views,
-					name: Name.Page
+					name: Name.Page,
 				}}
 			/>
 		);
@@ -106,7 +112,7 @@ describe('AudienceReport', () => {
 			<WrappedComponent
 				queryProps={{
 					metricName: MetricName.Views,
-					name: Name.Page
+					name: Name.Page,
 				}}
 			/>
 		);

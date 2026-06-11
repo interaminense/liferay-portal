@@ -1,5 +1,11 @@
-import User from '../User';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {UserRoleNames} from 'shared/util/constants';
+
+import User from '../User';
 
 const adminUser = new User({roleName: UserRoleNames.Administrator});
 
@@ -20,7 +26,7 @@ describe('User', () => {
 		expect(
 			user.hasPermission([
 				UserRoleNames.Administrator,
-				UserRoleNames.Owner
+				UserRoleNames.Owner,
 			])
 		).toBe(false);
 
@@ -28,7 +34,7 @@ describe('User', () => {
 			user.hasPermission([
 				UserRoleNames.Administrator,
 				UserRoleNames.Member,
-				UserRoleNames.Owner
+				UserRoleNames.Owner,
 			])
 		).toBe(true);
 

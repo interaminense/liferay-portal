@@ -1,10 +1,16 @@
-import {mapPropsToOptions, mapResultToProps} from '../individual-metrics-query';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {range} from 'lodash';
 
+import {mapPropsToOptions, mapResultToProps} from '../individual-metrics-query';
+
 const mockMetric = {
-	histogram: {metrics: range(5).map(i => ({value: i}))},
+	histogram: {metrics: range(5).map((i) => ({value: i}))},
 	trend: {percentage: 25.4},
-	value: 10
+	value: 10,
 };
 
 const mockData = {
@@ -12,9 +18,9 @@ const mockData = {
 		individualMetric: {
 			anonymousIndividualsMetric: mockMetric,
 			knownIndividualsMetric: mockMetric,
-			totalIndividualsMetric: mockMetric
-		}
-	}
+			totalIndividualsMetric: mockMetric,
+		},
+	},
 };
 
 describe('Individual Metrics Query Mapper', () => {
@@ -23,8 +29,8 @@ describe('Individual Metrics Query Mapper', () => {
 			const props = {
 				interval: 'day',
 				rangeSelectors: {
-					rangeKey: '30'
-				}
+					rangeKey: '30',
+				},
 			};
 
 			expect(mapPropsToOptions(props)).toEqual(
@@ -33,8 +39,8 @@ describe('Individual Metrics Query Mapper', () => {
 						interval: 'day',
 						rangeEnd: null,
 						rangeKey: 30,
-						rangeStart: null
-					}
+						rangeStart: null,
+					},
 				})
 			);
 		});
@@ -51,11 +57,11 @@ describe('Individual Metrics Query Mapper', () => {
 						info:
 							expect.objectContaining({
 								content: expect.any(String),
-								title: expect.any(String)
+								title: expect.any(String),
 							}) || undefined,
 						title: expect.any(String),
-						total: expect.any(Number)
-					})
+						total: expect.any(Number),
+					}),
 				])
 			);
 		});

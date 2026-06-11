@@ -1,33 +1,39 @@
-import ConfigureWorkspace from '../ConfigureWorkspace';
-import mockStore from 'test/mock-store';
-import React from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {cleanup, render, screen} from '@testing-library/react';
 import {fromJS} from 'immutable';
-import {MemoryRouter} from 'react-router-dom';
 import {noop} from 'lodash';
+import React from 'react';
 import {Provider} from 'react-redux';
+import {MemoryRouter} from 'react-router-dom';
 import {updateProject} from 'shared/actions/projects';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useRequest} from 'shared/hooks/useRequest';
+import mockStore from 'test/mock-store';
+
+import ConfigureWorkspace from '../ConfigureWorkspace';
 
 jest.unmock('react-dom');
 
 jest.mock('shared/actions/alerts', () => ({
 	actionTypes: {},
-	addAlert: jest.fn()
+	addAlert: jest.fn(),
 }));
 
 jest.mock('shared/actions/projects', () => ({
 	actionTypes: {},
-	updateProject: jest.fn()
+	updateProject: jest.fn(),
 }));
 
 jest.mock('shared/hooks/useCurrentUser', () => ({
-	useCurrentUser: jest.fn()
+	useCurrentUser: jest.fn(),
 }));
 
 jest.mock('shared/hooks/useRequest', () => ({
-	useRequest: jest.fn()
+	useRequest: jest.fn(),
 }));
 
 const mockGroupId = '23';
@@ -37,16 +43,16 @@ const mockProject = {
 	groupId: mockGroupId,
 	incidentReportEmailAddresses: [],
 	name: 'Foo Project',
-	timeZoneId: 'UTC'
+	timeZoneId: 'UTC',
 };
 
 const defaultStore = mockStore(
 	fromJS({
 		projects: {
 			[mockGroupId]: {
-				data: mockProject
-			}
-		}
+				data: mockProject,
+			},
+		},
 	})
 );
 
@@ -68,12 +74,12 @@ describe('ConfigureWorkspace', () => {
 		(updateProject as jest.Mock).mockReturnValue(Promise.resolve());
 
 		(useCurrentUser as jest.Mock).mockReturnValue({
-			isAdmin: () => true
+			isAdmin: () => true,
 		});
 
 		(useRequest as jest.Mock).mockReturnValue({
 			data: ['liferay.com'],
-			loading: false
+			loading: false,
 		});
 	});
 
@@ -94,4 +100,5 @@ describe('ConfigureWorkspace', () => {
 	// Note: Validation tests for Formik are skipped here as they are proving
 	// extremely flaky due to async nature and complex UI component interactions.
 	// We establish that the component renders and basic props work.
+
 });

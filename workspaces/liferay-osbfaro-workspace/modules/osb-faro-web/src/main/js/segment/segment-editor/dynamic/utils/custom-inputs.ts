@@ -1,8 +1,14 @@
-import {createNewGroup} from './utils';
-import {CustomValue} from 'shared/util/records';
-import {fromJS, Map} from 'immutable';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {Map, fromJS} from 'immutable';
 import {isArray} from 'lodash';
+import {CustomValue} from 'shared/util/records';
+
 import {TIME_PERIOD_OPTIONS} from './constants';
+import {createNewGroup} from './utils';
 
 /**
  * Create the valueIMap for a custom input.
@@ -17,7 +23,8 @@ export const createCustomValueMap = (
 	params.forEach(({key, value}) => {
 		if (isArray(value)) {
 			valueIMap = valueIMap.set(key, fromJS(createNewGroup(value)));
-		} else {
+		}
+		else {
 			valueIMap = valueIMap.set(key, value);
 		}
 	});
@@ -46,7 +53,9 @@ export const getIndexFromPropertyName = (
 ): number => {
 	const items = valueIMap.getIn(['criterionGroup', 'items']);
 
-	if (!items) return -1;
+	if (!items) {
+		return -1;
+	}
 
 	return items.findIndex(
 		(entry: Map<string, any>) => entry.get('propertyName') === propertyName
@@ -92,7 +101,7 @@ export const getPropertyValue = (
  */
 export const getTimePeriodLabel = (value: string): string => {
 	const timePeriod = TIME_PERIOD_OPTIONS.find(
-		timePeriod => timePeriod.value === value
+		(timePeriod) => timePeriod.value === value
 	);
 
 	return timePeriod ? timePeriod.label : '';

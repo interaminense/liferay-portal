@@ -1,36 +1,42 @@
-import * as API from 'shared/api';
-import * as breadcrumbs from 'shared/util/breadcrumbs';
-import BasePage from 'settings/components/base-page/BasePage';
-import Card from 'shared/components/Card';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayButton from '@clayui/button';
-import Constants from 'shared/util/constants';
-import EmailReports from '../components/EmailReports';
+import React, {useState} from 'react';
+import {ConnectedProps, connect} from 'react-redux';
+import BasePage from 'settings/components/base-page/BasePage';
+import {addAlert} from 'shared/actions/alerts';
+import {close, modalTypes, open} from 'shared/actions/modals';
+import {updateDefaultChannelId} from 'shared/actions/preferences';
+import * as API from 'shared/api';
+import Card from 'shared/components/Card';
+import RadioGroup from 'shared/components/RadioGroup';
+import TitleEditor from 'shared/components/TitleEditor';
 import Form, {
 	validateMaxLength,
 	validateMinLength,
-	validateRequired
+	validateRequired,
 } from 'shared/components/form';
 import HelpBlock from 'shared/components/form/HelpBlock';
-import RadioGroup from 'shared/components/RadioGroup';
-import React, {useState} from 'react';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
-import SyncedStripe from '../components/SyncedStripe';
-import TitleEditor from 'shared/components/TitleEditor';
-import UserList from '../components/UserList';
-import {addAlert} from 'shared/actions/alerts';
-import {Alert, IPaginationUnsorted} from 'shared/types';
-import {close, modalTypes, open} from 'shared/actions/modals';
 import {compose} from 'shared/hoc';
-import {connect, ConnectedProps} from 'react-redux';
-import {RootState} from 'shared/store';
-import {Routes, toRoute} from 'shared/util/router';
 import {SafeResults} from 'shared/hoc/util';
-import {sequence} from 'shared/util/promise';
-import {sub} from 'shared/util/lang';
-import {UNAUTHORIZED_ACCESS} from 'shared/util/request';
-import {updateDefaultChannelId} from 'shared/actions/preferences';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useRequest} from 'shared/hooks/useRequest';
+import {RootState} from 'shared/store';
+import {Alert, IPaginationUnsorted} from 'shared/types';
+import * as breadcrumbs from 'shared/util/breadcrumbs';
+import Constants from 'shared/util/constants';
+import {sub} from 'shared/util/lang';
+import {sequence} from 'shared/util/promise';
+import {UNAUTHORIZED_ACCESS} from 'shared/util/request';
+import {Routes, toRoute} from 'shared/util/router';
+
+import EmailReports from '../components/EmailReports';
+import SyncedStripe from '../components/SyncedStripe';
+import UserList from '../components/UserList';
 
 const {channelPermissionTypes} = Constants;
 
@@ -52,8 +58,8 @@ export const ViewContainer: React.FC<Omit<IViewProps, 'channel'>> = ({
 		dataSourceFn: API.channels.fetch,
 		variables: {
 			channelId: id,
-			groupId
-		}
+			groupId,
+		},
 	});
 
 	return (
@@ -66,7 +72,7 @@ export const ViewContainer: React.FC<Omit<IViewProps, 'channel'>> = ({
 				message: Liferay.Language.get(
 					'the-property-you-are-looking-for-does-not-exist'
 				),
-				subtitle: Liferay.Language.get('property-not-found')
+				subtitle: Liferay.Language.get('property-not-found'),
 			}}
 			loading={loading}
 			onReload={refetch}
@@ -91,8 +97,8 @@ const connector = connect(
 			'preferences',
 			'user',
 			'defaultChannelId',
-			'data'
-		])
+			'data',
+		]),
 	}),
 	{addAlert, close, open, updateDefaultChannelId}
 );
@@ -135,14 +141,14 @@ const View: React.FC<IViewProps> = ({
 			.update({
 				groupId,
 				id,
-				permissionType
+				permissionType,
 			})
-			.then(response => setPermissionType(response.permissionType))
+			.then((response) => setPermissionType(response.permissionType))
 			.catch(() =>
 				addAlert({
 					alertType: Alert.Types.Error,
 					message: Liferay.Language.get('error'),
-					timeout: false
+					timeout: false,
 				})
 			);
 
@@ -150,7 +156,7 @@ const View: React.FC<IViewProps> = ({
 
 	const handleUnableToDeleteProperty = () => {
 		open(modalTypes.UNABLE_DELETE_PROPERTY_MODAL, {
-			onClose: close
+			onClose: close,
 		});
 	};
 
@@ -160,30 +166,30 @@ const View: React.FC<IViewProps> = ({
 				breadcrumbs.getChannels({groupId}),
 				breadcrumbs.getChannelName({
 					active: true,
-					label: name
-				})
+					label: name,
+				}),
 			]}
 			documentTitle={`${name} - ${Liferay.Language.get('properties')}`}
 		>
-			<div className='content-header has-page-actions'>
-				<div className='header-text w-100'>
+			<div className="content-header has-page-actions">
+				<div className="header-text w-100">
 					<Form
 						initialValues={{
-							name: channel.name
+							name: channel.name,
 						}}
 						onSubmit={({name}) =>
 							API.channels
 								.update({
 									groupId,
 									id,
-									name: encodeURIComponent(name)
+									name: encodeURIComponent(name),
 								})
 								.then(({name}) => setName(name))
 								.catch(() =>
 									addAlert({
 										alertType: Alert.Types.Error,
 										message: Liferay.Language.get('error'),
-										timeout: false
+										timeout: false,
 									})
 								)
 						}
@@ -192,7 +198,7 @@ const View: React.FC<IViewProps> = ({
 							<>
 								<TitleEditor
 									editable={authorized}
-									name='name'
+									name="name"
 									onBlur={() => {
 										handleSubmit();
 
@@ -203,38 +209,38 @@ const View: React.FC<IViewProps> = ({
 									validate={sequence([
 										validateMaxLength(75),
 										validateMinLength(3),
-										validateRequired
+										validateRequired,
 									])}
 								/>
 
 								<HelpBlock
-									className='text-danger'
-									name='name'
+									className="text-danger"
+									name="name"
 								/>
 							</>
 						)}
 					</Form>
 
-					<div className='description'>
+					<div className="description">
 						{sub(Liferay.Language.get('property-id-x'), [
-							channel.id
+							channel.id,
 						])}
 					</div>
 				</div>
 
-				<div className='d-flex'>
+				<div className="d-flex">
 					<EmailReports
 						channelId={id}
-						className='align-items-center d-flex'
+						className="align-items-center d-flex"
 						sitesSynced={!!channel.groupsCount}
 					/>
 
 					{authorized && (
-						<span className='header-action-buttons pl-3'>
+						<span className="header-action-buttons pl-3">
 							<ClayButton
-								className='button-root mr-3'
-								data-testid='clear-data'
-								displayType='secondary'
+								className="button-root mr-3"
+								data-testid="clear-data"
+								displayType="secondary"
 								onClick={() =>
 									open(modalTypes.DELETE_CONFIRMATION_MODAL, {
 										children: (
@@ -268,7 +274,7 @@ const View: React.FC<IViewProps> = ({
 											API.channels
 												.clear({
 													groupId,
-													ids: [id]
+													ids: [id],
 												})
 												.then(() => {
 													const clearedMessage =
@@ -282,12 +288,12 @@ const View: React.FC<IViewProps> = ({
 														message: sub(
 															clearedMessage,
 															[name]
-														) as string
+														) as string,
 													});
 
 													close();
 												})
-												.catch(err =>
+												.catch((err) =>
 													addAlert({
 														alertType:
 															Alert.Types.Error,
@@ -296,11 +302,11 @@ const View: React.FC<IViewProps> = ({
 															UNAUTHORIZED_ACCESS
 																? Liferay.Language.get(
 																		'unauthorized-access'
-																  )
+																	)
 																: Liferay.Language.get(
 																		'error'
-																  ),
-														timeout: false
+																	),
+														timeout: false,
 													})
 												);
 										},
@@ -309,7 +315,7 @@ const View: React.FC<IViewProps> = ({
 												'clear-x-data?'
 											),
 											[name]
-										)
+										),
 									})
 								}
 							>
@@ -317,9 +323,9 @@ const View: React.FC<IViewProps> = ({
 							</ClayButton>
 
 							<ClayButton
-								className='button-root'
-								data-testid='delete'
-								displayType='secondary'
+								className="button-root"
+								data-testid="delete"
+								displayType="secondary"
 								onClick={() => {
 									if (
 										channel.commerceChannelsCount ||
@@ -362,7 +368,7 @@ const View: React.FC<IViewProps> = ({
 											API.channels
 												.delete({
 													groupId,
-													ids: [id]
+													ids: [id],
 												})
 												.then(() => {
 													const deletedMessage =
@@ -377,7 +383,7 @@ const View: React.FC<IViewProps> = ({
 															Routes.SETTINGS_CHANNELS,
 															{
 																groupId,
-																id
+																id,
 															}
 														)
 													);
@@ -388,7 +394,7 @@ const View: React.FC<IViewProps> = ({
 														message: sub(
 															deletedMessage,
 															[name]
-														) as string
+														) as string,
 													});
 
 													if (
@@ -397,11 +403,11 @@ const View: React.FC<IViewProps> = ({
 														updateDefaultChannelId({
 															defaultChannelId:
 																null,
-															groupId
+															groupId,
 														});
 													}
 												})
-												.catch(err =>
+												.catch((err) =>
 													addAlert({
 														alertType:
 															Alert.Types.Error,
@@ -410,18 +416,18 @@ const View: React.FC<IViewProps> = ({
 															UNAUTHORIZED_ACCESS
 																? Liferay.Language.get(
 																		'unauthorized-access'
-																  )
+																	)
 																: Liferay.Language.get(
 																		'error'
-																  ),
-														timeout: false
+																	),
+														timeout: false,
 													})
 												);
 										},
 										title: sub(
 											Liferay.Language.get('delete-x?'),
 											[name]
-										)
+										),
 									});
 								}}
 							>
@@ -438,17 +444,17 @@ const View: React.FC<IViewProps> = ({
 					sitesSyncedCount={channel.groupsCount}
 				/>
 
-				<Card.Body className='flex-grow-0'>
+				<Card.Body className="flex-grow-0">
 					<RadioGroup
 						checked={permissionType}
 						disabled={!authorized}
 						inline
-						name='permissionType'
-						onChange={val => {
+						name="permissionType"
+						onChange={(val) => {
 							if (val === channelPermissionTypes.selectUsers) {
 								open(modalTypes.CONFIRMATION_MODAL, {
 									message: (
-										<div className='text-secondary'>
+										<div className="text-secondary">
 											{Liferay.Language.get(
 												'property-permissions-will-be-changed-if-you-proceed-to-select-users.-add-users-from-your-workspace-to-give-access-to-this-property'
 											)}
@@ -466,9 +472,10 @@ const View: React.FC<IViewProps> = ({
 									title: Liferay.Language.get(
 										'permissions-change'
 									),
-									titleIcon: 'warning-full'
+									titleIcon: 'warning-full',
 								});
-							} else {
+							}
+							else {
 								updatePermissions(val);
 							}
 						}}
@@ -497,7 +504,7 @@ const View: React.FC<IViewProps> = ({
 								'all-users-from-this-workspace-have-access-to-this-property'
 							)}
 							icon={{
-								symbol: 'ac_no_sites'
+								symbol: 'ac_no_sites',
 							}}
 							title={Liferay.Language.get('all-aboard')}
 						/>

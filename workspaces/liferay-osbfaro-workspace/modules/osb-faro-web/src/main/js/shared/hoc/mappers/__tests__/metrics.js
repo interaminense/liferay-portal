@@ -1,6 +1,12 @@
-import getMetricsMapper from '../metrics';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {createOrderIOMap} from 'shared/util/pagination';
 import {getSafeRangeSelectors} from 'shared/util/util';
+
+import getMetricsMapper from '../metrics';
 
 const mockData = {
 	pages: {
@@ -13,11 +19,11 @@ const mockData = {
 				entrancesMetric: {value: 43},
 				exitRateMetric: {value: 0.013},
 				viewsMetric: {value: 1},
-				visitorsMetric: {value: 2}
-			}
+				visitorsMetric: {value: 2},
+			},
 		],
-		total: 123
-	}
+		total: 123,
+	},
 };
 
 const mockProps = {
@@ -33,7 +39,7 @@ const mockProps = {
 			channelId: '321',
 			interestId: 'Testing Wiki',
 			title: 'test test',
-			touchpoint: 'test.com/test'
+			touchpoint: 'test.com/test',
 		},
 		query: {
 			delta: '5',
@@ -41,19 +47,19 @@ const mockProps = {
 			page: '2',
 			query: 'Test Test',
 			rangeKey: '90',
-			sortOrder: 'DESC'
-		}
+			sortOrder: 'DESC',
+		},
 	},
 	title: 'test test',
-	touchpoint: 'test.com/test'
+	touchpoint: 'test.com/test',
 };
 
 describe('metrics', () => {
 	describe('getMetricsMapper', () => {
 		it('mapPropsToOptions', () => {
-			const mapper = getMetricsMapper(result => ({
+			const mapper = getMetricsMapper((result) => ({
 				items: result.pages.assetMetrics,
-				total: result.pages.total
+				total: result.pages.total,
 			}));
 
 			const {
@@ -63,10 +69,10 @@ describe('metrics', () => {
 				query,
 				rangeSelectors: {rangeKey},
 				router: {
-					query: {field, sortOrder}
+					query: {field, sortOrder},
 				},
 				title,
-				touchpoint
+				touchpoint,
 			} = mockProps;
 
 			expect(mapper.options(mockProps)).toEqual(
@@ -77,22 +83,22 @@ describe('metrics', () => {
 						size: delta,
 						sort: {
 							column: field,
-							type: sortOrder
+							type: sortOrder,
 						},
 						start: 5,
 						terms: interestId,
 						title,
 						touchpoint,
-						...getSafeRangeSelectors({rangeKey})
-					}
+						...getSafeRangeSelectors({rangeKey}),
+					},
 				})
 			);
 		});
 
 		it('mapResultToProps', () => {
-			const mapper = getMetricsMapper(result => ({
+			const mapper = getMetricsMapper((result) => ({
 				items: result.pages.assetMetrics,
-				total: result.pages.total
+				total: result.pages.total,
 			}));
 
 			expect(mapper.props({data: mockData})).toEqual(
@@ -106,27 +112,27 @@ describe('metrics', () => {
 							entrancesMetric: 43,
 							exitRateMetric: 0.013,
 							viewsMetric: 1,
-							visitorsMetric: 2
-						}
+							visitorsMetric: 2,
+						},
 					],
-					total: expect.any(Number)
+					total: expect.any(Number),
 				})
 			);
 		});
 
 		it('Returns empty=true if no results', () => {
-			const mapper = getMetricsMapper(result => ({
+			const mapper = getMetricsMapper((result) => ({
 				items: result.pages.assetMetrics,
-				total: result.pages.total
+				total: result.pages.total,
 			}));
 
 			expect(
 				mapper.props({
-					data: {pages: {assetMetrics: []}}
+					data: {pages: {assetMetrics: []}},
 				})
 			).toEqual(
 				expect.objectContaining({
-					empty: true
+					empty: true,
 				})
 			);
 		});

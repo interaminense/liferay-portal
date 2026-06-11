@@ -1,8 +1,13 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayButton from '@clayui/button';
-import Form from 'shared/components/form';
-import React from 'react';
-import {BOOLEAN_LABELS_MAP, BOOLEAN_OPTIONS} from 'event-analysis/utils/utils';
 import {DataTypes, IFilterProps, Operators} from 'event-analysis/utils/types';
+import {BOOLEAN_LABELS_MAP, BOOLEAN_OPTIONS} from 'event-analysis/utils/utils';
+import React from 'react';
+import Form from 'shared/components/form';
 
 const BooleanFilter: React.FC<IFilterProps> = ({
 	attributeId,
@@ -10,7 +15,7 @@ const BooleanFilter: React.FC<IFilterProps> = ({
 	description,
 	displayName,
 	filter,
-	onSubmit
+	onSubmit,
 }) => {
 	const getInitialValues = () => {
 		if (filter) {
@@ -34,20 +39,20 @@ const BooleanFilter: React.FC<IFilterProps> = ({
 					description,
 					displayName,
 					operator,
-					values: [value]
+					values: [value],
 				});
 			}}
 		>
 			{({handleSubmit}) => (
 				<Form.Form onSubmit={handleSubmit}>
-					<div className='options-body'>
+					<div className="options-body">
 						<Form.Group autoFit>
 							<Form.GroupItem>
 								<Form.Select
 									label={Liferay.Language.get('condition')}
-									name='value'
+									name="value"
 								>
-									{BOOLEAN_OPTIONS.map(value => (
+									{BOOLEAN_OPTIONS.map((value) => (
 										<Form.Select.Item
 											key={value}
 											value={value}
@@ -60,12 +65,12 @@ const BooleanFilter: React.FC<IFilterProps> = ({
 						</Form.Group>
 					</div>
 
-					<div className='options-footer'>
+					<div className="options-footer">
 						<ClayButton
 							block
-							className='button-root'
-							displayType='primary'
-							type='submit'
+							className="button-root"
+							displayType="primary"
+							type="submit"
 						>
 							{Liferay.Language.get('apply')}
 						</ClayButton>

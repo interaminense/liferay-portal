@@ -1,11 +1,16 @@
-import * as API from 'shared/api';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayTable from '@clayui/table';
 import getCN from 'classnames';
-import Modal from 'shared/components/modal';
-import React, {useState} from 'react';
 import {noop} from 'lodash';
-import {sub} from 'shared/util/lang';
+import React, {useState} from 'react';
 import {useEffect} from 'react';
+import * as API from 'shared/api';
+import Modal from 'shared/components/modal';
+import {sub} from 'shared/util/lang';
 
 const ROW_DELTA = 10;
 
@@ -30,7 +35,7 @@ const CSVPreviewModal: React.FC<ICSVPreviewModalProps> = ({
 	groupId,
 	id,
 	name,
-	onClose = noop
+	onClose = noop,
 }) => {
 	const [data, setData] = useState<CSVFieldData[]>([]);
 
@@ -42,7 +47,7 @@ const CSVPreviewModal: React.FC<ICSVPreviewModalProps> = ({
 					fieldName,
 					fileVersionId,
 					groupId,
-					id
+					id,
 				})
 				.then(setData)
 				.catch(noop);
@@ -52,7 +57,7 @@ const CSVPreviewModal: React.FC<ICSVPreviewModalProps> = ({
 	}, [fieldName, fileVersionId, groupId, id]);
 
 	return (
-		<Modal className={getCN('csv-preview-modal-root', className)} size='lg'>
+		<Modal className={getCN('csv-preview-modal-root', className)} size="lg">
 			<Modal.Header
 				onClose={onClose}
 				title={sub(Liferay.Language.get('data-preview-x'), [name])}

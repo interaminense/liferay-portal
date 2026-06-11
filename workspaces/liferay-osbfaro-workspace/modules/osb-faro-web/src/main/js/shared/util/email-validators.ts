@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {toPromise} from 'shared/components/form';
 
 const VALIDATE_DOMAINS =
@@ -14,7 +19,7 @@ export const validateEmailDomainArr = (
 ): string | void => {
 	const emailDomains = items.concat(inputListValue || []);
 
-	if (emailDomains.some(emailDomain => !validateEmailDomain(emailDomain))) {
+	if (emailDomains.some((emailDomain) => !validateEmailDomain(emailDomain))) {
 		return Liferay.Language.get(
 			'please-enter-the-domain-in-this-format-domain-com'
 		);
@@ -32,7 +37,7 @@ export const validateEmailArr = (
 
 	let error = '';
 
-	if (emails.some(email => !validateEmail(email))) {
+	if (emails.some((email) => !validateEmail(email))) {
 		error = Liferay.Language.get(
 			'please-enter-the-email-in-this-format-sample-email-com'
 		);

@@ -1,7 +1,13 @@
-import IndividualAttributesCDP from '../IndividualAttributesCDP';
-import React from 'react';
-import {fromJS} from 'immutable';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {render} from '@testing-library/react';
+import {fromJS} from 'immutable';
+import React from 'react';
+
+import IndividualAttributesCDP from '../IndividualAttributesCDP';
 
 jest.unmock('react-dom');
 
@@ -18,7 +24,7 @@ describe('IndividualAttributesCDP', () => {
 		screenName: 'foobar',
 		suffix: 'Jr.',
 		userId: '123',
-		uuid: 'uuid-123'
+		uuid: 'uuid-123',
 	};
 
 	it('should render', () => {
@@ -35,7 +41,7 @@ describe('IndividualAttributesCDP', () => {
 				propertiesData={fromJS(mockProperties)}
 				showEmptyState
 			>
-				<div>{'empty state rendered'}</div>
+				<div>empty state rendered</div>
 			</IndividualAttributesCDP>
 		);
 

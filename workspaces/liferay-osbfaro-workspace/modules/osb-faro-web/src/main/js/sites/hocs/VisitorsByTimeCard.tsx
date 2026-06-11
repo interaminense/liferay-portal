@@ -1,27 +1,33 @@
-import BaseCard from 'shared/components/base-card';
-import BasePage from 'shared/components/base-page';
-import Card from 'shared/components/Card';
-import ChartTooltip, {
-	Alignments,
-	Weights
-} from 'shared/components/chart-tooltip';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {OperationOption, graphql} from '@apollo/client/react/hoc';
 import ClayLink from '@clayui/link';
-import HeatmapChart from 'shared/components/HeatmapChart';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import ReactDOMServer from 'react-dom/server';
-import URLConstants from 'shared/util/url-constants';
-import VisitorsByTimeQuery from 'shared/queries/VisitorsByTimeQuery';
+import Card from 'shared/components/Card';
+import HeatmapChart from 'shared/components/HeatmapChart';
+import BaseCard from 'shared/components/base-card';
+import BasePage from 'shared/components/base-page';
+import ChartTooltip, {
+	Alignments,
+	Weights,
+} from 'shared/components/chart-tooltip';
+import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {compose} from 'shared/hoc';
-import {graphql, OperationOption} from '@apollo/client/react/hoc';
+import {withEmpty, withError, withLoading} from 'shared/hoc';
+import VisitorsByTimeQuery from 'shared/queries/VisitorsByTimeQuery';
 import {IBasePageContext} from 'shared/types';
+import {sub} from 'shared/util/lang';
+import URLConstants from 'shared/util/url-constants';
+
 import {
 	mapPropsToOptions,
-	mapResultToProps
+	mapResultToProps,
 } from './mappers/visitors-by-time-query';
-import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
-import {sub} from 'shared/util/lang';
-import {withEmpty, withError, withLoading} from 'shared/hoc';
 
 export const formatHour = (hour: string) => {
 	const hourAsNumber = parseInt(hour);
@@ -30,7 +36,8 @@ export const formatHour = (hour: string) => {
 
 	if (hourAsNumber === 0) {
 		hourDisplay = 12;
-	} else if (hourAsNumber > 12) {
+	}
+	else if (hourAsNumber > 12) {
 		hourDisplay = hourAsNumber - 12;
 	}
 
@@ -40,7 +47,7 @@ export const formatHour = (hour: string) => {
 export const renderTooltip = ({
 	column,
 	row,
-	value
+	value,
 }: {
 	column: string;
 	row: string;
@@ -53,10 +60,10 @@ export const renderTooltip = ({
 					columns: [
 						{
 							label: `${column} - ${formatHour(row)}`,
-							weight: Weights.Semibold
-						}
-					]
-				}
+							weight: Weights.Semibold,
+						},
+					],
+				},
 			]}
 			rows={[
 				{
@@ -64,11 +71,11 @@ export const renderTooltip = ({
 						{
 							align: Alignments.Center,
 							label: sub(Liferay.Language.get('x-visitors'), [
-								value.toLocaleString()
-							]) as string
-						}
-					]
-				}
+								value.toLocaleString(),
+							]) as string,
+						},
+					],
+				},
 			]}
 		/>
 	);
@@ -76,14 +83,14 @@ export const renderTooltip = ({
 const HeatmapChartWithData = compose<any>(
 	graphql(VisitorsByTimeQuery, {
 		options: mapPropsToOptions,
-		props: mapResultToProps
+		props: mapResultToProps,
 	} as OperationOption<object, object>),
 	withLoading(),
 	withError({page: false}),
 	withEmpty({
 		description: (
 			<>
-				<span className='mr-1'>
+				<span className="mr-1">
 					{Liferay.Language.get(
 						'check-back-later-to-verify-if-data-has-been-received-from-your-data-sources'
 					)}
@@ -91,8 +98,8 @@ const HeatmapChartWithData = compose<any>(
 
 				<ClayLink
 					href={URLConstants.SitesDashboardVisitorsByDayAndTime}
-					key='DOCUMENTATION'
-					target='_blank'
+					key="DOCUMENTATION"
+					target="_blank"
 				>
 					{Liferay.Language.get(
 						'learn-more-about-visitors-by-day-and-time'
@@ -102,7 +109,7 @@ const HeatmapChartWithData = compose<any>(
 		),
 		title: Liferay.Language.get(
 			'there-are-no-visitors-on-the-selected-period'
-		)
+		),
 	})
 )(HeatmapChart);
 
@@ -112,7 +119,7 @@ interface IVisitorsByTimeCardProps extends React.HTMLAttributes<HTMLElement> {
 
 const VisitorsByTimeCard: React.FC<IVisitorsByTimeCardProps> = ({
 	className,
-	label
+	label,
 }) => {
 	const {router} = useContext(
 		BasePage.Context as React.Context<IBasePageContext>
@@ -142,7 +149,7 @@ const VisitorsByTimeCard: React.FC<IVisitorsByTimeCardProps> = ({
 
 VisitorsByTimeCard.propTypes = {
 	className: PropTypes.string,
-	label: PropTypes.string.isRequired
+	label: PropTypes.string.isRequired,
 };
 
 export default VisitorsByTimeCard;

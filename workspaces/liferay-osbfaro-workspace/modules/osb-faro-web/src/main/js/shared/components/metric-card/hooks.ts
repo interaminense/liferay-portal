@@ -1,14 +1,18 @@
-import {DocumentNode, useQuery} from '@apollo/client';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
 
+import {DocumentNode, useQuery} from '@apollo/client';
+import {useParams} from 'react-router-dom';
+import {ICommonVariables, Interval, RangeSelectors} from 'shared/types';
+import {RawFilters, getFilters} from 'shared/util/filter';
 import {fetchPolicyDefinition} from 'shared/util/graphql';
-import {getFilters, RawFilters} from 'shared/util/filter';
 import {
 	getSafeDecodedURIComponent,
 	getSafeRangeSelectors,
-	getSafeTouchpoint
+	getSafeTouchpoint,
 } from 'shared/util/util';
-import {ICommonVariables, Interval, RangeSelectors} from 'shared/types';
-import {useParams} from 'react-router-dom';
 
 export const useAssetVariables = (variables: ICommonVariables) => {
 	const {type, ...commonVariables} = variables;
@@ -16,7 +20,7 @@ export const useAssetVariables = (variables: ICommonVariables) => {
 		assetId = '',
 		channelId = '',
 		title = '',
-		touchpoint = ''
+		touchpoint = '',
 	} = useParams<{
 		assetId: string;
 		channelId: string;
@@ -29,9 +33,9 @@ export const useAssetVariables = (variables: ICommonVariables) => {
 		touchpoint: getSafeTouchpoint(touchpoint),
 		...(type !== 'objectEntry' && {
 			channelId,
-			title: getSafeDecodedURIComponent(title)
+			title: getSafeDecodedURIComponent(title),
 		}),
-		...commonVariables
+		...commonVariables,
 	};
 };
 
@@ -49,13 +53,13 @@ const buildQueryVariables = ({
 	filters,
 	interval,
 	rangeSelectors,
-	variables
+	variables,
 }: Omit<TMetricQueryParams, 'Query'>) =>
 	variables({
 		interval,
 		...getFilters(filters),
 		...getSafeRangeSelectors(rangeSelectors),
-		...(experienceId && {experienceId})
+		...(experienceId && {experienceId}),
 	});
 
 export const useMetricQuery = ({
@@ -64,7 +68,7 @@ export const useMetricQuery = ({
 	filters,
 	interval,
 	rangeSelectors,
-	variables
+	variables,
 }: TMetricQueryParams) => {
 	const {data, error, loading} = useQuery(Query, {
 		fetchPolicy: fetchPolicyDefinition(rangeSelectors),
@@ -73,8 +77,8 @@ export const useMetricQuery = ({
 			filters,
 			interval,
 			rangeSelectors,
-			variables
-		})
+			variables,
+		}),
 	});
 
 	return {data, error, loading};

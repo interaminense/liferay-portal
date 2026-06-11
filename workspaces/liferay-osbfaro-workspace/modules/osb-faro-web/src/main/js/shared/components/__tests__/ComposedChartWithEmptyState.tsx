@@ -1,11 +1,17 @@
-import ComposedChartWithEmptyState from '../ComposedChartWithEmptyState';
-import React from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {cleanup, render} from '@testing-library/react';
+import React from 'react';
+
+import ComposedChartWithEmptyState from '../ComposedChartWithEmptyState';
 
 jest.unmock('react-dom');
 
 const MockedComposedChart = () => (
-	<div data-testid='my-composed-chart'>{'my composed chart content'}</div>
+	<div data-testid="my-composed-chart">my composed chart content</div>
 );
 
 describe('CollapsibleOverlay', () => {
@@ -14,8 +20,8 @@ describe('CollapsibleOverlay', () => {
 	it('should render without empty state', () => {
 		const {container, getByTestId, getByText} = render(
 			<ComposedChartWithEmptyState
-				emptyDescription='this is an empty description'
-				emptyTitle='this is an empty title'
+				emptyDescription="this is an empty description"
+				emptyTitle="this is an empty title"
 			>
 				<MockedComposedChart />
 			</ComposedChartWithEmptyState>
@@ -35,8 +41,8 @@ describe('CollapsibleOverlay', () => {
 	it('should render empty state', () => {
 		const {container, getByTestId, getByText} = render(
 			<ComposedChartWithEmptyState
-				emptyDescription='this is an empty description'
-				emptyTitle='this is an empty title'
+				emptyDescription="this is an empty description"
+				emptyTitle="this is an empty title"
 				showEmptyState
 			>
 				<MockedComposedChart />
@@ -60,11 +66,11 @@ describe('CollapsibleOverlay', () => {
 		const {container, getByTestId, getByText} = render(
 			<ComposedChartWithEmptyState
 				emptyDescription={
-					<div data-testid='my-custom-description'>
-						{'this is an empty description'}
+					<div data-testid="my-custom-description">
+						this is an empty description
 					</div>
 				}
-				emptyTitle='this is an empty title'
+				emptyTitle="this is an empty title"
 				showEmptyState
 			>
 				<MockedComposedChart />

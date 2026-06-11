@@ -1,8 +1,14 @@
-import OverviewSection from '../OverviewSection';
-import React from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {cleanup, render} from '@testing-library/react';
-import {IOverviewMetric, OverviewMetricType} from '../../utils/types';
+import React from 'react';
 import {TrendClassification} from 'segment/types';
+
+import {IOverviewMetric, OverviewMetricType} from '../../utils/types';
+import OverviewSection from '../OverviewSection';
 
 jest.unmock('react-dom');
 
@@ -13,9 +19,9 @@ const buildMetric = (
 	metricType,
 	trend: {
 		percentage: 0,
-		trendClassification: TrendClassification.Neutral
+		trendClassification: TrendClassification.Neutral,
 	},
-	value
+	value,
 });
 
 describe('OverviewSection', () => {
@@ -40,7 +46,7 @@ describe('OverviewSection', () => {
 		const metrics = [
 			buildMetric(OverviewMetricType.NewPipeline, 11),
 			buildMetric(OverviewMetricType.Stalled, 22),
-			buildMetric(OverviewMetricType.AtRisk, 33)
+			buildMetric(OverviewMetricType.AtRisk, 33),
 		];
 
 		const {getByText} = render(<OverviewSection metrics={metrics} />);

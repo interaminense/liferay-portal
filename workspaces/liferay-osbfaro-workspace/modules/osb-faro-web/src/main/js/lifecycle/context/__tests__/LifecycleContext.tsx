@@ -1,12 +1,18 @@
-import React from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {act, renderHook} from '@testing-library/react';
-import {LifecycleContextProvider, useLifecycle} from '../LifecycleContext';
 import {LifecycleStages} from 'contacts/pages/account/utils/constants';
+import React from 'react';
+
+import {LifecycleContextProvider, useLifecycle} from '../LifecycleContext';
 
 jest.unmock('react-dom');
 
 const wrapper = ({children}: {children: React.ReactNode}) => (
-	<LifecycleContextProvider lifecycleId='1'>
+	<LifecycleContextProvider lifecycleId="1">
 		{children}
 	</LifecycleContextProvider>
 );
@@ -19,7 +25,7 @@ describe('LifecycleContext', () => {
 			countryFilter: '',
 			filterString: '',
 			industryFilter: '',
-			lifecycleStageFilter: LifecycleStages.AT_RISK
+			lifecycleStageFilter: LifecycleStages.AT_RISK,
 		});
 	});
 
@@ -32,7 +38,7 @@ describe('LifecycleContext', () => {
 			countryFilter: '',
 			filterString: "industry eq 'Tech'",
 			industryFilter: 'Tech',
-			lifecycleStageFilter: LifecycleStages.AT_RISK
+			lifecycleStageFilter: LifecycleStages.AT_RISK,
 		});
 	});
 
@@ -52,7 +58,7 @@ describe('LifecycleContext', () => {
 
 		act(() =>
 			result.current.updateFilters({
-				lifecycleStageFilter: LifecycleStages.AWARE
+				lifecycleStageFilter: LifecycleStages.AWARE,
 			})
 		);
 
@@ -68,7 +74,7 @@ describe('LifecycleContext', () => {
 			result.current.updateFilters({
 				countryFilter: 'US',
 				industryFilter: 'Tech',
-				lifecycleStageFilter: LifecycleStages.AWARE
+				lifecycleStageFilter: LifecycleStages.AWARE,
 			})
 		);
 		act(() => result.current.resetFilters());
@@ -77,7 +83,7 @@ describe('LifecycleContext', () => {
 			countryFilter: '',
 			filterString: '',
 			industryFilter: '',
-			lifecycleStageFilter: LifecycleStages.AT_RISK
+			lifecycleStageFilter: LifecycleStages.AT_RISK,
 		});
 	});
 });

@@ -1,7 +1,12 @@
-import FaroConstants from 'shared/util/constants';
-import sendRequest from 'shared/util/request';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {escapeSingleQuotes} from 'segment/segment-editor/dynamic/utils/odata';
 import {RESTParams} from 'shared/types';
+import FaroConstants from 'shared/util/constants';
+import sendRequest from 'shared/util/request';
 
 const {cur: defaultCur, delta: defaultDelta} = FaroConstants.pagination;
 
@@ -18,7 +23,7 @@ export const fetchFieldValues = ({
 	filter,
 	groupId,
 	page = defaultCur,
-	query
+	query,
 }: IFetchFieldValues): Promise<{
 	disableSearch: boolean;
 	items: string[];
@@ -31,8 +36,8 @@ export const fetchFieldValues = ({
 			delta,
 			fieldName,
 			filter,
-			query: query ? escapeSingleQuotes(query) : query
+			query: query ? escapeSingleQuotes(query) : query,
 		},
 		method: 'GET',
-		path: `contacts/${groupId}/session/values`
+		path: `contacts/${groupId}/session/values`,
 	});

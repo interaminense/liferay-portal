@@ -1,11 +1,16 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import React, {Suspense, lazy} from 'react';
+import {Switch} from 'react-router-dom';
 import BundleRouter from 'route-middleware/BundleRouter';
 import Loading from 'shared/components/Loading';
-import React, {lazy, Suspense} from 'react';
 import RouteNotFound from 'shared/components/RouteNotFound';
 import {DEVELOPER_MODE} from 'shared/util/constants';
 import {ENABLE_BLOCKLIST_KEYWORDS} from 'shared/util/feature-flags';
 import {Routes} from 'shared/util/router';
-import {Switch} from 'react-router-dom';
 
 const EventBlockList = lazy(
 	() =>
@@ -19,6 +24,7 @@ const Overview = lazy(
 const IndividualAttributes = lazy(
 	() =>
 		import(
+
 			/* webpackChunkName: "DefinitionsIndividualAttributes" */ './IndividualAttributes'
 		)
 );
@@ -26,6 +32,7 @@ const IndividualAttributes = lazy(
 const InterestTopics = lazy(
 	() =>
 		import(
+
 			/* webpackChunkName: "DefinitionsInterestTopics" */ './InterestTopics'
 		)
 );
@@ -42,6 +49,7 @@ const Search = lazy(
 const Events = lazy(
 	() =>
 		import(
+
 			/* webpackChunkName: "DefinitionsEvents" */ '../events/pages/Events'
 		)
 );
@@ -49,6 +57,7 @@ const Events = lazy(
 const EventAttributes = lazy(
 	() =>
 		import(
+
 			/* webpackChunkName: "DefinitionsEvents" */ '../event-attributes/pages/EventAttributes'
 		)
 );
@@ -56,6 +65,7 @@ const EventAttributes = lazy(
 const EventView = lazy(
 	() =>
 		import(
+
 			/* webpackChunkName: "DefinitionsEventView" */ '../events/pages/View'
 		)
 );
@@ -63,6 +73,7 @@ const EventView = lazy(
 const AttributeView = lazy(
 	() =>
 		import(
+
 			/* webpackChunkName: "DefinitionsEventAttributesView" */ '../event-attributes/pages/AttributeView'
 		)
 );
@@ -99,7 +110,9 @@ const Definitions: React.FC<IDefinitionsProps> = () => (
 			/>
 
 			{DEVELOPER_MODE && (
+
 				// TODO: LRAC-4511 Remove when new TrackedBehavior page exists
+
 				<BundleRouter
 					data={TrackedBehaviors}
 					exact
@@ -117,7 +130,7 @@ const Definitions: React.FC<IDefinitionsProps> = () => (
 				data={Events}
 				path={[
 					Routes.SETTINGS_DEFINITIONS_EVENTS_CUSTOM,
-					Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT
+					Routes.SETTINGS_DEFINITIONS_EVENTS_DEFAULT,
 				]}
 			/>
 
@@ -125,7 +138,7 @@ const Definitions: React.FC<IDefinitionsProps> = () => (
 				data={EventAttributes}
 				path={[
 					Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_LOCAL,
-					Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL
+					Routes.SETTINGS_DEFINITIONS_EVENT_ATTRIBUTES_GLOBAL,
 				]}
 			/>
 

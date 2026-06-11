@@ -1,7 +1,13 @@
-import ContextualInformation from '../ContextualInformation';
-import React from 'react';
-import {fromJS} from 'immutable';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {render} from '@testing-library/react';
+import {fromJS} from 'immutable';
+import React from 'react';
+
+import ContextualInformation from '../ContextualInformation';
 
 jest.unmock('react-dom');
 
@@ -12,17 +18,17 @@ describe('ContextualInformation', () => {
 		country: 'Australia',
 		deviceType: 'Desktop',
 		region: 'AEST',
-		timezoneOffset: '-03:00'
+		timezoneOffset: '-03:00',
 	};
 
 	it('should render the snapshot', () => {
 		const {container} = render(
 			<ContextualInformation
-				contactId='contact-1'
+				contactId="contact-1"
 				contextData={fromJS(mockContext)}
-				email='test@example.com'
-				userId='123456'
-				uuid='12345'
+				email="test@example.com"
+				userId="123456"
+				uuid="12345"
 			/>
 		);
 		expect(container).toMatchSnapshot();
@@ -40,8 +46,8 @@ describe('ContextualInformation', () => {
 		const {getByText} = render(
 			<ContextualInformation
 				contextData={fromJS({})}
-				email='test@example.com'
-				uuid='1234-abcde-67890'
+				email="test@example.com"
+				uuid="1234-abcde-67890"
 			/>
 		);
 

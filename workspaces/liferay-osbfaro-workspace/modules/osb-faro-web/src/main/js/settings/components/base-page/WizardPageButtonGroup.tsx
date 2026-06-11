@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayButton from '@clayui/button';
 import React from 'react';
 
@@ -12,19 +17,19 @@ export const WizardPageButtonGroup: React.FC<IWizardPageButtonGroupProps> = ({
 	nextButtonLabel,
 	nextButtonLoading,
 	onCancel,
-	prevButtonLabel
+	prevButtonLabel,
 }) => (
-	<div className='mt-5'>
+	<div className="mt-5">
 		<ClayButton
 			block
 			disabled={nextButtonLoading}
 			loading={nextButtonLoading}
-			type='submit'
+			type="submit"
 		>
 			{nextButtonLabel}
 		</ClayButton>
 
-		<ClayButton block borderless displayType='secondary' onClick={onCancel}>
+		<ClayButton block borderless displayType="secondary" onClick={onCancel}>
 			{prevButtonLabel}
 		</ClayButton>
 	</div>

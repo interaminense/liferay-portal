@@ -1,10 +1,8 @@
 /**
- * Inserts an item into a list at the specified index.
- * @param {Array} items - The list where the item will be inserted into.
- * @param {number} index The position where the item will be inserted.
- * @param {*} item - The item that will be inserted.
- * @return {Array}
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
+
 export const insertAtIndex = (
 	items: any[],
 	index: number,
@@ -53,7 +51,7 @@ export const moveItem = (items: any[], from: number, to: number): any[] => {
  */
 export function replaceAtIndex(list: any[], index: number, item: any): any[] {
 	return Object.assign(list, {
-		[index]: item
+		[index]: item,
 	});
 }
 
@@ -68,7 +66,7 @@ export const replaceWithMultipleAtIndex = (
 ): any[] => [
 	...list.slice(0, index),
 	...items,
-	...list.slice(index + 1, list.length)
+	...list.slice(index + 1, list.length),
 ];
 
 /**
@@ -77,8 +75,8 @@ export const replaceWithMultipleAtIndex = (
  * @returns {Array}
  */
 export function getDifferences<T>(arr1: T[], arr2: T[]): T[] {
-	const x = arr1.filter(x => !arr2.includes(x));
-	const y = arr2.filter(x => !arr1.includes(x));
+	const x = arr1.filter((x) => !arr2.includes(x));
+	const y = arr2.filter((x) => !arr1.includes(x));
 
 	return x.concat(y);
 }

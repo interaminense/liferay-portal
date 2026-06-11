@@ -1,28 +1,34 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {ApolloProvider} from '@apollo/client';
+import {MockedProvider} from '@apollo/client/testing';
 import ClayForm from '@clayui/form';
-import client from 'shared/apollo/client';
-import mockStore from 'test/mock-store';
+import {useModal} from '@clayui/modal';
+import {act, cleanup, fireEvent, render} from '@testing-library/react';
+import {createMemoryHistory} from 'history';
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
-import {act, cleanup, fireEvent, render} from '@testing-library/react';
-import {ApolloProvider} from '@apollo/client';
+import {Provider} from 'react-redux';
+import {Router} from 'react-router-dom';
+import client from 'shared/apollo/client';
+import {RangeSelectors} from 'shared/types';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
+import {sub} from 'shared/util/lang';
+import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
+import {waitForLoadingToBeRemoved} from 'test/helpers';
+import mockStore from 'test/mock-store';
+
 import {
 	Checkbox,
+	ReportContainer,
 	formattedContainers,
-	ReportContainer
 } from '../DownloadPDFReport';
-import {createMemoryHistory} from 'history';
-import {CSVType, useDownloadCSV} from '../utils';
 import {DownloadReportButton} from '../DownloadReportButton';
 import {DownloadReportModal, ReportType} from '../DownloadReportModal';
-import {MockedProvider} from '@apollo/client/testing';
-import {mockPreferenceReq, mockTimeRangeReq} from 'test/graphql-data';
-import {Provider} from 'react-redux';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {RangeSelectors} from 'shared/types';
-import {Router} from 'react-router-dom';
-import {sub} from 'shared/util/lang';
-import {useModal} from '@clayui/modal';
-import {waitForLoadingToBeRemoved} from 'test/helpers';
+import {CSVType, useDownloadCSV} from '../utils';
 
 jest.unmock('react-dom');
 
@@ -32,13 +38,13 @@ jest.mock('react-router-dom', () => ({
 		channelId: '456',
 		groupId: '2000',
 		query: {
-			rangeKey: RangeKeyTimeRanges.Last30Days
-		}
-	})
+			rangeKey: RangeKeyTimeRanges.Last30Days,
+		},
+	}),
 }));
 
 jest.mock('shared/hooks/useTimeZone', () => ({
-	useTimeZone: () => ({timeZoneId: 'UTC'})
+	useTimeZone: () => ({timeZoneId: 'UTC'}),
 }));
 
 interface IWrapperCSVComponentProps extends React.HTMLAttributes<HTMLElement> {
@@ -54,7 +60,7 @@ const WrapperCSVComponent: React.FC<IWrapperCSVComponentProps> = ({
 	const generateURL = useDownloadCSV({
 		assetId: '123',
 		assetType: 'myAssetType',
-		type
+		type,
 	});
 
 	return (
@@ -76,7 +82,7 @@ const WrapperCSVComponent: React.FC<IWrapperCSVComponentProps> = ({
 					[Liferay.Language.get('individuals')]
 				) as string
 			}
-			onSubmit={rangeSelectors => {
+			onSubmit={(rangeSelectors) => {
 				const url = generateURL(rangeSelectors);
 
 				CSV_URL = url;
@@ -172,7 +178,7 @@ const generateCSVURL = (type: CSVType) => {
 
 	fireEvent.click(
 		getByRole('button', {
-			name: /download report/i
+			name: /download report/i,
 		})
 	);
 
@@ -198,7 +204,8 @@ describe('DownloadReportModal CSV', () => {
 		jest.useFakeTimers();
 
 		// @ts-ignore
-		ReactDOM.createPortal = jest.fn(element => element);
+
+		ReactDOM.createPortal = jest.fn((element) => element);
 	});
 
 	afterAll(() => {
@@ -212,7 +219,7 @@ describe('DownloadReportModal CSV', () => {
 
 		fireEvent.click(
 			getByRole('button', {
-				name: /download report/i
+				name: /download report/i,
 			})
 		);
 
@@ -226,7 +233,7 @@ describe('DownloadReportModal CSV', () => {
 
 		expect(
 			getByRole('heading', {
-				name: /download report/i
+				name: /download report/i,
 			})
 		).toBeInTheDocument();
 
@@ -271,7 +278,8 @@ describe('DownloadReportModal PDF', () => {
 		jest.useFakeTimers();
 
 		// @ts-ignore
-		ReactDOM.createPortal = jest.fn(element => element);
+
+		ReactDOM.createPortal = jest.fn((element) => element);
 	});
 
 	afterAll(() => {
@@ -306,7 +314,7 @@ describe('DownloadReportModal PDF', () => {
 			ReportContainer.ViewsByLocationCard,
 			ReportContainer.ViewsByTechnologyCard,
 			ReportContainer.VisitorsBehaviorCard,
-			ReportContainer.VisitorsByTimeCard
+			ReportContainer.VisitorsByTimeCard,
 		];
 
 		const {container, getByRole, getByTestId, getByText} = render(
@@ -329,7 +337,7 @@ describe('DownloadReportModal PDF', () => {
 
 		fireEvent.click(
 			getByRole('button', {
-				name: /download report/i
+				name: /download report/i,
 			})
 		);
 
@@ -343,7 +351,7 @@ describe('DownloadReportModal PDF', () => {
 
 		expect(
 			getByRole('heading', {
-				name: /download report/i
+				name: /download report/i,
 			})
 		).toBeInTheDocument();
 

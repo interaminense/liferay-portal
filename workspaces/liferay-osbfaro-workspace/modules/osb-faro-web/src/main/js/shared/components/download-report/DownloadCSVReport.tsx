@@ -1,17 +1,23 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {useModal} from '@clayui/modal';
 import React from 'react';
+import {useDispatch} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import {addAlert} from 'shared/actions/alerts';
-import {Alert, RangeSelectors} from 'shared/types';
-import {CSVType, formatDate, MAX_CSV_ENTRIES, useDownloadCSV} from './utils';
-import {DownloadReportButton} from './DownloadReportButton';
-import {DownloadReportModal, ReportType} from './DownloadReportModal';
 import {fetchCount} from 'shared/api/csv';
+import {useUnsafeQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
+import {Alert, RangeSelectors} from 'shared/types';
 import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {toLocale} from 'shared/util/numbers';
-import {useDispatch} from 'react-redux';
-import {useModal} from '@clayui/modal';
-import {useParams} from 'react-router-dom';
-import {useUnsafeQueryRangeSelectors} from 'shared/hooks/useQueryRangeSelectors';
+
+import {DownloadReportButton} from './DownloadReportButton';
+import {DownloadReportModal, ReportType} from './DownloadReportModal';
+import {CSVType, MAX_CSV_ENTRIES, formatDate, useDownloadCSV} from './utils';
 
 export interface IDownloadReport {
 	assetId?: string;
@@ -27,7 +33,7 @@ const formatRangeSelectors = (rangeSelectors?: RangeSelectors) => {
 		return {
 			rangeEnd: formatDate(rangeSelectors.rangeEnd ?? ''),
 			rangeKey: RangeKeyTimeRanges.CustomRange,
-			rangeStart: formatDate(rangeSelectors.rangeStart ?? '')
+			rangeStart: formatDate(rangeSelectors.rangeStart ?? ''),
 		};
 	}
 
@@ -40,21 +46,21 @@ const DownloadCSVReport: React.FC<IDownloadReport> = ({
 	disabled,
 	individualId,
 	type,
-	typeLang
+	typeLang,
 }) => {
 	const dispatch = useDispatch();
 	const generateURL = useDownloadCSV({
 		assetId,
 		assetType,
 		individualId,
-		type
+		type,
 	});
 	const {observer, onOpenChange, open} = useModal();
 	const rangeSelectors = useUnsafeQueryRangeSelectors();
 	const {channelId, groupId} = useParams();
 
 	return (
-		<div className='download-report'>
+		<div className="download-report">
 			<DownloadReportButton
 				disabled={disabled}
 				onClick={() => onOpenChange(true)}
@@ -72,7 +78,7 @@ const DownloadCSVReport: React.FC<IDownloadReport> = ({
 					}
 					observer={observer}
 					onClose={() => onOpenChange(false)}
-					onSubmit={async rangeSelectors => {
+					onSubmit={async (rangeSelectors) => {
 						try {
 							const url = generateURL(rangeSelectors);
 							const response = await fetch(url);
@@ -94,7 +100,7 @@ const DownloadCSVReport: React.FC<IDownloadReport> = ({
 											'the-x-file-is-being-generated-and-your-download-will-start-soon'
 										),
 										['CSV']
-									) as string
+									) as string,
 								})
 							);
 
@@ -114,7 +120,7 @@ const DownloadCSVReport: React.FC<IDownloadReport> = ({
 								toDate:
 									formattedRangeSelector?.rangeEnd ??
 									undefined,
-								type
+								type,
 							});
 
 							if (count > MAX_CSV_ENTRIES) {
@@ -126,17 +132,18 @@ const DownloadCSVReport: React.FC<IDownloadReport> = ({
 												'the-csv-file-reached-x-entries'
 											),
 											[toLocale(MAX_CSV_ENTRIES)]
-										)
+										),
 									})
 								);
 							}
-						} catch (e) {
+						}
+						catch (e) {
 							dispatch(
 								addAlert({
 									alertType: Alert.Types.Error,
 									message: Liferay.Language.get(
 										'it-was-not-possible-to-generate-a-csv-file-at-this-moment.-please-try-again-later'
-									)
+									),
 								})
 							);
 						}

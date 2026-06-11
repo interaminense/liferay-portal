@@ -1,6 +1,12 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 jest.mock('shared/util/request');
 
 import sendRequest from 'shared/util/request';
+
 import {create, update} from '../individual-segment';
 
 const createArgs = {
@@ -8,7 +14,7 @@ const createArgs = {
 	criteriaString: "(name eq 'test test')",
 	groupId: '30555',
 	individualIds: [1, 2, 3],
-	name: 'segment name'
+	name: 'segment name',
 };
 
 const updateArgs = {
@@ -16,19 +22,19 @@ const updateArgs = {
 	criteriaString: "(name eq 'test test')",
 	groupId: '30555',
 	id: '23',
-	name: 'segment name'
+	name: 'segment name',
 };
 
 const newRequestParams = {
 	data: createArgs,
 	method: 'POST',
-	path: 'contacts/30555/individual_segment'
+	path: 'contacts/30555/individual_segment',
 };
 
 const updateRequestParams = {
 	data: updateArgs,
 	method: 'PUT',
-	path: 'contacts/30555/individual_segment/23'
+	path: 'contacts/30555/individual_segment/23',
 };
 
 describe('Individual Segment API', () => {
@@ -47,8 +53,8 @@ describe('Individual Segment API', () => {
 					includeAnonymousUsers: false,
 					name: createArgs.name,
 					segmentType,
-					sequential: false
-				}
+					sequential: false,
+				},
 			});
 		});
 
@@ -58,7 +64,7 @@ describe('Individual Segment API', () => {
 			create({
 				...createArgs,
 				externalReferenceCode,
-				segmentType: 'BATCH'
+				segmentType: 'BATCH',
 			});
 
 			expect(sendRequest).toHaveBeenCalledWith({
@@ -70,8 +76,8 @@ describe('Individual Segment API', () => {
 					includeAnonymousUsers: false,
 					name: createArgs.name,
 					segmentType: 'BATCH',
-					sequential: false
-				}
+					sequential: false,
+				},
 			});
 		});
 	});
@@ -86,14 +92,14 @@ describe('Individual Segment API', () => {
 				filter: "(name eq 'test test')",
 				includeAnonymousUsers: false,
 				name: updateArgs.name,
-				sequential: false
+				sequential: false,
 			};
 
 			update({...updateArgs, segmentType});
 
 			expect(sendRequest).toHaveBeenCalledWith({
 				...updateRequestParams,
-				data: {...data, segmentType}
+				data: {...data, segmentType},
 			});
 		});
 
@@ -103,7 +109,7 @@ describe('Individual Segment API', () => {
 			update({
 				...updateArgs,
 				externalReferenceCode,
-				segmentType: 'BATCH'
+				segmentType: 'BATCH',
 			});
 
 			expect(sendRequest).toHaveBeenCalledWith({
@@ -115,8 +121,8 @@ describe('Individual Segment API', () => {
 					includeAnonymousUsers: false,
 					name: updateArgs.name,
 					segmentType: 'BATCH',
-					sequential: false
-				}
+					sequential: false,
+				},
 			});
 		});
 	});

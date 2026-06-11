@@ -1,16 +1,22 @@
-import React from 'react';
-import {align} from './align';
-import {
-	ALIGNMENTS_MAP,
-	POSITIONS,
-	RangeKeyTimeRanges
-} from 'shared/util/constants';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {flow, get, isFinite, isNil, isString, toLower, trim} from 'lodash';
+import React from 'react';
 import {
 	RangeSelectors,
 	RawRangeSelectors,
-	SafeRangeSelectors
+	SafeRangeSelectors,
 } from 'shared/types';
+import {
+	ALIGNMENTS_MAP,
+	POSITIONS,
+	RangeKeyTimeRanges,
+} from 'shared/util/constants';
+
+import {align} from './align';
 
 /**
  * Check if the value is blank.
@@ -33,7 +39,7 @@ export const getRangeSelectorsFromQuery = (query: {[key: string]: any}) => {
 	return {
 		rangeEnd: rangeEnd === 'null' ? null : rangeEnd,
 		rangeKey,
-		rangeStart: rangeStart === 'null' ? null : rangeStart
+		rangeStart: rangeStart === 'null' ? null : rangeStart,
 	};
 };
 
@@ -46,7 +52,8 @@ export const getSafeDecodedURIComponent = (
 
 	try {
 		return decodeURIComponent(encodedURIComponent);
-	} catch (error) {
+	}
+	catch (error) {
 		return encodedURIComponent;
 	}
 };
@@ -65,7 +72,7 @@ export const getSafeRangeSelectors = (
 	return {
 		rangeEnd: rangeEnd || null,
 		rangeKey: rangeKey === 'CUSTOM' ? null : parseInt(rangeKey),
-		rangeStart: rangeStart || null
+		rangeStart: rangeStart || null,
 	};
 };
 
@@ -83,14 +90,14 @@ export const normalizeRangeSelectors = (
 		return {
 			rangeEnd,
 			rangeKey: RangeKeyTimeRanges.CustomRange,
-			rangeStart
+			rangeStart,
 		};
 	}
 
 	return {
 		rangeEnd: '',
 		rangeKey: String(rangeKey) as RangeKeyTimeRanges,
-		rangeStart: ''
+		rangeStart: '',
 	};
 };
 
@@ -106,14 +113,17 @@ export const getSafeDisplayValue = (
 ): string | number => (isBlank(value) ? defaultValue : value);
 
 export const getSafeTouchpoint = (touchpoint: string) => {
-	if (!touchpoint) return null;
+	if (!touchpoint) {
+		return null;
+	}
 
 	try {
 		const url = new URL(decodeURIComponent(touchpoint));
 		const remainingUrl = url.href.replace(url.origin, '');
 
 		return remainingUrl === '/' ? url.origin : url.origin + remainingUrl;
-	} catch (e) {
+	}
+	catch (e) {
 		return touchpoint !== 'Any'
 			? getSafeDecodedURIComponent(touchpoint)
 			: null;
@@ -127,7 +137,7 @@ export const getSafeTouchpoint = (touchpoint: string) => {
 export const downloadDataAsFile = ({
 	data,
 	name,
-	type
+	type,
 }: {
 	data: string;
 	name: string;
@@ -194,8 +204,12 @@ export const truncateText = (
 	length?: number | null,
 	ending?: string | null
 ) => {
-	if (length == null) length = 100;
-	if (ending == null) ending = '...';
+	if (length == null) {
+		length = 100;
+	}
+	if (ending == null) {
+		ending = '...';
+	}
 
 	return str.length > length
 		? str.substring(0, length - ending.length) + ending
@@ -208,6 +222,7 @@ export const truncateText = (
  */
 export const isEllipisActive = ({target}: {target: EventTarget | null}) => {
 	const el = target as HTMLElement | null;
+
 	return !!el && el.offsetWidth < el.scrollWidth;
 };
 
@@ -253,10 +268,11 @@ type Ref<T> =
 export const mergeRef =
 	<T>(...refs: Ref<T>[]) =>
 	(instance: T | null) =>
-		refs.forEach(ref => {
+		refs.forEach((ref) => {
 			if (typeof ref === 'function') {
 				ref(instance);
-			} else if (ref) {
+			}
+			else if (ref) {
 				ref.current = instance;
 			}
 		});

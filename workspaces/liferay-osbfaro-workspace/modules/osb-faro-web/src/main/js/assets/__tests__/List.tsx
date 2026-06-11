@@ -1,13 +1,20 @@
-import List from 'assets/pages/List';
-import mockStore from 'test/mock-store';
-import React from 'react';
-import {ChannelContext} from 'shared/context/channel';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {cleanup, fireEvent, render, screen} from '@testing-library/react';
+import List from 'assets/pages/List';
 import {createMemoryHistory} from 'history';
-import {mockChannelContext} from 'test/mock-channel-context';
+import React from 'react';
 import {Provider} from 'react-redux';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {Router} from 'react-router-dom';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const {useHistory} = require('react-router-dom');
+import {ChannelContext} from 'shared/context/channel';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
+import {mockChannelContext} from 'test/mock-channel-context';
 
 jest.unmock('react-dom');
 
@@ -17,7 +24,7 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 		emptyState,
 		filters,
 		id,
-		itemsActions
+		itemsActions,
 	}: {
 		emptyState?: {
 			description?: React.ReactNode;
@@ -28,22 +35,22 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 		id: string;
 		itemsActions?: Array<{onClick?: (item: any) => void}>;
 	}) => (
-		<div data-testid='fds-component' id={id}>
+		<div data-testid="fds-component" id={id}>
 			{emptyState && (
-				<div data-testid='fds-empty-state'>
-					<div data-testid='fds-empty-state-title'>
+				<div data-testid="fds-empty-state">
+					<div data-testid="fds-empty-state-title">
 						{emptyState.title}
 					</div>
 
-					<div data-testid='fds-empty-state-description'>
+					<div data-testid="fds-empty-state-description">
 						{emptyState.description}
 					</div>
 				</div>
 			)}
-			<div data-testid='fds-filters'>{JSON.stringify(filters)}</div>
+			<div data-testid="fds-filters">{JSON.stringify(filters)}</div>
 
 			<button
-				data-testid='trigger-info-panel'
+				data-testid="trigger-info-panel"
 				onClick={() =>
 					itemsActions?.[0]?.onClick?.({
 						itemData: {
@@ -52,16 +59,16 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 							assetTitle: 'Test Asset Title',
 							assetType: 'blog',
 							id: 'asset-id-1',
-							mimeType: 'blog'
-						}
+							mimeType: 'blog',
+						},
 					})
 				}
 			>
-				{'Open Info Panel'}
+				Open Info Panel
 			</button>
 
 			<button
-				data-testid='trigger-info-panel-no-mime'
+				data-testid="trigger-info-panel-no-mime"
 				onClick={() =>
 					itemsActions?.[0]?.onClick?.({
 						itemData: {
@@ -69,16 +76,16 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 							assetTags: [],
 							assetTitle: 'Asset Without Mime',
 							assetType: 'document',
-							id: 'asset-id-2'
-						}
+							id: 'asset-id-2',
+						},
 					})
 				}
 			>
-				{'Open Info Panel No Mime'}
+				Open Info Panel No Mime
 			</button>
 
 			<button
-				data-testid='trigger-info-panel-no-title'
+				data-testid="trigger-info-panel-no-title"
 				onClick={() =>
 					itemsActions?.[0]?.onClick?.({
 						itemData: {
@@ -86,16 +93,16 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 							assetTags: [],
 							assetType: 'folder',
 							id: 'fallback-id-3',
-							mimeType: 'folder'
-						}
+							mimeType: 'folder',
+						},
 					})
 				}
 			>
-				{'Open Info Panel No Title'}
+				Open Info Panel No Title
 			</button>
 
 			<button
-				data-testid='trigger-info-panel-with-items'
+				data-testid="trigger-info-panel-with-items"
 				onClick={() =>
 					itemsActions?.[0]?.onClick?.({
 						itemData: {
@@ -103,29 +110,29 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 								{
 									id: 'cat-1',
 									name: 'Category One',
-									vocabularyId: 'vocab-1'
+									vocabularyId: 'vocab-1',
 								},
 								{
 									id: 'cat-2',
 									name: 'Category Two',
-									vocabularyId: 'vocab-1'
-								}
+									vocabularyId: 'vocab-1',
+								},
 							],
 							assetTags: [{id: 'tag-1', name: 'Tag One'}],
 							assetTitle: 'Rich Asset',
 							assetType: 'webContent',
 							assetVocabularies: [{id: 'vocab-1', name: 'Topic'}],
 							id: 'asset-id-4',
-							mimeType: 'basic-web-content'
-						}
+							mimeType: 'basic-web-content',
+						},
 					})
 				}
 			>
-				{'Open Info Panel With Items'}
+				Open Info Panel With Items
 			</button>
 
 			<button
-				data-testid='trigger-info-panel-empty-vocab'
+				data-testid="trigger-info-panel-empty-vocab"
 				onClick={() =>
 					itemsActions?.[0]?.onClick?.({
 						itemData: {
@@ -133,68 +140,68 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 								{
 									id: 'cat-1',
 									name: 'Category One',
-									vocabularyId: 'vocab-1'
-								}
+									vocabularyId: 'vocab-1',
+								},
 							],
 							assetTags: [],
 							assetTitle: 'Asset With Empty Vocab',
 							assetType: 'blog',
 							assetVocabularies: [
 								{id: 'vocab-1', name: 'Topics'},
-								{id: 'vocab-2', name: 'Genres'}
+								{id: 'vocab-2', name: 'Genres'},
 							],
 							id: 'asset-id-5',
-							mimeType: 'blog'
-						}
+							mimeType: 'blog',
+						},
 					})
 				}
 			>
-				{'Open Info Panel Empty Vocab'}
+				Open Info Panel Empty Vocab
 			</button>
 		</div>
-	)
+	),
 }));
 
 jest.mock('shared/components/dropdown-range-key/DropdownRangeKey', () => ({
 	DropdownRangeKey: ({
 		onRangeSelectorChange,
-		rangeSelectors
+		rangeSelectors,
 	}: {
 		onRangeSelectorChange: (rs: any) => void;
 		rangeSelectors: any;
 	}) => (
-		<div data-testid='dropdown-range-key'>
-			<span data-testid='current-range-key'>
+		<div data-testid="dropdown-range-key">
+			<span data-testid="current-range-key">
 				{rangeSelectors.rangeKey}
 			</span>
 
 			<button
-				data-testid='change-range-btn'
+				data-testid="change-range-btn"
 				onClick={() =>
 					onRangeSelectorChange({
 						rangeEnd: null,
 						rangeKey: '7', // RangeKeyTimeRanges.Last7Days
-						rangeStart: null
+						rangeStart: null,
 					})
 				}
 			>
-				{'Change Range'}
+				Change Range
 			</button>
 
 			<button
-				data-testid='change-range-custom-btn'
+				data-testid="change-range-custom-btn"
 				onClick={() =>
 					onRangeSelectorChange({
 						rangeEnd: '2024-03-01',
 						rangeKey: 'CUSTOM', // RangeKeyTimeRanges.CustomRange
-						rangeStart: '2024-01-01'
+						rangeStart: '2024-01-01',
 					})
 				}
 			>
-				{'Change to Custom Range'}
+				Change to Custom Range
 			</button>
 		</div>
-	)
+	),
 }));
 
 // breadcrumbs.getHome is a pure utility – mocking it keeps the test focused
@@ -203,8 +210,8 @@ jest.mock('shared/components/dropdown-range-key/DropdownRangeKey', () => ({
 jest.mock('shared/util/breadcrumbs', () => ({
 	getHome: jest.fn(({label}: {label?: string} = {}) => ({
 		active: false,
-		label: label || 'Home'
-	}))
+		label: label || 'Home',
+	})),
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -212,8 +219,8 @@ jest.mock('react-router-dom', () => ({
 	useHistory: jest.fn(),
 	useParams: () => ({
 		channelId: '123',
-		groupId: '23'
-	})
+		groupId: '23',
+	}),
 }));
 
 // Default push spy shared across tests, reset in beforeEach.
@@ -248,8 +255,7 @@ const renderList = (
 
 // Obtain the mocked useHistory so we can configure it per test.
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const {useHistory} = require('react-router-dom');
+import mockStore from 'test/mock-store';
 
 describe('List', () => {
 	beforeEach(() => {
@@ -284,7 +290,7 @@ describe('List', () => {
 
 			const link = screen.getByRole('link', {
 				exact: false,
-				name: /learn more about assets/i
+				name: /learn more about assets/i,
 			});
 
 			expect(link).toBeInTheDocument();
@@ -365,12 +371,13 @@ describe('List', () => {
 		});
 
 		it('should pick up rangeKey from the URL query string', () => {
+
 			// The real useQueryRangeSelectors reads from the URL; we provide a
 			// URL carrying a rangeKey to verify the initial state is seeded
 			// from the query params.
 
 			renderList({
-				queryString: `?rangeKey=${RangeKeyTimeRanges.Last7Days}`
+				queryString: `?rangeKey=${RangeKeyTimeRanges.Last7Days}`,
 			});
 
 			expect(screen.getByTestId('current-range-key')).toHaveTextContent(
@@ -389,6 +396,7 @@ describe('List', () => {
 		});
 
 		it('should update the displayed range key after a change', () => {
+
 			// List calls setRangeSelectors in the onRangeSelectorChange
 			// handler, which causes a re-render passing the new rangeSelectors
 			// to the stub DropdownRangeKey. Since history.push is mocked and
@@ -419,18 +427,20 @@ describe('List', () => {
 			fireEvent.click(screen.getByTestId('change-range-btn'));
 
 			// FaroConstants.pagination.cur === 1 in the jest config globals
+
 			const pushedPath: string = mockHistoryPush.mock.calls[0][0];
 
 			expect(pushedPath).toContain('page=1');
 		});
 
 		it('should strip rangeEnd and rangeStart from the URL when switching to a preset range', () => {
+
 			// Start with a custom range in the URL so the strip logic is
 			// exercised by removeUriQueryParam.
 
 			renderList({
 				queryString:
-					'?rangeKey=CUSTOM&rangeStart=2024-01-01&rangeEnd=2024-03-01'
+					'?rangeKey=CUSTOM&rangeStart=2024-01-01&rangeEnd=2024-03-01',
 			});
 
 			fireEvent.click(screen.getByTestId('change-range-btn'));
@@ -468,6 +478,7 @@ describe('List', () => {
 
 	describe('breadcrumbs', () => {
 		it('should build the home breadcrumb using the selected channel name', () => {
+
 			// mockChannelContext() returns selectedChannel = mockChannel(1),
 			// whose name is "Channel 1".
 
@@ -480,18 +491,19 @@ describe('List', () => {
 				expect.objectContaining({
 					channelId: '123',
 					groupId: '23',
-					label: 'Channel 1'
+					label: 'Channel 1',
 				})
 			);
 		});
 
 		it('should pass null label when no channel is selected', () => {
+
 			// eslint-disable-next-line @typescript-eslint/no-var-requires
 			const breadcrumbs = require('shared/util/breadcrumbs');
 
 			const contextWithNoChannel = {
 				...mockChannelContext(),
-				selectedChannel: null
+				selectedChannel: null,
 			};
 
 			render(
@@ -508,7 +520,7 @@ describe('List', () => {
 
 			expect(breadcrumbs.getHome).toHaveBeenCalledWith(
 				expect.objectContaining({
-					label: undefined
+					label: undefined,
 				})
 			);
 		});
@@ -516,6 +528,7 @@ describe('List', () => {
 
 	describe('FDS remount key', () => {
 		it('should reflect the updated rangeKey in component state after change, triggering FDS remount', () => {
+
 			// List passes key={Object.values(rangeSelectors).join()} to FDS.
 			// After setRangeSelectors is called the key changes, forcing FDS
 			// to remount. We verify via the DropdownRangeKey stub that the

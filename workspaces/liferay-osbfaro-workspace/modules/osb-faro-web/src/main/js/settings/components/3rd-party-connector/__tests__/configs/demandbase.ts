@@ -1,10 +1,16 @@
-import demandbaseConfig from '../../configs/demandbase';
-import {DataSourceTypes} from 'shared/util/constants';
-import {Entity} from '../../types';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {fetchConnectorEntityCount} from 'shared/api/connector';
+import {DataSourceTypes} from 'shared/util/constants';
+
+import demandbaseConfig from '../../configs/demandbase';
+import {Entity} from '../../types';
 
 jest.mock('shared/api/connector', () => ({
-	fetchConnectorEntityCount: jest.fn(() => Promise.resolve(7))
+	fetchConnectorEntityCount: jest.fn(() => Promise.resolve(7)),
 }));
 
 describe('demandbase config', () => {
@@ -40,7 +46,7 @@ describe('demandbase config', () => {
 	it('delegates fetchCount to fetchConnectorEntityCount with the entity', async () => {
 		await demandbaseConfig.entities[0].fetchCount!({
 			groupId: '42',
-			id: 'data-source-9'
+			id: 'data-source-9',
 		});
 
 		expect(fetchConnectorEntityCount).toHaveBeenCalledWith(

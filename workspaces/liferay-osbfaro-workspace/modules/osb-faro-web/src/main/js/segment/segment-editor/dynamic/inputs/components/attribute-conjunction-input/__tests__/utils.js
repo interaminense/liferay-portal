@@ -1,10 +1,16 @@
-import * as UTILS from '../utils';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {DataTypes} from 'event-analysis/utils/types';
+
 import {
 	FunctionalOperators,
 	NotOperators,
-	RelationalOperators
+	RelationalOperators,
 } from '../../../../utils/constants';
+import * as UTILS from '../utils';
 
 describe('Utils', () => {
 	describe('createOption', () => {
@@ -28,7 +34,7 @@ describe('Utils', () => {
 			({dataType, label, option}) => {
 				expect(UTILS.createOption(option, dataType)).toEqual({
 					label,
-					value: option
+					value: option,
 				});
 			}
 		);

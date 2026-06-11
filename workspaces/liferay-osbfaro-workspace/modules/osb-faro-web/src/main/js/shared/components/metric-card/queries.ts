@@ -1,9 +1,15 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import gql from 'graphql-tag';
-import {Metric} from './metrics';
 import {
 	METRIC_HISTOGRAM_FRAGMENT,
-	METRIC_TABS_FRAGMENT
+	METRIC_TABS_FRAGMENT,
 } from 'shared/queries/fragments';
+
+import {Metric} from './metrics';
 
 const capitalize = (str: string): string =>
 	str.charAt(0).toUpperCase() + str.slice(1);

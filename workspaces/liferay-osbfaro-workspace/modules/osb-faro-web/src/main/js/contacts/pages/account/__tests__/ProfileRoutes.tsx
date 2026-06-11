@@ -1,30 +1,36 @@
-import mockStore from 'test/mock-store';
-import ProfileRoutes from '../ProfileRoutes';
-import React from 'react';
-import {ChannelContext} from 'shared/context/channel';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {cleanup, render, screen} from '@testing-library/react';
 import {createMemoryHistory} from 'history';
-import {mockChannelContext} from 'test/mock-channel-context';
+import React from 'react';
 import {Provider} from 'react-redux';
 import {Router} from 'react-router-dom';
+import {ChannelContext} from 'shared/context/channel';
 import {useRequest} from 'shared/hooks/useRequest';
+import {mockChannelContext} from 'test/mock-channel-context';
+import mockStore from 'test/mock-store';
+
+import ProfileRoutes from '../ProfileRoutes';
 
 jest.unmock('react-dom');
 
 jest.mock('shared/hooks/useRequest', () => ({
-	useRequest: jest.fn()
+	useRequest: jest.fn(),
 }));
 
 jest.mock('shared/util/breadcrumbs', () => ({
 	getAccounts: jest.fn(() => ({active: false, label: 'Accounts'})),
 	getEntityName: jest.fn(({label}: {label?: string} = {}) => ({
 		active: true,
-		label
+		label,
 	})),
 	getHome: jest.fn(({label}: {label?: string} = {}) => ({
 		active: false,
-		label: label || 'Home'
-	}))
+		label: label || 'Home',
+	})),
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -32,18 +38,18 @@ jest.mock('react-router-dom', () => ({
 	useParams: () => ({
 		channelId: '123',
 		groupId: '23',
-		id: 'acc-1'
-	})
+		id: 'acc-1',
+	}),
 }));
 
 jest.mock('../Activities', () => ({
 	__esModule: true,
-	default: () => <div data-testid='account-activities' />
+	default: () => <div data-testid="account-activities" />,
 }));
 
 jest.mock('../Profile', () => ({
 	__esModule: true,
-	default: () => <div data-testid='account-profile' />
+	default: () => <div data-testid="account-profile" />,
 }));
 
 const mockedUseRequest = useRequest as jest.Mock;
@@ -52,7 +58,7 @@ const store = mockStore();
 
 const renderProfileRoutes = (
 	history = createMemoryHistory({
-		initialEntries: ['/workspace/23/123/accounts/acc-1']
+		initialEntries: ['/workspace/23/123/accounts/acc-1'],
 	})
 ) =>
 	render(
@@ -76,7 +82,7 @@ describe('AccountProfileRoutes', () => {
 		mockedUseRequest.mockReturnValue({
 			data: null,
 			error: false,
-			loading: true
+			loading: true,
 		});
 
 		const {container} = renderProfileRoutes();
@@ -89,7 +95,7 @@ describe('AccountProfileRoutes', () => {
 		mockedUseRequest.mockReturnValue({
 			data: null,
 			error: true,
-			loading: false
+			loading: false,
 		});
 
 		renderProfileRoutes();
@@ -105,7 +111,7 @@ describe('AccountProfileRoutes', () => {
 		mockedUseRequest.mockReturnValue({
 			data: null,
 			error: false,
-			loading: false
+			loading: false,
 		});
 
 		renderProfileRoutes();
@@ -117,7 +123,7 @@ describe('AccountProfileRoutes', () => {
 		mockedUseRequest.mockReturnValue({
 			data: null,
 			error: true,
-			loading: false
+			loading: false,
 		});
 
 		renderProfileRoutes();
@@ -132,7 +138,7 @@ describe('AccountProfileRoutes', () => {
 		mockedUseRequest.mockReturnValue({
 			data: {accountName: 'Acme Corp'},
 			error: false,
-			loading: false
+			loading: false,
 		});
 
 		renderProfileRoutes();

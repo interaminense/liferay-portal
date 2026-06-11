@@ -1,54 +1,60 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import moment from 'moment';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
+
 import {
 	formatDateRange,
 	formatDateWithTimezone,
 	formatTimeRange,
 	getFilteredItems,
-	getSelectedItem
+	getSelectedItem,
 } from '../utils';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
 
 const timeRange = [
 	{
 		endDate: '2024-01-16T18:25:43.325',
 		rangeKey: 0,
-		startDate: '2024-01-15T19:00'
+		startDate: '2024-01-15T19:00',
 	},
 	{
 		endDate: '2024-01-15T23:59:59.999999999',
 		rangeKey: 1,
-		startDate: '2024-01-15T00:00'
+		startDate: '2024-01-15T00:00',
 	},
 	{
 		endDate: '2024-01-15T23:59:59.999999',
 		rangeKey: 7,
-		startDate: '2024-01-09T00:00'
+		startDate: '2024-01-09T00:00',
 	},
 	{
 		endDate: '2024-01-15T23:59:59.999999',
 		rangeKey: 28,
-		startDate: '2023-12-19T00:00'
+		startDate: '2023-12-19T00:00',
 	},
 	{
 		endDate: '2024-01-15T23:59:59.999999',
 		rangeKey: 30,
-		startDate: '2023-12-17T00:00'
+		startDate: '2023-12-17T00:00',
 	},
 	{
 		endDate: '2024-01-15T23:59:59.999999',
 		rangeKey: 90,
-		startDate: '2023-10-18T00:00'
+		startDate: '2023-10-18T00:00',
 	},
 	{
 		endDate: '2024-01-15T23:59:59.999999',
 		rangeKey: 180,
-		startDate: '2023-07-20T00:00'
+		startDate: '2023-07-20T00:00',
 	},
 	{
 		endDate: '2024-01-15T23:59:59.999999',
 		rangeKey: 365,
-		startDate: '2023-01-15T23:59:59.999999'
-	}
+		startDate: '2023-01-15T23:59:59.999999',
+	},
 ];
 
 describe('formatDateWithTimezone', () => {
@@ -82,35 +88,35 @@ describe('formatDateRange', () => {
 			{
 				description: '15 Jan, 07 PM - 16 Jan, 06 PM',
 				label: 'Last 24 hours',
-				value: '0'
+				value: '0',
 			},
 			{
 				description: '15 Jan, 12 AM - 15 Jan, 11 PM',
 				label: 'Yesterday',
-				value: '1'
+				value: '1',
 			},
 			{description: '09 Jan - 15 Jan', label: 'Last 7 days', value: '7'},
 			{
 				description: '19 Dec - 15 Jan',
 				label: 'Last 28 days',
-				value: '28'
+				value: '28',
 			},
 			{
 				description: '17 Dec - 15 Jan',
 				label: 'Last 30 days',
-				value: '30'
+				value: '30',
 			},
 			{
 				description: '18 Oct - 15 Jan',
 				label: 'Last 90 days',
-				value: '90'
+				value: '90',
 			},
 			{
 				description: '20 Jul - 15 Jan',
 				label: 'Last 180 days',
-				value: '180'
+				value: '180',
 			},
-			{description: '15 Jan - 15 Jan', label: 'Last Year', value: '365'}
+			{description: '15 Jan - 15 Jan', label: 'Last Year', value: '365'},
 		]);
 	});
 
@@ -120,11 +126,11 @@ describe('formatDateRange', () => {
 				{
 					endDate: '2024-01-15T23:59:59.999999',
 					rangeKey: 'CUSTOM',
-					startDate: '2023-01-15T23:59:59.999999'
-				}
+					startDate: '2023-01-15T23:59:59.999999',
+				},
 			])
 		).toEqual([
-			{description: '15 Jan - 15 Jan', label: undefined, value: 'CUSTOM'}
+			{description: '15 Jan - 15 Jan', label: undefined, value: 'CUSTOM'},
 		]);
 	});
 });
@@ -151,13 +157,13 @@ describe('getFilteredItems', () => {
 				rangeKey: RangeKeyTimeRanges.Last30Days,
 				retentionPeriod: 13,
 				seeMore: false,
-				timeRange: formatTimeRange(timeRange)
+				timeRange: formatTimeRange(timeRange),
 			})
 		).toEqual([
 			{
 				description: '15 Jan, 07 PM - 16 Jan, 06 PM',
 				label: 'Last 24 hours',
-				value: '0'
+				value: '0',
 			},
 
 			{description: '09 Jan - 15 Jan', label: 'Last 7 days', value: '7'},
@@ -165,13 +171,13 @@ describe('getFilteredItems', () => {
 			{
 				description: '17 Dec - 15 Jan',
 				label: 'Last 30 days',
-				value: '30'
+				value: '30',
 			},
 			{
 				description: '18 Oct - 15 Jan',
 				label: 'Last 90 days',
-				value: '90'
-			}
+				value: '90',
+			},
 		]);
 	});
 
@@ -182,35 +188,35 @@ describe('getFilteredItems', () => {
 				rangeKey: RangeKeyTimeRanges.Last30Days,
 				retentionPeriod: 7,
 				seeMore: false,
-				timeRange: formatTimeRange(timeRange)
+				timeRange: formatTimeRange(timeRange),
 			})
 		).toEqual([
 			{
 				description: '15 Jan, 07 PM - 16 Jan, 06 PM',
 				label: 'Last 24 hours',
-				value: '0'
+				value: '0',
 			},
 			{
 				description: '15 Jan, 12 AM - 15 Jan, 11 PM',
 				label: 'Yesterday',
-				value: '1'
+				value: '1',
 			},
 			{description: '09 Jan - 15 Jan', label: 'Last 7 days', value: '7'},
 			{
 				description: '19 Dec - 15 Jan',
 				label: 'Last 28 days',
-				value: '28'
+				value: '28',
 			},
 			{
 				description: '17 Dec - 15 Jan',
 				label: 'Last 30 days',
-				value: '30'
+				value: '30',
 			},
 			{
 				description: '18 Oct - 15 Jan',
 				label: 'Last 90 days',
-				value: '90'
-			}
+				value: '90',
+			},
 		]);
 	});
 
@@ -221,40 +227,40 @@ describe('getFilteredItems', () => {
 				rangeKey: RangeKeyTimeRanges.Last30Days,
 				retentionPeriod: 7,
 				seeMore: true,
-				timeRange: formatTimeRange(timeRange)
+				timeRange: formatTimeRange(timeRange),
 			})
 		).toEqual([
 			{
 				description: '15 Jan, 07 PM - 16 Jan, 06 PM',
 				label: 'Last 24 hours',
-				value: '0'
+				value: '0',
 			},
 			{
 				description: '15 Jan, 12 AM - 15 Jan, 11 PM',
 				label: 'Yesterday',
-				value: '1'
+				value: '1',
 			},
 			{description: '09 Jan - 15 Jan', label: 'Last 7 days', value: '7'},
 			{
 				description: '19 Dec - 15 Jan',
 				label: 'Last 28 days',
-				value: '28'
+				value: '28',
 			},
 			{
 				description: '17 Dec - 15 Jan',
 				label: 'Last 30 days',
-				value: '30'
+				value: '30',
 			},
 			{
 				description: '18 Oct - 15 Jan',
 				label: 'Last 90 days',
-				value: '90'
+				value: '90',
 			},
 			{
 				description: '20 Jul - 15 Jan',
 				label: 'Last 180 days',
-				value: '180'
-			}
+				value: '180',
+			},
 		]);
 	});
 
@@ -270,43 +276,43 @@ describe('getFilteredItems', () => {
 					{
 						endDate: '2024-01-15T23:59:59.999999',
 						rangeKey: 'CUSTOM',
-						startDate: '2023-01-15T23:59:59.999999'
-					}
-				])
+						startDate: '2023-01-15T23:59:59.999999',
+					},
+				]),
 			})
 		).toEqual([
 			{
 				description: '15 Jan, 07 PM - 16 Jan, 06 PM',
 				label: 'Last 24 hours',
-				value: '0'
+				value: '0',
 			},
 			{
 				description: '15 Jan, 12 AM - 15 Jan, 11 PM',
 				label: 'Yesterday',
-				value: '1'
+				value: '1',
 			},
 			{description: '09 Jan - 15 Jan', label: 'Last 7 days', value: '7'},
 			{
 				description: '19 Dec - 15 Jan',
 				label: 'Last 28 days',
-				value: '28'
+				value: '28',
 			},
 			{
 				description: '17 Dec - 15 Jan',
 				label: 'Last 30 days',
-				value: '30'
+				value: '30',
 			},
 			{
 				description: '18 Oct - 15 Jan',
 				label: 'Last 90 days',
-				value: '90'
+				value: '90',
 			},
 			{
 				description: '20 Jul - 15 Jan',
 				label: 'Last 180 days',
-				value: '180'
+				value: '180',
 			},
-			{description: '15 Jan - 15 Jan', label: 'Last Year', value: '365'}
+			{description: '15 Jan - 15 Jan', label: 'Last Year', value: '365'},
 		]);
 	});
 
@@ -317,41 +323,41 @@ describe('getFilteredItems', () => {
 				rangeKey: RangeKeyTimeRanges.Last30Days,
 				retentionPeriod: 13,
 				seeMore: true,
-				timeRange: formatTimeRange(timeRange)
+				timeRange: formatTimeRange(timeRange),
 			})
 		).toEqual([
 			{
 				description: '15 Jan, 07 PM - 16 Jan, 06 PM',
 				label: 'Last 24 hours',
-				value: '0'
+				value: '0',
 			},
 			{
 				description: '15 Jan, 12 AM - 15 Jan, 11 PM',
 				label: 'Yesterday',
-				value: '1'
+				value: '1',
 			},
 			{description: '09 Jan - 15 Jan', label: 'Last 7 days', value: '7'},
 			{
 				description: '19 Dec - 15 Jan',
 				label: 'Last 28 days',
-				value: '28'
+				value: '28',
 			},
 			{
 				description: '17 Dec - 15 Jan',
 				label: 'Last 30 days',
-				value: '30'
+				value: '30',
 			},
 			{
 				description: '18 Oct - 15 Jan',
 				label: 'Last 90 days',
-				value: '90'
+				value: '90',
 			},
 			{
 				description: '20 Jul - 15 Jan',
 				label: 'Last 180 days',
-				value: '180'
+				value: '180',
 			},
-			{description: '15 Jan - 15 Jan', label: 'Last Year', value: '365'}
+			{description: '15 Jan - 15 Jan', label: 'Last Year', value: '365'},
 		]);
 	});
 });
@@ -363,12 +369,12 @@ describe('getSelectedItem', () => {
 				rangeEnd: '2024-01-16T18:25:43.325',
 				rangeKey: 30,
 				rangeStart: '2024-01-15T19:00',
-				timeRange
+				timeRange,
 			})
 		).toEqual({
 			endDate: '2024-01-16T18:25:43.325',
 			rangeKey: 0,
-			startDate: '2024-01-15T19:00'
+			startDate: '2024-01-15T19:00',
 		});
 	});
 });

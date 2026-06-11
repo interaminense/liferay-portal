@@ -1,15 +1,21 @@
-import * as API from 'shared/api';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import TagDisplay from 'segment/components/criteria-card/display-components/TagDisplay';
-import TagInput from '../../inputs/TagInput';
 import VocabularyDisplay from 'segment/components/criteria-card/display-components/VocabularyDisplay';
+import * as API from 'shared/api';
+
+import TagInput from '../../inputs/TagInput';
 import VocabularyInput from '../../inputs/VocabularyInput';
-import {createTagProperty, createVocabularyProperty} from '../../utils/utils';
 import {CustomFunctionOperators, NotOperators} from '../../utils/constants';
+import {createTagProperty, createVocabularyProperty} from '../../utils/utils';
 import {
+	REMOTE_CRITERION_TYPES,
 	getRemoteCriterionTypeByOperator,
 	getRemoteCriterionTypeByPropertyKey,
 	isRemoteCriterionOperator,
-	REMOTE_CRITERION_TYPES
 } from '../registry';
 import {tagCriterionType} from '../tagCriterionType';
 import {vocabularyCriterionType} from '../vocabularyCriterionType';

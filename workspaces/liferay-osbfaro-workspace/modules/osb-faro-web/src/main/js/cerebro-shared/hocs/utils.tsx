@@ -1,5 +1,10 @@
-import NoResultsDisplay from 'shared/components/NoResultsDisplay';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import React from 'react';
+import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import {Sizes} from 'shared/util/constants';
 
 interface IIconProps {
@@ -14,7 +19,7 @@ type TWithError = () => (
 
 const withError: TWithError =
 	() =>
-	Component =>
+	(Component) =>
 	({error, errorMessage, ...props}) => {
 		if (error) {
 			return (
@@ -41,7 +46,7 @@ type TWithEmpty = (params?: {
 
 const withEmpty: TWithEmpty =
 	({emptyDescription, emptyIcon, emptyTitle, primary} = {}) =>
-	Component =>
+	(Component) =>
 	({
 		filterEnabled = false,
 		items,
@@ -60,14 +65,15 @@ const withEmpty: TWithEmpty =
 						icon={{
 							border: false,
 							size: Sizes.XXXLarge,
-							symbol: 'ac_no_results_found'
+							symbol: 'ac_no_results_found',
 						}}
 						title={Liferay.Language.get(
 							'there-are-no-results-found'
 						)}
 					/>
 				);
-			} else if (noResultsRenderer) {
+			}
+			else if (noResultsRenderer) {
 				return noResultsRenderer;
 			}
 

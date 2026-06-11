@@ -1,22 +1,27 @@
-import client from 'shared/apollo/client';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {ApolloProvider} from '@apollo/client';
+import {MockedProvider} from '@apollo/client/testing';
+import {cleanup, render} from '@testing-library/react';
 import CommerceMetricCard from 'commerce/components/CommerceMetricCard';
 import CommerceTotalOrderValueQuery, {
-	CommerceTotalOrderValueData
+	CommerceTotalOrderValueData,
 } from 'commerce/queries/TotalOrderValueQuery';
-import mockStore from 'test/mock-store';
 import React from 'react';
-import {ApolloProvider} from '@apollo/client';
-import {cleanup, render} from '@testing-library/react';
+import {Provider} from 'react-redux';
+import {StaticRouter} from 'react-router-dom';
+import client from 'shared/apollo/client';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {
 	mockCommerceTotalOrderValueReq,
 	mockPreferenceReq,
-	mockTimeRangeReq
+	mockTimeRangeReq,
 } from 'test/graphql-data';
-import {MockedProvider} from '@apollo/client/testing';
-import {Provider} from 'react-redux';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+import mockStore from 'test/mock-store';
 
 jest.unmock('react-dom');
 
@@ -25,9 +30,9 @@ jest.mock('react-router-dom', () => ({
 	useParams: () => ({
 		channelId: '123',
 		query: {
-			rangeKey: RangeKeyTimeRanges.Last30Days
-		}
-	})
+			rangeKey: RangeKeyTimeRanges.Last30Days,
+		},
+	}),
 }));
 
 const COMMERCE_TOTAL_ORDER_VALUE = '10000000';
@@ -36,7 +41,7 @@ const COMMERCE_TREND_PERCENTAGE = 50;
 const getData = ({
 	classification = 'POSITIVE',
 	currencyCode = 'USD',
-	percentage = COMMERCE_TREND_PERCENTAGE
+	percentage = COMMERCE_TREND_PERCENTAGE,
 }) => ({
 	orderTotalCurrencyValues: [
 		{
@@ -45,18 +50,18 @@ const getData = ({
 			trend: {
 				__typename: 'orderTotalCurrencyValuesTrend',
 				percentage,
-				trendClassification: classification
+				trendClassification: classification,
 			},
-			value: COMMERCE_TOTAL_ORDER_VALUE
-		}
-	]
+			value: COMMERCE_TOTAL_ORDER_VALUE,
+		},
+	],
 });
 
 const variables = {
 	channelId: '123',
 	rangeEnd: null,
 	rangeKey: 30,
-	rangeStart: null
+	rangeStart: null,
 };
 
 const WrappedComponent = ({data}: {data?: any; defaultLanguageId?: string}) => (
@@ -70,16 +75,16 @@ const WrappedComponent = ({data}: {data?: any; defaultLanguageId?: string}) => (
 						mockCommerceTotalOrderValueReq({
 							data,
 							Query: CommerceTotalOrderValueQuery,
-							variables
-						})
+							variables,
+						}),
 					]}
 				>
 					<CommerceMetricCard<CommerceTotalOrderValueData>
-						description='this is the description'
-						emptyTitle='There are no orders on the selected period.'
-						label='this is the label'
-						mapper={result => result?.orderTotalCurrencyValues}
 						Query={CommerceTotalOrderValueQuery}
+						description="this is the description"
+						emptyTitle="There are no orders on the selected period."
+						label="this is the label"
+						mapper={(result) => result?.orderTotalCurrencyValues}
 					/>
 				</MockedProvider>
 			</StaticRouter>
@@ -231,7 +236,7 @@ describe('CommerceMetricCard Format Currency', () => {
 		const {container} = render(
 			<WrappedComponent
 				data={getData({currencyCode: 'BRL'})}
-				defaultLanguageId='pt_BR'
+				defaultLanguageId="pt_BR"
 			/>
 		);
 
@@ -248,7 +253,7 @@ describe('CommerceMetricCard Format Currency', () => {
 		const {container} = render(
 			<WrappedComponent
 				data={getData({currencyCode: 'USD'})}
-				defaultLanguageId='en_US'
+				defaultLanguageId="en_US"
 			/>
 		);
 
@@ -265,7 +270,7 @@ describe('CommerceMetricCard Format Currency', () => {
 		const {container} = render(
 			<WrappedComponent
 				data={getData({currencyCode: 'EUR'})}
-				defaultLanguageId='es-ES'
+				defaultLanguageId="es-ES"
 			/>
 		);
 

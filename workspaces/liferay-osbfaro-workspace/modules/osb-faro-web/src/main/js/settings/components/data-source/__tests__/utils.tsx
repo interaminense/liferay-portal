@@ -1,12 +1,18 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {render} from '@testing-library/react';
 import React from 'react';
 import {disconnect} from 'shared/api/data-source';
-import {render} from '@testing-library/react';
+
 import {useDisconnectDataSource} from '../utils';
 
 jest.unmock('react-dom');
 
 jest.mock('shared/api/data-source', () => ({
-	disconnect: jest.fn(() => Promise.resolve({}))
+	disconnect: jest.fn(() => Promise.resolve({})),
 }));
 
 interface RunFlowOptions {
@@ -16,7 +22,7 @@ interface RunFlowOptions {
 
 const runDisconnectFlow = async ({
 	beforeSubmit,
-	onSubmit = () => Promise.resolve()
+	onSubmit = () => Promise.resolve(),
 }: RunFlowOptions = {}) => {
 	const open = jest.fn();
 	const close = jest.fn();
@@ -32,7 +38,7 @@ const runDisconnectFlow = async ({
 			groupId: '23',
 			id: 'ds-1',
 			onSubmit,
-			open
+			open,
 		});
 
 		handleDisconnect = hook.handleDisconnect;

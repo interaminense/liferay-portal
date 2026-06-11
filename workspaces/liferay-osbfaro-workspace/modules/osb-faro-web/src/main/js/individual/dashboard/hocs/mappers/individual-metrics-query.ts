@@ -1,6 +1,11 @@
-import {getSafeRangeSelectors} from 'shared/util/util';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {Interval, RangeSelectors} from 'shared/types';
 import {safeResultToProps} from 'shared/util/mappers';
+import {getSafeRangeSelectors} from 'shared/util/util';
 
 interface IIndividualMetric {
 	trend: {percentage: number};
@@ -20,13 +25,13 @@ export const CHART_DATA_ID_2 = 'anonymousIndividuals';
 
 export const LANG_MAP = {
 	[CHART_DATA_ID_1]: Liferay.Language.get('known-visitors'),
-	[CHART_DATA_ID_2]: Liferay.Language.get('anonymous-visitors')
+	[CHART_DATA_ID_2]: Liferay.Language.get('anonymous-visitors'),
 };
 
 export const mapPropsToOptions = ({
 	channelId,
 	interval,
-	rangeSelectors
+	rangeSelectors,
 }: {
 	channelId: string;
 	interval: Interval;
@@ -35,8 +40,8 @@ export const mapPropsToOptions = ({
 	variables: {
 		channelId,
 		interval,
-		...getSafeRangeSelectors(rangeSelectors)
-	}
+		...getSafeRangeSelectors(rangeSelectors),
+	},
 });
 
 export const mapResultToProps = safeResultToProps(
@@ -44,15 +49,15 @@ export const mapResultToProps = safeResultToProps(
 		individualMetric: {
 			anonymousIndividualsMetric,
 			knownIndividualsMetric,
-			totalIndividualsMetric
-		}
+			totalIndividualsMetric,
+		},
 	}: IIndividualMetricsResult) => ({
 		items: [
 			{
 				...totalIndividualsMetric,
 				id: 'totalIndividuals',
 				info: undefined as {content: string; title: string} | undefined,
-				title: Liferay.Language.get('total-individuals')
+				title: Liferay.Language.get('total-individuals'),
 			},
 			{
 				...knownIndividualsMetric,
@@ -61,9 +66,9 @@ export const mapResultToProps = safeResultToProps(
 					content: Liferay.Language.get(
 						'current-total-of-known-individuals-that-are-tracked-by-analytics-cloud.-an-individual-is-considered-known-if-we-have-any-identifiable-information-about-the-individual'
 					),
-					title: Liferay.Language.get('known-individuals')
+					title: Liferay.Language.get('known-individuals'),
 				},
-				title: Liferay.Language.get('known')
+				title: Liferay.Language.get('known'),
 			},
 			{
 				...anonymousIndividualsMetric,
@@ -72,16 +77,16 @@ export const mapResultToProps = safeResultToProps(
 					content: Liferay.Language.get(
 						'current-total-of-anonymous-individuals-that-are-tracked-by-analytics-cloud.-inactive-anonymous-individuals-are-automatically-removed-if-they-dont-have-activities-during-the-retention-period'
 					),
-					title: Liferay.Language.get('anonymous-individuals')
+					title: Liferay.Language.get('anonymous-individuals'),
 				},
-				title: Liferay.Language.get('anonymous')
-			}
+				title: Liferay.Language.get('anonymous'),
+			},
 		].map(({id, info, title, trend: {percentage}, value}) => ({
 			change: percentage,
 			id,
 			info,
 			title,
-			total: value
-		}))
+			total: value,
+		})),
 	})
 );

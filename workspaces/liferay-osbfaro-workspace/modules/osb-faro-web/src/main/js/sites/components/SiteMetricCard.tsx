@@ -1,32 +1,37 @@
-import MetricBaseCard, {
-	IGenericMetricBaseCardProps
-} from 'shared/components/metric-card/MetricBaseCard';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import React from 'react';
+import {useParams} from 'react-router-dom';
+import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
+import MetricBaseCard, {
+	IGenericMetricBaseCardProps,
+} from 'shared/components/metric-card/MetricBaseCard';
 import {
 	BounceRateMetric,
 	CompositeMetric,
 	Metric,
 	SessionDurationMetric,
-	SessionsPerVisitorMetric
+	SessionsPerVisitorMetric,
 } from 'shared/components/metric-card/metrics';
-import {getSiteMetricsChartData} from 'shared/components/metric-card/util';
-import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {
 	SitesMetricQuery,
-	SitesTabsQuery
+	SitesTabsQuery,
 } from 'shared/components/metric-card/queries';
-import {useParams} from 'react-router-dom';
+import {getSiteMetricsChartData} from 'shared/components/metric-card/util';
 
 type TChartData = typeof getSiteMetricsChartData;
 
-const SitesMetricCard: React.FC<IGenericMetricBaseCardProps> = props => {
+const SitesMetricCard: React.FC<IGenericMetricBaseCardProps> = (props) => {
 	const {channelId} = useParams();
 
 	const metrics: Metric[] = [
 		CompositeMetric,
 		SessionsPerVisitorMetric,
 		SessionDurationMetric,
-		BounceRateMetric
+		BounceRateMetric,
 	];
 
 	return (
@@ -37,12 +42,12 @@ const SitesMetricCard: React.FC<IGenericMetricBaseCardProps> = props => {
 			queries={{
 				MetricQuery: SitesMetricQuery,
 				name: 'site',
-				TabsQuery: SitesTabsQuery
+				TabsQuery: SitesTabsQuery,
 			}}
 			reportContainer={ReportContainer.SiteActivityCard}
-			variables={commonVariables => ({
+			variables={(commonVariables) => ({
 				...commonVariables,
-				channelId
+				channelId,
 			})}
 		/>
 	);

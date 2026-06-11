@@ -1,7 +1,10 @@
-// @ts-nocheck - Fix it at this LRAC-13388
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
 
-import * as d3 from 'd3';
 import getCN from 'classnames';
+import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef} from 'react';
 import {CHART_COLOR_NAMES} from 'shared/util/charts';
@@ -14,7 +17,7 @@ const DEFAULT_COLOR_RANGE = [
 	martellL4,
 	martellL1,
 	martellD2,
-	martellD4
+	martellD4,
 ];
 const MARGIN = {bottom: 50, left: 40, right: 20, top: 20};
 
@@ -25,7 +28,7 @@ const attachChart = (chartElement: HTMLElement, props: HeatmapChartIProps) => {
 		height,
 		rowAxisFormatter,
 		thresholds,
-		width
+		width,
 	} = props;
 
 	const computedHeight = height - MARGIN.top - MARGIN.bottom;
@@ -34,12 +37,14 @@ const attachChart = (chartElement: HTMLElement, props: HeatmapChartIProps) => {
 	const legendMarginTop = 16;
 
 	// Attach tooltip container
+
 	d3.select('body')
 		.append('div')
 		.style('opacity', 0)
 		.attr('class', 'tooltip heatmap-tooltip bb-tooltip-container');
 
 	// Append the svg object to the chart element
+
 	const svg = d3
 		.select(chartElement)
 		.append('svg')
@@ -48,10 +53,12 @@ const attachChart = (chartElement: HTMLElement, props: HeatmapChartIProps) => {
 		.attr('transform', `translate(${MARGIN.left},${MARGIN.top})`);
 
 	// Get row and column keys
+
 	const columns = d3.map(data, ({column}) => column).keys();
 	const rows = d3.map(data, ({row}) => row).keys();
 
 	// Build X scales and axis
+
 	const x = d3
 		.scaleBand()
 		.domain(columns)
@@ -65,6 +72,7 @@ const attachChart = (chartElement: HTMLElement, props: HeatmapChartIProps) => {
 		.remove();
 
 	// Build Y scales and axis
+
 	const y = d3
 		.scaleBand()
 		.domain(rows)
@@ -78,6 +86,7 @@ const attachChart = (chartElement: HTMLElement, props: HeatmapChartIProps) => {
 		.remove();
 
 	// Add the squares
+
 	svg.append('g')
 		.attr('class', 'rects')
 		.selectAll()
@@ -100,9 +109,11 @@ const attachChart = (chartElement: HTMLElement, props: HeatmapChartIProps) => {
 		.data(thresholds);
 
 	// Add the legend items
+
 	legend.enter().append('rect');
 
 	// Add legend labels
+
 	legend.enter().append('text');
 
 	return svg;
@@ -124,9 +135,11 @@ const updateChart = (chartElement, props) => {
 	const svg = d3.select(chartElement);
 
 	// Build color scale
+
 	const colorScale = d3.scaleThreshold().domain(thresholds).range(colorRange);
 
 	// Update the square colors
+
 	svg.select('.rects')
 		.selectAll('rect')
 		.data(data, ({column, row}) => `${column}:${row}`)
@@ -162,6 +175,7 @@ const updateChart = (chartElement, props) => {
 		});
 
 	// Update the legend
+
 	const legendItemsSelection = svg
 		.select('.heatmap-legend')
 		.selectAll('rect')
@@ -172,14 +186,17 @@ const updateChart = (chartElement, props) => {
 		.data(thresholds);
 
 	// Remove any un-needed legends
+
 	legendItemsSelection.exit().remove();
 	legendLabelSelection.exit().remove();
 
 	// Add any additional legends
+
 	legendItemsSelection.enter().append('rect');
 	legendLabelSelection.enter().append('text');
 
 	// Update all legend items
+
 	legendItemsSelection
 		.attr('x', (_, i) =>
 			i > 0
@@ -192,16 +209,17 @@ const updateChart = (chartElement, props) => {
 		.style('fill', (_, i) => legendColors[i]);
 
 	// Update all legend labels
+
 	legendLabelSelection
 		.attr('class', 'legend-label')
 		.attr('x', (_, i) =>
 			i > 0 ? i * legendItemWidth + i * legendItemPadding : 0
 		)
 		.attr('y', 30)
-		.text(d => toThousands(d));
+		.text((d) => toThousands(d));
 };
 
-const destroyChart = svg => {
+const destroyChart = (svg) => {
 	svg && svg.remove();
 
 	d3.select('.heatmap-tooltip').remove();
@@ -209,7 +227,7 @@ const destroyChart = svg => {
 
 export const getNicedExtent = ([min, max]: [number, number]): [
 	number,
-	number
+	number,
 ] => {
 	const threshold = d3.scaleQuantize().domain([min, max]).nice(3);
 
@@ -219,7 +237,7 @@ export const getNicedExtent = ([min, max]: [number, number]): [
 };
 
 export const getThresholdsFromData = (data: {value: number}[]): number[] => {
-	const valuesOverZero = data.map(({value}) => value).filter(d => d > 0);
+	const valuesOverZero = data.map(({value}) => value).filter((d) => d > 0);
 	const extent = d3.extent(valuesOverZero);
 
 	const [min, max]: [number, number] =
@@ -232,7 +250,7 @@ export const getThresholdsFromData = (data: {value: number}[]): number[] => {
 		Math.round(min + stepSize),
 		Math.round(min + stepSize * 2),
 		Math.round(min + stepSize * 3),
-		max
+		max,
 	];
 };
 
@@ -247,7 +265,7 @@ interface HeatmapChartIProps extends React.HTMLAttributes<HTMLElement> {
 	width?: number;
 }
 
-const HeatmapChart: React.FC<HeatmapChartIProps> = props => {
+const HeatmapChart: React.FC<HeatmapChartIProps> = (props) => {
 	const chartRef = useRef();
 	const {className, data} = props;
 
@@ -265,7 +283,7 @@ const HeatmapChart: React.FC<HeatmapChartIProps> = props => {
 
 	return (
 		<div className={getCN(className, 'heatmap-chart-root')}>
-			<div className='heatmap-chart' id='chart' ref={chartRef} />
+			<div className="heatmap-chart" id="chart" ref={chartRef} />
 		</div>
 	);
 };
@@ -278,16 +296,16 @@ HeatmapChart.propTypes = {
 	renderTooltip: PropTypes.func,
 	rowAxisFormatter: PropTypes.func,
 	thresholds: PropTypes.array,
-	width: PropTypes.number
+	width: PropTypes.number,
 };
 
 HeatmapChart.defaultProps = {
 	colorRange: DEFAULT_COLOR_RANGE,
-	columnAxisFormatter: val => val,
+	columnAxisFormatter: (val) => val,
 	height: 440,
 	renderTooltip: ({value}) => value,
-	rowAxisFormatter: val => val,
-	width: 300
+	rowAxisFormatter: (val) => val,
+	width: 300,
 };
 
 export default HeatmapChart;

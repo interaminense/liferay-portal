@@ -1,8 +1,14 @@
-import AccountDetailsModal from '../AccountDetailsModal';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {act, cleanup, render, screen} from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {act, cleanup, render, screen} from '@testing-library/react';
 import {useRequest} from 'shared/hooks/useRequest';
+
+import AccountDetailsModal from '../AccountDetailsModal';
 
 jest.unmock('react-dom');
 
@@ -15,7 +21,7 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 		id,
 		items,
 		onItemsPropSearch,
-		views
+		views,
 	}: {
 		id: string;
 		items: any[];
@@ -26,24 +32,24 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 		lastViews = views;
 
 		return (
-			<div data-testid='fds-component' id={id}>
+			<div data-testid="fds-component" id={id}>
 				{(items ?? []).map((item: any) => (
-					<div data-testid='fds-item' key={item.name}>
+					<div data-testid="fds-item" key={item.name}>
 						{item.name}
 					</div>
 				))}
 			</div>
 		);
-	}
+	},
 }));
 
 jest.mock('shared/hooks/useRequest', () => ({
-	useRequest: jest.fn()
+	useRequest: jest.fn(),
 }));
 
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
-	useParams: () => ({channelId: '456', groupId: '23'})
+	useParams: () => ({channelId: '456', groupId: '23'}),
 }));
 
 const mockedUseRequest = useRequest as jest.Mock;
@@ -55,7 +61,7 @@ const mockFields = [
 		lastModified: '2024-11-20T08:30:00.000Z',
 		name: 'website',
 		sourceName: 'Web',
-		value: 'https://acme.com'
+		value: 'https://acme.com',
 	},
 	{
 		dataSourceId: 'ds-1',
@@ -63,8 +69,8 @@ const mockFields = [
 		lastModified: '2024-10-15T10:00:00.000Z',
 		name: 'industry',
 		sourceName: 'CRM',
-		value: 'Technology'
-	}
+		value: 'Technology',
+	},
 ];
 
 const renderModal = (
@@ -76,8 +82,8 @@ const renderModal = (
 ) => {
 	const result = render(
 		<AccountDetailsModal
-			accountId='abc'
-			accountName='Acme Corp'
+			accountId="abc"
+			accountName="Acme Corp"
 			onClose={jest.fn()}
 			{...overrides}
 		/>
@@ -92,9 +98,10 @@ const renderModal = (
 
 describe('AccountDetailsModal', () => {
 	beforeAll(() => {
+
 		// @ts-ignore
 
-		ReactDOM.createPortal = jest.fn(element => element);
+		ReactDOM.createPortal = jest.fn((element) => element);
 	});
 
 	beforeEach(() => {
@@ -116,7 +123,7 @@ describe('AccountDetailsModal', () => {
 
 		expect(mockedUseRequest).toHaveBeenCalledWith(
 			expect.objectContaining({
-				variables: {accountId: 'abc', channelId: '456', groupId: '23'}
+				variables: {accountId: 'abc', channelId: '456', groupId: '23'},
 			})
 		);
 	});
@@ -152,7 +159,7 @@ describe('AccountDetailsModal', () => {
 	it('should match items by name when the data set search has a query', () => {
 		renderModal();
 
-		const matches = mockFields.filter(field =>
+		const matches = mockFields.filter((field) =>
 			lastOnItemsPropSearch!(field, 'industry')
 		);
 
@@ -163,7 +170,7 @@ describe('AccountDetailsModal', () => {
 	it('should match the name filter case-insensitively', () => {
 		renderModal();
 
-		const matches = mockFields.filter(field =>
+		const matches = mockFields.filter((field) =>
 			lastOnItemsPropSearch!(field, 'WEB')
 		);
 

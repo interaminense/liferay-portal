@@ -1,18 +1,24 @@
-import AcquisitionsCard from '../AcquisitionsCard';
-import BasePage from 'shared/components/base-page';
-import mockStore from 'test/mock-store';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {MockedProvider} from '@apollo/client/testing';
+import {render} from '@testing-library/react';
 import React from 'react';
-import {CompositionTypes, RangeKeyTimeRanges} from 'shared/util/constants';
+import {Provider} from 'react-redux';
 import {MemoryRouter} from 'react-router-dom';
+import BasePage from 'shared/components/base-page';
+import {CompositionTypes, RangeKeyTimeRanges} from 'shared/util/constants';
 import {
 	mockAcquisitionsReq,
 	mockPreferenceReq,
-	mockTimeRangeReq
+	mockTimeRangeReq,
 } from 'test/graphql-data';
-import {MockedProvider} from '@apollo/client/testing';
-import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+import mockStore from 'test/mock-store';
+
+import AcquisitionsCard from '../AcquisitionsCard';
 
 jest.unmock('react-dom');
 
@@ -21,12 +27,12 @@ const MOCK_CONTEXT = {
 	router: {
 		params: {
 			channelId: '123',
-			groupId: '456'
+			groupId: '456',
 		},
 		query: {
-			rangeKey: RangeKeyTimeRanges.Last30Days
-		}
-	}
+			rangeKey: RangeKeyTimeRanges.Last30Days,
+		},
+	},
 };
 
 const DefaultComponent = () => (
@@ -38,12 +44,12 @@ const DefaultComponent = () => (
 					mocks={[
 						mockTimeRangeReq(),
 						mockPreferenceReq(),
-						mockAcquisitionsReq()
+						mockAcquisitionsReq(),
 					]}
 				>
 					<AcquisitionsCard
 						compositionBagName={CompositionTypes.Acquisitions}
-						label='card label'
+						label="card label"
 					/>
 				</MockedProvider>
 			</MemoryRouter>

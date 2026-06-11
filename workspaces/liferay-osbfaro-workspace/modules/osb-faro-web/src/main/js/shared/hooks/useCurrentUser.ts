@@ -1,6 +1,11 @@
-import {fetchCurrentUser} from 'shared/actions/users';
-import {useDispatch, useSelector} from 'react-redux';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchCurrentUser} from 'shared/actions/users';
 import {User} from 'shared/util/records';
 
 /**
@@ -8,7 +13,7 @@ import {User} from 'shared/util/records';
  * To get currentUser, you can use WithCurrentUser (for HOC) or useCurrentUser (for HOOK).
  */
 export const useFetchCurrentUser = (initialGroupId: string = '0') => {
-	const currentUser = useSelector<any, any>(state =>
+	const currentUser = useSelector<any, any>((state) =>
 		state.get('currentUser')
 	);
 	const error = currentUser.get('error');
@@ -31,7 +36,7 @@ export const useFetchCurrentUser = (initialGroupId: string = '0') => {
 	return {
 		data,
 		error,
-		loading
+		loading,
 	};
 };
 
@@ -39,10 +44,10 @@ export const useFetchCurrentUser = (initialGroupId: string = '0') => {
  * Get currentUser from redux store.
  */
 export const useCurrentUser = (): User => {
-	const currentUserId = useSelector<any, any>(state =>
+	const currentUserId = useSelector<any, any>((state) =>
 		state.getIn(['currentUser', 'data'])
 	);
-	const data: User = useSelector<any, any>(state =>
+	const data: User = useSelector<any, any>((state) =>
 		state.getIn(['users', currentUserId, 'data'])
 	);
 
@@ -51,7 +56,7 @@ export const useCurrentUser = (): User => {
 		id: '',
 		name: '',
 		roleName: '',
-		status: 1
+		status: 1,
 	});
 
 	return data || newUser;

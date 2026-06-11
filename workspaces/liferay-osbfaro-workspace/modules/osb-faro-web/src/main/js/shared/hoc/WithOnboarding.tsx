@@ -1,12 +1,17 @@
-import React, {useContext, useEffect} from 'react';
-import SitesDashboardQuery from 'shared/queries/SitesDashboardQuery';
-import {close, modalTypes, open} from 'shared/actions/modals';
-import {compose} from 'redux';
-import {connect} from 'react-redux';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {graphql} from '@apollo/client/react/hoc';
 import {isArray} from 'lodash';
+import React, {useContext, useEffect} from 'react';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {close, modalTypes, open} from 'shared/actions/modals';
 import {OnboardingContext} from 'shared/context/onboarding';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
+import SitesDashboardQuery from 'shared/queries/SitesDashboardQuery';
 import {User} from 'shared/util/records';
 
 const withOnboarding = (
@@ -50,7 +55,7 @@ const withOnboarding = (
 					if (triggerCondition) {
 						open(modalTypes.ONBOARDING_MODAL, {
 							groupId,
-							onClose: close
+							onClose: close,
 						});
 						setOnboardingTriggered();
 					}

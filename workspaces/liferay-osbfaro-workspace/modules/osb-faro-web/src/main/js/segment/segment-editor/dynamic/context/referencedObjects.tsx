@@ -1,24 +1,30 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {Map} from 'immutable';
 import React, {createContext, useEffect, useReducer} from 'react';
+import {FieldOwnerTypes} from 'shared/util/constants';
+import {Property, Segment} from 'shared/util/records';
+
 import {
 	convertReferencedObjectsToProperties,
 	getPropertyContextFromRaw,
-	getPropertyNameFromRaw
+	getPropertyNameFromRaw,
 } from '../utils/utils';
-import {FieldOwnerTypes} from 'shared/util/constants';
-import {Map} from 'immutable';
-import {Property, Segment} from 'shared/util/records';
 
 export enum ActionType {
 	AddEntities = 'addEntities',
 	AddEntity = 'addEntity',
 	AddProperty = 'addProperty',
-	ReplaceAll = 'replaceAll'
+	ReplaceAll = 'replaceAll',
 }
 
 export const ACTION_TYPES: {[key: string]: ActionType} = {
 	addEntities: ActionType.AddEntities,
 	addEntity: ActionType.AddEntity,
-	addProperty: ActionType.AddProperty
+	addProperty: ActionType.AddProperty,
 };
 
 export enum EntityType {
@@ -30,7 +36,7 @@ export enum EntityType {
 	Roles = 'roles',
 	Teams = 'teams',
 	UserGroups = 'user-groups',
-	Users = 'users'
+	Users = 'users',
 }
 
 export type AddEntities = (params: {
@@ -54,7 +60,7 @@ export const ReferencedObjectsContext = createContext<{
 	referencedProperties: ReferencedProperties;
 }>({
 	referencedEntities: Map(),
-	referencedProperties: Map()
+	referencedProperties: Map(),
 });
 
 type Action = {
@@ -73,25 +79,28 @@ export const referencedPropertiesReducer = (
 				[
 					FieldOwnerTypes.Account,
 					FieldOwnerTypes.Individual,
-					FieldOwnerTypes.Organization
+					FieldOwnerTypes.Organization,
 				].includes(payload.propertyKey)
 			) {
 				return state.setIn(
 					[
 						payload.propertyKey,
 						getPropertyContextFromRaw(payload.name),
-						getPropertyNameFromRaw(payload.name)
+						getPropertyNameFromRaw(payload.name),
 					],
 					payload
 				);
-			} else if (payload.propertyKey === 'event') {
+			}
+			else if (payload.propertyKey === 'event') {
 				return state.setIn(
 					[payload.propertyKey, payload.name],
 					payload
 				);
-			} else if (payload.propertyKey === 'vocabulary') {
+			}
+			else if (payload.propertyKey === 'vocabulary') {
 				return state.setIn(['vocabulary', payload.name], payload);
-			} else if (payload.propertyKey === 'tag') {
+			}
+			else if (payload.propertyKey === 'tag') {
 				return state.setIn(['tag', payload.name], payload);
 			}
 
@@ -114,7 +123,7 @@ export const referencedEntitiesReducer = (
 				Map(
 					payload.map((item: Map<string, any>) => [
 						item.get('id'),
-						item
+						item,
 					])
 				)
 			);
@@ -151,13 +160,13 @@ const createReferencedEntitiesIMapFromSegment = (
 		[EntityType.Roles]: referencedObjects.get(EntityType.Roles),
 		[EntityType.Teams]: referencedObjects.get(EntityType.Teams),
 		[EntityType.UserGroups]: referencedObjects.get(EntityType.UserGroups),
-		[EntityType.Users]: referencedObjects.get(EntityType.Users)
+		[EntityType.Users]: referencedObjects.get(EntityType.Users),
 	});
 };
 
 export const ReferencedObjectsProvider = ({
 	children,
-	segment
+	segment,
 }: {
 	children: React.ReactNode;
 	segment?: Segment;
@@ -174,7 +183,7 @@ export const ReferencedObjectsProvider = ({
 		segment
 			? convertReferencedObjectsToProperties(
 					segment.get('referencedObjects', Map())
-			  )
+				)
 			: Map<string, any>()
 	);
 
@@ -184,16 +193,16 @@ export const ReferencedObjectsProvider = ({
 				? createReferencedEntitiesIMapFromSegment(segment)
 				: Map(),
 
-			type: ActionType.ReplaceAll
+			type: ActionType.ReplaceAll,
 		});
 
 		referencedPropertiesDispatch({
 			payload: segment
 				? convertReferencedObjectsToProperties(
 						segment.get('referencedObjects', Map())
-				  )
+					)
 				: Map(),
-			type: ActionType.ReplaceAll
+			type: ActionType.ReplaceAll,
 		});
 	}, [segment]);
 
@@ -202,7 +211,7 @@ export const ReferencedObjectsProvider = ({
 			value={{
 				addEntities: ({
 					entityType,
-					payload
+					payload,
 				}: {
 					entityType: EntityType;
 					payload: any[];
@@ -210,12 +219,12 @@ export const ReferencedObjectsProvider = ({
 					referencedEntitiesDispatch({
 						entityType,
 						payload,
-						type: ActionType.AddEntities
+						type: ActionType.AddEntities,
 					});
 				},
 				addEntity: ({
 					entityType,
-					payload
+					payload,
 				}: {
 					entityType: EntityType;
 					payload: any;
@@ -223,16 +232,16 @@ export const ReferencedObjectsProvider = ({
 					referencedEntitiesDispatch({
 						entityType,
 						payload,
-						type: ActionType.AddEntity
+						type: ActionType.AddEntity,
 					});
 				},
 				addProperty: (payload: Property) =>
 					referencedPropertiesDispatch({
 						payload,
-						type: ActionType.AddProperty
+						type: ActionType.AddProperty,
 					}),
 				referencedEntities,
-				referencedProperties
+				referencedProperties,
 			}}
 		>
 			{children}
@@ -242,12 +251,11 @@ export const ReferencedObjectsProvider = ({
 
 export const withReferencedObjectsProvider =
 	<P extends {segment?: Segment}>(WrappedComponent: React.ComponentType<P>) =>
-	(props: P) =>
-		(
-			<ReferencedObjectsProvider segment={props.segment}>
-				<WrappedComponent {...props} />
-			</ReferencedObjectsProvider>
-		);
+	(props: P) => (
+		<ReferencedObjectsProvider segment={props.segment}>
+			<WrappedComponent {...props} />
+		</ReferencedObjectsProvider>
+	);
 
 export const withReferencedObjectsConsumer =
 	<P extends object>(WrappedComponent: React.ComponentType<P>) =>
@@ -260,14 +268,13 @@ export const withReferencedObjectsConsumer =
 			| 'referencedEntities'
 			| 'referencedProperties'
 		>
-	) =>
-		(
-			<ReferencedObjectsContext.Consumer>
-				{referencedObjects => (
-					<WrappedComponent
-						{...(props as P)}
-						{...(referencedObjects as any)}
-					/>
-				)}
-			</ReferencedObjectsContext.Consumer>
-		);
+	) => (
+		<ReferencedObjectsContext.Consumer>
+			{(referencedObjects) => (
+				<WrappedComponent
+					{...(props as P)}
+					{...(referencedObjects as any)}
+				/>
+			)}
+		</ReferencedObjectsContext.Consumer>
+	);

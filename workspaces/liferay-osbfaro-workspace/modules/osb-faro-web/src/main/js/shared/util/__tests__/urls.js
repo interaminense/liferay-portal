@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {getUrl} from '../urls';
 
 describe('Url Utils', () => {
@@ -9,11 +14,11 @@ describe('Url Utils', () => {
 				params: {
 					groupId: '32719',
 					title: 'my page',
-					touchpoint: 'http://mypage.com/'
+					touchpoint: 'http://mypage.com/',
 				},
 				query: {
-					rangeKey: '30'
-				}
+					rangeKey: '30',
+				},
 			};
 
 			expect(getUrl(path, router)).toEqual(
@@ -29,11 +34,11 @@ describe('Url Utils', () => {
 					assetId: '123',
 					groupId: '32719',
 					title: 'my asset',
-					touchpoint: 'Any'
+					touchpoint: 'Any',
 				},
 				query: {
-					rangeKey: '30'
-				}
+					rangeKey: '30',
+				},
 			};
 
 			expect(getUrl(path, router)).toEqual(

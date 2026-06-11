@@ -1,8 +1,13 @@
-import React, {createContext, useMemo, useReducer} from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {Attribute, Breakdown, Filter} from 'event-analysis/utils/types';
-import {deletePropertyFromObject} from 'shared/util/object';
 import {isEqual} from 'lodash';
+import React, {createContext, useMemo, useReducer} from 'react';
 import {moveItem} from 'shared/util/array';
+import {deletePropertyFromObject} from 'shared/util/object';
 
 type Breakdowns = {[key: string]: Breakdown};
 type Filters = {[key: string]: Filter};
@@ -18,8 +23,8 @@ export const isAttributeInUse = (
 	attributeId: string,
 	...items: (Breakdowns | Filters)[]
 ): boolean =>
-	items.some(item =>
-		Object.values(item).some(item => item.attributeId === attributeId)
+	items.some((item) =>
+		Object.values(item).some((item) => item.attributeId === attributeId)
 	);
 
 export enum ActionTypes {
@@ -31,7 +36,7 @@ export enum ActionTypes {
 	EditBreakdown = 'EDIT_BREAKDOWN',
 	EditFilter = 'EDIT_FILTER',
 	MoveBreakdown = 'MOVE_BREAKDOWN',
-	MoveFilter = 'MOVE_FILTER'
+	MoveFilter = 'MOVE_FILTER',
 }
 
 export type AddBreakdownParams = {
@@ -93,7 +98,7 @@ export const AttributesContext = createContext<
 	breakdowns: {},
 	changed: false,
 	filterOrder: [],
-	filters: {}
+	filters: {},
 });
 
 type Action = {
@@ -115,25 +120,21 @@ const actionHandlers = {
 			breakdownOrder,
 			breakdowns,
 			filterOrder,
-			filters
+			filters,
 		}: AttributesState,
 		{payload: {attribute, breakdown} = {}}: Action
 	): AttributesState => {
 		const id = Date.now().toString();
 
 		return {
-			attributes: Object.assign({}, attributes, {
-				[attribute!.id]: attribute!
-			}),
+			attributes: {...attributes, [attribute!.id]: attribute!},
 			breakdownOrder: [...breakdownOrder, id],
-			breakdowns: Object.assign(
-				{
-					[id]: {...breakdown, id}
-				},
-				breakdowns
-			),
+			breakdowns: {
+				[id]: {...breakdown, id},
+				...breakdowns,
+			},
 			filterOrder,
-			filters
+			filters,
 		};
 	},
 	[ActionTypes.AddFilter]: (
@@ -142,20 +143,18 @@ const actionHandlers = {
 			breakdownOrder,
 			breakdowns,
 			filterOrder,
-			filters
+			filters,
 		}: AttributesState,
 		{payload: {attribute, filter} = {}}: Action
 	): AttributesState => {
 		const id = Date.now().toString();
 
 		return {
-			attributes: Object.assign({}, attributes, {
-				[attribute!.id]: attribute!
-			}),
+			attributes: {...attributes, [attribute!.id]: attribute!},
 			breakdownOrder,
 			breakdowns,
 			filterOrder: [...filterOrder, id],
-			filters: Object.assign({[id]: {...filter, id}}, filters)
+			filters: {[id]: {...filter, id}, ...filters},
 		};
 	},
 	[ActionTypes.DeleteAllAttributes]: (): AttributesState => ({
@@ -163,7 +162,7 @@ const actionHandlers = {
 		breakdownOrder: [],
 		breakdowns: {},
 		filterOrder: [],
-		filters: {}
+		filters: {},
 	}),
 	[ActionTypes.DeleteBreakdown]: (
 		{
@@ -171,7 +170,7 @@ const actionHandlers = {
 			breakdownOrder,
 			breakdowns,
 			filterOrder,
-			filters
+			filters,
 		}: AttributesState,
 		{payload: {id} = {}}: Action
 	): AttributesState => {
@@ -188,11 +187,11 @@ const actionHandlers = {
 				? attributes
 				: deletePropertyFromObject(attributeId, attributes),
 			breakdownOrder: breakdownOrder.filter(
-				breakdownId => breakdownId !== id
+				(breakdownId) => breakdownId !== id
 			),
 			breakdowns: updatedBreakdowns,
 			filterOrder,
-			filters
+			filters,
 		};
 	},
 	[ActionTypes.DeleteFilter]: (
@@ -201,7 +200,7 @@ const actionHandlers = {
 			breakdownOrder,
 			breakdowns,
 			filterOrder,
-			filters
+			filters,
 		}: AttributesState,
 		{payload: {id} = {}}: Action
 	): AttributesState => {
@@ -219,8 +218,8 @@ const actionHandlers = {
 				: deletePropertyFromObject(attributeId, attributes),
 			breakdownOrder,
 			breakdowns,
-			filterOrder: filterOrder.filter(filterId => filterId !== id),
-			filters: updatedFilters
+			filterOrder: filterOrder.filter((filterId) => filterId !== id),
+			filters: updatedFilters,
 		};
 	},
 	[ActionTypes.EditBreakdown]: (
@@ -229,7 +228,7 @@ const actionHandlers = {
 			breakdownOrder,
 			breakdowns,
 			filterOrder,
-			filters
+			filters,
 		}: AttributesState,
 		{payload: {attribute, breakdown, id} = {}}: Action
 	): AttributesState => {
@@ -238,24 +237,21 @@ const actionHandlers = {
 		const updatedBreakdowns = Object.assign(
 			deletePropertyFromObject(id!, breakdowns),
 			{
-				[id!]: {...breakdown, id}
+				[id!]: {...breakdown, id},
 			}
 		);
 
 		return {
-			attributes: Object.assign(
-				{},
-				isAttributeInUse(oldAttributeId, updatedBreakdowns, filters)
+			attributes: {
+				...(isAttributeInUse(oldAttributeId, updatedBreakdowns, filters)
 					? attributes
-					: deletePropertyFromObject(oldAttributeId, attributes),
-				{
-					[attribute!.id]: attribute!
-				}
-			),
+					: deletePropertyFromObject(oldAttributeId, attributes)),
+				[attribute!.id]: attribute!,
+			},
 			breakdownOrder,
 			breakdowns: updatedBreakdowns,
 			filterOrder,
-			filters
+			filters,
 		};
 	},
 	[ActionTypes.EditFilter]: (
@@ -264,7 +260,7 @@ const actionHandlers = {
 			breakdownOrder,
 			breakdowns,
 			filterOrder,
-			filters
+			filters,
 		}: AttributesState,
 		{payload: {attribute, filter, id} = {}}: Action
 	): AttributesState => {
@@ -273,24 +269,21 @@ const actionHandlers = {
 		const updatedFilters = Object.assign(
 			deletePropertyFromObject(id!, filters),
 			{
-				[id!]: {...filter, id}
+				[id!]: {...filter, id},
 			}
 		);
 
 		return {
-			attributes: Object.assign(
-				{},
-				isAttributeInUse(oldAttributeId, updatedFilters, breakdowns)
+			attributes: {
+				...(isAttributeInUse(oldAttributeId, updatedFilters, breakdowns)
 					? attributes
-					: deletePropertyFromObject(oldAttributeId, attributes),
-				{
-					[attribute!.id]: attribute!
-				}
-			),
+					: deletePropertyFromObject(oldAttributeId, attributes)),
+				[attribute!.id]: attribute!,
+			},
 			breakdownOrder,
 			breakdowns,
 			filterOrder,
-			filters: updatedFilters
+			filters: updatedFilters,
 		};
 	},
 	[ActionTypes.MoveBreakdown]: (
@@ -299,7 +292,7 @@ const actionHandlers = {
 			breakdownOrder,
 			breakdowns,
 			filterOrder,
-			filters
+			filters,
 		}: AttributesState,
 		{payload: {from, to} = {}}: Action
 	): AttributesState => ({
@@ -307,7 +300,7 @@ const actionHandlers = {
 		breakdownOrder: moveItem([...breakdownOrder], from!, to!),
 		breakdowns,
 		filterOrder,
-		filters
+		filters,
 	}),
 	[ActionTypes.MoveFilter]: (
 		{
@@ -315,7 +308,7 @@ const actionHandlers = {
 			breakdownOrder,
 			breakdowns,
 			filterOrder,
-			filters
+			filters,
 		}: AttributesState,
 		{payload: {from, to} = {}}: Action
 	): AttributesState => ({
@@ -323,8 +316,8 @@ const actionHandlers = {
 		breakdownOrder,
 		breakdowns,
 		filterOrder: moveItem([...filterOrder], from!, to!),
-		filters
-	})
+		filters,
+	}),
 };
 
 export const attributesReducer = (
@@ -345,7 +338,7 @@ const defaultState = {
 	breakdownOrder: [],
 	breakdowns: {},
 	filterOrder: [],
-	filters: {}
+	filters: {},
 };
 
 interface IAttributesProviderProps extends React.HTMLAttributes<HTMLElement> {
@@ -354,18 +347,18 @@ interface IAttributesProviderProps extends React.HTMLAttributes<HTMLElement> {
 
 export const AttributesProvider: React.FC<IAttributesProviderProps> = ({
 	children,
-	initialState = defaultState
+	initialState = defaultState,
 }) => {
 	const [
 		{attributes, breakdownOrder, breakdowns, filterOrder, filters},
-		attributesDispatch
+		attributesDispatch,
 	] = useReducer(attributesReducer, initialState);
 
 	const {
 		breakdownOrder: initialBreakdownOrder,
 		breakdowns: initialBreakdowns,
 		filterOrder: initialFilterOrder,
-		filters: initialFilters
+		filters: initialFilters,
 	} = initialState;
 
 	const breakdownOrderChanged: boolean = useMemo(
@@ -405,15 +398,15 @@ export const AttributesProvider: React.FC<IAttributesProviderProps> = ({
 		moveBreakdown: MoveBreakdown;
 		moveFilter: MoveFilter;
 	} = {
-		addBreakdown: payload =>
+		addBreakdown: (payload) =>
 			attributesDispatch({
 				payload,
-				type: ActionTypes.AddBreakdown
+				type: ActionTypes.AddBreakdown,
 			}),
-		addFilter: payload =>
+		addFilter: (payload) =>
 			attributesDispatch({
 				payload,
-				type: ActionTypes.AddFilter
+				type: ActionTypes.AddFilter,
 			}),
 		attributes,
 		breakdownOrder,
@@ -426,28 +419,28 @@ export const AttributesProvider: React.FC<IAttributesProviderProps> = ({
 		deleteAllAttributes: () =>
 			attributesDispatch({
 				payload: {},
-				type: ActionTypes.DeleteAllAttributes
+				type: ActionTypes.DeleteAllAttributes,
 			}),
-		deleteBreakdown: payload =>
+		deleteBreakdown: (payload) =>
 			attributesDispatch({payload, type: ActionTypes.DeleteBreakdown}),
-		deleteFilter: payload =>
+		deleteFilter: (payload) =>
 			attributesDispatch({payload, type: ActionTypes.DeleteFilter}),
-		editBreakdown: payload =>
+		editBreakdown: (payload) =>
 			attributesDispatch({
 				payload,
-				type: ActionTypes.EditBreakdown
+				type: ActionTypes.EditBreakdown,
 			}),
-		editFilter: payload =>
+		editFilter: (payload) =>
 			attributesDispatch({
 				payload,
-				type: ActionTypes.EditFilter
+				type: ActionTypes.EditFilter,
 			}),
 		filterOrder,
 		filters,
-		moveBreakdown: payload =>
+		moveBreakdown: (payload) =>
 			attributesDispatch({payload, type: ActionTypes.MoveBreakdown}),
-		moveFilter: payload =>
-			attributesDispatch({payload, type: ActionTypes.MoveFilter})
+		moveFilter: (payload) =>
+			attributesDispatch({payload, type: ActionTypes.MoveFilter}),
 	};
 
 	return (
@@ -459,18 +452,16 @@ export const AttributesProvider: React.FC<IAttributesProviderProps> = ({
 
 export const withAttributesProvider =
 	(WrappedComponent: React.ComponentType<any>) =>
-	(props: Record<string, any>) =>
-		(
-			<AttributesProvider>
-				<WrappedComponent {...props} />
-			</AttributesProvider>
-		);
+	(props: Record<string, any>) => (
+		<AttributesProvider>
+			<WrappedComponent {...props} />
+		</AttributesProvider>
+	);
 
 export const withAttributesConsumer =
 	(WrappedComponent: React.ComponentType<any>) =>
-	(props: Record<string, any>) =>
-		(
-			<AttributesContext.Consumer>
-				{attributes => <WrappedComponent {...props} {...attributes} />}
-			</AttributesContext.Consumer>
-		);
+	(props: Record<string, any>) => (
+		<AttributesContext.Consumer>
+			{(attributes) => <WrappedComponent {...props} {...attributes} />}
+		</AttributesContext.Consumer>
+	);

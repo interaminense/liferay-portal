@@ -1,9 +1,15 @@
-import DataSourceQuery from 'shared/queries/DataSourceQuery';
-import React from 'react';
-import {DataSourceTypes, OrderByDirections} from 'shared/util/constants';
-import {MemoryRouter} from 'react-router-dom';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {MockedProvider, MockedResponse} from '@apollo/client/testing';
 import {render} from '@testing-library/react';
+import React from 'react';
+import {MemoryRouter} from 'react-router-dom';
+import DataSourceQuery from 'shared/queries/DataSourceQuery';
+import {DataSourceTypes, OrderByDirections} from 'shared/util/constants';
+
 import {ReviewSyncedDataStep} from '../ReviewSyncedDataStep';
 
 jest.unmock('react-dom');
@@ -14,8 +20,8 @@ const defaultMock = {
 		variables: {
 			size: 1,
 			sort: {column: 'createDate', type: OrderByDirections.Descending},
-			type: DataSourceTypes.Liferay
-		}
+			type: DataSourceTypes.Liferay,
+		},
 	},
 	result: {
 		data: {
@@ -23,16 +29,16 @@ const defaultMock = {
 				{
 					contactsSyncDetails: {selected: true},
 					id: '123',
-					sitesSyncDetails: {selected: false}
-				}
-			]
-		}
-	}
+					sitesSyncDetails: {selected: false},
+				},
+			],
+		},
+	},
 };
 
 const Wrapper = ({
 	children,
-	mocks = [defaultMock]
+	mocks = [defaultMock],
 }: {
 	children: React.ReactNode;
 	mocks?: MockedResponse[];

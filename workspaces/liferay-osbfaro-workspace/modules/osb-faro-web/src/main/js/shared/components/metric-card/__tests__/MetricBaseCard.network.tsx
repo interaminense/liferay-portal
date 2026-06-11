@@ -1,18 +1,24 @@
-import BasePage from 'shared/components/base-page';
-import MetricBaseCard from '../MetricBaseCard';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {MockedProvider} from '@apollo/client/testing';
+import {render, waitFor} from '@testing-library/react';
 import React from 'react';
+import {MemoryRouter, Route} from 'react-router-dom';
+import BasePage from 'shared/components/base-page';
+import {getSiteMetricsChartData} from 'shared/components/metric-card/util';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
+
+import MetricBaseCard from '../MetricBaseCard';
 import {
 	BounceRateMetric,
 	CompositeMetric,
 	Metric,
 	SessionDurationMetric,
-	SessionsPerVisitorMetric
+	SessionsPerVisitorMetric,
 } from '../metrics';
-import {getSiteMetricsChartData} from 'shared/components/metric-card/util';
-import {MemoryRouter, Route} from 'react-router-dom';
-import {MockedProvider} from '@apollo/client/testing';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {render, waitFor} from '@testing-library/react';
 import {SitesMetricQuery, SitesTabsQuery} from '../queries';
 
 jest.unmock('react-dom');
@@ -20,15 +26,15 @@ jest.unmock('react-dom');
 jest.mock('shared/hooks/useRequest', () => ({
 	useRequest: jest.fn(() => ({
 		data: 13,
-		loading: false
-	}))
+		loading: false,
+	})),
 }));
 
 const metrics: Metric[] = [
 	CompositeMetric,
 	SessionsPerVisitorMetric,
 	SessionDurationMetric,
-	BounceRateMetric
+	BounceRateMetric,
 ];
 
 const sharedRequestVariables = {
@@ -38,7 +44,7 @@ const sharedRequestVariables = {
 	location: 'Any',
 	rangeEnd: null,
 	rangeKey: parseInt(RangeKeyTimeRanges.Last30Days),
-	rangeStart: null
+	rangeStart: null,
 };
 
 const tabsResult = {
@@ -50,9 +56,9 @@ const tabsResult = {
 			trend: {
 				__typename: 'Trend',
 				percentage: null,
-				trendClassification: 'NEUTRAL'
+				trendClassification: 'NEUTRAL',
 			},
-			value: 0
+			value: 0,
 		},
 		sessionDurationMetric: {
 			__typename: 'Metric',
@@ -60,9 +66,9 @@ const tabsResult = {
 			trend: {
 				__typename: 'Trend',
 				percentage: null,
-				trendClassification: 'NEUTRAL'
+				trendClassification: 'NEUTRAL',
 			},
-			value: 0
+			value: 0,
 		},
 		sessionsPerVisitorMetric: {
 			__typename: 'Metric',
@@ -70,9 +76,9 @@ const tabsResult = {
 			trend: {
 				__typename: 'Trend',
 				percentage: null,
-				trendClassification: 'NEUTRAL'
+				trendClassification: 'NEUTRAL',
 			},
-			value: 0
+			value: 0,
 		},
 		visitorsMetric: {
 			__typename: 'Metric',
@@ -80,11 +86,11 @@ const tabsResult = {
 			trend: {
 				__typename: 'Trend',
 				percentage: null,
-				trendClassification: 'NEUTRAL'
+				trendClassification: 'NEUTRAL',
 			},
-			value: 0
-		}
-	}
+			value: 0,
+		},
+	},
 };
 
 const compositeMetricResult = {
@@ -95,70 +101,72 @@ const compositeMetricResult = {
 			histogram: {
 				__typename: 'Histogram',
 				asymmetricComparison: false,
-				metrics: []
+				metrics: [],
 			},
 			previousValue: null,
 			trend: {
 				__typename: 'Trend',
 				percentage: null,
-				trendClassification: 'NEUTRAL'
+				trendClassification: 'NEUTRAL',
 			},
-			value: 0
+			value: 0,
 		},
 		knownVisitorsMetric: {
 			__typename: 'HistogramMetric',
 			histogram: {
 				__typename: 'Histogram',
 				asymmetricComparison: false,
-				metrics: []
+				metrics: [],
 			},
 			previousValue: null,
 			trend: {
 				__typename: 'Trend',
 				percentage: null,
-				trendClassification: 'NEUTRAL'
+				trendClassification: 'NEUTRAL',
 			},
-			value: 0
+			value: 0,
 		},
 		visitorsMetric: {
 			__typename: 'HistogramMetric',
 			histogram: {
 				__typename: 'Histogram',
 				asymmetricComparison: false,
-				metrics: []
+				metrics: [],
 			},
 			previousValue: null,
 			trend: {
 				__typename: 'Trend',
 				percentage: null,
-				trendClassification: 'NEUTRAL'
+				trendClassification: 'NEUTRAL',
 			},
-			value: 0
-		}
-	}
+			value: 0,
+		},
+	},
 };
 
 const buildMocks = (counter: {tabs: number; metric: number}) => [
 	{
 		newData: () => {
 			counter.tabs += 1;
+
 			return {data: tabsResult};
 		},
 		request: {
 			query: SitesTabsQuery,
-			variables: sharedRequestVariables
-		}
+			variables: sharedRequestVariables,
+		},
 	},
 	{
 		newData: () => {
 			counter.metric += 1;
+
 			return {data: compositeMetricResult};
 		},
 		request: {
 			query: SitesMetricQuery('visitorsMetric'),
-			variables: sharedRequestVariables
-		}
-	}
+			variables: sharedRequestVariables,
+		},
+	},
 ];
 
 const renderWithProviders = (
@@ -172,28 +180,28 @@ const renderWithProviders = (
 					filters: {},
 					router: {
 						params: {channelId: '456', groupId: '2000'},
-						query: {rangeKey: RangeKeyTimeRanges.Last30Days}
-					}
+						query: {rangeKey: RangeKeyTimeRanges.Last30Days},
+					},
 				}}
 			>
 				<MemoryRouter
 					initialEntries={[
-						`/workspace/2000/456/sites?rangeKey=${RangeKeyTimeRanges.Last30Days}`
+						`/workspace/2000/456/sites?rangeKey=${RangeKeyTimeRanges.Last30Days}`,
 					]}
 				>
-					<Route path='/workspace/:groupId/:channelId/sites'>
+					<Route path="/workspace/:groupId/:channelId/sites">
 						{visible && (
 							<MetricBaseCard
 								chartDataMapFn={getSiteMetricsChartData}
-								label='Visitors Behavior'
+								label="Visitors Behavior"
 								metrics={metrics}
 								queries={{
 									MetricQuery: SitesMetricQuery,
 									name: 'site',
-									TabsQuery: SitesTabsQuery
+									TabsQuery: SitesTabsQuery,
 								}}
 								variables={() => ({
-									...sharedRequestVariables
+									...sharedRequestVariables,
 								})}
 							/>
 						)}

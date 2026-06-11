@@ -1,20 +1,26 @@
-import AttributeBreakdownChip from './AttributeBreakdownChip';
-import AttributeBreakdownDropdown from './attribute-breakdown-dropdown';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayButton from '@clayui/button';
+import {Align} from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
-import DndProvider from 'shared/components/DndProvider';
+import {Attributes, Breakdowns, Filters} from 'event-analysis/utils/types';
 import React from 'react';
+import {HTML5Backend} from 'react-dnd-html5-backend';
+import DndProvider from 'shared/components/DndProvider';
+
 import {
 	AddBreakdown,
 	AddBreakdownParams,
 	DeleteBreakdown,
 	EditBreakdown,
 	MoveBreakdown,
-	withAttributesConsumer
+	withAttributesConsumer,
 } from '../context/attributes';
-import {Align} from '@clayui/drop-down';
-import {Attributes, Breakdowns, Filters} from 'event-analysis/utils/types';
-import {HTML5Backend} from 'react-dnd-html5-backend';
+import AttributeBreakdownChip from './AttributeBreakdownChip';
+import AttributeBreakdownDropdown from './attribute-breakdown-dropdown';
 
 const MAX_ATTRIBUTES = 5;
 
@@ -40,10 +46,10 @@ export const AttributeBreakdownSection: React.FC<
 	deleteBreakdown,
 	editBreakdown,
 	eventId,
-	moveBreakdown
+	moveBreakdown,
 }) => {
 	const disabledIds = breakdownOrder.map(
-		breakdownId => breakdowns[breakdownId].attributeId
+		(breakdownId) => breakdowns[breakdownId].attributeId
 	);
 
 	const uneditableIds = Object.keys(attributes);
@@ -55,15 +61,15 @@ export const AttributeBreakdownSection: React.FC<
 	};
 
 	return (
-		<div className='attribute-breakdown-section-root d-flex align-items-center'>
-			<div className='section-header'>
+		<div className="align-items-center attribute-breakdown-section-root d-flex">
+			<div className="section-header">
 				{Liferay.Language.get('breakdown')}
 			</div>
 
 			{!!eventId && (
-				<div className='attribute-container d-flex align-items-center justify-content-between'>
+				<div className="align-items-center attribute-container d-flex justify-content-between">
 					<DndProvider backend={HTML5Backend}>
-						<div className='attribute-list d-flex align-items-center'>
+						<div className="align-items-center attribute-list d-flex">
 							{breakdownOrder.map((id, i) => (
 								<AttributeBreakdownChip
 									attribute={
@@ -93,13 +99,13 @@ export const AttributeBreakdownSection: React.FC<
 								<ClayButton
 									aria-label={Liferay.Language.get('add')}
 									borderless
-									className='button-root add-attribute'
-									displayType='secondary'
-									size='sm'
+									className="add-attribute button-root"
+									displayType="secondary"
+									size="sm"
 								>
 									<ClayIcon
-										className='icon-root'
-										symbol='plus'
+										className="icon-root"
+										symbol="plus"
 									/>
 								</ClayButton>
 							}

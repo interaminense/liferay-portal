@@ -1,12 +1,18 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayDropDown, {Align} from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import getCN from 'classnames';
-import Item from './Item';
 import React, {useRef, useState} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {Routes, toRoute} from 'shared/util/router';
 import {updateDefaultChannelId} from 'shared/actions/preferences';
+import {Routes, toRoute} from 'shared/util/router';
+
+import Item from './Item';
 
 export type Channel = {
 	createTime: number;
@@ -23,7 +29,7 @@ interface IChannelsMenuProps extends React.HTMLAttributes<HTMLElement> {
 	channels: Channel[];
 	updateDefaultChannelId: ({
 		defaultChannelId,
-		groupId
+		groupId,
 	}: {
 		defaultChannelId: string;
 		groupId: string;
@@ -51,7 +57,7 @@ export const ChannelsMenu: React.FC<IChannelsMenuProps> = ({
 	className,
 	defaultChannelId,
 	groupId,
-	updateDefaultChannelId
+	updateDefaultChannelId,
 }) => {
 	const [active, setActive] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
@@ -78,39 +84,39 @@ export const ChannelsMenu: React.FC<IChannelsMenuProps> = ({
 					active={active}
 					alignElementRef={triggerElementRef}
 					alignmentPosition={Align.RightTop}
-					className='channels-menu-dropdown'
+					className="channels-menu-dropdown"
 					offsetFn={() => [12, 0]}
 					onSetActive={setActive}
 					ref={menuElementRef}
 				>
 					<>
-						<div className='channels-menu-dropdown-header'>
-							<div className='title'>
+						<div className="channels-menu-dropdown-header">
+							<div className="title">
 								<div>{Liferay.Language.get('properties')}</div>
 								<Link
-									className='text-white'
+									className="text-white"
 									to={toRoute(Routes.SETTINGS_CHANNELS, {
-										groupId
+										groupId,
 									})}
 								>
 									<ClayIcon
-										className='icon-root'
-										symbol='cog'
+										className="icon-root"
+										symbol="cog"
 									/>
 								</Link>
 							</div>
 
 							<ClayDropDown.Search
-								className='header-search'
+								className="header-search"
 								formProps={{
-									onSubmit: e => e.preventDefault()
+									onSubmit: (e) => e.preventDefault(),
 								}}
 								onChange={setSearchTerm}
 								placeholder={Liferay.Language.get('search')}
 								value={searchTerm}
 							/>
 						</div>
-						<div className='channels-menu-dropdown-body'>
+						<div className="channels-menu-dropdown-body">
 							<ClayDropDown.ItemList>
 								{channels.map((channel, i) => {
 									if (
@@ -132,7 +138,7 @@ export const ChannelsMenu: React.FC<IChannelsMenuProps> = ({
 													updateDefaultChannelId({
 														defaultChannelId:
 															channel.id,
-														groupId
+														groupId,
 													});
 													handleActive();
 												}}
@@ -162,16 +168,16 @@ const ChannelsButton = React.forwardRef<
 		ref={ref}
 		{...otherProps}
 	>
-		<div className='channels-menu-icon'>
-			<ClayIcon className='icon-root' symbol='sites' />
+		<div className="channels-menu-icon">
+			<ClayIcon className="icon-root" symbol="sites" />
 		</div>
 
-		<div className='channels-menu-label'>
+		<div className="channels-menu-label">
 			{channel ? channel.name : Liferay.Language.get('no-properties')}
 		</div>
 
-		<div className='channels-menu-caret'>
-			<ClayIcon className='icon-root' symbol='caret-right' />
+		<div className="channels-menu-caret">
+			<ClayIcon className="icon-root" symbol="caret-right" />
 		</div>
 	</button>
 ));

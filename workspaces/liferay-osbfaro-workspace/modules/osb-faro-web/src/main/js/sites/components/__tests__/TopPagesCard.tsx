@@ -1,18 +1,24 @@
-import BasePage from 'shared/components/base-page';
-import mockStore from 'test/mock-store';
-import React from 'react';
-import TopPagesCard from '../TopPagesCard';
-import {MemoryRouter} from 'react-router-dom';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {MockedProvider} from '@apollo/client/testing';
+import {render} from '@testing-library/react';
+import React from 'react';
+import {Provider} from 'react-redux';
+import {MemoryRouter} from 'react-router-dom';
+import BasePage from 'shared/components/base-page';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {
 	mockPreferenceReq,
 	mockSitesTopPagesReq,
-	mockTimeRangeReq
+	mockTimeRangeReq,
 } from 'test/graphql-data';
-import {Provider} from 'react-redux';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {render} from '@testing-library/react';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+import mockStore from 'test/mock-store';
+
+import TopPagesCard from '../TopPagesCard';
 
 jest.unmock('react-dom');
 
@@ -21,12 +27,12 @@ const MOCK_CONTEXT = {
 	router: {
 		params: {
 			channelId: '123',
-			groupId: '456'
+			groupId: '456',
 		},
 		query: {
-			rangeKey: RangeKeyTimeRanges.Last30Days
-		}
-	}
+			rangeKey: RangeKeyTimeRanges.Last30Days,
+		},
+	},
 };
 
 const DefaultComponent = () => (
@@ -38,15 +44,15 @@ const DefaultComponent = () => (
 					mocks={[
 						mockTimeRangeReq(),
 						mockPreferenceReq(),
-						mockSitesTopPagesReq()
+						mockSitesTopPagesReq(),
 					]}
 				>
 					<TopPagesCard
 						footer={{
 							href: 'link-to-the-next-page',
-							label: 'view pages'
+							label: 'view pages',
 						}}
-						label='card label'
+						label="card label"
 					/>
 				</MockedProvider>
 			</MemoryRouter>

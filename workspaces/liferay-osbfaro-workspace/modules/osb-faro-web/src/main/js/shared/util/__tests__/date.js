@@ -1,4 +1,10 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import * as data from 'test/data';
+
 import {
 	applyTimeZone,
 	formatUTCDate,
@@ -11,7 +17,7 @@ import {
 	getFirstDate,
 	getISODate,
 	getLastDate,
-	toUnix
+	toUnix,
 } from '../date';
 
 describe('date', () => {
@@ -91,6 +97,7 @@ describe('date', () => {
 	});
 
 	expect.extend({
+
 		/**
 		 * To Equal Without Type
 		 * @param {string} received
@@ -102,15 +109,16 @@ describe('date', () => {
 				return {
 					message: () =>
 						`expected ${received} not to equal ${argument}`,
-					pass: true
-				};
-			} else {
-				return {
-					message: () => `expected ${received} to equal ${argument}`,
-					pass: false
+					pass: true,
 				};
 			}
-		}
+			else {
+				return {
+					message: () => `expected ${received} to equal ${argument}`,
+					pass: false,
+				};
+			}
+		},
 	});
 
 	describe('getDateRangeLabel', () => {
@@ -118,7 +126,7 @@ describe('date', () => {
 			const dates = [
 				{intervalInitDate: data.getTimestamp(-2)},
 				{intervalInitDate: data.getTimestamp(-1)},
-				{intervalInitDate: data.getTimestamp()}
+				{intervalInitDate: data.getTimestamp()},
 			];
 
 			expect(

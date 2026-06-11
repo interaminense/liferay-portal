@@ -1,6 +1,12 @@
-import reducer from '../sidebar';
-import {actionTypes} from '../../actions/sidebar';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {Map} from 'immutable';
+
+import {actionTypes} from '../../actions/sidebar';
+import reducer from '../sidebar';
 
 describe('Sidebar Reducer', () => {
 	it('should be a function', () => {
@@ -14,16 +20,16 @@ describe('Sidebar Reducer', () => {
 		const action = {
 			payload: {
 				collapsed,
-				currentUserId
+				currentUserId,
 			},
-			type: actionTypes.COLLAPSE_SIDEBAR
+			type: actionTypes.COLLAPSE_SIDEBAR,
 		};
 
 		const state = reducer(new Map(), action);
 
 		expect(state).toEqual(
 			new Map({
-				[currentUserId]: collapsed
+				[currentUserId]: collapsed,
 			})
 		);
 	});

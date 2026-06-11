@@ -1,29 +1,33 @@
-import BaseCard from 'shared/components/base-card';
-import BasePage from 'shared/components/base-page';
-import Card from 'shared/components/Card';
-import CardTabs from 'shared/components/CardTabs';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {ApolloError, useQuery} from '@apollo/client';
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
-import ErrorDisplay from 'shared/components/ErrorDisplay';
+import {pickBy} from 'lodash';
 import React, {useContext, useState} from 'react';
-import SitesTopPagesQuery, {
-	SitesTopPagesQueryData,
-	SitesTopPagesQueryVariables
-} from 'shared/queries/SitesTopPagesQuery';
+import Card from 'shared/components/Card';
+import CardTabs from 'shared/components/CardTabs';
+import ErrorDisplay from 'shared/components/ErrorDisplay';
+import BaseCard from 'shared/components/base-card';
+import BasePage from 'shared/components/base-page';
+import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import Table from 'shared/components/table';
-import URLConstants from 'shared/util/url-constants';
-import {ApolloError, useQuery} from '@apollo/client';
-
-import {ENTRANCES_METRIC, EXIT_RATE_METRIC} from 'shared/util/pagination';
-import {getSafeRangeSelectors} from 'shared/util/util';
-import {metricsListColumns} from 'shared/util/table-columns';
 import {NameCell} from 'shared/components/table/cell-components';
-import {OrderByDirections} from 'shared/util/constants';
-import {pickBy} from 'lodash';
+import SitesTopPagesQuery, {
+	SitesTopPagesQueryData,
+	SitesTopPagesQueryVariables,
+} from 'shared/queries/SitesTopPagesQuery';
 import {RangeSelectors} from 'shared/types';
-import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
+import {OrderByDirections} from 'shared/util/constants';
+import {ENTRANCES_METRIC, EXIT_RATE_METRIC} from 'shared/util/pagination';
 import {setUriQueryValues} from 'shared/util/router';
+import {metricsListColumns} from 'shared/util/table-columns';
+import URLConstants from 'shared/util/url-constants';
+import {getSafeRangeSelectors} from 'shared/util/util';
 
 const ROW_IDENTIFIER = ['assetId', 'assetTitle'];
 
@@ -31,18 +35,18 @@ const ASSET_TITLE_COLUMN = {
 	cellRenderer: NameCell,
 	cellRendererProps: {
 		nameKey: 'assetTitle',
-		renderSecondaryInfo: ({assetId}: {assetId: string}) => assetId
+		renderSecondaryInfo: ({assetId}: {assetId: string}) => assetId,
 	},
 	className: 'table-cell-expand',
 	label: `${Liferay.Language.get('page-title')}
 			|
 			${Liferay.Language.get('canonical-url')}`,
-	sortable: false
+	sortable: false,
 };
 
 const DEFAULT_METRIC_COLUMN = {
 	sortable: false,
-	title: true
+	title: true,
 };
 
 const tabs = [
@@ -52,12 +56,12 @@ const tabs = [
 			{
 				...DEFAULT_METRIC_COLUMN,
 				...metricsListColumns.visitorsMetric,
-				accessor: 'visitorsMetric.value'
-			}
+				accessor: 'visitorsMetric.value',
+			},
 		],
 		rowIdentifier: ROW_IDENTIFIER,
 		tabId: 'visitorsMetric',
-		title: Liferay.Language.get('visited-pages')
+		title: Liferay.Language.get('visited-pages'),
 	},
 	{
 		getColumns: () => [
@@ -65,12 +69,12 @@ const tabs = [
 			{
 				...DEFAULT_METRIC_COLUMN,
 				...metricsListColumns.entrancesMetric,
-				accessor: 'entrancesMetric.value'
-			}
+				accessor: 'entrancesMetric.value',
+			},
 		],
 		rowIdentifier: ROW_IDENTIFIER,
 		tabId: ENTRANCES_METRIC,
-		title: Liferay.Language.get('entrance-pages')
+		title: Liferay.Language.get('entrance-pages'),
 	},
 	{
 		getColumns: () => [
@@ -78,13 +82,13 @@ const tabs = [
 			{
 				...DEFAULT_METRIC_COLUMN,
 				...metricsListColumns.exitRateMetric,
-				accessor: 'exitRateMetric.value'
-			}
+				accessor: 'exitRateMetric.value',
+			},
 		],
 		rowIdentifier: ROW_IDENTIFIER,
 		tabId: EXIT_RATE_METRIC,
-		title: Liferay.Language.get('exit-pages')
-	}
+		title: Liferay.Language.get('exit-pages'),
+	},
 ];
 
 interface ITopPagesCardProps extends React.HTMLAttributes<HTMLElement> {
@@ -100,7 +104,7 @@ const TopPagesCard: React.FC<ITopPagesCardProps> = ({
 	className,
 	footer,
 	label,
-	legacyDropdownRangeKey
+	legacyDropdownRangeKey,
 }) => (
 	<BaseCard
 		className={className}
@@ -123,18 +127,18 @@ interface ITopPageCardWithData extends Partial<ITopPagesCardProps> {
 
 const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 	footer,
-	rangeSelectors
+	rangeSelectors,
 }) => {
 	const [activeTabId, setActiveTabId] = useState(tabs[0].tabId);
 	const {
 		router: {
-			params: {channelId}
-		}
+			params: {channelId},
+		},
 	} = useContext(BasePage.Context);
 	const {
 		data,
 		error,
-		loading = false
+		loading = false,
 	} = useQuery<SitesTopPagesQueryData, SitesTopPagesQueryVariables>(
 		SitesTopPagesQuery,
 		{
@@ -144,10 +148,10 @@ const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 				size: 5,
 				sort: {
 					column: activeTabId,
-					type: OrderByDirections.Descending
+					type: OrderByDirections.Descending,
 				},
-				start: 0
-			}
+				start: 0,
+			},
 		}
 	);
 
@@ -157,12 +161,12 @@ const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 	return (
 		<>
 			<Card.Body
-				className='w-100 d-flex flex-column flex-grow-1'
+				className="d-flex flex-column flex-grow-1 w-100"
 				noPadding
 			>
 				<CardTabs
 					activeTabId={activeTabId}
-					onChange={tabId => setActiveTabId(tabId)}
+					onChange={(tabId) => setActiveTabId(tabId)}
 					tabs={tabs.map(({tabId, title}) => ({tabId, title}))}
 				/>
 
@@ -172,7 +176,7 @@ const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 					loading={loading}
 				>
 					<Table
-						className='flex-grow-1 table-hover'
+						className="flex-grow-1 table-hover"
 						columns={getColumns() as any}
 						items={data?.pages.assetMetrics ?? []}
 						rowIdentifier={rowIdentifier}
@@ -185,13 +189,13 @@ const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 					<ClayLink
 						borderless
 						button
-						className='button-root'
-						displayType='secondary'
+						className="button-root"
+						displayType="secondary"
 						href={setUriQueryValues(
 							pickBy({
 								...rangeSelectors,
 								field: activeTabId,
-								sortOrder: OrderByDirections.Descending
+								sortOrder: OrderByDirections.Descending,
 							}),
 							footer.href
 						)}
@@ -200,8 +204,8 @@ const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 						{footer.label}
 
 						<ClayIcon
-							className='icon-root ml-2'
-							symbol='angle-right-small'
+							className="icon-root ml-2"
+							symbol="angle-right-small"
 						/>
 					</ClayLink>
 				</Card.Footer>
@@ -225,7 +229,7 @@ const TopPagesCardWithStatesRenderer: React.FC<
 		<StatesRenderer.Empty
 			description={
 				<>
-					<span className='mr-1'>
+					<span className="mr-1">
 						{Liferay.Language.get(
 							'check-back-later-to-verify-if-data-has-been-received-from-your-data-sources'
 						)}
@@ -233,8 +237,8 @@ const TopPagesCardWithStatesRenderer: React.FC<
 
 					<ClayLink
 						href={URLConstants.SitesDashboardTopPages}
-						key='DOCUMENTATION'
-						target='_blank'
+						key="DOCUMENTATION"
+						target="_blank"
 					>
 						{Liferay.Language.get('learn-more-about-pages')}
 					</ClayLink>

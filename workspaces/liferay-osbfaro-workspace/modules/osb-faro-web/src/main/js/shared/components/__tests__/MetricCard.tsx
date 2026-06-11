@@ -1,7 +1,13 @@
-import MetricCard from '../MetricCard';
-import React from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {cleanup, render} from '@testing-library/react';
+import React from 'react';
 import {TrendClassification} from 'segment/types';
+
+import MetricCard from '../MetricCard';
 
 jest.unmock('react-dom');
 
@@ -11,12 +17,10 @@ describe('MetricCard', () => {
 	const defaultProps = {
 		description: 'Test description',
 		renderTrendLabel: (percentageNode: React.ReactNode) => (
-			<>
-				{percentageNode} {'vs last period'}
-			</>
+			<>{percentageNode} vs last period</>
 		),
 		title: 'Test title',
-		value: 42
+		value: 42,
 	};
 
 	it('should render', () => {
@@ -49,7 +53,7 @@ describe('MetricCard', () => {
 				{...defaultProps}
 				trend={{
 					percentage: 10,
-					trendClassification: TrendClassification.Positive
+					trendClassification: TrendClassification.Positive,
 				}}
 			/>
 		);
@@ -67,7 +71,7 @@ describe('MetricCard', () => {
 				{...defaultProps}
 				trend={{
 					percentage: -5,
-					trendClassification: TrendClassification.Negative
+					trendClassification: TrendClassification.Negative,
 				}}
 			/>
 		);
@@ -84,7 +88,7 @@ describe('MetricCard', () => {
 				{...defaultProps}
 				trend={{
 					percentage: 0,
-					trendClassification: TrendClassification.Neutral
+					trendClassification: TrendClassification.Neutral,
 				}}
 			/>
 		);
@@ -109,12 +113,12 @@ describe('MetricCard', () => {
 		const {container} = render(
 			<MetricCard
 				{...defaultProps}
-				className='custom-card'
+				className="custom-card"
 				trend={{
 					percentage: 10,
-					trendClassification: TrendClassification.Positive
+					trendClassification: TrendClassification.Positive,
 				}}
-				trendClassName='custom-trend'
+				trendClassName="custom-trend"
 			/>
 		);
 
@@ -126,7 +130,7 @@ describe('MetricCard', () => {
 		const {getByTestId} = render(
 			<MetricCard
 				{...defaultProps}
-				value={<span data-testid='custom-value'>{'5 accounts'}</span>}
+				value={<span data-testid="custom-value">5 accounts</span>}
 			/>
 		);
 
@@ -139,7 +143,7 @@ describe('MetricCard', () => {
 				{...defaultProps}
 				trend={{
 					percentage: 12.3456,
-					trendClassification: TrendClassification.Positive
+					trendClassification: TrendClassification.Positive,
 				}}
 			/>
 		);

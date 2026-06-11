@@ -1,5 +1,10 @@
-import {ConnectorStatus} from '../types';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {getInitialLogEntries} from '../getConnectorStatusItems';
+import {ConnectorStatus} from '../types';
 
 describe('getInitialLogEntries', () => {
 	it('seeds a single Token generated entry for Inactive with no data', () => {
@@ -55,11 +60,11 @@ describe('item shape', () => {
 			getInitialLogEntries(ConnectorStatus.Active, 0),
 			getInitialLogEntries(ConnectorStatus.Active, 1),
 			getInitialLogEntries(ConnectorStatus.Inactive, 1),
-			getInitialLogEntries(ConnectorStatus.Disconnected, 0)
+			getInitialLogEntries(ConnectorStatus.Disconnected, 0),
 		];
 
-		allSeeds.forEach(entries => {
-			entries.forEach(entry => {
+		allSeeds.forEach((entries) => {
+			entries.forEach((entry) => {
 				expect(typeof entry.bold).toBe('boolean');
 				expect(typeof entry.icon).toBe('string');
 				expect(['secondary', 'success']).toContain(

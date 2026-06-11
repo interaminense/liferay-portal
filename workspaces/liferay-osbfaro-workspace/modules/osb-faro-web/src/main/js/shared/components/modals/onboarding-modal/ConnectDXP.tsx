@@ -1,60 +1,65 @@
-import * as API from 'shared/api';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {useLazyQuery} from '@apollo/client';
 import ClayButton from '@clayui/button';
+import {Text} from '@clayui/core';
 import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
 import ClayLink from '@clayui/link';
 import ClayList from '@clayui/list';
+import getCN from 'classnames';
+import {get, noop, upperFirst} from 'lodash';
+import React, {FC, useEffect, useRef, useState} from 'react';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {fetchDataSource} from 'shared/actions/data-sources';
+import * as API from 'shared/api';
 import CopyButton from 'shared/components/CopyButton';
+import InfoPopover from 'shared/components/InfoPopover';
+import Input from 'shared/components/Input';
+import Select from 'shared/components/Select';
+import {getDefaultChannel} from 'shared/components/channels-menu';
+import Label from 'shared/components/form/Label';
+import Modal from 'shared/components/modal';
+import {ActionType, useChannelContext} from 'shared/context/channel';
+import {withHistory} from 'shared/hoc';
+import {useInterval} from 'shared/hooks/useInterval';
 import DataSourceQuery, {
 	DataSource,
 	DataSourceData,
-	DataSourceSyncData
+	DataSourceSyncData,
 } from 'shared/queries/DataSourceQuery';
-import getCN from 'classnames';
-import InfoPopover from 'shared/components/InfoPopover';
-import Input from 'shared/components/Input';
-import Label from 'shared/components/form/Label';
-import Modal from 'shared/components/modal';
-import React, {FC, useEffect, useRef, useState} from 'react';
-import Select from 'shared/components/Select';
-import URLConstants from 'shared/util/url-constants';
-import {ActionType, useChannelContext} from 'shared/context/channel';
-import {compose} from 'redux';
-import {connect} from 'react-redux';
-import {CREATE_DATE} from 'shared/util/pagination';
 import {DataSourceTypes, OrderByDirections} from 'shared/util/constants';
-import {fetchDataSource} from 'shared/actions/data-sources';
-import {get, noop, upperFirst} from 'lodash';
-import {getDefaultChannel} from 'shared/components/channels-menu';
-import {Routes, toRoute} from 'shared/util/router';
 import {sub} from 'shared/util/lang';
-import {Text} from '@clayui/core';
-import {useInterval} from 'shared/hooks/useInterval';
-import {useLazyQuery} from '@apollo/client';
-import {withHistory} from 'shared/hoc';
+import {CREATE_DATE} from 'shared/util/pagination';
+import {Routes, toRoute} from 'shared/util/router';
+import URLConstants from 'shared/util/url-constants';
 
 const TIMEOUT_INTERVAL = 5000;
 
 const DXP_VERSIONS: Record<string, {label: string; url: URLConstants}> = {
 	'dxp-2024-q-1-1': {
 		label: 'DXP 2024.Q1.1 Quarterly Release',
-		url: URLConstants.DownloadDXP2024Q11
+		url: URLConstants.DownloadDXP2024Q11,
 	},
 	'dxp-73-u30': {
 		label: 'DXP Version 7.3 U30 + and above with hotfix',
-		url: URLConstants.DownloadDXP73U30
-	}
+		url: URLConstants.DownloadDXP73U30,
+	},
 };
 
 const DATA_SOURCE_STATUSES = {
 	CONFIGURED: {
 		display: 'success',
-		label: Liferay.Language.get('configured')
+		label: Liferay.Language.get('configured'),
 	},
 	UNCONFIGURED: {
 		display: 'secondary',
-		label: Liferay.Language.get('unconfigured')
-	}
+		label: Liferay.Language.get('unconfigured'),
+	},
 };
 
 interface IConnectDXPProps {
@@ -69,7 +74,7 @@ interface IConnectDXPWrapperProps {
 	dataSourceId?: string;
 	fetchDataSource: ({
 		groupId,
-		id
+		id,
 	}: {
 		groupId: string;
 		id: string;
@@ -95,7 +100,7 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 	onClose,
 	onDxpConnected,
 	onNext,
-	onboarding
+	onboarding,
 }) => {
 	const {channelDispatch} = useChannelContext();
 	const [token, setToken] = useState<string>('');
@@ -111,31 +116,35 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 				size: 1,
 				sort: {
 					column: CREATE_DATE,
-					type: OrderByDirections.Descending
+					type: OrderByDirections.Descending,
 				},
-				type: DataSourceTypes.Liferay
-			}
+				type: DataSourceTypes.Liferay,
+			},
 		}
 	);
 
 	let _tokenRequest: ReturnType<typeof setTimeout> | Promise<any> | undefined;
 
-	const getNextToken: (prevToken?: string) => Promise<any> = prevToken =>
+	const getNextToken: (prevToken?: string) => Promise<any> = (prevToken) =>
 		API.dataSource
 			.fetchToken(groupId, dataSourceId)
-			.then(nextToken => {
+			.then((nextToken) => {
 				if (!prevToken || prevToken === nextToken) {
 					_tokenRequest = setTimeout(
 						() => getNextToken(nextToken),
 						TIMEOUT_INTERVAL
 					);
-				} else {
+				}
+				else {
 					if (onboarding) {
 						onDxpConnected(true);
 
 						updateChannels();
+
 						// if it's an upgrade from oauth to token, we need to fetch the DataSource
-					} else if (dataSourceId) {
+
+					}
+					else if (dataSourceId) {
 						fetchDataSource({groupId, id: dataSourceId});
 					}
 
@@ -144,7 +153,7 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 
 				return nextToken;
 			})
-			.catch(err => {
+			.catch((err) => {
 				if (!err.IS_CANCELLATION_ERROR) {
 					_tokenRequest = setTimeout(
 						() => getNextToken(prevToken),
@@ -163,12 +172,12 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 
 			channelDispatch?.({
 				payload: getDefaultChannel(channelId, items),
-				type: ActionType.setSelectedChannel
+				type: ActionType.setSelectedChannel,
 			});
 
 			channelDispatch?.({
 				payload: items,
-				type: ActionType.setChannels
+				type: ActionType.setChannels,
 			});
 		});
 	};
@@ -196,34 +205,34 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 			<Modal.Header onClose={onClose} />
 
 			<Modal.Body>
-				<div className='analytics-to-dxp-container'>
+				<div className="analytics-to-dxp-container">
 					<ClayIcon
-						className='icon-root icon-size-xl'
-						symbol='dxp_icon'
+						className="icon-root icon-size-xl"
+						symbol="dxp_icon"
 					/>
 
 					<ClayIcon
 						className={getCN('arrows icon-root icon-size-lg', {
-							connected: dxpConnected
+							connected: dxpConnected,
 						})}
-						symbol='ac_horizontal_arrows'
+						symbol="ac_horizontal_arrows"
 					/>
 
 					<ClayIcon
-						className='icon-root icon-size-xl'
+						className="icon-root icon-size-xl"
 						symbol={dxpConnected ? 'ac_logo' : 'ac_logo_grayscale'}
 					/>
 				</div>
 
-				<div className='text-center mb-4'>
-					<Text size={10} weight='bold'>
+				<div className="mb-4 text-center">
+					<Text size={10} weight="bold">
 						{dxpConnected
 							? Liferay.Language.get(
 									'your-dxp-instance-is-connected-to-analytics-cloud'
-							  )
+								)
 							: Liferay.Language.get(
 									'connect-your-dxp-analytics'
-							  )}
+								)}
 					</Text>
 				</div>
 
@@ -242,9 +251,9 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 				<div>
 					{!(dxpConnected && onboarding) && (
 						<ClayButton
-							className='button-root'
+							className="button-root"
 							disabled={dxpConnected}
-							displayType='secondary'
+							displayType="secondary"
 							onClick={onboarding ? () => onNext?.() : onClose}
 						>
 							{onboarding
@@ -255,8 +264,8 @@ const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
 
 					<ClayLink
 						button
-						className='button-root ml-2'
-						displayType='primary'
+						className="button-root ml-2"
+						displayType="primary"
 						href={getNavHref()}
 						onClick={() => (onboarding ? onNext?.() : onClose())}
 					>
@@ -274,7 +283,7 @@ const DxpSyncTable: FC<React.HTMLAttributes<HTMLElement>> = () => {
 	const [dataSource, setDataSources] = useState<DataSource>({
 		contactsSyncDetails: {selected: false},
 		id: '',
-		sitesSyncDetails: {selected: false}
+		sitesSyncDetails: {selected: false},
 	});
 	const [getDataSources, {data}] = useLazyQuery<DataSourceSyncData>(
 		DataSourceQuery,
@@ -284,10 +293,10 @@ const DxpSyncTable: FC<React.HTMLAttributes<HTMLElement>> = () => {
 				size: 1,
 				sort: {
 					column: CREATE_DATE,
-					type: OrderByDirections.Descending
+					type: OrderByDirections.Descending,
 				},
-				type: DataSourceTypes.Liferay
-			}
+				type: DataSourceTypes.Liferay,
+			},
 		}
 	);
 	useInterval<void>(getDataSources, TIMEOUT_INTERVAL);
@@ -316,14 +325,14 @@ const DxpSyncTable: FC<React.HTMLAttributes<HTMLElement>> = () => {
 			<ClayList>
 				<ClayList.Item flex>
 					<ClayList.ItemField expand>
-						<Text size={3} weight='bold'>
+						<Text size={3} weight="bold">
 							{Liferay.Language.get('sites')}
 						</Text>
 					</ClayList.ItemField>
 
 					<ClayList.ItemField>
 						<ClayLabel
-							className='text-uppercase'
+							className="text-uppercase"
 							displayType={sitesDisplay as any}
 							large
 						>
@@ -334,14 +343,14 @@ const DxpSyncTable: FC<React.HTMLAttributes<HTMLElement>> = () => {
 
 				<ClayList.Item flex>
 					<ClayList.ItemField expand>
-						<Text size={3} weight='bold'>
+						<Text size={3} weight="bold">
 							{Liferay.Language.get('contacts')}
 						</Text>
 					</ClayList.ItemField>
 
 					<ClayList.ItemField>
 						<ClayLabel
-							className='text-uppercase'
+							className="text-uppercase"
 							displayType={contactsDisplay as any}
 							large
 						>
@@ -351,8 +360,8 @@ const DxpSyncTable: FC<React.HTMLAttributes<HTMLElement>> = () => {
 				</ClayList.Item>
 			</ClayList>
 
-			<div className='mt-2'>
-				<Text color='secondary' size={3}>
+			<div className="mt-2">
+				<Text color="secondary" size={3}>
 					{Liferay.Language.get(
 						'you-can-check-your-data-source-syncing-status-under-settings-in-data-sources,-or-continue-configuring-your-data-source-on-your-dxp-instance'
 					)}
@@ -368,8 +377,8 @@ const FixPackSelect: FC<React.HTMLAttributes<HTMLElement>> = () => {
 
 	return (
 		<>
-			<div className='mt-1'>
-				<Text color='secondary' size={3}>
+			<div className="mt-1">
+				<Text color="secondary" size={3}>
 					{sub(
 						Liferay.Language.get(
 							'x-to-learn-how-to-connect-liferay-dxp-to-analytics-cloud'
@@ -377,29 +386,29 @@ const FixPackSelect: FC<React.HTMLAttributes<HTMLElement>> = () => {
 						[
 							<ClayLink
 								href={URLConstants.HelpConnectDxp}
-								key='helpConnectDxpText'
-								target='_blank'
+								key="helpConnectDxpText"
+								target="_blank"
 							>
 								{upperFirst(
 									Liferay.Language.get(
 										'click-here'
 									).toLowerCase()
 								)}
-							</ClayLink>
+							</ClayLink>,
 						],
 						false
 					)}
 				</Text>
 			</div>
 
-			<div className='mt-4 mb-1'>
+			<div className="mb-1 mt-4">
 				<Label>
-					<Text size={6} weight='bold'>
+					<Text size={6} weight="bold">
 						{Liferay.Language.get('dxp-requirements')}
 					</Text>
 
 					<InfoPopover
-						className='ml-2'
+						className="ml-2"
 						content={Liferay.Language.get(
 							'minimum-fix-pack-version-required-for-full-functionality'
 						)}
@@ -408,17 +417,17 @@ const FixPackSelect: FC<React.HTMLAttributes<HTMLElement>> = () => {
 				</Label>
 			</div>
 
-			<div className='d-flex align-items-center justify-content-between'>
-				<div className='flex-grow-1 mr-3'>
+			<div className="align-items-center d-flex justify-content-between">
+				<div className="flex-grow-1 mr-3">
 					<Select
 						onChange={({
-							target: {value}
+							target: {value},
 						}: React.ChangeEvent<HTMLSelectElement>) =>
 							setDxpVersion(value)
 						}
 						value={dxpVersion}
 					>
-						{dxpVersionsList.map(key => (
+						{dxpVersionsList.map((key) => (
 							<Select.Item key={key} value={key}>
 								{DXP_VERSIONS[key].label}
 							</Select.Item>
@@ -429,14 +438,14 @@ const FixPackSelect: FC<React.HTMLAttributes<HTMLElement>> = () => {
 				<div>
 					<ClayLink
 						button
-						className='button-root'
-						displayType='secondary'
+						className="button-root"
+						displayType="secondary"
 						href={DXP_VERSIONS[dxpVersion].url}
-						target='_blank'
+						target="_blank"
 					>
 						<ClayIcon
-							className='icon-root mr-2'
-							symbol='shortcut'
+							className="icon-root mr-2"
+							symbol="shortcut"
 						/>
 
 						{Liferay.Language.get('download')}
@@ -450,7 +459,7 @@ const FixPackSelect: FC<React.HTMLAttributes<HTMLElement>> = () => {
 const TokenInput: FC<ITokenInputProps> = ({token}) => {
 	const [tokenCopied, setTokenCopied] = useState(false);
 	const copyButtonClassName = getCN('copy-button', {
-		'input-success': tokenCopied
+		'input-success': tokenCopied,
 	});
 
 	const _inputRef = useRef<any>();
@@ -461,8 +470,8 @@ const TokenInput: FC<ITokenInputProps> = ({token}) => {
 
 	return (
 		<>
-			<div className='mb-1'>
-				<Text weight='bold'>
+			<div className="mb-1">
+				<Text weight="bold">
 					{sub(
 						Liferay.Language.get(
 							'copy-this-token-to-your-x-instance'
@@ -473,12 +482,12 @@ const TokenInput: FC<ITokenInputProps> = ({token}) => {
 			</div>
 
 			<Input.Group>
-				<Input.GroupItem position='prepend'>
+				<Input.GroupItem position="prepend">
 					<Input
 						className={getCN('text-truncate', {
-							'input-success': tokenCopied
+							'input-success': tokenCopied,
 						})}
-						inset='after'
+						inset="after"
 						onChange={noop}
 						onClick={selectAll}
 						ref={_inputRef}
@@ -487,11 +496,11 @@ const TokenInput: FC<ITokenInputProps> = ({token}) => {
 
 					<Input.Inset
 						className={copyButtonClassName}
-						position='after'
+						position="after"
 					>
 						<CopyButton
 							className={copyButtonClassName}
-							displayType='unstyled'
+							displayType="unstyled"
 							onClick={() => {
 								setTokenCopied(true);
 							}}
@@ -507,6 +516,6 @@ const TokenInput: FC<ITokenInputProps> = ({token}) => {
 export default compose<any>(
 	withHistory,
 	connect(null, {
-		fetchDataSource
+		fetchDataSource,
 	})
 )(ConnectDXP);

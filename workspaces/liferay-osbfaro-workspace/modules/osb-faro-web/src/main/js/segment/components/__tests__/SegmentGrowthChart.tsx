@@ -1,5 +1,11 @@
-import React from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {fireEvent, render} from '@testing-library/react';
+import React from 'react';
+
 import {SegmentGrowthChart} from '../Growth';
 
 const chartData = [
@@ -9,7 +15,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724112000000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -17,7 +23,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724198400000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -25,7 +31,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724284800000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -33,7 +39,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724371200000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -41,7 +47,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724457600000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -49,7 +55,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724544000000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -57,7 +63,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724630400000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -65,7 +71,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724716800000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -73,7 +79,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724803200000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -81,7 +87,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724889600000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -89,7 +95,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1724976000000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -97,7 +103,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725062400000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -105,7 +111,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725148800000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -113,7 +119,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725235200000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -121,7 +127,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725321600000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -129,7 +135,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725408000000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -137,7 +143,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725494400000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -145,7 +151,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725580800000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -153,7 +159,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725667200000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -161,7 +167,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725753600000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -169,7 +175,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725840000000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -177,7 +183,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1725926400000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -185,7 +191,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1726012800000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -193,7 +199,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1726099200000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -201,7 +207,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1726185600000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -209,7 +215,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1726272000000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -217,7 +223,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1726358400000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -225,7 +231,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1726444800000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -233,7 +239,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1726531200000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -241,7 +247,7 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1726617600000,
 		removed: 0,
-		value: 0
+		value: 0,
 	},
 	{
 		added: 0,
@@ -249,8 +255,8 @@ const chartData = [
 		knownCount: 0,
 		modifiedDate: 1726704000000,
 		removed: 0,
-		value: 0
-	}
+		value: 0,
+	},
 ];
 
 jest.unmock('react-dom');
@@ -280,7 +286,7 @@ jest.mock('recharts', () => {
 					{children}
 				</OriginalModule.Tooltip>
 			);
-		}
+		},
 	};
 });
 

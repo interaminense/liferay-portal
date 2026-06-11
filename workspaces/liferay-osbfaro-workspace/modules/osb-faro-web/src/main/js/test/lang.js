@@ -1,13 +1,13 @@
 /**
- * Reads our `Language.properties` and should return them for any calls
- * to `Liferay.Language.get`. This module will report an error if the file
- * cannot be read, and will probably fail most of our tests.
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 import fs from 'fs';
-import LanguageIgnoreList from './language-ignore-list';
 import path from 'path';
 import properties from 'properties';
+
+import LanguageIgnoreList from './language-ignore-list';
 
 const AC_LANG_PATH = path.resolve(
 	'src',
@@ -36,7 +36,9 @@ function getKeys(langPath) {
 		const buffer = fs.readFileSync(langPath);
 
 		keys = properties.parse(buffer.toString('utf8'));
-	} catch (e) {
+	}
+	catch (e) {
+
 		// eslint-disable-next-line no-console
 		console.error(`Failed to read lang key file: ${langPath}`);
 	}

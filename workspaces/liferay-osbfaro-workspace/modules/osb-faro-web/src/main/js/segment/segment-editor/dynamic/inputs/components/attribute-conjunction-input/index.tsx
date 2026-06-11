@@ -1,26 +1,32 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
-import Form from 'shared/components/form';
-import OperatorSelect from './OperatorSelect';
+import {Attribute} from 'event-analysis/utils/types';
+import {DATA_TYPE_ICONS_MAP} from 'event-analysis/utils/utils';
+import {Map} from 'immutable';
 import React, {useEffect, useState} from 'react';
 import Sticker from 'shared/components/Sticker';
-import ValueInput from './ValueInput';
+import Form from 'shared/components/form';
+
 import {
 	AddEntity,
 	EntityType,
 	ReferencedEntities,
-	withReferencedObjectsConsumer
+	withReferencedObjectsConsumer,
 } from '../../../context/referencedObjects';
-import {Attribute} from 'event-analysis/utils/types';
 import {Criterion} from '../../../utils/types';
-import {DATA_TYPE_ICONS_MAP} from 'event-analysis/utils/utils';
+import OperatorSelect from './OperatorSelect';
+import ValueInput from './ValueInput';
 import {
 	getDefaultAttributeOperator,
 	getDefaultAttributeValue,
-	validateAttributeValue
+	validateAttributeValue,
 } from './utils';
-import {Map} from 'immutable';
 
 interface IAttributeFilterConjunctionInputProps {
 	addEntity: AddEntity;
@@ -57,7 +63,7 @@ const AttributeFilterConjunctionInput: React.FC<
 	conjunctionCriterion,
 	onChange,
 	touched,
-	valid
+	valid,
 }) => {
 	useEffect(() => {
 		if (!getAttributeId()) {
@@ -75,7 +81,7 @@ const AttributeFilterConjunctionInput: React.FC<
 		const attributeId = getAttributeId();
 
 		return (
-			attributes.find(attribute => attribute?.id === attributeId) ||
+			attributes.find((attribute) => attribute?.id === attributeId) ||
 			attributes[0]
 		);
 	};
@@ -95,7 +101,9 @@ const AttributeFilterConjunctionInput: React.FC<
 	};
 
 	const getAttributes = (query: string) => {
-		if (!query) return attributes;
+		if (!query) {
+			return attributes;
+		}
 
 		return attributes.filter(
 			({displayName, name}) =>
@@ -109,7 +117,7 @@ const AttributeFilterConjunctionInput: React.FC<
 	const setAttribute = (attribute: Attribute) => {
 		addEntity({
 			entityType: EntityType.Attributes,
-			payload: Map(attribute)
+			payload: Map(attribute),
 		});
 
 		const defaultAttributeValue = getDefaultAttributeValue(
@@ -129,7 +137,7 @@ const AttributeFilterConjunctionInput: React.FC<
 				operatorName:
 					defaultAttributeOperator as unknown as Criterion['operatorName'],
 				propertyName: `attribute/${attribute.id}`,
-				value: defaultAttributeValue
+				value: defaultAttributeValue,
 			},
 			touched: {...touched, attribute: true, attributeValue: false},
 			valid: {
@@ -139,8 +147,8 @@ const AttributeFilterConjunctionInput: React.FC<
 					defaultAttributeValue,
 					attribute.dataType,
 					defaultAttributeOperator
-				)
-			}
+				),
+			},
 		});
 	};
 
@@ -154,15 +162,15 @@ const AttributeFilterConjunctionInput: React.FC<
 					closeOnClick
 					trigger={
 						<ClayButton
-							className='form-control form-control-select form-control-select-secondary'
-							displayType='secondary'
+							className="form-control form-control-select form-control-select-secondary"
+							displayType="secondary"
 						>
 							{attribute.displayName || attribute.name}
 						</ClayButton>
 					}
 				>
 					<ClayDropDown.Search
-						className='py-2 px-2'
+						className="px-2 py-2"
 						onChange={(query: string) => {
 							setSearchValue(query);
 							setAttributesDisplayed(getAttributes(query));
@@ -175,16 +183,17 @@ const AttributeFilterConjunctionInput: React.FC<
 						{(item: unknown) => {
 							const {dataType, displayName, id, name} =
 								item as Attribute;
+
 							return (
 								<ClayDropDown.Item
 									active={id === attribute.id}
 									key={name}
 									onClick={() => handleAttributeChange(id)}
-									roleItem='option'
+									roleItem="option"
 								>
 									<Sticker
-										className='mr-3'
-										display='secondary'
+										className="mr-3"
+										display="secondary"
 									>
 										<ClayIcon
 											symbol={
@@ -208,7 +217,7 @@ const AttributeFilterConjunctionInput: React.FC<
 						attribute,
 						criterion: params.criterion,
 						touched,
-						valid
+						valid,
 					})
 				}
 				operatorName={operatorName}
@@ -216,7 +225,7 @@ const AttributeFilterConjunctionInput: React.FC<
 
 			<ValueInput
 				dataType={attribute.dataType}
-				onChange={params =>
+				onChange={(params) =>
 					onChange({
 						attribute,
 						criterion: params.criterion ?? {},
@@ -224,14 +233,14 @@ const AttributeFilterConjunctionInput: React.FC<
 							...touched,
 							attributeValue:
 								params.touched?.attributeValue ??
-								touched.attributeValue
+								touched.attributeValue,
 						},
 						valid: {
 							...valid,
 							attributeValue:
 								params.valid?.attributeValue ??
-								valid.attributeValue
-						}
+								valid.attributeValue,
+						},
 					})
 				}
 				operatorName={operatorName}

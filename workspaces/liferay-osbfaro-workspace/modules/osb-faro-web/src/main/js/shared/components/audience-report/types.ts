@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 export type DataPoint = {
 	color: string;
 	count: number;
@@ -38,7 +43,7 @@ export enum Name {
 	Form = 'form',
 	Journal = 'journal',
 	ObjectEntry = 'objectEntry',
-	Page = 'page'
+	Page = 'page',
 }
 
 export interface IAudienceReportBaseCardProps {

@@ -1,30 +1,36 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {Map, Set} from 'immutable';
+
+import {DataSourceTypes, EntityTypes} from '../constants';
 import {
 	ACCOUNTS,
+	INDIVIDUALS,
+	LIFERAY,
+	Routes,
+	SEGMENTS,
 	buildRoutes,
 	getDataSourceType,
 	getMatchedRoute,
 	getRouteName,
 	getType,
-	INDIVIDUALS,
-	LIFERAY,
 	removePageParam,
 	removeUriQueryParam,
 	resetPaginationParams,
-	Routes,
-	SEGMENTS,
 	setUriFilterValues,
 	setUriQueryValue,
 	setUriQueryValues,
-	toRoute
+	toRoute,
 } from '../router';
-import {DataSourceTypes, EntityTypes} from '../constants';
-import {Map, Set} from 'immutable';
 
 describe('setUriFilterValues', () => {
 	it('should add filter queries to url and return as a string', () => {
 		const mockFilterBy = new Map({
 			biz: new Set(['buz']),
-			foo: new Set(['bar', 'baz'])
+			foo: new Set(['bar', 'baz']),
 		});
 
 		const url = 'http://www.liferay.com';
@@ -129,7 +135,7 @@ describe('setUriFilterValues', () => {
 
 		const mockFilterBy = new Map({
 			devices: new Set(['desktop', 'mobile']),
-			foo: new Set(['bar'])
+			foo: new Set(['bar']),
 		});
 
 		expect(setUriFilterValues(mockFilterBy, url)).toBe(
@@ -175,12 +181,12 @@ describe('buildRoutes', () => {
 	it('should return an object with keys that map to route strings', () => {
 		const routes = buildRoutes({
 			BAR: '/bar',
-			FOO: '/foo'
+			FOO: '/foo',
 		});
 
 		expect(routes).toMatchObject({
 			BAR: '/bar',
-			FOO: '/foo'
+			FOO: '/foo',
 		});
 	});
 
@@ -194,12 +200,12 @@ describe('buildRoutes', () => {
 					FIZZ: {
 						path: '/fizz',
 						routes: {
-							BUZZ: '/buzz'
-						}
-					}
-				}
+							BUZZ: '/buzz',
+						},
+					},
+				},
 			},
-			FOO: '/foo'
+			FOO: '/foo',
 		});
 
 		expect(routes).toMatchObject({
@@ -208,7 +214,7 @@ describe('buildRoutes', () => {
 			BIZ: '/bar/biz',
 			BUZZ: '/bar/fizz/buzz',
 			FIZZ: '/bar/fizz',
-			FOO: '/foo'
+			FOO: '/foo',
 		});
 	});
 });

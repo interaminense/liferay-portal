@@ -1,3 +1,9 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {RelationalOperators, TimeSpans} from '../../utils/constants';
 import {
 	createCustomValueMap,
 	getCompleteDate,
@@ -8,9 +14,8 @@ import {
 	removeItemsByIndex,
 	setCompleteDate,
 	setOperator,
-	setPropertyValue
+	setPropertyValue,
 } from '../custom-inputs';
-import {RelationalOperators, TimeSpans} from '../../utils/constants';
 
 const mockValue = createCustomValueMap([
 	{
@@ -19,19 +24,20 @@ const mockValue = createCustomValueMap([
 			{
 				operatorName: RelationalOperators.EQ,
 				propertyName: 'context/city',
-				value: 'foo'
+				value: 'foo',
 			},
 			{
 				operatorName: RelationalOperators.GT,
 				propertyName: 'completeDate',
-				value: TimeSpans.Last7Days
-			}
-		]
-	}
+				value: TimeSpans.Last7Days,
+			},
+		],
+	},
 ]);
 
 describe('Custom Inputs Util', () => {
 	describe('createCustomValueMap', () => {
+
 		// This unit test is skipped because uuid is generated every time test is run.
 
 		it.skip('should create an immutable valueIMap from a given param array', () => {
@@ -43,15 +49,15 @@ describe('Custom Inputs Util', () => {
 							{
 								operatorName: RelationalOperators.EQ,
 								propertyName: 'context/city',
-								value: 'foo'
+								value: 'foo',
 							},
 							{
 								operatorName: RelationalOperators.GT,
 								propertyName: 'completeDate',
-								value: TimeSpans.Last7Days
-							}
-						]
-					}
+								value: TimeSpans.Last7Days,
+							},
+						],
+					},
 				])
 			).toMatchSnapshot();
 		});
@@ -97,7 +103,7 @@ describe('Custom Inputs Util', () => {
 			);
 
 			const updatedMockValue = removeItemsByIndex(mockValue, [
-				indexToRemove
+				indexToRemove,
 			]);
 
 			expect(

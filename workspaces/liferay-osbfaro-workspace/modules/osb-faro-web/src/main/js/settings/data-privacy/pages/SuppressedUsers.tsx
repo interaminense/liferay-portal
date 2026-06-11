@@ -1,10 +1,16 @@
-import BasePage from 'settings/components/base-page/BasePage';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import React from 'react';
-import SuppressedUserList from '../hocs/SuppressedUserList';
-import {getDataPrivacy} from 'shared/util/breadcrumbs';
-import {Router} from 'shared/types';
+import BasePage from 'settings/components/base-page/BasePage';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
+import {Router} from 'shared/types';
+import {getDataPrivacy} from 'shared/util/breadcrumbs';
+
+import SuppressedUserList from '../hocs/SuppressedUserList';
 
 export const SuppressedUsers = ({router}: {router: Router}) => {
 	const currentUser = useCurrentUser();
@@ -18,10 +24,10 @@ export const SuppressedUsers = ({router}: {router: Router}) => {
 				getDataPrivacy({groupId}),
 				{
 					active: true,
-					label: Liferay.Language.get('suppressed-user-list')
-				}
+					label: Liferay.Language.get('suppressed-user-list'),
+				},
 			]}
-			className='suppressed-users-page-root'
+			className="suppressed-users-page-root"
 			documentTitle={Liferay.Language.get('suppressed-user-list')}
 		>
 			<SuppressedUserList

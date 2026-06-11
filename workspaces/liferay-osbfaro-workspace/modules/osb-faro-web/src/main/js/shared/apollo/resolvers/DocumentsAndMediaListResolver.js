@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 export default () => ({
 	__typename: 'AssetMetricBag',
 	assetMetrics: [
@@ -8,21 +13,21 @@ export default () => ({
 				'Como Construir uma Intranet que Impulsione a Produtividade',
 			commentsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
 			downloadsMetric: {
 				__typename: 'Metric',
-				value: 4
+				value: 4,
 			},
 			impressionMadeMetric: {
 				__typename: 'Metric',
-				value: 13
+				value: 13,
 			},
 			ratingsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
-			urls: null
+			urls: null,
 		},
 		{
 			__typename: 'DocumentMetric',
@@ -30,21 +35,21 @@ export default () => ({
 			assetTitle: 'Deploying Liferay DXP in Azure',
 			commentsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
 			downloadsMetric: {
 				__typename: 'Metric',
-				value: 3
+				value: 3,
 			},
 			impressionMadeMetric: {
 				__typename: 'Metric',
-				value: 13
+				value: 13,
 			},
 			ratingsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
-			urls: null
+			urls: null,
 		},
 		{
 			__typename: 'DocumentMetric',
@@ -52,21 +57,21 @@ export default () => ({
 			assetTitle: 'Liferay DXP 7.4 Deployment Checklist',
 			commentsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
 			downloadsMetric: {
 				__typename: 'Metric',
-				value: 3
+				value: 3,
 			},
 			impressionMadeMetric: {
 				__typename: 'Metric',
-				value: 5
+				value: 5,
 			},
 			ratingsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
-			urls: null
+			urls: null,
 		},
 		{
 			__typename: 'DocumentMetric',
@@ -74,21 +79,21 @@ export default () => ({
 			assetTitle: 'Upgrading from Liferay 7.x to 7.4',
 			commentsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
 			downloadsMetric: {
 				__typename: 'Metric',
-				value: 2
+				value: 2,
 			},
 			impressionMadeMetric: {
 				__typename: 'Metric',
-				value: 24
+				value: 24,
 			},
 			ratingsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
-			urls: null
+			urls: null,
 		},
 		{
 			__typename: 'DocumentMetric',
@@ -96,22 +101,22 @@ export default () => ({
 			assetTitle: '5 Ways Self-Service is Valuable for Wealth Managers',
 			commentsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
 			downloadsMetric: {
 				__typename: 'Metric',
-				value: 2
+				value: 2,
 			},
 			impressionMadeMetric: {
 				__typename: 'Metric',
-				value: 3
+				value: 3,
 			},
 			ratingsMetric: {
 				__typename: 'Metric',
-				value: 0
+				value: 0,
 			},
-			urls: null
-		}
+			urls: null,
+		},
 	],
-	total: 5
+	total: 5,
 });

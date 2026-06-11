@@ -1,6 +1,12 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {pickBy} from 'lodash';
-import {RangeKeyTimeRanges} from './constants';
 import {RangeSelectors} from 'shared/types';
+
+import {RangeKeyTimeRanges} from './constants';
 
 export type GQLQuery = {
 	definitions: {
@@ -24,7 +30,7 @@ export const getVariableDefinitions = (
 		(acc, {variableDefinitions}) => {
 			variableDefinitions.forEach(({variable}) => {
 				const {
-					name: {value}
+					name: {value},
 				} = variable;
 
 				acc[value] = true;

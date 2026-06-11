@@ -1,6 +1,11 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {isNumber, round} from 'lodash';
 import moment from 'moment';
 import momentDurationFormatSetup from 'moment-duration-format';
-import {isNumber, round} from 'lodash';
 
 momentDurationFormatSetup(moment);
 
@@ -10,7 +15,7 @@ momentDurationFormatSetup(moment);
  */
 const removeZeroPrecision = (str, locale) => {
 	const parts = new Intl.NumberFormat(locale).formatToParts(1.1);
-	const decimalPart = parts.find(part => part.type === 'decimal');
+	const decimalPart = parts.find((part) => part.type === 'decimal');
 	const decimalSeparator = decimalPart ? decimalPart.value : '.';
 
 	const regex = new RegExp(
@@ -27,7 +32,7 @@ const removeZeroPrecision = (str, locale) => {
 export const toRounded = (number, precision = 1, locale = undefined) => {
 	const formatted = new Intl.NumberFormat(locale, {
 		maximumFractionDigits: precision,
-		minimumFractionDigits: precision
+		minimumFractionDigits: precision,
 	}).format(number);
 
 	return removeZeroPrecision(formatted.trim(), locale);
@@ -39,7 +44,7 @@ export const toRounded = (number, precision = 1, locale = undefined) => {
  */
 export const toLocale = (number, locale = undefined) =>
 	new Intl.NumberFormat(locale, {
-		maximumFractionDigits: 6
+		maximumFractionDigits: 6,
 	}).format(number);
 
 /**
@@ -50,8 +55,8 @@ export const toLocale = (number, locale = undefined) =>
  * @param {number} number
  * @returns {string}
  */
-export const toThousands = number =>
-	toThousandsBase(number, factor => round(number * factor, 2));
+export const toThousands = (number) =>
+	toThousandsBase(number, (factor) => round(number * factor, 2));
 
 export const toThousandsBase = (number, setFactor) => {
 	if (!isNumber(number)) {
@@ -68,10 +73,12 @@ export const toThousandsBase = (number, setFactor) => {
 	if (number >= 1e6 && number < 1e9) {
 		factor = 1e-6;
 		suffix = 'M';
-	} else if (number >= 1e9 && number < 1e12) {
+	}
+	else if (number >= 1e9 && number < 1e12) {
 		factor = 1e-9;
 		suffix = 'B';
-	} else if (number >= 1e12) {
+	}
+	else if (number >= 1e12) {
 		factor = 1e-12;
 		suffix = 'T';
 	}
@@ -86,7 +93,7 @@ export const toThousandsBase = (number, setFactor) => {
 export const toFixedPoint = (number, locale = undefined) => {
 	const formatted = new Intl.NumberFormat(locale, {
 		maximumFractionDigits: 0,
-		useGrouping: true
+		useGrouping: true,
 	}).format(number);
 
 	return removeZeroPrecision(formatted, locale).trim().toUpperCase();
@@ -96,7 +103,7 @@ export const toFixedPoint = (number, locale = undefined) => {
  * To Int
  * @param {string} str
  */
-export const toInt = str => parseInt(str, 10);
+export const toInt = (str) => parseInt(str, 10);
 
 /**
  * To Duration
@@ -118,14 +125,14 @@ export const toDuration = (
 const multipliers = {
 	B: 1000000000,
 	K: 1000,
-	M: 1000000
+	M: 1000000,
 };
 
 /**
  * Undo Thousands
  * @param {string} formatted
  */
-export const undoThousands = formatted => {
+export const undoThousands = (formatted) => {
 	if (!formatted) {
 		return 0;
 	}

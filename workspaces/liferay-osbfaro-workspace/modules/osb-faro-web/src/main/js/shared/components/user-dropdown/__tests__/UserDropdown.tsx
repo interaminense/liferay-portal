@@ -1,7 +1,13 @@
-import React from 'react';
-import UserDropdown, {Menus} from '../index';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
+import React from 'react';
 import {MemoryRouter} from 'react-router-dom';
+
+import UserDropdown, {Menus} from '../index';
 
 jest.unmock('react-dom');
 
@@ -11,33 +17,33 @@ const mockMenus = (): Menus => ({
 			items: [
 				{
 					childMenuId: 'language',
-					label: 'Language'
+					label: 'Language',
 				},
 				{
 					externalLink: true,
 					label: 'Link 1',
-					url: '/link-1'
+					url: '/link-1',
 				},
 				{
 					label: 'Link 2',
-					url: '/link-externo-2'
-				}
+					url: '/link-externo-2',
+				},
 			],
-			subheaderLabel: 'test@test.com'
-		}
+			subheaderLabel: 'test@test.com',
+		},
 	],
 	language: [
 		{
 			items: [
 				{
-					label: 'English'
+					label: 'English',
 				},
 				{
-					label: 'Japanese'
-				}
-			]
-		}
-	]
+					label: 'Japanese',
+				},
+			],
+		},
+	],
 });
 
 const Wrapper = ({children}: {children: React.ReactNode}) => (
@@ -51,9 +57,9 @@ describe('UserDropdown', () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown
-					initialActiveMenu='base'
+					initialActiveMenu="base"
 					menus={mockMenus()}
-					userName='Test Test'
+					userName="Test Test"
 				/>
 			</Wrapper>
 		);
@@ -65,9 +71,9 @@ describe('UserDropdown', () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown
-					initialActiveMenu='base'
+					initialActiveMenu="base"
 					menus={mockMenus()}
-					userName='Test Test'
+					userName="Test Test"
 				/>
 			</Wrapper>
 		);
@@ -84,9 +90,9 @@ describe('UserDropdown', () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown
-					initialActiveMenu='base'
+					initialActiveMenu="base"
 					menus={mockMenus()}
-					userName='Test Test'
+					userName="Test Test"
 				/>
 			</Wrapper>
 		);
@@ -111,9 +117,9 @@ describe('UserDropdown', () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown
-					initialActiveMenu='base'
+					initialActiveMenu="base"
 					menus={mockMenus()}
-					userName='Test Test'
+					userName="Test Test"
 				/>
 			</Wrapper>
 		);
@@ -147,9 +153,9 @@ describe('UserDropdown', () => {
 		const {container} = render(
 			<Wrapper>
 				<UserDropdown
-					initialActiveMenu='base'
+					initialActiveMenu="base"
 					menus={mockMenus()}
-					userName='Test Test'
+					userName="Test Test"
 				/>
 			</Wrapper>
 		);
@@ -169,6 +175,7 @@ describe('UserDropdown', () => {
 		expect(screen.getByText('English')).toBeInTheDocument();
 
 		// Close
+
 		fireEvent.click(toggleButton!);
 
 		act(() => {
@@ -176,6 +183,7 @@ describe('UserDropdown', () => {
 		});
 
 		// Open again
+
 		fireEvent.click(toggleButton!);
 
 		act(() => {

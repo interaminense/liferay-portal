@@ -1,4 +1,10 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {createOrderIOMap} from 'shared/util/pagination';
+
 import {mapCardPropsToOptions, mapPropsToOptions} from '../interests-query';
 
 const mockProps = {
@@ -7,7 +13,7 @@ const mockProps = {
 	id: '123123',
 	orderIOMap: createOrderIOMap('default Test', 'DESC'),
 	page: 2,
-	query: 'test query'
+	query: 'test query',
 };
 
 describe('Interests Query Mapper', () => {
@@ -23,10 +29,10 @@ describe('Interests Query Mapper', () => {
 						size: 5,
 						sort: {
 							column: 'count',
-							type: 'DESC'
+							type: 'DESC',
 						},
-						start: 0
-					}
+						start: 0,
+					},
 				})
 			);
 		});
@@ -46,10 +52,10 @@ describe('Interests Query Mapper', () => {
 						size: delta,
 						sort: {
 							column: 'default Test',
-							type: 'DESC'
+							type: 'DESC',
 						},
-						start: 5
-					}
+						start: 5,
+					},
 				})
 			);
 		});

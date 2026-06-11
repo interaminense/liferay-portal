@@ -1,16 +1,21 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {List, Map as ImmutableMap} from 'immutable';
 import * as API from 'shared/api';
+import {toPromise} from 'shared/components/form';
 import {Alert} from 'shared/types';
 import {
 	CredentialTypes,
 	DataSourceStates,
 	DataSourceStatuses,
 	DataSourceTypes,
-	EntityTypes
+	EntityTypes,
 } from 'shared/util/constants';
 import {DataSource} from 'shared/util/records';
-import {Map as ImmutableMap, List} from 'immutable';
 import {Routes, toRoute} from 'shared/util/router';
-import {toPromise} from 'shared/components/form';
 
 export const LIFERAY_SITE_TYPE = `${EntityTypes.DataSource}-site`;
 
@@ -25,7 +30,7 @@ export const SERVICE_ERROR_MESSAGE_MAP: Record<number, string> = {
 	),
 	404: Liferay.Language.get(
 		'there-was-an-error-with-the-servers-connection.-please-try-again-when-data-sources-status-is-active'
-	)
+	),
 };
 
 /**
@@ -48,7 +53,7 @@ export function getServiceAlertConfig(code: number) {
 	return {
 		alertType: Alert.Types.Warning,
 		message,
-		timeout: WARNING_TIMEOUT
+		timeout: WARNING_TIMEOUT,
 	};
 }
 
@@ -59,71 +64,71 @@ export const STATUS_DISPLAY = {
 	[DataSourceStates.ActionNeeded]: {
 		display: 'warning',
 		label: Liferay.Language.get('action-needed'),
-		message: Liferay.Language.get('action-needed')
+		message: Liferay.Language.get('action-needed'),
 	},
 	active: {
 		display: 'success',
 		label: Liferay.Language.get('active'),
 		message: Liferay.Language.get(
 			'all-data-coming-from-this-data-source-is-up-to-date.-there-are-no-errors-to-report'
-		)
+		),
 	},
 	[DataSourceStates.CredentialsInvalid]: {
 		display: 'warning',
 		label: Liferay.Language.get('invalid-credentials'),
 		message: Liferay.Language.get(
 			'the-authorization-for-this-data-source-has-expired.-please-reauthorize-the-token-in-the-oauth-tab'
-		)
+		),
 	},
 	[DataSourceStates.CredentialsValid]: {
 		display: 'info',
 		label: Liferay.Language.get('authenticated'),
 		message: Liferay.Language.get(
 			'you-have-successfully-authenticated.-you-can-now-configure-your-data'
-		)
+		),
 	},
 	default: {
 		display: 'secondary',
 		label: Liferay.Language.get('not-configured'),
 		message: Liferay.Language.get(
 			'data-source-has-not-been-created.-please-authorize-and-save-to-get-started'
-		)
+		),
 	},
 	[DataSourceStates.Disconnected]: {
 		display: 'secondary',
 		label: Liferay.Language.get('disconnected'),
 		message: Liferay.Language.get(
 			'the-data-source-is-disconnected.-data-is-no-longer-being-synced-from-dxp,-but-you-can-reconnect-to-resume-syncing'
-		)
+		),
 	},
 	[DataSourceStates.InProgressDeleting]: {
 		display: 'info',
 		label: Liferay.Language.get('deletion-in-progress'),
 		message: Liferay.Language.get(
 			'this-data-source-and-its-related-data-are-currently-being-deleted'
-		)
+		),
 	},
 	[DataSourceStates.LiferayVersionInvalid]: {
 		display: 'warning',
 		label: Liferay.Language.get('unsupported-version'),
 		message: Liferay.Language.get(
 			'this-method-of-connection-does-not-support-the-data-source-liferay-version'
-		)
+		),
 	},
 	tokenCredentialsValid: {
 		display: 'success',
 		label: Liferay.Language.get('connected'),
 		message: Liferay.Language.get(
 			'you-have-successfully-authenticated-your-token-with-your-data-source.-you-can-now-configure-your-data-in-dxp'
-		)
+		),
 	},
 	[DataSourceStates.UndefinedError]: {
 		display: 'warning',
 		label: Liferay.Language.get('inactive'),
 		message: Liferay.Language.get(
 			'a-server-error-occurred-while-connected-to-your-data-source.-analytics-cloud-will-attempt-to-automatically-reconnect-during-its-next-regularly-scheduled-sync'
-		)
-	}
+		),
+	},
 };
 
 /**
@@ -134,17 +139,18 @@ export const STATUS_DISPLAY = {
  */
 export function dataSourceRedirectFn({
 	dataSource,
-	groupId
+	groupId,
 }: {
 	dataSource: DataSource;
 	groupId: string;
 }) {
 	if (isDataSourceValid(dataSource.state)) {
 		return null;
-	} else {
+	}
+	else {
 		return toRoute(Routes.SETTINGS_DATA_SOURCE, {
 			groupId,
-			id: dataSource.id
+			id: dataSource.id,
 		});
 	}
 }
@@ -167,7 +173,7 @@ export function isDataSourceValid(state?: string): boolean {
  */
 export function validateUniqueName({
 	groupId,
-	value
+	value,
 }: {
 	groupId: string;
 	value: string;
@@ -178,9 +184,9 @@ export function validateUniqueName({
 			groupId,
 			name: value,
 			page: 1,
-			query: ''
+			query: '',
 		})
-		.then(result => {
+		.then((result) => {
 			let error = '';
 			if (result.total) {
 				error = Liferay.Language.get(
@@ -239,8 +245,8 @@ export function getDataSourceDisplayObject(dataSource: DataSource) {
 			return {
 				...STATUS_DISPLAY[DataSourceStates.UndefinedError],
 				message: [
-					STATUS_DISPLAY[DataSourceStates.UndefinedError].message
-				]
+					STATUS_DISPLAY[DataSourceStates.UndefinedError].message,
+				],
 			};
 		default:
 			return STATUS_DISPLAY.default;
@@ -261,7 +267,7 @@ export function getIdsFromConfiguration(
 		ImmutableMap<string, unknown>
 	>;
 
-	return list.map(itemIMap => Number(itemIMap?.get('id'))).toArray();
+	return list.map((itemIMap) => Number(itemIMap?.get('id'))).toArray();
 }
 
 /**
@@ -283,7 +289,9 @@ export function validAnalyticsConfig(dataSource: DataSource): boolean {
 				analyticsConfiguration.get('enableAllSites') ||
 					analyticsConfiguration.get('sites').size
 			);
+
 		// TODO: Add validation on salesforce anlayticsConfiguration
+
 		case DataSourceTypes.Salesforce:
 		default:
 			return Boolean(analyticsConfiguration);

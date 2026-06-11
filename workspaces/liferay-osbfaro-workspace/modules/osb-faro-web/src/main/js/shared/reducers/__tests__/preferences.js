@@ -1,8 +1,14 @@
-import reducer from '../preferences';
-import {DistributionTab, RemoteData} from 'shared/util/records';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {List, Map} from 'immutable';
 import {actionTypes as preferencesActionTypes} from 'shared/actions/preferences';
 import {PreferencesScopes} from 'shared/util/constants';
+import {DistributionTab, RemoteData} from 'shared/util/records';
+
+import reducer from '../preferences';
 
 describe('Preferences Reducer', () => {
 	it('should get default channel id', () => {
@@ -11,7 +17,7 @@ describe('Preferences Reducer', () => {
 		const action = {
 			meta: {scope: PreferencesScopes.User},
 			payload: {defaultChannelId},
-			type: preferencesActionTypes.FETCH_DEFAULT_CHANNEL_ID_SUCCESS
+			type: preferencesActionTypes.FETCH_DEFAULT_CHANNEL_ID_SUCCESS,
 		};
 
 		const state = reducer(new Map(), action);
@@ -29,7 +35,7 @@ describe('Preferences Reducer', () => {
 		const action = {
 			meta: {scope: PreferencesScopes.User},
 			payload: {defaultChannelId},
-			type: preferencesActionTypes.UPDATE_DEFAULT_CHANNEL_ID_SUCCESS
+			type: preferencesActionTypes.UPDATE_DEFAULT_CHANNEL_ID_SUCCESS,
 		};
 
 		const prevState = new Map({
@@ -37,16 +43,16 @@ describe('Preferences Reducer', () => {
 				defaultChannelId: new RemoteData({
 					data: prevDefaultChannelId,
 					error: false,
-					loading: false
-				})
-			})
+					loading: false,
+				}),
+			}),
 		});
 
 		expect(
 			prevState.getIn([
 				PreferencesScopes.User,
 				'defaultChannelId',
-				'data'
+				'data',
 			])
 		).toEqual(prevDefaultChannelId);
 
@@ -65,7 +71,7 @@ describe('Preferences Reducer', () => {
 		const action = {
 			meta: {scope: PreferencesScopes.User},
 			payload: upgradeModalSeen,
-			type: preferencesActionTypes.UPDATE_UPGRADE_MODAL_SEEN_SUCCESS
+			type: preferencesActionTypes.UPDATE_UPGRADE_MODAL_SEEN_SUCCESS,
 		};
 
 		const prevState = new Map({
@@ -73,16 +79,16 @@ describe('Preferences Reducer', () => {
 				upgradeModalSeen: new RemoteData({
 					data: prevUpgradeModalSeen,
 					error: false,
-					loading: false
-				})
-			})
+					loading: false,
+				}),
+			}),
 		});
 
 		expect(
 			prevState.getIn([
 				PreferencesScopes.User,
 				'upgradeModalSeen',
-				'data'
+				'data',
 			])
 		).toEqual(prevUpgradeModalSeen);
 
@@ -97,7 +103,7 @@ describe('Preferences Reducer', () => {
 		const id = '123';
 
 		const distributionCardTabPreferencesMap = {
-			test: {context: 'demographics', id: 'test', title: 'test'}
+			test: {context: 'demographics', id: 'test', title: 'test'},
 		};
 
 		const order = ['test'];
@@ -105,7 +111,7 @@ describe('Preferences Reducer', () => {
 		const action = {
 			meta: {id, scope: PreferencesScopes.User},
 			payload: {distributionCardTabPreferencesMap, order},
-			type: preferencesActionTypes.FETCH_DISTRIBUTION_TABS_SUCCESS
+			type: preferencesActionTypes.FETCH_DISTRIBUTION_TABS_SUCCESS,
 		};
 
 		const state = reducer(new Map(), action);
@@ -116,13 +122,13 @@ describe('Preferences Reducer', () => {
 				'distributionCardTabs',
 				id,
 				'data',
-				0
+				0,
 			])
 		).toEqual(
 			new DistributionTab({
 				context: 'demographics',
 				id: 'test',
-				title: 'test'
+				title: 'test',
 			})
 		);
 	});
@@ -131,7 +137,7 @@ describe('Preferences Reducer', () => {
 		const id = '123';
 
 		const distributionCardTabPreferencesMap = {
-			test: {context: 'demographics', id: 'test', title: 'test'}
+			test: {context: 'demographics', id: 'test', title: 'test'},
 		};
 
 		const order = ['test'];
@@ -139,7 +145,7 @@ describe('Preferences Reducer', () => {
 		const action = {
 			meta: {id, scope: PreferencesScopes.User},
 			payload: {distributionCardTabPreferencesMap, order},
-			type: preferencesActionTypes.ADD_DISTRIBUTION_TABS_SUCCESS
+			type: preferencesActionTypes.ADD_DISTRIBUTION_TABS_SUCCESS,
 		};
 
 		const state = reducer(new Map(), action);
@@ -150,13 +156,13 @@ describe('Preferences Reducer', () => {
 				'distributionCardTabs',
 				id,
 				'data',
-				0
+				0,
 			])
 		).toEqual(
 			new DistributionTab({
 				context: 'demographics',
 				id: 'test',
-				title: 'test'
+				title: 'test',
 			})
 		);
 	});
@@ -167,15 +173,15 @@ describe('Preferences Reducer', () => {
 		const action = {
 			meta: {id, scope: PreferencesScopes.User},
 			payload: {distributionCardTabPreferencesMap: {}, order: []},
-			type: preferencesActionTypes.REMOVE_DISTRIBUTION_TABS_SUCCESS
+			type: preferencesActionTypes.REMOVE_DISTRIBUTION_TABS_SUCCESS,
 		};
 
 		const distributionTabsIList = new List([
 			new DistributionTab({
 				context: 'demographics',
 				id: 'test',
-				title: 'test'
-			})
+				title: 'test',
+			}),
 		]);
 
 		const prevState = new Map({
@@ -184,10 +190,10 @@ describe('Preferences Reducer', () => {
 					individualsDashboard: new RemoteData({
 						data: distributionTabsIList,
 						error: false,
-						loading: false
-					})
-				})
-			})
+						loading: false,
+					}),
+				}),
+			}),
 		});
 
 		const state = reducer(prevState, action);
@@ -197,7 +203,7 @@ describe('Preferences Reducer', () => {
 				PreferencesScopes.User,
 				'distributionCardTabs',
 				id,
-				'data'
+				'data',
 			]).size
 		).toBe(0);
 	});

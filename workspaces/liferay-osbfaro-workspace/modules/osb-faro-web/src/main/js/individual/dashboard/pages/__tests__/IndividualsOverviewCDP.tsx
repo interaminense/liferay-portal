@@ -1,44 +1,50 @@
-import IndividualsOverviewCDP from '../IndividualsOverviewCDP';
-import mockStore from 'test/mock-store';
-import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
-import {Provider} from 'react-redux';
-import {render} from '@testing-library/react';
-import {useCurrentUser} from 'shared/hooks/useCurrentUser';
-import {useDataSources} from 'shared/context/dataSources';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {useQuery} from '@apollo/client';
+import {render} from '@testing-library/react';
+import React from 'react';
+import {Provider} from 'react-redux';
+import {BrowserRouter} from 'react-router-dom';
+import {useDataSources} from 'shared/context/dataSources';
+import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 import {useRequest} from 'shared/hooks/useRequest';
+import mockStore from 'test/mock-store';
+
+import IndividualsOverviewCDP from '../IndividualsOverviewCDP';
 
 jest.unmock('react-dom');
 
 jest.mock('@apollo/client', () => ({
 	...jest.requireActual('@apollo/client'),
-	useQuery: jest.fn()
+	useQuery: jest.fn(),
 }));
 
 jest.mock('shared/hooks/useRequest', () => ({
-	useRequest: jest.fn()
+	useRequest: jest.fn(),
 }));
 
 jest.mock('shared/hooks/useCurrentUser', () => ({
-	useCurrentUser: jest.fn()
+	useCurrentUser: jest.fn(),
 }));
 
 jest.mock('shared/context/dataSources', () => ({
-	useDataSources: jest.fn()
+	useDataSources: jest.fn(),
 }));
 
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
 	useParams: () => ({
 		channelId: '123',
-		groupId: '456'
-	})
+		groupId: '456',
+	}),
 }));
 
 jest.mock('../IndividualsList', () => ({
 	__esModule: true,
-	default: () => null
+	default: () => null,
 }));
 
 const mockedIndividualMetrics = {
@@ -51,30 +57,30 @@ const mockedIndividualMetrics = {
 				trend: {
 					__typename: 'Trend',
 					percentage: 11.123,
-					trendClassification: 'POSITIVE'
+					trendClassification: 'POSITIVE',
 				},
-				value: 5123
+				value: 5123,
 			},
 			knownIndividualsMetric: {
 				__typename: 'Metric',
 				trend: {
 					__typename: 'Trend',
 					percentage: 28.12,
-					trendClassification: 'NEGATIVE'
+					trendClassification: 'NEGATIVE',
 				},
-				value: 1103
+				value: 1103,
 			},
 			totalIndividualsMetric: {
 				__typename: 'Metric',
 				trend: {
 					__typename: 'Trend',
 					percentage: 30.23,
-					trendClassification: 'POSITIVE'
+					trendClassification: 'POSITIVE',
 				},
-				value: 2120
-			}
-		}
-	}
+				value: 2120,
+			},
+		},
+	},
 };
 
 const renderIndividualsOverviewCDP = () =>
@@ -90,7 +96,7 @@ describe('IndividualsOverviewCDP', () => {
 	beforeEach(() => {
 		(useRequest as jest.Mock).mockReturnValue({
 			data: {total: 1},
-			loading: false
+			loading: false,
 		});
 		(useCurrentUser as jest.Mock).mockReturnValue({isAdmin: () => true});
 		(useDataSources as jest.Mock).mockReturnValue({empty: false});
@@ -103,7 +109,7 @@ describe('IndividualsOverviewCDP', () => {
 	it('should render Individuals Metrics Cards', () => {
 		(useQuery as jest.Mock).mockReturnValue({
 			data: mockedIndividualMetrics.data,
-			loading: false
+			loading: false,
 		});
 
 		const {getByText} = renderIndividualsOverviewCDP();
@@ -116,7 +122,7 @@ describe('IndividualsOverviewCDP', () => {
 	it('should render a centered loader inside each metric card while metrics are loading', () => {
 		(useQuery as jest.Mock).mockReturnValue({
 			data: undefined,
-			loading: true
+			loading: true,
 		});
 
 		const {container, queryByText} = renderIndividualsOverviewCDP();

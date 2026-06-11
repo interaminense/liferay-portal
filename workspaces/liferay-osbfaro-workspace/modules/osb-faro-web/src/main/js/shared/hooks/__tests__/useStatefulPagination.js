@@ -1,9 +1,14 @@
-import Constants from 'shared/util/constants';
-import React from 'react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {act, render} from '@testing-library/react';
-import {createOrderIOMap} from 'shared/util/pagination';
 import {Map, Set} from 'immutable';
+import React from 'react';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
+import Constants from 'shared/util/constants';
+import {createOrderIOMap} from 'shared/util/pagination';
 
 const {cur: DEFAULT_PAGE, delta: DEFAULT_DELTA} = Constants.pagination;
 
@@ -25,7 +30,7 @@ describe('useStatefulPagination', () => {
 			delta: DEFAULT_DELTA,
 			filterBy: expect.anything(),
 			page: DEFAULT_PAGE,
-			query: ''
+			query: '',
 		});
 		expect(typeof result.onDeltaChange).toBe('function');
 		expect(typeof result.onPageChange).toBe('function');
@@ -110,7 +115,7 @@ describe('useStatefulPagination', () => {
 
 		const Component = () => {
 			result = useStatefulPagination(null, {
-				initialOrderIOMap: createOrderIOMap('name')
+				initialOrderIOMap: createOrderIOMap('name'),
 			});
 
 			return null;
@@ -206,7 +211,7 @@ describe('useStatefulPagination', () => {
 		act(() => {
 			result.onFilterByChange(
 				Map({
-					biz: Set(['buz'])
+					biz: Set(['buz']),
 				})
 			);
 		});

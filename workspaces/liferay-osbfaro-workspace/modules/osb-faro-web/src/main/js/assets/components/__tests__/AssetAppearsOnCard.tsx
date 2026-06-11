@@ -1,21 +1,27 @@
-import client from 'shared/apollo/client';
-import mockStore from 'test/mock-store';
-import React from 'react';
-import {Accessor, AssetAppearsOnCard} from '../AssetAppearsOnCard';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {ApolloProvider} from '@apollo/client';
-import {AssetTypes} from 'shared/util/constants';
+import {MockedProvider} from '@apollo/client/testing';
 import {cleanup, render} from '@testing-library/react';
-import {EmptyStateLink, EmptyStateText} from '../AssetAppearsOnCard';
+import React from 'react';
+import {Provider} from 'react-redux';
+import {StaticRouter} from 'react-router-dom';
+import client from 'shared/apollo/client';
+import {AssetTypes} from 'shared/util/constants';
+import {RangeKeyTimeRanges} from 'shared/util/constants';
 import {
 	mockAssetAppearsOnReq,
 	mockPreferenceReq,
-	mockTimeRangeReq
+	mockTimeRangeReq,
 } from 'test/graphql-data';
-import {MockedProvider} from '@apollo/client/testing';
-import {Provider} from 'react-redux';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {StaticRouter} from 'react-router-dom';
 import {waitForLoadingToBeRemoved} from 'test/helpers';
+import mockStore from 'test/mock-store';
+
+import {Accessor, AssetAppearsOnCard} from '../AssetAppearsOnCard';
+import {EmptyStateLink, EmptyStateText} from '../AssetAppearsOnCard';
 
 jest.unmock('react-dom');
 
@@ -26,10 +32,10 @@ jest.mock('react-router-dom', () => ({
 		channelId: '123',
 		groupId: '456',
 		query: {
-			rangeKey: RangeKeyTimeRanges.Last30Days
+			rangeKey: RangeKeyTimeRanges.Last30Days,
 		},
-		title: 'Blog Title'
-	})
+		title: 'Blog Title',
+	}),
 }));
 
 const WrappedComponent = ({
@@ -37,7 +43,7 @@ const WrappedComponent = ({
 	assetType,
 	empty = false,
 	emptyStateLink,
-	emptyStateText
+	emptyStateText,
 }: {
 	accessors: Accessor[];
 	assetType: AssetTypes;
@@ -55,10 +61,10 @@ const WrappedComponent = ({
 						mockAssetAppearsOnReq(
 							{
 								assetType: assetType.toUpperCase(),
-								selectedMetrics: accessors
+								selectedMetrics: accessors,
 							},
 							empty
-						)
+						),
 					]}
 				>
 					<AssetAppearsOnCard
@@ -112,7 +118,7 @@ describe('AssetAppearsOnCard', () => {
 			<WrappedComponent
 				accessors={[
 					Accessor.DownloadsMetric,
-					Accessor.ImpressionMadeMetric
+					Accessor.ImpressionMadeMetric,
 				]}
 				assetType={AssetTypes.Document}
 				emptyStateLink={EmptyStateLink.Document}

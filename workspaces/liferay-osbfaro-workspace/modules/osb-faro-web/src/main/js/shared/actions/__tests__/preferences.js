@@ -1,5 +1,11 @@
-import * as actions from '../preferences';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {isFSA} from 'flux-standard-action';
+
+import * as actions from '../preferences';
 
 describe('Preferences Actions', () => {
 	describe('addDistributionTabs', () => {
@@ -9,7 +15,7 @@ describe('Preferences Actions', () => {
 				distributionTab: {},
 				distributionTabId: 'Test Tab',
 				groupId: '321',
-				id: '123'
+				id: '123',
 			});
 
 			expect(isFSA(action)).toBe(true);
@@ -22,7 +28,7 @@ describe('Preferences Actions', () => {
 			const action = actions.fetchDistributionTabs({
 				distributionKey: '321',
 				groupId: '123',
-				id: '321'
+				id: '321',
 			});
 
 			expect(isFSA(action)).toBe(true);
@@ -36,7 +42,7 @@ describe('Preferences Actions', () => {
 				distributionKey: '123',
 				distributionTabId: 'Test Tab',
 				groupId: '321',
-				id: '123'
+				id: '123',
 			});
 
 			expect(isFSA(action)).toBe(true);
@@ -66,7 +72,7 @@ describe('Preferences Actions', () => {
 		it('should return an action', () => {
 			const action = actions.updateDefaultChannelId({
 				defaultChannelId: '122',
-				groupId: '321'
+				groupId: '321',
 			});
 
 			expect(isFSA(action)).toBe(true);
@@ -78,7 +84,7 @@ describe('Preferences Actions', () => {
 		it('should return an action', () => {
 			const action = actions.updateUpgradeModalSeen({
 				groupId: '321',
-				upgradeModalSeen: true
+				upgradeModalSeen: true,
 			});
 
 			expect(isFSA(action)).toBe(true);

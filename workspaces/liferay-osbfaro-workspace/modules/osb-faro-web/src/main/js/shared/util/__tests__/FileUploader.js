@@ -1,4 +1,7 @@
-/* eslint-disable no-underscore-dangle */
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
 
 import FileUploader, {ERROR_TYPES, normalizeFiles} from '../FileUploader';
 
@@ -20,8 +23,8 @@ describe('FileUploader', () => {
 
 		Object.defineProperty(event, 'target', {
 			value: {
-				files: names.map(mockFile)
-			}
+				files: names.map(mockFile),
+			},
 		});
 
 		return event;
@@ -61,7 +64,7 @@ describe('FileUploader', () => {
 		const CONSTANTS = {
 			onChange: jest.fn(),
 			onError: jest.fn(),
-			uploadURL: 'test/url/path'
+			uploadURL: 'test/url/path',
 		};
 
 		uploader = new FileUploader(CONSTANTS).render();
@@ -89,7 +92,7 @@ describe('FileUploader', () => {
 		const spy = jest.fn();
 
 		uploader = new FileUploader({
-			onError: spy
+			onError: spy,
 		}).render();
 
 		uploader.upload([file]);
@@ -99,7 +102,7 @@ describe('FileUploader', () => {
 
 	it('should call `onChange`', () => {
 		uploader = new FileUploader({
-			onChange: jest.fn()
+			onChange: jest.fn(),
 		}).render();
 
 		uploader.onLoad('foo', 1, mockEvent('foo'));
@@ -109,7 +112,7 @@ describe('FileUploader', () => {
 
 	it('should call `onChange`', () => {
 		uploader = new FileUploader({
-			onChange: jest.fn()
+			onChange: jest.fn(),
 		}).render();
 
 		uploader.onStart('foo', 1, 'bar');
@@ -124,7 +127,7 @@ describe('FileUploader', () => {
 
 		Object.defineProperty(uploader._inputNode, 'value', {
 			value: uploaderValue,
-			writable: true
+			writable: true,
 		});
 
 		expect(uploader._inputNode.value).toBe(uploaderValue);
@@ -139,7 +142,7 @@ describe('FileUploader', () => {
 			const spy = jest.fn();
 
 			uploader = new FileUploader({
-				onChange: spy
+				onChange: spy,
 			}).render();
 
 			uploader.onProgress('', 1, {target: {}});
@@ -170,14 +173,15 @@ describe('FileUploader', () => {
 				uploader = new FileUploader({
 					fileTypes: ['.csv'],
 					onError,
-					...props
+					...props,
 				}).render();
 
 				uploader.addFiles(files.map(mockFile));
 
 				if (error) {
 					expect(onError).toHaveBeenCalledWith(error);
-				} else {
+				}
+				else {
 					expect(onError).not.toHaveBeenCalled();
 				}
 			}

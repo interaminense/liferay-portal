@@ -1,8 +1,14 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 jest.unmock('lodash/debounce');
 
 import autobind from 'autobind-decorator';
-import debounce from '../debounce-decorator';
 import {times} from 'lodash';
+
+import debounce from '../debounce-decorator';
 
 describe('debounce-decorator', () => {
 	beforeAll(() => {
@@ -17,7 +23,7 @@ describe('debounce-decorator', () => {
 		expect(typeof debounce(250)).toBe('function');
 	});
 
-	it('should debounce the class method', done => {
+	it('should debounce the class method', (done) => {
 		expect.assertions(3);
 
 		class TestDebounce {
@@ -60,7 +66,7 @@ describe('debounce-decorator', () => {
 		expect(a.foo).not.toEqual(b.foo);
 	});
 
-	it('should debounce a function that has been autobind', done => {
+	it('should debounce a function that has been autobind', (done) => {
 		expect.assertions(3);
 
 		class TestDebounce {
@@ -92,7 +98,7 @@ describe('debounce-decorator', () => {
 		}, 1000);
 	});
 
-	it('should continually debounce a function that has been autobind', done => {
+	it('should continually debounce a function that has been autobind', (done) => {
 		expect.assertions(3);
 
 		class TestDebounce {

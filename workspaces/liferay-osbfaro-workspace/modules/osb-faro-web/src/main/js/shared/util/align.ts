@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 export const POSITIONS = {
 	BottomCenter: 4,
 	BottomLeft: 5,
@@ -6,7 +11,7 @@ export const POSITIONS = {
 	RightCenter: 2,
 	TopCenter: 0,
 	TopLeft: 7,
-	TopRight: 1
+	TopRight: 1,
 };
 
 export type Position = (typeof POSITIONS)[keyof typeof POSITIONS];
@@ -36,7 +41,8 @@ export function align(
 		);
 		position = suggestion.position;
 		bestRegion = suggestion.region;
-	} else {
+	}
+	else {
 		bestRegion = getAlignRegion(element, alignElement, position);
 	}
 
@@ -113,7 +119,7 @@ function getAlignRegion(
 		left,
 		right: left + r2.width,
 		top,
-		width: r2.width
+		width: r2.width,
 	};
 }
 
@@ -158,7 +164,7 @@ function suggestAlignBestRegion(
 
 	return {
 		position: bestPosition,
-		region: bestRegion
+		region: bestRegion,
 	};
 }
 
@@ -230,6 +236,6 @@ function makeRegion(
 		left,
 		right,
 		top,
-		width
+		width,
 	};
 }

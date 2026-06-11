@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 export const escapeGroup = (group: string) =>
 	group.replace(/([=!:$/()])/g, '\\$1');
 
@@ -27,7 +32,7 @@ export const parse = (str: string): PathToken[] => {
 	const PATH_REGEXP = new RegExp(
 		[
 			'(\\\\.)',
-			'([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?)'
+			'([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?)',
 		].join('|'),
 		'g'
 	);
@@ -65,10 +70,10 @@ export const parse = (str: string): PathToken[] => {
 			pattern: capture
 				? escapeGroup(capture)
 				: group
-				? escapeGroup(group)
-				: `[^${escapeString(defaultDelimiter)}]+?`,
+					? escapeGroup(group)
+					: `[^${escapeString(defaultDelimiter)}]+?`,
 			prefix,
-			repeat
+			repeat,
 		});
 	}
 
@@ -110,7 +115,7 @@ const tokensToFunction =
 					);
 				}
 
-				if (value.length === 0) {
+				if (!value.length) {
 					if (token.optional) {
 						return;
 					}

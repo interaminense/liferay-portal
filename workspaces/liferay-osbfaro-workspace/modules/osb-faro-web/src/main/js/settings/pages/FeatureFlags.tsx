@@ -1,12 +1,17 @@
-import BasePage from 'settings/components/base-page/BasePage';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayPanel from '@clayui/panel';
 import React from 'react';
+import BasePage from 'settings/components/base-page/BasePage';
 import ToggleSwitch from 'shared/components/ToggleSwitch';
 import {
 	FEATURE_FLAGS,
 	FeatureFlagKey,
 	isFeatureFlagEnabled,
-	setFeatureFlag
+	setFeatureFlag,
 } from 'shared/util/feature-flags';
 import {reloadPage} from 'shared/util/router';
 
@@ -25,11 +30,11 @@ const FeatureFlags = () => {
 		};
 
 	return (
-		<BasePage pageTitle='Feature Flags'>
-			<ClayPanel.Group className='mb-4'>
+		<BasePage pageTitle="Feature Flags">
+			<ClayPanel.Group className="mb-4">
 				{FEATURE_FLAGS.map(({key}) => (
-					<ClayPanel displayType='secondary' key={key}>
-						<ClayPanel.Header className='align-items-center d-flex justify-content-between'>
+					<ClayPanel displayType="secondary" key={key}>
+						<ClayPanel.Header className="align-items-center d-flex justify-content-between">
 							<span>{key}</span>
 
 							<ToggleSwitch

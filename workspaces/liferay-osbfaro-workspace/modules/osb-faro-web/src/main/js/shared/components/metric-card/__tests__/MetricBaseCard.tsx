@@ -1,46 +1,52 @@
-import BasePage from 'shared/components/base-page';
-import MetricBaseCard from '../MetricBaseCard';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+import {MockedProvider} from '@apollo/client/testing';
+import {render, screen} from '@testing-library/react';
 import React from 'react';
+import {MemoryRouter, Route} from 'react-router-dom';
+import BasePage from 'shared/components/base-page';
+import {getSiteMetricsChartData} from 'shared/components/metric-card/util';
+import {
+	RangeKeyTimeRanges,
+	SEVEN_MONTHS,
+	THIRTEEN_MONTHS,
+} from 'shared/util/constants';
+
+import MetricBaseCard from '../MetricBaseCard';
 import {
 	BounceRateMetric,
 	CompositeMetric,
 	Metric,
 	SessionDurationMetric,
-	SessionsPerVisitorMetric
+	SessionsPerVisitorMetric,
 } from '../metrics';
-import {getSiteMetricsChartData} from 'shared/components/metric-card/util';
-import {MemoryRouter, Route} from 'react-router-dom';
-import {MockedProvider} from '@apollo/client/testing';
-import {
-	RangeKeyTimeRanges,
-	SEVEN_MONTHS,
-	THIRTEEN_MONTHS
-} from 'shared/util/constants';
-import {render, screen} from '@testing-library/react';
 import {SitesMetricQuery, SitesTabsQuery} from '../queries';
 
 jest.unmock('react-dom');
 
-jest.mock('../MetricTabs', () => () => <div data-testid='MetricTabs' />);
-jest.mock('../MetricChart', () => () => <div data-testid='MetricChart' />);
+jest.mock('../MetricTabs', () => () => <div data-testid="MetricTabs" />);
+jest.mock('../MetricChart', () => () => <div data-testid="MetricChart" />);
 
 jest.mock('shared/hooks/useRequest', () => ({
 	useRequest: jest.fn(() => ({
 		data: THIRTEEN_MONTHS,
-		loading: false
-	}))
+		loading: false,
+	})),
 }));
 
 const metrics: Metric[] = [
 	CompositeMetric,
 	SessionsPerVisitorMetric,
 	SessionDurationMetric,
-	BounceRateMetric
+	BounceRateMetric,
 ];
 
 const WrapperComponent = ({
 	children,
-	rangeKey = RangeKeyTimeRanges.Last30Days
+	rangeKey = RangeKeyTimeRanges.Last30Days,
 }: {
 	children: React.ReactNode;
 	rangeKey?: RangeKeyTimeRanges;
@@ -51,16 +57,16 @@ const WrapperComponent = ({
 				filters: {},
 				router: {
 					params: {channelId: '456', groupId: '2000'},
-					query: {rangeKey}
-				}
+					query: {rangeKey},
+				},
 			}}
 		>
 			<MemoryRouter
 				initialEntries={[
-					`/workspace/2000/456/sites?rangeKey=${rangeKey}`
+					`/workspace/2000/456/sites?rangeKey=${rangeKey}`,
 				]}
 			>
-				<Route path='/workspace/:groupId/:channelId/sites'>
+				<Route path="/workspace/:groupId/:channelId/sites">
 					{children}
 				</Route>
 			</MemoryRouter>
@@ -74,12 +80,12 @@ describe('MetricBaseCard', () => {
 			<WrapperComponent>
 				<MetricBaseCard
 					chartDataMapFn={getSiteMetricsChartData}
-					label='Visitors Behavior'
+					label="Visitors Behavior"
 					metrics={metrics}
 					queries={{
 						MetricQuery: SitesMetricQuery,
 						name: 'site',
-						TabsQuery: SitesTabsQuery
+						TabsQuery: SitesTabsQuery,
 					}}
 					variables={() => ({
 						channelId: '456',
@@ -88,7 +94,7 @@ describe('MetricBaseCard', () => {
 						location: 'Any',
 						rangeEnd: null,
 						rangeKey: RangeKeyTimeRanges.Last30Days,
-						rangeStart: null
+						rangeStart: null,
 					})}
 				/>
 			</WrapperComponent>
@@ -103,21 +109,22 @@ describe('MetricBaseCard', () => {
 		const {useRequest} = require('shared/hooks/useRequest');
 		(useRequest as jest.Mock).mockReturnValue({
 			data: SEVEN_MONTHS,
-			loading: false
+			loading: false,
 		});
 
 		// We need to keep MetricChart unmocked for this test since it has the logic we're testing
 		// but for now, let's establish a working baseline.
+
 		render(
 			<WrapperComponent rangeKey={RangeKeyTimeRanges.Last180Days}>
 				<MetricBaseCard
 					chartDataMapFn={getSiteMetricsChartData}
-					label='Visitors Behavior'
+					label="Visitors Behavior"
 					metrics={metrics}
 					queries={{
 						MetricQuery: SitesMetricQuery,
 						name: 'site',
-						TabsQuery: SitesTabsQuery
+						TabsQuery: SitesTabsQuery,
 					}}
 					variables={() => ({
 						channelId: '456',
@@ -126,7 +133,7 @@ describe('MetricBaseCard', () => {
 						location: 'Any',
 						rangeEnd: null,
 						rangeKey: RangeKeyTimeRanges.Last180Days,
-						rangeStart: null
+						rangeStart: null,
 					})}
 				/>
 			</WrapperComponent>

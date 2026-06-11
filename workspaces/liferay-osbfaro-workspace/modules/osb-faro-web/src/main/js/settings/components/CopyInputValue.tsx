@@ -1,8 +1,13 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import Clipboard from 'clipboard';
 import getCN from 'classnames';
+import Clipboard from 'clipboard';
 import React, {useEffect, useRef, useState} from 'react';
 import {Alert} from 'shared/types';
 
@@ -21,7 +26,7 @@ const CopyInputValue = ({
 	addAlert,
 	disabled,
 	title,
-	value
+	value,
 }: ICopyInputValueProps) => {
 	const [isUrlCopied, setIsUrlCopied] = useState(false);
 	const [copyTitle, setCopyTitle] = useState(
@@ -43,7 +48,7 @@ const CopyInputValue = ({
 				alertType: Alert.Types.Success,
 				message: Liferay.Language.get(
 					'copied-successfully-to-the-clipboard'
-				)
+				),
 			});
 
 			setTimeout(() => {
@@ -60,20 +65,20 @@ const CopyInputValue = ({
 	return (
 		<ClayForm.Group
 			className={getCN({
-				'has-success': isUrlCopied
+				'has-success': isUrlCopied,
 			})}
 		>
-			{title && <label htmlFor='value'>{title}</label>}
+			{title && <label htmlFor="value">{title}</label>}
 
 			<ClayInput.Group>
 				<ClayInput.GroupItem prepend>
 					<ClayInput
 						disabled={disabled}
-						id='value'
+						id="value"
 						insetAfter
-						name='value'
+						name="value"
 						readOnly={!isUrlCopied}
-						type='text'
+						type="text"
 						value={value ? value : Liferay.Language.get('loading')}
 					/>
 				</ClayInput.GroupItem>

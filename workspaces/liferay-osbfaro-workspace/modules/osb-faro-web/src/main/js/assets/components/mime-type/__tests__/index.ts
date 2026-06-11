@@ -1,5 +1,10 @@
-import {getMimeType} from '../index';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {STRUCTURES_MAP} from '../constants';
+import {getMimeType} from '../index';
 
 describe('getMimeType', () => {
 	it('should return correct mapping for assetType when mimeType is missing', () => {
@@ -65,7 +70,9 @@ describe('getMimeType', () => {
 	});
 
 	it('should handle mimeType without slash by using it as prefix', () => {
+
 		// Even if it's not a standard mime type, the logic uses the first part.
+
 		expect(getMimeType({mimeType: 'image'})).toEqual(
 			STRUCTURES_MAP.CMSDocumentImage
 		);

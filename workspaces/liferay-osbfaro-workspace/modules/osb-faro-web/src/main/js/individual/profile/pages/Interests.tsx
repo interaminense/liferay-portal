@@ -1,23 +1,28 @@
-import * as API from 'shared/api';
-import Card from 'shared/components/Card';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import ClayLink from '@clayui/link';
 import getCN from 'classnames';
-import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import React from 'react';
+import * as API from 'shared/api';
+import Card from 'shared/components/Card';
+import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import SearchableEntityTable from 'shared/components/SearchableEntityTable';
 import TextTruncate from 'shared/components/TextTruncate';
-import URLConstants from 'shared/util/url-constants';
-import {
-	createOrderIOMap,
-	getDefaultSortOrder,
-	NAME
-} from 'shared/util/pagination';
-import {INDIVIDUALS} from 'shared/util/router';
-import {interestListColumns} from 'shared/util/table-columns';
-import {Routes, toRoute} from 'shared/util/router';
+import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {Sizes} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
-import {useQueryPagination} from 'shared/hooks/useQueryPagination';
+import {
+	NAME,
+	createOrderIOMap,
+	getDefaultSortOrder,
+} from 'shared/util/pagination';
+import {INDIVIDUALS} from 'shared/util/router';
+import {Routes, toRoute} from 'shared/util/router';
+import {interestListColumns} from 'shared/util/table-columns';
+import URLConstants from 'shared/util/url-constants';
 
 export const TOTAL_DAYS = 90;
 
@@ -28,12 +33,12 @@ interface IContributionsCellProps {
 
 export const ContributionsCell: React.FC<IContributionsCellProps> = ({
 	className,
-	data: {relatedPagesCount}
+	data: {relatedPagesCount},
 }) => (
 	<td className={getCN('table-cell-expand', className)}>
 		<TextTruncate
 			title={sub(Liferay.Language.get('x-contributing-pages'), [
-				relatedPagesCount
+				relatedPagesCount,
 			])}
 		/>
 	</td>
@@ -47,13 +52,13 @@ interface IInterestsProps {
 
 const Interests: React.FC<IInterestsProps> = ({channelId, groupId, id}) => {
 	const {delta, orderIOMap, page, query} = useQueryPagination({
-		initialOrderIOMap: createOrderIOMap(NAME, getDefaultSortOrder(NAME))
+		initialOrderIOMap: createOrderIOMap(NAME, getDefaultSortOrder(NAME)),
 	});
 
 	return (
 		<Card pageDisplay>
 			<SearchableEntityTable
-				className='interest-history-table'
+				className="interest-history-table"
 				columns={[
 					interestListColumns.getName({
 						channelId,
@@ -68,24 +73,24 @@ const Interests: React.FC<IInterestsProps> = ({channelId, groupId, id}) => {
 									channelId,
 									groupId,
 									id,
-									interestId: name
+									interestId: name,
 								}
 							),
-						type: INDIVIDUALS
+						type: INDIVIDUALS,
 					}),
 					{
 						accessor: 'relatedPagesCount',
 						cellRenderer: ContributionsCell,
 						label: Liferay.Language.get('contributing-pages'),
-						sortable: false
-					}
+						sortable: false,
+					},
 				]}
 				dataSourceFn={API.interests.search}
 				dataSourceParams={{
 					channelId,
 					contactsEntityId: id,
 					groupId,
-					interestMax: TOTAL_DAYS
+					interestMax: TOTAL_DAYS,
 				}}
 				delta={delta}
 				entityLabel={Liferay.Language.get('interests')}
@@ -93,7 +98,7 @@ const Interests: React.FC<IInterestsProps> = ({channelId, groupId, id}) => {
 					<NoResultsDisplay
 						description={
 							<>
-								<span className='mr-1'>
+								<span className="mr-1">
 									{Liferay.Language.get(
 										'check-back-later-to-verify-if-data-has-been-received-from-your-data-sources'
 									)}
@@ -103,8 +108,8 @@ const Interests: React.FC<IInterestsProps> = ({channelId, groupId, id}) => {
 									href={
 										URLConstants.IndividualsDashboardInterestsDocumentation
 									}
-									key='DOCUMENTATION'
-									target='_blank'
+									key="DOCUMENTATION"
+									target="_blank"
 								>
 									{Liferay.Language.get(
 										'learn-more-about-interests'
@@ -115,7 +120,7 @@ const Interests: React.FC<IInterestsProps> = ({channelId, groupId, id}) => {
 						icon={{
 							border: false,
 							size: Sizes.XXXLarge,
-							symbol: 'ac_satellite'
+							symbol: 'ac_satellite',
 						}}
 						title={Liferay.Language.get(
 							'there-are-no-interests-found'
@@ -125,13 +130,13 @@ const Interests: React.FC<IInterestsProps> = ({channelId, groupId, id}) => {
 				orderByOptions={[
 					{
 						label: Liferay.Language.get('interest'),
-						value: NAME
-					}
+						value: NAME,
+					},
 				]}
 				orderIOMap={orderIOMap}
 				page={page}
 				query={query}
-				rowIdentifier='name'
+				rowIdentifier="name"
 			/>
 		</Card>
 	);

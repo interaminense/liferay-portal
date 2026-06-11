@@ -1,5 +1,11 @@
-import {EntityType} from '../context/referencedObjects';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {gql} from '@apollo/client';
+
+import {EntityType} from '../context/referencedObjects';
 
 /**
  * DXP Entity List Query
@@ -8,7 +14,7 @@ import {gql} from '@apollo/client';
  * @param {string} metricName
  * @returns GraphQL query
  */
-export default entityName => {
+export default (entityName) => {
 	if ([EntityType.Teams, EntityType.Groups].includes(entityName)) {
 		return gql`
 			query DXPEntitiesList(

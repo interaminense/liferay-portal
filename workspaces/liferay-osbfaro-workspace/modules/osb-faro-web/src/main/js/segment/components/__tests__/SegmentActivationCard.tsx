@@ -1,20 +1,26 @@
-import mockStore from 'test/mock-store';
-import React from 'react';
-import SegmentActivationCard from '../SegmentActivationCard';
-import {BrowserRouter} from 'react-router-dom';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {fireEvent, render} from '@testing-library/react';
 import {fromJS} from 'immutable';
+import React from 'react';
 import {Provider} from 'react-redux';
+import {BrowserRouter} from 'react-router-dom';
 import {
 	SegmentActivationFrequencyTypes,
 	SegmentActivationScheduleTypes,
-	SegmentTypes
+	SegmentTypes,
 } from 'shared/util/constants';
+import mockStore from 'test/mock-store';
+
+import SegmentActivationCard from '../SegmentActivationCard';
 
 jest.unmock('react-dom');
 
 const WrapperComponent: React.FC<{children: React.ReactNode}> = ({
-	children
+	children,
 }) => (
 	<Provider store={mockStore()}>
 		<BrowserRouter>{children}</BrowserRouter>
@@ -26,8 +32,8 @@ jest.mock(
 	() =>
 		function MockDateInput({value}: {value: {start: string; end: string}}) {
 			return (
-				<div data-testid='mock-date-input'>
-					{value.start} {'-'} {value.end}
+				<div data-testid="mock-date-input">
+					{value.start} - {value.end}
 				</div>
 			);
 		}
@@ -41,7 +47,7 @@ describe('SegmentActivationCard', () => {
 					segmentActivation={fromJS({
 						frequencyType:
 							SegmentActivationFrequencyTypes.Indefinitely,
-						scheduleType: SegmentActivationScheduleTypes.Batch
+						scheduleType: SegmentActivationScheduleTypes.Batch,
 					})}
 					segmentType={SegmentTypes.Batch}
 				/>
@@ -57,7 +63,7 @@ describe('SegmentActivationCard', () => {
 					segmentActivation={fromJS({
 						frequencyType:
 							SegmentActivationFrequencyTypes.Indefinitely,
-						scheduleType: SegmentActivationScheduleTypes.RealTime
+						scheduleType: SegmentActivationScheduleTypes.RealTime,
 					})}
 					segmentType={SegmentTypes.Batch}
 				/>
@@ -74,7 +80,7 @@ describe('SegmentActivationCard', () => {
 						frequencyType: SegmentActivationFrequencyTypes.Between,
 						scheduleEndDate: '1757818800000',
 						scheduleStartDate: '1756004400000',
-						scheduleType: SegmentActivationScheduleTypes.Batch
+						scheduleType: SegmentActivationScheduleTypes.Batch,
 					})}
 					segmentType={SegmentTypes.Batch}
 				/>
@@ -90,7 +96,7 @@ describe('SegmentActivationCard', () => {
 					segmentActivation={fromJS({
 						frequencyType:
 							SegmentActivationFrequencyTypes.Indefinitely,
-						scheduleType: SegmentActivationScheduleTypes.Batch
+						scheduleType: SegmentActivationScheduleTypes.Batch,
 					})}
 					segmentType={SegmentTypes.Batch}
 				/>
@@ -114,7 +120,7 @@ describe('SegmentActivationCard', () => {
 					segmentActivation={fromJS({
 						frequencyType:
 							SegmentActivationFrequencyTypes.Indefinitely,
-						scheduleType: SegmentActivationScheduleTypes.RealTime
+						scheduleType: SegmentActivationScheduleTypes.RealTime,
 					})}
 					segmentType={SegmentTypes.RealTime}
 				/>
@@ -142,7 +148,7 @@ describe('SegmentActivationCard', () => {
 						frequencyType: SegmentActivationFrequencyTypes.Between,
 						scheduleEndDate: '1757818800000',
 						scheduleStartDate: '1756004400000',
-						scheduleType: SegmentActivationScheduleTypes.RealTime
+						scheduleType: SegmentActivationScheduleTypes.RealTime,
 					})}
 					segmentType={SegmentTypes.RealTime}
 				/>

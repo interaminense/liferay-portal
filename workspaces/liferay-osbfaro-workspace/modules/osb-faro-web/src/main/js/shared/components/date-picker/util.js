@@ -1,5 +1,10 @@
-import moment from 'moment';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {conformsTo, isNil} from 'lodash';
+import moment from 'moment';
 
 /**
  * Represents a time between two dates.
@@ -17,7 +22,7 @@ export function isAboveMaxRange(date, maxRange) {
 		moment
 			.duration({
 				from: date.start,
-				to: date.end
+				to: date.end,
 			})
 			.asDays() > maxRange
 	);
@@ -67,7 +72,7 @@ export function isInRange(dateOrRange, date) {
 export function isRange(value) {
 	return conformsTo(value, {
 		end: isMomentOrNil,
-		start: isMomentOrNil
+		start: isMomentOrNil,
 	});
 }
 
@@ -86,7 +91,7 @@ export function updateRange(range, date) {
 	if (!range.start) {
 		return {
 			...range,
-			start: date
+			start: date,
 		};
 	}
 
@@ -94,12 +99,13 @@ export function updateRange(range, date) {
 		if (date.isSameOrAfter(range.start)) {
 			return {
 				...range,
-				end: date
+				end: date,
 			};
-		} else {
+		}
+		else {
 			return {
 				end: range.start,
-				start: date
+				start: date,
 			};
 		}
 	}
@@ -110,6 +116,6 @@ export function updateRange(range, date) {
 
 	return {
 		end: null,
-		start: date
+		start: date,
 	};
 }

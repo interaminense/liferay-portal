@@ -1,15 +1,21 @@
-import * as API from 'shared/api';
-import mockStore from 'test/mock-store';
-import React from 'react';
-import {addAlert} from 'shared/actions/alerts';
-import {Alert} from 'shared/types';
-import {CSVType} from '../utils';
-import {DownloadStaticCSVReport} from '../DownloadStaticCSVReport';
-import {fireEvent, render, screen, waitFor} from '@testing-library/react';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {InMemoryCache} from '@apollo/client';
-import {MemoryRouter, Route} from 'react-router-dom';
 import {MockedProvider} from '@apollo/client/testing';
+import {fireEvent, render, screen, waitFor} from '@testing-library/react';
+import React from 'react';
 import {Provider} from 'react-redux';
+import {MemoryRouter, Route} from 'react-router-dom';
+import {addAlert} from 'shared/actions/alerts';
+import * as API from 'shared/api';
+import {Alert} from 'shared/types';
+import mockStore from 'test/mock-store';
+
+import {DownloadStaticCSVReport} from '../DownloadStaticCSVReport';
+import {CSVType} from '../utils';
 
 jest.unmock('react-dom');
 
@@ -18,22 +24,23 @@ jest.mock('shared/actions/alerts', () => ({
 	addAlert: jest.fn(() => ({
 		meta: {},
 		payload: {},
-		type: 'addAlert'
-	}))
+		type: 'addAlert',
+	})),
 }));
 
 jest.mock('shared/api', () => ({
 	csv: {
 		fetchCount: jest.fn(),
-		fetchCSV: jest.fn()
-	}
+		fetchCSV: jest.fn(),
+	},
 }));
 
 jest.mock('../utils', () => {
 	const original = jest.requireActual('../utils');
+
 	return {
 		...original,
-		useDownloadCSV: jest.fn(() => () => 'http://test-url.com')
+		useDownloadCSV: jest.fn(() => () => 'http://test-url.com'),
 	};
 });
 
@@ -42,18 +49,18 @@ jest.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
 const DefaultComponent = () => (
 	<Provider store={mockStore()}>
 		<MemoryRouter initialEntries={['/workspace/123/456/individuals']}>
-			<Route path='/workspace/:groupId/:channelId/individuals'>
+			<Route path="/workspace/:groupId/:channelId/individuals">
 				<MockedProvider
 					cache={
 						new InMemoryCache({
-							addTypename: false
+							addTypename: false,
 						})
 					}
 				>
 					<DownloadStaticCSVReport
 						disabled={false}
 						type={CSVType.Individual}
-						typeLang='Individuals'
+						typeLang="Individuals"
 					/>
 				</MockedProvider>
 			</Route>
@@ -70,7 +77,7 @@ describe('DownloadStaticCSVReport', () => {
 		render(<DefaultComponent />);
 
 		const downloadBtn = screen.getByRole('button', {
-			name: /download report/i
+			name: /download report/i,
 		});
 
 		fireEvent.click(downloadBtn);
@@ -94,7 +101,7 @@ describe('DownloadStaticCSVReport', () => {
 
 		fireEvent.click(
 			screen.getByRole('button', {
-				name: /download report/i
+				name: /download report/i,
 			})
 		);
 
@@ -126,7 +133,7 @@ describe('DownloadStaticCSVReport', () => {
 
 		fireEvent.click(
 			screen.getByRole('button', {
-				name: /download report/i
+				name: /download report/i,
 			})
 		);
 
@@ -139,7 +146,7 @@ describe('DownloadStaticCSVReport', () => {
 		await waitFor(() => {
 			expect(addAlert).toHaveBeenCalledWith(
 				expect.objectContaining({
-					alertType: Alert.Types.Default
+					alertType: Alert.Types.Default,
 				})
 			);
 		});
@@ -157,7 +164,7 @@ describe('DownloadStaticCSVReport', () => {
 
 		fireEvent.click(
 			screen.getByRole('button', {
-				name: /download report/i
+				name: /download report/i,
 			})
 		);
 
@@ -170,7 +177,7 @@ describe('DownloadStaticCSVReport', () => {
 		await waitFor(() => {
 			expect(addAlert).toHaveBeenCalledWith(
 				expect.objectContaining({
-					alertType: Alert.Types.Warning
+					alertType: Alert.Types.Warning,
 				})
 			);
 		});
@@ -185,7 +192,7 @@ describe('DownloadStaticCSVReport', () => {
 
 		fireEvent.click(
 			screen.getByRole('button', {
-				name: /download report/i
+				name: /download report/i,
 			})
 		);
 
@@ -200,7 +207,7 @@ describe('DownloadStaticCSVReport', () => {
 				alertType: Alert.Types.Error,
 				message: Liferay.Language.get(
 					'it-was-not-possible-to-generate-a-csv-file-at-this-moment.-please-try-again-later'
-				)
+				),
 			});
 		});
 	});

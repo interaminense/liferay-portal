@@ -1,6 +1,12 @@
-import reducer from '../alerts';
-import {actionTypes} from '../../actions/alerts';
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 import {Map, OrderedMap} from 'immutable';
+
+import {actionTypes} from '../../actions/alerts';
+import reducer from '../alerts';
 
 describe('Alerts Reducer', () => {
 	const message = 'Hello World!';
@@ -16,9 +22,9 @@ describe('Alerts Reducer', () => {
 			payload: {
 				alertType: 'error',
 				id,
-				message
+				message,
 			},
-			type: actionTypes.ADD_ALERT
+			type: actionTypes.ADD_ALERT,
 		};
 
 		const state = reducer(new OrderedMap(), action);
@@ -36,17 +42,17 @@ describe('Alerts Reducer', () => {
 		const action = {
 			payload: {
 				alertType: 'confirmation',
-				id
+				id,
 			},
-			type: actionTypes.UPDATE_ALERT
+			type: actionTypes.UPDATE_ALERT,
 		};
 
 		const prevState = new OrderedMap({
 			[id]: new Map({
 				alertType: 'pending',
 				id,
-				message
-			})
+				message,
+			}),
 		});
 
 		const newState = reducer(prevState, action);
@@ -60,15 +66,15 @@ describe('Alerts Reducer', () => {
 
 		const action = {
 			payload: {id},
-			type: actionTypes.REMOVE_ALERT
+			type: actionTypes.REMOVE_ALERT,
 		};
 
 		const prevState = new OrderedMap({
 			[id]: new Map({
 				alertType: 'error',
 				id,
-				message
-			})
+				message,
+			}),
 		});
 
 		const newState = reducer(prevState, action);

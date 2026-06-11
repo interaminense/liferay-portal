@@ -1,7 +1,13 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
 jest.mock('shared/util/request');
 
-import api, {CALL_API, toAction} from '../api';
 import sendRequest from 'shared/util/request';
+
+import api, {CALL_API, toAction} from '../api';
 
 describe('API Middleware', () => {
 	it('should call next middleware if not an API call', () => {
@@ -10,7 +16,7 @@ describe('API Middleware', () => {
 		const next = jest.fn();
 
 		const action = {
-			type: 'TEST_REQUEST'
+			type: 'TEST_REQUEST',
 		};
 
 		api()(next)(action);
@@ -25,11 +31,11 @@ describe('API Middleware', () => {
 					data: {foo: 'bar'},
 					method: 'GET',
 					path: 'test/path',
-					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE']
+					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE'],
 				},
-				schema: 'schema'
+				schema: 'schema',
 			},
-			type: 'NO_OP'
+			type: 'NO_OP',
 		};
 
 		const next = jest.fn();
@@ -46,11 +52,11 @@ describe('API Middleware', () => {
 					data: {foo: 'bar'},
 					method: 'GET',
 					path: 'test/path',
-					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE']
+					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE'],
 				},
-				schema: 'schema'
+				schema: 'schema',
 			},
-			type: 'NO_OP'
+			type: 'NO_OP',
 		};
 
 		const next = jest.fn();
@@ -67,16 +73,16 @@ describe('API Middleware', () => {
 					data: {foo: 'bar'},
 					method: 'GET',
 					path: 'test/path',
-					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE']
+					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE'],
 				},
-				schema: 'schema'
+				schema: 'schema',
 			},
-			type: 'NO_OP'
+			type: 'NO_OP',
 		};
 
 		const next = jest.fn();
 
-		return api()(next)(action).then(val =>
+		return api()(next)(action).then((val) =>
 			expect(val.payload.foo).toBe('bar')
 		);
 	});
@@ -88,16 +94,18 @@ describe('API Middleware', () => {
 					data: {foo: 'bar'},
 					method: 'GET',
 					path: 'test/path',
-					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE']
+					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE'],
 				},
-				schema: 'schema'
+				schema: 'schema',
 			},
-			type: 'NO_OP'
+			type: 'NO_OP',
 		};
 
 		const next = jest.fn();
 
-		return api()(next)(action).catch(val => expect(val.reason).toBe('bar'));
+		return api()(next)(action).catch((val) =>
+			expect(val.reason).toBe('bar')
+		);
 	});
 
 	it('should call requestFn if requestFn exists', () => {
@@ -108,11 +116,11 @@ describe('API Middleware', () => {
 				[CALL_API]: {
 					data: {foo: 'bar'},
 					requestFn,
-					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE']
+					types: ['TEST_REQUEST', 'TEST_SUCCESS', 'TEST_FAILURE'],
 				},
-				schema: 'schema'
+				schema: 'schema',
 			},
-			type: 'NO_OP'
+			type: 'NO_OP',
 		};
 
 		const next = jest.fn();
@@ -134,8 +142,8 @@ describe('toAction', () => {
 		const action = toAction('TEST', {
 			meta: {
 				[CALL_API]: 1,
-				id: 15
-			}
+				id: 15,
+			},
 		});
 
 		expect(action.meta[CALL_API]).toBeUndefined();
