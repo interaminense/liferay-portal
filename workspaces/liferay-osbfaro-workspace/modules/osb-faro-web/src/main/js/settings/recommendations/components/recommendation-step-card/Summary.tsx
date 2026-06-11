@@ -11,8 +11,7 @@ import {get} from 'lodash';
 import React, {useEffect, useState} from 'react';
 import InfoPopover from 'shared/components/InfoPopover';
 import Form from 'shared/components/form';
-import Constants from 'shared/util/constants';
-import {
+import Constants, {
 	JobRunDataPeriods,
 	JobRunFrequencies,
 	JobRunStatuses,
@@ -142,6 +141,8 @@ const Summary: React.FC<ISummaryProps> = ({
 
 			setFieldValue('runNow', true);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activitiesDataWithPrevious, activitiesData]);
 
 	const render2StepsBackButton = (

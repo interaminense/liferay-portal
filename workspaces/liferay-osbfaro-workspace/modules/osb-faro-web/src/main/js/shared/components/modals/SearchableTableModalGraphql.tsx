@@ -86,6 +86,8 @@ const SearchableTableModalGraphql: React.FC<
 				type: ACTION_TYPES.add,
 			});
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleSubmit = () => onSubmit(contextSelectedItems);

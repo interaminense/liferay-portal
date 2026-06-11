@@ -20,8 +20,8 @@ import {
 } from 'recharts';
 import ComposedChartWithEmptyState from 'shared/components/ComposedChartWithEmptyState';
 import {Interval, RangeSelectors} from 'shared/types';
-import {CHART_COLOR_NAMES} from 'shared/util/charts';
 import {
+	CHART_COLOR_NAMES,
 	formatXAxisDate,
 	getBarColor,
 	getDateTitle,
@@ -268,7 +268,7 @@ const ActivitiesChart: React.FC<IChartProps<IActivitiesHistory<number>>> = ({
 						animationDuration={ANIMATION_DURATION.bar}
 						dataKey="totalElements"
 						fill={CHART_BLUE}
-						onMouseEnter={(e, index) => setHoverIndex(index)}
+						onMouseEnter={(event, index) => setHoverIndex(index)}
 						onMouseLeave={() => setHoverIndex(-1)}
 					>
 						{history.map((entry, index) => (

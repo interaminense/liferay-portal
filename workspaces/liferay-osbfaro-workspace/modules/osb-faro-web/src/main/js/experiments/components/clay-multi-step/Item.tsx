@@ -15,10 +15,10 @@ interface ClayMultiStepItemIProps
 	extends React.LiHTMLAttributes<HTMLLIElement> {
 	Body?: React.FC<Body>;
 	lastChild?: boolean;
+	showIndicatorLabel?: boolean;
 	status?: string;
 	stepNumber?: string;
 	title?: string;
-	showIndicatorLabel?: boolean;
 }
 
 const ClayMultiStepItem: React.FC<ClayMultiStepItemIProps> = ({

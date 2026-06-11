@@ -13,9 +13,9 @@ interface ITimeZonePicker {
 	disabled?: boolean;
 	fieldName: string;
 	initialTimeZone?: TimeZone;
+	onCountryChange?: Function;
 	setFieldTouched: Function;
 	setFieldValue: Function;
-	onCountryChange?: Function;
 }
 
 const TimeZonePicker: React.FC<ITimeZonePicker> = ({

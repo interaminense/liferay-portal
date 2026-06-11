@@ -18,11 +18,11 @@ interface IDropdownRangeKeyDatePickerProps {
 	retentionPeriod: number | null;
 }
 
-export const DropdownRangeKeyDatePicker = ({
+export const DropdownRangeKeyDatePicker = function DropdownRangeKeyDatePicker({
 	customDateRange,
 	onCustomRangeChange,
 	retentionPeriod,
-}: IDropdownRangeKeyDatePickerProps) => {
+}: IDropdownRangeKeyDatePickerProps) {
 	const {timeZoneId} = useTimeZone();
 
 	return (

@@ -15,8 +15,8 @@ export interface DataSourceData {
 
 export interface DataSource {
 	contactsSyncDetails: {selected: boolean};
-	sitesSyncDetails: {selected: boolean};
 	id: string;
+	sitesSyncDetails: {selected: boolean};
 }
 
 export interface DataSourceSyncData {

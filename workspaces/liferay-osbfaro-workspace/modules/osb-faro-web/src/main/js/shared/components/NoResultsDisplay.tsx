@@ -50,6 +50,15 @@ const NoResultsDisplayIcon: React.FC<INoResultsDisplayIcon> = ({
 	);
 };
 
+type GetFormattedTitle = (name?: string, title?: string) => string;
+
+export const getFormattedTitle: GetFormattedTitle = function getFormattedTitle(
+	name = Liferay.Language.get('items').toLowerCase(),
+	title = Liferay.Language.get('there-are-no-x-found')
+) {
+	return sub(title, [name]) as string;
+};
+
 const NoResultsDisplay: React.FC<INoResultsDisplayProps> = ({
 	children,
 	className,
@@ -85,12 +94,5 @@ const NoResultsDisplay: React.FC<INoResultsDisplayProps> = ({
 		</div>
 	);
 };
-
-type GetFormattedTitle = (name?: string, title?: string) => string;
-
-export const getFormattedTitle: GetFormattedTitle = (
-	name = Liferay.Language.get('items').toLowerCase(),
-	title = Liferay.Language.get('there-are-no-x-found')
-) => sub(title, [name]) as string;
 
 export default NoResultsDisplay;

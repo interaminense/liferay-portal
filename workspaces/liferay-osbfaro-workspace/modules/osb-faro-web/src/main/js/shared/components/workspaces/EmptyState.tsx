@@ -19,6 +19,51 @@ interface IEmptyStateProps extends React.HTMLAttributes<HTMLElement> {
 	open: (modalType: string, props: object) => void;
 }
 
+interface ICardItemProps extends React.HTMLAttributes<HTMLElement> {
+	buttonProps: {
+		displayType?: DisplayType;
+		href?: string;
+		label: string;
+		onClick?: () => void;
+	};
+	description: string;
+	icon: string;
+}
+
+export const CardEmpty = function CardEmpty({
+	buttonProps,
+	description,
+	icon,
+}: ICardItemProps) {
+	const {
+		displayType = 'secondary',
+		href,
+		label,
+		...otherButtonProps
+	} = buttonProps;
+
+	return (
+		<div className="empty-card">
+			<ClayIcon className="icon-root" symbol={icon} />
+			<p>{description}</p>
+			{href ? (
+				<ClayLink
+					button
+					displayType="secondary"
+					href={href}
+					{...otherButtonProps}
+				>
+					{label}
+				</ClayLink>
+			) : (
+				<ClayButton displayType={displayType} {...otherButtonProps}>
+					{label}
+				</ClayButton>
+			)}
+		</div>
+	);
+};
+
 const EmptyState: React.FC<IEmptyStateProps> = ({
 	className,
 	close,
@@ -63,50 +108,5 @@ const EmptyState: React.FC<IEmptyStateProps> = ({
 		)}
 	</div>
 );
-
-interface ICardItemProps extends React.HTMLAttributes<HTMLElement> {
-	buttonProps: {
-		displayType?: DisplayType;
-		href?: string;
-		label: string;
-		onClick?: () => void;
-	};
-	description: string;
-	icon: string;
-}
-
-export const CardEmpty: React.FC<ICardItemProps> = ({
-	buttonProps,
-	description,
-	icon,
-}) => {
-	const {
-		displayType = 'secondary',
-		href,
-		label,
-		...otherButtonProps
-	} = buttonProps;
-
-	return (
-		<div className="empty-card">
-			<ClayIcon className="icon-root" symbol={icon} />
-			<p>{description}</p>
-			{href ? (
-				<ClayLink
-					button
-					displayType="secondary"
-					href={href}
-					{...otherButtonProps}
-				>
-					{label}
-				</ClayLink>
-			) : (
-				<ClayButton displayType={displayType} {...otherButtonProps}>
-					{label}
-				</ClayButton>
-			)}
-		</div>
-	);
-};
 
 export default connect(null, {close, open})(EmptyState);

@@ -12,7 +12,7 @@ import {getDataPrivacy} from 'shared/util/breadcrumbs';
 
 import RequestList from '../hocs/RequestList';
 
-export const RequestLog = () => {
+export const RequestLog = function RequestLog() {
 	const {groupId = ''} = useParams<{groupId: string}>();
 	const currentUser = useCurrentUser();
 	const {timeZoneId} = useTimeZone();

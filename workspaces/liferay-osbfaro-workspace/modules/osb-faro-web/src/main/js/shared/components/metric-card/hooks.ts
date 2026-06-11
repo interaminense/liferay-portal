@@ -14,7 +14,9 @@ import {
 	getSafeTouchpoint,
 } from 'shared/util/util';
 
-export const useAssetVariables = (variables: ICommonVariables) => {
+export const useAssetVariables = function useAssetVariables(
+	variables: ICommonVariables
+) {
 	const {type, ...commonVariables} = variables;
 	const {
 		assetId = '',
@@ -40,10 +42,10 @@ export const useAssetVariables = (variables: ICommonVariables) => {
 };
 
 type TMetricQueryParams = {
+	Query: DocumentNode;
 	experienceId?: string;
 	filters: RawFilters;
 	interval: Interval;
-	Query: DocumentNode;
 	rangeSelectors: RangeSelectors;
 	variables: (commonVariables: ICommonVariables) => any;
 };
@@ -62,14 +64,14 @@ const buildQueryVariables = ({
 		...(experienceId && {experienceId}),
 	});
 
-export const useMetricQuery = ({
+export const useMetricQuery = function useMetricQuery({
 	Query,
 	experienceId,
 	filters,
 	interval,
 	rangeSelectors,
 	variables,
-}: TMetricQueryParams) => {
+}: TMetricQueryParams) {
 	const {data, error, loading} = useQuery(Query, {
 		fetchPolicy: fetchPolicyDefinition(rangeSelectors),
 		variables: buildQueryVariables({

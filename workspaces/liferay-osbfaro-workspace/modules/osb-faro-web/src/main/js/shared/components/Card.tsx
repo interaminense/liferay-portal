@@ -76,6 +76,8 @@ const Card: React.FC<ICardProps> & {
 		}
 
 		return clearReportContainers;
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [reportContainer]);
 
 	const classes = getCN('card', 'card-root', className, {

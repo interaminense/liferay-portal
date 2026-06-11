@@ -133,6 +133,13 @@ export const STRING_OPERATOR_LABELS_MAP: PartialOperatorLabelsMap = {
 	[Operators.NE]: Liferay.Language.get('is-not').toLowerCase(),
 };
 
+export const getBreakdownDisplay = function getBreakdownDisplay(
+	{displayName, name}: Attribute,
+	attributeType: AttributeOwnerTypes
+): [string, string] {
+	return [ATTRIBUTE_TYPE_LABEL_MAP[attributeType], displayName || name];
+};
+
 const getBooleanDisplay = (
 	attribute: Attribute,
 	{attributeType, values: [value]}: Filter
@@ -164,14 +171,6 @@ const getDateDisplay = (
 		`${breakdownValue}`,
 	];
 };
-
-export const getBreakdownDisplay = (
-	{displayName, name}: Attribute,
-	attributeType: AttributeOwnerTypes
-): [string, string] => [
-	ATTRIBUTE_TYPE_LABEL_MAP[attributeType],
-	displayName || name,
-];
 
 const getDurationDisplay = (
 	attribute: Attribute,
@@ -218,17 +217,20 @@ const FILTER_DISPLAY_MAP = {
 	[DataTypes.String]: getStringDisplay,
 };
 
-export const getFilterDisplay = (
+export const getFilterDisplay = function getFilterDisplay(
 	attribute: Attribute,
 	filter: Filter
-): [string, string] => {
+): [string, string] {
 	const displayFn = FILTER_DISPLAY_MAP[filter.dataType];
 
 	return displayFn(attribute, filter);
 };
 
-export const isAttribute = (item: Attribute | Event): boolean =>
-	(item as Attribute).dataType !== undefined;
+export const isAttribute = function isAttribute(
+	item: Attribute | Event
+): boolean {
+	return (item as Attribute).dataType !== undefined;
+};
 
 interface IBreakdownFnArgs {
 	attributeId: string;
@@ -239,88 +241,98 @@ interface IBreakdownFnArgs {
 	displayName: string;
 }
 
-export const createBooleanBreakdown = ({
+export const createBooleanBreakdown = function createBooleanBreakdown({
 	attributeId,
 	attributeType,
 	description,
 	displayName,
-}: IBreakdownFnArgs): Breakdown => ({
-	attributeId,
-	attributeType,
-	binSize: null,
-	dataType: DataTypes.Boolean,
-	dateGrouping: null,
-	description,
-	displayName,
-	sortType: OrderByDirections.Descending,
-});
+}: IBreakdownFnArgs): Breakdown {
+	return {
+		attributeId,
+		attributeType,
+		binSize: null,
+		dataType: DataTypes.Boolean,
+		dateGrouping: null,
+		description,
+		displayName,
+		sortType: OrderByDirections.Descending,
+	};
+};
 
-export const createDateBreakdown = ({
+export const createDateBreakdown = function createDateBreakdown({
 	attributeId,
 	attributeType,
 	dateGrouping = DEFAULT_DATE_GROUPING,
 	description,
 	displayName,
-}: IBreakdownFnArgs): Breakdown => ({
-	attributeId,
-	attributeType,
-	binSize: null,
-	dataType: DataTypes.Date,
-	dateGrouping,
-	description,
-	displayName,
-	sortType: OrderByDirections.Descending,
-});
+}: IBreakdownFnArgs): Breakdown {
+	return {
+		attributeId,
+		attributeType,
+		binSize: null,
+		dataType: DataTypes.Date,
+		dateGrouping,
+		description,
+		displayName,
+		sortType: OrderByDirections.Descending,
+	};
+};
 
-export const createDurationBreakdown = ({
+export const createDurationBreakdown = function createDurationBreakdown({
 	attributeId,
 	attributeType,
 	binSize = DEFAULT_DURATION_BIN,
 	description,
 	displayName,
-}: IBreakdownFnArgs): Breakdown => ({
-	attributeId,
-	attributeType,
-	binSize,
-	dataType: DataTypes.Duration,
-	dateGrouping: null,
-	description,
-	displayName,
-	sortType: OrderByDirections.Descending,
-});
+}: IBreakdownFnArgs): Breakdown {
+	return {
+		attributeId,
+		attributeType,
+		binSize,
+		dataType: DataTypes.Duration,
+		dateGrouping: null,
+		description,
+		displayName,
+		sortType: OrderByDirections.Descending,
+	};
+};
 
-export const createNumberBreakdown = ({
+export const createNumberBreakdown = function createNumberBreakdown({
 	attributeId,
 	attributeType,
 	binSize = DEFAULT_NUMBER_BIN,
 	description,
 	displayName,
-}: IBreakdownFnArgs): Breakdown => ({
-	attributeId,
-	attributeType,
-	binSize,
-	dataType: DataTypes.Number,
-	dateGrouping: null,
-	description,
-	displayName,
-	sortType: OrderByDirections.Descending,
-});
+}: IBreakdownFnArgs): Breakdown {
+	return {
+		attributeId,
+		attributeType,
+		binSize,
+		dataType: DataTypes.Number,
+		dateGrouping: null,
+		description,
+		displayName,
+		sortType: OrderByDirections.Descending,
+	};
+};
 
-export const createStringBreakdown = ({
+export const createStringBreakdown = function createStringBreakdown({
 	attributeId,
 	attributeType,
 	description,
 	displayName,
-}: IBreakdownFnArgs): Breakdown => ({
-	attributeId,
-	attributeType,
-	binSize: null,
-	dataType: DataTypes.String,
-	dateGrouping: null,
-	description,
-	displayName,
-	sortType: OrderByDirections.Descending,
-});
+}: IBreakdownFnArgs): Breakdown {
+	return {
+		attributeId,
+		attributeType,
+		binSize: null,
+		dataType: DataTypes.String,
+		dateGrouping: null,
+		description,
+		displayName,
+		sortType: OrderByDirections.Descending,
+	};
+};
 
 export const BREAKDOWN_FNS_MAP = {
 	[DataTypes.Boolean]: createBooleanBreakdown,
@@ -330,7 +342,9 @@ export const BREAKDOWN_FNS_MAP = {
 	[DataTypes.String]: createStringBreakdown,
 };
 
-export const getRowSpan = (breakdownItems: BreakdownDataItem[]): number => {
+export const getRowSpan = function getRowSpan(
+	breakdownItems: BreakdownDataItem[]
+): number {
 	let rowSpan = breakdownItems.length || 1;
 
 	breakdownItems.forEach(({breakdownItems, leafNode}) => {
@@ -342,10 +356,10 @@ export const getRowSpan = (breakdownItems: BreakdownDataItem[]): number => {
 	return rowSpan;
 };
 
-export const formatDateName = (
+export const formatDateName = function formatDateName(
 	name: string,
 	dateGrouping: DateGroupings
-): string => {
+): string {
 	switch (dateGrouping) {
 		case DateGroupings.Day:
 			return moment(name, 'YYYY-MM-DD').format('ll');
@@ -357,7 +371,9 @@ export const formatDateName = (
 	}
 };
 
-export const formatDurationName = (name: string): string => {
+export const formatDurationName = function formatDurationName(
+	name: string
+): string {
 	const [durationStart, durationEnd] = name.split('-');
 
 	return `${Liferay.Language.get('between')} ${formatTime(
@@ -365,29 +381,30 @@ export const formatDurationName = (name: string): string => {
 	)} - ${formatTime(Number(durationEnd))}`;
 };
 
-export const formatBreakdownNameByDataType = (
-	name: string,
-	breakdown: Breakdown
-): string | number => {
-	if (name === 'undefined') {
-		return name;
-	}
-
-	switch (breakdown?.dataType) {
-		case DataTypes.Date:
-			return formatDateName(
-				name,
-				breakdown.dateGrouping ?? DateGroupings.Month
-			);
-		case DataTypes.Duration:
-			return formatDurationName(name);
-		case DataTypes.Boolean:
-		case DataTypes.String:
-		case DataTypes.Number:
-		default:
+export const formatBreakdownNameByDataType =
+	function formatBreakdownNameByDataType(
+		name: string,
+		breakdown: Breakdown
+	): string | number {
+		if (name === 'undefined') {
 			return name;
-	}
-};
+		}
+
+		switch (breakdown?.dataType) {
+			case DataTypes.Date:
+				return formatDateName(
+					name,
+					breakdown.dateGrouping ?? DateGroupings.Month
+				);
+			case DataTypes.Duration:
+				return formatDurationName(name);
+			case DataTypes.Boolean:
+			case DataTypes.String:
+			case DataTypes.Number:
+			default:
+				return name;
+		}
+	};
 
 function formatName(name = 'undefined') {
 	if (name === '') {
@@ -397,12 +414,12 @@ function formatName(name = 'undefined') {
 	return name;
 }
 
-export const parseBreakdownData = (
+export const parseBreakdownData = function parseBreakdownData(
 	{breakdownItems}: BreakdownData | BreakdownDataItem,
 	orderedBreakdowns: Breakdown[],
 	rows: ParsedBreakdownData = [{index: '0'} as ParsedBreakdownItem],
 	level: number = 0
-): ParsedBreakdownData => {
+): ParsedBreakdownData {
 	const items = breakdownItems ?? [];
 
 	items.forEach((data) => {
@@ -462,14 +479,14 @@ export const parseBreakdownData = (
 
 	return level === 0 && !items.length
 		? rows
-		: rows.filter((obj) => Object.keys(obj).length !== 0);
+		: rows.filter((object) => Object.keys(object).length !== 0);
 };
 
-export const getMaxEventValue = (
+export const getMaxEventValue = function getMaxEventValue(
 	parsedData: ParsedBreakdownData,
 	compareToPrevious: boolean
-) =>
-	parsedData.reduce<number>(
+) {
+	return parsedData.reduce<number>(
 		(prev, {events = []}) =>
 			events.reduce<number>(
 				(
@@ -499,6 +516,7 @@ export const getMaxEventValue = (
 			),
 		0
 	);
+};
 
 export function getModifiedEventAttributeDefinitions({
 	attribute,
@@ -572,17 +590,20 @@ export function getModifiedEventAttributeDefinitions({
 	return modifiedEventAttributeDefinitions;
 }
 
-export const getTabs = (
+export const getTabs = function getTabs(
 	setAttributeOwnerType: (type: AttributeOwnerTypes) => void
-) => [
-	{
-		onClick: () => setAttributeOwnerType(AttributeOwnerTypes.Event),
-		tabId: AttributeOwnerTypes.Event,
-		title: Liferay.Language.get('event'),
-	},
-	{
-		onClick: () => setAttributeOwnerType(AttributeOwnerTypes.Individual),
-		tabId: AttributeOwnerTypes.Individual,
-		title: Liferay.Language.get('individual'),
-	},
-];
+) {
+	return [
+		{
+			onClick: () => setAttributeOwnerType(AttributeOwnerTypes.Event),
+			tabId: AttributeOwnerTypes.Event,
+			title: Liferay.Language.get('event'),
+		},
+		{
+			onClick: () =>
+				setAttributeOwnerType(AttributeOwnerTypes.Individual),
+			tabId: AttributeOwnerTypes.Individual,
+			title: Liferay.Language.get('individual'),
+		},
+	];
+};

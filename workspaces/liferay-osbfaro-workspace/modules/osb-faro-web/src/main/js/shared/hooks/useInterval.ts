@@ -5,10 +5,15 @@
 
 import {useEffect} from 'react';
 
-export const useInterval = <T>(tickFn: () => T, delay: number = 0): void => {
+export const useInterval = function useInterval<T>(
+	tickFn: () => T,
+	delay: number = 0
+): void {
 	let intervalId: ReturnType<typeof setInterval>;
 
 	useEffect(() => {
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		intervalId = setInterval(tickFn, delay);
 
 		return () => {

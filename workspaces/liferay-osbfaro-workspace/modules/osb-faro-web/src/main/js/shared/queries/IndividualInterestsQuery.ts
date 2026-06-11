@@ -10,8 +10,8 @@ export interface IIndividualInterestsData {
 	individualInterests: {
 		compositions: [
 			{
-				name: string;
 				count: number;
+				name: string;
 			},
 		];
 		maxCount: number;

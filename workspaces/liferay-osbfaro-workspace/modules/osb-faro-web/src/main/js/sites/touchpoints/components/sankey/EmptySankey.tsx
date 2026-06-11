@@ -17,11 +17,11 @@ interface IEmptySankeyProps {
 	rangeSelectors: RangeSelectors;
 }
 
-export const EmptySankey: React.FC<IEmptySankeyProps> = ({
+export const EmptySankey = function EmptySankey({
 	data,
 	emptyState,
 	rangeSelectors,
-}) => {
+}: IEmptySankeyProps) {
 	const marginTop = 60;
 
 	return (

@@ -9,8 +9,7 @@ import ClayLayout from '@clayui/layout';
 import ClayLink from '@clayui/link';
 import React, {useEffect, useState} from 'react';
 import {ConnectedProps, connect} from 'react-redux';
-import {useHistory} from 'react-router-dom';
-import {useParams} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import {addAlert} from 'shared/actions/alerts';
 import {close, open} from 'shared/actions/modals';
 import {useQueryParams} from 'shared/hooks/useQueryParams';
@@ -20,8 +19,6 @@ import URLConstants from 'shared/util/url-constants';
 
 import Toolbar from './Toolbar';
 import {WizardPageProvider, useWizardPage} from './WizardPageContext';
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface IWizardStepsContentProps extends PropsFromRedux {
 	groupId: string;
@@ -158,6 +155,8 @@ const connector = connect(null, {
 	close,
 	open,
 });
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const WizardPage = ({children}: {children: React.ReactNode}) => {
 	const {groupId = ''} = useParams<{groupId: string}>();

@@ -64,8 +64,8 @@ const EmailReports: React.FC<IEmailReportsProps> = ({
 					}
 				)
 			)
-			.catch((e) => {
-				console.error(e); // eslint-disable-line no-console
+			.catch((event) => {
+				console.error(event); // eslint-disable-line no-console
 			});
 	}, [channelId, groupId]);
 
@@ -84,8 +84,8 @@ const EmailReports: React.FC<IEmailReportsProps> = ({
 
 				setReport(report);
 			})
-			.catch((e) => {
-				console.error(e); // eslint-disable-line no-console
+			.catch((event) => {
+				console.error(event); // eslint-disable-line no-console
 
 				addAlert({
 					alertType: Alert.Types.Error,

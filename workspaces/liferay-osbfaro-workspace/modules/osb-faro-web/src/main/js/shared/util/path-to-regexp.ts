@@ -3,11 +3,13 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-export const escapeGroup = (group: string) =>
-	group.replace(/([=!:$/()])/g, '\\$1');
+export const escapeGroup = function escapeGroup(group: string) {
+	return group.replace(/([=!:$/()])/g, '\\$1');
+};
 
-export const escapeString = (str: string) =>
-	str.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1');
+export const escapeString = function escapeString(str: string) {
+	return str.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1');
+};
 
 export type PathToken =
 	| string
@@ -21,7 +23,7 @@ export type PathToken =
 			repeat: boolean;
 	  };
 
-export const parse = (str: string): PathToken[] => {
+export const parse = function parse(str: string): PathToken[] {
 	const tokens: PathToken[] = [];
 	let key = 0;
 	let index = 0;
@@ -86,7 +88,7 @@ export const parse = (str: string): PathToken[] => {
 
 const tokensToFunction =
 	(tokens: PathToken[]) =>
-	(obj: Record<string, string | number | Array<string | number>>) => {
+	(object: Record<string, string | number | Array<string | number>>) => {
 		let path = '';
 
 		tokens.forEach((token: PathToken) => {
@@ -96,9 +98,9 @@ const tokensToFunction =
 				return;
 			}
 
-			const value = obj[token.name];
+			const value = object[token.name];
 
-			if (value == null) {
+			if (value === null || value === undefined) {
 				if (token.optional) {
 					return;
 				}
@@ -156,7 +158,7 @@ const tokensToFunction =
 		return path;
 	};
 
-export const compile = (path: string) => {
+export const compile = function compile(path: string) {
 	const tokens = parse(path);
 
 	return tokensToFunction(tokens);

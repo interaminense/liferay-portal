@@ -168,12 +168,14 @@ const IndividualsList: React.FC = () => {
 		}
 
 		return DEFAULT_FILTER_BY_OPTIONS;
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [countriesData, countriesLoading]);
 
 	const activeUsersValue =
 		paginationParams.filterBy.get('activeUsers')?.first() ?? null;
 
-	const rangeKey = activeUsersValue ? parseInt(activeUsersValue) : null;
+	const rangeKey = activeUsersValue ? parseInt(activeUsersValue, 10) : null;
 
 	const selectedFilters = {
 		filter: transformCountriesInQueryString(

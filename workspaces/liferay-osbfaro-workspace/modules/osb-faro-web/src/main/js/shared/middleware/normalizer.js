@@ -5,21 +5,25 @@
 
 import {normalize} from 'normalizr';
 
-export default () => (next) => (action) => {
-	const {meta, payload, type} = action;
+const Normalizer = function Normalizer() {
+	return (next) => (action) => {
+		const {meta, payload, type} = action;
 
-	if (payload && meta && meta.schema) {
-		const {entities, result} = normalize(payload, meta.schema);
+		if (payload && meta && meta.schema) {
+			const {entities, result} = normalize(payload, meta.schema);
 
-		action = {
-			meta,
-			payload: {
-				entities,
-				result,
-			},
-			type,
-		};
-	}
+			action = {
+				meta,
+				payload: {
+					entities,
+					result,
+				},
+				type,
+			};
+		}
 
-	return next(action);
+		return next(action);
+	};
 };
+
+export default Normalizer;

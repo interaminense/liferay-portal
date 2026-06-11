@@ -16,7 +16,7 @@ export type Resource = {
 	measurement: string;
 };
 
-export const UsageOverviewSaaS = () => {
+export const UsageOverviewSaaS = function UsageOverviewSaaS() {
 	const currentUser = useCurrentUser();
 
 	let pageActions: {

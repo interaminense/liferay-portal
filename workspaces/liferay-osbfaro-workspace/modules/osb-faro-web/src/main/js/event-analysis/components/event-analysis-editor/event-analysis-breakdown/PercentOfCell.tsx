@@ -14,6 +14,29 @@ interface IPercentOfCellProps extends React.HTMLAttributes<HTMLElement> {
 	totalValue: number;
 }
 
+const getItems = (
+	events: BreakdownDataItem[],
+	compareToPrevious: boolean
+): {
+	value: number;
+}[] => {
+	const data: {value: number}[] = [];
+
+	events.forEach(({previousValue = 0, value}) => {
+		data.push({
+			value,
+		});
+
+		if (compareToPrevious) {
+			data.push({
+				value: previousValue,
+			});
+		}
+	});
+
+	return data;
+};
+
 const PercentOfCell: React.FC<IPercentOfCellProps> = ({
 	compareToPrevious = false,
 	events = [],
@@ -52,29 +75,6 @@ const PercentOfCell: React.FC<IPercentOfCellProps> = ({
 			)}
 		</>
 	);
-};
-
-const getItems = (
-	events: BreakdownDataItem[],
-	compareToPrevious: boolean
-): {
-	value: number;
-}[] => {
-	const data: {value: number}[] = [];
-
-	events.forEach(({previousValue = 0, value}) => {
-		data.push({
-			value,
-		});
-
-		if (compareToPrevious) {
-			data.push({
-				value: previousValue,
-			});
-		}
-	});
-
-	return data;
 };
 
 export default PercentOfCell;

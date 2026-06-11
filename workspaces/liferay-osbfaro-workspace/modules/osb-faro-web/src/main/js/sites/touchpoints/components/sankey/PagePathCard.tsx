@@ -28,12 +28,12 @@ import {TitleKey, Type} from './types';
 import {SANKEY_WIDTH, SECONDARY_NODE_COLOR} from './utils';
 
 type pagePathNode = {
-	external: boolean;
-	views: number;
 	canonicalUrl: string;
-	title: TitleKey;
+	external: boolean;
 	followingPagePathNodes: pagePathNode[];
 	previousPagePathNodes: pagePathNode[];
+	title: TitleKey;
+	views: number;
 };
 
 function getTitle(key: TitleKey, type: Type) {

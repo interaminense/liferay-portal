@@ -842,7 +842,7 @@ const DXP_VARIANTS = [
 	},
 ];
 
-export default () => {
+const ExperimentResolver = function ExperimentResolver() {
 	const status = 'RUNNING';
 	const winnerDXPVariantId = null;
 
@@ -880,3 +880,5 @@ export default () => {
 		winnerDXPVariantId,
 	};
 };
+
+export default ExperimentResolver;

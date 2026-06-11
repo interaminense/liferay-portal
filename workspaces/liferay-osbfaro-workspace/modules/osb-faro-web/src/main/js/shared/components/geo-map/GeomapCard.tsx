@@ -175,7 +175,10 @@ interface IGeomapCardProps {
 	metricLabel: string;
 }
 
-export const GeomapCard = ({data, metricLabel}: IGeomapCardProps) => {
+export const GeomapCard = function GeomapCard({
+	data,
+	metricLabel,
+}: IGeomapCardProps) {
 	const mergedData = mergeData(data.countries);
 	const [selectedCountry, setSelectedCountry] = useState<
 		IFeature | boolean | null
@@ -298,10 +301,14 @@ export const GeomapCard = ({data, metricLabel}: IGeomapCardProps) => {
 		return () => {
 			tooltipRoot.unmount();
 		};
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		chartRef.current.mapLayer!.selectAll('path').style('fill', fillFn);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedCountry]);
 
 	return (

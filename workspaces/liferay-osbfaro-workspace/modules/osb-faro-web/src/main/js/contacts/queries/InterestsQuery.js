@@ -12,28 +12,32 @@ const INTERESTS_ID_MAP = {
 	[CompositionTypes.SegmentInterests]: 'individualSegmentId',
 };
 
-export default (queryName) => gql`
-	query Interests(
-		$active: Boolean!
-		$channelId: String
-		$id: String!
-		$keywords: String
-		$size: Int!
-		$sort: Sort!
-		$start: Int!
-	) {
-		${queryName}(
-			active: $active
-			channelId: $channelId
-			${INTERESTS_ID_MAP[queryName]}: $id
-			keywords: $keywords
-			size: $size
-			sort: $sort
-			start: $start
-		) {
-			...compositionFragment
-		}
-	}
+const InterestsQuery = function InterestsQuery(queryName) {
+	return gql`
+        query Interests(
+            $active: Boolean!
+            $channelId: String
+            $id: String!
+            $keywords: String
+            $size: Int!
+            $sort: Sort!
+            $start: Int!
+        ) {
+            ${queryName}(
+                active: $active
+                channelId: $channelId
+                ${INTERESTS_ID_MAP[queryName]}: $id
+                keywords: $keywords
+                size: $size
+                sort: $sort
+                start: $start
+            ) {
+                ...compositionFragment
+            }
+        }
 
-	${COMPOSITION_FRAGMENT}
-`;
+        ${COMPOSITION_FRAGMENT}
+    `;
+};
+
+export default InterestsQuery;

@@ -8,9 +8,9 @@ import React, {createContext, useContext, useReducer} from 'react';
 import {ReportContainer} from './DownloadPDFReport';
 
 export const Context = createContext<{
+	clearReportContainers: () => void;
 	reportContainers: ReportContainer[];
 	setReportContainer: (reportContainer: ReportContainer) => void;
-	clearReportContainers: () => void;
 }>({
 	clearReportContainers: () => {},
 	reportContainers: [],
@@ -23,8 +23,8 @@ enum ActionTypes {
 }
 
 type DownloadReportAction = {
-	type: ActionTypes;
 	payload?: ReportContainer;
+	type: ActionTypes;
 };
 
 const downloadReportReducer = (
@@ -53,11 +53,11 @@ const downloadReportReducer = (
 	}
 };
 
-export const DownloadReportProvider = ({
+export const DownloadReportProvider = function DownloadReportProvider({
 	children,
 }: {
 	children: React.ReactNode;
-}) => {
+}) {
 	const [{reportContainers}, dispatch] = useReducer(downloadReportReducer, {
 		reportContainers: [],
 	});
@@ -90,4 +90,6 @@ export const DownloadReportProvider = ({
 
 Context.displayName = 'DownloadReportContext';
 
-export const useDownloadReportContext = () => useContext(Context);
+export const useDownloadReportContext = function useDownloadReportContext() {
+	return useContext(Context);
+};

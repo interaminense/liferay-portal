@@ -29,10 +29,10 @@ const PAGES_ORDER_BY_OPTIONS = [
 
 interface IInterestPages {
 	channelId?: string;
-	groupId?: string;
 	dataSourceFn: () => void;
 	dataSourceParams: any;
 	entityLabel: string;
+	groupId?: string;
 	rowIdentifier: string[];
 }
 

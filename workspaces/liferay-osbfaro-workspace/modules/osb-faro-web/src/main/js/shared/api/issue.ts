@@ -5,7 +5,7 @@
 
 import sendRequest from 'shared/util/request';
 
-export const create = ({
+export const create = function create({
 	currentUrl,
 	description,
 	groupId,
@@ -15,9 +15,10 @@ export const create = ({
 	description: string;
 	groupId: string;
 	title: string;
-}): Promise<any> =>
-	sendRequest({
+}): Promise<any> {
+	return sendRequest({
 		data: {currentUrl, description, title},
 		method: 'POST',
 		path: `main/${groupId}/issue`,
 	});
+};

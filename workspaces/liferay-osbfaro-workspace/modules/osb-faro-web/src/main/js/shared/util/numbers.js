@@ -29,7 +29,11 @@ const removeZeroPrecision = (str, locale) => {
  * To Rounded Single Precision
  * @param {number} number
  */
-export const toRounded = (number, precision = 1, locale = undefined) => {
+export const toRounded = function toRounded(
+	number,
+	precision = 1,
+	locale = undefined
+) {
 	const formatted = new Intl.NumberFormat(locale, {
 		maximumFractionDigits: precision,
 		minimumFractionDigits: precision,
@@ -42,10 +46,11 @@ export const toRounded = (number, precision = 1, locale = undefined) => {
  * To Locale
  * @param {number} number
  */
-export const toLocale = (number, locale = undefined) =>
-	new Intl.NumberFormat(locale, {
+export const toLocale = function toLocale(number, locale = undefined) {
+	return new Intl.NumberFormat(locale, {
 		maximumFractionDigits: 6,
 	}).format(number);
+};
 
 /**
  * To Thousands
@@ -55,10 +60,11 @@ export const toLocale = (number, locale = undefined) =>
  * @param {number} number
  * @returns {string}
  */
-export const toThousands = (number) =>
-	toThousandsBase(number, (factor) => round(number * factor, 2));
+export const toThousands = function toThousands(number) {
+	return toThousandsBase(number, (factor) => round(number * factor, 2));
+};
 
-export const toThousandsBase = (number, setFactor) => {
+export const toThousandsBase = function toThousandsBase(number, setFactor) {
 	if (!isNumber(number)) {
 		return '';
 	}
@@ -90,7 +96,7 @@ export const toThousandsBase = (number, setFactor) => {
  * To Fixes Point
  * @param {number} number
  */
-export const toFixedPoint = (number, locale = undefined) => {
+export const toFixedPoint = function toFixedPoint(number, locale = undefined) {
 	const formatted = new Intl.NumberFormat(locale, {
 		maximumFractionDigits: 0,
 		useGrouping: true,
@@ -103,18 +109,20 @@ export const toFixedPoint = (number, locale = undefined) => {
  * To Int
  * @param {string} str
  */
-export const toInt = (str) => parseInt(str, 10);
+export const toInt = function toInt(str) {
+	return parseInt(str, 10);
+};
 
 /**
  * To Duration
  * @param {string} time
  * @param {string} measurement
  */
-export const toDuration = (
+export const toDuration = function toDuration(
 	time,
 	format = 'DD[d] hh[h] mm[m] ss[s]',
 	measurement = 'milliseconds'
-) => {
+) {
 	if (time === 0) {
 		format = 'DD[d] hh[h] mm[m] s[s]';
 	}
@@ -132,7 +140,7 @@ const multipliers = {
  * Undo Thousands
  * @param {string} formatted
  */
-export const undoThousands = (formatted) => {
+export const undoThousands = function undoThousands(formatted) {
 	if (!formatted) {
 		return 0;
 	}

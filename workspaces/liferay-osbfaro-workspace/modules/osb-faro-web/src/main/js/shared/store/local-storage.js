@@ -14,7 +14,7 @@ export function loadState() {
 			sidebar: JSON.parse(atob(localStorage.getItem('sidebar'))),
 		});
 	}
-	catch (err) {
+	catch (error) {
 		return undefined;
 	}
 }
@@ -31,5 +31,5 @@ export function saveState(state) {
 			btoa(JSON.stringify(state.get('sidebar')))
 		);
 	}
-	catch (err) {}
+	catch (error) {}
 }

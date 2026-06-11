@@ -4,9 +4,9 @@
  */
 
 import React from 'react';
-const Interests = InterestsBase as React.ComponentType<any>;
-
 import InterestsBase from 'sites/hocs/Interests';
+
+const Interests = InterestsBase as React.ComponentType<any>;
 
 interface IInterestsPageProps extends React.HTMLAttributes<HTMLDivElement> {
 	router: {

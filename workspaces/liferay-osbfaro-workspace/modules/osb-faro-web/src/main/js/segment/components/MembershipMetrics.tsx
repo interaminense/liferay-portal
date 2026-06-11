@@ -45,14 +45,14 @@ interface ICardSectionProps {
 	trendComparison?: number;
 }
 
-export const CardSection: React.FC<ICardSectionProps> = ({
+export const CardSection = function CardSection({
 	data,
 	description,
 	loading,
 	title,
 	totalComparisonValue,
 	trendComparison,
-}) => {
+}: ICardSectionProps) {
 	const isAverageSegmentMetric =
 		title === METRICS_TITLES.averageSegmentMembershipDurationMetric;
 

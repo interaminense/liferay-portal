@@ -27,11 +27,13 @@ import {
 import {RootState} from 'shared/store';
 import {Alert} from 'shared/types';
 import {ExpirationPeriod} from 'shared/util/constants';
-import {CUSTOM_DATE_FORMAT} from 'shared/util/date';
-import {formatDateToTimeZone, getDateNow} from 'shared/util/date';
+import {
+	CUSTOM_DATE_FORMAT,
+	formatDateToTimeZone,
+	getDateNow,
+} from 'shared/util/date';
 import {sub} from 'shared/util/lang';
-import URLConstants from 'shared/util/url-constants';
-import {ApisPath} from 'shared/util/url-constants';
+import URLConstants, {ApisPath} from 'shared/util/url-constants';
 
 import GenerateTokenCard from '../components/GenerateTokenCard';
 import TokenCell from '../components/TokenCell';
@@ -39,8 +41,9 @@ import {AccessToken} from '../types';
 
 import type {Column} from 'shared/components/table/Row';
 
-export const isExpired = (expirationDate: string) =>
-	moment.utc(expirationDate).isSameOrBefore(getDateNow());
+export const isExpired = function isExpired(expirationDate: string) {
+	return moment.utc(expirationDate).isSameOrBefore(getDateNow());
+};
 
 const getTimestamp = (date: string | Date) =>
 	Math.floor(new Date(date).getTime() / 1000);
@@ -307,28 +310,32 @@ interface IAccessTokenListProps {
 	groupId: string;
 }
 
-export const AccessTokenList: React.FC<IAccessTokenListProps> = ({groupId}) => (
-	<BasePage
-		className="access-token-list-root"
-		pageDescription={sub(
-			Liferay.Language.get(
-				'access-this-workspaces-data-via-api-using-an-access-token.-a-full-list-of-endpoints-is-available-in-the-x'
-			),
-			[
-				<ClayLink
-					href={URLConstants.APIOverviewDocumentationLink}
-					key="API_OVERVIEW_DOCUMENTATION"
-					target="_blank"
-				>
-					{Liferay.Language.get('documentation').toLowerCase()}
-				</ClayLink>,
-			],
-			false
-		)}
-		pageTitle={Liferay.Language.get('access-tokens')}
-	>
-		<ListWithData groupId={groupId} />
-	</BasePage>
-);
+export const AccessTokenList = function AccessTokenList({
+	groupId,
+}: IAccessTokenListProps) {
+	return (
+		<BasePage
+			className="access-token-list-root"
+			pageDescription={sub(
+				Liferay.Language.get(
+					'access-this-workspaces-data-via-api-using-an-access-token.-a-full-list-of-endpoints-is-available-in-the-x'
+				),
+				[
+					<ClayLink
+						href={URLConstants.APIOverviewDocumentationLink}
+						key="API_OVERVIEW_DOCUMENTATION"
+						target="_blank"
+					>
+						{Liferay.Language.get('documentation').toLowerCase()}
+					</ClayLink>,
+				],
+				false
+			)}
+			pageTitle={Liferay.Language.get('access-tokens')}
+		>
+			<ListWithData groupId={groupId} />
+		</BasePage>
+	);
+};
 
 export default withAdminPermission(AccessTokenList);

@@ -43,12 +43,16 @@ const StringMatchInput: React.FC<IStringMatchInputProps> = ({
 		if (metadata) {
 			onStringMatchChange('');
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [metadata]);
 
 	useEffect(() => {
 		if (!!metadata || !metadataResults) {
 			_inputRef.current?.focus();
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [metadata, stringMatch]);
 
 	return (

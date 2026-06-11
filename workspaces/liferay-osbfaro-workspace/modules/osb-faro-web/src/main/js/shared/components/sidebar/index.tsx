@@ -181,7 +181,8 @@ const Sidebar: React.FC<ISidebarProps> = ({
 											})
 											.then(() =>
 												window.location.reload()
-											);
+											)
+											.catch(() => {});
 									},
 						};
 					}),

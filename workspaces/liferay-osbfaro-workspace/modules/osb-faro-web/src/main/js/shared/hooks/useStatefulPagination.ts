@@ -36,12 +36,12 @@ interface State {
 }
 
 interface StatefulPaginationResult extends State {
-	resetPage: () => void;
 	onDeltaChange: (delta: number) => void;
 	onFilterByChange: (filterBy: FilterByType) => void;
 	onOrderIOMapChange: (orderIOMap: OrderedMap<string, OrderParams>) => void;
 	onPageChange: (page: number) => void;
 	onQueryChange: (query: string) => void;
+	resetPage: () => void;
 }
 
 const DEFAULT_INITIAL_PAGINATION_PROPS: {

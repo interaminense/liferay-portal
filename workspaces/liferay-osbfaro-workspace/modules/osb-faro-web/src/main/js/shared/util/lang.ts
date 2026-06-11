@@ -29,11 +29,11 @@ const SPLIT_REGEX = /({\d+})/g;
  * the array before it is returned. Use `false` if subbing in JSX.
  * @return {(string|Array)}
  */
-export const sub = (
+export const sub = function sub(
 	langKey: string,
 	args: any[],
 	join: boolean = true
-): string | any[] => {
+): string | any[] {
 	const keyArray = langKey
 		.split(SPLIT_REGEX)
 		.filter((val) => val.length !== 0);
@@ -55,13 +55,13 @@ export const sub = (
 	return join ? (keyArray.join('') as string) : (keyArray as any[]);
 };
 
-export const getPluralMessage = (
+export const getPluralMessage = function getPluralMessage(
 	singular: string,
 	plural: string,
 	count: number = 0,
 	toString?: boolean,
 	subArray?: any[]
-) => {
+) {
 	const message = count === 1 ? singular : plural;
 
 	return sub(message, subArray || [count.toLocaleString()], toString);
@@ -121,13 +121,19 @@ const DATA_SOURCE_LANG_MAP: Record<string, string> = {
 	[DataSourceTypes.Liferay]: Liferay.Language.get('liferay-dxp'),
 };
 
-export const getDataSourceLangKey = (type: string): string =>
-	DATA_SOURCE_LANG_MAP[type];
+export const getDataSourceLangKey = function getDataSourceLangKey(
+	type: string
+): string {
+	return DATA_SOURCE_LANG_MAP[type];
+};
 
-export const getTypeLangKey = (type: string): string =>
-	(ENTITY_LANG_MAP as Record<string, string>)[type];
+export const getTypeLangKey = function getTypeLangKey(type: string): string {
+	return (ENTITY_LANG_MAP as Record<string, string>)[type];
+};
 
-export const getDisplayRole = (roleName: UserRoleNames): string => {
+export const getDisplayRole = function getDisplayRole(
+	roleName: UserRoleNames
+): string {
 	switch (roleName) {
 		case UserRoleNames.Administrator:
 			return Liferay.Language.get('administrator');
@@ -153,8 +159,12 @@ const LABELS_MAP: Record<string, string> = {
  * @param {string} deviceType
  */
 
-export const getDeviceLabel = (deviceType: string): string =>
-	LABELS_MAP[deviceType.toLowerCase()] || deviceType;
+export const getDeviceLabel = function getDeviceLabel(
+	deviceType: string
+): string {
+	return LABELS_MAP[deviceType.toLowerCase()] || deviceType;
+};
 
-export const isJapaneseLang = (value: string): boolean =>
-	/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(value);
+export const isJapaneseLang = function isJapaneseLang(value: string): boolean {
+	return /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(value);
+};

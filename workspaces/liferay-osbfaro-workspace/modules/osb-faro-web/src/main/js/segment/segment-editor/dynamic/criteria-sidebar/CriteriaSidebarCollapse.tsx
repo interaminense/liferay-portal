@@ -30,7 +30,9 @@ import CriteriaSidebarItem from './CriteriaSidebarItem';
 /**
  * Returns a default value for a property provided.
  */
-export const getDefaultValue = (property: Property): any => {
+export const getDefaultValue = function getDefaultValue(
+	property: Property
+): any {
 	const {name, options, type} = property;
 
 	switch (type) {

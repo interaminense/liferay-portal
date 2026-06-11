@@ -30,14 +30,14 @@ interface IAttributeFilterSectionProps {
 	moveFilter: MoveFilter;
 }
 
-export const AttributeFilterSection: React.FC<IAttributeFilterSectionProps> = ({
+export const AttributeFilterSection = function AttributeFilterSection({
 	attributes,
 	deleteFilter,
 	eventId,
 	filterOrder,
 	filters,
 	moveFilter,
-}) => {
+}: IAttributeFilterSectionProps) {
 	const uneditableIds = Object.keys(attributes);
 
 	return (

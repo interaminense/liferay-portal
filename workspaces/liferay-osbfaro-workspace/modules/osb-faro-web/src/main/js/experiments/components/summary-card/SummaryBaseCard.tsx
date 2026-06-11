@@ -43,18 +43,20 @@ export const SummaryBaseCard: React.FC<SummaryBaseCardIProps> & {
 	Body: typeof Body;
 	Footer: typeof Footer;
 	Header: typeof Header;
-} = ({children, status}) => (
-	<Card
-		className={getCN(
-			'analytics-summary-card analytics-summary-card-status',
-			{
-				[` analytics-summary-card-status-${status}`]: status,
-			}
-		)}
-	>
-		{children}
-	</Card>
-);
+} = function SummaryBaseCard({children, status}) {
+	return (
+		<Card
+			className={getCN(
+				'analytics-summary-card analytics-summary-card-status',
+				{
+					[` analytics-summary-card-status-${status}`]: status,
+				}
+			)}
+		>
+			{children}
+		</Card>
+	);
+};
 
 SummaryBaseCard.Body = Body;
 SummaryBaseCard.Footer = Footer;

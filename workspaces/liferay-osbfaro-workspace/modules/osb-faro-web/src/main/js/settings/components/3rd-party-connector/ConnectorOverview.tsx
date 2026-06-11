@@ -63,6 +63,215 @@ interface IConnectorOverviewProps extends PropsFromRedux {
 	dataSource: DataSource;
 }
 
+interface IConnectorStatusListProps {
+	entries: ConnectorStatusItem[];
+}
+
+const ConnectorStatusList: React.FC<IConnectorStatusListProps> = ({
+	entries,
+}) => (
+	<ClayList className="mb-0 mt-3">
+		{entries.map(
+			({bold, icon, iconDisplayType, secondaryText, title}, index) => (
+				<ClayList.Item flex key={index}>
+					<ClayList.ItemField>
+						<ClaySticker displayType="unstyled">
+							<ClayIcon
+								className={
+									iconDisplayType === 'success'
+										? 'text-success'
+										: 'text-secondary'
+								}
+								symbol={icon}
+							/>
+						</ClaySticker>
+					</ClayList.ItemField>
+
+					<ClayList.ItemField expand>
+						<ClayList.ItemTitle
+							className={
+								bold
+									? 'font-weight-bold'
+									: 'font-weight-normal text-secondary'
+							}
+						>
+							{title}
+						</ClayList.ItemTitle>
+
+						<ClayList.ItemText className="text-secondary">
+							{secondaryText}
+						</ClayList.ItemText>
+					</ClayList.ItemField>
+				</ClayList.Item>
+			)
+		)}
+	</ClayList>
+);
+
+interface IConnectorEntityListProps {
+	config: ConnectorConfig;
+	dataSource: DataSource;
+	groupId: string;
+}
+
+const getAvailableDataAlertStorageKey = (
+	kind: ConnectorAvailableDataAlertKind,
+	dataSourceId: string
+) => `connector-overview:${kind}-alert-dismissed:${dataSourceId}`;
+
+const ConnectorEntityList: React.FC<IConnectorEntityListProps> = ({
+	config,
+	dataSource,
+	groupId,
+}) => {
+	const dataSourceId = dataSource.id ?? '';
+
+	const [syncingAlertDismissed, setSyncingAlertDismissed] = useState(
+		() =>
+			window.localStorage.getItem(
+				getAvailableDataAlertStorageKey('syncing', dataSourceId)
+			) === 'true'
+	);
+
+	const [previouslySyncedAlertDismissed, setPreviouslySyncedAlertDismissed] =
+		useState(
+			() =>
+				window.localStorage.getItem(
+					getAvailableDataAlertStorageKey(
+						'previously-synced',
+						dataSourceId
+					)
+				) === 'true'
+		);
+
+	const handleDismissAvailableDataAlert = (
+		kind: ConnectorAvailableDataAlertKind
+	) => {
+		window.localStorage.setItem(
+			getAvailableDataAlertStorageKey(kind, dataSourceId),
+			'true'
+		);
+
+		if (kind === 'syncing') {
+			setSyncingAlertDismissed(true);
+		}
+		else {
+			setPreviouslySyncedAlertDismissed(true);
+		}
+	};
+
+	const countResponse = useRequest({
+		dataSourceFn: async (params) => {
+			const entries = await Promise.all(
+				config.entities.map(async ({entity, fetchCount}) => {
+					if (!fetchCount) {
+						return [entity, 0] as const;
+					}
+
+					try {
+						const count = await fetchCount({
+							groupId: params.groupId,
+							id: params.id!,
+						});
+
+						return [entity, count ?? 0] as const;
+					}
+					catch (error) {
+						return [entity, 0] as const;
+					}
+				})
+			);
+
+			return Object.fromEntries(entries);
+		},
+		variables: {groupId, id: dataSource.id},
+	});
+
+	const counts = (countResponse.data ?? {}) as {
+		[entity: string]: number | undefined;
+	};
+
+	const syncedCounts: {[entity: string]: number | undefined} = {};
+
+	config.entities.forEach(({entity}) => {
+		syncedCounts[entity] = counts[entity] ?? 0;
+	});
+
+	const totalCount = Object.values(counts).reduce<number>(
+		(sum, c) => sum + (typeof c === 'number' ? c : 0),
+		0
+	);
+	const hasData = totalCount > 0;
+
+	const connectorStatus = getConnectorStatus(dataSource);
+
+	if (countResponse.loading) {
+		return <Loading spacer />;
+	}
+
+	const logEntries: ConnectorStatusItem[] = getInitialLogEntries(
+		connectorStatus,
+		totalCount
+	);
+
+	const connectionStatusAlert = getConnectorConnectionStatusAlert(
+		dataSource,
+		totalCount
+	);
+
+	const availableDataAlert = getConnectorAvailableDataAlert(
+		dataSource,
+		hasData
+	);
+
+	return (
+		<div>
+			<div className="mb-4">
+				<Card.SubHeader
+					title={Liferay.Language.get('connection-status')}
+				/>
+
+				<ClayAlert
+					className="mt-3"
+					displayType={connectionStatusAlert.displayType}
+				>
+					{connectionStatusAlert.message}
+				</ClayAlert>
+
+				<ConnectorStatusList entries={logEntries} />
+			</div>
+
+			<div>
+				<Card.SubHeader
+					title={Liferay.Language.get('available-data')}
+				/>
+
+				{availableDataAlert &&
+					!(availableDataAlert.kind === 'syncing'
+						? syncingAlertDismissed
+						: previouslySyncedAlertDismissed) && (
+						<ClayAlert
+							displayType={availableDataAlert.displayType}
+							onClose={() =>
+								handleDismissAvailableDataAlert(
+									availableDataAlert.kind
+								)
+							}
+						>
+							{availableDataAlert.message}
+						</ClayAlert>
+					)}
+
+				<ConnectorEntities
+					connectorStatus={connectorStatus}
+					entities={config.entities}
+					syncedCounts={syncedCounts}
+				/>
+			</div>
+		</div>
+	);
+};
+
 const ConnectorOverview: React.FC<IConnectorOverviewProps> = ({
 	addAlert,
 	close,
@@ -134,6 +343,8 @@ const ConnectorOverview: React.FC<IConnectorOverviewProps> = ({
 		};
 
 		fetchConnectorTokenForGroup();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [config.slug, connectorStatus, groupId]);
 
 	const handleGenerateToken = async () => {
@@ -345,215 +556,6 @@ const ConnectorOverview: React.FC<IConnectorOverviewProps> = ({
 				/>
 			</Card>
 		</BasePage>
-	);
-};
-
-interface IConnectorStatusListProps {
-	entries: ConnectorStatusItem[];
-}
-
-const ConnectorStatusList: React.FC<IConnectorStatusListProps> = ({
-	entries,
-}) => (
-	<ClayList className="mb-0 mt-3">
-		{entries.map(
-			({bold, icon, iconDisplayType, secondaryText, title}, index) => (
-				<ClayList.Item flex key={index}>
-					<ClayList.ItemField>
-						<ClaySticker displayType="unstyled">
-							<ClayIcon
-								className={
-									iconDisplayType === 'success'
-										? 'text-success'
-										: 'text-secondary'
-								}
-								symbol={icon}
-							/>
-						</ClaySticker>
-					</ClayList.ItemField>
-
-					<ClayList.ItemField expand>
-						<ClayList.ItemTitle
-							className={
-								bold
-									? 'font-weight-bold'
-									: 'font-weight-normal text-secondary'
-							}
-						>
-							{title}
-						</ClayList.ItemTitle>
-
-						<ClayList.ItemText className="text-secondary">
-							{secondaryText}
-						</ClayList.ItemText>
-					</ClayList.ItemField>
-				</ClayList.Item>
-			)
-		)}
-	</ClayList>
-);
-
-interface IConnectorEntityListProps {
-	config: ConnectorConfig;
-	dataSource: DataSource;
-	groupId: string;
-}
-
-const getAvailableDataAlertStorageKey = (
-	kind: ConnectorAvailableDataAlertKind,
-	dataSourceId: string
-) => `connector-overview:${kind}-alert-dismissed:${dataSourceId}`;
-
-const ConnectorEntityList: React.FC<IConnectorEntityListProps> = ({
-	config,
-	dataSource,
-	groupId,
-}) => {
-	const dataSourceId = dataSource.id ?? '';
-
-	const [syncingAlertDismissed, setSyncingAlertDismissed] = useState(
-		() =>
-			window.localStorage.getItem(
-				getAvailableDataAlertStorageKey('syncing', dataSourceId)
-			) === 'true'
-	);
-
-	const [previouslySyncedAlertDismissed, setPreviouslySyncedAlertDismissed] =
-		useState(
-			() =>
-				window.localStorage.getItem(
-					getAvailableDataAlertStorageKey(
-						'previously-synced',
-						dataSourceId
-					)
-				) === 'true'
-		);
-
-	const handleDismissAvailableDataAlert = (
-		kind: ConnectorAvailableDataAlertKind
-	) => {
-		window.localStorage.setItem(
-			getAvailableDataAlertStorageKey(kind, dataSourceId),
-			'true'
-		);
-
-		if (kind === 'syncing') {
-			setSyncingAlertDismissed(true);
-		}
-		else {
-			setPreviouslySyncedAlertDismissed(true);
-		}
-	};
-
-	const countResponse = useRequest({
-		dataSourceFn: async (params) => {
-			const entries = await Promise.all(
-				config.entities.map(async ({entity, fetchCount}) => {
-					if (!fetchCount) {
-						return [entity, 0] as const;
-					}
-
-					try {
-						const count = await fetchCount({
-							groupId: params.groupId,
-							id: params.id!,
-						});
-
-						return [entity, count ?? 0] as const;
-					}
-					catch (error) {
-						return [entity, 0] as const;
-					}
-				})
-			);
-
-			return Object.fromEntries(entries);
-		},
-		variables: {groupId, id: dataSource.id},
-	});
-
-	const counts = (countResponse.data ?? {}) as {
-		[entity: string]: number | undefined;
-	};
-
-	const syncedCounts: {[entity: string]: number | undefined} = {};
-
-	config.entities.forEach(({entity}) => {
-		syncedCounts[entity] = counts[entity] ?? 0;
-	});
-
-	const totalCount = Object.values(counts).reduce<number>(
-		(sum, c) => sum + (typeof c === 'number' ? c : 0),
-		0
-	);
-	const hasData = totalCount > 0;
-
-	const connectorStatus = getConnectorStatus(dataSource);
-
-	if (countResponse.loading) {
-		return <Loading spacer />;
-	}
-
-	const logEntries: ConnectorStatusItem[] = getInitialLogEntries(
-		connectorStatus,
-		totalCount
-	);
-
-	const connectionStatusAlert = getConnectorConnectionStatusAlert(
-		dataSource,
-		totalCount
-	);
-
-	const availableDataAlert = getConnectorAvailableDataAlert(
-		dataSource,
-		hasData
-	);
-
-	return (
-		<div>
-			<div className="mb-4">
-				<Card.SubHeader
-					title={Liferay.Language.get('connection-status')}
-				/>
-
-				<ClayAlert
-					className="mt-3"
-					displayType={connectionStatusAlert.displayType}
-				>
-					{connectionStatusAlert.message}
-				</ClayAlert>
-
-				<ConnectorStatusList entries={logEntries} />
-			</div>
-
-			<div>
-				<Card.SubHeader
-					title={Liferay.Language.get('available-data')}
-				/>
-
-				{availableDataAlert &&
-					!(availableDataAlert.kind === 'syncing'
-						? syncingAlertDismissed
-						: previouslySyncedAlertDismissed) && (
-						<ClayAlert
-							displayType={availableDataAlert.displayType}
-							onClose={() =>
-								handleDismissAvailableDataAlert(
-									availableDataAlert.kind
-								)
-							}
-						>
-							{availableDataAlert.message}
-						</ClayAlert>
-					)}
-
-				<ConnectorEntities
-					connectorStatus={connectorStatus}
-					entities={config.entities}
-					syncedCounts={syncedCounts}
-				/>
-			</div>
-		</div>
 	);
 };
 

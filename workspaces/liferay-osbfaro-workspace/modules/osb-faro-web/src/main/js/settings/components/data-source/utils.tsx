@@ -76,6 +76,8 @@ const useDisconnectDataSource = ({
 			title: Liferay.Language.get('disconnect-data-source'),
 			titleIcon: 'warning-full',
 		});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addAlert, beforeSubmit, close, groupId, id, open]);
 
 	return {handleDisconnect};

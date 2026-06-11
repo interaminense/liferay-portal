@@ -59,6 +59,8 @@ const ConnectLiferayDXPStep = ({
 		};
 
 		fetchTokenFn();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [groupId]);
 
 	if (

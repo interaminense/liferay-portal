@@ -6,27 +6,30 @@
 import {IPagination} from 'shared/types';
 import {getGraphQLVariablesFromPagination} from 'shared/util/pagination';
 
-export const mapPropsToOptions = ({
+export const mapPropsToOptions = function mapPropsToOptions({
 	channelId,
 	delta,
 	orderIOMap,
 	page,
 	query,
-}: IPagination & {channelId: string}) => ({
-	variables: {
-		...getGraphQLVariablesFromPagination({
-			delta,
-			orderIOMap,
-			page,
-			query,
-		}),
-		channelId,
-	},
-});
+}: IPagination & {channelId: string}) {
+	return {
+		variables: {
+			...getGraphQLVariablesFromPagination({
+				delta,
+				orderIOMap,
+				page,
+				query,
+			}),
+			channelId,
+		},
+	};
+};
 
-export const getMapResultToProps =
-	(graphqlEntityType: string) =>
-	({
+export const getMapResultToProps = function getMapResultToProps(
+	graphqlEntityType: string
+) {
+	return ({
 		[graphqlEntityType]: {dxpEntities, total},
 	}: {
 		[key: string]: {
@@ -38,3 +41,4 @@ export const getMapResultToProps =
 		items: dxpEntities,
 		total,
 	});
+};

@@ -23,8 +23,8 @@ interface IEventAnalysisEditorProps extends React.HTMLAttributes<HTMLElement> {
 	onEventChange: (event: Event | null) => void;
 	onRangeSelectorsChange: (rangeSelectors: RangeSelectors) => void;
 	onTypeChange: (type: CalculationTypes) => void;
-	type: CalculationTypes;
 	rangeSelectors: RangeSelectors;
+	type: CalculationTypes;
 }
 
 const EventAnalysisEditor: React.FC<IEventAnalysisEditorProps> = ({

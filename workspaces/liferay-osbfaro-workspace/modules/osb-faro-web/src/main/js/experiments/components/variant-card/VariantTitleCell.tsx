@@ -10,7 +10,7 @@ import Popover from 'shared/components/Popover';
 import {isEllipisActive} from 'shared/util/util';
 
 interface IVariantTitleProps {
-	labels: Array<{value: string; status: string}>;
+	labels: Array<{status: string; value: string}>;
 	title: string;
 }
 

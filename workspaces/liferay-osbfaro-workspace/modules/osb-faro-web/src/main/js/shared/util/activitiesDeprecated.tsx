@@ -100,66 +100,6 @@ export function buildLegendItems({
 }
 
 /**
- * Filters out activities that are not in the activity actions title lang map
- * and formats it into an array of object for a vertical timeline.
- * @param {Array} activities
- * @param {string|number} groupId
- * @param {string} channelId
- * @returns {Array.<Object>} Array of objects for a vertical timeline.
- */
-function formatActivities(
-	activities: any[],
-	groupId: string,
-	channelId: string
-) {
-	return activities
-		.filter(({action}) => !!ACTIVITY_ACTIONS_TITLE_LANG_MAP[action])
-		.map(
-			({
-				action,
-				assetType,
-				canonicalUrl,
-				dataSourceAssetPK,
-				id,
-				name,
-				startTime,
-			}) => {
-				const assetRoute = getAssetRoute(assetType);
-
-				const assetURL = assetRoute
-					? `${toRoute(assetRoute, {
-							assetId:
-								assetType === AssetTypes.WebPage && canonicalUrl
-									? canonicalUrl
-									: dataSourceAssetPK,
-							channelId,
-							groupId,
-							title: encodeURIComponent(name),
-							touchpoint:
-								assetType !== AssetTypes.WebPage
-									? 'Any'
-									: canonicalUrl
-										? encodeURIComponent(canonicalUrl)
-										: dataSourceAssetPK,
-						})}`
-					: null;
-
-				return {
-					subtitle: canonicalUrl,
-					symbol: getObjectTypeIcon(assetType),
-					time: startTime,
-					title: sub(
-						ACTIVITY_ACTIONS_TITLE_LANG_MAP[action],
-						[<strong key={id}>{name}</strong>],
-						false
-					),
-					url: assetURL,
-				};
-			}
-		);
-}
-
-/**
  * Formats datetime to today or the current date.
  * @param {Date|string|number} datetime - Any value accepeted by Moment.
  * @returns {Moment} Date label to be displayed.
@@ -170,49 +110,6 @@ export function formatGroupingTime(datetime: Date | string | number): string {
 	return time.isSame(moment(), 'day')
 		? Liferay.Language.get('today')
 		: time.utc().format('ll');
-}
-
-/**
- * Format sessions into a format usable by the VerticalTimeline component while grouping them by day.
- * @param {Array} sessions
- * @param {string} groupId
- * @param {string} channelId
- * @returns {Array.<Object>} An array of session objects.
- */
-export function formatSessions(
-	sessions: any[],
-	groupId: string,
-	channelId: string
-): any[] {
-	return flow(
-		groupBy(({day}) => moment.utc(day).startOf('day').format()),
-		mapValues((items: unknown) =>
-			(
-				items as {
-					activities: any[];
-					id: string;
-					individual: unknown;
-					startTime: string | number;
-				}[]
-			).map(({activities, id, individual, startTime}) => ({
-				id,
-				individual,
-				nestedItems: formatActivities(activities, groupId, channelId),
-				subtitle: getActivitiesSummary(activities),
-				time: startTime,
-				title: sub(Liferay.Language.get('visited-x'), [
-					new URL(activities[0].url).hostname,
-				]),
-			}))
-		),
-		toPairs,
-		orderBy([([time]) => moment(time).unix()], ['desc']),
-		map(([time, items]: any[]) => [
-			{header: true, title: formatGroupingTime(time)},
-			items,
-		]),
-		flattenDepth(2)
-	)(sessions);
 }
 
 /**
@@ -293,9 +190,112 @@ function getObjectTypeIcon(assetType: string): string {
 	}
 }
 
-export const getSafeRangeKey = (
+/**
+ * Filters out activities that are not in the activity actions title lang map
+ * and formats it into an array of object for a vertical timeline.
+ * @param {Array} activities
+ * @param {string|number} groupId
+ * @param {string} channelId
+ * @returns {Array.<Object>} Array of objects for a vertical timeline.
+ */
+function formatActivities(
+	activities: any[],
+	groupId: string,
+	channelId: string
+) {
+	return activities
+		.filter(({action}) => !!ACTIVITY_ACTIONS_TITLE_LANG_MAP[action])
+		.map(
+			({
+				action,
+				assetType,
+				canonicalUrl,
+				dataSourceAssetPK,
+				id,
+				name,
+				startTime,
+			}) => {
+				const assetRoute = getAssetRoute(assetType);
+
+				const assetURL = assetRoute
+					? `${toRoute(assetRoute, {
+							assetId:
+								assetType === AssetTypes.WebPage && canonicalUrl
+									? canonicalUrl
+									: dataSourceAssetPK,
+							channelId,
+							groupId,
+							title: encodeURIComponent(name),
+							touchpoint:
+								assetType !== AssetTypes.WebPage
+									? 'Any'
+									: canonicalUrl
+										? encodeURIComponent(canonicalUrl)
+										: dataSourceAssetPK,
+						})}`
+					: null;
+
+				return {
+					subtitle: canonicalUrl,
+					symbol: getObjectTypeIcon(assetType),
+					time: startTime,
+					title: sub(
+						ACTIVITY_ACTIONS_TITLE_LANG_MAP[action],
+						[<strong key={id}>{name}</strong>],
+						false
+					),
+					url: assetURL,
+				};
+			}
+		);
+}
+
+/**
+ * Format sessions into a format usable by the VerticalTimeline component while grouping them by day.
+ * @param {Array} sessions
+ * @param {string} groupId
+ * @param {string} channelId
+ * @returns {Array.<Object>} An array of session objects.
+ */
+export function formatSessions(
+	sessions: any[],
+	groupId: string,
+	channelId: string
+): any[] {
+	return flow(
+		groupBy(({day}) => moment.utc(day).startOf('day').format()),
+		mapValues((items: unknown) =>
+			(
+				items as {
+					activities: any[];
+					id: string;
+					individual: unknown;
+					startTime: string | number;
+				}[]
+			).map(({activities, id, individual, startTime}) => ({
+				id,
+				individual,
+				nestedItems: formatActivities(activities, groupId, channelId),
+				subtitle: getActivitiesSummary(activities),
+				time: startTime,
+				title: sub(Liferay.Language.get('visited-x'), [
+					new URL(activities[0].url).hostname,
+				]),
+			}))
+		),
+		toPairs,
+		orderBy([([time]) => moment(time).unix()], ['desc']),
+		map(([time, items]: any[]) => [
+			{header: true, title: formatGroupingTime(time)},
+			items,
+		]),
+		flattenDepth(2)
+	)(sessions);
+}
+
+export const getSafeRangeKey = function getSafeRangeKey(
 	rangeKey: RangeSelectors['rangeKey']
-): RangeSelectors['rangeKey'] | null => {
+): RangeSelectors['rangeKey'] | null {
 	if (rangeKey === 'CUSTOM') {
 		return null;
 	}

@@ -37,6 +37,8 @@ const BasicSettings: React.FC<IBasicSettingsProps> = ({
 }) => {
 	useEffect(() => {
 		onSetDisabled(!name || !!errors.name);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [name, errors]);
 
 	const validateRecommendationName = (value: string): Promise<string> => {

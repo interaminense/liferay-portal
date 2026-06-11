@@ -22,8 +22,7 @@ import {sub} from 'shared/util/lang';
 import {NAME, createOrderIOMap} from 'shared/util/pagination';
 import {hasChanges} from 'shared/util/react';
 import {autoCancel, hasRequest} from 'shared/util/request-decorator';
-import {INDIVIDUALS} from 'shared/util/router';
-import {Routes, SEGMENTS, toRoute} from 'shared/util/router';
+import {INDIVIDUALS, Routes, SEGMENTS, toRoute} from 'shared/util/router';
 import {individualsListColumns} from 'shared/util/table-columns';
 
 import {Criteria} from './utils/types';
@@ -38,8 +37,8 @@ interface IToolbarProps {
 	id: string;
 	includeAnonymousUsers: boolean;
 	open: Modal.open;
-	valid: boolean;
 	segmentType: SegmentTypes;
+	valid: boolean;
 }
 
 interface IToolbarState {
@@ -118,8 +117,8 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
 				.then(({total}) =>
 					this.setState({countLoading: false, membersCount: total})
 				)
-				.catch((err) => {
-					if (!err.IS_CANCELLATION_ERROR) {
+				.catch((error) => {
+					if (!error.IS_CANCELLATION_ERROR) {
 						this.setState({countLoading: false});
 					}
 				});

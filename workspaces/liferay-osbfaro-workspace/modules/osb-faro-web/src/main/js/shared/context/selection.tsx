@@ -41,10 +41,10 @@ export const SelectionContext = React.createContext<{
 	selectionDispatch?: Dispatch;
 }>({selectedItems: OrderedMap()});
 
-export const selectionReducer = (
+export const selectionReducer = function selectionReducer(
 	{selectedItems}: State,
 	{payload, type}: Action
-) => {
+) {
 	switch (type) {
 		case 'add': {
 			return {
@@ -91,10 +91,10 @@ export const selectionReducer = (
 	}
 };
 
-export const SelectionProvider = ({
+export const SelectionProvider = function SelectionProvider({
 	children,
 	selectedItems: initialValue,
-}: SelectionProviderProps) => {
+}: SelectionProviderProps) {
 	const [state, dispatch] = useReducer(selectionReducer, {
 		selectedItems: initialValue
 			? OrderedMap(initialValue.map((item) => [item.id, item]))
@@ -113,7 +113,7 @@ export const SelectionProvider = ({
 	);
 };
 
-export const useSelectionContext = () => {
+export const useSelectionContext = function useSelectionContext() {
 	const context = React.useContext(SelectionContext);
 	if (context === undefined) {
 		throw new Error(
@@ -124,10 +124,12 @@ export const useSelectionContext = () => {
 	return context;
 };
 
-export const withSelectionProvider =
-	<P extends object>(WrappedComponent: React.ComponentType<P>) =>
-	(props: P) => (
+export const withSelectionProvider = function withSelectionProvider<
+	P extends object,
+>(WrappedComponent: React.ComponentType<P>) {
+	return (props: P) => (
 		<SelectionProvider>
 			<WrappedComponent {...props} />
 		</SelectionProvider>
 	);
+};

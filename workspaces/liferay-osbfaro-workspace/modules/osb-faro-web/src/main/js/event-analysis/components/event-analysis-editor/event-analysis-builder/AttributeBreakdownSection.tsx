@@ -36,9 +36,7 @@ interface IAttributeBreakdownSectionProps {
 	moveBreakdown: MoveBreakdown;
 }
 
-export const AttributeBreakdownSection: React.FC<
-	IAttributeBreakdownSectionProps
-> = ({
+export const AttributeBreakdownSection = function AttributeBreakdownSection({
 	addBreakdown,
 	attributes,
 	breakdownOrder,
@@ -47,7 +45,7 @@ export const AttributeBreakdownSection: React.FC<
 	editBreakdown,
 	eventId,
 	moveBreakdown,
-}) => {
+}: IAttributeBreakdownSectionProps) {
 	const disabledIds = breakdownOrder.map(
 		(breakdownId) => breakdowns[breakdownId].attributeId
 	);

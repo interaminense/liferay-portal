@@ -6,5 +6,10 @@
 import {useSubscriptionName} from 'shared/hooks/useSubscriptionName';
 import {isLDPPlan} from 'shared/util/subscriptions';
 
-export const useLDPEnabled = ({groupId}: {groupId: string}): boolean =>
-	isLDPPlan(useSubscriptionName({groupId}));
+export const useLDPEnabled = function useLDPEnabled({
+	groupId,
+}: {
+	groupId: string;
+}): boolean {
+	return isLDPPlan(useSubscriptionName({groupId}));
+};

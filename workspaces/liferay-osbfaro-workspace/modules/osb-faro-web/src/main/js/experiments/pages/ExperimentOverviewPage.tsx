@@ -67,33 +67,6 @@ const ExperimentActions = ({
 	);
 };
 
-const ExperimentOverviewPage = () => {
-	const {channelId, id} = useParams<{channelId: string; id: string}>();
-
-	const {data, error, loading} = useQuery(EXPERIMENT_STATUS_QUERY, {
-		fetchPolicy: 'no-cache',
-		variables: {channelId, experimentId: id},
-	});
-
-	return (
-		<StatesRenderer error={!!error} loading={loading}>
-			<StatesRenderer.Loading />
-
-			<StatesRenderer.Error apolloError={error}>
-				<ErrorPage />
-			</StatesRenderer.Error>
-
-			{!!data && (
-				<StatesRenderer.Success>
-					<ExperimentOverviewContent
-						status={data.experiment.status}
-					/>
-				</StatesRenderer.Success>
-			)}
-		</StatesRenderer>
-	);
-};
-
 const ExperimentOverviewContent = ({status}: {status: string}) => {
 	const {
 		channelId = '',
@@ -223,6 +196,33 @@ const ExperimentOverviewContent = ({status}: {status: string}) => {
 							)}
 						</BasePage.Body>
 					</BasePage>
+				</StatesRenderer.Success>
+			)}
+		</StatesRenderer>
+	);
+};
+
+const ExperimentOverviewPage = () => {
+	const {channelId, id} = useParams<{channelId: string; id: string}>();
+
+	const {data, error, loading} = useQuery(EXPERIMENT_STATUS_QUERY, {
+		fetchPolicy: 'no-cache',
+		variables: {channelId, experimentId: id},
+	});
+
+	return (
+		<StatesRenderer error={!!error} loading={loading}>
+			<StatesRenderer.Loading />
+
+			<StatesRenderer.Error apolloError={error}>
+				<ErrorPage />
+			</StatesRenderer.Error>
+
+			{!!data && (
+				<StatesRenderer.Success>
+					<ExperimentOverviewContent
+						status={data.experiment.status}
+					/>
 				</StatesRenderer.Success>
 			)}
 		</StatesRenderer>

@@ -63,6 +63,8 @@ const withUnassignedSegments = (
 
 		useEffect(() => {
 			fetchUpgradeModalSeen(groupId);
+
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []);
 
 		useEffect(() => {
@@ -97,6 +99,8 @@ const withUnassignedSegments = (
 					);
 				}
 			}
+
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [data, error, loading, upgradeModalSeen]);
 
 		return <WrappedComponent groupId={groupId} {...otherProps} />;

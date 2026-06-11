@@ -20,10 +20,10 @@ import {DataSourceStatuses} from 'shared/util/constants';
 import {sub} from 'shared/util/lang';
 import {
 	ERROR_TYPES,
+	OAUTH_CALLBACK_URL,
 	getOAuthWindowErrorMessage,
 	getTempCredentials,
 } from 'shared/util/oauth';
-import {OAUTH_CALLBACK_URL} from 'shared/util/oauth';
 import {sequence} from 'shared/util/promise';
 import {DataSource} from 'shared/util/records';
 import {Routes} from 'shared/util/router';
@@ -99,19 +99,19 @@ function salesforceAuthErrorMessage(errMessage: string) {
 }
 
 interface IConnectSalesforceAuthProps {
+	addAlert: any;
+	buttonProps?: {
+		[key: string]: any;
+	};
+	dataSource?: DataSource;
 
 	/**
 	 * When disabled, the form renders with all inputs
 	 * read-only and without any buttons.
 	 */
 	disabled?: boolean;
-	addAlert: any;
-	dataSource?: DataSource;
 	onCancel?: () => void;
 	onSubmit: (dataSource: DataSource) => void;
-	buttonProps?: {
-		[key: string]: any;
-	};
 }
 
 const ConnectSalesforceAuth: React.FC<IConnectSalesforceAuthProps> = ({
@@ -154,6 +154,8 @@ const ConnectSalesforceAuth: React.FC<IConnectSalesforceAuthProps> = ({
 		});
 
 		return () => _clipboard.destroy();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -261,14 +263,14 @@ const ConnectSalesforceAuth: React.FC<IConnectSalesforceAuthProps> = ({
 							}
 						}
 					})
-					.catch((err) => {
+					.catch((error) => {
 						addAlert({
 							alertType: Alert.Types.Error,
 							message:
-								err.type ===
+								error.type ===
 								ERROR_TYPES.AC_RECEIVE_CALLBACK_ERROR
-									? salesforceAuthErrorMessage(err.message)
-									: getOAuthWindowErrorMessage(err),
+									? salesforceAuthErrorMessage(error.message)
+									: getOAuthWindowErrorMessage(error),
 						});
 
 						setSubmitting(false);

@@ -12,19 +12,23 @@ import {createVocabularyProperty} from '../utils/utils';
 import {RemoteCriterionType} from './RemoteCriterionType';
 
 export const vocabularyCriterionType: RemoteCriterionType = {
+	DisplayComponent: VocabularyDisplay,
+	InputComponent: VocabularyInput,
+
 	get api() {
 		return API.vocabularies.search;
 	},
+
 	createProperty: createVocabularyProperty,
-	DisplayComponent: VocabularyDisplay,
 	idProperty: 'vocabularies/id',
-	InputComponent: VocabularyInput,
 	nameProperty: 'vocabularies/name',
 	negativeOperator: NotOperators.NotVocabulariesFilter,
+
 	operators: new Set([
 		CustomFunctionOperators.VocabulariesFilter,
 		NotOperators.NotVocabulariesFilter,
 	]),
+
 	positiveOperator: CustomFunctionOperators.VocabulariesFilter,
 	propertyKey: 'vocabulary',
 	supportsCategories: true,

@@ -48,6 +48,8 @@ const SyncSalesforceDataStep = ({
 			setEnabledAccount(accounts);
 			setEnabledIndividual(individuals);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

@@ -33,18 +33,18 @@ interface IWorkspaceProps
 		PropsFromRedux {
 	emailAddressDomains: string[];
 	groupId: string;
-	project: Project;
 	history: History;
+	project: Project;
 }
 
-export const Workspace: React.FC<IWorkspaceProps> = ({
+export const Workspace = function Workspace({
 	addAlert,
 	emailAddressDomains,
 	groupId,
 	history,
 	project,
 	updateProject,
-}) => {
+}: IWorkspaceProps) {
 	const currentUser = useCurrentUser();
 
 	const handleSubmit = ({

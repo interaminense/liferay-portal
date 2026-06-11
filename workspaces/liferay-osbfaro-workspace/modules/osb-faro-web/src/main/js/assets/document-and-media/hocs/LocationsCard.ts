@@ -4,8 +4,7 @@
  */
 
 import {gql} from '@apollo/client';
-import {OperationOption} from '@apollo/client/react/hoc';
-import {graphql} from '@apollo/client/react/hoc';
+import {OperationOption, graphql} from '@apollo/client/react/hoc';
 import {withLocationsCard} from 'cerebro-shared/hocs/LocationsCard';
 import getLocationsMapper, {
 	getLocationsMapperCountries,

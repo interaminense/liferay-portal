@@ -9,12 +9,6 @@ import {reloadPage} from 'shared/util/router';
 
 export const UNAUTHORIZED_ACCESS = 'Unauthorized Access';
 
-export function addParams(url, params) {
-	const separator = url.includes('?') ? '&' : '?';
-
-	return `${url}${separator}${serializeQueryString(params)}`;
-}
-
 export function getFormData(data) {
 	const formData = new FormData();
 
@@ -36,7 +30,7 @@ export function parseFromJSON(value) {
 	try {
 		result = JSON.parse(value);
 	}
-	catch (err) {}
+	catch (error) {}
 
 	return result;
 }
@@ -46,8 +40,8 @@ export function parseFromJSON(value) {
  * @param {Object} error - The error object.
  * @returns {object|null} - The parsed error or null if not one of the response error codes.
  */
-export function getServiceError(err) {
-	const parsedError = parseFromJSON(err.message);
+export function getServiceError(error) {
+	const parsedError = parseFromJSON(error.message);
 
 	return get(parsedError, 'status') ? parsedError : null;
 }
@@ -59,6 +53,12 @@ export function serializeQueryString(params) {
 				`${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
 		)
 		.join('&');
+}
+
+export function addParams(url, params) {
+	const separator = url.includes('?') ? '&' : '?';
+
+	return `${url}${separator}${serializeQueryString(params)}`;
 }
 
 export function stringifyValues(data) {
@@ -77,14 +77,14 @@ function getAuthData(data) {
 		...stringifyValues(data),
 	})
 		.filter(([, value]) => value !== undefined)
-		.reduce((obj, [key, value]) => {
-			obj[key] = value;
+		.reduce((object, [key, value]) => {
+			object[key] = value;
 
-			return obj;
+			return object;
 		}, {});
 }
 
-export default (request) => {
+const Request = function Request(request) {
 	const {
 		baseURL = '/o/faro',
 		contentType = 'json',
@@ -146,3 +146,5 @@ export default (request) => {
 		}
 	});
 };
+
+export default Request;

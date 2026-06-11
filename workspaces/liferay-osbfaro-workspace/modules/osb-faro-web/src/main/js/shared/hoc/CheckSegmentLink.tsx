@@ -59,11 +59,13 @@ const checkSegmentLink =
 							})
 						);
 					})
-					.catch((err) => {
+					.catch((error) => {
 						setLoading(false);
-						setError(err);
+						setError(error);
 					});
 			}
+
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []);
 
 		return (

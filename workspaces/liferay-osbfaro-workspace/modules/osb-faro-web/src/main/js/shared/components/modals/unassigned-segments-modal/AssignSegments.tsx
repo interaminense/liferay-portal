@@ -32,17 +32,17 @@ const UNASSIGNED_OPTION = {
 };
 
 const channelMappingsToArray = (
-	obj: IChannelMappings
+	object: IChannelMappings
 ): Array<{channelId: string; id: string}> => {
-	const arr = [];
+	const array = [];
 
-	for (const id in obj) {
-		if ({}.hasOwnProperty.call(obj, id)) {
-			arr.push({channelId: obj[id], id});
+	for (const id in object) {
+		if ({}.hasOwnProperty.call(object, id)) {
+			array.push({channelId: object[id], id});
 		}
 	}
 
-	return arr;
+	return array;
 };
 
 interface IChannelMappings {

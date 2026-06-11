@@ -30,8 +30,12 @@ const eventAnalysis = [
 	},
 ];
 
-export default () => ({
-	__typename: 'EventAnalysisList',
-	eventAnalysis,
-	total: eventAnalysis.length,
-});
+const EventAnalysisListResolver = function EventAnalysisListResolver() {
+	return {
+		__typename: 'EventAnalysisList',
+		eventAnalysis,
+		total: eventAnalysis.length,
+	};
+};
+
+export default EventAnalysisListResolver;

@@ -81,6 +81,8 @@ const ActivityStreamCard: React.FC<IActivityStreamCardProps> = ({
 
 	useEffect(() => {
 		resetPage();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [rangeSelectors.rangeKey]);
 
 	const safeRangeSelectors = getSafeRangeSelectors(rangeSelectors);

@@ -6,6 +6,37 @@
 import {gql} from '@apollo/client';
 import {DEVICE_FRAGMENT, GEOLOCATION_FRAGMENT} from 'shared/queries/fragments';
 
+const GlobalFilterAssetQuery = function GlobalFilterAssetQuery(
+	queryName,
+	metricName
+) {
+	return gql`
+            query GlobalFilterAssetQuery(
+                $assetId: String!
+                $channelId: String
+                $title: String
+                $touchpoint: String
+                $rangeKey: Int!
+            ) {
+                ${queryName}(
+                    assetId: $assetId
+                    canonicalUrl: $touchpoint
+                    channelId: $channelId
+                    title: $title
+                    rangeKey: $rangeKey
+                ) {
+                    ${metricName} {
+                        ...deviceFragment
+                        ...geolocationFragment
+                    }
+                }
+            }
+
+            ${DEVICE_FRAGMENT}
+            ${GEOLOCATION_FRAGMENT}
+        `;
+};
+
 /**
  * Global Filter Asset Query
  * @description Create a GraphQL query
@@ -13,28 +44,4 @@ import {DEVICE_FRAGMENT, GEOLOCATION_FRAGMENT} from 'shared/queries/fragments';
  * @param {string} metricName
  * @returns GraphQL query
  */
-export default (queryName, metricName) => gql`
-		query GlobalFilterAssetQuery(
-			$assetId: String!
-			$channelId: String
-			$title: String
-			$touchpoint: String
-			$rangeKey: Int!
-		) {
-			${queryName}(
-				assetId: $assetId
-				canonicalUrl: $touchpoint
-				channelId: $channelId
-				title: $title
-				rangeKey: $rangeKey
-			) {
-				${metricName} {
-					...deviceFragment
-					...geolocationFragment
-				}
-			}
-		}
-
-		${DEVICE_FRAGMENT}
-		${GEOLOCATION_FRAGMENT}
-	`;
+export default GlobalFilterAssetQuery;

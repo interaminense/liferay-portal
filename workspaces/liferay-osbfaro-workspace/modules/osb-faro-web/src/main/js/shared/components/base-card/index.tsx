@@ -14,12 +14,12 @@ import {ReportContainer} from '../download-report/DownloadPDFReport';
 import HeaderDefault, {BaseCardHeaderDefaultIProps} from './HeaderDefault';
 
 interface BaseCardIProps {
-	className?: string;
-	id?: string;
-	children: (val: any) => React.ReactNode;
-	description?: string;
 	Header?: React.FC<BaseCardHeaderDefaultIProps>;
+	children: (val: any) => React.ReactNode;
+	className?: string;
+	description?: string;
 	headerProps?: {[key: string]: any};
+	id?: string;
 	label: string;
 	legacyDropdownRangeKey: boolean;
 	minHeight?: number;

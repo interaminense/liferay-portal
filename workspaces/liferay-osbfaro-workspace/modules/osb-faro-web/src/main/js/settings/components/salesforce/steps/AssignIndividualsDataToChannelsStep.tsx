@@ -5,8 +5,7 @@
 
 import ClayButton from '@clayui/button';
 import {Text} from '@clayui/core';
-import ClayForm from '@clayui/form';
-import {ClayCheckbox} from '@clayui/form';
+import ClayForm, {ClayCheckbox} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
 import ClaySticker from '@clayui/sticker';

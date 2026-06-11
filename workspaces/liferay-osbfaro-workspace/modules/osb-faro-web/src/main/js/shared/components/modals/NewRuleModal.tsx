@@ -87,6 +87,8 @@ const NewRuleModal: React.FC<INewRuleModalProps> = ({onClose, onSubmit}) => {
 		if (!initialRender) {
 			fetchPageAssets();
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [delta, orderIOMap, page]);
 
 	const handleFindMatches = (): void => {

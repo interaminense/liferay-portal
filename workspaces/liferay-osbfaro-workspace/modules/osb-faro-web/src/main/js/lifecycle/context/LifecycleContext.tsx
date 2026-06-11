@@ -25,8 +25,8 @@ interface ILifecycleFilters extends ILifecycleFilterValues {
 interface ILifecycleContext {
 	filters: ILifecycleFilters;
 	lifecycleId: string;
-	updateFilters: (newFilters: Partial<ILifecycleFilterValues>) => void;
 	resetFilters: () => void;
+	updateFilters: (newFilters: Partial<ILifecycleFilterValues>) => void;
 }
 
 const LifecycleContext = createContext<ILifecycleContext>({
@@ -41,8 +41,9 @@ const LifecycleContext = createContext<ILifecycleContext>({
 	updateFilters: () => {},
 });
 
-export const useLifecycle = (): ILifecycleContext =>
-	useContext(LifecycleContext);
+export const useLifecycle = function useLifecycle(): ILifecycleContext {
+	return useContext(LifecycleContext);
+};
 
 const initialValues: ILifecycleFilterValues = {
 	countryFilter: '',
@@ -55,10 +56,10 @@ interface ILifecycleContextProviderProps {
 	lifecycleId: string;
 }
 
-export const LifecycleContextProvider = ({
+export const LifecycleContextProvider = function LifecycleContextProvider({
 	children,
 	lifecycleId,
-}: ILifecycleContextProviderProps) => {
+}: ILifecycleContextProviderProps) {
 	const [filterValues, setFilterValues] =
 		useState<ILifecycleFilterValues>(initialValues);
 

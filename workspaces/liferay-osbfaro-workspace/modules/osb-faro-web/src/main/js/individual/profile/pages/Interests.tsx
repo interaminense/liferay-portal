@@ -19,8 +19,7 @@ import {
 	createOrderIOMap,
 	getDefaultSortOrder,
 } from 'shared/util/pagination';
-import {INDIVIDUALS} from 'shared/util/router';
-import {Routes, toRoute} from 'shared/util/router';
+import {INDIVIDUALS, Routes, toRoute} from 'shared/util/router';
 import {interestListColumns} from 'shared/util/table-columns';
 import URLConstants from 'shared/util/url-constants';
 
@@ -31,18 +30,20 @@ interface IContributionsCellProps {
 	data: {relatedPagesCount: number};
 }
 
-export const ContributionsCell: React.FC<IContributionsCellProps> = ({
+export const ContributionsCell = function ContributionsCell({
 	className,
 	data: {relatedPagesCount},
-}) => (
-	<td className={getCN('table-cell-expand', className)}>
-		<TextTruncate
-			title={sub(Liferay.Language.get('x-contributing-pages'), [
-				relatedPagesCount,
-			])}
-		/>
-	</td>
-);
+}: IContributionsCellProps) {
+	return (
+		<td className={getCN('table-cell-expand', className)}>
+			<TextTruncate
+				title={sub(Liferay.Language.get('x-contributing-pages'), [
+					relatedPagesCount,
+				])}
+			/>
+		</td>
+	);
+};
 
 interface IInterestsProps {
 	channelId: string;

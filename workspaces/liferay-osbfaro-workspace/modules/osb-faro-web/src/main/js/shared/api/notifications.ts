@@ -5,27 +5,36 @@
 
 import sendRequest from 'shared/util/request';
 
-export const fetchNotifications = ({
+export const fetchNotifications = function fetchNotifications({
 	groupId,
 	type,
 }: {
 	groupId: string;
 	type?: string;
-}) =>
-	sendRequest({
+}) {
+	return sendRequest({
 		data: {type},
 		method: 'GET',
 		path: `main/${groupId}/notification`,
 	});
+};
 
-export const deleteNotification = (groupId: string, notificationId: string) =>
-	sendRequest({
+export const deleteNotification = function deleteNotification(
+	groupId: string,
+	notificationId: string
+) {
+	return sendRequest({
 		method: 'DELETE',
 		path: `main/${groupId}/notification/${notificationId}`,
 	});
+};
 
-export const readNotification = (groupId: string, notificationId: string) =>
-	sendRequest({
+export const readNotification = function readNotification(
+	groupId: string,
+	notificationId: string
+) {
+	return sendRequest({
 		method: 'POST',
 		path: `main/${groupId}/notification/${notificationId}/read`,
 	});
+};

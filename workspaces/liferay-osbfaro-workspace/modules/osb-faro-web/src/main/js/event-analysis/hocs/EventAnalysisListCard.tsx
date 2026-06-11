@@ -16,8 +16,7 @@ import Card from 'shared/components/Card';
 import Nav from 'shared/components/Nav';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import RowActions from 'shared/components/RowActions';
-import {CreatedByCell} from 'shared/components/table/cell-components';
-import {NameCell} from 'shared/components/table/cell-components';
+import {CreatedByCell, NameCell} from 'shared/components/table/cell-components';
 import {
 	useSelectionContext,
 	withSelectionProvider,

@@ -93,13 +93,13 @@ interface IIndividualProfileRoutesCDPProps {
 	};
 }
 
-export const IndividualProfileRoutesCDP = ({
+export const IndividualProfileRoutesCDP = function IndividualProfileRoutesCDP({
 	channelId,
 	className,
 	groupId,
 	id,
 	individual,
-}: IIndividualProfileRoutesCDPProps) => {
+}: IIndividualProfileRoutesCDPProps) {
 	const dataSourceStates = useDataSources();
 
 	const LDPEnabled = useLDPEnabled({groupId});
@@ -139,9 +139,10 @@ export const IndividualProfileRoutesCDP = ({
 						label: selectedChannel && selectedChannel.name,
 					}),
 					breadcrumbs.getIndividuals({
-						channelId,
-						groupId,
 						LDPEnabled,
+						channelId,
+
+						groupId,
 					}),
 					breadcrumbs.getEntityName({label: entityName}),
 				]}
@@ -157,7 +158,6 @@ export const IndividualProfileRoutesCDP = ({
 					routeParams={{channelId, groupId, id}}
 				/>
 			</BasePage.Header>
-
 			{getMatchedRoute(NAV_ITEMS_CDP) === Routes.CONTACTS_INDIVIDUAL &&
 				dataSourceData?.total > 0 && (
 					<BasePage.SubHeader>
@@ -171,7 +171,6 @@ export const IndividualProfileRoutesCDP = ({
 						</div>
 					</BasePage.SubHeader>
 				)}
-
 			<BasePage.Body>
 				<Suspense fallback={<Loading />}>
 					<Switch>

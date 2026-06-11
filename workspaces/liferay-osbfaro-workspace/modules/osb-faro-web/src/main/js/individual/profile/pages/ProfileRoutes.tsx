@@ -86,13 +86,13 @@ interface IIndividualProfileRoutesProps {
 	};
 }
 
-export const IndividualProfileRoutes = ({
+export const IndividualProfileRoutes = function IndividualProfileRoutes({
 	channelId,
 	className,
 	groupId,
 	id,
 	individual,
-}: IIndividualProfileRoutesProps) => {
+}: IIndividualProfileRoutesProps) {
 	const dataSourceStates = useDataSources();
 
 	const LDPEnabled = useLDPEnabled({groupId});
@@ -132,9 +132,10 @@ export const IndividualProfileRoutes = ({
 						label: selectedChannel && selectedChannel.name,
 					}),
 					breadcrumbs.getIndividuals({
-						channelId,
-						groupId,
 						LDPEnabled,
+						channelId,
+
+						groupId,
 					}),
 					breadcrumbs.getEntityName({label: entityName}),
 				]}
@@ -150,7 +151,6 @@ export const IndividualProfileRoutes = ({
 					routeParams={{channelId, groupId, id}}
 				/>
 			</BasePage.Header>
-
 			{getMatchedRoute(NAV_ITEMS) === Routes.CONTACTS_INDIVIDUAL &&
 				dataSourceData?.total > 0 && (
 					<BasePage.SubHeader>
@@ -164,7 +164,6 @@ export const IndividualProfileRoutes = ({
 						</div>
 					</BasePage.SubHeader>
 				)}
-
 			<BasePage.Body>
 				<Suspense fallback={<Loading />}>
 					<Switch>

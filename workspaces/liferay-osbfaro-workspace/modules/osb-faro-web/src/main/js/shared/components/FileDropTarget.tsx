@@ -32,7 +32,9 @@ const ERROR_LANG_MAP = {
 	),
 };
 
-export const getFileSizeLabel = (value: number): string => {
+export const getFileSizeLabel = function getFileSizeLabel(
+	value: number
+): string {
 	const kb = 1024;
 	const mb = Math.pow(kb, 2);
 
@@ -50,13 +52,13 @@ export const getFileSizeLabel = (value: number): string => {
 };
 
 type File = {
+	_id: string;
 	completed?: boolean;
 	name: string;
 	progress?: number;
 	response?: string;
 	size?: number;
 	status?: number;
-	_id: string;
 };
 
 const getFileStatusIcon = (file: File) => {
@@ -88,7 +90,7 @@ interface IFileItemProps {
 	onCancel: () => void;
 }
 
-export const FileItem: React.FC<IFileItemProps> = ({file, onCancel}) => {
+export const FileItem = function FileItem({file, onCancel}: IFileItemProps) {
 	const error = file && file.status && file.status >= 400;
 
 	return (

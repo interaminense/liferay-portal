@@ -19,8 +19,8 @@ import {
 	YAxis,
 } from 'recharts';
 import {Interval, RangeSelectors} from 'shared/types';
-import {CHART_COLOR_NAMES} from 'shared/util/charts';
 import {
+	CHART_COLOR_NAMES,
 	formatXAxisDate,
 	getBarColor,
 	getDateTitle,
@@ -39,13 +39,13 @@ import {
 const {stark: CHART_BLUE} = CHART_COLOR_NAMES;
 
 interface IChartProps<T> extends React.HTMLAttributes<HTMLElement> {
+	LDPEnabled?: boolean;
 	alwaysShowSelectedTooltip: boolean;
 	hasSelectedPoint?: boolean;
 	height?: number;
 	hideGrid?: boolean;
 	history: Array<T>;
 	interval: Interval;
-	LDPEnabled?: boolean;
 	onAfterInit?: () => void;
 	onPointSelect: (index: number | null) => void;
 	rangeSelectors: RangeSelectors;
@@ -285,7 +285,7 @@ const ActivitiesChart: React.FC<
 					animationDuration={ANIMATION_DURATION.bar}
 					dataKey="totalEvents"
 					fill={CHART_BLUE}
-					onMouseEnter={(e, index) => setHoverIndex(index)}
+					onMouseEnter={(event, index) => setHoverIndex(index)}
 					onMouseLeave={() => setHoverIndex(-1)}
 				>
 					{history.map((entry, index) => (

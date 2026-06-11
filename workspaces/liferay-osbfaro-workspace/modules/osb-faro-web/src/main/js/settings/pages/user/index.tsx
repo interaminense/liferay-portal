@@ -26,7 +26,7 @@ const UserRequest = lazy(
 	() => import(/* webpackChunkName: "UserRequest" */ './UserRequest')
 );
 
-export const User = ({className}: {className?: string}) => {
+export const User = function User({className}: {className?: string}) {
 	const {groupId = ''} = useParams<{groupId: string}>();
 	const currentUser = useCurrentUser();
 	const [userRequest, setUserRequest] = useState<number>(0);
@@ -39,7 +39,8 @@ export const User = ({className}: {className?: string}) => {
 			groupId,
 			statuses: [UserStatuses.Requested],
 		})
-		.then(setUserRequest);
+		.then(setUserRequest)
+		.catch(() => {});
 
 	const NAV_ITEMS = [
 		{

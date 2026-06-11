@@ -15,7 +15,7 @@ export const Icons = {
  * Return the icon name
  * @param {number} number
  */
-export const getIcon = (number) => {
+export const getIcon = function getIcon(number) {
 	if (number > 0) {
 		return Icons.positive;
 	}
@@ -31,12 +31,12 @@ export const getIcon = (number) => {
  * Return the current color
  * @param {string} str
  */
-export const getStatsColor = (str) => {
+export const getStatsColor = function getStatsColor(str) {
 	if (str) {
-		if (str.toLowerCase() == 'positive') {
+		if (str.toLowerCase() === 'positive') {
 			return Colors.positive;
 		}
-		else if (str.toLowerCase() == 'negative') {
+		else if (str.toLowerCase() === 'negative') {
 			return Colors.negative;
 		}
 		else {

@@ -48,116 +48,6 @@ interface IFilterBySegment {
 	rangeSelectors: RangeSelectors;
 }
 
-const filterBySegment: React.FC<IFilterBySegment> = ({
-	onFilterChange,
-	rangeSelectors,
-}) => {
-	const {channelId, groupId, title, touchpoint} = useParams();
-	const {delta, orderIOMap, page, query} = useQueryPagination({
-		initialOrderIOMap: createOrderIOMap(NAME, getDefaultSortOrder(NAME)),
-	});
-	const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-
-	const {data, loading} = useRequest({
-		dataSourceFn: API.individualSegment.search,
-		variables: {
-			channelId,
-			delta,
-			groupId,
-			orderIOMap,
-			page,
-			query,
-		},
-	});
-
-	const {data: segmentData, loading: segmentLoading} = useQuery<
-		SegmentPageViewsQueryData,
-		SegmentPageViewsQueryVariables
-	>(SegmentPageViewsQuery, {
-		fetchPolicy: 'network-only',
-		skip: !data?.items.length,
-		variables: {
-			canonicalUrl: getSafeTouchpoint(touchpoint as string) ?? '',
-			channelId: channelId as string,
-			segmentIds: data?.items.map(({id}: any) => id),
-			title: getSafeDecodedURIComponent(title as string),
-			...getSafeRangeSelectors(rangeSelectors),
-		},
-	});
-
-	const items = useMemo(
-		() =>
-			data?.items.map((item: any) => {
-				const selectedSegmentData = segmentData?.segmentPageViews.find(
-					({segmentId}) => segmentId === item.id
-				);
-
-				return {
-					...item,
-					disabled: !selectedSegmentData?.views,
-				};
-			}) ?? [],
-		[data, segmentData]
-	);
-
-	return (
-		<div className="analytics-segment-filter-root d-flex justify-content-between w-100">
-			<div className="align-items-center d-flex">
-				<Dropdown
-					channelId={channelId}
-					groupId={groupId}
-					items={items}
-					loading={loading || segmentLoading}
-					onFilterChange={(item: Item | null) => {
-						setSelectedItem(item);
-
-						onFilterChange(item);
-					}}
-				/>
-
-				{selectedItem && (
-					<ClayLabel
-						className="ml-2"
-						closeButtonProps={{
-							'aria-label': Liferay.Language.get('close'),
-							'id': 'closeId',
-							'title': Liferay.Language.get('close'),
-						}}
-						large
-						onClick={() => {
-							setSelectedItem(null);
-							onFilterChange(null);
-						}}
-					>
-						{selectedItem.name}
-					</ClayLabel>
-				)}
-			</div>
-
-			{selectedItem && (
-				<div className="d-flex">
-					<ClayButton
-						borderless
-						data-tooltip
-						data-tooltip-align="top"
-						displayType="secondary"
-						onClick={() => {
-							setSelectedItem(null);
-							onFilterChange(null);
-						}}
-						size="sm"
-						title={Liferay.Language.get('remove-filter')}
-					>
-						<ClayIcon symbol="times-circle" />
-					</ClayButton>
-
-					<div className="divider" />
-				</div>
-			)}
-		</div>
-	);
-};
-
 const Dropdown = ({
 	channelId,
 	groupId,
@@ -316,4 +206,116 @@ const Dropdown = ({
 	);
 };
 
-export default filterBySegment;
+const FilterBySegment: React.FC<IFilterBySegment> = ({
+	onFilterChange,
+	rangeSelectors,
+}) => {
+	const {channelId, groupId, title, touchpoint} = useParams();
+
+	const {delta, orderIOMap, page, query} = useQueryPagination({
+		initialOrderIOMap: createOrderIOMap(NAME, getDefaultSortOrder(NAME)),
+	});
+
+	const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+
+	const {data, loading} = useRequest({
+		dataSourceFn: API.individualSegment.search,
+		variables: {
+			channelId,
+			delta,
+			groupId,
+			orderIOMap,
+			page,
+			query,
+		},
+	});
+
+	const {data: segmentData, loading: segmentLoading} = useQuery<
+		SegmentPageViewsQueryData,
+		SegmentPageViewsQueryVariables
+	>(SegmentPageViewsQuery, {
+		fetchPolicy: 'network-only',
+		skip: !data?.items.length,
+		variables: {
+			canonicalUrl: getSafeTouchpoint(touchpoint as string) ?? '',
+			channelId: channelId as string,
+			segmentIds: data?.items.map(({id}: any) => id),
+			title: getSafeDecodedURIComponent(title as string),
+			...getSafeRangeSelectors(rangeSelectors),
+		},
+	});
+
+	const items = useMemo(
+		() =>
+			data?.items.map((item: any) => {
+				const selectedSegmentData = segmentData?.segmentPageViews.find(
+					({segmentId}) => segmentId === item.id
+				);
+
+				return {
+					...item,
+					disabled: !selectedSegmentData?.views,
+				};
+			}) ?? [],
+		[data, segmentData]
+	);
+
+	return (
+		<div className="analytics-segment-filter-root d-flex justify-content-between w-100">
+			<div className="align-items-center d-flex">
+				<Dropdown
+					channelId={channelId}
+					groupId={groupId}
+					items={items}
+					loading={loading || segmentLoading}
+					onFilterChange={(item: Item | null) => {
+						setSelectedItem(item);
+
+						onFilterChange(item);
+					}}
+				/>
+
+				{selectedItem && (
+					<ClayLabel
+						className="ml-2"
+						closeButtonProps={{
+							'aria-label': Liferay.Language.get('close'),
+							'id': 'closeId',
+							'title': Liferay.Language.get('close'),
+						}}
+						large
+						onClick={() => {
+							setSelectedItem(null);
+							onFilterChange(null);
+						}}
+					>
+						{selectedItem.name}
+					</ClayLabel>
+				)}
+			</div>
+
+			{selectedItem && (
+				<div className="d-flex">
+					<ClayButton
+						borderless
+						data-tooltip
+						data-tooltip-align="top"
+						displayType="secondary"
+						onClick={() => {
+							setSelectedItem(null);
+							onFilterChange(null);
+						}}
+						size="sm"
+						title={Liferay.Language.get('remove-filter')}
+					>
+						<ClayIcon symbol="times-circle" />
+					</ClayButton>
+
+					<div className="divider" />
+				</div>
+			)}
+		</div>
+	);
+};
+
+export default FilterBySegment;

@@ -48,10 +48,10 @@ export enum Name {
 
 export interface IAudienceReportBaseCardProps {
 	knownIndividualsTitle: string;
-	segmentsTitle?: string;
-	uniqueVisitorsTitle?: string;
 	query: {
 		metricName: string;
 		name: Name;
 	};
+	segmentsTitle?: string;
+	uniqueVisitorsTitle?: string;
 }

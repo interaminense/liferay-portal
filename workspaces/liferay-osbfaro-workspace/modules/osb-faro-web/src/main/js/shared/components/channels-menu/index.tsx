@@ -24,9 +24,9 @@ export type Channel = {
 };
 
 interface IChannelsMenuProps extends React.HTMLAttributes<HTMLElement> {
+	channels: Channel[];
 	defaultChannelId?: string;
 	groupId: string;
-	channels: Channel[];
 	updateDefaultChannelId: ({
 		defaultChannelId,
 		groupId,
@@ -41,10 +41,10 @@ interface IChannelsButtonProps
 	channel?: Channel | null;
 }
 
-export const getDefaultChannel = (
+export const getDefaultChannel = function getDefaultChannel(
 	defaultChannelId: string | undefined,
 	channels: Channel[]
-) => {
+) {
 	if (channels && !!channels.length) {
 		return channels.find(({id}) => id === defaultChannelId) || channels[0];
 	}
@@ -52,13 +52,39 @@ export const getDefaultChannel = (
 	return null;
 };
 
-export const ChannelsMenu: React.FC<IChannelsMenuProps> = ({
+const ChannelsButton = React.forwardRef<
+	HTMLButtonElement,
+	IChannelsButtonProps
+>(({channel, className, ...otherProps}, ref) => (
+	<button
+		className={getCN(
+			'channels-menu button-root btn btn-unstyled',
+			className
+		)}
+		ref={ref}
+		{...otherProps}
+	>
+		<div className="channels-menu-icon">
+			<ClayIcon className="icon-root" symbol="sites" />
+		</div>
+
+		<div className="channels-menu-label">
+			{channel ? channel.name : Liferay.Language.get('no-properties')}
+		</div>
+
+		<div className="channels-menu-caret">
+			<ClayIcon className="icon-root" symbol="caret-right" />
+		</div>
+	</button>
+));
+
+export const ChannelsMenu = function ChannelsMenu({
 	channels,
 	className,
 	defaultChannelId,
 	groupId,
 	updateDefaultChannelId,
-}) => {
+}: IChannelsMenuProps) {
 	const [active, setActive] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const triggerElementRef = useRef(null);
@@ -78,7 +104,6 @@ export const ChannelsMenu: React.FC<IChannelsMenuProps> = ({
 				onClick={channel ? handleActive : undefined}
 				ref={triggerElementRef}
 			/>
-
 			{channel && (
 				<ClayDropDown.Menu
 					active={active}
@@ -109,7 +134,7 @@ export const ChannelsMenu: React.FC<IChannelsMenuProps> = ({
 							<ClayDropDown.Search
 								className="header-search"
 								formProps={{
-									onSubmit: (e) => e.preventDefault(),
+									onSubmit: (event) => event.preventDefault(),
 								}}
 								onChange={setSearchTerm}
 								placeholder={Liferay.Language.get('search')}
@@ -155,31 +180,5 @@ export const ChannelsMenu: React.FC<IChannelsMenuProps> = ({
 		</>
 	);
 };
-
-const ChannelsButton = React.forwardRef<
-	HTMLButtonElement,
-	IChannelsButtonProps
->(({channel, className, ...otherProps}, ref) => (
-	<button
-		className={getCN(
-			'channels-menu button-root btn btn-unstyled',
-			className
-		)}
-		ref={ref}
-		{...otherProps}
-	>
-		<div className="channels-menu-icon">
-			<ClayIcon className="icon-root" symbol="sites" />
-		</div>
-
-		<div className="channels-menu-label">
-			{channel ? channel.name : Liferay.Language.get('no-properties')}
-		</div>
-
-		<div className="channels-menu-caret">
-			<ClayIcon className="icon-root" symbol="caret-right" />
-		</div>
-	</button>
-));
 
 export default connect(null, {updateDefaultChannelId})(ChannelsMenu);

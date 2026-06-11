@@ -18,8 +18,8 @@ interface ICopyInputValueProps {
 		timeout?: boolean;
 	}) => any;
 	disabled?: boolean;
-	value: string;
 	title?: string;
+	value: string;
 }
 
 const CopyInputValue = ({
@@ -60,6 +60,8 @@ const CopyInputValue = ({
 		});
 
 		return () => _clipboard.destroy();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

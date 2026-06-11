@@ -19,15 +19,13 @@ import Nav from 'shared/components/Nav';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
 import RowActions from 'shared/components/RowActions';
 import Table from 'shared/components/table';
-import {ActionTypes} from 'shared/context/selection';
-import {SelectionProvider} from 'shared/context/selection';
+import {ActionTypes, SelectionProvider} from 'shared/context/selection';
 import {compose, withPaginationBar, withToolbar} from 'shared/hoc';
 import CrossPageSelect from 'shared/hoc/CrossPageSelect';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
 import {useRequest} from 'shared/hooks/useRequest';
 import {RootState} from 'shared/store';
-import {Alert} from 'shared/types';
-import {IPaginationUnsorted} from 'shared/types';
+import {Alert, IPaginationUnsorted} from 'shared/types';
 import {Sizes} from 'shared/util/constants';
 import {getPluralMessage} from 'shared/util/lang';
 import {NAME, createOrderIOMap} from 'shared/util/pagination';
@@ -250,6 +248,8 @@ const UserList: React.FC<IUserListProps> = ({
 				close();
 
 				if (!get(data, 'total')) {
+
+					// eslint-disable-next-line @typescript-eslint/no-use-before-define -- mutual recursion with handleAddUserModal; deferred callback so safe at runtime
 					handleNoUsersInPropertyModal();
 				}
 			},

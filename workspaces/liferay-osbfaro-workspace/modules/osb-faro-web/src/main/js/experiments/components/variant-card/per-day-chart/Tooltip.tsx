@@ -13,7 +13,7 @@ import ChartTooltip, {
 import {Colors} from 'shared/util/charts';
 import {getDate as getDateUtil} from 'shared/util/date';
 
-export const Tooltip = ({dataPoint}: {dataPoint: any[]}) => {
+export const Tooltip = function Tooltip({dataPoint}: {dataPoint: any[]}) {
 	const control = dataPoint[0];
 	const variant = dataPoint[1];
 

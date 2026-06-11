@@ -35,7 +35,36 @@ interface ILabelProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	userName: string;
 }
 
-const userDropDown: React.FC<IUserDropdownProps> = ({
+const Label = React.forwardRef<HTMLButtonElement, ILabelProps>(
+	({className, showCaret, userName, ...otherProps}, ref) => (
+		<button
+			className={getCN(
+				'user-menu button-root btn btn-unstyled trigger',
+				className
+			)}
+			ref={ref}
+			type="button"
+			{...otherProps}
+		>
+			<div className="text-truncate">
+				<Sticker circle className="avatar">
+					{getInitials(userName)}
+				</Sticker>
+
+				<span className="user-name">{userName}</span>
+
+				{showCaret && (
+					<ClayIcon
+						className="caret icon-root"
+						symbol="caret-bottom"
+					/>
+				)}
+			</div>
+		</button>
+	)
+);
+
+const UserDropDown: React.FC<IUserDropdownProps> = ({
 	alignmentPosition = Align.RightCenter,
 	className,
 	containerElement: ContainerElement = 'div',
@@ -45,8 +74,11 @@ const userDropDown: React.FC<IUserDropdownProps> = ({
 	userName,
 }: IUserDropdownProps) => {
 	const [active, setActive] = useState(false);
+
 	const [activeMenu, setActiveMenu] = useState(initialActiveMenu);
+
 	const [direction, setDirection] = useState<'left' | 'right'>('left');
+
 	const [history, setHistory] = useState<string[]>([initialActiveMenu]);
 
 	useEffect(() => {
@@ -55,13 +87,18 @@ const userDropDown: React.FC<IUserDropdownProps> = ({
 
 			setHistory([initialActiveMenu]);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
 	useEffect(() => {
 		setActiveMenu(last(history) ?? initialActiveMenu);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [history]);
 
 	const triggerElementRef = useRef(null);
+
 	const menuElementRef = useRef(null);
 
 	const handleActive = () => {
@@ -175,34 +212,5 @@ const userDropDown: React.FC<IUserDropdownProps> = ({
 	);
 };
 
-const Label = React.forwardRef<HTMLButtonElement, ILabelProps>(
-	({className, showCaret, userName, ...otherProps}, ref) => (
-		<button
-			className={getCN(
-				'user-menu button-root btn btn-unstyled trigger',
-				className
-			)}
-			ref={ref}
-			type="button"
-			{...otherProps}
-		>
-			<div className="text-truncate">
-				<Sticker circle className="avatar">
-					{getInitials(userName)}
-				</Sticker>
-
-				<span className="user-name">{userName}</span>
-
-				{showCaret && (
-					<ClayIcon
-						className="caret icon-root"
-						symbol="caret-bottom"
-					/>
-				)}
-			</div>
-		</button>
-	)
-);
-
 export {MenuItem, Menus};
-export default userDropDown;
+export default UserDropDown;

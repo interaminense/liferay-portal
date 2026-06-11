@@ -5,9 +5,9 @@
 
 import {MutableRefObject, useEffect, useState} from 'react';
 
-export const useResize = (
+export const useResize = function useResize(
 	elementRef: MutableRefObject<any> | null
-): [number, number] => {
+): [number, number] {
 	const [size, setSize] = useState<[number, number]>([0, 0]);
 
 	useEffect(() => {

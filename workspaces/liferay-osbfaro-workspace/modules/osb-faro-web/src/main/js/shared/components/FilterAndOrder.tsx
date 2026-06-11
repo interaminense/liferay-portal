@@ -149,13 +149,13 @@ const FilterOptionsList: React.FC<FilterOptionsListPropsType> = ({
 	...otherProps
 }) => (flat ? <FlatList {...otherProps} /> : <NestedList {...otherProps} />);
 
-export const getFilterAndOrderLabel = ({
+export const getFilterAndOrderLabel = function getFilterAndOrderLabel({
 	filterByOptions = [],
 	orderByOptions = [],
 }: {
 	filterByOptions?: FilterOptionType[];
 	orderByOptions?: {label: string; value: string}[];
-}) => {
+}) {
 	if (filterByOptions.length && orderByOptions.length) {
 		return Liferay.Language.get('filter-and-order');
 	}
@@ -173,8 +173,8 @@ interface IFilterAndOrderProps extends React.HTMLAttributes<HTMLElement> {
 	flat: boolean;
 	onFilterByChange?: (filterBy: FilterByType) => void;
 	onOrderFieldChange?: (field: string) => void;
-	orderField: string;
 	orderByOptions?: {label: string; value: string}[];
+	orderField: string;
 	trigger?: React.ReactElement<any, string>;
 }
 

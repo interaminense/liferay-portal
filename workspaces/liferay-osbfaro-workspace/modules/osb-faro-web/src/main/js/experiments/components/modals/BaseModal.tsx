@@ -16,9 +16,9 @@ interface IBaseModalProps extends React.HTMLAttributes<HTMLElement> {
 	children: React.ReactNode;
 	disabled?: boolean;
 	observer: Observer;
+	onCancel?: () => void;
 	onClose: () => void;
 	onSubmit: () => Promise<void | any> | void;
-	onCancel?: () => void;
 	onSuccess?: () => void;
 	size?: Size;
 	status?: Status;

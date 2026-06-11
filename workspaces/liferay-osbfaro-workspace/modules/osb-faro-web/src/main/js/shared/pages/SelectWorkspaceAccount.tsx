@@ -17,7 +17,7 @@ import {Routes, setUriQueryValue, toRoute} from 'shared/util/router';
 
 const checkDisabled = ({configured}: {configured: boolean}) => configured;
 
-export const routingFn = ({projects}: {projects: any[]}) => {
+export const routingFn = function routingFn({projects}: {projects: any[]}) {
 	const basicProjects = getBasicProjects(projects);
 
 	if (basicProjects.length === 1) {

@@ -20,12 +20,12 @@ interface ITrendItemProps {
 	total: number;
 }
 
-export const TrendItem: React.FC<ITrendItemProps> = ({
+export const TrendItem = function TrendItem({
 	change,
 	info,
 	title,
 	total,
-}) => {
+}: ITrendItemProps) {
 	const finiteChange = isFinite(change);
 
 	return (

@@ -74,13 +74,6 @@ const InterestTopics: React.FC<IInterestTopicsProps> = ({
 		},
 	});
 
-	const handleInsertModal = () => {
-		open(modalTypes.INSERT_BLOCKED_KEYWORDS, {
-			onClose: close,
-			onSubmit: handleAddKeywords,
-		});
-	};
-
 	const handleAddKeywords = (keywords: string[]) => {
 		API.blockedKeywords
 			.insertMany({groupId, keywords})
@@ -137,6 +130,13 @@ const InterestTopics: React.FC<IInterestTopicsProps> = ({
 			});
 	};
 
+	const handleInsertModal = () => {
+		open(modalTypes.INSERT_BLOCKED_KEYWORDS, {
+			onClose: close,
+			onSubmit: handleAddKeywords,
+		});
+	};
+
 	const handleDeleteKeyword = (ids: string[]) => () => {
 		open(modalTypes.CONFIRMATION_MODAL, {
 			message: sub(
@@ -177,11 +177,11 @@ const InterestTopics: React.FC<IInterestTopicsProps> = ({
 
 						refetch();
 					})
-					.catch((err) =>
+					.catch((error) =>
 						addAlert({
 							alertType: Alert.Types.Error,
 							message:
-								err.message === UNAUTHORIZED_ACCESS
+								error.message === UNAUTHORIZED_ACCESS
 									? Liferay.Language.get(
 											'unauthorized-access'
 										)

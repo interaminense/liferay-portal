@@ -7,20 +7,21 @@ import React from 'react';
 
 import {SummaryTitle} from './SummaryTitle';
 
-export const SummaryParagraph = ({
+export const SummaryParagraph = function SummaryParagraph({
 	description,
 	title,
 }: {
 	description?: React.ReactNode;
 	title: React.ReactNode;
-}) => (
-	<>
-		<SummaryTitle className="mb-4" label={title} />
-
-		{description && (
-			<>
-				<p className="font-size-sm mb-0">{description}</p>
-			</>
-		)}
-	</>
-);
+}) {
+	return (
+		<>
+			<SummaryTitle className="mb-4" label={title} />
+			{description && (
+				<>
+					<p className="font-size-sm mb-0">{description}</p>
+				</>
+			)}
+		</>
+	);
+};

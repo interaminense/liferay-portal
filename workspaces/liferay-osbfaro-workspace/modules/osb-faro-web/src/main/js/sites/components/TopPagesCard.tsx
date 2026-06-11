@@ -93,37 +93,58 @@ const tabs = [
 
 interface ITopPagesCardProps extends React.HTMLAttributes<HTMLElement> {
 	footer: {
-		label: string;
 		href: string;
+		label: string;
 	};
 	label: string;
 	legacyDropdownRangeKey?: boolean;
 }
 
-const TopPagesCard: React.FC<ITopPagesCardProps> = ({
-	className,
-	footer,
-	label,
-	legacyDropdownRangeKey,
-}) => (
-	<BaseCard
-		className={className}
-		label={label}
-		legacyDropdownRangeKey={legacyDropdownRangeKey ?? true}
-		reportContainer={ReportContainer.TopPagesCard}
-	>
-		{({rangeSelectors}) => (
-			<TopPagesCardWithData
-				footer={footer}
-				rangeSelectors={rangeSelectors}
-			/>
-		)}
-	</BaseCard>
-);
-
 interface ITopPageCardWithData extends Partial<ITopPagesCardProps> {
 	rangeSelectors: RangeSelectors;
 }
+
+interface ITopPagesCardWithStatesRendererProps
+	extends React.HTMLAttributes<HTMLElement> {
+	empty?: boolean;
+	error?: ApolloError;
+	loading?: boolean;
+}
+
+const TopPagesCardWithStatesRenderer: React.FC<
+	ITopPagesCardWithStatesRendererProps
+> = ({children, empty, error, loading}) => (
+	<StatesRenderer empty={empty} error={!!error} loading={loading}>
+		<StatesRenderer.Loading />
+		<StatesRenderer.Empty
+			description={
+				<>
+					<span className="mr-1">
+						{Liferay.Language.get(
+							'check-back-later-to-verify-if-data-has-been-received-from-your-data-sources'
+						)}
+					</span>
+
+					<ClayLink
+						href={URLConstants.SitesDashboardTopPages}
+						key="DOCUMENTATION"
+						target="_blank"
+					>
+						{Liferay.Language.get('learn-more-about-pages')}
+					</ClayLink>
+				</>
+			}
+			showIcon={false}
+			title={Liferay.Language.get(
+				'there-are-no-visitors-on-the-selected-period'
+			)}
+		/>
+		<StatesRenderer.Error apolloError={error}>
+			<ErrorDisplay />
+		</StatesRenderer.Error>
+		<StatesRenderer.Success>{children}</StatesRenderer.Success>
+	</StatesRenderer>
+);
 
 const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 	footer,
@@ -214,46 +235,25 @@ const TopPagesCardWithData: React.FC<ITopPageCardWithData> = ({
 	);
 };
 
-interface ITopPagesCardWithStatesRendererProps
-	extends React.HTMLAttributes<HTMLElement> {
-	empty?: boolean;
-	error?: ApolloError;
-	loading?: boolean;
-}
-
-const TopPagesCardWithStatesRenderer: React.FC<
-	ITopPagesCardWithStatesRendererProps
-> = ({children, empty, error, loading}) => (
-	<StatesRenderer empty={empty} error={!!error} loading={loading}>
-		<StatesRenderer.Loading />
-		<StatesRenderer.Empty
-			description={
-				<>
-					<span className="mr-1">
-						{Liferay.Language.get(
-							'check-back-later-to-verify-if-data-has-been-received-from-your-data-sources'
-						)}
-					</span>
-
-					<ClayLink
-						href={URLConstants.SitesDashboardTopPages}
-						key="DOCUMENTATION"
-						target="_blank"
-					>
-						{Liferay.Language.get('learn-more-about-pages')}
-					</ClayLink>
-				</>
-			}
-			showIcon={false}
-			title={Liferay.Language.get(
-				'there-are-no-visitors-on-the-selected-period'
-			)}
-		/>
-		<StatesRenderer.Error apolloError={error}>
-			<ErrorDisplay />
-		</StatesRenderer.Error>
-		<StatesRenderer.Success>{children}</StatesRenderer.Success>
-	</StatesRenderer>
+const TopPagesCard: React.FC<ITopPagesCardProps> = ({
+	className,
+	footer,
+	label,
+	legacyDropdownRangeKey,
+}) => (
+	<BaseCard
+		className={className}
+		label={label}
+		legacyDropdownRangeKey={legacyDropdownRangeKey ?? true}
+		reportContainer={ReportContainer.TopPagesCard}
+	>
+		{({rangeSelectors}) => (
+			<TopPagesCardWithData
+				footer={footer}
+				rangeSelectors={rangeSelectors}
+			/>
+		)}
+	</BaseCard>
 );
 
 export default TopPagesCard;

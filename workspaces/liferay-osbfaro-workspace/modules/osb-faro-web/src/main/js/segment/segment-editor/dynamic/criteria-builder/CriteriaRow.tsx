@@ -70,8 +70,6 @@ import {
 	isValid,
 } from '../utils/utils';
 
-const acceptedDragTypes = [DragTypes.CriteriaRow, DragTypes.Property];
-
 /**
  * Prevents rows from dropping onto itself and adding properties to not matching
  * contributors.
@@ -97,88 +95,6 @@ const canDrop = (
 		monitor.getItem();
 
 	return destGroupId !== startGroupId || destIndex !== startIndex;
-};
-
-/**
- * Implements the behavior of what will occur when an item is dropped.
- * Items dropped on top of rows will create a new grouping.
- * This method must be called `drop`.
- */
-const drop = (
-	{
-		addProperty,
-		criteriaGroupId: destGroupId,
-		criterion,
-		index: destIndex,
-		onChange,
-		onMove,
-		sequential,
-	}: {
-		addProperty: AddProperty;
-		criteriaGroupId: string;
-		criterion: Criterion;
-		index: number;
-		onChange: (newGroup: CriterionGroup) => void;
-		onMove: OnMove;
-		sequential?: boolean;
-	},
-	monitor: DropTargetMonitor
-): void => {
-	const {
-		criteriaGroupId: startGroupId,
-		criterion: droppedCriterion,
-		index: startIndex,
-		property,
-	} = monitor.getItem();
-
-	const {
-		defaultValue,
-		operatorName,
-		propertyName,
-		rowId,
-		touched,
-		type,
-		valid,
-		value,
-	} = droppedCriterion;
-
-	if (property) {
-		addProperty(property);
-	}
-
-	const droppedCriterionValue = isValid(value) ? value : defaultValue;
-
-	const operators = getSupportedOperatorsFromType(type);
-
-	const newCriterion = {
-		operatorName: operatorName ? operatorName : operators[0].name,
-		propertyName,
-		rowId: rowId || generateRowId(),
-		touched,
-		valid,
-		value: droppedCriterionValue,
-	} as Criterion;
-
-	const itemType = monitor.getItemType();
-
-	const newGroup = createNewGroup(
-		[criterion, newCriterion],
-		sequential ? Conjunctions.Or : Conjunctions.And
-	);
-
-	if (itemType === DragTypes.Property) {
-		onChange(newGroup);
-	}
-	else if (itemType === DragTypes.CriteriaRow) {
-		onMove(
-			startGroupId,
-			startIndex,
-			destGroupId,
-			destIndex,
-			newGroup,
-			true
-		);
-	}
 };
 
 /**
@@ -223,8 +139,8 @@ interface ICriteriaRowProps extends PropsFromRedux {
 	disabled?: boolean;
 	dragging?: boolean;
 	groupId: string;
-	id?: string;
 	hover?: boolean;
+	id?: string;
 	index: number;
 	onAdd: (index: number, criterion: Criterion) => void;
 	onChange: (criterion: Criterion | Criterion[]) => void;
@@ -583,6 +499,90 @@ class CriteriaRow extends React.Component<
 		);
 	}
 }
+
+const acceptedDragTypes = [DragTypes.CriteriaRow, DragTypes.Property];
+
+/**
+ * Implements the behavior of what will occur when an item is dropped.
+ * Items dropped on top of rows will create a new grouping.
+ * This method must be called `drop`.
+ */
+const drop = (
+	{
+		addProperty,
+		criteriaGroupId: destGroupId,
+		criterion,
+		index: destIndex,
+		onChange,
+		onMove,
+		sequential,
+	}: {
+		addProperty: AddProperty;
+		criteriaGroupId: string;
+		criterion: Criterion;
+		index: number;
+		onChange: (newGroup: CriterionGroup) => void;
+		onMove: OnMove;
+		sequential?: boolean;
+	},
+	monitor: DropTargetMonitor
+): void => {
+	const {
+		criteriaGroupId: startGroupId,
+		criterion: droppedCriterion,
+		index: startIndex,
+		property,
+	} = monitor.getItem();
+
+	const {
+		defaultValue,
+		operatorName,
+		propertyName,
+		rowId,
+		touched,
+		type,
+		valid,
+		value,
+	} = droppedCriterion;
+
+	if (property) {
+		addProperty(property);
+	}
+
+	const droppedCriterionValue = isValid(value) ? value : defaultValue;
+
+	const operators = getSupportedOperatorsFromType(type);
+
+	const newCriterion = {
+		operatorName: operatorName ? operatorName : operators[0].name,
+		propertyName,
+		rowId: rowId || generateRowId(),
+		touched,
+		valid,
+		value: droppedCriterionValue,
+	} as Criterion;
+
+	const itemType = monitor.getItemType();
+
+	const newGroup = createNewGroup(
+		[criterion, newCriterion],
+		sequential ? Conjunctions.Or : Conjunctions.And
+	);
+
+	if (itemType === DragTypes.Property) {
+		onChange(newGroup);
+	}
+	else if (itemType === DragTypes.CriteriaRow) {
+		onMove(
+			startGroupId,
+			startIndex,
+			destGroupId,
+			destIndex,
+			newGroup,
+			true
+		);
+	}
+};
 
 const CriteriaRowWithDrag = dragSource(
 	DragTypes.CriteriaRow,

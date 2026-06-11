@@ -25,9 +25,9 @@ import NoResultsDisplay from '../NoResultsDisplay';
 
 interface ISelectChannelsModalProps {
 	groupId: string;
+	initialItems: string[];
 	onClose: () => {};
 	onSelect: (channels: string[]) => {};
-	initialItems: string[];
 }
 
 const SelectChannelsModal: React.FC<ISelectChannelsModalProps> = ({
@@ -82,6 +82,8 @@ const SelectChannelsModal: React.FC<ISelectChannelsModalProps> = ({
 				type: 'add',
 			});
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialItems]);
 
 	useEffect(() => {
@@ -100,6 +102,8 @@ const SelectChannelsModal: React.FC<ISelectChannelsModalProps> = ({
 				});
 			}
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
 
 	return (

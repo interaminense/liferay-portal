@@ -18,7 +18,7 @@ export function useSelectedPoint(): {
 			!isNull(selectedPoint) &&
 			selectedPoint !== undefined &&
 			isFinite(selectedPoint),
-		setSelectedPoint,
+		onPointSelect: setSelectedPoint,
 		selectedPoint,
 	};
 }

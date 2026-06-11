@@ -16,7 +16,7 @@ interface IFetchFieldValues extends RESTParams {
 	filter?: string;
 }
 
-export const fetchFieldValues = ({
+export const fetchFieldValues = function fetchFieldValues({
 	channelId = '',
 	delta = defaultDelta,
 	fieldName,
@@ -28,8 +28,8 @@ export const fetchFieldValues = ({
 	disableSearch: boolean;
 	items: string[];
 	total: number;
-}> =>
-	sendRequest({
+}> {
+	return sendRequest({
 		data: {
 			channelId,
 			cur: page,
@@ -41,3 +41,4 @@ export const fetchFieldValues = ({
 		method: 'GET',
 		path: `contacts/${groupId}/session/values`,
 	});
+};

@@ -20,11 +20,14 @@ const FILTER_CONFIG: {
 	{field: 'industryFilter', fieldName: 'industry', op: 'eq'},
 ];
 
-export const buildQueryString = (values: ILifecycleFilterValues): string =>
-	FILTER_CONFIG.map(({field, fieldName, op}) => {
+export const buildQueryString = function buildQueryString(
+	values: ILifecycleFilterValues
+): string {
+	return FILTER_CONFIG.map(({field, fieldName, op}) => {
 		const val = values[field];
 
 		return val !== '' ? `${fieldName} ${op} '${val}'` : null;
 	})
 		.filter(Boolean)
 		.join(' and ');
+};

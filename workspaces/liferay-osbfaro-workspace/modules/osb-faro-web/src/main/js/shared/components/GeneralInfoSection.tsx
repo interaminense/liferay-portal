@@ -63,46 +63,51 @@ interface IGeneralInfoSectionProps {
 	loading?: boolean;
 }
 
-export const GeneralInfoSection: React.FC<IGeneralInfoSectionProps> = ({
+export const GeneralInfoSection = function GeneralInfoSection({
 	config,
 	getValue,
 	languageMap,
 	loading,
-}) => (
-	<div className="general-info mb-4">
-		<div className="g-3 row">
-			{config.map((section) => (
-				<div className={section.columnClass} key={section.title}>
-					<Card className="h-100 p-2">
-						<Card.Title className="pt-2 px-2 text-uppercase">
-							<Text size={4}>{section.title}</Text>
-						</Card.Title>
-						<Card.Body className="pb-0 px-2">
-							{loading ? (
-								<Loading />
-							) : (
-								<div className="g-2 row">
-									{section.items.map((item) => {
-										const rawValue = getValue(item.key);
+}: IGeneralInfoSectionProps) {
+	return (
+		<div className="general-info mb-4">
+			<div className="g-3 row">
+				{config.map((section) => (
+					<div className={section.columnClass} key={section.title}>
+						<Card className="h-100 p-2">
+							<Card.Title className="pt-2 px-2 text-uppercase">
+								<Text size={4}>{section.title}</Text>
+							</Card.Title>
+							<Card.Body className="pb-0 px-2">
+								{loading ? (
+									<Loading />
+								) : (
+									<div className="g-2 row">
+										{section.items.map((item) => {
+											const rawValue = getValue(item.key);
 
-										const displayValue = rawValue || '-';
+											const displayValue =
+												rawValue || '-';
 
-										return (
-											<InfoItem
-												className={item.className}
-												icon={item.icon}
-												key={item.key}
-												label={languageMap[item.key]}
-												value={displayValue}
-											/>
-										);
-									})}
-								</div>
-							)}
-						</Card.Body>
-					</Card>
-				</div>
-			))}
+											return (
+												<InfoItem
+													className={item.className}
+													icon={item.icon}
+													key={item.key}
+													label={
+														languageMap[item.key]
+													}
+													value={displayValue}
+												/>
+											);
+										})}
+									</div>
+								)}
+							</Card.Body>
+						</Card>
+					</div>
+				))}
+			</div>
 		</div>
-	</div>
-);
+	);
+};

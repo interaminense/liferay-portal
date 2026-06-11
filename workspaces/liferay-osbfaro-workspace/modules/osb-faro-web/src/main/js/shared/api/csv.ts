@@ -6,9 +6,11 @@
 import {CSVType} from 'shared/components/download-report/utils';
 import sendRequest from 'shared/util/request';
 
-export const fetchCSV = (url: string) => fetch(url);
+export const fetchCSV = function fetchCSV(url: string) {
+	return fetch(url);
+};
 
-export const fetchCount = ({
+export const fetchCount = function fetchCount({
 	groupId,
 	type,
 	...data
@@ -19,13 +21,14 @@ export const fetchCount = ({
 	fromDate?: string;
 	groupId: string;
 	individualId?: string;
-	segmentId?: string;
 	rangeKey?: string;
+	segmentId?: string;
 	toDate?: string;
 	type: CSVType;
-}) =>
-	sendRequest({
+}) {
+	return sendRequest({
 		data,
 		method: 'GET',
 		path: `main/${groupId}/reports/export/csv/${type}/count`,
 	});
+};

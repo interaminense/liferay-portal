@@ -23,8 +23,8 @@ export const individual = new schema.Entity(
 	{processStrategy}
 );
 export const interest = new schema.Entity('interests', {}, {processStrategy});
-export const project = (groupId) =>
-	new schema.Entity(
+export const project = function project(groupId) {
+	return new schema.Entity(
 		'projects',
 		{},
 		{
@@ -32,6 +32,7 @@ export const project = (groupId) =>
 			processStrategy,
 		}
 	);
+};
 
 export const segment = new schema.Entity('segments', {}, {processStrategy});
 export const user = new schema.Entity('users', {}, {processStrategy});

@@ -150,8 +150,8 @@ const ConfigureWorkspaceWithEmailAddressDomains: React.FC<
 			>
 				{({dirty, errors, handleSubmit, isSubmitting, isValid}) => (
 					<Form.Form
-						onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-							e.preventDefault();
+						onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+							event.preventDefault();
 
 							if (!dirty || !isValid) {
 								onNext?.();
@@ -159,7 +159,7 @@ const ConfigureWorkspaceWithEmailAddressDomains: React.FC<
 								return;
 							}
 
-							handleSubmit(e);
+							handleSubmit(event);
 						}}
 					>
 						<Modal.Header onClose={onClose} />

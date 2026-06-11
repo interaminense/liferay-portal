@@ -39,6 +39,7 @@ const Overview: React.FC<IOverviewProps> = ({channelId, groupId, segment}) => {
 
 	const _sideColumnRef = useRef<any>();
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const updateHeaderVisible = useCallback(
 		debounce(() => {
 			const node = _sideColumnRef.current;
@@ -56,6 +57,8 @@ const Overview: React.FC<IOverviewProps> = ({channelId, groupId, segment}) => {
 		window.addEventListener('scroll', updateHeaderVisible);
 
 		return () => window.removeEventListener('scroll', updateHeaderVisible);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

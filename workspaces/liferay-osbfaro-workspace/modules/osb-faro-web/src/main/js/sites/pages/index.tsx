@@ -88,7 +88,7 @@ interface IDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
 	router: Router;
 }
 
-export const Dashboard: React.FC<IDashboardProps> = ({router}) => {
+export const Dashboard = function Dashboard({router}: IDashboardProps) {
 	const {channelId, groupId = ''} = useParams<{
 		channelId: string;
 		groupId: string;

@@ -57,9 +57,15 @@ async function fetchDataSource({
 	}
 }
 
-export const useWizardPage = () => useContext(WizardPageContext);
+export const useWizardPage = function useWizardPage() {
+	return useContext(WizardPageContext);
+};
 
-export const WizardPageProvider = ({children}: {children: React.ReactNode}) => {
+export const WizardPageProvider = function WizardPageProvider({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	const {groupId = ''} = useParams<{groupId: string}>();
 	const {dataSourceId} = useQueryParams();
 	const [dataSource, setDataSource] = useState<DataSource | null>(null);
@@ -74,6 +80,8 @@ export const WizardPageProvider = ({children}: {children: React.ReactNode}) => {
 				setLoading,
 			});
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [groupId, dataSourceId]);
 
 	return (

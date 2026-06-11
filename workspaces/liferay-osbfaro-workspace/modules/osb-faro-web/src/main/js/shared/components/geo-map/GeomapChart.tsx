@@ -211,9 +211,9 @@ export interface IProps {
 	elementProps?: React.HTMLAttributes<HTMLDivElement>;
 	forwardRef: React.MutableRefObject<any>;
 	grid?: any;
-	predictionDate?: any;
 	point?: any;
 	pollingInterval?: number;
+	predictionDate?: any;
 	[key: string]: any;
 }
 
@@ -242,6 +242,8 @@ const Geomap = ({
 		return () => {
 			forwardRef.current.disposed();
 		};
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const {height = '100%', width = '100%'} = forwardRef.current

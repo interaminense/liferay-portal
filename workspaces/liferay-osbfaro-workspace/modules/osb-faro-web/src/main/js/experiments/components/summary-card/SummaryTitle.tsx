@@ -6,10 +6,12 @@
 import getCN from 'classnames';
 import React from 'react';
 
-export const SummaryTitle = ({
+export const SummaryTitle = function SummaryTitle({
 	className,
 	label,
 }: {
 	className?: string;
 	label: React.ReactNode;
-}) => <h3 className={getCN('font-weight-bold', className)}>{label}</h3>;
+}) {
+	return <h3 className={getCN('font-weight-bold', className)}>{label}</h3>;
+};

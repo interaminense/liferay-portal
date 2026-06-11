@@ -131,37 +131,41 @@ export function fetchProjectViaCorpProjectUuid({corpProjectUuid}) {
 	};
 }
 
-export const updateProject = ({
+export const updateProject = function updateProject({
 	emailAddressDomains,
 	friendlyURL,
 	groupId,
 	incidentReportEmailAddresses,
 	name,
 	timeZoneId,
-}) => ({
-	meta: {
-		[CALL_API]: {
-			data: {
-				emailAddressDomains,
-				friendlyURL,
-				groupId,
-				incidentReportEmailAddresses,
-				name,
-				timeZoneId,
+}) {
+	return {
+		meta: {
+			[CALL_API]: {
+				data: {
+					emailAddressDomains,
+					friendlyURL,
+					groupId,
+					incidentReportEmailAddresses,
+					name,
+					timeZoneId,
+				},
+				requestFn: API.projects.update,
+				schema: project(groupId),
+				types: [
+					actionTypes.UPDATE_PROJECT_REQUEST,
+					actionTypes.UPDATE_PROJECT_SUCCESS,
+					actionTypes.UPDATE_PROJECT_FAILURE,
+				],
 			},
-			requestFn: API.projects.update,
-			schema: project(groupId),
-			types: [
-				actionTypes.UPDATE_PROJECT_REQUEST,
-				actionTypes.UPDATE_PROJECT_SUCCESS,
-				actionTypes.UPDATE_PROJECT_FAILURE,
-			],
+			newId: friendlyURL,
+			prevId: groupId,
 		},
-		newId: friendlyURL,
-		prevId: groupId,
-	},
-	payload: {
-		id: groupId,
-	},
-	type: 'NO_OP',
-});
+
+		payload: {
+			id: groupId,
+		},
+
+		type: 'NO_OP',
+	};
+};

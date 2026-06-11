@@ -73,9 +73,9 @@ export type Attributes = {[key: string]: Attribute};
 export type BlockedCustomEvent = {
 	hidden: boolean;
 	id: string;
-	name: string;
 	lastSeenDate: string;
 	lastSeenURL: string;
+	name: string;
 };
 
 export type Breakdown = {
@@ -152,9 +152,9 @@ export type BreakdownData = {
 };
 
 export type ParsedBreakdownItem = {
+	breakdown0: BreakdownDataItem & {rowSpan: number};
 	events: BreakdownDataItem[];
 	index: string;
-	breakdown0: BreakdownDataItem & {rowSpan: number};
 	[key: string]:
 		| (BreakdownDataItem & {rowSpan: number})
 		| BreakdownDataItem[]

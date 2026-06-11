@@ -4,6 +4,6 @@
  */
 
 export type Trend = {
-	trendClassification: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
 	percentage: number;
+	trendClassification: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
 };

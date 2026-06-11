@@ -35,7 +35,10 @@ export const ChannelContext = React.createContext<{
 	selectedChannel: null,
 });
 
-export const channelReducer = (state: State, {payload, type}: Action) => {
+export const channelReducer = function channelReducer(
+	state: State,
+	{payload, type}: Action
+) {
 	switch (type) {
 		case ActionType.setChannels: {
 			return {
@@ -54,10 +57,10 @@ export const channelReducer = (state: State, {payload, type}: Action) => {
 	}
 };
 
-export const ChannelProvider = ({
+export const ChannelProvider = function ChannelProvider({
 	children,
 	selectedChannel: channelProp = null,
-}: ChannelProviderProps) => {
+}: ChannelProviderProps) {
 	const [{channels, selectedChannel}, channelDispatch] = useReducer(
 		channelReducer,
 		{
@@ -77,4 +80,6 @@ export const ChannelProvider = ({
 
 export default ChannelProvider;
 
-export const useChannelContext = () => useContext(ChannelContext);
+export const useChannelContext = function useChannelContext() {
+	return useContext(ChannelContext);
+};

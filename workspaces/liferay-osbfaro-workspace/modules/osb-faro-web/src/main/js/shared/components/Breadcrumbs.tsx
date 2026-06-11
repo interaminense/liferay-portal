@@ -8,8 +8,7 @@ import ClayDropDown, {Align} from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import getCN from 'classnames';
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {useHistory} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {IBreadcrumbArgs} from 'shared/util/breadcrumbs';
 
 interface IBreadcrumbProps {

@@ -12,19 +12,20 @@ interface ILabelProps extends React.HTMLAttributes<HTMLSpanElement> {
 	onRemove: () => void;
 }
 
-export const Label: React.FC<ILabelProps> = ({label, onRemove}) => (
-	<span className="label label-dismissible label-lg label-secondary">
-		<span className="label-item label-item-expand">{label}</span>
-
-		<span className="label-item label-item-after">
-			<ClayButton
-				aria-label={Liferay.Language.get('close')}
-				className="button-root close"
-				displayType="unstyled"
-				onClick={onRemove}
-			>
-				<ClayIcon symbol="icon-root times" />
-			</ClayButton>
+export const Label = function Label({label, onRemove}: ILabelProps) {
+	return (
+		<span className="label label-dismissible label-lg label-secondary">
+			<span className="label-item label-item-expand">{label}</span>
+			<span className="label-item label-item-after">
+				<ClayButton
+					aria-label={Liferay.Language.get('close')}
+					className="button-root close"
+					displayType="unstyled"
+					onClick={onRemove}
+				>
+					<ClayIcon symbol="icon-root times" />
+				</ClayButton>
+			</span>
 		</span>
-	</span>
-);
+	);
+};

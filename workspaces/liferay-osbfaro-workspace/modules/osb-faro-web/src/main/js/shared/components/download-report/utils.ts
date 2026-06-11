@@ -94,7 +94,7 @@ export function useDownloadCSV({
 	};
 }
 
-export const useMutationObserver = () => {
+export const useMutationObserver = function useMutationObserver() {
 	const [loadingCount, setLoadingCount] = useState(0);
 
 	useEffect(() => {

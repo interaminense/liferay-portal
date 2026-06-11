@@ -37,7 +37,7 @@ function getRequestState(Record, data) {
 	});
 }
 
-export default (state = new Map(), action) => {
+const Normalizer = function Normalizer(state = new Map(), action) {
 	const {meta, payload} = action;
 
 	let retVal = state;
@@ -101,3 +101,5 @@ export default (state = new Map(), action) => {
 
 	return retVal;
 };
+
+export default Normalizer;

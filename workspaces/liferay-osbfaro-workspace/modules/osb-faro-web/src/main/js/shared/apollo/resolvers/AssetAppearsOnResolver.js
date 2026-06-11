@@ -28,13 +28,13 @@ const metrics = {
 };
 
 function generateItems({selectedMetrics, size}) {
-	const arr = new Array(size);
+	const array = new Array(size);
 
-	for (let i = 0; i < arr.length; i++) {
+	for (let i = 0; i < array.length; i++) {
 		const assetTitle = uuidv4();
 		const assetId = `http://liferay.com/web/test/abc/123/${assetTitle}`;
 
-		arr[i] = {
+		array[i] = {
 			__typename: 'BlogMetric',
 			assetId,
 			assetTitle,
@@ -45,11 +45,15 @@ function generateItems({selectedMetrics, size}) {
 		};
 	}
 
-	return arr;
+	return array;
 }
 
-export default (_, variables) => ({
-	__typename: 'AssetPages',
-	assetMetrics: generateItems(variables),
-	total: 1000,
-});
+const AssetAppearsOnResolver = function AssetAppearsOnResolver(_, variables) {
+	return {
+		__typename: 'AssetPages',
+		assetMetrics: generateItems(variables),
+		total: 1000,
+	};
+};
+
+export default AssetAppearsOnResolver;

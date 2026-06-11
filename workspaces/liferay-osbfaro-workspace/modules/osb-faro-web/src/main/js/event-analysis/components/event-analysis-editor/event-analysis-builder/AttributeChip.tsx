@@ -32,10 +32,10 @@ export enum HoverTypes {
 
 interface IAttributeChipProps {
 	dataType: DataTypes;
-	draggable?: boolean;
-	dragType: DragTypes;
 	description?: string;
 	displayName: string;
+	dragType: DragTypes;
+	draggable?: boolean;
 	id: string;
 	index: number;
 	label: string;
@@ -147,6 +147,8 @@ const AttributeChip: React.FC<IAttributeChipProps> = React.forwardRef<
 		useEffect(() => {
 			drop(_wrapperRef);
 			preview(_chipRef);
+
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []);
 
 		return (

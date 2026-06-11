@@ -31,7 +31,11 @@ type ProjectLike = {
 	[key: string]: any;
 };
 
-export const routingFn = ({projects}: {projects: ProjectLike[]}) => {
+export const routingFn = function routingFn({
+	projects,
+}: {
+	projects: ProjectLike[];
+}) {
 	if (projects.length === 1 && !projects[0].groupId) {
 		return toRoute(Routes.WORKSPACE_ADD_WITH_CORP_PROJECT_UUID, {
 			corpProjectUuid: projects[0].corpProjectUuid,

@@ -98,6 +98,8 @@ export default function CriteriaSidebar({
 		).forEach(({criterionType, id, name}) => {
 			addProperty(criterionType.createProperty({id, name}));
 		});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -145,7 +147,10 @@ export default function CriteriaSidebar({
 					);
 				}
 			})
+			.catch(() => {})
 			.finally(() => setRemoteLoading(false));
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [channelId, groupId, type, selectedRemoteCriterionType, remoteQuery]);
 
 	const effectivePropertyGroupsIList = useMemo(

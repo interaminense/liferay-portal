@@ -17,8 +17,8 @@ import {
 
 interface IRealTimePeriodInputProps {
 	initialInterval?: number;
-	onChange: (interval: number, timeWindow: string) => void;
 	initialTimeWindow?: string;
+	onChange: (interval: number, timeWindow: string) => void;
 }
 
 export const DEFAULT_OPTIONS = {

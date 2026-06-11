@@ -98,11 +98,11 @@ export const Colors = {
 	warning: '#B95000',
 };
 
-export const dateRangeFormatter = (
+export const dateRangeFormatter = function dateRangeFormatter(
 	dateStart: Date,
 	dateEnd: Date,
 	withYear: boolean = false
-): string => {
+): string {
 
 	// TODO: Add timezone param
 
@@ -126,10 +126,10 @@ export const dateRangeFormatter = (
  * @param {date} date
  * @param {string} rangeKey
  */
-export const formatTooltipDate = (
+export const formatTooltipDate = function formatTooltipDate(
 	date: number | string | Date,
 	rangeKey: RangeKeyTimeRanges
-) => {
+) {
 	if (
 		rangeKey === RangeKeyTimeRanges.Last24Hours ||
 		rangeKey === RangeKeyTimeRanges.Yesterday
@@ -143,12 +143,12 @@ export const formatTooltipDate = (
 	return moment.utc(date).format('YYYY MMM D');
 };
 
-export const formatXAxisDate = (
+export const formatXAxisDate = function formatXAxisDate(
 	dateKey: number | string,
 	rangeKey: string,
 	interval: Interval,
 	dateKeysIMap: Map<number, [number, number | null]>
-) => {
+) {
 
 	// display date and month
 
@@ -201,37 +201,10 @@ export const formatXAxisDate = (
 };
 
 /**
- * Return the formatted numbers to display on charts.
- * Per design requets these numbers shouldn't have decimal
- * precision.
- * @param {string} type
- */
-export const getAxisFormatter = (type: string): ((value: number) => string) => {
-	if (type === 'percentage') {
-		return (value: number) => `${toRounded(value * 100)}%`;
-	}
-	else if (type === 'time') {
-		return (value: number) => {
-			const displayMilliseconds =
-				value < 2e3 && value !== 1000 ? 'S[ms]' : '';
-
-			const format = `DD[days] hh[h] mm[m] ss[s] ${displayMilliseconds}`;
-
-			return toDuration(value, format);
-		};
-	}
-	else if (type == 'ratings') {
-		return (value: number) => `${(value * 10).toFixed(2)}`;
-	}
-
-	return getMetricFormatter(type);
-};
-
-/**
  * Return the chart axis measures from a max value
  * @param {number} value
  */
-export const getAxisMeasures = (value: number) => {
+export const getAxisMeasures = function getAxisMeasures(value: number) {
 	const numChars = Math.floor(value).toString().length;
 	const decOrder = Math.pow(10, numChars - 1);
 	let maxValue = decOrder * Math.floor(value / decOrder) + decOrder;
@@ -273,8 +246,9 @@ export const getAxisMeasures = (value: number) => {
 
 	return {
 		intervalCount,
-		intervals,
 		intervalValue,
+
+		intervals,
 		maxValue,
 	};
 };
@@ -283,21 +257,24 @@ export const getAxisMeasures = (value: number) => {
  * Return the chart max value from a data
  * @param {Array} data
  */
-export const getAxisMeasuresFromData = (data: number[][]) =>
-	getAxisMeasures(
+export const getAxisMeasuresFromData = function getAxisMeasuresFromData(
+	data: number[][]
+) {
+	return getAxisMeasures(
 		Math.max(
 			...data
 				.reduce<number[]>((prev, next) => prev.concat(next), [])
 				.filter((value: unknown) => typeof value === 'number')
 		)
 	);
+};
 
-export const getBarColor = (
+export const getBarColor = function getBarColor(
 	currentBarIndex: number,
 	hoverIndex: number,
 	selectedPoint?: number,
 	color: keyof typeof BAR_COLORS = 'blue'
-): string => {
+): string {
 	if (selectedPoint === currentBarIndex) {
 		return BAR_COLORS[color].selected;
 	}
@@ -315,13 +292,13 @@ export const getBarColor = (
  * Return the formatted array to display on charts.
  * @param {string} type
  */
-export const getDataFormatter = (type: string) => {
+export const getDataFormatter = function getDataFormatter(type: string) {
 	if (type === 'time') {
-		return (arr: number[]) =>
-			arr.map((value: number) => Math.round(value / 1e3) * 1e3);
+		return (array: number[]) =>
+			array.map((value: number) => Math.round(value / 1e3) * 1e3);
 	}
 
-	return (arr: number[]) => arr;
+	return (array: number[]) => array;
 };
 
 /**
@@ -329,11 +306,11 @@ export const getDataFormatter = (type: string) => {
  * @param {array} dates
  * @param {string} rangeKey
  */
-export const getDateTitle = (
+export const getDateTitle = function getDateTitle(
 	dates: [number, number | null] | undefined,
 	rangeKey: RangeKeyTimeRanges,
 	interval: Interval
-): string => {
+): string {
 	if (!dates) {
 		return '';
 	}
@@ -359,16 +336,16 @@ export const getDateTitle = (
  * @param {string} rangeKey
  * @param {array} arr
  */
-export const getIntervals = (
+export const getIntervals = function getIntervals(
 	rangeKey: RangeSelectors['rangeKey'],
-	arr: Array<number | null>,
+	array: Array<number | null>,
 	timeInterval: Interval,
 	dateKeysIMap: any
-): Array<number | null> => {
-	if (arr.length) {
-		const firstDate = moment(arr[0]);
+): Array<number | null> {
+	if (array.length) {
+		const firstDate = moment(array[0]);
 		const [lastPeriodStart, lastPeriodEnd] = dateKeysIMap.get(
-			arr[arr.length - 1]
+			array[array.length - 1]
 		);
 		const lastDate = lastPeriodEnd
 			? moment(lastPeriodEnd)
@@ -389,11 +366,11 @@ export const getIntervals = (
 		);
 
 		return intervalHandle
-			? intervalHandle(arr.filter((v): v is number => v !== null))
-			: arr;
+			? intervalHandle(array.filter((v): v is number => v !== null))
+			: array;
 	}
 
-	return arr;
+	return array;
 };
 
 /**
@@ -409,10 +386,10 @@ type LocationDataItem = {
 	value: string;
 };
 
-export const getLocationsData = (
+export const getLocationsData = function getLocationsData(
 	metrics: LocationMetric[],
 	location = 'Any'
-) => {
+) {
 	let total = 0;
 
 	metrics.forEach(({value}: LocationMetric) => {
@@ -465,9 +442,9 @@ export const getLocationsData = (
  * Return the metric formatter
  * @param {string} type
  */
-export const getMetricFormatter = (
+export const getMetricFormatter = function getMetricFormatter(
 	type: string
-): ((value: number) => string) => {
+): (value: number) => string {
 	if (type === 'number') {
 		return (value: number) => `${toThousands(value)}`;
 	}
@@ -477,10 +454,39 @@ export const getMetricFormatter = (
 	else if (type === 'time') {
 		return (value: number) => toDuration(value);
 	}
-	else if (type == 'ratings') {
+	else if (type === 'ratings') {
 		return (value: number) => `${(value * 10).toFixed(2)}/10`;
 	}
 	else {
 		return (value: number) => String(value);
 	}
+};
+
+/**
+ * Return the formatted numbers to display on charts.
+ * Per design requets these numbers shouldn't have decimal
+ * precision.
+ * @param {string} type
+ */
+export const getAxisFormatter = function getAxisFormatter(
+	type: string
+): (value: number) => string {
+	if (type === 'percentage') {
+		return (value: number) => `${toRounded(value * 100)}%`;
+	}
+	else if (type === 'time') {
+		return (value: number) => {
+			const displayMilliseconds =
+				value < 2e3 && value !== 1000 ? 'S[ms]' : '';
+
+			const format = `DD[days] hh[h] mm[m] ss[s] ${displayMilliseconds}`;
+
+			return toDuration(value, format);
+		};
+	}
+	else if (type === 'ratings') {
+		return (value: number) => `${(value * 10).toFixed(2)}`;
+	}
+
+	return getMetricFormatter(type);
 };

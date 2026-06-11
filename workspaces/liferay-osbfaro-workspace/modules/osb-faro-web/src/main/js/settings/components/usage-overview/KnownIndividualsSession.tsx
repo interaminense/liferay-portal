@@ -21,9 +21,9 @@ interface IKnownIndividualsSessionProps {
 	currentPlan: any;
 }
 
-export const KnownIndividualsSession = ({
+export const KnownIndividualsSession = function KnownIndividualsSession({
 	currentPlan,
-}: IKnownIndividualsSessionProps) => {
+}: IKnownIndividualsSessionProps) {
 	const {timeZoneId} = useTimeZone();
 	const {count, limit, status} = currentPlan.metrics.get('individuals');
 	const syncedIndividualsCount =

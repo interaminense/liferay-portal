@@ -15,15 +15,17 @@ import {Routes, toRoute} from 'shared/util/router';
 import {normalizeRangeSelectors} from 'shared/util/util';
 
 import BaseEventAnalysisPage from '../components/BaseEventAnalysisPage';
-import {AttributesProvider} from '../components/event-analysis-editor/context/attributes';
-import {AttributesState} from '../components/event-analysis-editor/context/attributes';
+import {
+	AttributesProvider,
+	AttributesState,
+} from '../components/event-analysis-editor/context/attributes';
 import {
 	EventAnalysisData,
 	EventAnalysisQuery,
 	EventAnalysisVariables,
 } from '../queries/EventAnalysisQuery';
 
-function normalizeItems<T extends {id: string; __typename?: string}>(
+function normalizeItems<T extends {__typename?: string; id: string}>(
 	data: T[]
 ): {[key: string]: T} {
 	return data.reduce(
@@ -105,6 +107,8 @@ const Edit: React.FC<React.HTMLAttributes<HTMLElement>> = () => {
 
 			return attributesState;
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		data?.eventAnalysis?.eventAnalysisBreakdowns,
 		data?.eventAnalysis?.eventAnalysisFilters,

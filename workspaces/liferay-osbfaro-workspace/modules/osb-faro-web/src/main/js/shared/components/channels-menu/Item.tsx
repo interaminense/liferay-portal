@@ -18,8 +18,8 @@ interface ISitesDropdownItem
 	active?: boolean;
 	channel: Channel;
 	groupId: string;
-	route: string;
 	onClick?: typeof noop;
+	route: string;
 }
 
 const ChannelsMenuDropdownItem: React.FC<ISitesDropdownItem> = ({

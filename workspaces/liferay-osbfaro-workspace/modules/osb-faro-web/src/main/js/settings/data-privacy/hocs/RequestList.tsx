@@ -27,16 +27,15 @@ import {
 import {withHistory} from 'shared/hoc';
 import CrossPageSelect from 'shared/hoc/CrossPageSelect';
 import {useQueryPagination} from 'shared/hooks/useQueryPagination';
-import {Alert} from 'shared/types';
-import {FilterByType, FilterInputType} from 'shared/types';
-import Constants, {OrderByDirections, Sizes} from 'shared/util/constants';
-import {
+import {Alert, FilterByType, FilterInputType} from 'shared/types';
+import Constants, {
 	GDPRRequestStatuses,
 	GDPRRequestTypes,
+	OrderByDirections,
 	RangeKeyTimeRanges,
+	Sizes,
 } from 'shared/util/constants';
-import {CUSTOM_DATE_FORMAT} from 'shared/util/date';
-import {formatDateToTimeZone} from 'shared/util/date';
+import {CUSTOM_DATE_FORMAT, formatDateToTimeZone} from 'shared/util/date';
 import {mapListResultsToProps} from 'shared/util/mappers';
 import {
 	CREATE_DATE,
@@ -135,7 +134,9 @@ export const FILTER_BY_OPTIONS = [
 	},
 ];
 
-export const getTodaysDate = () => moment().utc();
+export const getTodaysDate = function getTodaysDate() {
+	return moment().utc();
+};
 
 const isDisabled = (item?: object): boolean => {
 	const {completeDate, status} = (item ?? {}) as {
@@ -149,7 +150,7 @@ const isDisabled = (item?: object): boolean => {
 /**
  * Function for searching and filtering requests.
  */
-export const searchSelectedFn = ({
+export const searchSelectedFn = function searchSelectedFn({
 	filterBy,
 	items,
 	query,
@@ -157,7 +158,7 @@ export const searchSelectedFn = ({
 	filterBy: FilterByType;
 	items: OrderedMap<any, any>;
 	query: string;
-}): OrderedMap<any, any> => {
+}): OrderedMap<any, any> {
 	let result: OrderedMap<any, any>;
 
 	const statuses = filterBy.get(STATUSES, Set()).toArray();
@@ -235,7 +236,7 @@ const RequestList: React.FC<IRequestListProps> = ({
 		?.filterNot((val) => !!val && val.isEmpty())
 		.map((val, key) =>
 			getFilterOptionType(key as string) === 'radio' && val
-				? parseInt(val.first() ?? '')
+				? parseInt(val.first() ?? '', 10)
 				: val
 		)
 		.toJS();

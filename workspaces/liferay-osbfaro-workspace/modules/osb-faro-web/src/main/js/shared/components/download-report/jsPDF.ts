@@ -47,8 +47,8 @@ type Data = {
 };
 
 interface FloatText extends Text {
-	posY: number;
 	posX: PosX;
+	posY: number;
 }
 
 export type JSPDFExtensionContainer = {
@@ -60,8 +60,8 @@ export type JSPDFExtensionContainer = {
 export const fontMapper: {
 	[key: string]: {
 		path: string;
-		test: (value: string) => boolean;
 		style: string[];
+		test: (value: string) => boolean;
 	};
 } = {
 	[LanguageIds.Japanese]: {
@@ -73,13 +73,17 @@ export const fontMapper: {
 
 export class JSPDFExtension {
 	config: {
-		date: Date;
 		container: {
 			list: JSPDFExtensionContainer[];
 			padding: number;
 		};
+		date: Date;
 		fontFamily: string;
 		fontSize: {
+			['extra-small']: {
+				lineHeight: number;
+				size: number;
+			};
 			large: {
 				lineHeight: number;
 				size: number;
@@ -89,10 +93,6 @@ export class JSPDFExtension {
 				size: number;
 			};
 			small: {
-				lineHeight: number;
-				size: number;
-			};
-			['extra-small']: {
 				lineHeight: number;
 				size: number;
 			};
@@ -114,7 +114,7 @@ export class JSPDFExtension {
 
 	data: any[] = [];
 	doc: JSPDF;
-	textList: {text: Text; options?: {rect?: boolean}}[];
+	textList: {options?: {rect?: boolean}; text: Text}[];
 	floatTextList: FloatText[];
 
 	constructor({

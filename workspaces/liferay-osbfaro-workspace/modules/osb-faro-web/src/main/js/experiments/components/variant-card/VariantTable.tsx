@@ -17,11 +17,11 @@ import {createOrderIOMap} from 'shared/util/pagination';
 import {IExperiment} from '../summary-card/types';
 import columns from './variant-columns';
 
-export const VariantTable = ({
+export const VariantTable = function VariantTable({
 	experiment,
 }: {
 	experiment: IExperiment & {type?: string};
-}) => {
+}) {
 	const {onOrderIOMapChange, orderIOMap} = useStatefulPagination(undefined, {
 		initialOrderIOMap: createOrderIOMap('dxpVariantName'),
 	});

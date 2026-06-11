@@ -30,6 +30,8 @@ const Thumbs: React.FC<IThumbsProps> = ({
 		if (selectedItem) {
 			onSelectThumb(selectedItem);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [items]);
 
 	const selectThumb = (id: number) => {

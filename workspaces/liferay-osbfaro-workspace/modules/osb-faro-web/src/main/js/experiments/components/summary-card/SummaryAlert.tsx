@@ -10,19 +10,21 @@ interface SummaryAlertIProps extends React.HTMLAttributes<HTMLElement> {
 	symbol?: string;
 }
 
-export const SummaryAlert: React.FC<SummaryAlertIProps> = ({
+export const SummaryAlert = function SummaryAlert({
 	children,
 	symbol,
-}) => (
-	<div className="analytics-summary-card-alert p-4 w-100">
-		{symbol ? (
-			<>
-				<ClayIcon symbol={symbol} />
+}: SummaryAlertIProps) {
+	return (
+		<div className="analytics-summary-card-alert p-4 w-100">
+			{symbol ? (
+				<>
+					<ClayIcon symbol={symbol} />
 
-				<div>{children}</div>
-			</>
-		) : (
-			children
-		)}
-	</div>
-);
+					<div>{children}</div>
+				</>
+			) : (
+				children
+			)}
+		</div>
+	);
+};

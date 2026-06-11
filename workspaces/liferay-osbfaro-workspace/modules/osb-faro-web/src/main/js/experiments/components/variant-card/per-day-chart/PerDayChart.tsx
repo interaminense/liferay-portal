@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {formatYAxis} from 'experiments/util/experiments';
-import {getMetricUnit} from 'experiments/util/experiments';
+import {formatYAxis, getMetricUnit} from 'experiments/util/experiments';
 import {MetricName} from 'experiments/util/types';
 import React from 'react';
 
@@ -69,10 +68,16 @@ const formatData = (experiment: IPerDayExperiment) => {
 	};
 };
 
-export const PerDayChart = ({experiment}: {experiment: IPerDayExperiment}) => (
-	<ComposedChart
-		Tooltip={Tooltip}
-		chartType="area"
-		data={formatData(experiment)}
-	/>
-);
+export const PerDayChart = function PerDayChart({
+	experiment,
+}: {
+	experiment: IPerDayExperiment;
+}) {
+	return (
+		<ComposedChart
+			Tooltip={Tooltip}
+			chartType="area"
+			data={formatData(experiment)}
+		/>
+	);
+};

@@ -52,13 +52,15 @@ const TableWithData: React.FC<ITableWithDataProps> = ({authorized}) => (
 	/>
 );
 
-export const TrackedBehaviorsList: React.FC<ITrackedBehaviorsListProps> = ({
+export const TrackedBehaviorsList = function TrackedBehaviorsList({
 	authorized,
-}) => (
-	<Card className="tracked-behaviors-list-root">
-		<TableWithData authorized={authorized} />
-	</Card>
-);
+}: ITrackedBehaviorsListProps) {
+	return (
+		<Card className="tracked-behaviors-list-root">
+			<TableWithData authorized={authorized} />
+		</Card>
+	);
+};
 
 TrackedBehaviorsList.defaultProps = {
 	authorized: false,

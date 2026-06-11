@@ -14,8 +14,8 @@ import withAction from './WithAction';
  * @param {boolean} bypassErrorPage - Determine whether to bypass the error page if an error occurs but data still exists.
  * @returns {Function} - The new component
  */
-export const withProject = (bypassErrorPage = false) =>
-	withAction(
+export const withProject = function withProject(bypassErrorPage = false) {
+	return withAction(
 		({corpProjectUuid, groupId}) => {
 			if (corpProjectUuid) {
 				return fetchProjectViaCorpProjectUuid({corpProjectUuid});
@@ -40,5 +40,6 @@ export const withProject = (bypassErrorPage = false) =>
 		},
 		{bypassErrorPage, propName: 'project'}
 	);
+};
 
 export default withProject();

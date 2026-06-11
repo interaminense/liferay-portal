@@ -4,11 +4,11 @@
  */
 
 import ActivitiesChartTimelineBase from 'contacts/components/ActivitiesChartTimeline';
-const ActivitiesChartTimeline =
-	ActivitiesChartTimelineBase as React.ComponentType<any>;
-
 import React from 'react';
 import {EntityTypes, RangeKeyTimeRanges} from 'shared/util/constants';
+
+const ActivitiesChartTimeline =
+	ActivitiesChartTimelineBase as React.ComponentType<any>;
 
 const activityHistory = Array.from({length: 30}, (_, i) => ({
 	intervalInitDate: new Date(2019, 0, i + 1).getTime(),

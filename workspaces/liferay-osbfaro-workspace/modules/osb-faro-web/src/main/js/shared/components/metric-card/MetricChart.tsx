@@ -65,14 +65,14 @@ interface IMetricChartProps extends Partial<ICommonMetricProps> {
 	onCompareToPreviousChange?: (compareToPrevious: boolean) => void;
 }
 
-export const MetricChart: React.FC<IMetricChartProps> = ({
+export const MetricChart = function MetricChart({
 	chartHeight: height = 350,
 	compareToPrevious,
 	data,
 	interval,
 	onCompareToPreviousChange,
 	rangeSelectors,
-}) => {
+}: IMetricChartProps) {
 	const {changeCompareToPrevious} = useActions();
 
 	const [hoveredLegendItem, setHoveredLegendItem] = useState<string | null>(
@@ -109,6 +109,8 @@ export const MetricChart: React.FC<IMetricChartProps> = ({
 						);
 
 						if (yAxisWidth < textWidth) {
+
+							// eslint-disable-next-line react-hooks/exhaustive-deps
 							yAxisWidth = textWidth;
 						}
 
@@ -390,6 +392,8 @@ const MetricChartWrapper: React.FC<IMetricChartWrapperProps> = ({
 				tooltipTitle,
 				type,
 			}),
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[data, interval, metricName, rangeSelectors]
 	);
 
@@ -429,10 +433,11 @@ const MetricChartRenderer: React.FC<ICommonMetricProps> = ({
 	const metricName = getMetricName(activeItemIndex, metrics);
 
 	const {data, error, loading} = useMetricQuery({
+		Query: queries.MetricQuery(metricName),
 		experienceId,
 		filters,
+
 		interval,
-		Query: queries.MetricQuery(metricName),
 		rangeSelectors,
 		variables,
 	});

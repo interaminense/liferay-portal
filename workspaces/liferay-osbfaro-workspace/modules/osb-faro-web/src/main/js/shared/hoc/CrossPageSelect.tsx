@@ -28,8 +28,11 @@ export type SearchFnType = ({items, query}: SearchArgs) => OrderedMap<any, any>;
 /**
  * Function for local search on items.
  */
-export const defaultSearch: SearchFnType = ({items, query}: SearchArgs) =>
-	items.filter(
+export const defaultSearch: SearchFnType = function defaultSearch({
+	items,
+	query,
+}: SearchArgs) {
+	return items.filter(
 		(item) =>
 			Object.values(get(item, 'properties', {})).some((value: any) =>
 				String(getSafeDisplayValue(value, ''))
@@ -40,14 +43,15 @@ export const defaultSearch: SearchFnType = ({items, query}: SearchArgs) =>
 				.toLowerCase()
 				.match(query.toLowerCase())
 	) as OrderedMap<any, any>;
+};
 
 /**
  * Function for local sort on items.
  */
-export const defaultSort = (
+export const defaultSort = function defaultSort(
 	items: OrderedMap<any, any>,
 	orderIOMap: OrderedMap<string, OrderParams>
-): OrderedMap<any, any> => {
+): OrderedMap<any, any> {
 	const first = orderIOMap.first() as OrderParams | undefined;
 	const field = first?.field ?? '';
 	const sortOrder = first?.sortOrder;
@@ -69,7 +73,7 @@ export const defaultSort = (
 		: (sorted.reverse() as OrderedMap<any, any>);
 };
 
-export const fetchLocalData = ({
+export const fetchLocalData = function fetchLocalData({
 	delta,
 	filterBy,
 	items,
@@ -79,8 +83,8 @@ export const fetchLocalData = ({
 	searchSelectedFn = defaultSearch,
 }: {
 	delta: number;
-	items: OrderedMap<any, any>;
 	filterBy?: FilterByType;
+	items: OrderedMap<any, any>;
 	orderIOMap: OrderedMap<string, OrderParams>;
 	page: number;
 	query?: string;
@@ -89,7 +93,7 @@ export const fetchLocalData = ({
 		items,
 		query,
 	}: SearchArgs) => OrderedMap<any, any>;
-}) => {
+}) {
 	const start = (page - 1) * delta;
 
 	const end = start + delta;
@@ -109,32 +113,32 @@ export const fetchLocalData = ({
 	};
 };
 
-export const withLocalData =
-	() =>
-	<P extends {[key: string]: any}>(
-		WrappedComponent: React.ComponentType<P>
-	) =>
-	(props: P) => {
-		const {delta, filterBy, orderIOMap, page, query, searchSelectedFn} =
-			props;
+export const withLocalData = function withLocalData() {
+	return <P extends {[key: string]: any}>(
+			WrappedComponent: React.ComponentType<P>
+		) =>
+		(props: P) => {
+			const {delta, filterBy, orderIOMap, page, query, searchSelectedFn} =
+				props;
 
-		const {selectedItems} = useSelectionContext();
+			const {selectedItems} = useSelectionContext();
 
-		return (
-			<WrappedComponent
-				{...props}
-				{...fetchLocalData({
-					delta,
-					filterBy,
-					items: selectedItems,
-					orderIOMap,
-					page,
-					query,
-					searchSelectedFn,
-				})}
-			/>
-		);
-	};
+			return (
+				<WrappedComponent
+					{...props}
+					{...fetchLocalData({
+						delta,
+						filterBy,
+						items: selectedItems,
+						orderIOMap,
+						page,
+						query,
+						searchSelectedFn,
+					})}
+				/>
+			);
+		};
+};
 
 interface IwithSelectionProps {
 	checkDisabled?: (item?: object) => boolean;
@@ -150,7 +154,7 @@ interface IwithSelectionProps {
  */
 export const withSelection: (
 	WrappedComponent: React.ComponentType<any>
-) => React.FC<IwithSelectionProps> = (WrappedComponent) => {
+) => React.FC<IwithSelectionProps> = function withSelection(WrappedComponent) {
 	const WithSelection: React.FC<IwithSelectionProps> = ({
 		checkDisabled = () => false,
 		items = [],
@@ -180,10 +184,11 @@ export const withSelection: (
 					payload: {item},
 					type: ACTION_TYPES.toggle,
 				}),
-			selectedItemsIOMap: selectedItems,
 			selectEntirePage: allChecked,
+
 			selectEntirePageIndeterminate:
 				!allChecked && !selectedItems.isEmpty(),
+			selectedItemsIOMap: selectedItems,
 			showCheckbox,
 		};
 
@@ -204,7 +209,7 @@ export const withSelection: (
 	return WithSelection;
 };
 
-export const ViewSelectedToggle = ({
+export const ViewSelectedToggle = function ViewSelectedToggle({
 	onClick,
 	selectedItemsCount,
 	showSelected,
@@ -212,23 +217,25 @@ export const ViewSelectedToggle = ({
 	onClick: () => void;
 	selectedItemsCount: number;
 	showSelected: boolean;
-}) => (
-	<ClayButton
-		className="button-root"
-		data-testid="view-selected"
-		displayType="unstyled"
-		onClick={onClick}
-		small
-	>
-		<b>
-			{showSelected
-				? Liferay.Language.get('return-to-list')
-				: sub(Liferay.Language.get('view-selected-x'), [
-						selectedItemsCount,
-					])}
-		</b>
-	</ClayButton>
-);
+}) {
+	return (
+		<ClayButton
+			className="button-root"
+			data-testid="view-selected"
+			displayType="unstyled"
+			onClick={onClick}
+			small
+		>
+			<b>
+				{showSelected
+					? Liferay.Language.get('return-to-list')
+					: sub(Liferay.Language.get('view-selected-x'), [
+							selectedItemsCount,
+						])}
+			</b>
+		</ClayButton>
+	);
+};
 
 interface ICrossPageSelectProps extends IPagination {
 	children: (val: any) => React.ReactElement;
@@ -271,6 +278,7 @@ const CrossPageSelect: React.FC<ICrossPageSelectProps> = ({
 	const {selectedItems, selectionDispatch} = useSelectionContext();
 	const [showSelected, setShowSelected] = useState(false);
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(() => {
 		if (selectedItems.isEmpty() && showSelected) {
 			setShowSelected(false);

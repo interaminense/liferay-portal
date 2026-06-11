@@ -41,7 +41,7 @@ if (FARO_ENV === FaroEnv.Local || FARO_ENV === FaroEnv.Staging) {
 }
 
 const getRetentionLabel = (milliseconds: number): string => {
-	if (milliseconds < parseInt(ONE_MONTH)) {
+	if (milliseconds < parseInt(ONE_MONTH, 10)) {
 		return sub(Liferay.Language.get('x-days'), [
 			convertMillisecondsToDays(milliseconds),
 		]) as string;
@@ -80,7 +80,11 @@ interface IOverviewProps {
 	open: (modalType: string, options: object) => void;
 }
 
-export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
+export const Overview = function Overview({
+	close,
+	groupId,
+	open,
+}: IOverviewProps) {
 	const [updatePreference] = useMutation(PreferenceMutation);
 
 	const {data} = useQuery(PreferenceQuery, {
@@ -90,8 +94,8 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 	const currentUser = useCurrentUser();
 
 	const handleDateRetentionPeriodChange = (value: React.Key) => {
-		const curVal = parseInt(data.preference.value);
-		const newVal = parseInt(String(value));
+		const curVal = parseInt(data.preference.value, 10);
+		const newVal = parseInt(String(value), 10);
 
 		const updateDateRetentionPeriod = () =>
 			updatePreference({
@@ -234,7 +238,7 @@ export const Overview: React.FC<IOverviewProps> = ({close, groupId, open}) => {
 											{(item) => (
 												<Option key={item}>
 													{getRetentionLabel(
-														parseInt(item)
+														parseInt(item, 10)
 													)}
 												</Option>
 											)}

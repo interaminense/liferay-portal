@@ -6,8 +6,7 @@
 import ClayTable from '@clayui/table';
 import getCN from 'classnames';
 import {noop} from 'lodash';
-import React, {useState} from 'react';
-import {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as API from 'shared/api';
 import Modal from 'shared/components/modal';
 import {sub} from 'shared/util/lang';

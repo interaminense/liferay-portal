@@ -18,9 +18,9 @@ interface IFilterProps {
 type Item = {
 	category: string;
 	checked?: boolean;
-	items: Item[] | null;
 	hasSearch: boolean;
 	inputType: string;
+	items: Item[] | null;
 	label: string;
 	value: string;
 };
@@ -39,15 +39,27 @@ const Filter: React.FC<IFilterProps> = ({
 	const _elementRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
+
+		// handleDocClick is declared below; moving it up would cross these side-effecting useEffect calls
+
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		document.addEventListener('click', handleDocClick);
 
 		return () => {
+
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define
 			document.removeEventListener('click', handleDocClick);
 		};
 	}, []);
 
 	useEffect(() => {
+
+		// getCheckedItems is declared below; moving it up would cross this side-effecting useEffect
+
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		setItems(getCheckedItems(initialItems));
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialItems]);
 
 	const getCheckedItems = (parentItems: Item[]): Item[] =>
@@ -70,6 +82,12 @@ const Filter: React.FC<IFilterProps> = ({
 
 			return {...item, items: childItems};
 		});
+
+	const handleUpdateFilters = (selectedItems: SelectedItems): void => {
+		onChange(selectedItems);
+
+		setSelectedItems(selectedItems);
+	};
 
 	const updateRadioItems = ({category, label}: Item): void => {
 		handleUpdateFilters({...selectedItems, [category]: [label]});
@@ -95,10 +113,10 @@ const Filter: React.FC<IFilterProps> = ({
 	}: {
 		dropdownItem: Item;
 	}): void => {
-		if (dropdownItem.inputType == 'radio') {
+		if (dropdownItem.inputType === 'radio') {
 			updateRadioItems(dropdownItem);
 		}
-		else if (dropdownItem.inputType == 'checkbox') {
+		else if (dropdownItem.inputType === 'checkbox') {
 			updateCheckboxItems(dropdownItem);
 		}
 	};
@@ -128,12 +146,6 @@ const Filter: React.FC<IFilterProps> = ({
 		}
 
 		setShowDropdown(false);
-	};
-
-	const handleUpdateFilters = (selectedItems: SelectedItems): void => {
-		onChange(selectedItems);
-
-		setSelectedItems(selectedItems);
 	};
 
 	return (

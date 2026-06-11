@@ -40,6 +40,73 @@ interface IAssignedPropertiesTableProps {
 	updateDataSourceFn: (params: {[key: string]: any}) => Promise<any>;
 }
 
+const ToggleRenderer = ({
+	addAlert,
+	close,
+	data,
+	disabled,
+	onChange,
+	open,
+}: {
+	addAlert: (alert: {alertType: string; message: string}) => void;
+	close: (...args: any[]) => void;
+	data: IChannel;
+	disabled: boolean;
+	onChange: (channel: IChannel) => void;
+	open: (...args: any[]) => void;
+}) => {
+	const [state, setState] = useState(data.enabled);
+
+	const handleChange = (newState: boolean) => {
+		setState(newState);
+
+		onChange({
+			channelId: data.channelId,
+			enabled: newState,
+		});
+	};
+
+	return (
+		<td className="text-center">
+			<ClayToggle
+				defaultChecked={state}
+				disabled={disabled}
+				onToggle={() => {
+					if (state) {
+						open(modalTypes.CONFIRMATION_MODAL, {
+							cancelMessage: Liferay.Language.get('cancel'),
+							message: Liferay.Language.get(
+								'this-action-will-stop-syncing-new-data-from-your-liferay-dxp-instance-to-this-property.-data-that-was-already-synced-will-remain-available.-are-you-sure-you-want-to-continue'
+							),
+							modalVariant: 'modal-warning',
+							onClose: close,
+							onSubmit: () => {
+								handleChange(!state);
+
+								addAlert({
+									alertType: Alert.Types.Success,
+									message: Liferay.Language.get(
+										'properties-settings-have-been-saved'
+									),
+								});
+							},
+							submitButtonDisplay: 'warning',
+							submitMessage: Liferay.Language.get('stop-syncing'),
+							title: Liferay.Language.get('stop-syncing-data'),
+							titleIcon: 'warning-full',
+						});
+					}
+					else {
+						handleChange(!state);
+					}
+				}}
+				sizing="sm"
+				toggled={state}
+			/>
+		</td>
+	);
+};
+
 const AssignedPropertiesTable = ({
 	addAlert,
 	close,
@@ -360,73 +427,6 @@ const AssignedPropertiesTable = ({
 				/>
 			)}
 		</>
-	);
-};
-
-const ToggleRenderer = ({
-	addAlert,
-	close,
-	data,
-	disabled,
-	onChange,
-	open,
-}: {
-	addAlert: (alert: {alertType: string; message: string}) => void;
-	close: (...args: any[]) => void;
-	data: IChannel;
-	disabled: boolean;
-	onChange: (channel: IChannel) => void;
-	open: (...args: any[]) => void;
-}) => {
-	const [state, setState] = useState(data.enabled);
-
-	const handleChange = (newState: boolean) => {
-		setState(newState);
-
-		onChange({
-			channelId: data.channelId,
-			enabled: newState,
-		});
-	};
-
-	return (
-		<td className="text-center">
-			<ClayToggle
-				defaultChecked={state}
-				disabled={disabled}
-				onToggle={() => {
-					if (state) {
-						open(modalTypes.CONFIRMATION_MODAL, {
-							cancelMessage: Liferay.Language.get('cancel'),
-							message: Liferay.Language.get(
-								'this-action-will-stop-syncing-new-data-from-your-liferay-dxp-instance-to-this-property.-data-that-was-already-synced-will-remain-available.-are-you-sure-you-want-to-continue'
-							),
-							modalVariant: 'modal-warning',
-							onClose: close,
-							onSubmit: () => {
-								handleChange(!state);
-
-								addAlert({
-									alertType: Alert.Types.Success,
-									message: Liferay.Language.get(
-										'properties-settings-have-been-saved'
-									),
-								});
-							},
-							submitButtonDisplay: 'warning',
-							submitMessage: Liferay.Language.get('stop-syncing'),
-							title: Liferay.Language.get('stop-syncing-data'),
-							titleIcon: 'warning-full',
-						});
-					}
-					else {
-						handleChange(!state);
-					}
-				}}
-				sizing="sm"
-				toggled={state}
-			/>
-		</td>
 	);
 };
 

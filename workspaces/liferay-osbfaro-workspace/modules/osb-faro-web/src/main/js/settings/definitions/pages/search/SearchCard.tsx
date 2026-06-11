@@ -68,13 +68,13 @@ const renderAddButton = (
 const removeSpecialCharacters = (originalValue: string): string =>
 	originalValue.split('=')[0].replace(/[^\w\s]/gi, '');
 
-export const SearchCard: React.FC<ISearchCardProps> = ({
+export const SearchCard = function SearchCard({
 	addAlert,
 	close,
 	groupId,
 	history,
 	open,
-}) => {
+}: ISearchCardProps) {
 	const currentUser = useCurrentUser();
 	const {
 		data: searchQueryStringsData,

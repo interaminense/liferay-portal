@@ -15,8 +15,8 @@ export interface EventAttributeValuesVariables {
 	eventAttributeDefinitionId: string;
 	eventDefinitionId: string;
 	keywords: string;
-	start: number;
 	size: number;
+	start: number;
 }
 
 export default gql`

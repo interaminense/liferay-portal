@@ -205,8 +205,8 @@ export interface IDownloadReport {
 	children?: any;
 	dateRangeDescription?: string;
 	disabled: boolean;
-	label?: string;
 	infoMessage?: string;
+	label?: string;
 	showDateRange?: boolean;
 	subtitle?: string;
 	title: string;
@@ -217,10 +217,10 @@ type ContainerList = {
 	[key in ReportContainer]: TransformedContainer;
 };
 
-export const formattedContainers = (
+export const formattedContainers = function formattedContainers(
 	reportContainers: ReportContainer[]
-): ContainerList =>
-	reportContainers.reduce((acc, id) => {
+): ContainerList {
+	return reportContainers.reduce((acc, id) => {
 		acc[id] = {
 			...CONTAINERS[id],
 			checked: true,
@@ -229,43 +229,50 @@ export const formattedContainers = (
 
 		return acc;
 	}, {} as ContainerList);
+};
 
 let _spriteSVG: Element | null = null;
 
-export const resetSpriteCache = () => {
+export const resetSpriteCache = function resetSpriteCache() {
 	_spriteSVG = null;
 };
 
-export const fetchSprite = async (): Promise<Element | null> => {
-	if (_spriteSVG) {
+export const fetchSprite =
+	async function fetchSprite(): Promise<Element | null> {
+		if (_spriteSVG) {
+			return _spriteSVG;
+		}
+
+		const useEl = document.querySelector('svg use');
+
+		if (!useEl) {
+			return null;
+		}
+
+		const href =
+			useEl.getAttribute('href') ||
+			useEl.getAttribute('xlink:href') ||
+			'';
+
+		const spriteUrl = href.split('#')[0];
+
+		if (!spriteUrl) {
+			return null;
+		}
+
+		const res = await fetch(spriteUrl);
+		const text = await res.text();
+		const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
+
+		_spriteSVG = doc.documentElement;
+
 		return _spriteSVG;
-	}
+	};
 
-	const useEl = document.querySelector('svg use');
-
-	if (!useEl) {
-		return null;
-	}
-
-	const href =
-		useEl.getAttribute('href') || useEl.getAttribute('xlink:href') || '';
-
-	const spriteUrl = href.split('#')[0];
-
-	if (!spriteUrl) {
-		return null;
-	}
-
-	const res = await fetch(spriteUrl);
-	const text = await res.text();
-	const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
-
-	_spriteSVG = doc.documentElement;
-
-	return _spriteSVG;
-};
-
-export const inlineSVGIcons = (clonedDoc: Document, sprite: Element) => {
+export const inlineSVGIcons = function inlineSVGIcons(
+	clonedDoc: Document,
+	sprite: Element
+) {
 	clonedDoc.querySelectorAll('svg use').forEach((useEl) => {
 		const href =
 			useEl.getAttribute('href') ||
@@ -330,6 +337,27 @@ const getContainers = async (
 	});
 
 	return Promise.all(promises).then(() => containerArr);
+};
+
+export const Checkbox = function Checkbox({
+	label,
+	onChange,
+}: {
+	label: string;
+	onChange: (val: boolean) => void;
+}) {
+	const [checked, setChecked] = useState(true);
+
+	return (
+		<ClayCheckbox
+			checked={checked}
+			label={label}
+			onChange={() => {
+				setChecked(!checked);
+				onChange(!checked);
+			}}
+		/>
+	);
 };
 
 const DownloadPDFReport: React.FC<IDownloadReport> = ({
@@ -522,27 +550,6 @@ const DownloadPDFReport: React.FC<IDownloadReport> = ({
 				</DownloadReportModal>
 			)}
 		</div>
-	);
-};
-
-export const Checkbox = ({
-	label,
-	onChange,
-}: {
-	label: string;
-	onChange: (val: boolean) => void;
-}) => {
-	const [checked, setChecked] = useState(true);
-
-	return (
-		<ClayCheckbox
-			checked={checked}
-			label={label}
-			onChange={() => {
-				setChecked(!checked);
-				onChange(!checked);
-			}}
-		/>
 	);
 };
 

@@ -26,14 +26,14 @@ type QueryPaginationParams = {
 	initialQuery?: string;
 };
 
-export const useQueryPagination = ({
+export const useQueryPagination = function useQueryPagination({
 	filterFields,
 	initialDelta = defaultDelta,
 	initialFilterBy = defaultFilterBy,
 	initialOrderIOMap,
 	initialPage = defaultPage,
 	initialQuery = defaultQuery,
-}: QueryPaginationParams): Pagination => {
+}: QueryPaginationParams): Pagination {
 	const {
 		delta = initialDelta,
 		field,
@@ -75,10 +75,10 @@ export const useQueryPagination = ({
 	}
 
 	return {
-		delta: parseInt(delta as string),
+		delta: parseInt(delta as string, 10),
 		filterBy,
 		orderIOMap,
-		page: parseInt(page as string),
+		page: parseInt(page as string, 10),
 		query: query as string,
 	};
 };

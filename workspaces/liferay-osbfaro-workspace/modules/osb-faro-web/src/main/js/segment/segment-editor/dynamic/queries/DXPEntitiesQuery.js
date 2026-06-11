@@ -7,14 +7,7 @@ import {gql} from '@apollo/client';
 
 import {EntityType} from '../context/referencedObjects';
 
-/**
- * DXP Entity List Query
- * @description Create a GraphQL query
- * @param {string} queryName
- * @param {string} metricName
- * @returns GraphQL query
- */
-export default (entityName) => {
+const DXPEntitiesQuery = function DXPEntitiesQuery(entityName) {
 	if ([EntityType.Teams, EntityType.Groups].includes(entityName)) {
 		return gql`
 			query DXPEntitiesList(
@@ -67,3 +60,12 @@ export default (entityName) => {
 		}
 	`;
 };
+
+/**
+ * DXP Entity List Query
+ * @description Create a GraphQL query
+ * @param {string} queryName
+ * @param {string} metricName
+ * @returns GraphQL query
+ */
+export default DXPEntitiesQuery;

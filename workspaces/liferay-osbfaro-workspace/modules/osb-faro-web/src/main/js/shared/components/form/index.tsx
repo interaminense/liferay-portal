@@ -62,8 +62,10 @@ const FormGroupItem: React.FC<IFormGroupItemProps> = ({
  * Wrap a form component with the Formik Field component.
  * @param {Component} FormComponent
  */
-export const withField = (FormComponent: React.ComponentType<any>) =>
-	React.forwardRef<
+export const withField = function withField(
+	FormComponent: React.ComponentType<any>
+) {
+	return React.forwardRef<
 		typeof FormComponent,
 		React.ComponentProps<typeof FormComponent>
 	>(({name, ...otherParams}, ref) => {
@@ -78,6 +80,7 @@ export const withField = (FormComponent: React.ComponentType<any>) =>
 			/>
 		);
 	});
+};
 
 export default Object.assign(Formik, {
 	AutocompleteInput: withField(AutocompleteInput),

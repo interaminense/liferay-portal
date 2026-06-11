@@ -12,8 +12,8 @@ import {isBlank} from 'shared/util/util';
 interface IMemberCellProps {
 	className?: string;
 	data: {
-		name: string;
 		id: string;
+		name: string;
 		properties: {
 			email?: string;
 			emailAddress?: string;

@@ -40,11 +40,15 @@ import URLConstants from 'shared/util/url-constants';
 
 const TIMEOUT_INTERVAL = 5000;
 
+// Order is user-facing (rendered via Object.keys); keep newest first.
+
 const DXP_VERSIONS: Record<string, {label: string; url: URLConstants}> = {
 	'dxp-2024-q-1-1': {
 		label: 'DXP 2024.Q1.1 Quarterly Release',
 		url: URLConstants.DownloadDXP2024Q11,
 	},
+
+	// eslint-disable-next-line sort-keys -- newest-first is the rendered order
 	'dxp-73-u30': {
 		label: 'DXP Version 7.3 U30 + and above with hotfix',
 		url: URLConstants.DownloadDXP73U30,
@@ -65,9 +69,9 @@ const DATA_SOURCE_STATUSES = {
 interface IConnectDXPProps {
 	dxpConnected: boolean;
 	groupId: string;
-	onboarding?: boolean;
 	onClose: () => void;
 	onNext?: (increment?: number) => void;
+	onboarding?: boolean;
 }
 
 interface IConnectDXPWrapperProps {
@@ -90,194 +94,6 @@ interface IConnectDXPWrapperProps {
 interface ITokenInputProps {
 	token: string;
 }
-
-const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
-	dataSourceId,
-	dxpConnected,
-	fetchDataSource,
-	groupId,
-	history,
-	onClose,
-	onDxpConnected,
-	onNext,
-	onboarding,
-}) => {
-	const {channelDispatch} = useChannelContext();
-	const [token, setToken] = useState<string>('');
-
-	const [getDataSources, {data}] = useLazyQuery<DataSourceData>(
-		DataSourceQuery,
-		{
-			fetchPolicy: 'network-only',
-			onCompleted: () => {
-				onDxpConnected(true);
-			},
-			variables: {
-				size: 1,
-				sort: {
-					column: CREATE_DATE,
-					type: OrderByDirections.Descending,
-				},
-				type: DataSourceTypes.Liferay,
-			},
-		}
-	);
-
-	let _tokenRequest: ReturnType<typeof setTimeout> | Promise<any> | undefined;
-
-	const getNextToken: (prevToken?: string) => Promise<any> = (prevToken) =>
-		API.dataSource
-			.fetchToken(groupId, dataSourceId)
-			.then((nextToken) => {
-				if (!prevToken || prevToken === nextToken) {
-					_tokenRequest = setTimeout(
-						() => getNextToken(nextToken),
-						TIMEOUT_INTERVAL
-					);
-				}
-				else {
-					if (onboarding) {
-						onDxpConnected(true);
-
-						updateChannels();
-
-						// if it's an upgrade from oauth to token, we need to fetch the DataSource
-
-					}
-					else if (dataSourceId) {
-						fetchDataSource({groupId, id: dataSourceId});
-					}
-
-					getDataSources();
-				}
-
-				return nextToken;
-			})
-			.catch((err) => {
-				if (!err.IS_CANCELLATION_ERROR) {
-					_tokenRequest = setTimeout(
-						() => getNextToken(prevToken),
-						TIMEOUT_INTERVAL
-					);
-				}
-
-				return prevToken;
-			});
-
-	const updateChannels = () => {
-		API.channels.fetchAll({groupId}).then(({items}) => {
-			const channelId = get(items, [0, 'id']);
-
-			history.push(toRoute(Routes.SITES, {channelId, groupId}));
-
-			channelDispatch?.({
-				payload: getDefaultChannel(channelId, items),
-				type: ActionType.setSelectedChannel,
-			});
-
-			channelDispatch?.({
-				payload: items,
-				type: ActionType.setChannels,
-			});
-		});
-	};
-
-	useEffect(() => {
-		_tokenRequest = getNextToken().then(setToken);
-
-		return () => {
-			clearTimeout(_tokenRequest as ReturnType<typeof setTimeout>);
-		};
-	}, []);
-
-	const getNavHref = () => {
-		const id = get(data, ['dataSources', 0, 'id'], null);
-
-		if (id) {
-			return toRoute(Routes.SETTINGS_DATA_SOURCE, {groupId, id});
-		}
-
-		return toRoute(Routes.SETTINGS_DATA_SOURCE_LIST, {groupId});
-	};
-
-	return (
-		<>
-			<Modal.Header onClose={onClose} />
-
-			<Modal.Body>
-				<div className="analytics-to-dxp-container">
-					<ClayIcon
-						className="icon-root icon-size-xl"
-						symbol="dxp_icon"
-					/>
-
-					<ClayIcon
-						className={getCN('arrows icon-root icon-size-lg', {
-							connected: dxpConnected,
-						})}
-						symbol="ac_horizontal_arrows"
-					/>
-
-					<ClayIcon
-						className="icon-root icon-size-xl"
-						symbol={dxpConnected ? 'ac_logo' : 'ac_logo_grayscale'}
-					/>
-				</div>
-
-				<div className="mb-4 text-center">
-					<Text size={10} weight="bold">
-						{dxpConnected
-							? Liferay.Language.get(
-									'your-dxp-instance-is-connected-to-analytics-cloud'
-								)
-							: Liferay.Language.get(
-									'connect-your-dxp-analytics'
-								)}
-					</Text>
-				</div>
-
-				{!dxpConnected && (
-					<>
-						<TokenInput token={token} />
-
-						<FixPackSelect />
-					</>
-				)}
-
-				{dxpConnected && <DxpSyncTable />}
-			</Modal.Body>
-
-			<Modal.Footer>
-				<div>
-					{!(dxpConnected && onboarding) && (
-						<ClayButton
-							className="button-root"
-							disabled={dxpConnected}
-							displayType="secondary"
-							onClick={onboarding ? () => onNext?.() : onClose}
-						>
-							{onboarding
-								? Liferay.Language.get('skip')
-								: Liferay.Language.get('cancel')}
-						</ClayButton>
-					)}
-
-					<ClayLink
-						button
-						className="button-root ml-2"
-						displayType="primary"
-						href={getNavHref()}
-						onClick={() => (onboarding ? onNext?.() : onClose())}
-					>
-						{onboarding
-							? Liferay.Language.get('next')
-							: Liferay.Language.get('done')}
-					</ClayLink>
-				</div>
-			</Modal.Footer>
-		</>
-	);
-};
 
 const DxpSyncTable: FC<React.HTMLAttributes<HTMLElement>> = () => {
 	const [dataSource, setDataSources] = useState<DataSource>({
@@ -509,6 +325,196 @@ const TokenInput: FC<ITokenInputProps> = ({token}) => {
 					</Input.Inset>
 				</Input.GroupItem>
 			</Input.Group>
+		</>
+	);
+};
+
+const ConnectDXP: React.FC<IConnectDXPWrapperProps & IConnectDXPProps> = ({
+	dataSourceId,
+	dxpConnected,
+	fetchDataSource,
+	groupId,
+	history,
+	onClose,
+	onDxpConnected,
+	onNext,
+	onboarding,
+}) => {
+	const {channelDispatch} = useChannelContext();
+	const [token, setToken] = useState<string>('');
+
+	const [getDataSources, {data}] = useLazyQuery<DataSourceData>(
+		DataSourceQuery,
+		{
+			fetchPolicy: 'network-only',
+			onCompleted: () => {
+				onDxpConnected(true);
+			},
+			variables: {
+				size: 1,
+				sort: {
+					column: CREATE_DATE,
+					type: OrderByDirections.Descending,
+				},
+				type: DataSourceTypes.Liferay,
+			},
+		}
+	);
+
+	let _tokenRequest: ReturnType<typeof setTimeout> | Promise<any> | undefined;
+
+	const updateChannels = () => {
+		return API.channels.fetchAll({groupId}).then(({items}) => {
+			const channelId = get(items, [0, 'id']);
+
+			history.push(toRoute(Routes.SITES, {channelId, groupId}));
+
+			channelDispatch?.({
+				payload: getDefaultChannel(channelId, items),
+				type: ActionType.setSelectedChannel,
+			});
+
+			channelDispatch?.({
+				payload: items,
+				type: ActionType.setChannels,
+			});
+		});
+	};
+
+	const getNextToken: (prevToken?: string) => Promise<any> = (prevToken) =>
+		API.dataSource
+			.fetchToken(groupId, dataSourceId)
+			.then((nextToken) => {
+				if (!prevToken || prevToken === nextToken) {
+					_tokenRequest = setTimeout(
+						() => getNextToken(nextToken),
+						TIMEOUT_INTERVAL
+					);
+				}
+				else {
+					if (onboarding) {
+						onDxpConnected(true);
+
+						updateChannels();
+
+						// if it's an upgrade from oauth to token, we need to fetch the DataSource
+
+					}
+					else if (dataSourceId) {
+						fetchDataSource({groupId, id: dataSourceId});
+					}
+
+					getDataSources();
+				}
+
+				return nextToken;
+			})
+			.catch((error) => {
+				if (!error.IS_CANCELLATION_ERROR) {
+					_tokenRequest = setTimeout(
+						() => getNextToken(prevToken),
+						TIMEOUT_INTERVAL
+					);
+				}
+
+				return prevToken;
+			});
+
+	useEffect(() => {
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		_tokenRequest = getNextToken().then(setToken);
+
+		return () => {
+			clearTimeout(_tokenRequest as ReturnType<typeof setTimeout>);
+		};
+	}, []);
+
+	const getNavHref = () => {
+		const id = get(data, ['dataSources', 0, 'id'], null);
+
+		if (id) {
+			return toRoute(Routes.SETTINGS_DATA_SOURCE, {groupId, id});
+		}
+
+		return toRoute(Routes.SETTINGS_DATA_SOURCE_LIST, {groupId});
+	};
+
+	return (
+		<>
+			<Modal.Header onClose={onClose} />
+
+			<Modal.Body>
+				<div className="analytics-to-dxp-container">
+					<ClayIcon
+						className="icon-root icon-size-xl"
+						symbol="dxp_icon"
+					/>
+
+					<ClayIcon
+						className={getCN('arrows icon-root icon-size-lg', {
+							connected: dxpConnected,
+						})}
+						symbol="ac_horizontal_arrows"
+					/>
+
+					<ClayIcon
+						className="icon-root icon-size-xl"
+						symbol={dxpConnected ? 'ac_logo' : 'ac_logo_grayscale'}
+					/>
+				</div>
+
+				<div className="mb-4 text-center">
+					<Text size={10} weight="bold">
+						{dxpConnected
+							? Liferay.Language.get(
+									'your-dxp-instance-is-connected-to-analytics-cloud'
+								)
+							: Liferay.Language.get(
+									'connect-your-dxp-analytics'
+								)}
+					</Text>
+				</div>
+
+				{!dxpConnected && (
+					<>
+						<TokenInput token={token} />
+
+						<FixPackSelect />
+					</>
+				)}
+
+				{dxpConnected && <DxpSyncTable />}
+			</Modal.Body>
+
+			<Modal.Footer>
+				<div>
+					{!(dxpConnected && onboarding) && (
+						<ClayButton
+							className="button-root"
+							disabled={dxpConnected}
+							displayType="secondary"
+							onClick={onboarding ? () => onNext?.() : onClose}
+						>
+							{onboarding
+								? Liferay.Language.get('skip')
+								: Liferay.Language.get('cancel')}
+						</ClayButton>
+					)}
+
+					<ClayLink
+						button
+						className="button-root ml-2"
+						displayType="primary"
+						href={getNavHref()}
+						onClick={() => (onboarding ? onNext?.() : onClose())}
+					>
+						{onboarding
+							? Liferay.Language.get('next')
+							: Liferay.Language.get('done')}
+					</ClayLink>
+				</div>
+			</Modal.Footer>
 		</>
 	);
 };

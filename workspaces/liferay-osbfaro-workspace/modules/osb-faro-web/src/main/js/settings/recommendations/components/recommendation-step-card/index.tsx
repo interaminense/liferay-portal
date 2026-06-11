@@ -14,8 +14,7 @@ import NavigationWarning from 'shared/components/NavigationWarning';
 import ProgressTimeline from 'shared/components/ProgressTimeline';
 import Form from 'shared/components/form';
 import {withHistory} from 'shared/hoc';
-import {Alert} from 'shared/types';
-import {Router} from 'shared/types';
+import {Alert, Router} from 'shared/types';
 import {
 	JobRunDataPeriods,
 	JobRunFrequencies,

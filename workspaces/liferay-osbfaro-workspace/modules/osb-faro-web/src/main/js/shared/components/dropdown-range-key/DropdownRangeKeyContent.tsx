@@ -21,9 +21,7 @@ import {Data, DropdownRangeKeyIProps} from './DropdownRangeKey';
 import {DropdownRangeKeyLegacy} from './DropdownRangeKeyLegacy';
 import {formatTimeRange, getFilteredItems, getSelectedItem} from './utils';
 
-export const DropdownRangeKeyContent: React.FC<
-	DropdownRangeKeyIProps & {data: Data}
-> = ({
+export const DropdownRangeKeyContent = function DropdownRangeKeyContent({
 	alignmentPosition = Align.BottomRight,
 	data,
 
@@ -32,14 +30,16 @@ export const DropdownRangeKeyContent: React.FC<
 	 * DropdownRangeKey to include the new values
 	 */
 	legacy = true,
+
 	onRangeSelectorChange,
 
 	/**
 	 * When legacy props is true, rangeKeys will be ignored.
 	 */
 	rangeKeys,
+
 	rangeSelectors,
-}) => {
+}: DropdownRangeKeyIProps & {data: Data}) {
 	const [active, setActive] = useState(false);
 	const [customDateRange, setCustomDateRange] = useState<MomentDateRange>({
 		end: rangeSelectors?.rangeEnd
@@ -94,6 +94,8 @@ export const DropdownRangeKeyContent: React.FC<
 		return () => {
 			unlisten();
 		};
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -109,6 +111,8 @@ export const DropdownRangeKeyContent: React.FC<
 
 			setActive(false);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [customDateRange]);
 
 	return (

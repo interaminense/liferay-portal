@@ -26,9 +26,9 @@ const {EQ, GT, LT} = RelationalOperators;
 
 const TIME_PERIOD_VALUES = TIME_PERIOD_OPTIONS.map(({value}) => value);
 
-export const getInitialConjunction = (
+export const getInitialConjunction = function getInitialConjunction(
 	conjunctionCriterion: Criterion
-): FunctionalOperators | RelationalOperators | 'since' | 'ever' => {
+): FunctionalOperators | RelationalOperators | 'since' | 'ever' {
 	const {operatorName, value} = conjunctionCriterion;
 
 	if (operatorName === GT && TIME_PERIOD_VALUES.includes(value)) {

@@ -8,10 +8,8 @@ import React, {useCallback} from 'react';
 import Card from 'shared/components/Card';
 import IntervalSelector from 'shared/components/IntervalSelector';
 import {DropdownRangeKey} from 'shared/components/dropdown-range-key/DropdownRangeKey';
-import {Interval} from 'shared/types';
-import {RangeSelectors} from 'shared/types';
-import {INTERVAL_KEY_MAP} from 'shared/util/time';
-import {isHourlyRangeKey} from 'shared/util/time';
+import {Interval, RangeSelectors} from 'shared/types';
+import {INTERVAL_KEY_MAP, isHourlyRangeKey} from 'shared/util/time';
 
 export interface BaseCardHeaderDefaultIProps
 	extends React.HTMLAttributes<HTMLElement> {
@@ -43,10 +41,14 @@ const BaseCardHeaderDefault: React.FC<BaseCardHeaderDefaultIProps> = ({
 		if (isHourlyRangeKey(newVal.rangeKey)) {
 			onChangeInterval(INTERVAL_KEY_MAP.day);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleChangeInterval = useCallback(
 		(newVal: any) => onChangeInterval && onChangeInterval(newVal),
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[]
 	);
 

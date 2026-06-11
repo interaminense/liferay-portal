@@ -5,8 +5,8 @@
 
 import {gql} from '@apollo/client';
 
-export default (metric) =>
-	gql(`
+const CustomAssetQuery = function CustomAssetQuery(metric) {
+	return gql(`
 		query Custom(
 			$assetId: String!
 			$channelId: String
@@ -52,3 +52,6 @@ export default (metric) =>
 				}
 			}
 		}`);
+};
+
+export default CustomAssetQuery;

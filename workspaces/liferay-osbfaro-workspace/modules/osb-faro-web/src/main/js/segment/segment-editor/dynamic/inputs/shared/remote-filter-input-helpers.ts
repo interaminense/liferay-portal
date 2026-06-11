@@ -64,12 +64,15 @@ export const DEFAULT_CONJUNCTION_CRITERION = {
 	value: TimeSpans.Last24Hours,
 } as Criterion & {touched: boolean; valid: boolean};
 
-export const isValidOccurrenceCount = (count: number | string): boolean =>
-	isValid(count) && Number(count) >= 0;
+export const isValidOccurrenceCount = function isValidOccurrenceCount(
+	count: number | string
+): boolean {
+	return isValid(count) && Number(count) >= 0;
+};
 
-export const getAssetTypeFromValue = (
+export const getAssetTypeFromValue = function getAssetTypeFromValue(
 	value: CustomValue | undefined
-): React.Key => {
+): React.Key {
 	if (!value) {
 		return 'any';
 	}
@@ -94,9 +97,9 @@ export const getAssetTypeFromValue = (
 	return 'any';
 };
 
-export const getEventTypeFromValue = (
+export const getEventTypeFromValue = function getEventTypeFromValue(
 	value: CustomValue | undefined
-): React.Key => {
+): React.Key {
 	if (!value) {
 		return 'all';
 	}
@@ -121,26 +124,27 @@ export const getEventTypeFromValue = (
 	return 'all';
 };
 
-export const getConjunctionCriterionFromValue = (
-	value: CustomValue | undefined
-): Criterion & {touched: boolean; valid: boolean} => {
-	if (!value) {
-		return DEFAULT_CONJUNCTION_CRITERION;
-	}
+export const getConjunctionCriterionFromValue =
+	function getConjunctionCriterionFromValue(
+		value: CustomValue | undefined
+	): Criterion & {touched: boolean; valid: boolean} {
+		if (!value) {
+			return DEFAULT_CONJUNCTION_CRITERION;
+		}
 
-	const dayIndex = getIndexFromPropertyName(value, 'day');
+		const dayIndex = getIndexFromPropertyName(value, 'day');
 
-	if (dayIndex < 0) {
-		return DEFAULT_CONJUNCTION_CRITERION;
-	}
+		if (dayIndex < 0) {
+			return DEFAULT_CONJUNCTION_CRITERION;
+		}
 
-	return (
-		(getFilterCriterionIMap(value, dayIndex)?.toJS() as Criterion & {
-			touched: boolean;
-			valid: boolean;
-		}) ?? DEFAULT_CONJUNCTION_CRITERION
-	);
-};
+		return (
+			(getFilterCriterionIMap(value, dayIndex)?.toJS() as Criterion & {
+				touched: boolean;
+				valid: boolean;
+			}) ?? DEFAULT_CONJUNCTION_CRITERION
+		);
+	};
 
 export interface RemoteFilterInputConfig {
 	idProperty: string;
@@ -203,10 +207,10 @@ export interface BuildRemoteFilterValueArgs {
 	occurrenceOperator: React.Key;
 }
 
-export const buildRemoteFilterValue = (
+export const buildRemoteFilterValue = function buildRemoteFilterValue(
 	args: BuildRemoteFilterValueArgs,
 	config: RemoteFilterInputConfig
-): CustomValue => {
+): CustomValue {
 	const {
 		assetType,
 		categories,

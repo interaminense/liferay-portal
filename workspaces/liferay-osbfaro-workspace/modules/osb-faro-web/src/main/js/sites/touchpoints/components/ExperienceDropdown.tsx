@@ -12,9 +12,9 @@ import {useRequest} from 'shared/hooks/useRequest';
 import {truncateText} from 'shared/util/util';
 
 interface IExperienceItem {
+	displayName?: string;
 	id: string | null;
 	name: string;
-	displayName?: string;
 }
 
 const ALL_EXPERIENCES_ITEM: IExperienceItem = {

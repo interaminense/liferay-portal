@@ -9,8 +9,7 @@ import React, {useEffect, useState} from 'react';
 import Card from 'shared/components/Card';
 import CodeSnippet from 'shared/components/CodeSnippet';
 import Label from 'shared/components/form/Label';
-import Table from 'shared/components/table';
-import {Column} from 'shared/components/table';
+import Table, {Column} from 'shared/components/table';
 import {attributeListColumns} from 'shared/util/table-columns';
 
 interface IEventDetailsCardProps {
@@ -56,6 +55,8 @@ const EventDetailsCard: React.FC<IEventDetailsCardProps> = ({
 			...attributesRepresentations,
 			codeLines[codeLines.length - 1],
 		]);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedAttributes]);
 
 	const addSelectedAttribute = (attribute: Attribute): void =>

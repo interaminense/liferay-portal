@@ -10,8 +10,8 @@ import {
 	AttributeOwnerTypes,
 	Breakdowns,
 	DataTypes,
+	IBreakdownProps,
 } from 'event-analysis/utils/types';
-import {IBreakdownProps} from 'event-analysis/utils/types';
 import React from 'react';
 
 import {

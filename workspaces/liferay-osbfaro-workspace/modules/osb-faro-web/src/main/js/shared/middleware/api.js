@@ -16,43 +16,47 @@ export function toAction(type, ...objs) {
 	return action;
 }
 
-export default () => (next) => (action) => {
-	const request = get(action, ['meta', CALL_API]);
+const Api = function Api() {
+	return (next) => (action) => {
+		const request = get(action, ['meta', CALL_API]);
 
-	if (isNil(request)) {
-		return next(action);
-	}
-
-	const {data, requestFn, types} = request;
-
-	const [requestType, successType, failureType] = types;
-
-	next(toAction(requestType, action));
-
-	const retVal = requestFn ? requestFn(data) : sendRequest(request);
-
-	return retVal.then(
-		(payload) => {
-			next(
-				toAction(successType, action, {
-					meta: {
-						...action.meta,
-						schema: request.schema,
-					},
-					payload,
-				})
-			);
-
-			return {payload};
-		},
-		(error) => {
-			next(
-				toAction(failureType, action, {
-					error: true,
-				})
-			);
-
-			throw error;
+		if (isNil(request)) {
+			return next(action);
 		}
-	);
+
+		const {data, requestFn, types} = request;
+
+		const [requestType, successType, failureType] = types;
+
+		next(toAction(requestType, action));
+
+		const retVal = requestFn ? requestFn(data) : sendRequest(request);
+
+		return retVal.then(
+			(payload) => {
+				next(
+					toAction(successType, action, {
+						meta: {
+							...action.meta,
+							schema: request.schema,
+						},
+						payload,
+					})
+				);
+
+				return {payload};
+			},
+			(error) => {
+				next(
+					toAction(failureType, action, {
+						error: true,
+					})
+				);
+
+				throw error;
+			}
+		);
+	};
 };
+
+export default Api;

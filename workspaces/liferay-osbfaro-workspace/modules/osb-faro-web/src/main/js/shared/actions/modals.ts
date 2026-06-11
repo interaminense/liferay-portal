@@ -10,19 +10,23 @@ const modalTypes = Modal.modalTypes;
 
 export {actionTypes, modalTypes};
 
-export const close = () => ({
-	type: actionTypes.CLOSE_MODAL,
-});
+export const close = function close() {
+	return {
+		type: actionTypes.CLOSE_MODAL,
+	};
+};
 
-export const closeAll = () => ({
-	type: actionTypes.CLOSE_ALL_MODALS,
-});
+export const closeAll = function closeAll() {
+	return {
+		type: actionTypes.CLOSE_ALL_MODALS,
+	};
+};
 
-export const open = (
+export const open = function open(
 	type: string,
 	props: {[key: string]: any} = {},
 	options: {closeOnBlur?: boolean} = {}
-) => {
+) {
 	const {closeOnBlur = true} = options;
 
 	return {

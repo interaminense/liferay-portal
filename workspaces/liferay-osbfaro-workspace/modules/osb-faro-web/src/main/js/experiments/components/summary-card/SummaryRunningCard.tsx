@@ -19,7 +19,10 @@ import {SummaryParagraph} from './SummaryParagraph';
 import {SummarySection} from './SummarySection';
 import {IExperiment} from './types';
 
-export const SummaryRunningCard: React.FC<{
+export const SummaryRunningCard = function SummaryRunningCard({
+	experiment,
+	timeZoneId,
+}: {
 	experiment: IExperiment & {
 		description?: string;
 		metrics: {
@@ -33,7 +36,7 @@ export const SummaryRunningCard: React.FC<{
 		type?: string;
 	};
 	timeZoneId: string;
-}> = ({experiment, timeZoneId}) => {
+}) {
 	const {
 		description,
 		goal,
@@ -60,7 +63,6 @@ export const SummaryRunningCard: React.FC<{
 				}
 				title={Liferay.Language.get('test-is-running')}
 			/>
-
 			<SummaryBaseCard.Body>
 				<div className="mt-4 w-100">
 					<SummaryParagraph
@@ -77,7 +79,7 @@ export const SummaryRunningCard: React.FC<{
 							/>
 
 							<SummarySection.ProgressBar
-								value={parseInt(toRounded(completion))}
+								value={parseInt(toRounded(completion), 10)}
 							/>
 						</SummarySection>
 

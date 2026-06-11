@@ -73,26 +73,7 @@ interface IDataSourceNameProps {
 	hrefFormatter: (params: {[key: string]: any}) => string;
 }
 
-export const DataSourceName: React.FC<IDataSourceNameProps> = ({
-	data,
-	hrefFormatter,
-}) => (
-	<td className="table-cell-expand">
-		<div className="table-title">
-			{disableRow(
-				data as {[key: string]: any; state: DataSourceStates}
-			) ? (
-				<span className="text-truncate">{data.name}</span>
-			) : (
-				<Link className="text-truncate" to={hrefFormatter(data)}>
-					{data.name}
-				</Link>
-			)}
-		</div>
-	</td>
-);
-
-export const StatusRenderer: React.FC<ICellProps> = ({data}) => {
+export const StatusRenderer = function StatusRenderer({data}: ICellProps) {
 	const dataSource = new DataSource(fromJS(data));
 
 	const {display, label} = getConnectorConfig(data.providerType)
@@ -111,8 +92,34 @@ export const StatusRenderer: React.FC<ICellProps> = ({data}) => {
 const dateFormatter = (date: string, timeZoneId: string): string =>
 	formatDateToTimeZone(date, 'll', timeZoneId);
 
-export const disableRow = ({state}: {state: DataSourceStates}): boolean =>
-	state === DataSourceStates.InProgressDeleting;
+export const disableRow = function disableRow({
+	state,
+}: {
+	state: DataSourceStates;
+}): boolean {
+	return state === DataSourceStates.InProgressDeleting;
+};
+
+export const DataSourceName = function DataSourceName({
+	data,
+	hrefFormatter,
+}: IDataSourceNameProps) {
+	return (
+		<td className="table-cell-expand">
+			<div className="table-title">
+				{disableRow(
+					data as {state: DataSourceStates; [key: string]: any}
+				) ? (
+					<span className="text-truncate">{data.name}</span>
+				) : (
+					<Link className="text-truncate" to={hrefFormatter(data)}>
+						{data.name}
+					</Link>
+				)}
+			</div>
+		</td>
+	);
+};
 
 const getAlertMessage = (
 	dataSource: {[key: string]: any},
@@ -231,6 +238,8 @@ const DataSourceList: React.FC<IDataSourceListProps> = ({className}) => {
 				},
 			]);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [invalidDataSourcesLoading]);
 
 	const {data, error, loading} = useRequest({

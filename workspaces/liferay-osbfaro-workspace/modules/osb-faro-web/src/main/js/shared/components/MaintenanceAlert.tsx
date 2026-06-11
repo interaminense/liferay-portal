@@ -87,14 +87,14 @@ export class MaintenanceAlert extends React.Component<IMaintenanceAlertProps> {
 	}
 }
 
-export const mapState = (
+export const mapState = function mapState(
 	store: any,
 	{
 		match: {
 			params: {groupId},
 		},
 	}: any
-) => {
+) {
 	const currentUserId = store.getIn(['currentUser', 'data']);
 
 	const project = store.getIn(['projects', groupId, 'data'], new Project());

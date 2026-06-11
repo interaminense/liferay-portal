@@ -20,13 +20,13 @@ interface ICurrentUsageProps {
 	percentageText: (percentage: number | string) => string;
 }
 
-export const CurrentUsage = ({
+export const CurrentUsage = function CurrentUsage({
 	count,
 	items,
 	legendText,
 	limit,
 	percentageText,
-}: ICurrentUsageProps) => {
+}: ICurrentUsageProps) {
 	const percentage = toRounded(
 		limit > 0 ? (count / limit >= 1 ? 100 : (count / limit) * 100) : 0
 	);

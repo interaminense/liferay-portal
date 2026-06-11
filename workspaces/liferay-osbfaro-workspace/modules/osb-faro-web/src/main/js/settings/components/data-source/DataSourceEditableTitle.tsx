@@ -37,6 +37,7 @@ const DataSourceEditableTitle = ({
 }: IDataSourceEditableTitleProps) => {
 	const cachedNameValuesRef = useRef(new Map());
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const handleUpdateName = useCallback(onUpdateName, [
 		groupId,
 		dataSource.id,

@@ -75,7 +75,7 @@ const Title = ({title, x, y}: {title: string; x: number; y: number}) => (
 	</text>
 );
 
-export const Node = ({
+export const Node = function Node({
 	emptyState,
 	height: initialHeight,
 	hovered,
@@ -87,7 +87,7 @@ export const Node = ({
 	width: initialWidth,
 	x: initialX,
 	y: initialY,
-}: any) => {
+}: any) {
 	const height = normalizeNumber(initialHeight);
 	const width = normalizeNumber(initialWidth);
 	const x = normalizeNumber(initialX);

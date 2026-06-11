@@ -24,8 +24,8 @@ interface IHeaderCellProps {
 	field: string;
 	headerLink?: boolean;
 	onSortOrderChange?: (orderParams: OrderParams) => void;
-	sortable?: boolean;
 	sortOrder: OrderByDirections;
+	sortable?: boolean;
 }
 
 const ButtonSort = ({

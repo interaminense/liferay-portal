@@ -14,9 +14,9 @@ interface ITrackedBehaviorsProps {
 	groupId: string;
 }
 
-export const TrackedBehaviors: React.FC<ITrackedBehaviorsProps> = ({
+export const TrackedBehaviors = function TrackedBehaviors({
 	groupId,
-}) => {
+}: ITrackedBehaviorsProps) {
 	const currentUser = useCurrentUser();
 
 	return (

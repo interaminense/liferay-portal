@@ -8,8 +8,6 @@ import DistributionBase, {
 	CONTEXT_OPTIONS,
 } from 'contacts/components/Distribution';
 import {get} from 'lodash';
-const Distribution = DistributionBase as React.ComponentType<any>;
-
 import React from 'react';
 import {ConnectedProps, connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
@@ -27,6 +25,8 @@ import {Sizes} from 'shared/util/constants';
 import {Routes, toRoute} from 'shared/util/router';
 import URLConstants from 'shared/util/url-constants';
 
+const Distribution = DistributionBase as React.ComponentType<any>;
+
 const connector = connect(null, {
 	fetchDistribution: fetchIndividualsDistribution,
 });
@@ -37,9 +37,10 @@ interface IIndividualsDistributionProps extends PropsFromRedux {
 	knownIndividualCount: number | null;
 }
 
-export const IndividualsDistribution: React.FC<
-	IIndividualsDistributionProps
-> = ({knownIndividualCount, ...otherProps}) => {
+export const IndividualsDistribution = function IndividualsDistribution({
+	knownIndividualCount,
+	...otherProps
+}: IIndividualsDistributionProps) {
 	const {groupId} = useParams();
 	const dataSourceStates = useDataSources();
 	const currentUser = useCurrentUser();

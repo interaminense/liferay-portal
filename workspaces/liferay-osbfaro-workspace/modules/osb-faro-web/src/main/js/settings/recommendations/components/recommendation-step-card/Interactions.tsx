@@ -12,12 +12,12 @@ import {JOB_RUN_DATA_PERIODS_LIST} from '../../utils/utils';
 
 interface IInteractionsProps {
 	includePreviousPeriod: boolean;
+	runFrequency: JobRunFrequencies;
 	setFieldValue: (
 		field: string,
 		value: any,
 		shouldValidate?: boolean
 	) => void;
-	runFrequency: JobRunFrequencies;
 }
 
 const Interactions: React.FC<IInteractionsProps> = ({
@@ -31,6 +31,8 @@ const Interactions: React.FC<IInteractionsProps> = ({
 		if (manualRunFequency && includePreviousPeriod) {
 			setFieldValue('includePreviousPeriod', false);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const interactionPeriodLabel = (

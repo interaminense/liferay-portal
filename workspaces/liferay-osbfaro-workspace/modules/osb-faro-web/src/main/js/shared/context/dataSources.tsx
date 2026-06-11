@@ -26,7 +26,7 @@ interface IDataSourcesContext extends IStatesRendererContextProps {
 
 const DataSourcesContext = createContext<IDataSourcesContext | null>(null);
 
-export const DataSourcesProvider = ({
+export const DataSourcesProvider = function DataSourcesProvider({
 	children,
 	groupId,
 	skip = false,
@@ -34,7 +34,7 @@ export const DataSourcesProvider = ({
 	children: React.ReactNode;
 	groupId: string;
 	skip?: boolean;
-}) => {
+}) {
 	const variables = useMemo(
 		() => ({
 			delta: 1,
@@ -75,7 +75,7 @@ export const DataSourcesProvider = ({
 	);
 };
 
-export const useDataSources = () => {
+export const useDataSources = function useDataSources() {
 	const context = useContext(DataSourcesContext);
 
 	if (!context) {

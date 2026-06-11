@@ -78,10 +78,10 @@ const formatDay = (dateKey: string, timeZoneId?: string): string =>
 const formatTime = (date: string, timeZoneId?: string): string =>
 	formatDateToTimeZone(date, 'h:mma', timeZoneId);
 
-export const formatSessionTimeRange = (
+export const formatSessionTimeRange = function formatSessionTimeRange(
 	{completeDate, createDate}: AccountUserSession,
 	timeZoneId?: string
-): string => {
+): string {
 	const start = formatTime(createDate, timeZoneId);
 
 	if (completeDate) {
@@ -93,10 +93,13 @@ export const formatSessionTimeRange = (
 	return `${start} - ${Liferay.Language.get('in-progress').toLowerCase()}`;
 };
 
-export const isEmptyValue = (value: unknown): boolean =>
-	value === null || value === undefined || value === '';
+export const isEmptyValue = function isEmptyValue(value: unknown): boolean {
+	return value === null || value === undefined || value === '';
+};
 
-export const formatAttributeValue = (value: unknown): string => {
+export const formatAttributeValue = function formatAttributeValue(
+	value: unknown
+): string {
 	if (typeof value === 'string') {
 		return /^[\w-]+$/.test(value) ? value : `"${value}"`;
 	}
@@ -104,10 +107,10 @@ export const formatAttributeValue = (value: unknown): string => {
 	return String(value);
 };
 
-export const groupByDate = (
+export const groupByDate = function groupByDate(
 	sessions: AccountUserSession[],
 	timeZoneId?: string
-): DateGroup[] => {
+): DateGroup[] {
 	const byDate = new Map<string, AccountUserSession[]>();
 
 	sessions.forEach((session) => {
@@ -160,6 +163,216 @@ export const groupByDate = (
 				userGroups,
 			};
 		});
+};
+
+interface ISessionRowProps {
+	session: AccountUserSession;
+	timeZoneId?: string;
+}
+
+interface IEventRowProps {
+	event: AccountUserSessionEvent;
+	timeZoneId?: string;
+}
+
+interface ISessionAttributesProps {
+	session: AccountUserSession;
+}
+
+interface IEventAttributesProps {
+	event: AccountUserSessionEvent;
+}
+
+interface IAttributesListProps {
+	items: {key: string; value: unknown}[];
+}
+
+const AttributesList: React.FC<IAttributesListProps> = ({items}) => (
+	<dl className="mb-0">
+		{items.map(({key, value}) => (
+			<div className="d-flex py-1" key={key}>
+				<dt
+					className="font-weight-normal mb-0 text-secondary"
+					style={{minWidth: '11rem'}}
+				>
+					{key}
+				</dt>
+
+				<dd className="mb-0 text-break text-secondary">
+					{formatAttributeValue(value)}
+				</dd>
+			</div>
+		))}
+	</dl>
+);
+
+const SessionAttributes: React.FC<ISessionAttributesProps> = ({session}) => {
+	const items = SESSION_ATTRIBUTE_KEYS.map((key) => ({
+		key,
+		value: session[key],
+	})).filter(({value}) => !isEmptyValue(value));
+
+	if (!items.length) {
+		return null;
+	}
+
+	return (
+		<div className="timeline-attributes">
+			<div className="font-weight-semi-bold mb-2">
+				{Liferay.Language.get('session-attributes')}
+			</div>
+
+			<AttributesList items={items} />
+		</div>
+	);
+};
+
+const EventAttributes: React.FC<IEventAttributesProps> = ({event}) => {
+	const items = EVENT_ATTRIBUTE_KEYS.map((key) => ({
+		key,
+		value: event[key],
+	})).filter(({value}) => !isEmptyValue(value));
+
+	if (!items.length) {
+		return null;
+	}
+
+	return (
+		<div className="timeline-event-attributes">
+			<div className="font-weight-semi-bold mb-2 text-secondary">
+				{Liferay.Language.get('event-attributes')}
+			</div>
+
+			<AttributesList items={items} />
+		</div>
+	);
+};
+
+const EventRow: React.FC<IEventRowProps> = ({event, timeZoneId}) => {
+	const [expanded, setExpanded] = useState(false);
+	const [hovered, setHovered] = useState(false);
+
+	return (
+		<li>
+			<div className="timeline-row">
+				<span className="timeline-event-dot" />
+
+				<div
+					className={`timeline-row-wrapper ${
+						expanded ? 'is-expanded' : ''
+					} ${hovered ? 'is-hovered' : ''}`}
+				>
+					<button
+						aria-expanded={expanded}
+						className="align-items-start btn btn-unstyled text-left timeline-row-button"
+						onClick={() => setExpanded((prev) => !prev)}
+						onMouseEnter={() => setHovered(true)}
+						onMouseLeave={() => setHovered(false)}
+						type="button"
+					>
+						<span
+							className="text-secondary"
+							style={{minWidth: '5rem'}}
+						>
+							{formatTime(event.createDate, timeZoneId)}
+						</span>
+
+						<div className="flex-grow-1 min-w-0">
+							<div className="font-weight-semi-bold text-dark">
+								{event.name}
+							</div>
+
+							<div className="font-weight-semi-bold text-secondary text-truncate">
+								{event.pageTitle || event.assetTitle}
+							</div>
+
+							{event.canonicalUrl && (
+								<div className="text-secondary text-truncate">
+									{event.canonicalUrl}
+								</div>
+							)}
+						</div>
+
+						<ClayIcon
+							className="ml-3 text-secondary"
+							symbol={expanded ? 'caret-top' : 'caret-bottom'}
+						/>
+					</button>
+
+					{expanded && <EventAttributes event={event} />}
+				</div>
+			</div>
+		</li>
+	);
+};
+
+const SessionRow: React.FC<ISessionRowProps> = ({session, timeZoneId}) => {
+	const [expanded, setExpanded] = useState(false);
+	const [hovered, setHovered] = useState(false);
+
+	const deviceIcon = session.deviceType
+		? DEVICE_ICONS[session.deviceType.toLowerCase()] ?? 'devices'
+		: null;
+
+	return (
+		<div>
+			<div className="timeline-row">
+				<span className="timeline-session-dot" />
+
+				<div
+					className={`timeline-row-wrapper ${
+						expanded ? 'is-expanded' : ''
+					} ${hovered ? 'is-hovered' : ''}`}
+				>
+					<button
+						aria-expanded={expanded}
+						className="align-items-center btn btn-unstyled text-left timeline-row-button"
+						onClick={() => setExpanded((prev) => !prev)}
+						onMouseEnter={() => setHovered(true)}
+						onMouseLeave={() => setHovered(false)}
+						type="button"
+					>
+						<Text weight="semi-bold">
+							{formatSessionTimeRange(session, timeZoneId)}
+						</Text>
+
+						<span className="align-items-center d-inline-flex ml-auto text-secondary">
+							<span
+								className="align-items-center d-inline-flex mr-3"
+								style={{fontSize: '1rem'}}
+							>
+								<ClayIcon className="mr-1" symbol="click" />
+
+								{session.events?.length ?? 0}
+							</span>
+
+							{deviceIcon && (
+								<ClayIcon
+									className="mr-3"
+									symbol={deviceIcon}
+								/>
+							)}
+
+							<ClayIcon
+								symbol={expanded ? 'caret-top' : 'caret-bottom'}
+							/>
+						</span>
+					</button>
+
+					{expanded && <SessionAttributes session={session} />}
+				</div>
+			</div>
+			<ul className="list-unstyled mb-0 mt-2">
+				{session.events?.map((event, index) => (
+					<EventRow
+						event={event}
+						key={`${event.createDate}-${index}`}
+						timeZoneId={timeZoneId}
+					/>
+				))}
+			</ul>
+		</div>
+	);
 };
 
 const ActivityStreamTimeline: React.FC<IActivityStreamTimelineProps> = ({
@@ -272,9 +485,9 @@ const ActivityStreamTimeline: React.FC<IActivityStreamTimelineProps> = ({
 										}`}
 									/>
 
-									{userSessions.map((session, idx) => (
+									{userSessions.map((session, index) => (
 										<SessionRow
-											key={`${session.createDate}-${idx}`}
+											key={`${session.createDate}-${index}`}
 											session={session}
 											timeZoneId={timeZoneId}
 										/>
@@ -285,7 +498,6 @@ const ActivityStreamTimeline: React.FC<IActivityStreamTimelineProps> = ({
 					)}
 				</section>
 			))}
-
 			<PaginationBar
 				className="mt-3"
 				onDeltaChange={onDeltaChange}
@@ -297,216 +509,5 @@ const ActivityStreamTimeline: React.FC<IActivityStreamTimelineProps> = ({
 		</div>
 	);
 };
-
-interface ISessionRowProps {
-	session: AccountUserSession;
-	timeZoneId?: string;
-}
-
-const SessionRow: React.FC<ISessionRowProps> = ({session, timeZoneId}) => {
-	const [expanded, setExpanded] = useState(false);
-	const [hovered, setHovered] = useState(false);
-
-	const deviceIcon = session.deviceType
-		? DEVICE_ICONS[session.deviceType.toLowerCase()] ?? 'devices'
-		: null;
-
-	return (
-		<div>
-			<div className="timeline-row">
-				<span className="timeline-session-dot" />
-
-				<div
-					className={`timeline-row-wrapper ${
-						expanded ? 'is-expanded' : ''
-					} ${hovered ? 'is-hovered' : ''}`}
-				>
-					<button
-						aria-expanded={expanded}
-						className="align-items-center btn btn-unstyled text-left timeline-row-button"
-						onClick={() => setExpanded((prev) => !prev)}
-						onMouseEnter={() => setHovered(true)}
-						onMouseLeave={() => setHovered(false)}
-						type="button"
-					>
-						<Text weight="semi-bold">
-							{formatSessionTimeRange(session, timeZoneId)}
-						</Text>
-
-						<span className="align-items-center d-inline-flex ml-auto text-secondary">
-							<span
-								className="align-items-center d-inline-flex mr-3"
-								style={{fontSize: '1rem'}}
-							>
-								<ClayIcon className="mr-1" symbol="click" />
-
-								{session.events?.length ?? 0}
-							</span>
-
-							{deviceIcon && (
-								<ClayIcon
-									className="mr-3"
-									symbol={deviceIcon}
-								/>
-							)}
-
-							<ClayIcon
-								symbol={expanded ? 'caret-top' : 'caret-bottom'}
-							/>
-						</span>
-					</button>
-
-					{expanded && <SessionAttributes session={session} />}
-				</div>
-			</div>
-
-			<ul className="list-unstyled mb-0 mt-2">
-				{session.events?.map((event, idx) => (
-					<EventRow
-						event={event}
-						key={`${event.createDate}-${idx}`}
-						timeZoneId={timeZoneId}
-					/>
-				))}
-			</ul>
-		</div>
-	);
-};
-
-interface IEventRowProps {
-	event: AccountUserSessionEvent;
-	timeZoneId?: string;
-}
-
-const EventRow: React.FC<IEventRowProps> = ({event, timeZoneId}) => {
-	const [expanded, setExpanded] = useState(false);
-	const [hovered, setHovered] = useState(false);
-
-	return (
-		<li>
-			<div className="timeline-row">
-				<span className="timeline-event-dot" />
-
-				<div
-					className={`timeline-row-wrapper ${
-						expanded ? 'is-expanded' : ''
-					} ${hovered ? 'is-hovered' : ''}`}
-				>
-					<button
-						aria-expanded={expanded}
-						className="align-items-start btn btn-unstyled text-left timeline-row-button"
-						onClick={() => setExpanded((prev) => !prev)}
-						onMouseEnter={() => setHovered(true)}
-						onMouseLeave={() => setHovered(false)}
-						type="button"
-					>
-						<span
-							className="text-secondary"
-							style={{minWidth: '5rem'}}
-						>
-							{formatTime(event.createDate, timeZoneId)}
-						</span>
-
-						<div className="flex-grow-1 min-w-0">
-							<div className="font-weight-semi-bold text-dark">
-								{event.name}
-							</div>
-
-							<div className="font-weight-semi-bold text-secondary text-truncate">
-								{event.pageTitle || event.assetTitle}
-							</div>
-
-							{event.canonicalUrl && (
-								<div className="text-secondary text-truncate">
-									{event.canonicalUrl}
-								</div>
-							)}
-						</div>
-
-						<ClayIcon
-							className="ml-3 text-secondary"
-							symbol={expanded ? 'caret-top' : 'caret-bottom'}
-						/>
-					</button>
-
-					{expanded && <EventAttributes event={event} />}
-				</div>
-			</div>
-		</li>
-	);
-};
-
-interface ISessionAttributesProps {
-	session: AccountUserSession;
-}
-
-const SessionAttributes: React.FC<ISessionAttributesProps> = ({session}) => {
-	const items = SESSION_ATTRIBUTE_KEYS.map((key) => ({
-		key,
-		value: session[key],
-	})).filter(({value}) => !isEmptyValue(value));
-
-	if (!items.length) {
-		return null;
-	}
-
-	return (
-		<div className="timeline-attributes">
-			<div className="font-weight-semi-bold mb-2">
-				{Liferay.Language.get('session-attributes')}
-			</div>
-
-			<AttributesList items={items} />
-		</div>
-	);
-};
-
-interface IEventAttributesProps {
-	event: AccountUserSessionEvent;
-}
-
-const EventAttributes: React.FC<IEventAttributesProps> = ({event}) => {
-	const items = EVENT_ATTRIBUTE_KEYS.map((key) => ({
-		key,
-		value: event[key],
-	})).filter(({value}) => !isEmptyValue(value));
-
-	if (!items.length) {
-		return null;
-	}
-
-	return (
-		<div className="timeline-event-attributes">
-			<div className="font-weight-semi-bold mb-2 text-secondary">
-				{Liferay.Language.get('event-attributes')}
-			</div>
-
-			<AttributesList items={items} />
-		</div>
-	);
-};
-
-interface IAttributesListProps {
-	items: {key: string; value: unknown}[];
-}
-
-const AttributesList: React.FC<IAttributesListProps> = ({items}) => (
-	<dl className="mb-0">
-		{items.map(({key, value}) => (
-			<div className="d-flex py-1" key={key}>
-				<dt
-					className="font-weight-normal mb-0 text-secondary"
-					style={{minWidth: '11rem'}}
-				>
-					{key}
-				</dt>
-
-				<dd className="mb-0 text-break text-secondary">
-					{formatAttributeValue(value)}
-				</dd>
-			</div>
-		))}
-	</dl>
-);
 
 export default ActivityStreamTimeline;

@@ -7,7 +7,7 @@ import React from 'react';
 import {sub} from 'shared/util/lang';
 import {toLocale} from 'shared/util/numbers';
 
-export const Tooltip: React.FC<any> = ({payload}) => {
+export const Tooltip = function Tooltip({payload}: any) {
 	if (!payload.length) {
 		return null;
 	}

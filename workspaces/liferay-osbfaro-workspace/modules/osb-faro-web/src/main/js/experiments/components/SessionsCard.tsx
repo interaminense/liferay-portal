@@ -147,13 +147,14 @@ const formatTotalSessionsData = (experiment: IExperimentWithHistogram) => {
 	});
 
 	return {
+		Tooltip: TotalSessionsTooltip,
+
 		data: {
 			controlLabel: Liferay.Language.get('total'),
 			data: chartData,
 			format: getAxisFormatter('number'),
 			intervals: control.sessionsHistogram.map(({key}) => key),
 		},
-		Tooltip: TotalSessionsTooltip,
 	};
 };
 
@@ -179,6 +180,8 @@ const formatPerVariantsData = (experiment: IExperimentWithHistogram) => {
 	});
 
 	return {
+		Tooltip: PerVariantTooltip,
+
 		data: {
 			controlLabel: control.dxpVariantName,
 			data: chartData,
@@ -186,7 +189,6 @@ const formatPerVariantsData = (experiment: IExperimentWithHistogram) => {
 			intervals: control.sessionsHistogram.map(({key}) => key),
 			variantLabel: variant.dxpVariantName,
 		},
-		Tooltip: PerVariantTooltip,
 	};
 };
 
@@ -201,11 +203,11 @@ const formatData = (
 	return formatPerVariantsData(experiment);
 };
 
-export const SessionsCard = ({
+export const SessionsCard = function SessionsCard({
 	experiment,
 }: {
 	experiment: IExperimentWithHistogram;
-}) => {
+}) {
 	const [sessionView, setSessionView] = useState<SessionView>(
 		SessionView.Total
 	);

@@ -29,7 +29,7 @@ interface IActiveShapeProps {
 	cx: number;
 	cy: number;
 	endAngle: number;
-	fill: number;
+	fill: string;
 	innerRadius: number;
 	outerRadius: number;
 	startAngle: number;
@@ -104,8 +104,8 @@ const BarLabel: React.FC<IBarLabelProps> = ({
 };
 
 interface ITooltipContentProps {
-	isEmpty: boolean;
 	active: boolean;
+	isEmpty: boolean;
 	payload: {
 		count: number;
 		label: string;
@@ -161,7 +161,7 @@ const AudienceReportDonut: React.FC<IAudienceReportDonutProps> = ({
 }) => {
 	const [hoverIndex, setHoverIndex] = useState<number>(-1);
 
-	const handleSetHoverIndex = (e, index) => {
+	const handleSetHoverIndex = (event: any, index: number) => {
 		!isEmpty && setHoverIndex(index);
 	};
 
@@ -174,13 +174,15 @@ const AudienceReportDonut: React.FC<IAudienceReportDonutProps> = ({
 			<ResponsiveContainer height={height}>
 				<PieChart>
 					<Tooltip
-						content={(props: ITooltipContentProps) => (
-							<TooltipContent {...props} />
-						)}
+						content={
+							((props: ITooltipContentProps) => (
+								<TooltipContent {...props} />
+							)) as any
+						}
 					/>
 
 					<Legend
-						formatter={(_, {payload: {label}}) => {
+						formatter={(_, {payload: {label}}: any) => {
 							if (isEmpty) {
 								return (
 									<div className="pl-4 pr-4 text-center">
@@ -191,7 +193,7 @@ const AudienceReportDonut: React.FC<IAudienceReportDonutProps> = ({
 
 							return (
 								<ClayText
-									className="legend-item"
+									{...({className: 'legend-item'} as any)}
 									color="secondary"
 									size={3}
 								>
@@ -209,9 +211,11 @@ const AudienceReportDonut: React.FC<IAudienceReportDonutProps> = ({
 
 					<Pie
 						activeIndex={hoverIndex}
-						activeShape={(props: IActiveShapeProps) => (
-							<ActiveShape {...props} />
-						)}
+						activeShape={
+							((props: IActiveShapeProps) => (
+								<ActiveShape {...props} />
+							)) as any
+						}
 						blendStroke
 						cy={142}
 						data={

@@ -15,35 +15,35 @@ interface IDropdownRangeKeyLegacyProps {
 	selectedItem?: {[key: string]: any} | null;
 }
 
-export const DropdownRangeKeyLegacy = ({
+export const DropdownRangeKeyLegacy = function DropdownRangeKeyLegacy({
 	onClickSeeMore,
 	onClickShowDatePicker,
 	seeMore,
 	selectedItem,
-}: IDropdownRangeKeyLegacyProps) => (
-	<>
-		{!seeMore && (
+}: IDropdownRangeKeyLegacyProps) {
+	return (
+		<>
+			{!seeMore && (
+				<ClayDropDown.Item
+					className="c-pointer"
+					key="SEE_MORE"
+					onClick={onClickSeeMore}
+				>
+					{Liferay.Language.get('more-preset-periods')}
+				</ClayDropDown.Item>
+			)}
+			<ClayDropDown.Divider />
 			<ClayDropDown.Item
-				className="c-pointer"
-				key="SEE_MORE"
-				onClick={onClickSeeMore}
+				className={getCN('c-pointer', {
+					active: selectedItem?.value === 'CUSTOM',
+				})}
+				key="CUSTOM"
+				onClick={onClickShowDatePicker}
 			>
-				{Liferay.Language.get('more-preset-periods')}
+				<ClayText size={3} weight="semi-bold">
+					{Liferay.Language.get('custom-range')}
+				</ClayText>
 			</ClayDropDown.Item>
-		)}
-
-		<ClayDropDown.Divider />
-
-		<ClayDropDown.Item
-			className={getCN('c-pointer', {
-				active: selectedItem?.value === 'CUSTOM',
-			})}
-			key="CUSTOM"
-			onClick={onClickShowDatePicker}
-		>
-			<ClayText size={3} weight="semi-bold">
-				{Liferay.Language.get('custom-range')}
-			</ClayText>
-		</ClayDropDown.Item>
-	</>
-);
+		</>
+	);
+};

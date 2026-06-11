@@ -93,6 +93,8 @@ const NewRequestModal: React.FC<INewRequestModalProps> = ({
 		}
 
 		fetchIndividuals();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedEmail]);
 
 	const _formRef = useRef<any>(null);

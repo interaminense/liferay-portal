@@ -25,8 +25,7 @@ import {
 	JobRunStatuses,
 	OrderByDirections,
 } from 'shared/util/constants';
-import {CUSTOM_DATE_FORMAT} from 'shared/util/date';
-import {applyTimeZone} from 'shared/util/date';
+import {CUSTOM_DATE_FORMAT, applyTimeZone} from 'shared/util/date';
 import {sub} from 'shared/util/lang';
 import {
 	ID,

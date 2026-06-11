@@ -445,11 +445,11 @@ export const assetTypePaths = {
 	journal: Routes.ASSETS_WEB_CONTENT_OVERVIEW,
 };
 
-export const toAssetOverviewRoute = (
+export function toAssetOverviewRoute(
 	assetType: keyof typeof assetTypePaths,
 	routeParams: {[key: string]: any},
 	query: {[key: string]: any}
-) => {
+) {
 	let route = '';
 
 	if (assetType === 'blog') {
@@ -463,7 +463,7 @@ export const toAssetOverviewRoute = (
 	}
 
 	return !isEmpty(query) ? setUriQueryValues(query, route) : route;
-};
+}
 
 export function getType(routeName: keyof typeof ROUTE_TO_TYPE_MAP) {
 	return ROUTE_TO_TYPE_MAP[routeName];

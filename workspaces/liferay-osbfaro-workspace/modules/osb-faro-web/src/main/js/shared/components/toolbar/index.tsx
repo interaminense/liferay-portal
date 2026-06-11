@@ -48,8 +48,8 @@ function getFilterLabel(
 interface IToolbarProps extends React.HTMLAttributes<HTMLElement> {
 	alwaysShowSearch?: boolean;
 	autoFocus?: boolean;
-	disabled?: boolean;
 	disableSearch?: boolean;
+	disabled?: boolean;
 	filterBy?: FilterByType;
 	filterByOptions?: FilterOptionType[];
 	flatFilter?: boolean;

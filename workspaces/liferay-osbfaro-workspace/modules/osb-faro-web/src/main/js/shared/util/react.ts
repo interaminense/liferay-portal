@@ -6,8 +6,11 @@
 import {isEqual} from 'lodash';
 import {ComponentType} from 'react';
 
-export const getDisplayName = (WrappedComponent: ComponentType<any>): string =>
-	WrappedComponent.displayName || WrappedComponent.name || 'Component';
+export const getDisplayName = function getDisplayName(
+	WrappedComponent: ComponentType<any>
+): string {
+	return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+};
 
 type HasChanges = <T extends object>(
 	prev: T,
@@ -18,11 +21,11 @@ type HasChanges = <T extends object>(
 /**
  * Compare previous state or props object by provided keys to detect changes.
  */
-export const hasChanges: HasChanges = (
+export const hasChanges: HasChanges = function hasChanges(
 	prev = {} as any,
 	next = {} as any,
 	...keys
-) => {
+) {
 	for (const key of keys) {
 		if ((key as string) in next) {
 			const newVal = (next as Record<string, unknown>)[key as string];

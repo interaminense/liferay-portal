@@ -65,7 +65,6 @@ const DownloadCSVReport: React.FC<IDownloadReport> = ({
 				disabled={disabled}
 				onClick={() => onOpenChange(true)}
 			/>
-
 			{open && (
 				<DownloadReportModal
 					infoMessage={
@@ -137,7 +136,7 @@ const DownloadCSVReport: React.FC<IDownloadReport> = ({
 								);
 							}
 						}
-						catch (e) {
+						catch (error) {
 							dispatch(
 								addAlert({
 									alertType: Alert.Types.Error,

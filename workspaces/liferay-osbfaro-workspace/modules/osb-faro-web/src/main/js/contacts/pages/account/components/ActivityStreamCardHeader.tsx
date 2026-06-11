@@ -28,10 +28,14 @@ const ActivityStreamCardHeader: React.FC<BaseCardHeaderDefaultIProps> = ({
 		if (isHourlyRangeKey(newVal.rangeKey)) {
 			onChangeInterval(INTERVAL_KEY_MAP.day);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleChangeInterval = useCallback(
 		(newVal: any) => onChangeInterval && onChangeInterval(newVal),
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[]
 	);
 

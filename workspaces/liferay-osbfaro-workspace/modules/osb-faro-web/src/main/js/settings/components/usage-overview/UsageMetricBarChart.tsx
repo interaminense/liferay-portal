@@ -44,37 +44,6 @@ interface IUsageMetricLegendProps {
 	payload?: {color: string; value: string}[];
 }
 
-export const UsageMetricBarChart: React.FC<IUsageMetricBarChart> = ({
-	items,
-	showLegend = true,
-	total,
-}) => (
-	<ResponsiveContainer height={24} width="100%">
-		<BarChart
-			data={transformData(items)}
-			layout="vertical"
-			margin={{bottom: 0, left: 0, right: 0, top: 0}}
-		>
-			<XAxis domain={[0, total]} hide type="number" />
-			<YAxis dataKey="name" hide type="category" />
-
-			{Object.keys(items).map((key, index) => (
-				<Bar
-					background={index === 0}
-					dataKey={key}
-					fill={items[key].color}
-					key={index}
-					stackId="barId"
-				/>
-			))}
-
-			{showLegend && (
-				<Legend content={<UsageMetricLegend legendMap={items} />} />
-			)}
-		</BarChart>
-	</ResponsiveContainer>
-);
-
 const UsageMetricLegend: React.FC<IUsageMetricLegendProps> = ({
 	legendMap,
 	payload,
@@ -95,3 +64,36 @@ const UsageMetricLegend: React.FC<IUsageMetricLegendProps> = ({
 		))}
 	</div>
 );
+
+export const UsageMetricBarChart = function UsageMetricBarChart({
+	items,
+	showLegend = true,
+	total,
+}: IUsageMetricBarChart) {
+	return (
+		<ResponsiveContainer height={24} width="100%">
+			<BarChart
+				data={transformData(items)}
+				layout="vertical"
+				margin={{bottom: 0, left: 0, right: 0, top: 0}}
+			>
+				<XAxis domain={[0, total]} hide type="number" />
+				<YAxis dataKey="name" hide type="category" />
+
+				{Object.keys(items).map((key, index) => (
+					<Bar
+						background={index === 0}
+						dataKey={key}
+						fill={items[key].color}
+						key={index}
+						stackId="barId"
+					/>
+				))}
+
+				{showLegend && (
+					<Legend content={<UsageMetricLegend legendMap={items} />} />
+				)}
+			</BarChart>
+		</ResponsiveContainer>
+	);
+};

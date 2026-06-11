@@ -25,15 +25,15 @@ export const BasePage: React.FC<IBasePageProps> & {
 	Header: typeof Header;
 	Row: typeof Row;
 	SubHeader: typeof SubHeader;
-} = ({children, className, documentTitle}) => (
-	<div className={getCN('index-root', className)}>
-		<DocumentTitle title={documentTitle} />
-
-		<MaintenanceAlert stripe />
-
-		{children}
-	</div>
-);
+} = function BasePage({children, className, documentTitle}) {
+	return (
+		<div className={getCN('index-root', className)}>
+			<DocumentTitle title={documentTitle} />
+			<MaintenanceAlert stripe />
+			{children}
+		</div>
+	);
+};
 
 BasePage.Body = Body;
 BasePage.Context = Context;

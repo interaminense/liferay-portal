@@ -26,103 +26,6 @@ interface IDownloadStaticCSVReport {
 	typeLang: string;
 }
 
-export const DownloadStaticCSVReport: React.FC<IDownloadStaticCSVReport> = ({
-	children,
-	disabled,
-	segmentId,
-	type,
-	typeLang,
-}) => {
-	const dispatch = useDispatch();
-	const generateURL = useDownloadCSV({segmentId, type});
-	const {observer, onOpenChange, open} = useModal();
-	const {channelId, groupId} = useParams();
-
-	return (
-		<>
-			{children ? (
-				React.cloneElement(children, {
-					disabled,
-					onClick: () => onOpenChange(true),
-				})
-			) : (
-				<DownloadReportButton
-					disabled={disabled}
-					onClick={() => onOpenChange(true)}
-				/>
-			)}
-
-			{open && (
-				<Modal
-					observer={observer}
-					onClose={() => onOpenChange(false)}
-					onSubmit={async () => {
-						onOpenChange(false);
-
-						try {
-							const url = generateURL();
-							const response = await API.csv.fetchCSV(url);
-
-							if (!response.ok) {
-								throw new Error();
-							}
-
-							dispatch(
-								addAlert({
-									alertType: Alert.Types.Default,
-									message: sub(
-										Liferay.Language.get(
-											'the-x-file-is-being-generated-and-your-download-will-start-soon'
-										),
-										['CSV']
-									) as string,
-								})
-							);
-
-							const a = document.createElement('a');
-
-							a.href = url;
-							a.click();
-
-							const count = await API.csv.fetchCount({
-								channelId: channelId!,
-								groupId: groupId!,
-								segmentId,
-								type: CSVType.Individual,
-							});
-
-							if (count > MAX_CSV_ENTRIES) {
-								dispatch(
-									addAlert({
-										alertType: Alert.Types.Warning,
-										message: sub(
-											Liferay.Language.get(
-												'the-csv-file-reached-x-entries'
-											),
-											[toLocale(MAX_CSV_ENTRIES)]
-										),
-									})
-								);
-							}
-						}
-						catch (e) {
-							dispatch(
-								addAlert({
-									alertType: Alert.Types.Error,
-									message: Liferay.Language.get(
-										'it-was-not-possible-to-generate-a-csv-file-at-this-moment.-please-try-again-later'
-									),
-								})
-							);
-						}
-					}}
-					typeLang={typeLang}
-				/>
-			)}
-		</>
-	);
-};
-
 const Modal = ({
 	observer,
 	onClose,
@@ -179,3 +82,99 @@ const Modal = ({
 		</ClayForm>
 	</ClayModal>
 );
+
+export const DownloadStaticCSVReport = function DownloadStaticCSVReport({
+	children,
+	disabled,
+	segmentId,
+	type,
+	typeLang,
+}: IDownloadStaticCSVReport) {
+	const dispatch = useDispatch();
+	const generateURL = useDownloadCSV({segmentId, type});
+	const {observer, onOpenChange, open} = useModal();
+	const {channelId, groupId} = useParams();
+
+	return (
+		<>
+			{children ? (
+				React.cloneElement(children, {
+					disabled,
+					onClick: () => onOpenChange(true),
+				})
+			) : (
+				<DownloadReportButton
+					disabled={disabled}
+					onClick={() => onOpenChange(true)}
+				/>
+			)}
+			{open && (
+				<Modal
+					observer={observer}
+					onClose={() => onOpenChange(false)}
+					onSubmit={async () => {
+						onOpenChange(false);
+
+						try {
+							const url = generateURL();
+							const response = await API.csv.fetchCSV(url);
+
+							if (!response.ok) {
+								throw new Error();
+							}
+
+							dispatch(
+								addAlert({
+									alertType: Alert.Types.Default,
+									message: sub(
+										Liferay.Language.get(
+											'the-x-file-is-being-generated-and-your-download-will-start-soon'
+										),
+										['CSV']
+									) as string,
+								})
+							);
+
+							const a = document.createElement('a');
+
+							a.href = url;
+							a.click();
+
+							const count = await API.csv.fetchCount({
+								channelId: channelId!,
+								groupId: groupId!,
+								segmentId,
+								type: CSVType.Individual,
+							});
+
+							if (count > MAX_CSV_ENTRIES) {
+								dispatch(
+									addAlert({
+										alertType: Alert.Types.Warning,
+										message: sub(
+											Liferay.Language.get(
+												'the-csv-file-reached-x-entries'
+											),
+											[toLocale(MAX_CSV_ENTRIES)]
+										),
+									})
+								);
+							}
+						}
+						catch (error) {
+							dispatch(
+								addAlert({
+									alertType: Alert.Types.Error,
+									message: Liferay.Language.get(
+										'it-was-not-possible-to-generate-a-csv-file-at-this-moment.-please-try-again-later'
+									),
+								})
+							);
+						}
+					}}
+					typeLang={typeLang}
+				/>
+			)}
+		</>
+	);
+};

@@ -19,8 +19,6 @@ import {Routes, toRoute} from 'shared/util/router';
 
 import TimeZoneAlert from './TimeZoneAlert';
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
 interface INotificationAlertListProps extends PropsFromRedux {
 	data: {
 		id: string;
@@ -102,7 +100,11 @@ const notificationStrategies = new Map<string, Function>([
 
 const connector = connect(null, {addAlert});
 
-export const useNotificationsAPI = (groupId: string) => {
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export const useNotificationsAPI = function useNotificationsAPI(
+	groupId: string
+) {
 	const response = useRequest({
 		dataSourceFn: ({groupId, type}) =>
 			API.notifications.fetchNotifications({groupId, type}),

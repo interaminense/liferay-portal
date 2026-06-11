@@ -15,9 +15,11 @@ import {SummaryBaseCard} from './SummaryBaseCard';
 import {SummaryTitle} from './SummaryTitle';
 import {IExperiment} from './types';
 
-export const SummaryDraftCard: React.FC<{experiment: IExperiment}> = ({
+export const SummaryDraftCard = function SummaryDraftCard({
 	experiment: {dxpExperienceName, dxpSegmentName, dxpVariants, goal, status},
-}) => {
+}: {
+	experiment: IExperiment;
+}) {
 	const currentStep = dxpVariants ? 3 : goal ? 2 : 1;
 
 	const totalVariants = dxpVariants?.filter(

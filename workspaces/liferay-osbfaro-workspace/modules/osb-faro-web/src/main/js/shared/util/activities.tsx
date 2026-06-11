@@ -76,34 +76,36 @@ export type VerticalTimelineSession = {
  * @param {number} changeMetrics.activityCount - The activity count.
  * @return {Array} Activity metrics formatted for use in ChangeLegend.
  */
-export const buildLegendItems = ({
+export const buildLegendItems = function buildLegendItems({
 	activityChange,
 	activityCount,
 }: {
 	activityChange: number;
 	activityCount: number;
-}): {change: number; id: string; secondaryInfo: string; title: string}[] => [
-	{
-		change: activityChange,
-		id: CHART_ACTIVITY_ID,
-		secondaryInfo: sub(Liferay.Language.get('x-day-change'), [
-			DEFAULT_ACTIVITY_MAX,
-		]) as string,
-		title: sub(Liferay.Language.get('total-activity-count-x'), [
-			activityCount.toLocaleString(),
-		]) as string,
-	},
-];
+}): {change: number; id: string; secondaryInfo: string; title: string}[] {
+	return [
+		{
+			change: activityChange,
+			id: CHART_ACTIVITY_ID,
+			secondaryInfo: sub(Liferay.Language.get('x-day-change'), [
+				DEFAULT_ACTIVITY_MAX,
+			]) as string,
+			title: sub(Liferay.Language.get('total-activity-count-x'), [
+				activityCount.toLocaleString(),
+			]) as string,
+		},
+	];
+};
 
 /**
  * Formats UserSessions events and maps its attributes to the required to be used in VerticalTimeline component.
  * @param {Array} events Array of UserSessions events.
  * @returns {Array.<Object>} Array of objects for a vertical timeline.
  */
-export const formatEvents = (
+export const formatEvents = function formatEvents(
 	events: UserSessionEvent[],
 	userAgent?: string
-): Array<SessionEvent> => {
+): Array<SessionEvent> {
 	const isWebhook = userAgent?.toLowerCase().includes('webhook');
 
 	return events.map(
@@ -145,9 +147,9 @@ export const formatEvents = (
  * @param {Date|string|number} datetime - Any value accepeted by Moment.
  * @returns {Moment} Date label to be displayed.
  */
-export const formatGroupingTime = (
+export const formatGroupingTime = function formatGroupingTime(
 	datetime: Date | string | number
-): string => {
+): string {
 	const time = moment(datetime);
 
 	return time.isSame(moment(), 'day')
@@ -160,10 +162,10 @@ export const formatGroupingTime = (
  * @param {Array} sessions
  * @returns {Array.<Object>} An array of session objects.
  */
-export const formatSessions = (
+export const formatSessions = function formatSessions(
 	sessions: UserSession[]
-): (VerticalTimelineHeader | VerticalTimelineSession)[] =>
-	flow(
+): (VerticalTimelineHeader | VerticalTimelineSession)[] {
+	return flow(
 		groupBy(({createDate}: UserSession) =>
 			moment.utc(createDate).startOf('day').format()
 		),
@@ -226,24 +228,28 @@ export const formatSessions = (
 		]),
 		flattenDepth(3)
 	)(sessions);
+};
 
 /**
  * Helper function get the correct pluralization of count label.
  * @param {Number} totalEvents
  * @returns {Array} Label to be displayed.
  */
-export const getActivityLabel = (totalEvents: number): React.ReactNode[] =>
-	sub(
+export const getActivityLabel = function getActivityLabel(
+	totalEvents: number
+): React.ReactNode[] {
+	return sub(
 		totalEvents === 1
 			? Liferay.Language.get('event-x')
 			: Liferay.Language.get('events-x'),
 		[<b key="ACTIVITIES">{totalEvents}</b>],
 		false
 	) as React.ReactNode[];
+};
 
-export const getSafeRangeKey = (
+export const getSafeRangeKey = function getSafeRangeKey(
 	rangeKey: RangeSelectors['rangeKey']
-): RangeSelectors['rangeKey'] | null => {
+): RangeSelectors['rangeKey'] | null {
 	if (rangeKey === 'CUSTOM') {
 		return null;
 	}

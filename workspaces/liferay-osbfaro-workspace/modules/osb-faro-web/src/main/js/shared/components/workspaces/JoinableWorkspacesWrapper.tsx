@@ -7,8 +7,8 @@ import React from 'react';
 
 interface IJoinableWorkspacesWrapperProps
 	extends React.HTMLAttributes<HTMLElement> {
-	title: string;
 	details: string;
+	title: string;
 }
 
 const JoinableWorkspacesWrapper: React.FC<IJoinableWorkspacesWrapperProps> = ({

@@ -79,14 +79,14 @@ const getSegmentsData = (
 	 * @param {number} value
 	 */
 	const getValue = (value: number) =>
-		parseInt(toRounded(getPercentage(value, total)));
+		parseInt(toRounded(getPercentage(value, total)), 10);
 
 	/**
 	 * Sum all the keys value of the array
 	 * @param {array} arr
 	 */
-	const sumArrValues = (arr: {value: number}[]) =>
-		arr.map(({value}) => value).reduce((a, b) => a + b);
+	const sumArrValues = (array: {value: number}[]) =>
+		array.map(({value}) => value).reduce((a, b) => a + b);
 
 	let items: any[] = segments.slice(0, MAX_BARS).map(({value, valueKey}) => ({
 		columns: [
@@ -180,7 +180,7 @@ type FormattedData = {
 	};
 };
 
-export const formatData = ({
+export const formatData = function formatData({
 	audienceReport: {
 		anonymousUsersCount,
 		knownUsersCount,
@@ -189,7 +189,7 @@ export const formatData = ({
 		segmentedKnownUsersCount,
 	},
 	segment: {metrics, total: totalOthers},
-}: any): FormattedData => {
+}: any): FormattedData {
 	const knownIndividualsData = [
 		{
 			color: martellL4,

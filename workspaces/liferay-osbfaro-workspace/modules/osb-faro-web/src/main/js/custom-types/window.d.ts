@@ -30,6 +30,7 @@ export {};
 
 declare global {
 	interface Window {
+		__REDUX_DEVTOOLS_EXTENSION_COMPOSE__: compose;
 		faroConstants: {
 			activityActions: {[key: string]: ActivityActions};
 			applications: {[key: string]: Applications};
@@ -75,6 +76,5 @@ declare global {
 			};
 		};
 		jQuery: object;
-		__REDUX_DEVTOOLS_EXTENSION_COMPOSE__: compose;
 	}
 }

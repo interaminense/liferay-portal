@@ -34,8 +34,8 @@ const AudienceReportTitle: React.FC<IInfoPopoverProps> = ({content, title}) => (
 
 interface IAudienceReportWithDataProps<TRawData>
 	extends Partial<IAudienceReportBaseCardProps> {
-	mapper: (data: TRawData) => TData;
 	data: TRawData;
+	mapper: (data: TRawData) => TData;
 	name: Name;
 }
 
@@ -104,12 +104,12 @@ function AudienceReportWithData<TRawData>({
 
 interface IAudienceReportProps<TRawData>
 	extends Partial<IAudienceReportBaseCardProps> {
+	Query: DocumentNode;
 	experienceId?: string | null;
 	filters: RawFilters;
-	rangeSelectors: RangeSelectors;
-	Query: DocumentNode;
 	mapper: (data: TRawData) => TData;
 	name: Name;
+	rangeSelectors: RangeSelectors;
 }
 
 function AudienceReport<TRawData>({

@@ -4,8 +4,7 @@
  */
 
 import {gql} from '@apollo/client';
-import {OperationOption} from '@apollo/client/react/hoc';
-import {graphql} from '@apollo/client/react/hoc';
+import {OperationOption, graphql} from '@apollo/client/react/hoc';
 import getDevicesMapper from 'cerebro-shared/hocs/mappers/devices';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
 import {withDevicesCard} from 'shared/hoc/DevicesCard';

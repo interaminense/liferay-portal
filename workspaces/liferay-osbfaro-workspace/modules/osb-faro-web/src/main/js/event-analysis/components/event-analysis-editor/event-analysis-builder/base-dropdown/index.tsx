@@ -17,8 +17,8 @@ interface IBaseDropdownProps {
 		setActive: (v: boolean) => void;
 	}) => React.ReactNode;
 	className?: string;
-	trigger: React.ReactElement;
 	onActiveChange?: (active: boolean) => void;
+	trigger: React.ReactElement;
 }
 
 const BaseDropdown: React.FC<IBaseDropdownProps> = ({
@@ -34,6 +34,8 @@ const BaseDropdown: React.FC<IBaseDropdownProps> = ({
 		if (onActiveChange) {
 			onActiveChange(active);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
 	return (

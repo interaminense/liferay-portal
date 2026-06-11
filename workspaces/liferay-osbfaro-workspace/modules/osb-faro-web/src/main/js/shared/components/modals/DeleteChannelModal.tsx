@@ -13,8 +13,8 @@ import {DataSource} from 'shared/util/records';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 interface IDeleteChannelModalProps extends React.HTMLAttributes<HTMLElement> {
-	channelName: string;
 	channelIds: Array<string>;
+	channelName: string;
 	groupId: string;
 	onClose: () => void;
 	onSubmit: () => void;

@@ -48,53 +48,55 @@ interface IAlertFeedProps
 	extends React.HTMLAttributes<HTMLElement>,
 		PropsFromRedux {}
 
-export const AlertFeed: React.FC<IAlertFeedProps> = ({
+export const AlertFeed = function AlertFeed({
 	alertsIMap,
 	className,
 	modalActive = false,
 	removeAlert,
-}) => (
-	<div
-		className={getCN(className, 'alert-feed-root alert-notifications', {
-			'modal-active': modalActive,
-		})}
-	>
-		<TransitionGroup>
-			{alertsIMap
-				.map((alertIMap: Map<string, any>) => {
-					const {
-						iconSymbol: symbol,
-						title: label,
-						type: display,
-					} = ALERT_DISPLAYS[alertIMap.get('alertType')];
+}: IAlertFeedProps) {
+	return (
+		<div
+			className={getCN(className, 'alert-feed-root alert-notifications', {
+				'modal-active': modalActive,
+			})}
+		>
+			<TransitionGroup>
+				{alertsIMap
+					.map((alertIMap: Map<string, any>) => {
+						const {
+							iconSymbol: symbol,
+							title: label,
+							type: display,
+						} = ALERT_DISPLAYS[alertIMap.get('alertType')];
 
-					const id = alertIMap.get('id');
-					const message = alertIMap.get('message');
+						const id = alertIMap.get('id');
+						const message = alertIMap.get('message');
 
-					return (
-						<CSSTransition
-							appear
-							classNames="transition-slide-up"
-							key={id}
-							timeout={{enter: 150, exit: 150}}
-						>
-							<Alert
-								iconSymbol={symbol}
-								id={id}
-								onClose={removeAlert}
-								title={label}
-								type={display}
+						return (
+							<CSSTransition
+								appear
+								classNames="transition-slide-up"
+								key={id}
+								timeout={{enter: 150, exit: 150}}
 							>
-								{List.isList(message)
-									? message.toJS()
-									: message}
-							</Alert>
-						</CSSTransition>
-					);
-				})
-				.toArray()}
-		</TransitionGroup>
-	</div>
-);
+								<Alert
+									iconSymbol={symbol}
+									id={id}
+									onClose={removeAlert}
+									title={label}
+									type={display}
+								>
+									{List.isList(message)
+										? message.toJS()
+										: message}
+								</Alert>
+							</CSSTransition>
+						);
+					})
+					.toArray()}
+			</TransitionGroup>
+		</div>
+	);
+};
 
 export default connector(AlertFeed);

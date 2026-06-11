@@ -20,11 +20,11 @@ enum VariantView {
 	PerDay = 'per-day',
 }
 
-export const VariantCard = ({
+export const VariantCard = function VariantCard({
 	experiment,
 }: {
 	experiment: IExperiment & {metricsHistogram?: unknown[]};
-}) => {
+}) {
 	const [variantView, setVariantView] = useState<VariantView>(
 		VariantView.Medians
 	);

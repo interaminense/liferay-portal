@@ -8,7 +8,7 @@ import PreferenceQuery from 'shared/queries/PreferenceQuery';
 import {DATA_RETENTION_PERIOD_KEY} from 'shared/util/constants';
 import {convertMillisecondsToMonths} from 'shared/util/date';
 
-export const useRetentionPeriod = () => {
+export const useRetentionPeriod = function useRetentionPeriod() {
 	const {data, error, loading} = useQuery(PreferenceQuery, {
 		variables: {
 			key: DATA_RETENTION_PERIOD_KEY,
@@ -23,5 +23,5 @@ export const useRetentionPeriod = () => {
 		return null;
 	}
 
-	return convertMillisecondsToMonths(parseInt(data.preference.value));
+	return convertMillisecondsToMonths(parseInt(data.preference.value, 10));
 };

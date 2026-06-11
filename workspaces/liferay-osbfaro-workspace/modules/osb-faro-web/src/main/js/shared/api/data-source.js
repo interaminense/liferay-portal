@@ -11,17 +11,19 @@ import {
 } from 'shared/util/pagination';
 import sendRequest from 'shared/util/request';
 
-export const clearData = ({groupId, id}) =>
-	sendRequest({
+export const clearData = function clearData({groupId, id}) {
+	return sendRequest({
 		method: 'POST',
 		path: `contacts/${groupId}/data_source/${id}/clear`,
 	});
+};
 
-export const disconnect = ({groupId, id}) =>
-	sendRequest({
+export const disconnect = function disconnect({groupId, id}) {
+	return sendRequest({
 		method: 'POST',
 		path: `contacts/${groupId}/data_source/${id}/disconnect`,
 	});
+};
 
 export function fetch({groupId, id}) {
 	return sendRequest({
@@ -165,14 +167,15 @@ export function fetchSitesById({groupId, id, siteIds}) {
 	});
 }
 
-export const fetchToken = (groupId, dataSourceId) =>
-	sendRequest({
+export const fetchToken = function fetchToken(groupId, dataSourceId) {
+	return sendRequest({
 		contentType: 'text/plain',
 		method: 'GET',
 		path: `contacts/${groupId}/data_source/${
 			dataSourceId ? `${dataSourceId}/` : ''
 		}token`,
 	});
+};
 
 export function fetchUserGroups({cur, delta, groupId, id, name}) {
 	return sendRequest({

@@ -148,15 +148,22 @@ export const RULE_NAME_LABEL_MAP = {
 	includeFilter: Liferay.Language.get('include'),
 };
 
-export const getPropertiesFromItems = (itemFilters: Filter[]): JobProperty[] =>
-	itemFilters.map(({name, value}) => ({
+export const getPropertiesFromItems = function getPropertiesFromItems(
+	itemFilters: Filter[]
+): JobProperty[] {
+	return itemFilters.map(({name, value}) => ({
 		filter: value,
 		negate: name === EXCLUDE,
 	}));
+};
 
-export const getFilterValueBreakdown = (
+export const getFilterValueBreakdown = function getFilterValueBreakdown(
 	filter: string
-): {exactMatchSign: string; metadataTag: string; rule: string} => {
+): {
+	exactMatchSign: string;
+	metadataTag: string;
+	rule: string;
+} {
 	const [rule, exactMatchSign, metadataTag] = filter
 		.split(/\s*([=~])\s*/, 3)
 		.reverse();

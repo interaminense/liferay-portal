@@ -72,11 +72,11 @@ const getAlertStatusCode = (currentPlan: {
 	return null;
 };
 
-export const UsageOverview = ({
+export const UsageOverview = function UsageOverview({
 	project,
 }: {
 	project: {faroSubscription: any};
-}) => {
+}) {
 	const [showAlert, setShowAlert] = useState(true);
 	const currentUser = useCurrentUser();
 	const admin = currentUser.isAdmin();

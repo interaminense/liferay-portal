@@ -16,11 +16,11 @@ interface IDownloadReportButton {
 	onClick: () => void;
 }
 
-export const DownloadReportButton: React.FC<IDownloadReportButton> = ({
+export const DownloadReportButton = function DownloadReportButton({
 	disabled,
 	loading = false,
 	onClick,
-}) => {
+}: IDownloadReportButton) {
 	const {loadingCount} = useMutationObserver();
 
 	return (

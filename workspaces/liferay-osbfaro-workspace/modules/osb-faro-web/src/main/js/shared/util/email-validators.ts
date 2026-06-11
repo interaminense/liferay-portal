@@ -10,13 +10,16 @@ const VALIDATE_DOMAINS =
 const VALIDATE_EMAILS =
 	/^(?![<>{}[\]()])[^@\s]+@[^\s@]+\.[^\s@]+(?<![<>{}[\]()])$/;
 
-export const validateEmailDomain = (emailDomain: string): boolean =>
-	VALIDATE_DOMAINS.test(emailDomain);
+export const validateEmailDomain = function validateEmailDomain(
+	emailDomain: string
+): boolean {
+	return VALIDATE_DOMAINS.test(emailDomain);
+};
 
-export const validateEmailDomainArr = (
+export const validateEmailDomainArr = function validateEmailDomainArr(
 	items: string[],
 	inputListValue: string | string[]
-): string | void => {
+): string | void {
 	const emailDomains = items.concat(inputListValue || []);
 
 	if (emailDomains.some((emailDomain) => !validateEmailDomain(emailDomain))) {
@@ -26,13 +29,14 @@ export const validateEmailDomainArr = (
 	}
 };
 
-export const validateEmail = (email: string): boolean =>
-	VALIDATE_EMAILS.test(email);
+export const validateEmail = function validateEmail(email: string): boolean {
+	return VALIDATE_EMAILS.test(email);
+};
 
-export const validateEmailArr = (
+export const validateEmailArr = function validateEmailArr(
 	items: string[],
 	inputListValue: string
-): Promise<string> => {
+): Promise<string> {
 	const emails = items.concat(inputListValue || []);
 
 	let error = '';

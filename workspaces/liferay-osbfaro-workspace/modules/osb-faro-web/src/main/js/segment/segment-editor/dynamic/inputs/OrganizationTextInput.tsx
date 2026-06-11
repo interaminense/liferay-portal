@@ -7,8 +7,7 @@ import React from 'react';
 import * as API from 'shared/api';
 
 import {getPropertyValue} from '../utils/custom-inputs';
-import CustomStringInput from './CustomStringInput';
-import {ICustomStringInputProps} from './CustomStringInput';
+import CustomStringInput, {ICustomStringInputProps} from './CustomStringInput';
 
 const OrganizationTextInput: React.FC<ICustomStringInputProps> = (props) => {
 	const {

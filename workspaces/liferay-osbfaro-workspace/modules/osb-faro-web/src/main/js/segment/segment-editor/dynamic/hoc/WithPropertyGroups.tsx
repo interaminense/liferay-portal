@@ -14,9 +14,9 @@ import {withRequest} from 'shared/hoc';
 import {
 	FieldContexts,
 	FieldOwnerTypes,
+	OrderByDirections,
 	SegmentTypes,
 } from 'shared/util/constants';
-import {OrderByDirections} from 'shared/util/constants';
 import {NAME} from 'shared/util/pagination';
 import {PropertyGroup, PropertySubgroup} from 'shared/util/records';
 
@@ -250,10 +250,10 @@ const mapResultToProps = (
 	return {propertyGroupsIList};
 };
 
-export const withPropertyGroups = (
+export const withPropertyGroups = function withPropertyGroups(
 	WrappedComponent: React.ComponentType<any>
-) =>
-	class extends React.Component<{
+) {
+	return class extends React.Component<{
 		propertyGroupsIList: List<PropertyGroup>;
 	}> {
 		render() {
@@ -267,8 +267,9 @@ export const withPropertyGroups = (
 			);
 		}
 	};
+};
 
 export default compose(
-	withRequest(fetchPropertyGroups, mapResultToProps),
+	withRequest(fetchPropertyGroups, mapResultToProps as (val: any) => any),
 	withPropertyGroups
 );

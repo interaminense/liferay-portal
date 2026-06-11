@@ -56,6 +56,8 @@ const BatchActionModal: React.FC<IBatchActionModalProps> = ({
 	useEffect(() => {
 		items.length &&
 			selectionDispatch?.({payload: {items}, type: ACTION_TYPES.add});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleEdits = (newVal: string) => {
@@ -74,7 +76,7 @@ const BatchActionModal: React.FC<IBatchActionModalProps> = ({
 	};
 
 	const handleSave = () => {
-		onSave({
+		return onSave({
 			edits: {[editableAttr]: selectedKey},
 			ids: selectedItemsIOMap.keySeq().toArray(),
 		}).then(onClose);

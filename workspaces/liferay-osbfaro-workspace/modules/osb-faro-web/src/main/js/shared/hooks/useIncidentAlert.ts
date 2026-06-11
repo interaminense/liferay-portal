@@ -6,7 +6,7 @@
 import {useEffect, useState} from 'react';
 import {fetchPreferences} from 'shared/api/preferences';
 
-export const useIncidentAlert = () => {
+export const useIncidentAlert = function useIncidentAlert() {
 	const [data, setData] = useState({incidentAlertEnabled: false});
 	const [loading, setLoading] = useState(true);
 

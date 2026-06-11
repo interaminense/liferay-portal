@@ -45,9 +45,10 @@ const sanitizeActivation = (activation: any) => {
 	return data;
 };
 
+const connector = connect(null, {addAlert});
+
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const connector = connect(null, {addAlert});
 export type SegmentActivationDetails = {
 	frequencyType: SegmentActivationFrequencyTypes;
 	scheduleEndDate?: string;
@@ -56,19 +57,19 @@ export type SegmentActivationDetails = {
 };
 
 type IActivationFormValues = {
-	scheduleEndDate?: string | null;
 	frequencyType: SegmentActivationFrequencyTypes;
-	scheduleType: SegmentActivationScheduleTypes;
+	scheduleEndDate?: string | null;
 	scheduleStartDate?: string | null;
+	scheduleType: SegmentActivationScheduleTypes;
 };
 
 interface IActivationConfigurationModalProps {
 	initialValues: IActivationFormValues;
-	onSave: (values: IActivationFormValues) => Promise<void>;
+	observer?: any;
 	onOpenChange: (open: boolean) => void;
+	onSave: (values: IActivationFormValues) => Promise<void>;
 	open: boolean;
 	showActivationTypePicker?: boolean;
-	observer?: any;
 }
 
 interface ISegmentActivationCardProps {

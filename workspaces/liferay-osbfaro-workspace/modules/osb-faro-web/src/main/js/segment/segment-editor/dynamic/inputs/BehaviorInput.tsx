@@ -5,8 +5,7 @@
 
 import autobind from 'autobind-decorator';
 import {Map, fromJS} from 'immutable';
-import {get} from 'lodash';
-import {isBoolean, isNil, isNull} from 'lodash';
+import {get, isBoolean, isNil, isNull} from 'lodash';
 import React from 'react';
 import * as API from 'shared/api';
 import Form from 'shared/components/form';
@@ -38,26 +37,30 @@ import DateFilterConjunctionInput from './components/DateFilterConjunctionInput'
 import OccurenceConjunctionInput from './components/OccurenceConjunctionInput';
 import SelectEntityFromModal from './components/SelectEntityFromModal';
 
-export const AssetItem: React.FC<{
+export const AssetItem = function AssetItem({
+	dataSourceAssetPK = '',
+	name,
+}: {
 	dataSourceAssetPK?: string;
 	name: string;
-}> = ({dataSourceAssetPK = '', name}) => (
-	<div className="asset-display-root" title={dataSourceAssetPK}>
-		<div className="asset-name text-truncate">{name}</div>
-
-		{!!dataSourceAssetPK && (
-			<div
-				data-tooltip
-				data-tooltip-align="top"
-				title={getSafeDecodedURIComponent(dataSourceAssetPK)}
-			>
-				<div className="asset-url text-secondary text-truncate">
-					{getSafeDecodedURIComponent(dataSourceAssetPK)}
+}) {
+	return (
+		<div className="asset-display-root" title={dataSourceAssetPK}>
+			<div className="asset-name text-truncate">{name}</div>
+			{!!dataSourceAssetPK && (
+				<div
+					data-tooltip
+					data-tooltip-align="top"
+					title={getSafeDecodedURIComponent(dataSourceAssetPK)}
+				>
+					<div className="asset-url text-secondary text-truncate">
+						{getSafeDecodedURIComponent(dataSourceAssetPK)}
+					</div>
 				</div>
-			</div>
-		)}
-	</div>
-);
+			)}
+		</div>
+	);
+};
 
 const ASSET_MODAL_CONFIG_MAP = {
 	[AssetNames.CommentPosted]: {

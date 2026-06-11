@@ -13,10 +13,10 @@ import {
 } from '../utils/types';
 
 export interface EventAnalysisResultData {
+	breakdownItems: BreakdownDataItem[];
 	count: number;
 	page: number;
 	value: number;
-	breakdownItems: BreakdownDataItem[];
 }
 
 export interface EventAnalysisResultVariables {

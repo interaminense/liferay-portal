@@ -18,31 +18,33 @@ export interface ExtractedRemoteCriterionEntry {
  * the matching `RemoteCriterionType` with the id and human-readable name
  * pulled from the criterion's inner items.
  */
-export const extractRemoteCriterionEntries = (
-	criteria: any
-): ExtractedRemoteCriterionEntry[] => {
-	if (!criteria) {
-		return [];
-	}
+export const extractRemoteCriterionEntries =
+	function extractRemoteCriterionEntries(
+		criteria: any
+	): ExtractedRemoteCriterionEntry[] {
+		if (!criteria) {
+			return [];
+		}
 
-	if (criteria.items) {
-		return criteria.items.flatMap(extractRemoteCriterionEntries);
-	}
+		if (criteria.items) {
+			return criteria.items.flatMap(extractRemoteCriterionEntries);
+		}
 
-	const criterionType = getRemoteCriterionTypeByOperator(
-		criteria.operatorName
-	);
+		const criterionType = getRemoteCriterionTypeByOperator(
+			criteria.operatorName
+		);
 
-	if (!criterionType || !criteria.propertyName) {
-		return [];
-	}
+		if (!criterionType || !criteria.propertyName) {
+			return [];
+		}
 
-	const id = criteria.propertyName as string;
-	const items = criteria.value?.getIn?.(['criterionGroup', 'items']);
-	const nameItem = items?.find?.(
-		(item: any) => item.get?.('propertyName') === criterionType.nameProperty
-	);
-	const name = (nameItem?.get?.('value') as string) ?? id;
+		const id = criteria.propertyName as string;
+		const items = criteria.value?.getIn?.(['criterionGroup', 'items']);
+		const nameItem = items?.find?.(
+			(item: any) =>
+				item.get?.('propertyName') === criterionType.nameProperty
+		);
+		const name = (nameItem?.get?.('value') as string) ?? id;
 
-	return [{criterionType, id, name}];
-};
+		return [{criterionType, id, name}];
+	};

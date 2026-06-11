@@ -52,7 +52,10 @@ const ATTRIBUTES_STRING_OPERATOR_LABELS_MAP = {
 	[RelationalOperators.NE]: Liferay.Language.get('is-not').toLowerCase(),
 };
 
-export const createOption = (option: string, dataType: DataTypes) => {
+export const createOption = function createOption(
+	option: string,
+	dataType: DataTypes
+) {
 	const LABELS_MAP: Record<string, Record<string, string>> = {
 		[DataTypes.Boolean]: BOOLEAN_LABELS_MAP,
 		[DataTypes.Date]:
@@ -69,7 +72,9 @@ export const createOption = (option: string, dataType: DataTypes) => {
 	};
 };
 
-export const getOperatorOptions = (dataType: DataTypes) => {
+export const getOperatorOptions = function getOperatorOptions(
+	dataType: DataTypes
+) {
 	const OPERATOR_OPTIONS: Record<string, string[]> = {
 		[DataTypes.Date]: ATTRIBUTES_DATE_AND_DURATION_OPTIONS,
 		[DataTypes.Duration]: ATTRIBUTES_DATE_AND_DURATION_OPTIONS,
@@ -82,9 +87,9 @@ export const getOperatorOptions = (dataType: DataTypes) => {
 	);
 };
 
-export const getDefaultAttributeOperator = (
+export const getDefaultAttributeOperator = function getDefaultAttributeOperator(
 	dataType: DataTypes
-): RelationalOperators | FunctionalOperators => {
+): RelationalOperators | FunctionalOperators {
 	switch (dataType) {
 		case DataTypes.Boolean:
 		case DataTypes.Date:
@@ -98,10 +103,10 @@ export const getDefaultAttributeOperator = (
 	}
 };
 
-export const getDefaultAttributeValue = (
+export const getDefaultAttributeValue = function getDefaultAttributeValue(
 	dataType: DataTypes,
 	operatorName: RelationalOperators | FunctionalOperators
-): string | {end: number | string; start: number | string} => {
+): string | {end: number | string; start: number | string} {
 	if (
 		operatorName === FunctionalOperators.Between &&
 		[DataTypes.Number, DataTypes.Date].filter((type) => type === dataType)
@@ -121,11 +126,11 @@ export const getDefaultAttributeValue = (
 	}
 };
 
-export const validateAttributeValue = (
+export const validateAttributeValue = function validateAttributeValue(
 	value: string | number | BetweenNumber | DateRange,
 	dataType: DataTypes,
 	operatorName?: FunctionalOperators | RelationalOperators
-): boolean => {
+): boolean {
 	if (
 		operatorName === FunctionalOperators.Between &&
 		[DataTypes.Number, DataTypes.Date].filter((type) => type === dataType)

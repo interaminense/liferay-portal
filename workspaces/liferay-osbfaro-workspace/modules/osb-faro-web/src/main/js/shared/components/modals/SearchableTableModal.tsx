@@ -96,6 +96,8 @@ const SearchableTableModal: React.FC<ISearchableTableModalProps> = ({
 				type: ActionTypes.Add,
 			});
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const {data, error, loading, refetch} = useRequest({

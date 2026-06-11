@@ -44,13 +44,13 @@ interface IDateInputProps {
 	displayFormat?: string;
 	format?: string;
 	groupId?: string;
-	limitEndDate?: boolean;
 	id?: string;
+	limitEndDate?: boolean;
+	maxRange?: number;
 	name?: string;
 	onBlur?: (event?: FocusEvent) => void;
 	onChange: (range: DateRange) => void;
 	overlayAlignment?: string;
-	maxRange?: number;
 	showRetentionPeriod?: boolean;
 	usePortal?: boolean;
 	value: DateRange;

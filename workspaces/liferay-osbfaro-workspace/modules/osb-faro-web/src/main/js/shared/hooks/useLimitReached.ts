@@ -9,18 +9,18 @@ export enum FeatureName {
 	EventAnalysis = 'event analysis',
 }
 
-export const useLimitReached = ({
+export const useLimitReached = function useLimitReached({
 	data = [],
 	featureName,
 }: {
 	data?: Array<{
-		type?: string;
-		name?: string;
 		currentUsage: number;
 		limit: number;
+		name?: string;
+		type?: string;
 	}>;
 	featureName: FeatureName;
-}) => {
+}) {
 	const usage = data?.find(
 		(item) =>
 			(item['type'] || item['name'] || '').toLowerCase() ===

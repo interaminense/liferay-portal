@@ -32,8 +32,9 @@ export default composeReducers(
 	combineReducers({
 		accounts,
 		alerts,
-		cards,
 		cardTemplates,
+
+		cards,
 		currentUser,
 		dataSources,
 		distributions,

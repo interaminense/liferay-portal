@@ -15,15 +15,11 @@ import {
 	AssetMetricQuery,
 	AssetTabsQuery,
 } from 'shared/components/metric-card/queries';
-import {ICommonVariables} from 'shared/types';
 import URLConstants from 'shared/util/url-constants';
 
 const NAME = 'journal';
 
 const WebContentMetricCard: React.FC<IGenericMetricBaseCardProps> = (props) => {
-	const variables = (commonVariables: ICommonVariables) =>
-		useAssetVariables(commonVariables);
-
 	const metrics: Metric[] = [ViewsMetric];
 
 	return (
@@ -54,11 +50,12 @@ const WebContentMetricCard: React.FC<IGenericMetricBaseCardProps> = (props) => {
 			metrics={metrics}
 			queries={{
 				MetricQuery: AssetMetricQuery(NAME),
-				name: NAME,
 				TabsQuery: AssetTabsQuery(metrics, NAME),
+
+				name: NAME,
 			}}
 			reportContainer={ReportContainer.VisitorsBehaviorCard}
-			variables={variables}
+			variables={useAssetVariables}
 		/>
 	);
 };

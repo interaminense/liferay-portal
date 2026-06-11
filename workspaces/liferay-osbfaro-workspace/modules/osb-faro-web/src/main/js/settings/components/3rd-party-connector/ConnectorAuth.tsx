@@ -67,6 +67,8 @@ const ConnectorAuth: React.FC<IConnectorAuthProps> = ({
 		};
 
 		fetchConnectorTokenForGroup();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [config.slug, groupId]);
 
 	return (

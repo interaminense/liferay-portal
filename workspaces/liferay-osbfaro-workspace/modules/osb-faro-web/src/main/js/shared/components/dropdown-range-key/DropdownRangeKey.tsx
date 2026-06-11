@@ -33,13 +33,13 @@ export type Data = {
 	}[];
 };
 
-export const DropdownRangeKey: React.FC<DropdownRangeKeyIProps> = ({
+export const DropdownRangeKey = function DropdownRangeKey({
 	alignmentPosition,
 	legacy,
 	onRangeSelectorChange,
 	rangeKeys,
 	rangeSelectors,
-}) => {
+}: DropdownRangeKeyIProps) {
 	const {data, error, loading} = useQuery<Data>(TimeRangeQuery);
 
 	return (

@@ -18,8 +18,8 @@ const inlineClassName = {
 };
 
 export interface ILoadingProps extends React.HTMLAttributes<HTMLElement> {
-	center?: boolean;
 	align?: Align;
+	center?: boolean;
 	overlay?: boolean;
 	spacer?: boolean;
 }

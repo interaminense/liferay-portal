@@ -9,8 +9,7 @@ import {Switch, useParams} from 'react-router-dom';
 import BundleRouter from 'route-middleware/BundleRouter';
 import Loading from 'shared/components/Loading';
 import RouteNotFound from 'shared/components/RouteNotFound';
-import {compose} from 'shared/hoc';
-import {withOnboarding} from 'shared/hoc';
+import {compose, withOnboarding} from 'shared/hoc';
 import checkProjectState from 'shared/hoc/CheckProjectState';
 import {Routes} from 'shared/util/router';
 
@@ -128,7 +127,7 @@ const WorkspaceSettings = lazy(
 	() => import(/* webpackChunkName: "WorkspaceSettings" */ './Workspace')
 );
 
-export const Settings = () => {
+export const Settings = function Settings() {
 	const {groupId} = useParams();
 	const store = useStore();
 

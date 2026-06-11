@@ -69,10 +69,10 @@ type Action = {
 	type: ActionType;
 };
 
-export const referencedPropertiesReducer = (
+export const referencedPropertiesReducer = function referencedPropertiesReducer(
 	state: ReferencedProperties,
 	{payload, type}: Action
-): ReferencedProperties => {
+): ReferencedProperties {
 	switch (type) {
 		case ActionType.AddProperty:
 			if (
@@ -112,10 +112,10 @@ export const referencedPropertiesReducer = (
 	}
 };
 
-export const referencedEntitiesReducer = (
+export const referencedEntitiesReducer = function referencedEntitiesReducer(
 	state: ReferencedEntities,
 	{entityType, payload, type}: Action
-): ReferencedEntities => {
+): ReferencedEntities {
 	switch (type) {
 		case ActionType.AddEntities:
 			return state.mergeIn(
@@ -164,13 +164,13 @@ const createReferencedEntitiesIMapFromSegment = (
 	});
 };
 
-export const ReferencedObjectsProvider = ({
+export const ReferencedObjectsProvider = function ReferencedObjectsProvider({
 	children,
 	segment,
 }: {
 	children: React.ReactNode;
 	segment?: Segment;
-}) => {
+}) {
 	const [referencedEntities, referencedEntitiesDispatch] = useReducer(
 		referencedEntitiesReducer,
 		segment
@@ -250,31 +250,37 @@ export const ReferencedObjectsProvider = ({
 };
 
 export const withReferencedObjectsProvider =
-	<P extends {segment?: Segment}>(WrappedComponent: React.ComponentType<P>) =>
-	(props: P) => (
-		<ReferencedObjectsProvider segment={props.segment}>
-			<WrappedComponent {...props} />
-		</ReferencedObjectsProvider>
-	);
+	function withReferencedObjectsProvider<P extends {segment?: Segment}>(
+		WrappedComponent: React.ComponentType<P>
+	) {
+		return (props: P) => (
+			<ReferencedObjectsProvider segment={props.segment}>
+				<WrappedComponent {...props} />
+			</ReferencedObjectsProvider>
+		);
+	};
 
 export const withReferencedObjectsConsumer =
-	<P extends object>(WrappedComponent: React.ComponentType<P>) =>
-	(
-		props: Omit<
-			P,
-			| 'addEntities'
-			| 'addEntity'
-			| 'addProperty'
-			| 'referencedEntities'
-			| 'referencedProperties'
-		>
-	) => (
-		<ReferencedObjectsContext.Consumer>
-			{(referencedObjects) => (
-				<WrappedComponent
-					{...(props as P)}
-					{...(referencedObjects as any)}
-				/>
-			)}
-		</ReferencedObjectsContext.Consumer>
-	);
+	function withReferencedObjectsConsumer<P extends object>(
+		WrappedComponent: React.ComponentType<P>
+	) {
+		return (
+			props: Omit<
+				P,
+				| 'addEntities'
+				| 'addEntity'
+				| 'addProperty'
+				| 'referencedEntities'
+				| 'referencedProperties'
+			>
+		) => (
+			<ReferencedObjectsContext.Consumer>
+				{(referencedObjects) => (
+					<WrappedComponent
+						{...(props as P)}
+						{...(referencedObjects as any)}
+					/>
+				)}
+			</ReferencedObjectsContext.Consumer>
+		);
+	};

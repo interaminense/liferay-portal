@@ -10,9 +10,9 @@ import {Cell, Label, Pie, PieChart, ResponsiveContainer} from 'recharts';
 type PieSpecs = {
 	endAngle: number;
 	innerRadius: number;
-	startAngle: number;
 	outerRadius: number;
 	pieColor: string;
+	startAngle: number;
 };
 
 const PIE_SPECS: PieSpecs = {
@@ -28,10 +28,10 @@ interface IGenericDonutChart {
 	measurement: string;
 }
 
-export const GenericDonutChart: React.FC<IGenericDonutChart> = ({
+export const GenericDonutChart = function GenericDonutChart({
 	capacity,
 	measurement,
-}) => {
+}: IGenericDonutChart) {
 	const data = [{value: 10}];
 
 	return (

@@ -56,7 +56,9 @@ export function validateDateRangeRequired({
 	return toPromise(error);
 }
 
-export const validateGreaterThanZero = (value: string) => {
+export const validateGreaterThanZero = function validateGreaterThanZero(
+	value: string
+) {
 	let error = '';
 
 	if (Number(value) <= 0) {
@@ -68,7 +70,7 @@ export const validateGreaterThanZero = (value: string) => {
 	return toPromise(error);
 };
 
-export const validateIsInteger = (value: string) => {
+export const validateIsInteger = function validateIsInteger(value: string) {
 	let error = '';
 
 	if (!Number.isInteger(Number(value))) {
@@ -185,9 +187,10 @@ export const validateSalesforceDomain = validatePattern(
 	Liferay.Language.get('please-enter-a-valid-salesforce-url')
 );
 
-export const composeValidators =
-	(...validators: Array<(value: any) => Promise<string> | string>) =>
-	async (value: any) => {
+export const composeValidators = function composeValidators(
+	...validators: Array<(value: any) => Promise<string> | string>
+) {
+	return async (value: any) => {
 		for (const validator of validators) {
 			const error = await validator(value);
 
@@ -198,6 +201,7 @@ export const composeValidators =
 
 		return '';
 	};
+};
 
 export const validateExternalReferenceCode = composeValidators(
 	validateRequired,

@@ -12,10 +12,10 @@ import HelpBlock from './HelpBlock';
 import Label from './Label';
 
 interface FormAutocompleteInputType {
+	className?: string;
+	label?: string;
 	required?: boolean;
 	value: string;
-	label?: string;
-	className?: string;
 }
 const FormAutocompleteInput: React.FC<
 	FormAutocompleteInputType & FieldProps

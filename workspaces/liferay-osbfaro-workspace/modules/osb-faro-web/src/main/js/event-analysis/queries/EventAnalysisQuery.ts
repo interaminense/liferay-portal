@@ -21,8 +21,8 @@ interface EventAnalysis extends RawRangeSelectors {
 	eventDefinitionId: number;
 	name: string;
 	referencedObjects: {
-		eventDefinition: Event;
 		eventAttributeDefinitions: Attribute[];
+		eventDefinition: Event;
 	};
 }
 
@@ -31,13 +31,13 @@ export interface EventAnalysisData {
 }
 
 export interface EventAnalysisListData {
-	total: number;
 	eventAnalyses: {
 		id: number;
 		modifiedDate: number;
 		name: string;
 		userName: string;
 	}[];
+	total: number;
 }
 
 export interface EventAnalysisMutationData {
@@ -65,6 +65,7 @@ export interface EventAnalysisMutationVariables {
 	compareToPrevious: boolean;
 	eventAnalysisBreakdowns?: Breakdown[];
 	eventAnalysisFilters?: Filter[];
+	eventAnalysisId?: string | null;
 	eventDefinitionId: string;
 	name: string;
 	rangeEnd: string | null;
@@ -72,7 +73,6 @@ export interface EventAnalysisMutationVariables {
 	rangeStart: string | null;
 	userId: string;
 	userName: string;
-	eventAnalysisId?: string | null;
 }
 
 export interface DeleteEventAnalysisVariables {

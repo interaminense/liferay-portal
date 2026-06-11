@@ -31,8 +31,11 @@ import ChartTooltip, {
 } from 'shared/components/chart-tooltip';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 import {getNetChange} from 'shared/util/change';
-import {CHART_COLOR_NAMES} from 'shared/util/charts';
-import {formatXAxisDate, getIntervals} from 'shared/util/charts';
+import {
+	CHART_COLOR_NAMES,
+	formatXAxisDate,
+	getIntervals,
+} from 'shared/util/charts';
 import {OrderByDirections, RangeKeyTimeRanges} from 'shared/util/constants';
 import {formatUTCDateFromUnix} from 'shared/util/date';
 import {createDateKeysIMap} from 'shared/util/intervals';
@@ -114,8 +117,8 @@ interface ISegmentGrowthChartProps {
 	hasSelectedPoint: boolean;
 	height?: number;
 	individualCounts?: {anonymousCount: number; knownCount: number};
-	selectedPoint?: number;
 	onSelectedPointChange?: (selectedPoint: number) => void;
+	selectedPoint?: number;
 }
 
 interface ITooltipProps {
@@ -123,18 +126,20 @@ interface ITooltipProps {
 	payload: CHANGES_AGGREGATION_SHAPE[];
 }
 
-export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
+export const SegmentGrowthChart = function SegmentGrowthChart({
 	data,
 	hasSelectedPoint,
 	height = 360,
+
 	individualCounts = {
 		anonymousCount: 0,
 		knownCount: 0,
 	},
+
 	onSelectedPointChange,
 	selectedPoint,
-}) => {
-	const [legendHoverItem, setLegendHoverItem] = useState(null);
+}: ISegmentGrowthChartProps) {
+	const [legendHoverItem, setLegendHoverItem] = useState<any>(null);
 	const [mouseOutside, setMouseOutside] = useState(false);
 
 	const {anonymousCount, knownCount} = individualCounts;
@@ -150,7 +155,7 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 				modifiedDate,
 				removed,
 				value,
-			} = get(payload, [0, 'payload'], data[selectedPoint]);
+			} = get(payload, [0, 'payload'], data[selectedPoint!]);
 
 			const change = [
 				{
@@ -256,7 +261,7 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 								]
 						).map(({label, value}, i, array) => {
 							const className =
-								i < array.length - 1 ? 'pb-0' : null;
+								i < array.length - 1 ? 'pb-0' : undefined;
 
 							return {
 								columns: [
@@ -284,7 +289,7 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 
 	interface ICommonAreaChartStyles {
 		isAnimationActive: boolean;
-		legendType: string;
+		legendType: any;
 		stackId: string;
 	}
 
@@ -307,12 +312,12 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 
 	const yAxisWidth = getYAxisWidth(data, 'value');
 
-	const handleClick = (data) => {
+	const handleClick = (data: any) => {
 		if (data?.activeTooltipIndex === undefined) {
 			return;
 		}
 
-		onSelectedPointChange(data?.activeTooltipIndex);
+		onSelectedPointChange?.(data?.activeTooltipIndex);
 	};
 
 	return (
@@ -370,7 +375,7 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 						)}
 						tickLine={false}
 						tickMargin={12}
-						ticks={intervals}
+						ticks={intervals as (string | number)[]}
 						type="number"
 					/>
 
@@ -414,7 +419,7 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 
 					<Legend
 						align="right"
-						formatter={(value, {count}) => (
+						formatter={(value, {count}: any) => (
 							<span className="legend-text-color">
 								{`${value}:`}
 
@@ -426,31 +431,37 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 							setLegendHoverItem(dataKey)
 						}
 						onMouseLeave={() => setLegendHoverItem(null)}
-						payload={[
-							{
-								color: CHART_BLUE,
-								count: knownCount,
-								dataKey: 'knownCount',
-								type: 'circle',
-								value: Liferay.Language.get('known-members'),
-							},
-							{
-								color: CHART_ORANGE,
-								count: anonymousCount,
-								dataKey: 'anonymousCount',
-								type: 'circle',
-								value: Liferay.Language.get(
-									'anonymous-members'
-								),
-							},
-							{
-								color: CHART_BLACK,
-								count: anonymousCount + knownCount,
-								dataKey: 'individualCount',
-								type: 'circle',
-								value: Liferay.Language.get('total-members'),
-							},
-						]}
+						payload={
+							[
+								{
+									color: CHART_BLUE,
+									count: knownCount,
+									dataKey: 'knownCount',
+									type: 'circle',
+									value: Liferay.Language.get(
+										'known-members'
+									),
+								},
+								{
+									color: CHART_ORANGE,
+									count: anonymousCount,
+									dataKey: 'anonymousCount',
+									type: 'circle',
+									value: Liferay.Language.get(
+										'anonymous-members'
+									),
+								},
+								{
+									color: CHART_BLACK,
+									count: anonymousCount + knownCount,
+									dataKey: 'individualCount',
+									type: 'circle',
+									value: Liferay.Language.get(
+										'total-members'
+									),
+								},
+							] as any
+						}
 						verticalAlign="bottom"
 						wrapperStyle={{
 							color: AXIS.textColor,
@@ -461,7 +472,7 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 					/>
 
 					<Tooltip
-						content={renderTooltip}
+						content={renderTooltip as any}
 						cursor={!intervals.length}
 						ref={tooltipRef}
 						wrapperStyle={
@@ -469,7 +480,7 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 								? {
 										visibility: 'visible',
 									}
-								: null
+								: undefined
 						}
 					/>
 
@@ -477,7 +488,7 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 						strokeWidth={1}
 						x={
 							showFixedTooltip
-								? data[selectedPoint].modifiedDate
+								? data[selectedPoint!].modifiedDate
 								: null
 						}
 					/>
@@ -492,12 +503,12 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 						stroke="none"
 						x={
 							hasSelectedPoint
-								? data[selectedPoint].modifiedDate
+								? data[selectedPoint!].modifiedDate
 								: null
 						}
 						y={
 							hasSelectedPoint
-								? data[selectedPoint].knownCount
+								? data[selectedPoint!].knownCount
 								: null
 						}
 					/>
@@ -510,13 +521,13 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 						stroke="none"
 						x={
 							hasSelectedPoint
-								? data[selectedPoint].modifiedDate
+								? data[selectedPoint!].modifiedDate
 								: null
 						}
 						y={
 							hasSelectedPoint
-								? data[selectedPoint].knownCount +
-									data[selectedPoint].anonymousCount
+								? data[selectedPoint!].knownCount +
+									data[selectedPoint!].anonymousCount
 								: null
 						}
 					/>
@@ -558,11 +569,13 @@ export const SegmentGrowthChart: React.FC<ISegmentGrowthChartProps> = ({
 	);
 };
 
-export const SelectedPointInfo: React.FC = () => (
-	<div className="selected-point-info">
-		<div className="h4">{Liferay.Language.get('known-members')}</div>
-	</div>
-);
+export const SelectedPointInfo: React.FC = function SelectedPointInfo() {
+	return (
+		<div className="selected-point-info">
+			<div className="h4">{Liferay.Language.get('known-members')}</div>
+		</div>
+	);
+};
 
 interface ISegmentGrowthWithList {
 	channelId: string;
@@ -589,7 +602,7 @@ const SegmentGrowthWithList: React.FC<ISegmentGrowthWithList> = ({
 }) => {
 	const [showMembershipList, setShowMembershipList] = useState(true);
 
-	const fetchMembers = (params) => {
+	const fetchMembers = (params: any) => {
 		const fetchMembersFn = hasSelectedPoint
 			? getMemberChanges
 			: getAllMembers;
@@ -616,7 +629,7 @@ const SegmentGrowthWithList: React.FC<ISegmentGrowthWithList> = ({
 
 	const {modifiedDate} = get(data, selectedPoint, {modifiedDate: 0});
 
-	const paginationParams = useStatefulPagination(null, {
+	const paginationParams = useStatefulPagination(undefined, {
 		initialDelta: 20,
 		initialOrderIOMap: hasSelectedPoint
 			? OrderedMap({
@@ -680,7 +693,7 @@ const SegmentGrowthWithList: React.FC<ISegmentGrowthWithList> = ({
 							// to avoid render two empty states
 
 							setShowMembershipList(
-								!!individualCounts.knownCount ||
+								!!individualCounts?.knownCount ||
 									!!intervals.length
 							);
 

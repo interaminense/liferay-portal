@@ -8,7 +8,7 @@ import React from 'react';
 import {fetchProject} from 'shared/actions/projects';
 import Sheet from 'shared/components/Sheet';
 import WorkspacesBasePage from 'shared/components/workspaces/BasePage';
-import {withPolling} from 'shared/hoc';
+import withPolling from 'shared/hoc/WithPolling';
 import {ProjectStates} from 'shared/util/constants';
 import URLConstants from 'shared/util/url-constants';
 

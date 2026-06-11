@@ -8,7 +8,7 @@ import {Layer} from 'recharts';
 
 import {getFill} from './utils';
 
-export const Link: React.FC<any> = (props) => {
+export const Link = function Link(props: any) {
 	const {
 		hovered,
 		index,

@@ -50,6 +50,151 @@ interface ISalesforceOverviewProps extends PropsFromRedux {
 	dataSource: DataSource;
 }
 
+const AccountAndIndividuals = ({
+	currentUser,
+	dataSource,
+	groupId,
+	loading,
+	onSubmit,
+}: {
+	currentUser: any;
+	dataSource: DataSource;
+	groupId: string;
+	loading: boolean;
+	onSubmit: (params: {
+		enabledAllAccounts: boolean;
+		enabledAllIndividuals: boolean;
+	}) => void;
+}) => {
+	const [enabledAllAccounts, setEnabledAllAccount] = useState(
+		dataSource.provider?.getIn(
+			['accountsConfiguration', 'enableAllAccounts'],
+			false
+		)
+	);
+
+	const [enabledAllIndividuals, setEnabledAllIndividuals] = useState(
+		dataSource.provider?.getIn(
+			['contactsConfiguration', 'enableAllContacts'],
+			false
+		) ||
+			dataSource.provider?.getIn(
+				['contactsConfiguration', 'enableAllLeads'],
+				false
+			)
+	);
+
+	const accountsCountResponse = useRequest({
+		dataSourceFn: (params) =>
+			fetchConnectorEntityCount(Entity.Accounts, params),
+		variables: {groupId, id: dataSource.id!},
+	});
+
+	const userCountResponse = useRequest({
+		dataSourceFn: (params) =>
+			fetchConnectorEntityCount(Entity.Users, params),
+		variables: {groupId, id: dataSource.id!},
+	});
+
+	const hasChangesRef = useRef<boolean | null>(null);
+	const enabledAllAccountsPrevValueRef = useRef(enabledAllAccounts);
+	const enabledAllIndividualsPrevValueRef = useRef(enabledAllIndividuals);
+
+	const dataSourceActive = dataSource.status === DataSourceStatuses.Active;
+
+	if (accountsCountResponse.error || userCountResponse.error) {
+		return <ErrorDisplay />;
+	}
+
+	if (accountsCountResponse.loading || userCountResponse.loading) {
+		return <Loading spacer />;
+	}
+
+	return (
+		<div>
+			{!hasChangesRef.current &&
+				dataSourceActive &&
+				!enabledAllAccounts &&
+				!enabledAllIndividuals && (
+					<ClayAlert displayType="warning" title="Warning">
+						{Liferay.Language.get(
+							'the-data-source-setup-is-almost-complete.-sync-data-to-start-seeing-results-as-activities-occur-on-your-sites'
+						)}
+					</ClayAlert>
+				)}
+
+			{hasChangesRef.current && (
+				<ClayAlert displayType="info">
+					{Liferay.Language.get(
+						'this-configuration-is-not-saved-yet'
+					)}
+				</ClayAlert>
+			)}
+
+			<div className="mb-2">
+				<Text color="secondary" size={4}>
+					{Liferay.Language.get(
+						'to-configure-your-salesforce-data-source,-go-to-your-salesforce-environment-to-update-this-app-connection'
+					)}
+				</Text>
+			</div>
+
+			<div className="mt-3 text-dark">
+				<Text size={2} weight="semi-bold">
+					{Liferay.Language.get('select-items-to-sync').toUpperCase()}
+				</Text>
+			</div>
+
+			<SalesforceAccountsAndIndividuals
+				accountsSyncedCount={accountsCountResponse.data}
+				disabled={!dataSourceActive || !currentUser.isAdmin()}
+				enabledAccount={enabledAllAccounts}
+				enabledIndividual={enabledAllIndividuals}
+				individualsSyncedCount={userCountResponse.data}
+				onAccountChange={() => {
+					const newValue = !enabledAllAccounts;
+
+					setEnabledAllAccount(newValue);
+
+					hasChangesRef.current =
+						enabledAllAccountsPrevValueRef.current !== newValue ||
+						enabledAllIndividualsPrevValueRef.current !==
+							enabledAllIndividuals;
+				}}
+				onIndividualChange={() => {
+					const newValue = !enabledAllIndividuals;
+
+					setEnabledAllIndividuals(newValue);
+
+					hasChangesRef.current =
+						enabledAllIndividualsPrevValueRef.current !==
+							newValue ||
+						enabledAllAccountsPrevValueRef.current !==
+							enabledAllAccounts;
+				}}
+			/>
+
+			{dataSourceActive && currentUser.isAdmin() && (
+				<ClayButton
+					className="mt-3"
+					loading={loading}
+					onClick={async () => {
+						hasChangesRef.current = false;
+
+						await onSubmit({
+							enabledAllAccounts,
+							enabledAllIndividuals,
+						});
+					}}
+					size="sm"
+				>
+					{Liferay.Language.get('save')}
+				</ClayButton>
+			)}
+		</div>
+	);
+};
+
 const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 	addAlert,
 	close,
@@ -330,151 +475,6 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 				/>
 			</Card>
 		</BasePage>
-	);
-};
-
-const AccountAndIndividuals = ({
-	currentUser,
-	dataSource,
-	groupId,
-	loading,
-	onSubmit,
-}: {
-	currentUser: any;
-	dataSource: DataSource;
-	groupId: string;
-	loading: boolean;
-	onSubmit: (params: {
-		enabledAllAccounts: boolean;
-		enabledAllIndividuals: boolean;
-	}) => void;
-}) => {
-	const [enabledAllAccounts, setEnabledAllAccount] = useState(
-		dataSource.provider?.getIn(
-			['accountsConfiguration', 'enableAllAccounts'],
-			false
-		)
-	);
-
-	const [enabledAllIndividuals, setEnabledAllIndividuals] = useState(
-		dataSource.provider?.getIn(
-			['contactsConfiguration', 'enableAllContacts'],
-			false
-		) ||
-			dataSource.provider?.getIn(
-				['contactsConfiguration', 'enableAllLeads'],
-				false
-			)
-	);
-
-	const accountsCountResponse = useRequest({
-		dataSourceFn: (params) =>
-			fetchConnectorEntityCount(Entity.Accounts, params),
-		variables: {groupId, id: dataSource.id!},
-	});
-
-	const userCountResponse = useRequest({
-		dataSourceFn: (params) =>
-			fetchConnectorEntityCount(Entity.Users, params),
-		variables: {groupId, id: dataSource.id!},
-	});
-
-	const hasChangesRef = useRef<boolean | null>(null);
-	const enabledAllAccountsPrevValueRef = useRef(enabledAllAccounts);
-	const enabledAllIndividualsPrevValueRef = useRef(enabledAllIndividuals);
-
-	const dataSourceActive = dataSource.status === DataSourceStatuses.Active;
-
-	if (accountsCountResponse.error || userCountResponse.error) {
-		return <ErrorDisplay />;
-	}
-
-	if (accountsCountResponse.loading || userCountResponse.loading) {
-		return <Loading spacer />;
-	}
-
-	return (
-		<div>
-			{!hasChangesRef.current &&
-				dataSourceActive &&
-				!enabledAllAccounts &&
-				!enabledAllIndividuals && (
-					<ClayAlert displayType="warning" title="Warning">
-						{Liferay.Language.get(
-							'the-data-source-setup-is-almost-complete.-sync-data-to-start-seeing-results-as-activities-occur-on-your-sites'
-						)}
-					</ClayAlert>
-				)}
-
-			{hasChangesRef.current && (
-				<ClayAlert displayType="info">
-					{Liferay.Language.get(
-						'this-configuration-is-not-saved-yet'
-					)}
-				</ClayAlert>
-			)}
-
-			<div className="mb-2">
-				<Text color="secondary" size={4}>
-					{Liferay.Language.get(
-						'to-configure-your-salesforce-data-source,-go-to-your-salesforce-environment-to-update-this-app-connection'
-					)}
-				</Text>
-			</div>
-
-			<div className="mt-3 text-dark">
-				<Text size={2} weight="semi-bold">
-					{Liferay.Language.get('select-items-to-sync').toUpperCase()}
-				</Text>
-			</div>
-
-			<SalesforceAccountsAndIndividuals
-				accountsSyncedCount={accountsCountResponse.data}
-				disabled={!dataSourceActive || !currentUser.isAdmin()}
-				enabledAccount={enabledAllAccounts}
-				enabledIndividual={enabledAllIndividuals}
-				individualsSyncedCount={userCountResponse.data}
-				onAccountChange={() => {
-					const newValue = !enabledAllAccounts;
-
-					setEnabledAllAccount(newValue);
-
-					hasChangesRef.current =
-						enabledAllAccountsPrevValueRef.current !== newValue ||
-						enabledAllIndividualsPrevValueRef.current !==
-							enabledAllIndividuals;
-				}}
-				onIndividualChange={() => {
-					const newValue = !enabledAllIndividuals;
-
-					setEnabledAllIndividuals(newValue);
-
-					hasChangesRef.current =
-						enabledAllIndividualsPrevValueRef.current !==
-							newValue ||
-						enabledAllAccountsPrevValueRef.current !==
-							enabledAllAccounts;
-				}}
-			/>
-
-			{dataSourceActive && currentUser.isAdmin() && (
-				<ClayButton
-					className="mt-3"
-					loading={loading}
-					onClick={async () => {
-						hasChangesRef.current = false;
-
-						await onSubmit({
-							enabledAllAccounts,
-							enabledAllIndividuals,
-						});
-					}}
-					size="sm"
-				>
-					{Liferay.Language.get('save')}
-				</ClayButton>
-			)}
-		</div>
 	);
 };
 

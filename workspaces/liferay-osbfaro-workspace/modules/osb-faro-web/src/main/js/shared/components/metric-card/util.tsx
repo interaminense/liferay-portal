@@ -101,7 +101,7 @@ type TTab = {
 	title: string;
 };
 
-export const buildTabs = ({
+export const buildTabs = function buildTabs({
 	activeItemIndex,
 	items,
 	onActiveItemIndexChange,
@@ -109,8 +109,8 @@ export const buildTabs = ({
 	activeItemIndex: number;
 	items: TTabItem[];
 	onActiveItemIndexChange: (index: number) => void;
-}): TTab[] =>
-	items.map(({content}, index) => {
+}): TTab[] {
+	return items.map(({content}, index) => {
 		const {details, title, type, value} = content;
 		const {color, icon, label} = details;
 
@@ -133,11 +133,19 @@ export const buildTabs = ({
 			title,
 		};
 	});
+};
 
-export const getMetricName = (activeItemIndex: number, metrics: Metric[]) =>
-	metrics.map(({name}) => name)[activeItemIndex];
+export const getMetricName = function getMetricName(
+	activeItemIndex: number,
+	metrics: Metric[]
+) {
+	return metrics.map(({name}) => name)[activeItemIndex];
+};
 
-export const getActiveItem = (retVal: any, compareToPrevious: boolean) => {
+export const getActiveItem = function getActiveItem(
+	retVal: any,
+	compareToPrevious: boolean
+) {
 	if (!retVal) {
 		return {
 			chartData: [],
@@ -203,27 +211,30 @@ export const getActiveItem = (retVal: any, compareToPrevious: boolean) => {
 	return retVal;
 };
 
-export const getPreviousValueFromCompositeData = (
-	compositeData: Record<string, any> | undefined,
-	dataName: string | undefined,
-	dateKey: number
-) => {
-	const data = get(compositeData, dataName as string);
+export const getPreviousValueFromCompositeData =
+	function getPreviousValueFromCompositeData(
+		compositeData: Record<string, any> | undefined,
+		dataName: string | undefined,
+		dateKey: number
+	) {
+		const data = get(compositeData, dataName as string);
 
-	if (data) {
-		return data.find((val: {key: string}) => toUnix(val.key) === dateKey)
-			?.previousValue;
-	}
+		if (data) {
+			return data.find(
+				(val: {key: string}) => toUnix(val.key) === dateKey
+			)?.previousValue;
+		}
+	};
+
+export const getRegexType = function getRegexType(type: MetricType): RegExp {
+	return type === MetricType.Ratings ? /([/][0-9]+)/g : /([a-zA-Z%])+/g;
 };
 
-export const getRegexType = (type: MetricType): RegExp =>
-	type === MetricType.Ratings ? /([/][0-9]+)/g : /([a-zA-Z%])+/g;
-
-export const formatValue = (
+export const formatValue = function formatValue(
 	value: string,
 	regex: RegExp
-): React.ReactElement[] =>
-	value.split(' ').map((item, i) => {
+): React.ReactElement[] {
+	return value.split(' ').map((item, i) => {
 		const [head, unit] = item.split(regex);
 
 		return (
@@ -234,12 +245,13 @@ export const formatValue = (
 			</Fragment>
 		);
 	});
+};
 
-export const getMetricCardTabsData = (
+export const getMetricCardTabsData = function getMetricCardTabsData(
 	result: TMetricsResult,
 	metrics: Metric[]
-): TTabItem[] =>
-	metrics.map(({name, title, type}) => {
+): TTabItem[] {
+	return metrics.map(({name, title, type}) => {
 		const metricFormatter = getMetricFormatter(type);
 		const {percentage, trendClassification} = result[name].trend;
 
@@ -257,8 +269,9 @@ export const getMetricCardTabsData = (
 			},
 		};
 	});
+};
 
-export const convertHistogramKeysToDate = ({
+export const convertHistogramKeysToDate = function convertHistogramKeysToDate({
 	key,
 	previousValueKey,
 	valueKey,
@@ -268,14 +281,16 @@ export const convertHistogramKeysToDate = ({
 	previousValueKey: string;
 	valueKey: string;
 	[k: string]: any;
-}) => ({
-	key: toUnix(key),
-	previousValueKey: previousValueKey.split('/').map(toUnix),
-	valueKey: valueKey.split('/').map(toUnix),
-	...otherParams,
-});
+}) {
+	return {
+		key: toUnix(key),
+		previousValueKey: previousValueKey.split('/').map(toUnix),
+		valueKey: valueKey.split('/').map(toUnix),
+		...otherParams,
+	};
+};
 
-export const getMetricsChartData = ({
+export const getMetricsChartData = function getMetricsChartData({
 	histogram,
 	name,
 	title,
@@ -291,7 +306,7 @@ export const getMetricsChartData = ({
 	title: string;
 	tooltipTitle?: string;
 	type: MetricType;
-}): TChartDataSet[] => {
+}): TChartDataSet[] {
 	const formatter = getDataFormatter(type);
 
 	return [
@@ -353,7 +368,7 @@ const buildCompositeData = (
 	return {compositeContent, compositeData};
 };
 
-export const getMetricData = ({
+export const getMetricData = function getMetricData({
 	chartDataMapFn = getMetricsChartData,
 	compositeMetrics,
 	interval = INTERVAL_KEY_MAP.day,
@@ -373,7 +388,7 @@ export const getMetricData = ({
 	title: string;
 	tooltipTitle?: string;
 	type: MetricType;
-}) => {
+}) {
 	const metricFormatter = getMetricFormatter(type);
 
 	const histogram = result[name].histogram.metrics.map(
@@ -426,14 +441,14 @@ export const getMetricData = ({
 	};
 };
 
-export const getMetricsData = (
+export const getMetricsData = function getMetricsData(
 	result: TMetricsResult,
 	metrics: Metric[],
 	rangeSelectors: Partial<RangeSelectors> = {},
 	chartDataMapFn: (...args: any[]) => any = getMetricsChartData,
 	interval: string = INTERVAL_KEY_MAP.day
-) =>
-	metrics.map(({compositeMetrics, name, title, tooltipTitle, type}) =>
+) {
+	return metrics.map(({compositeMetrics, name, title, tooltipTitle, type}) =>
 		getMetricData({
 			chartDataMapFn,
 			compositeMetrics,
@@ -446,8 +461,9 @@ export const getMetricsData = (
 			type,
 		})
 	);
+};
 
-export const getSiteMetricsChartData = ({
+export const getSiteMetricsChartData = function getSiteMetricsChartData({
 	compositeData,
 	histogram,
 	name,
@@ -465,7 +481,7 @@ export const getSiteMetricsChartData = ({
 	title: string;
 	tooltipTitle?: string;
 	type: MetricType;
-}): TChartDataSet[] => {
+}): TChartDataSet[] {
 	if (name !== 'visitorsMetric') {
 		return getMetricsChartData({
 			histogram,

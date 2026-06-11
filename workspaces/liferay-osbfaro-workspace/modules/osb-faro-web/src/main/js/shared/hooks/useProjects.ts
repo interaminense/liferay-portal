@@ -8,7 +8,7 @@ import {useEffect, useState} from 'react';
 import {fetchJoinableProjects, fetchMany} from 'shared/api/projects';
 import {Project} from 'shared/util/records';
 
-export const useFetchProjects = () => {
+export const useFetchProjects = function useFetchProjects() {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState<any[]>([]);
 
@@ -36,7 +36,7 @@ export const useFetchProjects = () => {
 	};
 };
 
-export const useFetchJoinableProjects = () => {
+export const useFetchJoinableProjects = function useFetchJoinableProjects() {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState<any[]>([]);
 

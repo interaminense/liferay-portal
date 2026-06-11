@@ -13,23 +13,25 @@ export const DEFAULT_RANGE_SELECTORS: RangeSelectors = {
 	rangeStart: null as unknown as string,
 };
 
-export const useQueryRangeSelectors = (): RangeSelectors => {
-	const rangeSelectors = useUnsafeQueryRangeSelectors();
-
-	return rangeSelectors || DEFAULT_RANGE_SELECTORS;
-};
-
 /**
  * Used to get undefined if there is no rangeKey on query
  * @returns {RangeSelectors | undefined}
  */
 
-export const useUnsafeQueryRangeSelectors = (): RangeSelectors | undefined => {
-	const {rangeEnd, rangeKey, rangeStart} = useQueryParams();
+export const useUnsafeQueryRangeSelectors =
+	function useUnsafeQueryRangeSelectors(): RangeSelectors | undefined {
+		const {rangeEnd, rangeKey, rangeStart} = useQueryParams();
 
-	if (!rangeKey) {
-		return;
-	}
+		if (!rangeKey) {
+			return;
+		}
 
-	return {rangeEnd, rangeKey, rangeStart};
-};
+		return {rangeEnd, rangeKey, rangeStart};
+	};
+
+export const useQueryRangeSelectors =
+	function useQueryRangeSelectors(): RangeSelectors {
+		const rangeSelectors = useUnsafeQueryRangeSelectors();
+
+		return rangeSelectors || DEFAULT_RANGE_SELECTORS;
+	};

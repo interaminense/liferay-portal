@@ -12,20 +12,24 @@ import {deletePropertyFromObject} from 'shared/util/object';
 type Breakdowns = {[key: string]: Breakdown};
 type Filters = {[key: string]: Filter};
 
-export const hasOrderChanged = (
+export const hasOrderChanged = function hasOrderChanged(
 	initialOrder: string[],
 	order: string[]
-): boolean =>
-	initialOrder.length !== order.length ||
-	!order.every((id, i) => id === initialOrder[i]);
+): boolean {
+	return (
+		initialOrder.length !== order.length ||
+		!order.every((id, i) => id === initialOrder[i])
+	);
+};
 
-export const isAttributeInUse = (
+export const isAttributeInUse = function isAttributeInUse(
 	attributeId: string,
 	...items: (Breakdowns | Filters)[]
-): boolean =>
-	items.some((item) =>
+): boolean {
+	return items.some((item) =>
 		Object.values(item).some((item) => item.attributeId === attributeId)
 	);
+};
 
 export enum ActionTypes {
 	AddBreakdown = 'ADD_BREAKDOWN',
@@ -130,7 +134,7 @@ const actionHandlers = {
 			attributes: {...attributes, [attribute!.id]: attribute!},
 			breakdownOrder: [...breakdownOrder, id],
 			breakdowns: {
-				[id]: {...breakdown, id},
+				[id]: {...breakdown!, id},
 				...breakdowns,
 			},
 			filterOrder,
@@ -154,7 +158,7 @@ const actionHandlers = {
 			breakdownOrder,
 			breakdowns,
 			filterOrder: [...filterOrder, id],
-			filters: {[id]: {...filter, id}, ...filters},
+			filters: {[id]: {...filter!, id}, ...filters},
 		};
 	},
 	[ActionTypes.DeleteAllAttributes]: (): AttributesState => ({
@@ -320,10 +324,10 @@ const actionHandlers = {
 	}),
 };
 
-export const attributesReducer = (
+export const attributesReducer = function attributesReducer(
 	state: AttributesState,
 	action: Action
-): AttributesState => {
+): AttributesState {
 	const handlerFn = actionHandlers[action.type];
 
 	if (handlerFn) {
@@ -345,10 +349,10 @@ interface IAttributesProviderProps extends React.HTMLAttributes<HTMLElement> {
 	initialState?: AttributesState;
 }
 
-export const AttributesProvider: React.FC<IAttributesProviderProps> = ({
+export const AttributesProvider = function AttributesProvider({
 	children,
 	initialState = defaultState,
-}) => {
+}: IAttributesProviderProps) {
 	const [
 		{attributes, breakdownOrder, breakdowns, filterOrder, filters},
 		attributesDispatch,
@@ -450,18 +454,22 @@ export const AttributesProvider: React.FC<IAttributesProviderProps> = ({
 	);
 };
 
-export const withAttributesProvider =
-	(WrappedComponent: React.ComponentType<any>) =>
-	(props: Record<string, any>) => (
+export const withAttributesProvider = function withAttributesProvider(
+	WrappedComponent: React.ComponentType<any>
+) {
+	return (props: Record<string, any>) => (
 		<AttributesProvider>
 			<WrappedComponent {...props} />
 		</AttributesProvider>
 	);
+};
 
-export const withAttributesConsumer =
-	(WrappedComponent: React.ComponentType<any>) =>
-	(props: Record<string, any>) => (
+export const withAttributesConsumer = function withAttributesConsumer(
+	WrappedComponent: React.ComponentType<any>
+) {
+	return (props: Record<string, any>) => (
 		<AttributesContext.Consumer>
 			{(attributes) => <WrappedComponent {...props} {...attributes} />}
 		</AttributesContext.Consumer>
 	);
+};

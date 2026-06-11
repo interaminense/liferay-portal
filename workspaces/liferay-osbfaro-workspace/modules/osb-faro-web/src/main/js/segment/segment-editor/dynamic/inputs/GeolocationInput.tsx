@@ -36,6 +36,19 @@ const COUNTRY = 'country';
 const REGION = 'region';
 
 /**
+ * Get the index of the entry in the criteria list with the matching location type.
+ * @param {Map} valueIMap - The Immutable Map representing the custom input value.
+ * @param {string} locationType - The location type.
+ * @returns {number} - The index of the matching entry or -1 if not found.
+ */
+export function getLocationTypeIndex(
+	valueIMap: CustomValue,
+	locationType: string
+): number {
+	return getIndexFromPropertyName(valueIMap, `context/${locationType}`);
+}
+
+/**
  * Create a new templated criterion entry for Geolocation.
  * @param {string} locationType - The location type.
  * @param {string} value - The value of the criterion.
@@ -57,19 +70,6 @@ export function createLocationTypeEntry(
 		propertyName: `context/${locationType}`,
 		value,
 	});
-}
-
-/**
- * Get the index of the entry in the criteria list with the matching location type.
- * @param {Map} valueIMap - The Immutable Map representing the custom input value.
- * @param {string} locationType - The location type.
- * @returns {number} - The index of the matching entry or -1 if not found.
- */
-export function getLocationTypeIndex(
-	valueIMap: CustomValue,
-	locationType: string
-): number {
-	return getIndexFromPropertyName(valueIMap, `context/${locationType}`);
 }
 
 /**
@@ -225,8 +225,8 @@ interface IButtonInputTriggerProps {
 	dataSourceFn: (query?: string) => Promise<string[]>;
 	editing: boolean;
 	label: string;
-	onChange: (value: string) => void;
 	onBlur: () => void;
+	onChange: (value: string) => void;
 	onClick: () => void;
 	placeholder: string;
 	value: string;
@@ -336,8 +336,8 @@ export default class GeolocationInput extends React.Component<
 		const {onChange, valid, value} = this.props;
 
 		let params: {
-			value: Map<any, any>;
 			valid?: {country: boolean; dateFilter: boolean};
+			value: Map<any, any>;
 		} = {
 			value: setLocationTypeValue(value, locationType, inputValue),
 		};

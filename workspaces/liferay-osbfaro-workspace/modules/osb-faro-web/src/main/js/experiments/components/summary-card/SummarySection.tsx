@@ -13,12 +13,12 @@ interface SummarySectionIProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export const SummarySection: React.FC<SummarySectionIProps> & {
-	Variant: typeof Variant;
 	Description: typeof Description;
 	Heading: typeof Heading;
-	ProgressBar: typeof ProgressBar;
 	MetricType: typeof MetricType;
-} = ({children, className, title, ...otherProps}) => {
+	ProgressBar: typeof ProgressBar;
+	Variant: typeof Variant;
+} = function SummarySection({children, className, title, ...otherProps}) {
 	const classes = getCN('analytics-summary-section', className);
 
 	return (

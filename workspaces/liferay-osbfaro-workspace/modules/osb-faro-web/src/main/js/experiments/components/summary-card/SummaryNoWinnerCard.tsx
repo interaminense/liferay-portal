@@ -21,7 +21,10 @@ import {SummarySection} from './SummarySection';
 import {SummaryTitle} from './SummaryTitle';
 import {IExperiment} from './types';
 
-export const SummaryNoWinnerCard: React.FC<{
+export const SummaryNoWinnerCard = function SummaryNoWinnerCard({
+	experiment,
+	timeZoneId,
+}: {
 	experiment: IExperiment & {
 		description?: string;
 		metrics: {
@@ -34,7 +37,7 @@ export const SummaryNoWinnerCard: React.FC<{
 		type?: string;
 	};
 	timeZoneId: string;
-}> = ({experiment, timeZoneId}) => {
+}) {
 	const {
 		description,
 		goal,
@@ -61,7 +64,6 @@ export const SummaryNoWinnerCard: React.FC<{
 				}
 				title={Liferay.Language.get('no-clear-winner')}
 			/>
-
 			<SummaryAlert symbol="exclamation-circle">
 				<SummaryTitle
 					className="font-weight-bold mb-1"
@@ -74,7 +76,6 @@ export const SummaryNoWinnerCard: React.FC<{
 					)}
 				</strong>
 			</SummaryAlert>
-
 			<SummaryBaseCard.Body>
 				<div className="mt-4 w-100">
 					<SummaryParagraph
@@ -91,7 +92,7 @@ export const SummaryNoWinnerCard: React.FC<{
 							/>
 
 							<SummarySection.ProgressBar
-								value={parseInt(toRounded(completion))}
+								value={parseInt(toRounded(completion), 10)}
 							/>
 						</SummarySection>
 

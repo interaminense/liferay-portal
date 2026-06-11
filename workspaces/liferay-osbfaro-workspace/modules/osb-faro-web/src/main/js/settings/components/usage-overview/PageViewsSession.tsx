@@ -18,7 +18,9 @@ interface IPageViewsSessionProps {
 	currentPlan: any;
 }
 
-export const PageViewsSession = ({currentPlan}: IPageViewsSessionProps) => {
+export const PageViewsSession = function PageViewsSession({
+	currentPlan,
+}: IPageViewsSessionProps) {
 	const {timeZoneId} = useTimeZone();
 	const {count, limit, status} = currentPlan.metrics.get('pageViews');
 	const available = limit - count;

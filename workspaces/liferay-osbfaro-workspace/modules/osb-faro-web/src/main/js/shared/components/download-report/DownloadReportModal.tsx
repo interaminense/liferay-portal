@@ -35,11 +35,13 @@ interface IDownloadReportModal {
 	type?: ReportType;
 }
 
-export const DownloadReportModal: React.FC<IDownloadReportModal> = ({
+export const DownloadReportModal = function DownloadReportModal({
 	children,
+
 	dateRangeDescription = Liferay.Language.get(
 		'only-select-a-date-range-if-you-want-to-modify-the-current-date-filter'
 	),
+
 	disabled = false,
 	infoMessage,
 	observer,
@@ -48,7 +50,7 @@ export const DownloadReportModal: React.FC<IDownloadReportModal> = ({
 	rangeSelectors: initialRangeSelectors,
 	showDateRange = true,
 	type,
-}) => {
+}: IDownloadReportModal) {
 	const history = useHistory();
 	const [openAlert, setOpenAlert] = useState(true);
 	const [submitDisabled, setSubmitDisabled] = useState(false);

@@ -8,8 +8,8 @@ import {Interval} from 'shared/types';
 import {INTERVAL_KEY_MAP} from 'shared/util/time';
 
 interface IWrappedComponentProps {
-	onChangeInterval: (val: Interval) => void;
 	interval: Interval;
+	onChangeInterval: (val: Interval) => void;
 }
 
 const withInterval =

@@ -8,8 +8,10 @@ import {Routes, SEGMENTS, toRoute} from 'shared/util/router';
 import {fetchSegment} from '../actions/segments';
 import withAction from './WithAction';
 
-export const withSegment = (includeReferencedObjects = false) =>
-	withAction(
+export const withSegment = function withSegment(
+	includeReferencedObjects = false
+) {
+	return withAction(
 		({groupId, id}) =>
 			fetchSegment({groupId, includeReferencedObjects, segmentId: id}),
 		(state, {id}) => state.getIn(['segments', id]),
@@ -29,5 +31,6 @@ export const withSegment = (includeReferencedObjects = false) =>
 			propName: 'segment',
 		}
 	);
+};
 
 export default withSegment();

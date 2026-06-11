@@ -47,9 +47,9 @@ type Valid = {
 };
 
 interface IEventInputProps extends ISegmentEditorCustomInputBase {
+	segmentType: SegmentTypes;
 	touched: Touched;
 	valid: Valid;
-	segmentType: SegmentTypes;
 }
 
 const EventInput: React.FC<IEventInputProps> = ({
@@ -313,6 +313,7 @@ const EventInput: React.FC<IEventInputProps> = ({
 		);
 	}
 
+	// eslint-disable-next-line react-hooks/rules-of-hooks -- the early returns above are stable per mount; lifting this query would fire it for hidden events
 	const result = useQuery<EventPropertiesData, EventPropertiesVariables>(
 		EventPropertiesQuery,
 		{

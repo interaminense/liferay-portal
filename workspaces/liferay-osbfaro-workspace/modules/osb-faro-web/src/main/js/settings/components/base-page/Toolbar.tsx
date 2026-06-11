@@ -11,8 +11,8 @@ import {Link} from 'react-router-dom';
 
 interface IToolbarProps {
 	backURL: {
-		url: string;
 		label: string;
+		url: string;
 	};
 }
 

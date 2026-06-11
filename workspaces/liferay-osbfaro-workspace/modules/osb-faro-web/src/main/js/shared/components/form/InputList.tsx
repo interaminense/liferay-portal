@@ -139,6 +139,8 @@ const FormInputList: React.FC<IInputListProps> = ({
 
 	useEffect(() => {
 		setFieldValue(name, items);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [items]);
 
 	useEffect(() => {
@@ -152,6 +154,8 @@ const FormInputList: React.FC<IInputListProps> = ({
 		else {
 			setFieldError(name, '');
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [inputValue]);
 
 	onChangeInputList(inputValue || '');
@@ -184,8 +188,8 @@ const FormInputList: React.FC<IInputListProps> = ({
 					inputValue: inputValue || '',
 					inset,
 					items,
-					setInputValue,
-					setItems,
+					onInputChange: setInputValue,
+					onItemsChange: setItems,
 					onValidationFail,
 					text,
 					validateOnBlur: true,

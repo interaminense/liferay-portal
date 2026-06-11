@@ -30,7 +30,7 @@ interface ISiteMetricsDataRow {
 	visitors: number;
 }
 
-export const mapPropsToOptions = ({
+export const mapPropsToOptions = function mapPropsToOptions({
 	channelId,
 	interval,
 	rangeSelectors,
@@ -38,13 +38,15 @@ export const mapPropsToOptions = ({
 	channelId: string;
 	interval: Interval;
 	rangeSelectors: RangeSelectors;
-}) => ({
-	variables: {
-		channelId,
-		interval,
-		...getSafeRangeSelectors(rangeSelectors),
-	},
-});
+}) {
+	return {
+		variables: {
+			channelId,
+			interval,
+			...getSafeRangeSelectors(rangeSelectors),
+		},
+	};
+};
 
 export const mapResultToProps = safeResultToProps(
 	({

@@ -30,7 +30,11 @@ const Component: Record<
 	[Status.FinishedWinner]: SummaryWinnerCard as React.FC<any>,
 };
 
-export const SummaryCard = ({experiment}: {experiment: IExperiment}) => {
+export const SummaryCard = function SummaryCard({
+	experiment,
+}: {
+	experiment: IExperiment;
+}) {
 	const {groupId} = useParams<{groupId: string}>();
 	const store = useStore();
 	const timeZoneId = store

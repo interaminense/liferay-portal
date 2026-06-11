@@ -37,10 +37,10 @@ interface ISubscriptionDetailsProps {
 	planType: string;
 }
 
-export const SubscriptionDetails = ({
+export const SubscriptionDetails = function SubscriptionDetails({
 	currentPlan,
 	planType,
-}: ISubscriptionDetailsProps) => {
+}: ISubscriptionDetailsProps) {
 	const addOns = getPlanAddOns(currentPlan);
 
 	const LDPEnabled = planType?.includes('Data Platform');

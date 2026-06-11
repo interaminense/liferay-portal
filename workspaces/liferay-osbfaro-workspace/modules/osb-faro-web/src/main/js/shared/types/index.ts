@@ -9,6 +9,8 @@ import {OrderByDirections, RangeKeyTimeRanges} from 'shared/util/constants';
 import {Filters} from 'shared/util/filter';
 import {OrderParams} from 'shared/util/records';
 
+import {Modal} from './Modal';
+
 export {Alert} from './Alert';
 export {Modal} from './Modal';
 
@@ -41,8 +43,8 @@ export type DisplayType = 'primary' | 'secondary' | 'link' | 'unstyled';
 export type FilterByType = Map<string, Set<string>>;
 export type FilterInputType = 'radio' | 'checkbox';
 export type FilterOptionType = {
-	label: string;
 	key: string;
+	label: string;
 	type?: FilterInputType;
 	values: {label: string; value: string}[];
 };
@@ -57,8 +59,8 @@ export interface ICompositionBag {
 export interface IBasePageContext {
 	experienceId?: string | null;
 	filters: any;
-	router: any;
 	rangeSelectors?: RangeSelectors;
+	router: any;
 }
 
 export interface IPagination {
@@ -145,8 +147,6 @@ export interface HasModal {
 	close: Modal.close;
 	open: Modal.open;
 }
-
-import {Modal} from './Modal';
 
 export interface ICommonVariables extends SafeRangeSelectors, Filters {
 	interval: Interval;

@@ -16,7 +16,11 @@ import Legend from 'shared/components/Legend';
 
 import {IExperiment} from '../summary-card/types';
 
-export const MediansChart = ({experiment}: {experiment: IExperiment}) => {
+export const MediansChart = function MediansChart({
+	experiment,
+}: {
+	experiment: IExperiment;
+}) {
 	const {dxpVariants, goal, metrics} = experiment;
 
 	const variantMetrics = metrics?.variantMetrics ?? [];

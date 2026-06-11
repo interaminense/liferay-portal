@@ -157,7 +157,7 @@ export default class CustomStringInput extends React.Component<ICustomStringInpu
 								TEXT_OPERATORS.map(({key, label}) => ({
 									key,
 									label,
-								})) as {label: string; key: string}[]
+								})) as {key: string; label: string}[]
 							}
 							onSelectionChange={this.handleOperatorChange}
 							selectedKey={selectedOperatorKey}

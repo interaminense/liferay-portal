@@ -7,9 +7,10 @@ import * as d3 from 'd3';
 import {toThousandsABTesting} from 'experiments/util/experiments';
 import React from 'react';
 import ChartTooltip, {
+	Alignments,
 	IChartTooltipProps,
+	Weights,
 } from 'shared/components/chart-tooltip';
-import {Alignments, Weights} from 'shared/components/chart-tooltip';
 import {getDate as getDateUtil} from 'shared/util/date';
 
 const formatTooltip = (dataPoint: any[]): IChartTooltipProps => {
@@ -110,8 +111,10 @@ const formatTooltip = (dataPoint: any[]): IChartTooltipProps => {
 	return {header, rows};
 };
 
-export const Tooltip = ({dataPoint}: {dataPoint: any[]}) => (
-	<div className="bb-tooltip-container position-static">
-		<ChartTooltip {...formatTooltip(dataPoint)} />
-	</div>
-);
+export const Tooltip = function Tooltip({dataPoint}: {dataPoint: any[]}) {
+	return (
+		<div className="bb-tooltip-container position-static">
+			<ChartTooltip {...formatTooltip(dataPoint)} />
+		</div>
+	);
+};

@@ -6,8 +6,7 @@
 import {graphql} from '@apollo/client/react/hoc';
 import ClayButton from '@clayui/button';
 import {OrderedMap} from 'immutable';
-import {isArray, isString} from 'lodash';
-import {omit} from 'lodash';
+import {isArray, isString, omit} from 'lodash';
 import React from 'react';
 import MetadataTag from 'settings/recommendations/components/MetadataTag';
 import RecommendationPageAssetsQuery from 'settings/recommendations/queries/RecommendationPageAssetsQuery';

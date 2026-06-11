@@ -6,13 +6,20 @@
 import React from 'react';
 import {useCurrentUser} from 'shared/hooks/useCurrentUser';
 
-/**
- * CurrentUser HOC
- * @deprecated Use useCurrentUser Hook for functional components.
- */
-export default <P extends object>(Component: React.ComponentType<P>) =>
-	(props: P) => {
+const WithCurrentUser = function WithCurrentUser<P extends object>(
+	Component: React.ComponentType<P>
+) {
+	const WithCurrentUserComponent = (props: P) => {
 		const currentUser = useCurrentUser();
 
 		return <Component {...props} currentUser={currentUser} />;
 	};
+
+	return WithCurrentUserComponent;
+};
+
+/**
+ * CurrentUser HOC
+ * @deprecated Use useCurrentUser Hook for functional components.
+ */
+export default WithCurrentUser;

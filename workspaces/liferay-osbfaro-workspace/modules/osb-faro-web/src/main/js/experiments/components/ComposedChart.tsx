@@ -17,8 +17,7 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
-import {CHART_COLOR_NAMES} from 'shared/util/charts';
-import {getAxisMeasuresFromData} from 'shared/util/charts';
+import {CHART_COLOR_NAMES, getAxisMeasuresFromData} from 'shared/util/charts';
 import {getDate} from 'shared/util/date';
 import {ANIMATION_DURATION, AXIS, getAxisTickText} from 'shared/util/recharts';
 
@@ -27,6 +26,7 @@ import {CONTROL_COLOR} from '../util/constants';
 const {stark: CHART_BLUE} = CHART_COLOR_NAMES;
 
 interface IComposedChartProps {
+	Tooltip: React.ComponentType<any>;
 	chartType?: 'line' | 'area';
 	data: {
 		controlLabel: string;
@@ -35,14 +35,13 @@ interface IComposedChartProps {
 		intervals: Array<string | number>;
 		variantLabel?: string;
 	};
-	Tooltip: React.ComponentType<any>;
 }
 
-export const ComposedChart = ({
+export const ComposedChart = function ComposedChart({
 	Tooltip,
 	chartType = 'line',
 	data: initialData,
-}: IComposedChartProps) => {
+}: IComposedChartProps) {
 	const {controlLabel, data, format, intervals, variantLabel} = initialData;
 
 	const [hoverLegend, setHoverLegend] = useState<string | null>(null);

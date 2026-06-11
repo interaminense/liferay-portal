@@ -37,10 +37,10 @@ export const UnassignedSegmentsContext = React.createContext<{
 	unassignedSegments: [],
 });
 
-export const unassignedSegmentsReducer = (
+export const unassignedSegmentsReducer = function unassignedSegmentsReducer(
 	state: State,
 	{payload, type}: Action
-) => {
+) {
 	switch (type) {
 		case 'setSegments': {
 			return {
@@ -59,10 +59,10 @@ export const unassignedSegmentsReducer = (
 	}
 };
 
-export const UnassignedSegmentsProvider = ({
+export const UnassignedSegmentsProvider = function UnassignedSegmentsProvider({
 	children,
 	unassignedSegments: initialSegments,
-}: unassignedSegmentsProviderProps) => {
+}: unassignedSegmentsProviderProps) {
 	const [
 		{showUnassignedAlert, unassignedSegments},
 		unassignedSegmentsDispatch,
@@ -84,23 +84,27 @@ export const UnassignedSegmentsProvider = ({
 	);
 };
 
-export const useUnassignedSegmentsContext = () => {
-	const context = React.useContext(UnassignedSegmentsContext);
-	if (isNil(context)) {
-		throw new Error(
-			'UnassignedSegmentsContext must be used within a UnassignedSegmentsProvider'
-		);
-	}
+export const useUnassignedSegmentsContext =
+	function useUnassignedSegmentsContext() {
+		const context = React.useContext(UnassignedSegmentsContext);
+		if (isNil(context)) {
+			throw new Error(
+				'UnassignedSegmentsContext must be used within a UnassignedSegmentsProvider'
+			);
+		}
 
-	return context;
-};
+		return context;
+	};
 
 export const withUnassignedSegmentsProvider =
-	<P extends object>(WrappedComponent: React.ComponentType<P>) =>
-	(props: P) => (
-		<UnassignedSegmentsProvider>
-			<WrappedComponent {...props} />
-		</UnassignedSegmentsProvider>
-	);
+	function withUnassignedSegmentsProvider<P extends object>(
+		WrappedComponent: React.ComponentType<P>
+	) {
+		return (props: P) => (
+			<UnassignedSegmentsProvider>
+				<WrappedComponent {...props} />
+			</UnassignedSegmentsProvider>
+		);
+	};
 
 export default UnassignedSegmentsProvider;

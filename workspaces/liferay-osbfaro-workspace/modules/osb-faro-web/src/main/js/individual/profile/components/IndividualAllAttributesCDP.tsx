@@ -87,6 +87,17 @@ const DetailsCard = ({
 	</Card>
 );
 
+const ListComponent = compose(
+	withToolbar({
+		disableSearch: false,
+		showDropdownRangeKey: false,
+		showFilterAndOrder: false,
+	}),
+	withLoading({spacer: true}),
+	withError({page: false}),
+	withEmpty()
+)(Table) as React.ComponentType<any>;
+
 const IndividualDetailsCDP = ({
 	children: emptyState,
 	groupId,
@@ -171,7 +182,7 @@ const IndividualDetailsCDP = ({
 		return {
 			filteredItems: filtered,
 			sourcesCount: new Set(
-				allFields.map((e) => e.dataSourceId).filter(Boolean)
+				allFields.map((event) => event.dataSourceId).filter(Boolean)
 			).size,
 			totalOriginal: allFields.length,
 		};
@@ -240,16 +251,5 @@ const IndividualDetailsCDP = ({
 		</div>
 	);
 };
-
-const ListComponent = compose(
-	withToolbar({
-		disableSearch: false,
-		showDropdownRangeKey: false,
-		showFilterAndOrder: false,
-	}),
-	withLoading({spacer: true}),
-	withError({page: false}),
-	withEmpty()
-)(Table) as React.ComponentType<any>;
 
 export default IndividualDetailsCDP;

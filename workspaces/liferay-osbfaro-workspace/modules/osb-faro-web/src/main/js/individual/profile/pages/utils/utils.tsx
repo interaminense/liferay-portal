@@ -6,11 +6,11 @@
 import {Text} from '@clayui/core';
 import React from 'react';
 
-export const buildHeaderSubtitle = (individual: {
+export const buildHeaderSubtitle = function buildHeaderSubtitle(individual: {
 	accountName: string;
 	lastSessionCountry: string;
 	properties: {email: string};
-}) => {
+}) {
 	const {email} = individual.properties;
 	const {accountName, lastSessionCountry} = individual;
 

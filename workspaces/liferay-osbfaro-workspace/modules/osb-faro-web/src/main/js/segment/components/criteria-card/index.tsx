@@ -50,6 +50,8 @@ const CriteriaCard: React.FC<ICriteriaCardProps> = ({
 		setReportContainer(ReportContainer.SegmentCriteriaCard);
 
 		return clearReportContainers;
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -62,6 +64,8 @@ const CriteriaCard: React.FC<ICriteriaCardProps> = ({
 				addProperty(criterionType.createProperty({id, name}));
 			}
 		);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [channelId, groupId, criteria]);
 
 	return (

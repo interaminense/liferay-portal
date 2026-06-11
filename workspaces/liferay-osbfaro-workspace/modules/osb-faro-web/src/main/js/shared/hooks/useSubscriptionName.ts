@@ -8,14 +8,15 @@ import {useSelector} from 'react-redux';
 
 type RootState = Map<string, any>;
 
-export const useSubscriptionName = ({
+export const useSubscriptionName = function useSubscriptionName({
 	groupId,
 }: {
 	groupId: string;
-}): string | null =>
-	useSelector((state: RootState) =>
+}): string | null {
+	return useSelector((state: RootState) =>
 		state.getIn(
 			['projects', groupId, 'data', 'faroSubscription', 'name'],
 			null
 		)
 	);
+};

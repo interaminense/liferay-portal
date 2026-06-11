@@ -12,14 +12,14 @@ import React from 'react';
 interface IRowActionsProps {
 	actions?: (React.HTMLAttributes<HTMLElement> & {
 		className?: string;
-		label: string;
 		iconSymbol?: string;
+		label: string;
 		onClick?: any;
 	})[];
 	quickActions?: {
+		href?: string;
 		iconSymbol: string;
 		label: string;
-		href?: string;
 		onClick?: () => void;
 	}[];
 }

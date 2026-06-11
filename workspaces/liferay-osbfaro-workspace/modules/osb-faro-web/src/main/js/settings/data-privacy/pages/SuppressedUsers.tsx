@@ -12,7 +12,11 @@ import {getDataPrivacy} from 'shared/util/breadcrumbs';
 
 import SuppressedUserList from '../hocs/SuppressedUserList';
 
-export const SuppressedUsers = ({router}: {router: Router}) => {
+export const SuppressedUsers = function SuppressedUsers({
+	router,
+}: {
+	router: Router;
+}) {
 	const currentUser = useCurrentUser();
 	const {timeZoneId} = useTimeZone();
 

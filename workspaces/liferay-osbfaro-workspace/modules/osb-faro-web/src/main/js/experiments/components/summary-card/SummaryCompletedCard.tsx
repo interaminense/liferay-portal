@@ -21,7 +21,10 @@ import {SummarySection} from './SummarySection';
 import {SummaryTitle} from './SummaryTitle';
 import {IExperiment} from './types';
 
-export const SummaryCompletedCard: React.FC<{
+export const SummaryCompletedCard = function SummaryCompletedCard({
+	experiment,
+	timeZoneId,
+}: {
 	experiment: IExperiment & {
 		description?: string;
 		finishedDate?: string;
@@ -35,7 +38,7 @@ export const SummaryCompletedCard: React.FC<{
 		type?: string;
 	};
 	timeZoneId: string;
-}> = ({experiment, timeZoneId}) => {
+}) {
 	const {
 		description,
 		dxpVariants,
@@ -83,7 +86,6 @@ export const SummaryCompletedCard: React.FC<{
 				)}
 				title={Liferay.Language.get('test-complete')}
 			/>
-
 			<SummaryAlert symbol="check-circle">
 				<SummaryTitle
 					className="font-weight-bold mb-1"
@@ -100,7 +102,6 @@ export const SummaryCompletedCard: React.FC<{
 					)}
 				</strong>
 			</SummaryAlert>
-
 			<SummaryBaseCard.Body>
 				<div className="mt-4 w-100">
 					<SummaryParagraph
@@ -116,7 +117,7 @@ export const SummaryCompletedCard: React.FC<{
 								value={`${toRounded(completion)}%`}
 							/>
 							<SummarySection.ProgressBar
-								value={parseInt(toRounded(completion))}
+								value={parseInt(toRounded(completion), 10)}
 							/>
 						</SummarySection>
 

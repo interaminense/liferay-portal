@@ -22,8 +22,8 @@ const SELECT_KEYS = [ARROW_DOWN, ARROW_UP, ENTER];
 
 type GraphqlQuery = {
 	mapResultsToProps: (data: any) => TMappedData;
-	variables: object;
 	query: DocumentNode;
+	variables: object;
 };
 
 type TMappedData = {
@@ -39,41 +39,42 @@ interface IItemProps extends React.HTMLAttributes<HTMLLIElement> {
 	onSelect: (item: any) => void;
 }
 
-export const Item: React.FC<IItemProps> = ({
+export const Item = function Item({
 	active,
 	className,
 	disabled,
 	item,
 	itemRenderer,
 	onSelect,
-}) => (
-	<li className={className}>
-		<ClayButton
-			className={getCN('button-root dropdown-item text-truncate', {
-				active,
-			})}
-			disabled={disabled}
-			displayType="unstyled"
-			onClick={() => onSelect(item)}
-		>
-			{itemRenderer(item)}
-		</ClayButton>
-	</li>
-);
+}: IItemProps) {
+	return (
+		<li className={className}>
+			<ClayButton
+				className={getCN('button-root dropdown-item text-truncate', {
+					active,
+				})}
+				disabled={disabled}
+				displayType="unstyled"
+				onClick={() => onSelect(item)}
+			>
+				{itemRenderer(item)}
+			</ClayButton>
+		</li>
+	);
+};
 
 interface IBaseSelectProps extends React.HTMLAttributes<HTMLInputElement> {
-	placeholder?: string;
 	alwaysFetchOnFocus?: boolean;
 	className?: string;
 	containerClass?: string;
 	dataSourceFn?: (value: string | number) => Promise<any>;
 	disabled?: boolean;
 	emptyInputOnInactive?: boolean;
-	inputName?: string;
 	focusOnInit?: boolean;
 	forwardedRef?: React.Ref<any>;
 	graphqlQuery?: GraphqlQuery;
 	id?: string;
+	inputName?: string;
 	inputSize?: string;
 	inputValue?: string | React.ReactText;
 	inset?: boolean;
@@ -82,6 +83,7 @@ interface IBaseSelectProps extends React.HTMLAttributes<HTMLInputElement> {
 	onFocus?: () => void;
 	onInputValueChange?: (value: string | number) => void;
 	onSelect?: (item: any) => void;
+	placeholder?: string;
 	selectedItem?: any;
 }
 
@@ -111,8 +113,11 @@ const BaseSelect: React.FC<IBaseSelectProps> = ({
 }) => {
 	useImperativeHandle(forwardedRef, () => ({
 		focus: () => {
+
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define -- declared after this Hook; reordering would change Hook call order
 			handleFocus();
 
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define -- declared after this Hook; reordering would change Hook call order
 			_inputRef.current.focus();
 		},
 	}));
@@ -130,8 +135,11 @@ const BaseSelect: React.FC<IBaseSelectProps> = ({
 			query,
 			variables,
 		} = graphqlQuery;
+
+		// eslint-disable-next-line react-hooks/rules-of-hooks -- graphql vs dataSourceFn mode is fixed per mount, so the branch (and Hook order) is stable
 		const debouncedInputValue = useDebounce(inputValue, DEBOUNCE_DELAY);
 
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 		response = useQuery(query, {
 			fetchPolicy: 'network-only',
 			skip: !active,
@@ -147,6 +155,8 @@ const BaseSelect: React.FC<IBaseSelectProps> = ({
 		};
 	}
 	else {
+
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 		response = useRequest({
 			dataSourceFn: ({value}) => dataSourceFn?.(value),
 			debounceDelay: DEBOUNCE_DELAY,
@@ -167,10 +177,30 @@ const BaseSelect: React.FC<IBaseSelectProps> = ({
 		if (focusOnInit) {
 			_inputRef.current.focus();
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
 		onBlur && onBlur(event);
+	};
+
+	const handleOutsideClick = () => {
+		_inputRef.current.blur();
+
+		setActive(false);
+	};
+
+	const handleSetFocusIndex = (val: number): void => {
+		const count = items?.length;
+
+		setFocusIndex((val + count) % count || 0);
+	};
+
+	const handleSelect = (item: any) => {
+		handleOutsideClick();
+
+		onSelect(item);
 	};
 
 	const handleFocus = () => {
@@ -209,24 +239,6 @@ const BaseSelect: React.FC<IBaseSelectProps> = ({
 			default:
 				break;
 		}
-	};
-
-	const handleOutsideClick = () => {
-		_inputRef.current.blur();
-
-		setActive(false);
-	};
-
-	const handleSelect = (item: any) => {
-		handleOutsideClick();
-
-		onSelect(item);
-	};
-
-	const handleSetFocusIndex = (val: number): void => {
-		const count = items?.length;
-
-		setFocusIndex((val + count) % count || 0);
 	};
 
 	return (

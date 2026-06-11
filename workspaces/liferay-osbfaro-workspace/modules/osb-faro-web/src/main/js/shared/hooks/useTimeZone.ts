@@ -7,7 +7,9 @@ import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {ITimeZone} from 'shared/util/records/TimeZone';
 
-export const useTimeZone = (initialGroupId?: string): ITimeZone => {
+export const useTimeZone = function useTimeZone(
+	initialGroupId?: string
+): ITimeZone {
 	const {groupId} = useParams();
 
 	const value = useSelector<any, any>((state) =>

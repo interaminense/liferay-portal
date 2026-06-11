@@ -10,7 +10,6 @@ import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
 import ClayLink from '@clayui/link';
 import ClayNavigationBar from '@clayui/navigation-bar';
-import classNames from 'classnames';
 import getCN from 'classnames';
 import {pickBy} from 'lodash';
 import React, {useState} from 'react';
@@ -87,12 +86,12 @@ const NavBar: React.FC<INavBarProps> = ({
 interface Action extends React.HTMLAttributes<HTMLElement> {
 	deprecated?: boolean;
 	disabled: boolean;
-	label: string;
+	external?: boolean;
 	href: string;
 	icon?: {
 		symbol: string;
 	};
-	external?: boolean;
+	label: string;
 }
 
 interface IPageActionsProps {
@@ -116,7 +115,7 @@ const PageActions: React.FC<IPageActionsProps> = ({
 				return (
 					<Button
 						button
-						className={classNames(
+						className={getCN(
 							getCN('button-root', {
 								disabled: props.disabled,
 							})
@@ -196,8 +195,8 @@ interface ITitleSectionProps extends React.HTMLAttributes<HTMLDivElement> {
 export interface IActionProps extends React.HTMLAttributes<HTMLDivElement> {
 	displayType: string;
 	label: string;
-	redirectURL?: string;
 	onClick?: () => void;
+	redirectURL?: string;
 }
 
 interface IActionsProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -266,9 +265,9 @@ interface IHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Header: React.FC<IHeaderProps> & {
+	Actions: typeof Actions;
 	NavBar: typeof NavBar;
 	PageActions: typeof PageActions;
-	Actions: typeof Actions;
 	Section: typeof Section;
 	TitleSection: typeof TitleSection;
 } = ({breadcrumbs, children, fluid, groupId}) => {

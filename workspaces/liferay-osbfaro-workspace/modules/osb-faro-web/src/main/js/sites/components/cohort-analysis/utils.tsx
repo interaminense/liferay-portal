@@ -70,11 +70,11 @@ const COHORT_COLORS_MAP = {
 	[VISITORS]: [martellL4, martellL2, martell, martellD2],
 };
 
-export const formatDate = (
+export const formatDate = function formatDate(
 	date: string,
 	interval: IntervalType,
 	abbreviated: boolean = false
-): string => {
+): string {
 	const momentDate = moment(date);
 
 	const intervalFormat = abbreviated ? `${interval}-abbreviated` : interval;
@@ -111,15 +111,17 @@ const PERIOD_LABEL_MAP = {
 	[WEEK]: Liferay.Language.get('week-x'),
 };
 
-export const getPeriodLabel = (
+export const getPeriodLabel = function getPeriodLabel(
 	period: number,
 	interval: IntervalType
-): string | string[] => sub(PERIOD_LABEL_MAP[interval], [period]);
+): string | string[] {
+	return sub(PERIOD_LABEL_MAP[interval], [period]);
+};
 
-export const getColorHex = (
+export const getColorHex = function getColorHex(
 	retention: number,
 	visitorsType: VisitorsType
-): string => {
+): string {
 	const cohortColors = COHORT_COLORS_MAP[visitorsType];
 
 	if (retention >= 75) {

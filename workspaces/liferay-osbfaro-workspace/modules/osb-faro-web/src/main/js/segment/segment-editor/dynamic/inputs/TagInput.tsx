@@ -111,6 +111,8 @@ export default function TagInput({
 				),
 			});
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const isOccurrenceValid = (
@@ -200,7 +202,6 @@ export default function TagInput({
 					<b>{displayValue}</b>
 				</Form.GroupItem>
 			</Form.Group>
-
 			<Form.Group autoFit>
 				<Form.GroupItem className="entity-name" label shrink>
 					{Liferay.Language.get('for').toLowerCase()}
@@ -328,7 +329,7 @@ export default function TagInput({
 							let numberVal: string | number = '';
 
 							if (isValid(inputVal)) {
-								numberVal = parseInt(inputVal);
+								numberVal = parseInt(inputVal, 10);
 							}
 
 							const valid = isValidOccurrenceCount(numberVal);

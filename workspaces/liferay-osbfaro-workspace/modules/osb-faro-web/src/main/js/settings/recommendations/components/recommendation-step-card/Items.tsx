@@ -115,6 +115,8 @@ const Items: React.FC<IItemsProps> = ({close, groupId, itemFilters, open}) => {
 				start: 0,
 			},
 		});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [itemFilters]);
 
 	const renderTotalPages = (): React.ReactNode => {

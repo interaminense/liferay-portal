@@ -25,7 +25,7 @@ import {
 import {ICommonVariables} from 'shared/types';
 
 const PageMetricCard: React.FC<IGenericMetricBaseCardProps> = (props) => {
-	const variables = (commonVariables: ICommonVariables) =>
+	const useVariables = (commonVariables: ICommonVariables) =>
 		useAssetVariables(commonVariables);
 
 	const metrics: Metric[] = [
@@ -43,11 +43,12 @@ const PageMetricCard: React.FC<IGenericMetricBaseCardProps> = (props) => {
 			metrics={metrics}
 			queries={{
 				MetricQuery: PageMetricQuery,
-				name: 'page',
 				TabsQuery: PageMetricTabsQuery,
+
+				name: 'page',
 			}}
 			reportContainer={ReportContainer.VisitorsBehaviorCard}
-			variables={variables}
+			variables={useVariables}
 		/>
 	);
 };

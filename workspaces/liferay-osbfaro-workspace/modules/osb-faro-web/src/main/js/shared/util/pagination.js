@@ -134,8 +134,11 @@ export const ACCESSOR_TO_FIELD_MAP = {
 	viewCount: UNIQUE_VISITS_COUNT,
 };
 
-export const getFieldNameFromAccessor = (accessor = '') =>
-	get(ACCESSOR_TO_FIELD_MAP, [accessor], accessor);
+export const getFieldNameFromAccessor = function getFieldNameFromAccessor(
+	accessor = ''
+) {
+	return get(ACCESSOR_TO_FIELD_MAP, [accessor], accessor);
+};
 
 const SYSTEM_FIELDS = [
 	ACTIVITIES_COUNT,
@@ -190,12 +193,13 @@ export function createOrderByField(field, sortOrder, system) {
 	};
 }
 
-export const getDefaultSortOrder = (fieldName) =>
-	INVERTED_SORT_FIELDS.includes(fieldName)
+export const getDefaultSortOrder = function getDefaultSortOrder(fieldName) {
+	return INVERTED_SORT_FIELDS.includes(fieldName)
 		? OrderByDirections.Descending
 		: OrderByDirections.Ascending;
+};
 
-export const invertSortOrder = (currentSortOrder) => {
+export const invertSortOrder = function invertSortOrder(currentSortOrder) {
 	if (currentSortOrder) {
 		return currentSortOrder === OrderByDirections.Ascending
 			? OrderByDirections.Descending
@@ -206,15 +210,18 @@ export const invertSortOrder = (currentSortOrder) => {
 	}
 };
 
-export const createOrderIOMap = (field, sortOrder) =>
-	OrderedMap({
+export const createOrderIOMap = function createOrderIOMap(field, sortOrder) {
+	return OrderedMap({
 		[field]: new OrderParams({
 			field,
 			sortOrder: sortOrder || getDefaultSortOrder(field),
 		}),
 	});
+};
 
-export const getSortFromOrderIOMap = (orderIOMap) => {
+export const getSortFromOrderIOMap = function getSortFromOrderIOMap(
+	orderIOMap
+) {
 	if (orderIOMap) {
 		const {field, sortOrder} = orderIOMap.first();
 
@@ -225,14 +232,17 @@ export const getSortFromOrderIOMap = (orderIOMap) => {
 	}
 };
 
-export const getGraphQLVariablesFromPagination = ({
-	delta,
-	orderIOMap,
-	page,
-	query,
-}) => ({
-	keywords: query,
-	size: delta,
-	sort: getSortFromOrderIOMap(orderIOMap),
-	start: (page - 1) * delta,
-});
+export const getGraphQLVariablesFromPagination =
+	function getGraphQLVariablesFromPagination({
+		delta,
+		orderIOMap,
+		page,
+		query,
+	}) {
+		return {
+			keywords: query,
+			size: delta,
+			sort: getSortFromOrderIOMap(orderIOMap),
+			start: (page - 1) * delta,
+		};
+	};

@@ -5,11 +5,12 @@
 
 import sendRequest from 'shared/util/request';
 
-export const activate = ({groupId}) =>
-	sendRequest({
+export const activate = function activate({groupId}) {
+	return sendRequest({
 		method: 'POST',
 		path: `main/project/${groupId}/activate`,
 	});
+};
 
 export function create({
 	corpProjectUuid,

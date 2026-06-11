@@ -82,6 +82,8 @@ const SearchableModal: React.FC<ISearchableModalProps> = ({
 		if (page !== 1) {
 			onPageChange(1);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [orderIOMap, query]);
 
 	useEffect(() => {
@@ -91,6 +93,8 @@ const SearchableModal: React.FC<ISearchableModalProps> = ({
 		else if (data) {
 			onChange([...items, ...data?.items]);
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
 
 	const renderChildren = () => {

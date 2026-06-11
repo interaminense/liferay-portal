@@ -51,8 +51,8 @@ const InputWithEditToggle: React.FC<IInputWithEditToggleProps> = ({
 
 					setEditing(false);
 				})
-				.catch((err) => {
-					if (!err.IS_CANCELLATION_ERROR) {
+				.catch((error) => {
+					if (!error.IS_CANCELLATION_ERROR) {
 						setSubmitting(false);
 					}
 				});

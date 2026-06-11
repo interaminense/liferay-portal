@@ -103,10 +103,10 @@ type Data = {
 	filters: {string: string[]};
 	groupId: string;
 	id: string;
-	selectedDate: string;
 	orderIOMap: string;
 	page: number;
 	query: string;
+	selectedDate: string;
 };
 
 interface IOverviewProps {

@@ -9,10 +9,34 @@ import {fetchCurrentUser} from 'shared/actions/users';
 import {User} from 'shared/util/records';
 
 /**
+ * Get currentUser from redux store.
+ */
+export const useCurrentUser = function useCurrentUser(): User {
+	const currentUserId = useSelector<any, any>((state) =>
+		state.getIn(['currentUser', 'data'])
+	);
+	const data: User = useSelector<any, any>((state) =>
+		state.getIn(['users', currentUserId, 'data'])
+	);
+
+	const newUser = new User({
+		emailAddress: '',
+		id: '',
+		name: '',
+		roleName: '',
+		status: 1,
+	});
+
+	return data || newUser;
+};
+
+/**
  * Used only on the first time on App.tsx to fetch data from backend.
  * To get currentUser, you can use WithCurrentUser (for HOC) or useCurrentUser (for HOOK).
  */
-export const useFetchCurrentUser = (initialGroupId: string = '0') => {
+export const useFetchCurrentUser = function useFetchCurrentUser(
+	initialGroupId: string = '0'
+) {
 	const currentUser = useSelector<any, any>((state) =>
 		state.get('currentUser')
 	);
@@ -31,6 +55,8 @@ export const useFetchCurrentUser = (initialGroupId: string = '0') => {
 		}
 
 		dispatch(fetchCurrentUser(groupId));
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialGroupId]);
 
 	return {
@@ -38,26 +64,4 @@ export const useFetchCurrentUser = (initialGroupId: string = '0') => {
 		error,
 		loading,
 	};
-};
-
-/**
- * Get currentUser from redux store.
- */
-export const useCurrentUser = (): User => {
-	const currentUserId = useSelector<any, any>((state) =>
-		state.getIn(['currentUser', 'data'])
-	);
-	const data: User = useSelector<any, any>((state) =>
-		state.getIn(['users', currentUserId, 'data'])
-	);
-
-	const newUser = new User({
-		emailAddress: '',
-		id: '',
-		name: '',
-		roleName: '',
-		status: 1,
-	});
-
-	return data || newUser;
 };

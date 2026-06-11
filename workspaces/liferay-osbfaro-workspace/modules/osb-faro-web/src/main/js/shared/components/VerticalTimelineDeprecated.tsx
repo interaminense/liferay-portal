@@ -18,14 +18,14 @@ import Sticker from './Sticker';
 import TextTruncate from './TextTruncate';
 
 type TITLE_ELEMENT_ATTRIBUTES = {
+	_owner: string;
+	_store: {};
 	key: string;
 	props: {
 		children: string;
 	};
-	type: string;
 	ref: string;
-	_owner: string;
-	_store: {};
+	type: string;
 };
 
 type ITEM_SHAPE = {
@@ -164,6 +164,8 @@ const TimelineItem: FC<ITimelineItemProps> = ({
 				</div>
 
 				{expanded && nestedItems && (
+
+					// eslint-disable-next-line @typescript-eslint/no-use-before-define -- mutual recursion: TimelineItem and VerticalTimeline reference each other
 					<VerticalTimeline
 						items={nestedItems}
 						nested

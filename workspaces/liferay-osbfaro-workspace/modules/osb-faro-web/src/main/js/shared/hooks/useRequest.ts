@@ -7,7 +7,7 @@ import {debounce} from 'lodash/fp';
 import {useCallback, useRef, useState} from 'react';
 import {useDeepEqualEffect} from 'shared/hooks/useDeepEqualEffect';
 
-export const useRequest = <TParams extends object, TData>({
+export const useRequest = function useRequest<TParams extends object, TData>({
 	dataSourceFn,
 	debounceDelay = 0,
 	initialState = {
@@ -27,10 +27,11 @@ export const useRequest = <TParams extends object, TData>({
 	resetStateIfSkipingRequest?: boolean;
 	skipRequest?: boolean;
 	variables: TParams;
-}) => {
+}) {
 	const requestAbortControllerRef = useRef<AbortController>();
 	const debounceRef = useRef<ReturnType<typeof debounce>>();
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const debouncedDataSourceFn = useCallback<any>(
 		debounce(debounceDelay)((vars) => {
 			if (!dataSourceFn) {
@@ -50,15 +51,23 @@ export const useRequest = <TParams extends object, TData>({
 						return;
 					}
 
+					// `state`/`setState` are defined by a `useState` call below
+					// that must read `getData`; the cycle blocks reordering.
+
+					// eslint-disable-next-line @typescript-eslint/no-use-before-define
 					setState({
+
+						// eslint-disable-next-line @typescript-eslint/no-use-before-define
 						...state,
 						data: normalize(result),
 						loading: false,
 					});
 				})
 				.catch(
-					(err) =>
-						!err.IS_CANCELLATION_ERROR &&
+					(error) =>
+						!error.IS_CANCELLATION_ERROR &&
+
+						// eslint-disable-next-line @typescript-eslint/no-use-before-define
 						setState({...state, error: true, loading: false})
 				);
 		}),
@@ -66,6 +75,8 @@ export const useRequest = <TParams extends object, TData>({
 	);
 
 	const getData = () => {
+
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		setState({...state, loading: true});
 
 		debounceRef.current = debouncedDataSourceFn(variables);

@@ -28,11 +28,11 @@ type Currency = {
 
 interface ICommerceMetricCardProps<TGraphQlData>
 	extends React.HTMLAttributes<HTMLElement> {
+	Query: DocumentNode;
 	description: string;
 	emptyTitle: string;
 	label: string;
 	mapper: (result: TGraphQlData) => Currency[];
-	Query: DocumentNode;
 }
 
 interface ICommerceMetricCardWithStatesRendererProps
@@ -65,6 +65,38 @@ const CommerceCardWithStatesRenderer: React.FC<
 		<StatesRenderer.Success>{children}</StatesRenderer.Success>
 	</StatesRenderer>
 );
+
+function getCurrency(currencies: Currency[]): Currency {
+	const defaultCurrencyCode = 'USD';
+
+	if (!currencies || !currencies.length) {
+		return {
+			currencyCode: defaultCurrencyCode,
+			trend: {
+				percentage: 0,
+				trendClassification: 'NEUTRAL',
+			},
+			value: '0',
+		};
+	}
+
+	return (
+		currencies?.find(
+			({currencyCode}) => currencyCode === defaultCurrencyCode
+		) ?? currencies[0]
+	);
+}
+
+function formatCurrency(
+	currencyCode: string,
+	locale: string,
+	value: string
+): string {
+	return new Intl.NumberFormat(locale.replace('_', '-'), {
+		currency: currencyCode,
+		style: 'currency',
+	}).format(parseFloat(value));
+}
 
 function CommerceMetricCard<TGraphQlData>({
 	Query,
@@ -151,38 +183,6 @@ function CommerceMetricCard<TGraphQlData>({
 			}}
 		</BaseCard>
 	);
-}
-
-function getCurrency(currencies: Currency[]): Currency {
-	const defaultCurrencyCode = 'USD';
-
-	if (!currencies || !currencies.length) {
-		return {
-			currencyCode: defaultCurrencyCode,
-			trend: {
-				percentage: 0,
-				trendClassification: 'NEUTRAL',
-			},
-			value: '0',
-		};
-	}
-
-	return (
-		currencies?.find(
-			({currencyCode}) => currencyCode === defaultCurrencyCode
-		) ?? currencies[0]
-	);
-}
-
-function formatCurrency(
-	currencyCode: string,
-	locale: string,
-	value: string
-): string {
-	return new Intl.NumberFormat(locale.replace('_', '-'), {
-		currency: currencyCode,
-		style: 'currency',
-	}).format(parseFloat(value));
 }
 
 export default CommerceMetricCard;

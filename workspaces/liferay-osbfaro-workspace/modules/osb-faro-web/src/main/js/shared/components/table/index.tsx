@@ -15,10 +15,10 @@ import Row from './Row';
 
 import type {Column} from './Row';
 
-export const getRowIdentifierValue = (
+export const getRowIdentifierValue = function getRowIdentifierValue(
 	item: {[key: string]: any},
 	rowIdentifier: string | string[]
-) => {
+) {
 	if (isArray(rowIdentifier)) {
 		return rowIdentifier.reduce((acc, rowIdentifierKey) => {
 			acc = acc.concat(get(item, rowIdentifierKey, rowIdentifierKey));
@@ -41,12 +41,12 @@ interface ITableProps {
 	internalSort?: boolean;
 	items: {[key: string]: any}[];
 	loading?: boolean;
-	orderIOMap?: OrderedMap<string, OrderParams>;
 	onOrderIOMapChange?: (orderIOMap: OrderedMap<string, OrderParams>) => void;
 	onRowClick?: (item: {[key: string]: any}) => void;
 	onRowDelete?: (item: {[key: string]: any}) => void;
 	onRowSave?: (item: {[key: string]: any}) => void;
 	onSelectItemsChange?: (item: {[key: string]: any}) => void;
+	orderIOMap?: OrderedMap<string, OrderParams>;
 	renderInlineRowActions?: (params: {
 		data: {[key: string]: any};
 		editing: boolean;

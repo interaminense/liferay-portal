@@ -6,14 +6,13 @@
 import {utcFormat} from 'd3';
 import moment, {Moment} from 'moment';
 import momentTimezone from 'moment-timezone';
-import {RangeKeyTimeRanges} from 'shared/util/constants';
-import {TIME_RANGE_LABELS} from 'shared/util/constants';
+import {RangeKeyTimeRanges, TIME_RANGE_LABELS} from 'shared/util/constants';
 import {getDate} from 'shared/util/date';
 
 type TimeRange = {
 	description: string;
-	value: RangeKeyTimeRanges;
 	label: string;
+	value: RangeKeyTimeRanges;
 };
 
 export function formatDateWithTimezone(
@@ -61,7 +60,7 @@ export function formatTimeRange(timeRange: RawTimeRange[]) {
 		})
 		.sort(
 			(a: {value: string}, b: {value: string}) =>
-				parseInt(a.value) - parseInt(b.value)
+				parseInt(a.value, 10) - parseInt(b.value, 10)
 		);
 }
 
@@ -126,7 +125,7 @@ type GetFilteredItems = (props: {
 	timeRange: Array<TimeRange>;
 }) => Array<TimeRange>;
 
-export const getFilteredItems: GetFilteredItems = ({
+export const getFilteredItems: GetFilteredItems = function getFilteredItems({
 	legacy,
 	rangeKey,
 	rangeKeys = [
@@ -138,7 +137,7 @@ export const getFilteredItems: GetFilteredItems = ({
 	retentionPeriod,
 	seeMore,
 	timeRange,
-}) => {
+}) {
 	if (legacy) {
 		return filterLegacyItems(timeRange, retentionPeriod);
 	}

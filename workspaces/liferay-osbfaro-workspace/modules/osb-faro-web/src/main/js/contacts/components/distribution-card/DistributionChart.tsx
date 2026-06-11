@@ -269,7 +269,7 @@ class DistributionChart extends React.Component<
 												ANIMATION_DURATION.bar
 											}
 											dataKey={CHART_DATA_ID}
-											onMouseEnter={(e, index) =>
+											onMouseEnter={(event, index) =>
 												this.setState({
 													hoverIndex: index,
 												})
@@ -301,7 +301,6 @@ class DistributionChart extends React.Component<
 						</>
 					)}
 				</Card.Body>
-
 				<Card.Footer>
 					<ClayLink
 						borderless

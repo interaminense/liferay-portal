@@ -17,8 +17,7 @@ import ChartTooltip, {
 	Weights,
 } from 'shared/components/chart-tooltip';
 import {ReportContainer} from 'shared/components/download-report/DownloadPDFReport';
-import {compose} from 'shared/hoc';
-import {withEmpty, withError, withLoading} from 'shared/hoc';
+import {compose, withEmpty, withError, withLoading} from 'shared/hoc';
 import VisitorsByTimeQuery from 'shared/queries/VisitorsByTimeQuery';
 import {IBasePageContext} from 'shared/types';
 import {sub} from 'shared/util/lang';
@@ -29,8 +28,8 @@ import {
 	mapResultToProps,
 } from './mappers/visitors-by-time-query';
 
-export const formatHour = (hour: string) => {
-	const hourAsNumber = parseInt(hour);
+export const formatHour = function formatHour(hour: string) {
+	const hourAsNumber = parseInt(hour, 10);
 	const suffix = hourAsNumber >= 12 ? 'PM' : 'AM';
 	let hourDisplay = hourAsNumber;
 
@@ -44,7 +43,7 @@ export const formatHour = (hour: string) => {
 	return `${hourDisplay} ${suffix}`;
 };
 
-export const renderTooltip = ({
+export const renderTooltip = function renderTooltip({
 	column,
 	row,
 	value,
@@ -52,8 +51,8 @@ export const renderTooltip = ({
 	column: string;
 	row: string;
 	value: number;
-}) =>
-	ReactDOMServer.renderToString(
+}) {
+	return ReactDOMServer.renderToString(
 		<ChartTooltip
 			header={[
 				{
@@ -79,6 +78,7 @@ export const renderTooltip = ({
 			]}
 		/>
 	);
+};
 
 const HeatmapChartWithData = compose<any>(
 	graphql(VisitorsByTimeQuery, {

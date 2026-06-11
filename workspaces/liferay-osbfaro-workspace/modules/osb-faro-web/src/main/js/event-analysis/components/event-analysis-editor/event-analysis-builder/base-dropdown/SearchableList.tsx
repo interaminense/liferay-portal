@@ -53,14 +53,12 @@ const SearchableList: React.FC<ISearchableListProps> = ({
 	return (
 		<>
 			<ClayDropdown.Search
-				formProps={{onSubmit: (e) => e.preventDefault()}}
+				formProps={{onSubmit: (event) => event.preventDefault()}}
 				onChange={onQueryChange}
 				placeholder={Liferay.Language.get('search')}
 				value={query}
 			/>
-
 			{noResults && <NoResultsDisplay spacer />}
-
 			{!noResults && (
 				<ClayDropdown.ItemList className="base-dropdown-list">
 					{filteredItems.map((item) => {

@@ -5,8 +5,7 @@
 
 import React, {useEffect} from 'react';
 import {matchPath} from 'react-router-dom';
-import {Channel} from 'shared/components/channels-menu';
-import {getDefaultChannel} from 'shared/components/channels-menu';
+import {Channel, getDefaultChannel} from 'shared/components/channels-menu';
 import ErrorPage from 'shared/pages/ErrorPage';
 import {Routes, toRoute} from 'shared/util/router';
 
@@ -54,6 +53,8 @@ const checkValidChannel =
 					})
 				);
 			}
+
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []);
 
 		if (

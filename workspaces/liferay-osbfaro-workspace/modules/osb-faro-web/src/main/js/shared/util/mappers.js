@@ -5,11 +5,14 @@
 
 import {isNil, reduce} from 'lodash';
 import {getFilters} from 'shared/util/filter';
-import {getSafeDecodedURIComponent} from 'shared/util/util';
-import {getSafeRangeSelectors, getSafeTouchpoint} from 'shared/util/util';
+import {
+	getSafeDecodedURIComponent,
+	getSafeRangeSelectors,
+	getSafeTouchpoint,
+} from 'shared/util/util';
 
-export const formatItem = (item) =>
-	reduce(
+export const formatItem = function formatItem(item) {
+	return reduce(
 		item,
 		(acc, val, key) => {
 			if (val && !isNil(val.value)) {
@@ -23,6 +26,7 @@ export const formatItem = (item) =>
 		},
 		{}
 	);
+};
 
 /**
  * mapListResultsToProps
@@ -32,10 +36,10 @@ export const formatItem = (item) =>
  * @param {boolean} response.loading
  * @param {function} response.refetch
  */
-export const mapListResultsToProps = (
+export const mapListResultsToProps = function mapListResultsToProps(
 	{data, error, loading, refetch},
 	mapperFn = (val) => val
-) => {
+) {
 	if (data) {
 		const {items, total} = mapperFn(data);
 

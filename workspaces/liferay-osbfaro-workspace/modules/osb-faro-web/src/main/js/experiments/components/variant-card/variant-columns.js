@@ -16,7 +16,7 @@ import ImprovementCell from './ImprovementCell';
 import UniqueVisitorCell from './UniqueVisitorsCell';
 import VariantTitleCell from './VariantTitleCell';
 
-export default ({
+const VariantColumns = function VariantColumns({
 	bestVariant,
 	metric,
 	metricUnit,
@@ -24,8 +24,8 @@ export default ({
 	status,
 	type,
 	winnerDXPVariantId,
-}) => {
-	const arr = [
+}) {
+	const array = [
 		{
 			accessor: 'dxpVariantName',
 			cellRenderer: ({data: {dxpVariantId, dxpVariantName}}) => (
@@ -74,7 +74,7 @@ export default ({
 	];
 
 	if (type === 'AB') {
-		arr.push(
+		array.push(
 			{
 				accessor: 'improvement',
 				cellRenderer: ({data: {improvement}}) => (
@@ -101,7 +101,7 @@ export default ({
 		);
 	}
 
-	arr.push({
+	array.push({
 		accessor: 'uniqueVisitors',
 		cellRenderer: ({data: {trafficSplit, uniqueVisitors}}) => (
 			<UniqueVisitorCell
@@ -118,5 +118,7 @@ export default ({
 		sortable: true,
 	});
 
-	return arr;
+	return array;
 };
+
+export default VariantColumns;

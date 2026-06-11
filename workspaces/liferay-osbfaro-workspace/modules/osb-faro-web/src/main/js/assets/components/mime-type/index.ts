@@ -5,13 +5,13 @@
 
 import {ClassName, FILE_MIME_MAP, STRUCTURES_MAP} from './constants';
 
-export const getMimeType = ({
+export const getMimeType = function getMimeType({
 	assetType,
 	mimeType,
 }: {
 	assetType?: string;
 	mimeType?: string;
-}): {className: ClassName; icon: string} => {
+}): {className: ClassName; icon: string} {
 	if (!mimeType) {
 		if (STRUCTURES_MAP[assetType || ClassName.DocumentDefault]) {
 			return STRUCTURES_MAP[assetType || ClassName.DocumentDefault];

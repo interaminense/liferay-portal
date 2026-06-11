@@ -8,8 +8,8 @@ import {toRounded, toThousands} from 'shared/util/numbers';
 
 interface UniqueVisitorsCellIProps
 	extends React.TdHTMLAttributes<HTMLTableCellElement> {
-	uniqueVisitors: number;
 	trafficSplit: number;
+	uniqueVisitors: number;
 }
 
 const UniqueVisitorsCell: React.FC<UniqueVisitorsCellIProps> = ({

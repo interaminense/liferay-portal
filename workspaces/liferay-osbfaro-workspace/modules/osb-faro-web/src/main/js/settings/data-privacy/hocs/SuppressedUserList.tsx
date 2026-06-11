@@ -25,8 +25,7 @@ import {
 	GDPRRequestTypes,
 	Sizes,
 } from 'shared/util/constants';
-import {CUSTOM_DATE_FORMAT} from 'shared/util/date';
-import {formatDateToTimeZone} from 'shared/util/date';
+import {CUSTOM_DATE_FORMAT, formatDateToTimeZone} from 'shared/util/date';
 import {sub} from 'shared/util/lang';
 import {CREATE_DATE, createOrderIOMap} from 'shared/util/pagination';
 import {User} from 'shared/util/records';

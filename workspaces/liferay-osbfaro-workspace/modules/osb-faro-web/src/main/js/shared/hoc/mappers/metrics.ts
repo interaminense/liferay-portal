@@ -18,58 +18,62 @@ export const getMapPropsToOptions: (
 	gqlQuery: GQLQuery,
 	options?: object
 ) => (props: {[key: string]: any}) => GraphQLOptions =
-	(gqlQuery, options = {}) =>
-	({
-		delta,
-		filters,
-		interestId,
-		orderIOMap,
-		page,
-		query,
-		rangeSelectors,
-		router: {params, query: routerQuery},
-	}) => {
-		const {variables} = getVariables({
+	function getMapPropsToOptions(gqlQuery, options = {}) {
+		return ({
+			delta,
 			filters,
-			params,
+			interestId,
+			orderIOMap,
+			page,
+			query,
 			rangeSelectors,
-		});
+			router: {params, query: routerQuery},
+		}) => {
+			const {variables} = getVariables({
+				filters,
+				params,
+				rangeSelectors,
+			});
 
-		// LRAC-6976 POC TEMP
+			// LRAC-6976 POC TEMP
 
-		const useDB = get(routerQuery, 'useDB', null) === 'true';
+			const useDB = get(routerQuery, 'useDB', null) === 'true';
 
-		let unfilteredVariables: any = {
-			...variables,
-			keywords: query,
-			size: delta,
-			sort: getSortFromOrderIOMap(orderIOMap),
-			start: (page - 1) * delta,
-			terms: interestId,
-		};
+			let unfilteredVariables: any = {
+				...variables,
+				keywords: query,
+				size: delta,
+				sort: getSortFromOrderIOMap(orderIOMap),
+				start: (page - 1) * delta,
+				terms: interestId,
+			};
 
-		// LRAC-6976 POC TEMP
+			// LRAC-6976 POC TEMP
 
-		if (useDB) {
-			unfilteredVariables = {...unfilteredVariables, useDB};
-		}
+			if (useDB) {
+				unfilteredVariables = {...unfilteredVariables, useDB};
+			}
 
-		const validVariables: Record<string, boolean> = gqlQuery
-			? getVariableDefinitions(gqlQuery)
-			: {};
+			const validVariables: Record<string, boolean> = gqlQuery
+				? getVariableDefinitions(gqlQuery)
+				: {};
 
-		return {
-			variables: isEmpty(validVariables)
-				? unfilteredVariables
-				: removeUnusedVariables(unfilteredVariables, validVariables),
-			...options,
+			return {
+				variables: isEmpty(validVariables)
+					? unfilteredVariables
+					: removeUnusedVariables(
+							unfilteredVariables,
+							validVariables
+						),
+				...options,
+			};
 		};
 	};
 
-export const getMapResultToProps = (
+export const getMapResultToProps = function getMapResultToProps(
 	getResults: (result: any) => {items: any; total: any}
-) =>
-	safeResultToProps((result) => {
+) {
+	return safeResultToProps((result) => {
 		const {items, total} = getResults(result);
 
 		const formattedItems = items && items.map(formatItem);
@@ -80,6 +84,7 @@ export const getMapResultToProps = (
 			total,
 		};
 	}) as any;
+};
 
 const getMetricsMapper = (
 	getResults: (result: any) => {items: any; total: any},

@@ -24,7 +24,7 @@ interface IMembershipChanges {
 
 const MEMBERSHIP_CHANGE_MAP: Record<
 	MembershipChange,
-	{label: string; displayType?: 'success' | 'danger'}
+	{displayType?: 'success' | 'danger'; label: string}
 > = {
 	ADDED: {
 		displayType: 'success',
