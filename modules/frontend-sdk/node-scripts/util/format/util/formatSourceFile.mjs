@@ -73,6 +73,16 @@ export default async function formatSourceFile(filePath, skip, options) {
 				break;
 			}
 
+			case '.graphql': {
+				if (!skip.prettier) {
+					transformedContent = await formatWithPrettier(
+						transformedContent,
+						filePath
+					);
+				}
+				break;
+			}
+
 			default: {
 				if (!skip.prettier) {
 					transformedContent = await formatWithPrettier(
