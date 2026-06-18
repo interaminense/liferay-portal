@@ -130,8 +130,9 @@ export function useSnapshots(fdsName: string, enabled = true) {
 		Liferay.FeatureFlags['LPS-164563'];
 
 	const [snapshots, setSnapshots] = useState<Array<{
-		headerVisible: boolean;
-		items: any[];
+		configuration: string;
+		erc: string;
+		label: string;
 	}> | null>(fetchSnapshots ? null : []);
 
 	useEffect(() => {
@@ -157,11 +158,7 @@ export function useSnapshots(fdsName: string, enabled = true) {
 					})
 				);
 
-				setSnapshots(
-					formattedSnapshots.length
-						? [{headerVisible: false, items: formattedSnapshots}]
-						: []
-				);
+				setSnapshots(formattedSnapshots);
 			})
 			.catch(error => {
 				// eslint-disable-next-line no-console
@@ -202,7 +199,9 @@ const FrontendDataSet = ({
 		<BaseFrontendDataSet
 			{...props}
 			configInURLBehavior={configInURLBehavior}
-			snapshots={snapshots}
+			snapshots={
+				snapshots as unknown as IBaseFrontendDataSetProps['snapshots']
+			}
 			snapshotsEnabled={snapshotsEnabled}
 		/>
 	);
