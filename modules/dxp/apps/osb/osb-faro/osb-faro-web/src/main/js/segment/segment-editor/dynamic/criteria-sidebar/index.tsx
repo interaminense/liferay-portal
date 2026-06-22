@@ -1,6 +1,7 @@
 import ClayDropDown from '@clayui/drop-down';
 import CriteriaSidebarCollapse from './CriteriaSidebarCollapse';
 import CriteriaSidebarSearchBar from './CriteriaSidebarSearchBar';
+import EventsCriteriaTabs from './EventsCriteriaTabs';
 import Loading from 'shared/components/Loading';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {ClayPaginationWithBasicItems} from '@clayui/pagination';
@@ -15,6 +16,8 @@ import {SegmentTypes} from 'shared/util/constants';
 import {translateQueryToCriteria} from '../utils/odata';
 
 const REMOTE_PAGE_SIZE = 12;
+
+const EVENTS_PROPERTY_KEY = 'web';
 
 const PROPERTY_KEY_TO_GROUP: Record<string, string> = {
 	account: 'attributes',
@@ -187,6 +190,38 @@ export default function CriteriaSidebar({
 		label: GROUP_LABELS[groupKey] ?? groupKey
 	}));
 
+	const isEventsSection = selectedPropertyKey === EVENTS_PROPERTY_KEY;
+
+	const eventsGroup = propertyGroupsIList.find(
+		group => group?.propertyKey === EVENTS_PROPERTY_KEY
+	);
+
+	const defaultEvents =
+		eventsGroup?.propertySubgroups.first()?.properties ?? List<Property>();
+
+	const renderCriteria = () => {
+		if (isEventsSection) {
+			return (
+				<EventsCriteriaTabs
+					defaultEvents={defaultEvents}
+					searchValue={searchValue}
+				/>
+			);
+		}
+
+		if (isRemoteSection && remoteLoading) {
+			return <Loading overlay />;
+		}
+
+		return (
+			<CriteriaSidebarCollapse
+				propertyGroupsIList={effectivePropertyGroupsIList}
+				propertyKey={selectedPropertyKey ?? ''}
+				searchValue={isRemoteSection ? '' : searchValue}
+			/>
+		);
+	};
+
 	return (
 		<div className='criteria-sidebar-root'>
 			<div className='sidebar-title'>
@@ -225,17 +260,7 @@ export default function CriteriaSidebar({
 				/>
 			</div>
 
-			<div className='sidebar-collapse'>
-				{isRemoteSection && remoteLoading ? (
-					<Loading overlay />
-				) : (
-					<CriteriaSidebarCollapse
-						propertyGroupsIList={effectivePropertyGroupsIList}
-						propertyKey={selectedPropertyKey ?? ''}
-						searchValue={isRemoteSection ? '' : searchValue}
-					/>
-				)}
-			</div>
+			<div className='sidebar-collapse'>{renderCriteria()}</div>
 
 			{isRemoteSection && remoteTotalCount > 0 && (
 				<PaginationBar className='justify-content-center sidebar-pagination'>
