@@ -97,24 +97,39 @@ describe('EventsCriteriaTabs', () => {
 		expect(screen.getByText('Custom')).toBeInTheDocument();
 	});
 
-	it('opens on the Custom tab and lists the events fetched from the backend', () => {
+	it('opens on the Default tab and lists the frontend default events', () => {
 		renderTabs();
+
+		expect(screen.getByText('Viewed Page')).toBeInTheDocument();
+		expect(screen.getByText('Submitted Form')).toBeInTheDocument();
+
+		// Custom events are not in the DOM until the Custom tab is selected.
+
+		expect(screen.queryByText('Custom Event 1')).not.toBeInTheDocument();
+	});
+
+	it('lists the backend custom events when the Custom tab is selected', () => {
+		renderTabs();
+
+		fireEvent.click(screen.getByText('Custom'));
 
 		expect(screen.getByText('Custom Event 1')).toBeInTheDocument();
 		expect(screen.getByText('Custom Event 3')).toBeInTheDocument();
 
-		// Default events are not in the DOM while the Custom tab is active.
-
 		expect(screen.queryByText('Viewed Page')).not.toBeInTheDocument();
 	});
 
-	it('lists the frontend default events when the Default tab is selected', () => {
-		renderTabs();
+	it('renders criteria items inside the shared property-subgroups-list container so they pick up the sidebar item styles', () => {
+		const {container} = renderTabs();
 
-		fireEvent.click(screen.getByText('Default'));
+		const propertySubgroupsList = container.querySelector(
+			'.property-subgroups-list'
+		);
 
-		expect(screen.getByText('Viewed Page')).toBeInTheDocument();
-		expect(screen.getByText('Submitted Form')).toBeInTheDocument();
+		expect(propertySubgroupsList).toBeInTheDocument();
+		expect(
+			propertySubgroupsList.querySelector('.criteria-sidebar-item-root')
+		).toBeInTheDocument();
 	});
 
 	it('requests custom events from the backend with eventType Custom, page 0 and size 10', () => {
@@ -132,6 +147,7 @@ describe('EventsCriteriaTabs', () => {
 
 		renderTabs();
 
+		fireEvent.click(screen.getByText('Custom'));
 		fireEvent.click(screen.getByText('2'));
 
 		expect(lastQueryVariables().page).toBe(1);
@@ -142,6 +158,8 @@ describe('EventsCriteriaTabs', () => {
 
 		renderTabs();
 
+		fireEvent.click(screen.getByText('Custom'));
+
 		expect(screen.queryByText('2')).not.toBeInTheDocument();
 	});
 
@@ -150,6 +168,7 @@ describe('EventsCriteriaTabs', () => {
 
 		const {rerender} = renderTabs();
 
+		fireEvent.click(screen.getByText('Custom'));
 		fireEvent.click(screen.getByText('2'));
 
 		expect(lastQueryVariables().page).toBe(1);
@@ -172,16 +191,16 @@ describe('EventsCriteriaTabs', () => {
 	it('filters the default events client-side by the search keyword', () => {
 		renderTabs({searchValue: 'Viewed'});
 
-		fireEvent.click(screen.getByText('Default'));
-
 		expect(screen.getByText('Viewed Page')).toBeInTheDocument();
 		expect(screen.queryByText('Submitted Form')).not.toBeInTheDocument();
 	});
 
-	it('renders no items and no empty state when there are no custom events', () => {
+	it('renders no custom items and no empty state when there are no custom events', () => {
 		useQuery.mockReturnValue(customEventsResult(0, 0));
 
 		const {container} = renderTabs();
+
+		fireEvent.click(screen.getByText('Custom'));
 
 		expect(
 			container.querySelectorAll('[data-testid^="criteria-item-"]')

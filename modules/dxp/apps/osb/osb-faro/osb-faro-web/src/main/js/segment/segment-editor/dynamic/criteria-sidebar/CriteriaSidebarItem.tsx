@@ -148,7 +148,7 @@ export class CriteriaSidebarItem extends React.Component<ICriteriaSidebarItemPro
 					</span>
 				</span>
 
-				{label}
+				<span className='text-truncate'>{label}</span>
 			</li>
 		);
 	}

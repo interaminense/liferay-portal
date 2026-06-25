@@ -48,6 +48,10 @@
 				color: $mainLighten52;
 			}
 
+			.text-truncate {
+				min-width: 0;
+			}
+
 			&.dragging {
 				opacity: 0.4;
 			}
@@ -71,6 +75,18 @@
 		list-style: none;
 		margin: 0;
 		padding: 0;
+	}
+
+	.events-criteria-tabs {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+
+		.events-criteria-tabs-content {
+			flex: 1;
+			min-height: 0;
+			overflow-y: auto;
+		}
 	}
 
 	.sidebar-title {

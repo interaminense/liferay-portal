@@ -20,26 +20,29 @@ import {useQuery} from '@apollo/client';
 const CUSTOM_EVENTS_PAGE_SIZE = 10;
 
 const DEFAULT_TAB = 0;
-const CUSTOM_TAB = 1;
 
 const renderProperties = (properties: List<Property>) => (
-	<ul className='properties-list'>
-		{properties.toArray().map((property, i) => {
-			const {label, name, propertyKey, type} = property;
+	<ul className='property-subgroups-list active'>
+		<li>
+			<ul className='properties-list'>
+				{properties.toArray().map((property, i) => {
+					const {label, name, propertyKey, type} = property;
 
-			return (
-				<CriteriaSidebarItem
-					className={`color--${propertyKey}`}
-					defaultValue={getDefaultValue(property)}
-					key={`${name}-${i}`}
-					label={label}
-					name={name}
-					property={property}
-					propertyKey={propertyKey}
-					type={type}
-				/>
-			);
-		})}
+					return (
+						<CriteriaSidebarItem
+							className={`color--${propertyKey}`}
+							defaultValue={getDefaultValue(property)}
+							key={`${name}-${i}`}
+							label={label}
+							name={name}
+							property={property}
+							propertyKey={propertyKey}
+							type={type}
+						/>
+					);
+				})}
+			</ul>
+		</li>
 	</ul>
 );
 
@@ -52,7 +55,7 @@ const EventsCriteriaTabs: React.FC<IEventsCriteriaTabsProps> = ({
 	defaultEvents,
 	searchValue
 }) => {
-	const [activeTab, setActiveTab] = useState<number>(CUSTOM_TAB);
+	const [activeTab, setActiveTab] = useState<number>(DEFAULT_TAB);
 	const [page, setPage] = useState(1);
 
 	useEffect(() => {
@@ -94,26 +97,12 @@ const EventsCriteriaTabs: React.FC<IEventsCriteriaTabsProps> = ({
 		  ) as List<Property>)
 		: defaultEvents;
 
-	const renderCustomTab = () => {
+	const renderCustomContent = () => {
 		if (loading) {
 			return <Loading />;
 		}
 
-		return (
-			<>
-				{renderProperties(customEvents)}
-
-				{totalPages > 1 && (
-					<PaginationBar className='justify-content-center sidebar-pagination'>
-						<ClayPaginationWithBasicItems
-							active={page}
-							onActiveChange={setPage}
-							totalPages={totalPages}
-						/>
-					</PaginationBar>
-				)}
-			</>
-		);
+		return renderProperties(customEvents);
 	};
 
 	return (
@@ -124,9 +113,21 @@ const EventsCriteriaTabs: React.FC<IEventsCriteriaTabsProps> = ({
 				<ClayTabs.Item>{Liferay.Language.get('custom')}</ClayTabs.Item>
 			</ClayTabs>
 
-			{activeTab === DEFAULT_TAB
-				? renderProperties(filteredDefaultEvents)
-				: renderCustomTab()}
+			<div className='events-criteria-tabs-content mt-3'>
+				{activeTab === DEFAULT_TAB
+					? renderProperties(filteredDefaultEvents)
+					: renderCustomContent()}
+			</div>
+
+			{activeTab !== DEFAULT_TAB && totalPages > 1 && (
+				<PaginationBar className='justify-content-center sidebar-pagination'>
+					<ClayPaginationWithBasicItems
+						active={page}
+						onActiveChange={setPage}
+						totalPages={totalPages}
+					/>
+				</PaginationBar>
+			)}
 		</div>
 	);
 };
