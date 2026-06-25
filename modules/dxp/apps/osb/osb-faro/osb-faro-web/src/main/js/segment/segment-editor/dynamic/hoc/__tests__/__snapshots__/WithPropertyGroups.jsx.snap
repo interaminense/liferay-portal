@@ -6,7 +6,7 @@ exports[`WithPropertyGroups should pass propertyGroups to the WrappedComponent 1
     <div>
       Events
       <div>
-        Default Events-0: 8
+        Default Events-0: 7
       </div>
     </div>
     <div>
