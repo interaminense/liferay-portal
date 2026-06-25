@@ -87,6 +87,33 @@ describe('CriteriaSidebar', () => {
 		})
 	]);
 
+	const individualPropertyGroupList = new List([
+		new PropertyGroup({
+			label: 'Individual',
+			name: 'Individual',
+			propertyKey: 'individual',
+			propertySubgroups: new List([
+				new PropertySubgroup({
+					properties: new List([
+						data.getImmutableMock(Property, data.mockProperty, 0, {
+							label: 'First Name',
+							name: 'firstName'
+						})
+					])
+				}),
+				new PropertySubgroup({
+					label: 'DXP Custom Fields',
+					properties: new List([
+						data.getImmutableMock(Property, data.mockProperty, 0, {
+							label: 'Loyalty Tier',
+							name: 'loyaltyTier'
+						})
+					])
+				})
+			])
+		})
+	]);
+
 	afterEach(cleanup);
 
 	it('should render the sidebar structure with property groups', () => {
@@ -160,5 +187,24 @@ describe('CriteriaSidebar', () => {
 		fireEvent.click(screen.getByText('Default'));
 
 		expect(screen.getByText('Asset View')).toBeInTheDocument();
+	});
+
+	it('renders the Default and Custom tabs for the individual attributes section', () => {
+		render(
+			<DndProvider backend={HTML5Backend}>
+				<CriteriaSidebar
+					propertyGroupsIList={individualPropertyGroupList}
+					type={SegmentTypes.Batch}
+				/>
+			</DndProvider>
+		);
+
+		expect(screen.getByText('Default')).toBeInTheDocument();
+		expect(screen.getByText('Custom')).toBeInTheDocument();
+		expect(screen.getByText('First Name')).toBeInTheDocument();
+
+		fireEvent.click(screen.getByText('Custom'));
+
+		expect(screen.getByText('Loyalty Tier')).toBeInTheDocument();
 	});
 });

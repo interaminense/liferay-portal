@@ -1,3 +1,4 @@
+import AttributesCriteriaTabs from './AttributesCriteriaTabs';
 import ClayDropDown from '@clayui/drop-down';
 import CriteriaSidebarCollapse from './CriteriaSidebarCollapse';
 import CriteriaSidebarSearchBar from './CriteriaSidebarSearchBar';
@@ -6,13 +7,13 @@ import Loading from 'shared/components/Loading';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {ClayPaginationWithBasicItems} from '@clayui/pagination';
 import {extractRemoteCriterionEntries} from '../criterion-types/extract';
+import {FieldOwnerTypes, SegmentTypes} from 'shared/util/constants';
 import {getRemoteCriterionTypeByPropertyKey} from '../criterion-types/registry';
 import {List} from 'immutable';
 import {Option, Picker} from '@clayui/core';
 import {PaginationBar} from '@clayui/pagination-bar';
 import {Property, PropertyGroup, PropertySubgroup} from 'shared/util/records';
 import {ReferencedObjectsContext} from '../context/referencedObjects';
-import {SegmentTypes} from 'shared/util/constants';
 import {translateQueryToCriteria} from '../utils/odata';
 
 const REMOTE_PAGE_SIZE = 12;
@@ -199,11 +200,35 @@ export default function CriteriaSidebar({
 	const defaultEvents =
 		eventsGroup?.propertySubgroups.first()?.properties ?? List<Property>();
 
+	const isAttributesSection =
+		selectedPropertyKey === FieldOwnerTypes.Individual ||
+		selectedPropertyKey === FieldOwnerTypes.Organization;
+
+	const attributesGroup = propertyGroupsIList.find(
+		group => group?.propertyKey === selectedPropertyKey
+	);
+
 	const renderCriteria = () => {
 		if (isEventsSection) {
 			return (
 				<EventsCriteriaTabs
 					defaultEvents={defaultEvents}
+					searchValue={searchValue}
+				/>
+			);
+		}
+
+		if (isAttributesSection) {
+			return (
+				<AttributesCriteriaTabs
+					customProperties={
+						attributesGroup?.propertySubgroups.get(1)?.properties ??
+						List<Property>()
+					}
+					defaultProperties={
+						attributesGroup?.propertySubgroups.first()
+							?.properties ?? List<Property>()
+					}
 					searchValue={searchValue}
 				/>
 			);
