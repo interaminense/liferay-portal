@@ -6,8 +6,8 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import ErrorDisplay from 'shared/components/ErrorDisplay';
 import Loading from 'shared/components/Loading';
-import React, {useEffect, useRef, useState} from 'react';
-import SalesforceAccountsAndIndividuals from './SalesforceAccountsAndIndividuals';
+import React, {useEffect, useState} from 'react';
+import SalesforceSyncItems from './SalesforceSyncItems';
 import URLConstants from 'shared/util/url-constants';
 import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
@@ -269,39 +269,10 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 			</Card>
 
 			<Card title={Liferay.Language.get('synced-data')}>
-				<AccountAndIndividuals
+				<SyncedDataItems
 					currentUser={currentUser}
 					dataSource={dataSource}
 					groupId={groupId}
-					loading={loading}
-					onSubmit={async ({
-						enabledAllAccounts,
-						enabledAllIndividuals,
-					}: {
-						enabledAllAccounts: boolean;
-						enabledAllIndividuals: boolean;
-					}) => {
-						await updateSalesforce({
-							accountsConfiguration: {
-								enableAllAccounts: enabledAllAccounts,
-							},
-							contactsConfiguration: {
-								enableAllContacts: enabledAllIndividuals,
-								enableAllLeads: enabledAllIndividuals,
-							},
-							groupId,
-							id: dataSource.id,
-						} as any);
-
-						await handleUpdateDataSource();
-
-						addAlert({
-							alertType: Alert.Types.Success,
-							message: Liferay.Language.get(
-								'synced-data-settings-have-been-saved'
-							),
-						});
-					}}
 				/>
 			</Card>
 
@@ -327,39 +298,16 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 	);
 };
 
-const AccountAndIndividuals = ({
+const SyncedDataItems = ({
 	currentUser,
 	dataSource,
 	groupId,
-	loading,
-	onSubmit,
 }: {
 	currentUser: any;
 	dataSource: DataSource;
 	groupId: string;
-	loading: boolean;
-	onSubmit: (params: {
-		enabledAllAccounts: boolean;
-		enabledAllIndividuals: boolean;
-	}) => void;
 }) => {
-	const [enabledAllAccounts, setEnabledAllAccounts] = useState(
-		dataSource.provider?.getIn(
-			['accountsConfiguration', 'enableAllAccounts'],
-			false
-		)
-	);
-
-	const [enabledAllIndividuals, setEnabledAllIndividuals] = useState(
-		dataSource.provider?.getIn(
-			['contactsConfiguration', 'enableAllContacts'],
-			false
-		) ||
-			dataSource.provider?.getIn(
-				['contactsConfiguration', 'enableAllLeads'],
-				false
-			)
-	);
+	const [showInfoAlert, setShowInfoAlert] = useState(true);
 
 	const accountsCountResponse = useRequest({
 		dataSourceFn: (params) =>
@@ -373,10 +321,6 @@ const AccountAndIndividuals = ({
 		variables: {groupId, id: dataSource.id!},
 	});
 
-	const hasChangesRef = useRef<boolean | null>(null);
-	const enabledAllAccountsPrevValue = useRef(enabledAllAccounts);
-	const enabledAllIndividualsPrevValue = useRef(enabledAllIndividuals);
-
 	const dataSourceActive = dataSource.status === DataSourceStatuses.Active;
 
 	if (accountsCountResponse.error || userCountResponse.error) {
@@ -389,81 +333,35 @@ const AccountAndIndividuals = ({
 
 	return (
 		<div>
-			{!hasChangesRef.current &&
-				dataSourceActive &&
-				!enabledAllAccounts &&
-				!enabledAllIndividuals && (
-					<ClayAlert displayType="warning" title="Warning">
-						{Liferay.Language.get(
-							'the-data-source-setup-is-almost-complete.-sync-data-to-start-seeing-results-as-activities-occur-on-your-sites'
-						)}
-					</ClayAlert>
-				)}
+			<div className="mt-3 text-dark">
+				<Text size={2} weight="semi-bold">
+					{Liferay.Language.get('available-data').toUpperCase()}
+				</Text>
+			</div>
 
-			{hasChangesRef.current && (
-				<ClayAlert displayType="info">
+			{showInfoAlert && (
+				<ClayAlert
+					displayType="info"
+					onClose={() => setShowInfoAlert(false)}
+				>
 					{Liferay.Language.get(
-						'this-configuration-is-not-saved-yet'
+						'your-data-may-take-some-time-to-appear-as-syncing-completes'
 					)}
 				</ClayAlert>
 			)}
 
-			<div className="mb-2">
-				<Text color="secondary" size={4}>
-					{Liferay.Language.get(
-						'to-configure-your-salesforce-data-source,-go-to-your-salesforce-environment-to-update-this-app-connection'
-					)}
-				</Text>
-			</div>
-
-			<div className="mt-3 text-dark">
-				<Text size={2} weight="semi-bold">
-					{Liferay.Language.get('select-items-to-sync').toUpperCase()}
-				</Text>
-			</div>
-
-			<SalesforceAccountsAndIndividuals
-				accountsSyncedCount={accountsCountResponse.data}
+			<SalesforceSyncItems
 				disabled={!dataSourceActive || !currentUser.isAdmin()}
-				enabledAccounts={enabledAllAccounts}
-				enabledIndividuals={enabledAllIndividuals}
-				individualsSyncedCount={userCountResponse.data}
-				onAccountsChange={() => {
-					const newValue = !enabledAllAccounts;
-
-					setEnabledAllAccounts(newValue);
-
-					hasChangesRef.current =
-						enabledAllAccountsPrevValue.current !== newValue ||
-						enabledAllIndividualsPrevValue.current !==
-							enabledAllIndividuals;
+				itemsSyncedCounts={{
+					accountsAndOpportunities: accountsCountResponse.data,
+					campaignsAndCampaignMembers: 0,
+					individuals: userCountResponse.data,
 				}}
-				onIndividualsChange={() => {
-					const newValue = !enabledAllIndividuals;
-
-					setEnabledAllIndividuals(newValue);
-
-					hasChangesRef.current =
-						enabledAllIndividualsPrevValue.current !== newValue ||
-						enabledAllAccountsPrevValue.current !==
-							enabledAllAccounts;
-				}}
+				onSelect={() => {}}
 			/>
 
 			{dataSourceActive && currentUser.isAdmin() && (
-				<ClayButton
-					className="mt-3"
-					loading={loading}
-					onClick={async () => {
-						hasChangesRef.current = false;
-
-						await onSubmit({
-							enabledAllAccounts,
-							enabledAllIndividuals,
-						});
-					}}
-					size="sm"
-				>
+				<ClayButton className="mt-3" onClick={() => {}} size="sm">
 					{Liferay.Language.get('save')}
 				</ClayButton>
 			)}

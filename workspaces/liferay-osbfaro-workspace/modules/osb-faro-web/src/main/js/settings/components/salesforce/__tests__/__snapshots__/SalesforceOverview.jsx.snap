@@ -506,7 +506,16 @@ exports[`SalesforceOverview should render 1`] = `
               >
                 <div>
                   <div
-                    class="alert alert-warning"
+                    class="mt-3 text-dark"
+                  >
+                    <span
+                      class="text-2 font-weight-semi-bold"
+                    >
+                      AVAILABLE DATA
+                    </span>
+                  </div>
+                  <div
+                    class="alert alert-dismissible alert-info"
                   >
                     <div
                       class="alert-autofit-row autofit-row"
@@ -522,11 +531,11 @@ exports[`SalesforceOverview should render 1`] = `
                             class="alert-indicator"
                           >
                             <svg
-                              class="lexicon-icon lexicon-icon-warning-full"
+                              class="lexicon-icon lexicon-icon-info-circle"
                               role="presentation"
                             >
                               <use
-                                href="#warning-full"
+                                href="#info-circle"
                               />
                             </svg>
                           </span>
@@ -538,33 +547,24 @@ exports[`SalesforceOverview should render 1`] = `
                         <div
                           class="autofit-section"
                         >
-                          <strong
-                            class="lead"
-                          >
-                            Warning
-                          </strong>
-                          The data source setup is almost complete. Sync data to start seeing results as activities occur on your sites.
+                          Your data may take some time to appear as syncing completes.
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="mb-2"
-                  >
-                    <span
-                      class="text-4 text-secondary"
+                    <button
+                      aria-label="Close"
+                      class="close"
+                      type="button"
                     >
-                      To configure your Salesforce data source, go to your Salesforce environment to update this app connection.
-                    </span>
-                  </div>
-                  <div
-                    class="mt-3 text-dark"
-                  >
-                    <span
-                      class="text-2 font-weight-semi-bold"
-                    >
-                      SELECT ITEMS TO SYNC
-                    </span>
+                      <svg
+                        class="lexicon-icon lexicon-icon-times"
+                        role="presentation"
+                      >
+                        <use
+                          href="#times"
+                        />
+                      </svg>
+                    </button>
                   </div>
                   <div
                     class="pt-1"
@@ -576,24 +576,60 @@ exports[`SalesforceOverview should render 1`] = `
                         class="list-group-item list-group-item-flex"
                       >
                         <div
-                          class="autofit-col"
+                          class="mt-n2 autofit-col"
                         >
-                          <div
-                            class="custom-control custom-checkbox"
+                          <span
+                            class="sticker sticker-unstyled"
                           >
-                            <label>
-                              <input
-                                class="custom-control-input"
-                                type="checkbox"
-                              />
-                              <span
-                                class="custom-control-label"
-                              />
-                            </label>
-                          </div>
+                            <span
+                              class="sticker-overlay"
+                            >
+                              <svg
+                                class="lexicon-icon lexicon-icon-users text-secondary"
+                                role="presentation"
+                              >
+                                <use
+                                  href="#users"
+                                />
+                              </svg>
+                            </span>
+                          </span>
                         </div>
                         <div
-                          class="autofit-col"
+                          class="autofit-col autofit-col-expand"
+                        >
+                          <p
+                            class="list-group-title"
+                          >
+                            Individuals
+                          </p>
+                          <p
+                            class="list-group-text"
+                          >
+                            Represents fields from the Contact and Leads tables within Salesforce.
+                          </p>
+                          <p
+                            class="list-group-text"
+                          >
+                            0 items selected | 10 Items Synced
+                          </p>
+                        </div>
+                        <div
+                          class="align-self-center autofit-col"
+                        >
+                          <button
+                            class="rounded-lg btn btn-sm btn-secondary"
+                            type="button"
+                          >
+                            Select
+                          </button>
+                        </div>
+                      </li>
+                      <li
+                        class="list-group-item list-group-item-flex"
+                      >
+                        <div
+                          class="mt-n2 autofit-col"
                         >
                           <span
                             class="sticker sticker-unstyled"
@@ -618,42 +654,35 @@ exports[`SalesforceOverview should render 1`] = `
                           <p
                             class="list-group-title"
                           >
-                            Accounts
+                            Accounts and Opportunities
                           </p>
                           <p
                             class="list-group-text"
                           >
-                            Represents fields from the Account object within Salesforce.
+                            Represents fields from the Account and Opportunity table within Salesforce.
                           </p>
                           <p
                             class="list-group-text"
                           >
-                            10 Items Synced
+                            0 items selected | 10 Items Synced
                           </p>
+                        </div>
+                        <div
+                          class="align-self-center autofit-col"
+                        >
+                          <button
+                            class="rounded-lg btn btn-sm btn-secondary"
+                            type="button"
+                          >
+                            Select
+                          </button>
                         </div>
                       </li>
                       <li
                         class="list-group-item list-group-item-flex"
                       >
                         <div
-                          class="autofit-col"
-                        >
-                          <div
-                            class="custom-control custom-checkbox"
-                          >
-                            <label>
-                              <input
-                                class="custom-control-input"
-                                type="checkbox"
-                              />
-                              <span
-                                class="custom-control-label"
-                              />
-                            </label>
-                          </div>
-                        </div>
-                        <div
-                          class="autofit-col"
+                          class="mt-n2 autofit-col"
                         >
                           <span
                             class="sticker sticker-unstyled"
@@ -662,34 +691,44 @@ exports[`SalesforceOverview should render 1`] = `
                               class="sticker-overlay"
                             >
                               <svg
-                                class="lexicon-icon lexicon-icon-users text-secondary"
+                                class="lexicon-icon lexicon-icon-megaphone text-secondary"
                                 role="presentation"
                               >
                                 <use
-                                  href="#users"
+                                  href="#megaphone"
                                 />
                               </svg>
                             </span>
                           </span>
                         </div>
                         <div
-                          class="d-flex justify-content-center autofit-col autofit-col-expand"
+                          class="autofit-col autofit-col-expand"
                         >
                           <p
                             class="list-group-title"
                           >
-                            Individuals
+                            Campaigns and Campaign Members
                           </p>
                           <p
                             class="list-group-text"
                           >
-                            Represents fields from the Contact or Lead object within Salesforce.
+                            Represents fields from the Campaign and Campaign Members table within Salesforce.
                           </p>
                           <p
                             class="list-group-text"
                           >
-                            10 Items Synced
+                            0 items selected | 0 Items Synced
                           </p>
+                        </div>
+                        <div
+                          class="align-self-center autofit-col"
+                        >
+                          <button
+                            class="rounded-lg btn btn-sm btn-secondary"
+                            type="button"
+                          >
+                            Select
+                          </button>
                         </div>
                       </li>
                     </ul>
