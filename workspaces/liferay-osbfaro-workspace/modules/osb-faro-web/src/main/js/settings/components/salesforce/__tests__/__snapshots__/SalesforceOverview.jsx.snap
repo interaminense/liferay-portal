@@ -611,7 +611,7 @@ exports[`SalesforceOverview should render 1`] = `
                           <p
                             class="list-group-text"
                           >
-                            0 items selected | 10 Items Synced
+                            0 items selected | 10 items synced
                           </p>
                         </div>
                         <div
@@ -664,7 +664,7 @@ exports[`SalesforceOverview should render 1`] = `
                           <p
                             class="list-group-text"
                           >
-                            0 items selected | 10 Items Synced
+                            0 items selected | 10 items synced
                           </p>
                         </div>
                         <div
@@ -717,7 +717,7 @@ exports[`SalesforceOverview should render 1`] = `
                           <p
                             class="list-group-text"
                           >
-                            0 items selected | 0 Items Synced
+                            0 items selected | 0 items synced
                           </p>
                         </div>
                         <div
@@ -734,7 +734,7 @@ exports[`SalesforceOverview should render 1`] = `
                     </ul>
                   </div>
                   <button
-                    class="mt-3 btn btn-sm btn-primary"
+                    class="mt-3 rounded-lg btn btn-sm btn-primary"
                     type="button"
                   >
                     Save

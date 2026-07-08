@@ -357,11 +357,14 @@ const SyncedDataItems = ({
 					campaignsAndCampaignMembers: 0,
 					individuals: userCountResponse.data,
 				}}
-				onSelect={() => {}}
 			/>
 
 			{dataSourceActive && currentUser.isAdmin() && (
-				<ClayButton className="mt-3" onClick={() => {}} size="sm">
+				<ClayButton
+					className="mt-3 rounded-lg"
+					onClick={() => {}}
+					size="sm"
+				>
 					{Liferay.Language.get('save')}
 				</ClayButton>
 			)}

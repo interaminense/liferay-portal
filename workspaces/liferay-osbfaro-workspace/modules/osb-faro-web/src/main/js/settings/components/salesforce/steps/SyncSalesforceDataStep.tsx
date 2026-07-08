@@ -34,7 +34,7 @@ const SyncSalesforceDataStep = ({
 				</Text>
 			</div>
 
-			<SalesforceSyncItems onSelect={() => {}} />
+			{dataSource && <SalesforceSyncItems />}
 
 			<WizardPageButtonGroup
 				nextButtonLabel={Liferay.Language.get('continue')}

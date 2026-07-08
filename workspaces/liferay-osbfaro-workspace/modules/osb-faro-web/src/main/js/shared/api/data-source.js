@@ -463,6 +463,20 @@ export function updateSalesforce({
 	});
 }
 
+export function updateSalesforceSyncFields({
+	groupId,
+	id,
+	syncFieldsConfiguration,
+}) {
+	return sendRequest({
+		data: {
+			syncFieldsConfiguration,
+		},
+		method: 'PATCH',
+		path: `contacts/${groupId}/data_source/${id}/salesforce`,
+	});
+}
+
 export function fetchChannelDatasources({
 	delta,
 	groupId,

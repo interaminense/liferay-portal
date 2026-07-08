@@ -4,11 +4,34 @@ import {cleanup, fireEvent, render, screen} from '@testing-library/react';
 
 jest.unmock('react-dom');
 
+jest.mock('../SalesforceSyncFieldsModal', () => ({
+	__esModule: true,
+	default: ({
+		entityKey,
+		onDone,
+	}: {
+		entityKey: string;
+		onDone: (count: number) => void;
+	}) => (
+		<div data-testid="sync-fields-modal">
+			<span data-testid="modal-entity">{entityKey}</span>
+
+			<button
+				data-testid="modal-done"
+				onClick={() => onDone(5)}
+				type="button"
+			>
+				{'done'}
+			</button>
+		</div>
+	),
+}));
+
 describe('SalesforceSyncItems', () => {
 	afterEach(cleanup);
 
 	it('should render the three sync entities', () => {
-		render(<SalesforceSyncItems onSelect={() => {}} />);
+		render(<SalesforceSyncItems />);
 
 		expect(screen.getByText('Individuals')).toBeInTheDocument();
 		expect(
@@ -19,20 +42,34 @@ describe('SalesforceSyncItems', () => {
 		).toBeInTheDocument();
 	});
 
-	it('should call onSelect with the entity key when its Select button is clicked', () => {
-		const onSelect = jest.fn();
+	it('should open the modal for the clicked entity', () => {
+		render(<SalesforceSyncItems />);
 
-		render(<SalesforceSyncItems onSelect={onSelect} />);
+		expect(
+			screen.queryByTestId('sync-fields-modal')
+		).not.toBeInTheDocument();
 
 		fireEvent.click(screen.getAllByText('Select')[0]);
 
-		expect(onSelect).toHaveBeenCalledWith('individuals');
+		expect(screen.getByTestId('sync-fields-modal')).toBeInTheDocument();
+		expect(screen.getByTestId('modal-entity')).toHaveTextContent(
+			'individuals'
+		);
+	});
+
+	it('should update the selected count when the modal is done', () => {
+		render(<SalesforceSyncItems />);
+
+		fireEvent.click(screen.getAllByText('Select')[0]);
+		fireEvent.click(screen.getByTestId('modal-done'));
+
+		expect(screen.getByText(/5 items selected/)).toBeInTheDocument();
 	});
 
 	it('should show synced counts only when itemsSyncedCounts is provided', () => {
-		const {rerender} = render(<SalesforceSyncItems onSelect={() => {}} />);
+		const {rerender} = render(<SalesforceSyncItems />);
 
-		expect(screen.queryByText(/Items Synced/)).not.toBeInTheDocument();
+		expect(screen.queryByText(/items synced/)).not.toBeInTheDocument();
 
 		rerender(
 			<SalesforceSyncItems
@@ -41,10 +78,9 @@ describe('SalesforceSyncItems', () => {
 					campaignsAndCampaignMembers: 0,
 					individuals: 8900,
 				}}
-				onSelect={() => {}}
 			/>
 		);
 
-		expect(screen.getByText(/8.9K Items Synced/)).toBeInTheDocument();
+		expect(screen.getByText(/8.9K items synced/)).toBeInTheDocument();
 	});
 });

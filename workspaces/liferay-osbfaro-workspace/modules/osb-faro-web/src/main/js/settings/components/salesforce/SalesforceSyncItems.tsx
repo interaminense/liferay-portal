@@ -2,7 +2,8 @@ import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
 import ClaySticker from '@clayui/sticker';
-import React from 'react';
+import React, {useState} from 'react';
+import SalesforceSyncFieldsModal from './SalesforceSyncFieldsModal';
 import {sub} from 'shared/util/lang';
 import {toThousands} from 'shared/util/numbers';
 
@@ -44,73 +45,93 @@ interface ISalesforceSyncItemsProps {
 	disabled?: boolean;
 	itemsSelectedCounts?: Record<string, number>;
 	itemsSyncedCounts?: Record<string, number>;
-	onSelect: (key: string) => void;
 }
 
 const SalesforceSyncItems: React.FC<ISalesforceSyncItemsProps> = ({
 	disabled = false,
 	itemsSelectedCounts,
 	itemsSyncedCounts,
-	onSelect,
-}) => (
-	<div className="pt-1">
-		<ClayList className="mb-0">
-			{SYNC_ITEMS.map(({description, icon, key, title}) => {
-				const selectedCount = itemsSelectedCounts?.[key] ?? 0;
+}) => {
+	const [openEntityKey, setOpenEntityKey] = useState<string | null>(null);
+	const [selectedCounts, setSelectedCounts] = useState<
+		Record<string, number>
+	>(itemsSelectedCounts ?? {});
 
-				const countText = sub(
-					Liferay.Language.get('x-items-selected'),
-					[selectedCount]
-				);
+	return (
+		<div className="pt-1">
+			<ClayList className="mb-0">
+				{SYNC_ITEMS.map(({description, icon, key, title}) => {
+					const countText = sub(
+						Liferay.Language.get('x-items-selected').toLowerCase(),
+						[selectedCounts[key] ?? 0]
+					);
 
-				return (
-					<ClayList.Item flex key={key}>
-						<ClayList.ItemField className="mt-n2">
-							<ClaySticker displayType="unstyled">
-								<ClayIcon
-									className="text-secondary"
-									symbol={icon}
-								/>
-							</ClaySticker>
-						</ClayList.ItemField>
+					return (
+						<ClayList.Item flex key={key}>
+							<ClayList.ItemField className="mt-n2">
+								<ClaySticker displayType="unstyled">
+									<ClayIcon
+										className="text-secondary"
+										symbol={icon}
+									/>
+								</ClaySticker>
+							</ClayList.ItemField>
 
-						<ClayList.ItemField expand>
-							<ClayList.ItemTitle>{title}</ClayList.ItemTitle>
+							<ClayList.ItemField expand>
+								<ClayList.ItemTitle>{title}</ClayList.ItemTitle>
 
-							<ClayList.ItemText>{description}</ClayList.ItemText>
+								<ClayList.ItemText>
+									{description}
+								</ClayList.ItemText>
 
-							<ClayList.ItemText>
-								{itemsSyncedCounts
-									? `${countText} | ${sub(
-											Liferay.Language.get(
-												'x-items-synced'
-											),
-											[
-												toThousands(
-													itemsSyncedCounts[key] ?? 0
-												),
-											]
-										)}`
-									: countText}
-							</ClayList.ItemText>
-						</ClayList.ItemField>
+								<ClayList.ItemText>
+									{itemsSyncedCounts
+										? `${countText} | ${sub(
+												Liferay.Language.get(
+													'x-items-synced'
+												).toLowerCase(),
+												[
+													toThousands(
+														itemsSyncedCounts[
+															key
+														] ?? 0
+													),
+												]
+											)}`
+										: countText}
+								</ClayList.ItemText>
+							</ClayList.ItemField>
 
-						<ClayList.ItemField className="align-self-center">
-							<ClayButton
-								className="rounded-lg"
-								disabled={disabled}
-								displayType="secondary"
-								onClick={() => onSelect(key)}
-								size="sm"
-							>
-								{Liferay.Language.get('select')}
-							</ClayButton>
-						</ClayList.ItemField>
-					</ClayList.Item>
-				);
-			})}
-		</ClayList>
-	</div>
-);
+							<ClayList.ItemField className="align-self-center">
+								<ClayButton
+									className="rounded-lg"
+									disabled={disabled}
+									displayType="secondary"
+									onClick={() => setOpenEntityKey(key)}
+									size="sm"
+								>
+									{Liferay.Language.get('select')}
+								</ClayButton>
+							</ClayList.ItemField>
+						</ClayList.Item>
+					);
+				})}
+			</ClayList>
+
+			{openEntityKey && (
+				<SalesforceSyncFieldsModal
+					entityKey={openEntityKey}
+					onClose={() => setOpenEntityKey(null)}
+					onDone={(selectedCount) =>
+						setSelectedCounts((previousCounts) => ({
+							...previousCounts,
+							[openEntityKey]: selectedCount,
+						}))
+					}
+				/>
+			)}
+		</div>
+	);
+};
 
 export default SalesforceSyncItems;
