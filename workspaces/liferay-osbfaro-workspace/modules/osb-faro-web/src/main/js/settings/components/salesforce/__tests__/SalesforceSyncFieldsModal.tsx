@@ -10,13 +10,13 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 	FrontendDataSet: ({
 		id,
 		onSelectedItemsChange,
-		selectedItems
+		selectedItems,
 	}: {
 		id: string;
 		onSelectedItemsChange: (items: any[]) => void;
 		selectedItems: any[];
 	}) => (
-		<div data-testid='fds' id={id}>
+		<div data-testid="fds" id={id}>
 			<span data-testid={`fds-count-${id}`}>
 				{(selectedItems ?? []).length}
 			</span>
@@ -24,7 +24,7 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 			<button
 				data-testid={`fds-select-${id}`}
 				onClick={() => onSelectedItemsChange([{name: 'Name'}])}
-				type='button'
+				type="button"
 			>
 				{'select'}
 			</button>
@@ -32,12 +32,12 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 			<button
 				data-testid={`fds-clear-${id}`}
 				onClick={() => onSelectedItemsChange([])}
-				type='button'
+				type="button"
 			>
 				{'clear'}
 			</button>
 		</div>
-	)
+	),
 }));
 
 const renderModal = (entityKey = 'accountsAndOpportunities') => {
@@ -58,9 +58,10 @@ const renderModal = (entityKey = 'accountsAndOpportunities') => {
 
 describe('SalesforceSyncFieldsModal', () => {
 	beforeAll(() => {
+
 		// @ts-ignore
 
-		ReactDOM.createPortal = jest.fn(element => element);
+		ReactDOM.createPortal = jest.fn((element) => element);
 	});
 
 	afterEach(cleanup);

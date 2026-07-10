@@ -1,16 +1,17 @@
 export type SyncFieldDataType = 'Boolean' | 'Date' | 'Number' | 'String';
 
 export interface ISyncField {
-	dataType: SyncFieldDataType;
 	name: string;
-	type: string;
+	required: boolean;
+	selected: boolean;
+	type: SyncFieldDataType;
 }
 
 export interface ISyncFieldsTab {
+	entity: string;
 	fields: ISyncField[];
 	gatedOnFirst?: boolean;
 	label: string;
-	type: string;
 }
 
 export interface ISyncFieldsEntity {
@@ -19,10 +20,15 @@ export interface ISyncFieldsEntity {
 	tabs: ISyncFieldsTab[];
 }
 
-const toFields = (type: string, entries: [string, SyncFieldDataType][]) =>
-	entries.map(([name, dataType]) => ({dataType, name, type}));
+const toFields = (entries: [string, SyncFieldDataType][]): ISyncField[] =>
+	entries.map(([name, type]) => ({
+		name,
+		required: false,
+		selected: false,
+		type,
+	}));
 
-const ACCOUNT_FIELDS = toFields('Account', [
+const ACCOUNT_FIELDS = toFields([
 	['Name', 'String'],
 	['AccountNumber', 'Number'],
 	['Type', 'String'],
@@ -51,7 +57,7 @@ const ACCOUNT_FIELDS = toFields('Account', [
 	['LastModifiedDate', 'Date'],
 ]);
 
-const OPPORTUNITY_FIELDS = toFields('Opportunities', [
+const OPPORTUNITY_FIELDS = toFields([
 	['Amount', 'Number'],
 	['CloseDate', 'Date'],
 	['StageName', 'String'],
@@ -68,7 +74,7 @@ const OPPORTUNITY_FIELDS = toFields('Opportunities', [
 	['LastModifiedDate', 'Date'],
 ]);
 
-const CAMPAIGN_FIELDS = toFields('Campaign', [
+const CAMPAIGN_FIELDS = toFields([
 	['Name', 'String'],
 	['Type', 'String'],
 	['Status', 'String'],
@@ -86,7 +92,7 @@ const CAMPAIGN_FIELDS = toFields('Campaign', [
 	['LastModifiedDate', 'Date'],
 ]);
 
-const CAMPAIGN_MEMBER_FIELDS = toFields('Campaign Member', [
+const CAMPAIGN_MEMBER_FIELDS = toFields([
 	['Status', 'String'],
 	['HasResponded', 'Boolean'],
 	['FirstRespondedDate', 'Date'],
@@ -101,7 +107,7 @@ const CAMPAIGN_MEMBER_FIELDS = toFields('Campaign Member', [
 	['LastModifiedDate', 'Date'],
 ]);
 
-const CONTACT_FIELDS = toFields('Contact', [
+const CONTACT_FIELDS = toFields([
 	['FirstName', 'String'],
 	['LastName', 'String'],
 	['Email', 'String'],
@@ -127,15 +133,15 @@ export const SYNC_FIELDS_ENTITIES: Record<string, ISyncFieldsEntity> = {
 		),
 		tabs: [
 			{
+				entity: 'Account',
 				fields: ACCOUNT_FIELDS,
 				label: Liferay.Language.get('account'),
-				type: 'Account',
 			},
 			{
+				entity: 'Opportunities',
 				fields: OPPORTUNITY_FIELDS,
 				gatedOnFirst: true,
 				label: Liferay.Language.get('opportunities'),
-				type: 'Opportunities',
 			},
 		],
 	},
@@ -148,15 +154,15 @@ export const SYNC_FIELDS_ENTITIES: Record<string, ISyncFieldsEntity> = {
 		),
 		tabs: [
 			{
+				entity: 'Campaign',
 				fields: CAMPAIGN_FIELDS,
 				label: Liferay.Language.get('campaign'),
-				type: 'Campaign',
 			},
 			{
+				entity: 'Campaign Member',
 				fields: CAMPAIGN_MEMBER_FIELDS,
 				gatedOnFirst: true,
 				label: Liferay.Language.get('campaign-member'),
-				type: 'Campaign Member',
 			},
 		],
 	},
@@ -164,9 +170,9 @@ export const SYNC_FIELDS_ENTITIES: Record<string, ISyncFieldsEntity> = {
 		modalTitle: Liferay.Language.get('sync-individual-attributes'),
 		tabs: [
 			{
+				entity: 'Contact',
 				fields: CONTACT_FIELDS,
 				label: Liferay.Language.get('contact'),
-				type: 'Contact',
 			},
 		],
 	},

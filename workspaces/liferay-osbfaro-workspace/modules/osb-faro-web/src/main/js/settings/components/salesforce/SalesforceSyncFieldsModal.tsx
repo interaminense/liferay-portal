@@ -8,11 +8,11 @@ import {Sizes} from 'shared/util/constants';
 import {
 	ISyncField,
 	ISyncFieldsTab,
-	SYNC_FIELDS_ENTITIES
+	SYNC_FIELDS_ENTITIES,
 } from './salesforceSyncFields';
 import {
 	getMockEndpoint,
-	installSyncFieldsMockFetch
+	installSyncFieldsMockFetch,
 } from './salesforceSyncFieldsMock';
 
 interface ISyncFieldsDataSetProps {
@@ -26,45 +26,43 @@ const SyncFieldsDataSet: React.FC<ISyncFieldsDataSetProps> = ({
 	entityKey,
 	onSelectedItemsChange,
 	selectedItems,
-	tab
+	tab,
 }) => {
-	const dataTypes = Array.from(
-		new Set(tab.fields.map(({dataType}) => dataType))
-	);
+	const dataTypes = Array.from(new Set(tab.fields.map(({type}) => type)));
 
 	return (
 		<FrontendDataSet
-			apiURL={getMockEndpoint(entityKey, tab.type)}
+			apiURL={getMockEndpoint(entityKey, tab.entity)}
 			filters={[
 				{
 					entityFieldType: 'string',
-					id: 'dataType',
+					id: 'type',
 					itemKey: 'value',
 					itemLabel: 'label',
-					items: dataTypes.map(dataType => ({
+					items: dataTypes.map((dataType) => ({
 						label: dataType,
-						value: dataType
+						value: dataType,
 					})),
 					label: Liferay.Language.get('data-type'),
 					multiple: true,
-					name: 'dataType',
-					type: 'selection'
-				}
+					name: 'type',
+					type: 'selection',
+				},
 			]}
-			id={`${entityKey}-${tab.type}-sync-fields`}
+			id={`${entityKey}-${tab.entity}-sync-fields`}
 			onSelectedItemsChange={onSelectedItemsChange}
 			pagination={pagination}
 			selectedItems={selectedItems}
-			selectedItemsKey='name'
-			selectionType='multiple'
+			selectedItemsKey="name"
+			selectionType="multiple"
 			showPagination
 			sorts={[
 				{
 					active: true,
 					direction: 'asc',
 					key: 'name',
-					label: Liferay.Language.get('attribute-name')
-				}
+					label: Liferay.Language.get('attribute-name'),
+				},
 			]}
 			views={[
 				{
@@ -77,22 +75,17 @@ const SyncFieldsDataSet: React.FC<ISyncFieldsDataSetProps> = ({
 							{
 								fieldName: 'name',
 								label: Liferay.Language.get('attribute-name'),
-								sortable: true
-							},
-							{
-								fieldName: 'dataType',
-								label: Liferay.Language.get('data-type'),
-								sortable: true
+								sortable: true,
 							},
 							{
 								fieldName: 'type',
-								label: Liferay.Language.get('type'),
-								sortable: true
-							}
-						]
+								label: Liferay.Language.get('data-type'),
+								sortable: true,
+							},
+						],
 					},
-					thumbnail: 'table'
-				}
+					thumbnail: 'table',
+				},
 			]}
 		/>
 	);
@@ -107,7 +100,7 @@ interface ISalesforceSyncFieldsModalProps {
 const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 	entityKey,
 	onClose,
-	onDone
+	onDone,
 }) => {
 	const {observer} = useModal({onClose});
 
@@ -115,16 +108,16 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 
 	const [restoreFetch] = useState(() =>
 		installSyncFieldsMockFetch(
-			entity.tabs.map(tab => ({
-				endpoint: getMockEndpoint(entityKey, tab.type),
-				fields: tab.fields
+			entity.tabs.map((tab) => ({
+				endpoint: getMockEndpoint(entityKey, tab.entity),
+				fields: tab.fields,
 			}))
 		)
 	);
 
 	const [activeTab, setActiveTab] = useState(0);
 	const [selectedByTab, setSelectedByTab] = useState<ISyncField[][]>(() =>
-		entity.tabs.map(() => [])
+		entity.tabs.map((tab) => tab.fields.filter((field) => field.selected))
 	);
 
 	const hasMultipleTabs = entity.tabs.length > 1;
@@ -132,16 +125,16 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 	useEffect(() => restoreFetch, [restoreFetch]);
 
 	return (
-		<ClayModal observer={observer} size='lg'>
+		<ClayModal observer={observer} size="lg">
 			<ClayModal.Header>{entity.modalTitle}</ClayModal.Header>
 
-			<ClayModal.Body className='px-0'>
+			<ClayModal.Body className="px-0">
 				{hasMultipleTabs && (
-					<ClayTabs active={activeTab} className='px-4'>
+					<ClayTabs active={activeTab} className="px-4">
 						{entity.tabs.map((tab, index) => (
 							<ClayTabs.Item
 								active={activeTab === index}
-								key={tab.type}
+								key={tab.entity}
 								onClick={() => setActiveTab(index)}
 							>
 								{tab.label}
@@ -153,18 +146,18 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 				<ClayTabs.Content activeIndex={activeTab} fade>
 					{entity.tabs.map((tab, index) => (
 						<ClayTabs.TabPane
-							aria-labelledby={tab.type}
-							key={tab.type}
+							aria-labelledby={tab.entity}
+							key={tab.entity}
 						>
 							{tab.gatedOnFirst &&
 							selectedByTab[0].length === 0 ? (
 								<NoResultsDisplay
-									className='py-5'
+									className="py-5"
 									description={entity.gateDescription}
 									icon={{
 										border: false,
 										size: Sizes.XXXLarge,
-										symbol: 'ac_satellite'
+										symbol: 'ac_satellite',
 									}}
 									title={Liferay.Language.get(
 										'no-fields-available-yet'
@@ -173,8 +166,8 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 							) : (
 								<SyncFieldsDataSet
 									entityKey={entityKey}
-									onSelectedItemsChange={selectedItems =>
-										setSelectedByTab(previousSelections =>
+									onSelectedItemsChange={(selectedItems) =>
+										setSelectedByTab((previousSelections) =>
 											previousSelections.map(
 												(selection, selectionIndex) => {
 													if (
@@ -211,7 +204,7 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 			<ClayModal.Footer
 				last={
 					<ClayButton.Group spaced>
-						<ClayButton displayType='secondary' onClick={onClose}>
+						<ClayButton displayType="secondary" onClick={onClose}>
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
 

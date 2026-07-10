@@ -11,7 +11,7 @@ interface IMockHandler {
 }
 
 const applyDataTypeFilter = (fields: ISyncField[], filter: string) => {
-	const match = filter.match(/dataType (?:eq|in) \(?([^)]*)\)?/);
+	const match = filter.match(/type (?:eq|in) \(?([^)]*)\)?/);
 
 	if (!match) {
 		return fields;
@@ -21,7 +21,7 @@ const applyDataTypeFilter = (fields: ISyncField[], filter: string) => {
 		.split(',')
 		.map((value) => value.replace(/'/g, '').trim());
 
-	return fields.filter((field) => values.includes(field.dataType));
+	return fields.filter((field) => values.includes(field.type));
 };
 
 const buildMockResponse = (url: URL, fields: ISyncField[]) => {
