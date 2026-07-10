@@ -128,9 +128,9 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 		<ClayModal observer={observer} size="lg">
 			<ClayModal.Header>{entity.modalTitle}</ClayModal.Header>
 
-			<ClayModal.Body className="px-0">
+			<ClayModal.Body>
 				{hasMultipleTabs && (
-					<ClayTabs active={activeTab} className="px-4">
+					<ClayTabs active={activeTab}>
 						{entity.tabs.map((tab, index) => (
 							<ClayTabs.Item
 								active={activeTab === index}

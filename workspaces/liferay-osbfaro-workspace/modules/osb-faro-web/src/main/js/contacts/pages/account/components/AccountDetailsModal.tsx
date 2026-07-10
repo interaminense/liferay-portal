@@ -51,7 +51,7 @@ const AccountDetailsModal: React.FC<IAccountDetailsModalProps> = ({
 				])}
 			</ClayModal.Header>
 
-			<ClayModal.Body className="px-0">
+			<ClayModal.Body>
 				{loading ? (
 					<div
 						className="align-items-center d-flex justify-content-center"
