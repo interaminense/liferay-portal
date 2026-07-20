@@ -10,6 +10,9 @@ import {
 	orderBy,
 	toPairs,
 } from 'lodash/fp';
+import getEventDashboardUrl, {
+	EventDashboardContext,
+} from './getEventDashboardUrl';
 import {getSafeDecodedURIComponent} from './util';
 import {RangeSelectors} from 'shared/types';
 import {sub} from 'shared/util/lang';
@@ -28,6 +31,7 @@ export const INTERVAL_MAP = {
 type SessionEvent = {
 	attributes: Record<string, unknown>;
 	description: string;
+	descriptionUrl?: string;
 	subtitle: string | undefined;
 	time: moment.Moment;
 	title: string;
@@ -61,6 +65,39 @@ export type VerticalTimelineSession = {
 	time: moment.Moment;
 	userAgent: string;
 };
+
+export interface ActivityHistoryPoint {
+	intervalInitDate: number;
+	totalEvents: number;
+	totalSessions?: number;
+}
+
+interface EventMetricLike {
+	totalEventsMetric: {
+		histogram: {metrics?: Array<{key: string; value: number}>};
+	};
+	totalSessionsMetric?: {
+		histogram?: {metrics?: Array<{value: number}>};
+	};
+}
+
+/**
+ * Maps an event-metric histogram into the activity-history points consumed by
+ * the activity-stream chart. Shared by the account and individual cards, which
+ * read the same eventMetric shape.
+ */
+export const mapEventMetricToActivityHistory = (
+	eventMetric: EventMetricLike
+): ActivityHistoryPoint[] | undefined =>
+	eventMetric.totalEventsMetric.histogram.metrics?.map(
+		({key, value}, index) => ({
+			intervalInitDate: moment.utc(key).valueOf(),
+			totalEvents: value,
+			totalSessions:
+				eventMetric?.totalSessionsMetric?.histogram?.metrics?.[index]
+					.value,
+		})
+	);
 
 /**
  * Format actvitiy metrics for use in ChangeLegend
@@ -96,12 +133,13 @@ export const buildLegendItems = ({
  */
 export const formatEvents = (
 	events: UserSessionEvent[],
-	userAgent?: string
+	userAgent?: string,
+	context: EventDashboardContext = {}
 ): Array<SessionEvent> => {
 	const isWebhook = userAgent?.toLowerCase().includes('webhook');
 
-	return events.map(
-		({
+	return events.map((event) => {
+		const {
 			applicationId,
 			assetTitle,
 			canonicalUrl,
@@ -109,8 +147,11 @@ export const formatEvents = (
 			eventDate,
 			eventId,
 			name,
+			pageTitle,
 			properties,
-		}) => ({
+		} = event;
+
+		return {
 			attributes: {
 				applicationId,
 				...(eventDate && {eventDate}),
@@ -124,14 +165,15 @@ export const formatEvents = (
 					),
 				}),
 			},
-			description: assetTitle,
+			description: assetTitle || pageTitle,
+			descriptionUrl: getEventDashboardUrl(event, {...context, isWebhook}),
 			subtitle: !isWebhook
 				? getSafeDecodedURIComponent(canonicalUrl)
 				: undefined,
 			time: moment(createDate),
 			title: name,
-		})
-	);
+		};
+	});
 };
 
 /**
@@ -150,14 +192,38 @@ export const formatGroupingTime = (
 };
 
 /**
+ * Marks each session item (i.e. not a day or user header) with whether it
+ * starts or ends its group, so the VerticalTimeline can bound the connecting
+ * line to the first and last session dots of the group instead of overflowing.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const markGroupBoundaries = (items: any[]): any[] =>
+	items.map((item, index) => {
+		if (item.header || item.userHeader) {
+			return item;
+		}
+
+		const previous = items[index - 1];
+		const next = items[index + 1];
+
+		return {
+			...item,
+			groupEnd: !next || !!(next.header || next.userHeader),
+			groupStart: !previous || !!(previous.header || previous.userHeader),
+		};
+	});
+
+/**
  * Format sessions into a format usable by the VerticalTimeline component while grouping them by day.
  * @param {Array} sessions
  * @returns {Array.<Object>} An array of session objects.
  */
 export const formatSessions = (
-	sessions: UserSession[]
+	sessions: UserSession[],
+	context: EventDashboardContext = {}
 ): (VerticalTimelineHeader | VerticalTimelineSession)[] =>
-	flow(
+	markGroupBoundaries(
+		flow(
 		groupBy(({createDate}: UserSession) =>
 			moment.utc(createDate).startOf('day').format()
 		),
@@ -195,7 +261,8 @@ export const formatSessions = (
 					endTime: completeDate,
 					nestedItems: formatEvents(
 						events as unknown as UserSessionEvent[],
-						userAgent
+						userAgent,
+						context
 					),
 					time: createDate,
 					userAgent,
@@ -218,8 +285,9 @@ export const formatSessions = (
 			},
 			items,
 		]),
-		flattenDepth(3)
-	)(sessions);
+			flattenDepth(3)
+		)(sessions)
+	);
 
 /**
  * Helper function get the correct pluralization of count label.
