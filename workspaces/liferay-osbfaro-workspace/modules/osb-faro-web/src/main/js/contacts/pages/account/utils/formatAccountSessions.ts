@@ -86,8 +86,7 @@ export const formatAccountSessions = (
 		const sessionsByUser = new Map<string, AccountUserSession[]>();
 
 		daySessions.forEach((session) => {
-			const userKey =
-				session.userId ?? session.userName ?? ANONYMOUS_KEY;
+			const userKey = session.userId ?? session.userName ?? ANONYMOUS_KEY;
 
 			const userSessions = sessionsByUser.get(userKey) ?? [];
 
@@ -101,8 +100,7 @@ export const formatAccountSessions = (
 
 			items.push({
 				isAnonymous: userName == null,
-				title:
-					userName || userId || Liferay.Language.get('anonymous'),
+				title: userName || userId || Liferay.Language.get('anonymous'),
 				userHeader: true,
 				userHeaderUrl:
 					userId && context.channelId && context.groupId

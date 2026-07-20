@@ -29,7 +29,10 @@ const ActivityChartEmptyState: React.FC<IActivityChartEmptyStateProps> = ({
 			pointerEvents: 'none',
 		}}
 	>
-		<div className="font-weight-semi-bold mb-2" style={{pointerEvents: 'auto'}}>
+		<div
+			className="font-weight-semi-bold mb-2"
+			style={{pointerEvents: 'auto'}}
+		>
 			{title}
 		</div>
 

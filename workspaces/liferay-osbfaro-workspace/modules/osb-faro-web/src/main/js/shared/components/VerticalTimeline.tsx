@@ -361,10 +361,7 @@ const TimelinePanelBodyContentText: FC<{
 			{!header && description && (
 				<div className="description">
 					{descriptionUrl ? (
-						<ClayLink
-							className="subtitle"
-							href={descriptionUrl}
-						>
+						<ClayLink className="subtitle" href={descriptionUrl}>
 							<TextTruncate title={description} />
 						</ClayLink>
 					) : (
@@ -379,7 +376,7 @@ const TimelinePanelBodyContentText: FC<{
 						className="event-icon icon-root mr-2"
 						symbol="click"
 					/>
-				
+
 					{totalEvents}
 				</span>
 			)}

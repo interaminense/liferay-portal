@@ -15,7 +15,10 @@ import UserSessionQuery, {
 	UserSessionVariables,
 } from 'shared/queries/UserSessionQuery';
 import {fetchPolicyDefinition} from 'shared/util/graphql';
-import {formatSessions, mapEventMetricToActivityHistory} from 'shared/util/activities';
+import {
+	formatSessions,
+	mapEventMetricToActivityHistory,
+} from 'shared/util/activities';
 import {getSafeRangeSelectors} from 'shared/util/util';
 import {getSessionsDateRange} from 'shared/util/activityDateRange';
 import {Individual} from 'shared/util/records';
@@ -26,10 +29,7 @@ import {sub} from 'shared/util/lang';
 import {useParams} from 'react-router-dom';
 import {useQuery} from '@apollo/client';
 import {useSelectedPoint} from 'shared/hooks/useSelectedPoint';
-import {
-	getDateRangeLabel,
-	getDateRangeLabelFromDate,
-} from 'shared/util/date';
+import {getDateRangeLabel, getDateRangeLabelFromDate} from 'shared/util/date';
 
 interface IProfileCardWithDataCDPProps
 	extends React.HTMLAttributes<HTMLElement> {
@@ -170,7 +170,9 @@ const ProfileCardWithDataCDP: React.FC<IProfileCardWithDataCDPProps> = ({
 			emptyChartContent={
 				<ActivityChartEmptyState
 					linkHref={URLConstants.IndividualProfilesDocument}
-					linkLabel={Liferay.Language.get('learn-more-about-individuals')}
+					linkLabel={Liferay.Language.get(
+						'learn-more-about-individuals'
+					)}
 					title={Liferay.Language.get(
 						'there-is-no-data-for-individual-activities'
 					)}

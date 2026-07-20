@@ -1,8 +1,4 @@
-import {
-	DEFAULT_DATE_FORMAT,
-	formatUTCDate,
-	getEndDate,
-} from 'shared/util/date';
+import {DEFAULT_DATE_FORMAT, formatUTCDate, getEndDate} from 'shared/util/date';
 import {getSafeRangeSelectors} from 'shared/util/util';
 import {Interval, RangeSelectors, SafeRangeSelectors} from 'shared/types';
 import {isNil} from 'lodash';

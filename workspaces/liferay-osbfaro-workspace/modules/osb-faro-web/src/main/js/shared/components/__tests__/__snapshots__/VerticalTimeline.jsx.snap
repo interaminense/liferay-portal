@@ -28,17 +28,18 @@ exports[`VerticalTimeline should render with a header and initialExpanded 1`] = 
                 >
                   Yesterday
                 </span>
-                <svg
-                  class="lexicon-icon lexicon-icon-click event-icon icon-root"
-                  role="presentation"
-                >
-                  <use
-                    href="#click"
-                  />
-                </svg>
                 <span
                   class="item-count text-secondary"
-                />
+                >
+                  <svg
+                    class="lexicon-icon lexicon-icon-click event-icon icon-root mr-2"
+                    role="presentation"
+                  >
+                    <use
+                      href="#click"
+                    />
+                  </svg>
+                </span>
               </div>
             </div>
           </div>
@@ -347,17 +348,18 @@ Firefox"
                 >
                   Today
                 </span>
-                <svg
-                  class="lexicon-icon lexicon-icon-click event-icon icon-root"
-                  role="presentation"
-                >
-                  <use
-                    href="#click"
-                  />
-                </svg>
                 <span
                   class="item-count text-secondary"
-                />
+                >
+                  <svg
+                    class="lexicon-icon lexicon-icon-click event-icon icon-root mr-2"
+                    role="presentation"
+                  >
+                    <use
+                      href="#click"
+                    />
+                  </svg>
+                </span>
               </div>
             </div>
           </div>

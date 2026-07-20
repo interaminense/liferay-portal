@@ -166,7 +166,10 @@ export const formatEvents = (
 				}),
 			},
 			description: assetTitle || pageTitle,
-			descriptionUrl: getEventDashboardUrl(event, {...context, isWebhook}),
+			descriptionUrl: getEventDashboardUrl(event, {
+				...context,
+				isWebhook,
+			}),
 			subtitle: !isWebhook
 				? getSafeDecodedURIComponent(canonicalUrl)
 				: undefined,
@@ -196,6 +199,7 @@ export const formatGroupingTime = (
  * starts or ends its group, so the VerticalTimeline can bound the connecting
  * line to the first and last session dots of the group instead of overflowing.
  */
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const markGroupBoundaries = (items: any[]): any[] =>
 	items.map((item, index) => {
@@ -224,67 +228,67 @@ export const formatSessions = (
 ): (VerticalTimelineHeader | VerticalTimelineSession)[] =>
 	markGroupBoundaries(
 		flow(
-		groupBy(({createDate}: UserSession) =>
-			moment.utc(createDate).startOf('day').format()
-		),
-		mapValues((items: unknown) =>
-			(items as (UserSession & {createDate: string})[]).map(
-				({
-					browserName,
-					completeDate,
-					contentLanguageID,
-					createDate,
-					devicePixelRatioz,
-					deviceType,
-					events,
-					languageID,
-					screenHeight,
-					screenWidth,
-					timezoneOffset,
-					userAgent,
-				}) => ({
-					applicationId:
-						(events as unknown as UserSessionEvent[])[0]
-							?.applicationId ?? '',
-					attributes: {
+			groupBy(({createDate}: UserSession) =>
+				moment.utc(createDate).startOf('day').format()
+			),
+			mapValues((items: unknown) =>
+				(items as (UserSession & {createDate: string})[]).map(
+					({
+						browserName,
+						completeDate,
 						contentLanguageID,
+						createDate,
 						devicePixelRatioz,
-						header: Liferay.Language.get('session-attributes'),
+						deviceType,
+						events,
 						languageID,
 						screenHeight,
 						screenWidth,
 						timezoneOffset,
 						userAgent,
-					},
-					browserName,
-					device: deviceType,
-					endTime: completeDate,
-					nestedItems: formatEvents(
-						events as unknown as UserSessionEvent[],
+					}) => ({
+						applicationId:
+							(events as unknown as UserSessionEvent[])[0]
+								?.applicationId ?? '',
+						attributes: {
+							contentLanguageID,
+							devicePixelRatioz,
+							header: Liferay.Language.get('session-attributes'),
+							languageID,
+							screenHeight,
+							screenWidth,
+							timezoneOffset,
+							userAgent,
+						},
+						browserName,
+						device: deviceType,
+						endTime: completeDate,
+						nestedItems: formatEvents(
+							events as unknown as UserSessionEvent[],
+							userAgent,
+							context
+						),
+						time: createDate,
 						userAgent,
-						context
+					})
+				)
+			),
+			toPairs,
+			orderBy([([time]) => moment(time).unix()], ['desc']),
+			map(([time, items]: [string, {nestedItems: unknown[]}[]]) => [
+				{
+					header: true,
+					title: formatGroupingTime(time),
+					totalEvents: items.reduce(
+						(
+							previousValue: number,
+							currentValue: {nestedItems: unknown[]}
+						) => previousValue + currentValue.nestedItems.length,
+						0
 					),
-					time: createDate,
-					userAgent,
-				})
-			)
-		),
-		toPairs,
-		orderBy([([time]) => moment(time).unix()], ['desc']),
-		map(([time, items]: [string, {nestedItems: unknown[]}[]]) => [
-			{
-				header: true,
-				title: formatGroupingTime(time),
-				totalEvents: items.reduce(
-					(
-						previousValue: number,
-						currentValue: {nestedItems: unknown[]}
-					) => previousValue + currentValue.nestedItems.length,
-					0
-				),
-			},
-			items,
-		]),
+				},
+				items,
+			]),
 			flattenDepth(3)
 		)(sessions)
 	);

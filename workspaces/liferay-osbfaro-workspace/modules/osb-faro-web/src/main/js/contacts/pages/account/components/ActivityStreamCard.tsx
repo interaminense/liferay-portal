@@ -30,10 +30,7 @@ import {useQuery} from '@apollo/client';
 import {useSelectedPoint} from 'shared/hooks/useSelectedPoint';
 import {useStatefulPagination} from 'shared/hooks/useStatefulPagination';
 import {useTimeZone} from 'shared/hooks/useTimeZone';
-import {
-	getDateRangeLabel,
-	getDateRangeLabelFromDate,
-} from 'shared/util/date';
+import {getDateRangeLabel, getDateRangeLabelFromDate} from 'shared/util/date';
 
 interface IActivityStreamCardProps {
 	accountId: string;
