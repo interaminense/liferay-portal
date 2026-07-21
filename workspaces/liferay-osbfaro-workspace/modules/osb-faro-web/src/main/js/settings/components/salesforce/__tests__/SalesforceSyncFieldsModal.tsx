@@ -40,10 +40,24 @@ jest.mock('@liferay/frontend-data-set-web', () => ({
 	),
 }));
 
+const CATALOG = {
+	ACCOUNT: [{name: 'Name', required: false, selected: false, type: 'String'}],
+	CONTACT: [
+		{name: 'Email', required: false, selected: false, type: 'String'},
+	],
+	OPPORTUNITY: [
+		{name: 'Amount', required: false, selected: false, type: 'Number'},
+	],
+};
+
 const renderModal = (entityKey = 'accountsAndOpportunities') => {
 	const result = render(
 		<SalesforceSyncFieldsModal
+			catalog={CATALOG}
+			dataSourceId="1"
 			entityKey={entityKey}
+			groupId="1"
+			initialSelection={{}}
 			onClose={jest.fn()}
 			onDone={jest.fn()}
 		/>
@@ -89,7 +103,7 @@ describe('SalesforceSyncFieldsModal', () => {
 		).toBeInTheDocument();
 		expect(
 			screen.queryByTestId(
-				'fds-select-accountsAndOpportunities-Opportunities-sync-fields'
+				'fds-select-accountsAndOpportunities-OPPORTUNITY-sync-fields'
 			)
 		).not.toBeInTheDocument();
 	});
@@ -99,13 +113,13 @@ describe('SalesforceSyncFieldsModal', () => {
 
 		fireEvent.click(
 			screen.getByTestId(
-				'fds-select-accountsAndOpportunities-Account-sync-fields'
+				'fds-select-accountsAndOpportunities-ACCOUNT-sync-fields'
 			)
 		);
 
 		expect(
 			screen.getByTestId(
-				'fds-select-accountsAndOpportunities-Opportunities-sync-fields'
+				'fds-select-accountsAndOpportunities-OPPORTUNITY-sync-fields'
 			)
 		).toBeInTheDocument();
 		expect(
@@ -118,35 +132,35 @@ describe('SalesforceSyncFieldsModal', () => {
 
 		fireEvent.click(
 			screen.getByTestId(
-				'fds-select-accountsAndOpportunities-Account-sync-fields'
+				'fds-select-accountsAndOpportunities-ACCOUNT-sync-fields'
 			)
 		);
 		fireEvent.click(
 			screen.getByTestId(
-				'fds-select-accountsAndOpportunities-Opportunities-sync-fields'
+				'fds-select-accountsAndOpportunities-OPPORTUNITY-sync-fields'
 			)
 		);
 
 		expect(
 			screen.getByTestId(
-				'fds-count-accountsAndOpportunities-Opportunities-sync-fields'
+				'fds-count-accountsAndOpportunities-OPPORTUNITY-sync-fields'
 			)
 		).toHaveTextContent('1');
 
 		fireEvent.click(
 			screen.getByTestId(
-				'fds-clear-accountsAndOpportunities-Account-sync-fields'
+				'fds-clear-accountsAndOpportunities-ACCOUNT-sync-fields'
 			)
 		);
 		fireEvent.click(
 			screen.getByTestId(
-				'fds-select-accountsAndOpportunities-Account-sync-fields'
+				'fds-select-accountsAndOpportunities-ACCOUNT-sync-fields'
 			)
 		);
 
 		expect(
 			screen.getByTestId(
-				'fds-count-accountsAndOpportunities-Opportunities-sync-fields'
+				'fds-count-accountsAndOpportunities-OPPORTUNITY-sync-fields'
 			)
 		).toHaveTextContent('0');
 	});
@@ -158,7 +172,7 @@ describe('SalesforceSyncFieldsModal', () => {
 			screen.getByText('Sync Individual Attributes')
 		).toBeInTheDocument();
 		expect(
-			screen.getByTestId('fds-select-individuals-Contact-sync-fields')
+			screen.getByTestId('fds-select-individuals-CONTACT-sync-fields')
 		).toBeInTheDocument();
 		expect(screen.queryByRole('tab')).not.toBeInTheDocument();
 	});

@@ -463,17 +463,19 @@ export function updateSalesforce({
 	});
 }
 
-export function updateSalesforceSyncFields({
-	groupId,
-	id,
-	syncFieldsConfiguration,
-}) {
+export function fetchSalesforceFieldCatalog({groupId, id, refresh = false}) {
 	return sendRequest({
-		data: {
-			syncFieldsConfiguration,
-		},
+		data: {refresh},
+		method: 'GET',
+		path: `contacts/${groupId}/data_source/${id}/field-catalog`,
+	});
+}
+
+export function updateSalesforceFieldSelection({fieldSelection, groupId, id}) {
+	return sendRequest({
+		data: {fieldSelection},
 		method: 'PATCH',
-		path: `contacts/${groupId}/data_source/${id}/salesforce`,
+		path: `contacts/${groupId}/data_source/${id}/field-selection`,
 	});
 }
 

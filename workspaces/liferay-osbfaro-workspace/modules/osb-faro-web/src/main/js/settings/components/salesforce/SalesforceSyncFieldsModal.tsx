@@ -2,103 +2,117 @@ import ClayButton from '@clayui/button';
 import ClayModal, {useModal} from '@clayui/modal';
 import ClayTabs from '@clayui/tabs';
 import NoResultsDisplay from 'shared/components/NoResultsDisplay';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {FrontendDataSet, pagination} from 'shared/components/FrontendDataSet';
-import {Sizes} from 'shared/util/constants';
 import {
 	ISyncField,
 	ISyncFieldsTab,
 	SYNC_FIELDS_ENTITIES,
 } from './salesforceSyncFields';
-import {
-	getMockEndpoint,
-	installSyncFieldsMockFetch,
-} from './salesforceSyncFieldsMock';
+import {Sizes} from 'shared/util/constants';
+
+type SelectedField = {name: string};
 
 interface ISyncFieldsDataSetProps {
+	dataSourceId: string;
 	entityKey: string;
-	onSelectedItemsChange: (selectedItems: ISyncField[]) => void;
-	selectedItems: ISyncField[];
+	groupId: string;
+	onSelectedItemsChange: (selectedItems: SelectedField[]) => void;
+	selectedItems: SelectedField[];
 	tab: ISyncFieldsTab;
+	typeOptions: string[];
 }
 
 const SyncFieldsDataSet: React.FC<ISyncFieldsDataSetProps> = ({
+	dataSourceId,
 	entityKey,
+	groupId,
 	onSelectedItemsChange,
 	selectedItems,
 	tab,
-}) => {
-	const dataTypes = Array.from(new Set(tab.fields.map(({type}) => type)));
-
-	return (
-		<FrontendDataSet
-			apiURL={getMockEndpoint(entityKey, tab.entity)}
-			filters={[
-				{
-					entityFieldType: 'string',
-					id: 'type',
-					itemKey: 'value',
-					itemLabel: 'label',
-					items: dataTypes.map((dataType) => ({
-						label: dataType,
-						value: dataType,
-					})),
-					label: Liferay.Language.get('data-type'),
-					multiple: true,
-					name: 'type',
-					type: 'selection',
+	typeOptions,
+}) => (
+	<FrontendDataSet
+		apiURL={`/o/faro/contacts/${groupId}/data_source/${dataSourceId}/field-catalog/${encodeURIComponent(
+			tab.catalogKey
+		)}`}
+		filters={
+			typeOptions.length
+				? [
+						{
+							entityFieldType: 'string',
+							id: 'type',
+							itemKey: 'value',
+							itemLabel: 'label',
+							items: typeOptions.map((type) => ({
+								label: type,
+								value: type,
+							})),
+							label: Liferay.Language.get('data-type'),
+							multiple: true,
+							name: 'type',
+							type: 'selection',
+						},
+					]
+				: undefined
+		}
+		id={`${entityKey}-${tab.catalogKey}-sync-fields`}
+		onSelectedItemsChange={onSelectedItemsChange}
+		pagination={pagination}
+		selectedItems={selectedItems}
+		selectedItemsKey="name"
+		selectionType="multiple"
+		showPagination
+		sorts={[
+			{
+				active: true,
+				direction: 'asc',
+				key: 'name',
+				label: Liferay.Language.get('attribute-name'),
+			},
+		]}
+		views={[
+			{
+				contentRenderer: 'table',
+				default: true,
+				label: Liferay.Language.get('default-view'),
+				name: 'table',
+				schema: {
+					fields: [
+						{
+							fieldName: 'name',
+							label: Liferay.Language.get('attribute-name'),
+							sortable: true,
+						},
+						{
+							fieldName: 'type',
+							label: Liferay.Language.get('data-type'),
+							sortable: true,
+						},
+					],
 				},
-			]}
-			id={`${entityKey}-${tab.entity}-sync-fields`}
-			onSelectedItemsChange={onSelectedItemsChange}
-			pagination={pagination}
-			selectedItems={selectedItems}
-			selectedItemsKey="name"
-			selectionType="multiple"
-			showPagination
-			sorts={[
-				{
-					active: true,
-					direction: 'asc',
-					key: 'name',
-					label: Liferay.Language.get('attribute-name'),
-				},
-			]}
-			views={[
-				{
-					contentRenderer: 'table',
-					default: true,
-					label: Liferay.Language.get('default-view'),
-					name: 'table',
-					schema: {
-						fields: [
-							{
-								fieldName: 'name',
-								label: Liferay.Language.get('attribute-name'),
-								sortable: true,
-							},
-							{
-								fieldName: 'type',
-								label: Liferay.Language.get('data-type'),
-								sortable: true,
-							},
-						],
-					},
-					thumbnail: 'table',
-				},
-			]}
-		/>
-	);
-};
+				thumbnail: 'table',
+			},
+		]}
+	/>
+);
 
 interface ISalesforceSyncFieldsModalProps {
+	catalog?: Record<string, ISyncField[]>;
+	dataSourceId: string;
 	entityKey: string;
+	groupId: string;
+	initialSelection: Record<string, string[]>;
 	onClose: () => void;
-	onDone: (selectedCount: number) => void;
+	onDone: (entitySelection: Record<string, string[]>) => void;
 }
 
 const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
+	catalog,
+	dataSourceId,
 	entityKey,
+	groupId,
+	initialSelection,
 	onClose,
 	onDone,
 }) => {
@@ -106,23 +120,42 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 
 	const entity = SYNC_FIELDS_ENTITIES[entityKey];
 
-	const [restoreFetch] = useState(() =>
-		installSyncFieldsMockFetch(
-			entity.tabs.map((tab) => ({
-				endpoint: getMockEndpoint(entityKey, tab.entity),
-				fields: tab.fields,
-			}))
+	const hasMultipleTabs = entity.tabs.length > 1;
+
+	const [activeTab, setActiveTab] = useState(0);
+	const [selectedByTab, setSelectedByTab] = useState<SelectedField[][]>(() =>
+		entity.tabs.map((tab) =>
+			(initialSelection[tab.catalogKey] ?? []).map((name) => ({name}))
 		)
 	);
 
-	const [activeTab, setActiveTab] = useState(0);
-	const [selectedByTab, setSelectedByTab] = useState<ISyncField[][]>(() =>
-		entity.tabs.map((tab) => tab.fields.filter((field) => field.selected))
-	);
+	const getTypeOptions = (tab: ISyncFieldsTab): string[] => {
+		if (!catalog) {
+			return [];
+		}
 
-	const hasMultipleTabs = entity.tabs.length > 1;
+		const catalogKey = Object.keys(catalog).find(
+			(key) => key.toLowerCase() === tab.catalogKey.toLowerCase()
+		);
 
-	useEffect(() => restoreFetch, [restoreFetch]);
+		const fields = catalogKey ? catalog[catalogKey] : [];
+
+		return Array.from(new Set(fields.map((field) => field.type)));
+	};
+
+	const handleDone = () => {
+		const entitySelection: Record<string, string[]> = {};
+
+		entity.tabs.forEach((tab, index) => {
+			entitySelection[tab.catalogKey] = (selectedByTab[index] ?? []).map(
+				(field) => field.name
+			);
+		});
+
+		onDone(entitySelection);
+
+		onClose();
+	};
 
 	return (
 		<ClayModal observer={observer} size="lg">
@@ -150,7 +183,7 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 							key={tab.entity}
 						>
 							{tab.gatedOnFirst &&
-							selectedByTab[0].length === 0 ? (
+							(selectedByTab[0]?.length ?? 0) === 0 ? (
 								<NoResultsDisplay
 									className="py-5"
 									description={entity.gateDescription}
@@ -165,7 +198,9 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 								/>
 							) : (
 								<SyncFieldsDataSet
+									dataSourceId={dataSourceId}
 									entityKey={entityKey}
+									groupId={groupId}
 									onSelectedItemsChange={(selectedItems) =>
 										setSelectedByTab((previousSelections) =>
 											previousSelections.map(
@@ -192,8 +227,9 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 											)
 										)
 									}
-									selectedItems={selectedByTab[index]}
+									selectedItems={selectedByTab[index] ?? []}
 									tab={tab}
+									typeOptions={getTypeOptions(tab)}
 								/>
 							)}
 						</ClayTabs.TabPane>
@@ -208,19 +244,7 @@ const SalesforceSyncFieldsModal: React.FC<ISalesforceSyncFieldsModalProps> = ({
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
 
-						<ClayButton
-							onClick={() => {
-								onDone(
-									selectedByTab.reduce(
-										(total, selection) =>
-											total + selection.length,
-										0
-									)
-								);
-
-								onClose();
-							}}
-						>
+						<ClayButton onClick={handleDone}>
 							{Liferay.Language.get('done')}
 						</ClayButton>
 					</ClayButton.Group>

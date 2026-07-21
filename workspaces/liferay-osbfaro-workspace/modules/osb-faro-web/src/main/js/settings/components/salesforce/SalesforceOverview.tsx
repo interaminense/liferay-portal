@@ -6,7 +6,7 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import ErrorDisplay from 'shared/components/ErrorDisplay';
 import Loading from 'shared/components/Loading';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import SalesforceSyncItems from './SalesforceSyncItems';
 import URLConstants from 'shared/util/url-constants';
 import {addAlert} from 'shared/actions/alerts';
@@ -22,7 +22,11 @@ import {DataSource} from 'shared/util/records';
 import {DataSourceEditableTitle} from '../data-source/DataSourceEditableTitle';
 import {DataSourceStatuses} from 'shared/util/constants';
 import {Entity} from '../3rd-party-connector/types';
-import {fetch, updateSalesforce} from 'shared/api/data-source';
+import {
+	fetch,
+	updateSalesforce,
+	updateSalesforceFieldSelection,
+} from 'shared/api/data-source';
 import {fetchConnectorEntityCount} from 'shared/api/connector';
 import {getDataSourceDisplayObject} from 'shared/util/data-sources';
 import {Text} from '@clayui/core';
@@ -270,6 +274,7 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 
 			<Card title={Liferay.Language.get('synced-data')}>
 				<SyncedDataItems
+					addAlert={addAlert}
 					currentUser={currentUser}
 					dataSource={dataSource}
 					groupId={groupId}
@@ -299,15 +304,19 @@ const SalesforceOverview: React.FC<ISalesforceOverviewProps> = ({
 };
 
 const SyncedDataItems = ({
+	addAlert,
 	currentUser,
 	dataSource,
 	groupId,
 }: {
+	addAlert: any;
 	currentUser: any;
 	dataSource: DataSource;
 	groupId: string;
 }) => {
+	const [saving, setSaving] = useState(false);
 	const [showInfoAlert, setShowInfoAlert] = useState(true);
+	const fieldSelectionRef = useRef<Record<string, string[]>>({});
 
 	const accountsCountResponse = useRequest({
 		dataSourceFn: (params) =>
@@ -322,6 +331,36 @@ const SyncedDataItems = ({
 	});
 
 	const dataSourceActive = dataSource.status === DataSourceStatuses.Active;
+
+	const handleSave = async () => {
+		try {
+			setSaving(true);
+
+			await updateSalesforceFieldSelection({
+				fieldSelection: fieldSelectionRef.current,
+				groupId,
+				id: dataSource.id!,
+			});
+
+			addAlert({
+				alertType: Alert.Types.Success,
+				message: Liferay.Language.get(
+					'synced-data-settings-have-been-saved'
+				),
+			});
+		}
+		catch (error) {
+			addAlert({
+				alertType: Alert.Types.Error,
+				message: Liferay.Language.get(
+					'there-was-an-error-processing-your-request.-try-again.-if-the-problem-persists,-please-contact-support'
+				),
+			});
+		}
+		finally {
+			setSaving(false);
+		}
+	};
 
 	if (accountsCountResponse.error || userCountResponse.error) {
 		return <ErrorDisplay />;
@@ -351,18 +390,24 @@ const SyncedDataItems = ({
 			)}
 
 			<SalesforceSyncItems
+				dataSourceId={dataSource.id!}
 				disabled={!dataSourceActive || !currentUser.isAdmin()}
+				groupId={groupId}
 				itemsSyncedCounts={{
 					accountsAndOpportunities: accountsCountResponse.data,
 					campaignsAndCampaignMembers: 0,
 					individuals: userCountResponse.data,
+				}}
+				onFieldSelectionChange={(fieldSelection) => {
+					fieldSelectionRef.current = fieldSelection;
 				}}
 			/>
 
 			{dataSourceActive && currentUser.isAdmin() && (
 				<ClayButton
 					className="mt-3 rounded-lg"
-					onClick={() => {}}
+					loading={saving}
+					onClick={handleSave}
 					size="sm"
 				>
 					{Liferay.Language.get('save')}
