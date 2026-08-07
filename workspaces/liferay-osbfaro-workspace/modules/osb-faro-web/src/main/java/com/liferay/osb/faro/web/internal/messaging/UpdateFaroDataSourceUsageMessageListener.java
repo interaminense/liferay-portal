@@ -13,6 +13,7 @@ import com.liferay.osb.faro.service.FaroDataSourceUsageLocalService;
 import com.liferay.osb.faro.service.FaroProjectLocalService;
 import com.liferay.osb.faro.web.internal.constants.FaroMessageDestinationNames;
 import com.liferay.osb.faro.web.internal.messaging.destination.creator.DestinationCreator;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -107,12 +108,30 @@ public class UpdateFaroDataSourceUsageMessageListener
 
 		Date date = calendar.getTime();
 
+		List<FaroProject> faroProjects =
+			_faroProjectLocalService.getFaroProjects(
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				StringBundler.concat(
+					"Starting Faro data source usage sync for ", date,
+					" across ", faroProjects.size(), " Faro projects"));
+		}
+
 		Map<String, Map<String, List<DataSourceUsageMetric>>>
 			dataSourceUsageMetricsMap = new HashMap<>();
 
-		for (FaroProject faroProject :
-				_faroProjectLocalService.getFaroProjects(
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+		for (FaroProject faroProject : faroProjects) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					StringBundler.concat(
+						"Processing Faro project ",
+						faroProject.getFaroProjectId(), " (projectId ",
+						faroProject.getProjectId(), ", server ",
+						faroProject.getServerLocation(), ", userId ",
+						faroProject.getUserId(), ")"));
+			}
 
 			try {
 				_addOrUpdateFaroDataSourceUsages(
@@ -123,6 +142,10 @@ public class UpdateFaroDataSourceUsageMessageListener
 					"Unable to add Faro data source usage for " + faroProject,
 					exception);
 			}
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Finished Faro data source usage sync for " + date);
 		}
 	}
 
@@ -136,11 +159,27 @@ public class UpdateFaroDataSourceUsageMessageListener
 			dataSourceUsageMetricsMap.get(faroProject.getServerLocation());
 
 		if (map == null) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Cache miss, fetching data source usage metrics from " +
+						"asah for server " + faroProject.getServerLocation());
+			}
+
 			map = new HashMap<>();
 
 			Results<DataSourceUsageMetric> results =
 				_contactsEngineClient.getDataSourceUsageMetrics(
 					faroProject, date);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					StringBundler.concat(
+						"Received ",
+						results.getItems(
+						).size(),
+						" data source usage metrics from asah for server ",
+						faroProject.getServerLocation()));
+			}
 
 			for (DataSourceUsageMetric dataSourceUsageMetric :
 					results.getItems()) {
@@ -155,16 +194,44 @@ public class UpdateFaroDataSourceUsageMessageListener
 
 			dataSourceUsageMetricsMap.put(faroProject.getServerLocation(), map);
 		}
+		else if (_log.isInfoEnabled()) {
+			_log.info(
+				"Cache hit, reusing data source usage metrics for server " +
+					faroProject.getServerLocation());
+		}
 
 		List<DataSourceUsageMetric> dataSourceUsageMetrics = map.get(
 			faroProject.getProjectId());
 
 		if (dataSourceUsageMetrics == null) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"No data source usage metrics found for Faro project " +
+						faroProject.getFaroProjectId());
+			}
+
 			return;
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				StringBundler.concat(
+					"Found ", dataSourceUsageMetrics.size(),
+					" data source usage metrics for Faro project ",
+					faroProject.getFaroProjectId()));
 		}
 
 		for (DataSourceUsageMetric dataSourceUsageMetric :
 				dataSourceUsageMetrics) {
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					StringBundler.concat(
+						"Adding data source usage for Faro project ",
+						faroProject.getFaroProjectId(), ", data source ",
+						dataSourceUsageMetric.getDataSourceId(), ", userId ",
+						faroProject.getUserId()));
+			}
 
 			_faroDataSourceUsageLocalService.addOrUpdateFaroDataSourceUsage(
 				faroProject.getUserId(),
@@ -174,6 +241,14 @@ public class UpdateFaroDataSourceUsageMessageListener
 				dataSourceUsageMetric.getDataSourceStatus(),
 				faroProject.getFaroProjectId(),
 				dataSourceUsageMetric.getKnownIndividualsCount(), date);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					StringBundler.concat(
+						"Added data source usage for Faro project ",
+						faroProject.getFaroProjectId(), ", data source ",
+						dataSourceUsageMetric.getDataSourceId()));
+			}
 		}
 	}
 
