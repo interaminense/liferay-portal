@@ -8,7 +8,6 @@ export const INDIVIDUALS = 'individuals';
 export const PAGEVIEWS = 'pageViews';
 
 export const SubscriptionNames = {
-	DigitalSalesRoom: 'Digital Sales Room',
 	LiferayAnalyticsCloudBasic: 'Liferay Analytics Cloud Basic',
 	LiferayAnalyticsCloudBusiness: 'Liferay Analytics Cloud Business',
 	LiferayAnalyticsCloudBusinessContacts:
@@ -23,6 +22,7 @@ export const SubscriptionNames = {
 	LiferayDataPlatform: 'Liferay Data Platform',
 	LiferayDataPlatformEnterprise: 'Liferay Data Platform Enterprise',
 	LiferayDataPlatformPrivateBeta: 'Liferay Data Platform (Private Beta)',
+	LiferayDigitalSalesRoom: 'Liferay Digital Sales Room',
 	LiferaySaasBusinessPlan: 'Liferay SaaS - Business Plan',
 	LiferaySaasCspCustomUserTier: 'Liferay SaaS - CSP - Custom User Tier',
 	LiferaySaasCspCustomUserTierExtraUser:
@@ -76,7 +76,6 @@ export const SubscriptionNames = {
 };
 
 export const PLAN_TYPES = {
-	[SubscriptionNames.DigitalSalesRoom]: 'digitalSalesRoom',
 	[SubscriptionNames.LiferayAnalyticsCloudBasic]: 'basic',
 	[SubscriptionNames.LiferayAnalyticsCloudBusiness]: 'business',
 	[SubscriptionNames.LiferayAnalyticsCloudBusinessContacts]: INDIVIDUALS,
@@ -87,6 +86,7 @@ export const PLAN_TYPES = {
 	[SubscriptionNames.LiferayDataPlatform]: 'dataPlatform',
 	[SubscriptionNames.LiferayDataPlatformEnterprise]: 'dataPlatformEnterprise',
 	[SubscriptionNames.LiferayDataPlatformPrivateBeta]: 'dataPlatform',
+	[SubscriptionNames.LiferayDigitalSalesRoom]: 'digitalSalesRoom',
 	[SubscriptionNames.LiferaySaasBusinessPlan]: 'lxcBusiness',
 	[SubscriptionNames.LiferaySaasCspCustomUserTier]: 'lxcCspCustomUserTier',
 	[SubscriptionNames.LiferaySaasCspCustomUserTierExtraUser]:
@@ -252,9 +252,6 @@ export function getPlanLabel(name) {
 		case PLANS.enterprise.name:
 			return Liferay.Language.get('enterprise-plan');
 
-		case SubscriptionNames.DigitalSalesRoom:
-			return Liferay.Language.get('digital-sales-room');
-
 		case SubscriptionNames.LiferayDataPlatform:
 			return Liferay.Language.get('liferay-data-platform');
 
@@ -263,6 +260,9 @@ export function getPlanLabel(name) {
 
 		case SubscriptionNames.LiferayDataPlatformEnterprise:
 			return Liferay.Language.get('liferay-data-platform-enterprise');
+
+		case SubscriptionNames.LiferayDigitalSalesRoom:
+			return Liferay.Language.get('liferay-digital-sales-room');
 
 		case PLANS.lxcCspCustomUserTier.name:
 			return Liferay.Language.get('lxc-csp-custom-user-tier');
