@@ -56,7 +56,7 @@ public class ProductConstants {
 		"Liferay Data Platform";
 
 	public static final String DIGITAL_SALES_ROOM_PRODUCT_ENTRY_ID =
-		"KOR-17676139";
+		"KOR-36833484";
 
 	public static final String DIGITAL_SALES_ROOM_PRODUCT_ENTRY_NAME =
 		"Digital Sales Room";
