@@ -89,8 +89,8 @@ public class FaroSubscriptionConstants {
 				ProductConstants.DIGITAL_SALES_ROOM_PRODUCT_ENTRY_NAME,
 				new FaroSubscriptionPlan(
 					null,
-					ProductConstants.DIGITAL_SALES_ROOM_PRODUCT_ENTRY_NAME,
-					-1, -1)
+					ProductConstants.DIGITAL_SALES_ROOM_PRODUCT_ENTRY_NAME, -1,
+					-1)
 			).put(
 				ProductConstants.ENTERPRISE_CONTACTS_PRODUCT_ENTRY_NAME,
 				new FaroSubscriptionPlan(

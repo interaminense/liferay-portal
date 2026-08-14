@@ -59,7 +59,7 @@ public class ProductConstants {
 		"KOR-36833484";
 
 	public static final String DIGITAL_SALES_ROOM_PRODUCT_ENTRY_NAME =
-		"Digital Sales Room";
+		"Liferay Digital Sales Room";
 
 	public static final String ENTERPRISE_CONTACTS_PRODUCT_ENTRY_ID =
 		"KOR-36437";
