@@ -58,6 +58,12 @@ describe('subscriptions', () => {
 	});
 
 	describe('getPlanLabel', () => {
+		it('should return the label for the Digital Sales Room plan', () => {
+			expect(getPlanLabel(SubscriptionNames.DigitalSalesRoom)).toEqual(
+				'Digital Sales Room'
+			);
+		});
+
 		it('should return the label for the Liferay Data Platform plan', () => {
 			expect(getPlanLabel(SubscriptionNames.LiferayDataPlatform)).toEqual(
 				'Liferay Data Platform'

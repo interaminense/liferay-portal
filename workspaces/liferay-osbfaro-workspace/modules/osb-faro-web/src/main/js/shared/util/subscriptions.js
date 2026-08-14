@@ -8,6 +8,7 @@ export const INDIVIDUALS = 'individuals';
 export const PAGEVIEWS = 'pageViews';
 
 export const SubscriptionNames = {
+	DigitalSalesRoom: 'Digital Sales Room',
 	LiferayAnalyticsCloudBasic: 'Liferay Analytics Cloud Basic',
 	LiferayAnalyticsCloudBusiness: 'Liferay Analytics Cloud Business',
 	LiferayAnalyticsCloudBusinessContacts:
@@ -75,6 +76,7 @@ export const SubscriptionNames = {
 };
 
 export const PLAN_TYPES = {
+	[SubscriptionNames.DigitalSalesRoom]: 'digitalSalesRoom',
 	[SubscriptionNames.LiferayAnalyticsCloudBasic]: 'basic',
 	[SubscriptionNames.LiferayAnalyticsCloudBusiness]: 'business',
 	[SubscriptionNames.LiferayAnalyticsCloudBusinessContacts]: INDIVIDUALS,
@@ -249,6 +251,9 @@ export function getPlanLabel(name) {
 
 		case PLANS.enterprise.name:
 			return Liferay.Language.get('enterprise-plan');
+
+		case SubscriptionNames.DigitalSalesRoom:
+			return Liferay.Language.get('digital-sales-room');
 
 		case SubscriptionNames.LiferayDataPlatform:
 			return Liferay.Language.get('liferay-data-platform');
