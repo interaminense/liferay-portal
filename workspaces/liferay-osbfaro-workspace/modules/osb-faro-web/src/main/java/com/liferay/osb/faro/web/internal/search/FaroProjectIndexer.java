@@ -15,7 +15,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -254,18 +253,12 @@ public class FaroProjectIndexer extends BaseIndexer<FaroProject> {
 	}
 
 	@Override
-	protected void doReindexCompany(long companyId) throws Exception {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
-			getIndexableActionableDynamicQuery();
-
-		indexableActionableDynamicQuery.setCompanyId(CompanyConstants.SYSTEM);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			this::safeGetDocument);
-
-		indexableActionableDynamicQuery.performActions();
+	protected void doReindex(String[] ids) throws Exception {
+		for (String id : ids) {
+			doReindex(FaroProject.class.getName(), GetterUtil.getLong(id));
+		}
 	}
 
-	@Override
 	protected IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 
