@@ -343,13 +343,9 @@ export const groupEventsByPage = (
 		// brought the visitor to it, so the group takes the first one it
 		// finds — preferring the page-view event, the touch itself.
 
-		const groupCampaign = [
-			pageEvent,
-			...pageEvents,
-		].reduce<TimelineCampaign | undefined>(
-			(campaign, event) => campaign ?? getEventCampaign(event),
-			undefined
-		);
+		const groupCampaign = [pageEvent, ...pageEvents].reduce<
+			TimelineCampaign | undefined
+		>((campaign, event) => campaign ?? getEventCampaign(event), undefined);
 
 		sortableItems.push({
 			item: {
