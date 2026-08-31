@@ -96,9 +96,11 @@
 	}
 
 	.became-known-label,
+	.campaign-label,
 	.data-source-label {
 		font-size: $fontSizeSmall;
 	}
+
 
 	.device-icon {
 		.icon-root {
@@ -168,6 +170,21 @@
 
 		.event-count-pill {
 			align-self: flex-start;
+		}
+
+		// The event count and the campaign label share one line below the
+		// title. A campaign following the count is divided off from it, so the
+		// two read as separate figures rather than one run-on measurement.
+
+		.row-metrics {
+			align-self: flex-start;
+			column-gap: 12px;
+			max-width: 100%;
+
+			> .campaign-label-root:not(:first-child) {
+				border-left: 1px solid $mainLighten74;
+				padding-left: 12px;
+			}
 		}
 	}
 
