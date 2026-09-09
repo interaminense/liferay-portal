@@ -218,8 +218,10 @@ const ExternalLink: FC<{url: string}> = ({url}) => (
  */
 const PayloadTable: FC<{table: IPayloadTable}> = ({table: {rows, title}}) => (
 	<div className="payload-table">
-		<div className="payload-table-title font-weight-semi-bold text-dark text-uppercase">
-			{title}
+		<div className="payload-table-title text-uppercase">
+			<Text size={2} weight="semi-bold">
+				{title}
+			</Text>
 		</div>
 
 		<ClayTable className="table-sm" striped={false}>
@@ -323,9 +325,9 @@ const RowAttributes: FC<{payload: Record<string, unknown>}> = ({payload}) => {
 	return (
 		<div className="attributes-payload d-block w-100">
 			<div className="payload-header d-flex align-items-center justify-content-between">
-				<span className="payload-title font-weight-semi-bold text-dark">
+				<Text size={3} weight="semi-bold">
 					{Liferay.Language.get('details')}
-				</span>
+				</Text>
 
 				<PayloadViewSelector onChange={setView} view={view} />
 			</div>
