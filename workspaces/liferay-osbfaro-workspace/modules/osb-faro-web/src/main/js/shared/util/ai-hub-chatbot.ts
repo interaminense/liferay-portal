@@ -1,11 +1,36 @@
 /**
  * Everything specific to the AI Hub chat widget: where it is served from, which
  * chatbot it opens, and the overrides that let its toggle share the corner with
- * the help widget. `external-scripts.js` owns the generic machinery that puts a
- * script or a stylesheet on the page and pulls the descriptors below into it.
+ * the help widget.
+ *
+ * The widget comes and goes with the route, because a chatbot can be
+ * provisioned for a single workspace. `RootLayout` calls `syncAIHubChatbot`
+ * with the workspace the router matched; everything below is how that decision
+ * is made and carried out.
  */
 
-const STAGING_CHATBOT_EXTERNAL_REFERENCE_CODE = 'chatbot-ldp-stg-liferay-com';
+import {appendLink, appendScript, applyNonce} from './external-script';
+
+interface Chatbot {
+
+	/**
+	 * The AI Hub the chatbot is served from. Each environment's chatbot is
+	 * provisioned on its own hub, so this travels with the chatbot rather than
+	 * standing as one constant for the whole app.
+	 */
+	aiHubURL: string;
+
+	externalReferenceCode: string;
+
+	/**
+	 * The workspace the chatbot was provisioned for, spelled the way the
+	 * `:groupId` segment of `/workspace/:groupId/...` spells it: the project's
+	 * friendly URL when it has one, and its group id otherwise. A chatbot that
+	 * names a workspace stays off every other one; a chatbot that names none
+	 * answers on all of them, including the pages outside any workspace.
+	 */
+	workspace?: string;
+}
 
 /**
  * A chatbot is provisioned per environment and answers to its own external
@@ -18,32 +43,33 @@ const STAGING_CHATBOT_EXTERNAL_REFERENCE_CODE = 'chatbot-ldp-stg-liferay-com';
  * internal to build as `stg`, keying on the environment would quietly serve it
  * staging's chatbot. Keying on the URL the portal reports for itself makes the
  * map fail closed instead: an environment it does not name renders nothing.
- *
- * TODO: Add the internal environment, `https://ldp-internal.liferay.com`, once
- * its chatbot is provisioned. Leaving it out is what keeps the widget off that
- * environment in the meantime.
  */
-const CHATBOT_EXTERNAL_REFERENCE_CODES: Record<string, string | undefined> = {
-	'https://ldp-stg.liferay.com': STAGING_CHATBOT_EXTERNAL_REFERENCE_CODE,
+const CHATBOTS: Record<string, Chatbot | undefined> = {
+	'https://ldp-internal.liferay.com': {
+		aiHubURL: 'https://ai-uat.liferay.net',
+		externalReferenceCode: 'L_AIHUB_CHATBOT_LDP',
+		workspace: 'liferay.com',
+	},
+	'https://ldp-stg.liferay.com': {
+		aiHubURL: 'https://na1.hub.liferay.com',
+		externalReferenceCode: 'chatbot-ldp-stg-liferay-com',
+	},
 };
 
-// The dev server rewrites `faroURL` to its own origin, so the URL cannot
-// identify the environment locally. Development always talks to the staging
-// chatbot, whichever backend `FARO_URL` points at.
+// Development is deliberately not a case of its own: the dev server reports its
+// own origin as `faroURL`, which this map does not name, so the widget stays off
+// locally and the unit tests are what cover it.
 
-const CHATBOT_EXTERNAL_REFERENCE_CODE =
-	FARO_ENV === 'local'
-		? STAGING_CHATBOT_EXTERNAL_REFERENCE_CODE
-		: CHATBOT_EXTERNAL_REFERENCE_CODES[
-				window.faroConstants.faroURL.replace(/\/$/, '')
-			];
+const CHATBOT = CHATBOTS[window.faroConstants.faroURL.replace(/\/$/, '')];
 
 const CHATBOT_HOST_ID = 'aihub-chatbot-host';
 
+const CHATBOT_LINK_ID = 'aihub-chatbot-widget-style';
+
 const CHATBOT_SCRIPT_ID = 'aihub-chatbot-widget-script';
 
-// The widget only renders once its configuration request resolves, so the host
-// is not on the page yet when this module runs.
+// The widget only renders once its configuration request resolves, so its host
+// is not on the page yet when it is mounted.
 
 const CHATBOT_STYLE_TIMEOUT = 30000;
 
@@ -80,43 +106,7 @@ const CHATBOT_TOGGLE_STYLES = `
 	}
 `;
 
-/**
- * Locally the widget is pointed at the dev server rather than at the AI Hub, so
- * that the configuration `fetch` it makes on startup is same-origin: the AI Hub
- * returns no `Access-Control-Allow-Origin`, so the browser blocks that call from
- * `http://localhost:<port>` before it is ever sent. The dev server forwards the
- * prefix to the real host — see `AI_HUB_PROXY_PATH` in `webpack.dev.js`.
- *
- * Compared against the `FaroEnv` value as a string literal rather than through
- * the enum, because webpack evaluates comparisons to literals at build time and
- * drops the branch that can never be reached, keeping the dev-only path out of
- * the deployed bundle.
- */
-const AI_HUB_URL =
-	FARO_ENV === 'local' ? '/__aihub__' : 'https://na1.hub.liferay.com';
-
-export const AI_HUB_CHATBOT_LINKS = CHATBOT_EXTERNAL_REFERENCE_CODE
-	? [
-			{
-				href: `${AI_HUB_URL}/documents/d/global/index-css`,
-				rel: 'stylesheet',
-			},
-		]
-	: [];
-
-export const AI_HUB_CHATBOT_SCRIPTS = CHATBOT_EXTERNAL_REFERENCE_CODE
-	? [
-			{
-				attributes: {
-					'ai-hub-url': AI_HUB_URL,
-					'chatbot-external-reference-code':
-						CHATBOT_EXTERNAL_REFERENCE_CODE,
-				},
-				id: CHATBOT_SCRIPT_ID,
-				src: `${AI_HUB_URL}/documents/d/global/index-js`,
-			},
-		]
-	: [];
+let toggleStylesObserver: MutationObserver | undefined;
 
 /**
  * Adds the overrides above to the chatbot's shadow root, if the widget has
@@ -133,35 +123,104 @@ function addToggleStyles() {
 
 	style.textContent = CHATBOT_TOGGLE_STYLES;
 
-	const nonce = (Liferay as unknown as {CSP?: {nonce?: string}}).CSP?.nonce;
-
-	if (nonce) {
-		style.setAttribute('nonce', nonce);
-	}
+	applyNonce(style);
 
 	shadowRoot.appendChild(style);
 
 	return true;
 }
 
+function stopStylingToggle() {
+	toggleStylesObserver?.disconnect();
+
+	toggleStylesObserver = undefined;
+}
+
 /**
  * Waits for the widget to put its host on the page, then restyles its toggle.
  */
-export function styleAIHubChatbot() {
-	if (!CHATBOT_EXTERNAL_REFERENCE_CODE || addToggleStyles()) {
+function styleToggle() {
+	if (addToggleStyles()) {
 		return;
 	}
 
-	const observer = new MutationObserver(() => {
+	toggleStylesObserver = new MutationObserver(() => {
 		if (addToggleStyles()) {
-			observer.disconnect();
+			stopStylingToggle();
 		}
 	});
 
-	observer.observe(document.body, {childList: true, subtree: true});
+	toggleStylesObserver.observe(document.body, {
+		childList: true,
+		subtree: true,
+	});
 
 	// A failed configuration request leaves the widget unrendered, so give up
 	// rather than watching the whole body for the life of the page.
 
-	setTimeout(() => observer.disconnect(), CHATBOT_STYLE_TIMEOUT);
+	setTimeout(stopStylingToggle, CHATBOT_STYLE_TIMEOUT);
+}
+
+function mount(chatbot: Chatbot) {
+	const {aiHubURL} = chatbot;
+
+	appendLink({
+		href: `${aiHubURL}/documents/d/global/index-css`,
+		id: CHATBOT_LINK_ID,
+		rel: 'stylesheet',
+	});
+
+	appendScript({
+		attributes: {
+			'ai-hub-url': aiHubURL,
+			'chatbot-external-reference-code': chatbot.externalReferenceCode,
+		},
+		id: CHATBOT_SCRIPT_ID,
+		src: `${aiHubURL}/documents/d/global/index-js`,
+	});
+
+	styleToggle();
+}
+
+/**
+ * The widget builds its own host and offers no teardown, so removing that host
+ * is both how it leaves the page and how the next mount is allowed to happen:
+ * its script bootstraps behind `if (!document.getElementById(<host>))`, and
+ * re-appending the script tag with the host still in place would do nothing.
+ *
+ * The React root the widget mounted inside the host is dropped rather than
+ * unmounted, because nothing exposes it. That strands one root per visit to the
+ * workspace, which a teardown API on the widget would fix at the source.
+ */
+function unmount() {
+	stopStylingToggle();
+
+	for (const id of [CHATBOT_HOST_ID, CHATBOT_LINK_ID, CHATBOT_SCRIPT_ID]) {
+		document.getElementById(id)?.remove();
+	}
+}
+
+/**
+ * Puts the chatbot on the page, or takes it off, to match the workspace the
+ * router is on — the `:groupId` segment of `/workspace/:groupId/...`, and
+ * `undefined` anywhere outside a workspace.
+ */
+export function syncAIHubChatbot(workspace?: string) {
+	const chatbot =
+		CHATBOT && (!CHATBOT.workspace || CHATBOT.workspace === workspace)
+			? CHATBOT
+			: undefined;
+
+	const mounted = Boolean(document.getElementById(CHATBOT_SCRIPT_ID));
+
+	if (Boolean(chatbot) === mounted) {
+		return;
+	}
+
+	if (chatbot) {
+		mount(chatbot);
+	}
+	else {
+		unmount();
+	}
 }
