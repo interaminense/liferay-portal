@@ -46,10 +46,11 @@ public class AccountLifecycleStageTransitionDTOConverterTest {
 
 		engineClientAccountLifecycleStageTransition.setAccountId("account-1");
 		engineClientAccountLifecycleStageTransition.setAccountName("Account 1");
-		engineClientAccountLifecycleStageTransition.setFromStage(
-			_createEngineClientAccountLifecycleStage(
-				"Pipeline", 3, "stage-3", 30, "PIPELINE"));
-		engineClientAccountLifecycleStageTransition.setToStage(
+		engineClientAccountLifecycleStageTransition.
+			setFromAccountLifecycleStage(
+				_createEngineClientAccountLifecycleStage(
+					"Pipeline", 3, "stage-3", 30, "PIPELINE"));
+		engineClientAccountLifecycleStageTransition.setToAccountLifecycleStage(
 			_createEngineClientAccountLifecycleStage(
 				"Onboarding", 4, "stage-4", 60, "ONBOARDING"));
 		engineClientAccountLifecycleStageTransition.setTransitionDate(
@@ -66,11 +67,13 @@ public class AccountLifecycleStageTransitionDTOConverterTest {
 			engineClientAccountLifecycleStageTransition.getAccountName(),
 			accountLifecycleStageTransition.getAccountName());
 		_assertAccountLifecycleStage(
-			engineClientAccountLifecycleStageTransition.getFromStage(),
-			accountLifecycleStageTransition.getFromStage());
+			engineClientAccountLifecycleStageTransition.
+				getFromAccountLifecycleStage(),
+			accountLifecycleStageTransition.getFromAccountLifecycleStage());
 		_assertAccountLifecycleStage(
-			engineClientAccountLifecycleStageTransition.getToStage(),
-			accountLifecycleStageTransition.getToStage());
+			engineClientAccountLifecycleStageTransition.
+				getToAccountLifecycleStage(),
+			accountLifecycleStageTransition.getToAccountLifecycleStage());
 		Assert.assertEquals(
 			engineClientAccountLifecycleStageTransition.getTransitionDate(),
 			accountLifecycleStageTransition.getTransitionDate());
