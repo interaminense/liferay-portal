@@ -15,6 +15,7 @@ import com.liferay.osb.faro.rest.dto.v1_0.Individual;
 import com.liferay.osb.faro.rest.dto.v1_0.IndividualSegment;
 import com.liferay.osb.faro.rest.dto.v1_0.IndividualSegmentMembership;
 import com.liferay.osb.faro.rest.dto.v1_0.IndividualSegmentMembershipChange;
+import com.liferay.osb.faro.rest.dto.v1_0.IndividualSegmentMembershipChangeMetric;
 import com.liferay.osb.faro.rest.dto.v1_0.PageMetric;
 import com.liferay.osb.faro.rest.dto.v1_0.SearchTerm;
 import com.liferay.osb.faro.rest.dto.v1_0.UserSession;
@@ -26,6 +27,7 @@ import com.liferay.osb.faro.rest.resource.v1_0.ChannelResource;
 import com.liferay.osb.faro.rest.resource.v1_0.EventMetricResource;
 import com.liferay.osb.faro.rest.resource.v1_0.EventResource;
 import com.liferay.osb.faro.rest.resource.v1_0.IndividualResource;
+import com.liferay.osb.faro.rest.resource.v1_0.IndividualSegmentMembershipChangeMetricResource;
 import com.liferay.osb.faro.rest.resource.v1_0.IndividualSegmentMembershipChangeResource;
 import com.liferay.osb.faro.rest.resource.v1_0.IndividualSegmentMembershipResource;
 import com.liferay.osb.faro.rest.resource.v1_0.IndividualSegmentResource;
@@ -145,6 +147,16 @@ public class Query {
 
 		_individualSegmentMembershipChangeResourceComponentServiceObjects =
 			individualSegmentMembershipChangeResourceComponentServiceObjects;
+	}
+
+	public static void
+		setIndividualSegmentMembershipChangeMetricResourceComponentServiceObjects(
+			ComponentServiceObjects
+				<IndividualSegmentMembershipChangeMetricResource>
+					individualSegmentMembershipChangeMetricResourceComponentServiceObjects) {
+
+		_individualSegmentMembershipChangeMetricResourceComponentServiceObjects =
+			individualSegmentMembershipChangeMetricResourceComponentServiceObjects;
 	}
 
 	public static void setPageMetricResourceComponentServiceObjects(
@@ -643,6 +655,30 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {workspaceGroupIndividualSegmentMembershipChangeMetric(groupId: ___, individualSegmentId: ___, rangeKey: ___){addedIndividuals, individuals, knownIndividuals, removedIndividuals}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(
+		description = "How an individual segment's membership changed over a date range: its size at the end of the range and how much it grew and shrank, each with the preceding range's figure, a trend percentage, and a daily time series. Use this to answer 'is this segment growing or shrinking' style questions. Growth and shrinkage are net per day and cannot report individuals joining and leaving on the same day; see the `IndividualSegmentMembershipChangeMetric` schema. Buckets are always daily and the range always ends today, so pass `rangeKey` as one of LAST_7_DAYS, LAST_28_DAYS, LAST_30_DAYS, LAST_90_DAYS, LAST_180_DAYS, LAST_YEAR. LAST_30_DAYS is used when omitted."
+	)
+	public IndividualSegmentMembershipChangeMetric
+			workspaceGroupIndividualSegmentMembershipChangeMetric(
+				@GraphQLName("groupId") Long groupId,
+				@GraphQLName("individualSegmentId") String individualSegmentId,
+				@GraphQLName("rangeKey") String rangeKey)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_individualSegmentMembershipChangeMetricResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			individualSegmentMembershipChangeMetricResource ->
+				individualSegmentMembershipChangeMetricResource.
+					getWorkspaceGroupIndividualSegmentMembershipChangeMetric(
+						groupId, individualSegmentId, rangeKey));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {workspaceGroupChannelPages(accountId: ___, channelId: ___, dataSourceId: ___, groupId: ___, individualId: ___, page: ___, pageSize: ___, rangeEnd: ___, rangeKey: ___, rangeStart: ___, search: ___, segmentId: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(
@@ -1114,6 +1150,45 @@ public class Query {
 
 	}
 
+	@GraphQLName("IndividualSegmentMembershipChangeMetricPage")
+	public class IndividualSegmentMembershipChangeMetricPage {
+
+		public IndividualSegmentMembershipChangeMetricPage(
+			Page individualSegmentMembershipChangeMetricPage) {
+
+			actions = individualSegmentMembershipChangeMetricPage.getActions();
+
+			items = individualSegmentMembershipChangeMetricPage.getItems();
+			lastPage =
+				individualSegmentMembershipChangeMetricPage.getLastPage();
+			page = individualSegmentMembershipChangeMetricPage.getPage();
+			pageSize =
+				individualSegmentMembershipChangeMetricPage.getPageSize();
+			totalCount =
+				individualSegmentMembershipChangeMetricPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected Map<String, Map<String, String>> actions;
+
+		@GraphQLField
+		protected java.util.Collection<IndividualSegmentMembershipChangeMetric>
+			items;
+
+		@GraphQLField
+		protected long lastPage;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
 	@GraphQLName("PageMetricPage")
 	public class PageMetricPage {
 
@@ -1463,6 +1538,32 @@ public class Query {
 			_roleLocalService);
 	}
 
+	private void _populateResourceContext(
+			IndividualSegmentMembershipChangeMetricResource
+				individualSegmentMembershipChangeMetricResource)
+		throws Exception {
+
+		individualSegmentMembershipChangeMetricResource.
+			setContextAcceptLanguage(_acceptLanguage);
+		individualSegmentMembershipChangeMetricResource.setContextCompany(
+			_company);
+		individualSegmentMembershipChangeMetricResource.
+			setContextHttpServletRequest(_httpServletRequest);
+		individualSegmentMembershipChangeMetricResource.
+			setContextHttpServletResponse(_httpServletResponse);
+		individualSegmentMembershipChangeMetricResource.setContextUriInfo(
+			_uriInfo);
+		individualSegmentMembershipChangeMetricResource.setContextUser(_user);
+		individualSegmentMembershipChangeMetricResource.setGroupLocalService(
+			_groupLocalService);
+		individualSegmentMembershipChangeMetricResource.
+			setResourceActionLocalService(_resourceActionLocalService);
+		individualSegmentMembershipChangeMetricResource.
+			setResourcePermissionLocalService(_resourcePermissionLocalService);
+		individualSegmentMembershipChangeMetricResource.setRoleLocalService(
+			_roleLocalService);
+	}
+
 	private void _populateResourceContext(PageMetricResource pageMetricResource)
 		throws Exception {
 
@@ -1554,6 +1655,9 @@ public class Query {
 	private static ComponentServiceObjects
 		<IndividualSegmentMembershipChangeResource>
 			_individualSegmentMembershipChangeResourceComponentServiceObjects;
+	private static ComponentServiceObjects
+		<IndividualSegmentMembershipChangeMetricResource>
+			_individualSegmentMembershipChangeMetricResourceComponentServiceObjects;
 	private static ComponentServiceObjects<PageMetricResource>
 		_pageMetricResourceComponentServiceObjects;
 	private static ComponentServiceObjects<SearchTermResource>
@@ -1580,4 +1684,4 @@ public class Query {
 	private com.liferay.portal.kernel.model.User _user;
 
 }
-// LIFERAY-REST-BUILDER-HASH:-905373556
+// LIFERAY-REST-BUILDER-HASH:1613540740

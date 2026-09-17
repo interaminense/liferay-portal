@@ -14,6 +14,7 @@ import com.liferay.osb.faro.rest.internal.resource.v1_0.ChannelResourceImpl;
 import com.liferay.osb.faro.rest.internal.resource.v1_0.EventMetricResourceImpl;
 import com.liferay.osb.faro.rest.internal.resource.v1_0.EventResourceImpl;
 import com.liferay.osb.faro.rest.internal.resource.v1_0.IndividualResourceImpl;
+import com.liferay.osb.faro.rest.internal.resource.v1_0.IndividualSegmentMembershipChangeMetricResourceImpl;
 import com.liferay.osb.faro.rest.internal.resource.v1_0.IndividualSegmentMembershipChangeResourceImpl;
 import com.liferay.osb.faro.rest.internal.resource.v1_0.IndividualSegmentMembershipResourceImpl;
 import com.liferay.osb.faro.rest.internal.resource.v1_0.IndividualSegmentResourceImpl;
@@ -28,6 +29,7 @@ import com.liferay.osb.faro.rest.resource.v1_0.ChannelResource;
 import com.liferay.osb.faro.rest.resource.v1_0.EventMetricResource;
 import com.liferay.osb.faro.rest.resource.v1_0.EventResource;
 import com.liferay.osb.faro.rest.resource.v1_0.IndividualResource;
+import com.liferay.osb.faro.rest.resource.v1_0.IndividualSegmentMembershipChangeMetricResource;
 import com.liferay.osb.faro.rest.resource.v1_0.IndividualSegmentMembershipChangeResource;
 import com.liferay.osb.faro.rest.resource.v1_0.IndividualSegmentMembershipResource;
 import com.liferay.osb.faro.rest.resource.v1_0.IndividualSegmentResource;
@@ -81,6 +83,9 @@ public class ServletDataImpl implements ServletData {
 		Query.
 			setIndividualSegmentMembershipChangeResourceComponentServiceObjects(
 				_individualSegmentMembershipChangeResourceComponentServiceObjects);
+		Query.
+			setIndividualSegmentMembershipChangeMetricResourceComponentServiceObjects(
+				_individualSegmentMembershipChangeMetricResourceComponentServiceObjects);
 		Query.setPageMetricResourceComponentServiceObjects(
 			_pageMetricResourceComponentServiceObjects);
 		Query.setSearchTermResourceComponentServiceObjects(
@@ -206,6 +211,12 @@ public class ServletDataImpl implements ServletData {
 							IndividualSegmentMembershipChangeResourceImpl.class,
 							"getWorkspaceGroupIndividualSegmentMembershipChangesPage"));
 					put(
+						"query#workspaceGroupIndividualSegmentMembershipChangeMetric",
+						new ObjectValuePair<>(
+							IndividualSegmentMembershipChangeMetricResourceImpl.
+								class,
+							"getWorkspaceGroupIndividualSegmentMembershipChangeMetric"));
+					put(
 						"query#workspaceGroupChannelPages",
 						new ObjectValuePair<>(
 							PageMetricResourceImpl.class,
@@ -273,6 +284,11 @@ public class ServletDataImpl implements ServletData {
 		_individualSegmentMembershipChangeResourceComponentServiceObjects;
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
+	private ComponentServiceObjects
+		<IndividualSegmentMembershipChangeMetricResource>
+			_individualSegmentMembershipChangeMetricResourceComponentServiceObjects;
+
+	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<PageMetricResource>
 		_pageMetricResourceComponentServiceObjects;
 
@@ -289,4 +305,4 @@ public class ServletDataImpl implements ServletData {
 		_workspaceResourceComponentServiceObjects;
 
 }
-// LIFERAY-REST-BUILDER-HASH:2146778047
+// LIFERAY-REST-BUILDER-HASH:-149085200

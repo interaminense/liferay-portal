@@ -105,6 +105,8 @@ public class OpenAPIResourceImpl {
 
 			add(IndividualSegmentMembershipChangeResourceImpl.class);
 
+			add(IndividualSegmentMembershipChangeMetricResourceImpl.class);
+
 			add(PageMetricResourceImpl.class);
 
 			add(SearchTermResourceImpl.class);
@@ -118,4 +120,4 @@ public class OpenAPIResourceImpl {
 	};
 
 }
-// LIFERAY-REST-BUILDER-HASH:421501364
+// LIFERAY-REST-BUILDER-HASH:1174181246
