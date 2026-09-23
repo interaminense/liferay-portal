@@ -4,7 +4,7 @@ import moment from 'moment';
 import React from 'react';
 import RecommendationJobRunsQuery from '../queries/RecommendationJobRunsQuery';
 import Table from 'shared/components/table';
-import {applyTimeZone} from 'shared/util/date';
+import {applyTimeZone, formatDate, formatRelativeTime} from 'shared/util/date';
 import {compose} from 'redux';
 import {
 	createOrderIOMap,
@@ -121,7 +121,7 @@ const OutputVersionsCard: React.FC<IOutputVersionsCardProps> = ({
 
 				{!!nextRunDate && (
 					<b>{`(${sub(Liferay.Language.get('next-x'), [
-						moment(nextRunDate).fromNow(),
+						formatRelativeTime(moment(nextRunDate)),
 					])})`}</b>
 				)}
 			</div>
@@ -134,21 +134,14 @@ const OutputVersionsCard: React.FC<IOutputVersionsCardProps> = ({
 						accessor: 'completedDate',
 						className: 'table-cell-expand',
 						dataFormatter: (val: string) => {
-							const dateFormat = getCustomDateFormat();
+							const date = applyTimeZone(val, timeZoneId);
 
-							return applyTimeZone(val, timeZoneId).calendar(
-								null,
-								{
-									lastDay: dateFormat,
-									lastWeek: dateFormat,
-									nextDay: dateFormat,
-									nextWeek: dateFormat,
-									sameDay: `[${Liferay.Language.get(
-										'today'
-									)}]`,
-									sameElse: dateFormat,
-								}
-							);
+							return date.isSame(
+								moment().utcOffset(date.utcOffset()),
+								'day'
+							)
+								? Liferay.Language.get('today')
+								: formatDate(date, getCustomDateFormat());
 						},
 						label: Liferay.Language.get('training-date'),
 						sortable: false,

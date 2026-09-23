@@ -11,7 +11,7 @@ import React, {useState} from 'react';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import {ComposedChart} from './ComposedChart';
 import {getAxisFormatter} from 'shared/util/charts';
-import {getDate, getDayMonthFormat} from 'shared/util/date';
+import {formatDate, getDate, getDayMonthFormat} from 'shared/util/date';
 import {Sizes} from 'shared/util/constants';
 import {toThousandsABTesting} from 'experiments/util/experiments';
 
@@ -25,9 +25,10 @@ const TotalSessionsTooltip = ({dataPoint}: {dataPoint: any[]}) => {
 		{
 			columns: [
 				{
-					label: moment
-						.utc(getDate(dataPoint[0].payload.key))
-						.format(getDayMonthFormat()),
+					label: formatDate(
+						moment.utc(getDate(dataPoint[0].payload.key)),
+						getDayMonthFormat()
+					),
 					weight: Weights.Semibold,
 					width: 100,
 				},
@@ -69,9 +70,10 @@ const PerVariantTooltip = ({dataPoint}: {dataPoint: any[]}) => {
 		{
 			columns: [
 				{
-					label: moment
-						.utc(getDate(control.payload.key))
-						.format(getDayMonthFormat()),
+					label: formatDate(
+						moment.utc(getDate(control.payload.key)),
+						getDayMonthFormat()
+					),
 					weight: Weights.Semibold,
 					width: 80,
 				},

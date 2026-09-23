@@ -1,7 +1,8 @@
 import DatePicker from '../index';
 import moment from 'moment';
 import React from 'react';
-import {render} from '@testing-library/react';
+import {fireEvent, render} from '@testing-library/react';
+import {DEFAULT_LOCALE, setLocale} from 'shared/util/locale';
 
 jest.unmock('react-dom');
 
@@ -20,6 +21,8 @@ const getSelects = container =>
 describe('DatePicker', () => {
 	afterEach(() => {
 		jest.useRealTimers();
+
+		setLocale(DEFAULT_LOCALE);
 	});
 
 	beforeEach(() => {
@@ -63,5 +66,19 @@ describe('DatePicker', () => {
 			)
 		).toEqual(['2027', '2026', '2025']);
 		expect(yearSelect).toHaveValue('2026');
+	});
+
+	it('selects a month picked by its name in the current locale', () => {
+		setLocale('pt-BR');
+
+		const {container, getByTestId} = renderDatePicker();
+
+		const [monthSelect] = getSelects(container);
+
+		fireEvent.change(monthSelect, {target: {value: 'agosto'}});
+
+		fireEvent.click(getByTestId('next-month'));
+
+		expect(monthSelect.value).toBe('setembro');
 	});
 });

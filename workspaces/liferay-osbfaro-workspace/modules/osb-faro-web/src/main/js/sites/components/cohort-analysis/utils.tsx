@@ -1,6 +1,12 @@
 import moment from 'moment';
 import {CHART_COLOR_NAMES} from 'shared/util/charts';
-import {getDayMonthFormat, getFullDayMonthFormat} from 'shared/util/date';
+import {
+	formatDate as formatMomentDate,
+	getDayMonthFormat,
+	getFullDayMonthFormat,
+	MONTH_FORMAT,
+	SHORT_MONTH_FORMAT,
+} from 'shared/util/date';
 import {sub} from 'shared/util/lang';
 
 const {
@@ -77,27 +83,29 @@ export const formatDate = (
 
 	switch (intervalFormat) {
 		case `${MONTH}-abbreviated`:
-			return momentDate.format('MMM');
+			return formatMomentDate(momentDate, SHORT_MONTH_FORMAT);
 
 		case `${WEEK}-abbreviated`:
-			return `${momentDate.format(getDayMonthFormat())} - ${moment(date)
-				.add(7, 'day')
-				.format(getDayMonthFormat())}`;
+			return `${formatMomentDate(momentDate, getDayMonthFormat())} - ${formatMomentDate(
+				moment(date).add(7, 'day'),
+				getDayMonthFormat()
+			)}`;
 
 		case `${DAY}-abbreviated`:
-			return momentDate.format(getDayMonthFormat());
+			return formatMomentDate(momentDate, getDayMonthFormat());
 
 		case MONTH:
-			return momentDate.format('MMMM');
+			return formatMomentDate(momentDate, MONTH_FORMAT);
 
 		case WEEK:
-			return `${momentDate.format(getDayMonthFormat())} - ${moment(date)
-				.add(7, 'day')
-				.format(getDayMonthFormat())}`;
+			return `${formatMomentDate(momentDate, getDayMonthFormat())} - ${formatMomentDate(
+				moment(date).add(7, 'day'),
+				getDayMonthFormat()
+			)}`;
 
 		case DAY:
 		default:
-			return momentDate.format(getFullDayMonthFormat());
+			return formatMomentDate(momentDate, getFullDayMonthFormat());
 	}
 };
 

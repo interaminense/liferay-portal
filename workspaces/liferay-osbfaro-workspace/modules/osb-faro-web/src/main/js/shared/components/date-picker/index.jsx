@@ -11,6 +11,12 @@ import {isAboveMaxRange, isDateOrRange, isRange, updateRange} from './util';
 import {noop, range} from 'lodash';
 import {PropTypes} from 'prop-types';
 import {sub} from 'shared/util/lang';
+import {
+	formatDate,
+	getMonthNames,
+	MONTH_FORMAT,
+	TIME_FORMAT
+} from 'shared/util/date';
 
 export default class DatePicker extends React.Component {
 	static defaultProps = {
@@ -43,7 +49,7 @@ export default class DatePicker extends React.Component {
 
 	state = {
 		currentMonth: moment(),
-		currentTime: moment().format('LT'),
+		currentTime: formatDate(moment(), TIME_FORMAT),
 		maxRangeError: false
 	};
 
@@ -88,7 +94,9 @@ export default class DatePicker extends React.Component {
 		const {currentMonth} = this.state;
 
 		this.setState({
-			currentMonth: currentMonth.clone().month(value)
+			currentMonth: currentMonth
+				.clone()
+				.month(getMonthNames().indexOf(value))
 		});
 	}
 
@@ -218,11 +226,11 @@ export default class DatePicker extends React.Component {
 					<div className='month-toggle-wrapper'>
 						<DatePickerSelect
 							onChange={this.handleMonthSelect}
-							options={moment.months().map(month => ({
+							options={getMonthNames().map(month => ({
 								label: month,
 								value: month
 							}))}
-							selected={currentMonth.format('MMMM')}
+							selected={formatDate(currentMonth, MONTH_FORMAT)}
 						/>
 
 						<DatePickerSelect
