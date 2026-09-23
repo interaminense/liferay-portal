@@ -6,7 +6,11 @@ import moment from 'moment';
 import React from 'react';
 import Trend from 'shared/components/Trend';
 import {Colors} from 'shared/util/charts';
-import {getCustomDateFormat, getDate as getDateUtil} from 'shared/util/date';
+import {
+	formatDate,
+	getCustomDateFormat,
+	getDate as getDateUtil,
+} from 'shared/util/date';
 
 export const Tooltip = ({dataPoint}: {dataPoint: any[]}) => {
 	const control = dataPoint[0];
@@ -36,9 +40,10 @@ export const Tooltip = ({dataPoint}: {dataPoint: any[]}) => {
 		{
 			columns: [
 				{
-					label: `${Liferay.Language.get('variants')} | ${moment
-						.utc(getDateUtil(control.payload.key))
-						.format(getCustomDateFormat())}`,
+					label: `${Liferay.Language.get('variants')} | ${formatDate(
+						moment.utc(getDateUtil(control.payload.key)),
+						getCustomDateFormat()
+					)}`,
 					weight: Weights.Semibold,
 					width: 140,
 				},

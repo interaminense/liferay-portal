@@ -1,11 +1,14 @@
 import moment from 'moment';
 import {BAR_COLORS} from 'shared/util/recharts';
 import {
+	DateFormat,
+	formatDate,
 	getCustomDateFormat,
 	getDayMonthFormat,
 	getDayMonthHourFormat,
 	getHourOnlyFormat,
 	getMonthYearFormat,
+	SHORT_MONTH_FORMAT,
 } from 'shared/util/date';
 import {getIntervalHandle} from './intervals';
 import {Interval, RangeSelectors} from 'shared/types';
@@ -111,8 +114,8 @@ export const dateRangeFormatter = (
 	const dayMonthFormat = getDayMonthFormat();
 	const dayMonthYearFormat = getCustomDateFormat();
 
-	const format = (date: Date, momentFormat: string) =>
-		moment.utc(date).format(momentFormat);
+	const format = (date: Date, dateFormat: DateFormat | string) =>
+		formatDate(moment.utc(date), dateFormat);
 
 	return `${
 		withYear
@@ -143,10 +146,10 @@ export const formatTooltipDate = (
 
 		// display hours for Last 24 hours and yesterday
 
-		return moment.utc(date).format(getDayMonthHourFormat());
+		return formatDate(moment.utc(date), getDayMonthHourFormat());
 	}
 
-	return moment.utc(date).format(getCustomDateFormat());
+	return formatDate(moment.utc(date), getCustomDateFormat());
 };
 
 export const formatXAxisDate = (
@@ -159,8 +162,9 @@ export const formatXAxisDate = (
 	// display date and month
 
 	let formatter = (date: Date) =>
-		moment.utc(date).format(getDayMonthFormat());
-	const monthFormat = (date: Date) => moment.utc(date).format('MMM');
+		formatDate(moment.utc(date), getDayMonthFormat());
+	const monthFormat = (date: Date) =>
+		formatDate(moment.utc(date), SHORT_MONTH_FORMAT);
 
 	const dates = dateKeysIMap.get(Number(dateKey));
 	const dateStart = dates ? dates[0] : 0;
@@ -199,7 +203,7 @@ export const formatXAxisDate = (
 			// display hours
 
 			formatter = (date: Date) =>
-				moment.utc(date).format(getHourOnlyFormat());
+				formatDate(moment.utc(date), getHourOnlyFormat());
 			break;
 		default:
 			break;
@@ -356,7 +360,7 @@ export const getDateTitle = (
 		);
 	}
 	else if (interval === INTERVAL_KEY_MAP.month) {
-		return moment.utc(startDate).format(getMonthYearFormat());
+		return formatDate(moment.utc(startDate), getMonthYearFormat());
 	}
 
 	return formatTooltipDate(startDate, rangeKey);

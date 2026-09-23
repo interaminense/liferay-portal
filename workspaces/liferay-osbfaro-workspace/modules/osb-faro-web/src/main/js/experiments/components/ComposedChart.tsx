@@ -15,7 +15,7 @@ import {
 import {CHART_COLOR_NAMES} from 'shared/util/charts';
 import {CONTROL_COLOR} from '../util/constants';
 import {getAxisMeasuresFromData} from 'shared/util/charts';
-import {getDate, getDayMonthFormat} from 'shared/util/date';
+import {formatDate, getDate, getDayMonthFormat} from 'shared/util/date';
 import {getShortIntervals} from 'experiments/util/experiments';
 
 const {stark: CHART_BLUE} = CHART_COLOR_NAMES;
@@ -76,7 +76,10 @@ export const ComposedChart = ({
 					dataKey="key"
 					interval="preserveStart"
 					tickFormatter={(date) =>
-						moment.utc(getDate(date)).format(getDayMonthFormat())
+						formatDate(
+							moment.utc(getDate(date)),
+							getDayMonthFormat()
+						)
 					}
 					tickLine={false}
 					ticks={customIntervals}

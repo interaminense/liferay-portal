@@ -7,6 +7,7 @@ import getEventDashboardUrl, {
 import {
 	applyTimeZone,
 	DEFAULT_DATE_FORMAT,
+	formatDate,
 	formatUTCDate,
 	getCustomDateFormat,
 } from 'shared/util/date';
@@ -460,7 +461,7 @@ export const formatGroupingTime = (
 
 	return day === toDayKey(Date.now(), timeZoneId)
 		? Liferay.Language.get('today')
-		: moment.utc(day).format(getCustomDateFormat());
+		: formatDate(moment.utc(day), getCustomDateFormat());
 };
 
 /**
