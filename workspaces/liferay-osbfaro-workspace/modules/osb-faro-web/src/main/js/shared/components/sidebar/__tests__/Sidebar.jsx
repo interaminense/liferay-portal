@@ -14,6 +14,10 @@ const defaultProps = {
 
 jest.unmock('react-dom');
 
+jest.mock('shared/hooks/useProjects', () => ({
+	useFetchProjects: () => ({data: [], loading: false})
+}));
+
 describe('Sidebar', () => {
 	it('should render', () => {
 		const {container} = render(
@@ -25,6 +29,21 @@ describe('Sidebar', () => {
 		);
 
 		expect(container).toMatchSnapshot();
+	});
+
+	it('should render the workspaces menu above the properties menu', () => {
+		const {container} = render(
+			<Provider store={mockStore(mockStoreDataLDP)}>
+				<MemoryRouter>
+					<Sidebar {...defaultProps} />
+				</MemoryRouter>
+			</Provider>
+		);
+
+		const header = container.querySelector('.sidebar-header');
+
+		expect(header.firstChild).toHaveClass('workspaces-menu-root');
+		expect(header.lastChild).toHaveClass('channels-menu-root');
 	});
 
 	it('should render as collapsed', () => {

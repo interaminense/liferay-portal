@@ -35,6 +35,10 @@ const Toolbar: React.FC<IToolbarProps> = ({className, groupId}) => {
 
 	const LDPEnabled = useLDPEnabled({groupId});
 
+	const workspaceName = useSelector<any, string>((state) =>
+		state.getIn(['projects', groupId, 'data', 'name'], '')
+	);
+
 	const {emailAddress, languageId} = currentUser;
 
 	return (
@@ -89,6 +93,16 @@ const Toolbar: React.FC<IToolbarProps> = ({className, groupId}) => {
 						</span>
 					</ClayToolbar.Section>
 				</ClayToolbar.Item>
+
+				{collapsed && workspaceName && (
+					<ClayToolbar.Item className="d-none d-sm-block pl-0">
+						<ClayToolbar.Section>
+							<span className="text-5 text-nowrap text-secondary">
+								{`/ ${workspaceName}`}
+							</span>
+						</ClayToolbar.Section>
+					</ClayToolbar.Item>
+				)}
 
 				<ClayToolbar.Item expand />
 
@@ -193,10 +207,6 @@ const Toolbar: React.FC<IToolbarProps> = ({className, groupId}) => {
 					>
 						<ClayDropDown.ItemList>
 							<ClayDropDown.Group header={emailAddress}>
-								<ClayDropDown.Item href={Routes.BASE}>
-									{Liferay.Language.get('switch-workspaces')}
-								</ClayDropDown.Item>
-
 								<ClayDropDown.Item href={Routes.LOGOUT}>
 									{Liferay.Language.get('sign-out')}
 								</ClayDropDown.Item>

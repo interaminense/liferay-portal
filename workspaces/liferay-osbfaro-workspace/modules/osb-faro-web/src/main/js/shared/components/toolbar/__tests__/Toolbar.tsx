@@ -164,5 +164,20 @@ describe('Toolbar', () => {
 
 		expect(await screen.findByText('test@liferay.com')).toBeTruthy();
 		expect(screen.getByText(/sign.out/i)).toBeTruthy();
+		expect(screen.queryByText(/switch workspaces/i)).toBeNull();
+	});
+
+	it('renders the workspace name when the sidebar is collapsed', () => {
+		renderToolbar(
+			mockStoreDataLDP.setIn(['sidebar', '23', 'collapsed'], true)
+		);
+
+		expect(screen.getByText('/ project23')).toBeTruthy();
+	});
+
+	it('does not render the workspace name when the sidebar is open', () => {
+		renderToolbar();
+
+		expect(screen.queryByText('/ project23')).toBeNull();
 	});
 });
