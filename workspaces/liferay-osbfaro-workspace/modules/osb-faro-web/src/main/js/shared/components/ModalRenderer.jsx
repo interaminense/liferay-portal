@@ -29,6 +29,7 @@ import SearchableTableModal from './modals/SearchableTableModal';
 import SearchableTableModalGraphql from './modals/SearchableTableModalGraphql';
 import SelectChannelsModal from './modals/SelectChannelsModal';
 import SelectItemsModal from './modals/SelectItemsModal';
+import SwitchWorkspaceModal from './modals/SwitchWorkspaceModal';
 import TestModal from './modals/TestModal';
 import TimeZoneSelectionModal from './modals/TimeZoneSelectionModal';
 import UnableDeletePropertyModal from './modals/UnableDeletePropertyModal';
@@ -72,6 +73,7 @@ const COMPONENT_MAP = {
 	[modalTypes.SEARCHABLE_TABLE_MODAL_GRAPHQL]: SearchableTableModalGraphql,
 	[modalTypes.SELECT_ITEMS_MODAL]: SelectItemsModal,
 	[modalTypes.SELECT_CHANNELS_MODAL]: SelectChannelsModal,
+	[modalTypes.SWITCH_WORKSPACE_MODAL]: SwitchWorkspaceModal,
 	[modalTypes.TEST]: TestModal,
 	[modalTypes.TIME_ZONE_SELECTION_MODAL]: TimeZoneSelectionModal,
 	[modalTypes.UNABLE_DELETE_PROPERTY_MODAL]: UnableDeletePropertyModal

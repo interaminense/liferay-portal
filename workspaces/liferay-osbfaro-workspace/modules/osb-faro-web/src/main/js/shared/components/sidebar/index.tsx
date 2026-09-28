@@ -4,7 +4,6 @@ import getCN from 'classnames';
 import Panel from '@clayui/panel';
 import React from 'react';
 import SidebarItem from './SidebarItem';
-import WorkspacesMenu from '../workspaces-menu';
 import {ACCOUNTS, Routes, SEGMENTS, toRoute} from 'shared/util/router';
 import {DEVELOPER_MODE} from 'shared/util/constants';
 import {Map} from 'immutable';
@@ -130,8 +129,6 @@ const Sidebar: React.FC<ISidebarProps> = ({
 		<div className={getCN('sidebar-root', className, {collapsed})}>
 			<div className="sidebar-menu">
 				<div className="sidebar-header">
-					<WorkspacesMenu groupId={groupId} />
-
 					<ChannelsMenu
 						channels={channels}
 						defaultChannelId={channelId}

@@ -12,39 +12,6 @@ exports[`Sidebar should render 1`] = `
         class="sidebar-header"
       >
         <div
-          class="workspaces-menu-root"
-        >
-          <div
-            class="workspaces-menu-label"
-          >
-            Workspace
-          </div>
-          <button
-            aria-activedescendant=""
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-label="Workspace"
-            class="align-items-center d-flex rounded-lg workspaces-menu-trigger btn btn-block btn-secondary"
-            role="combobox"
-            tabindex="0"
-            type="button"
-          >
-            <span
-              class="flex-grow-1 font-weight-semi-bold text-left text-truncate"
-            >
-              project23
-            </span>
-            <svg
-              class="lexicon-icon lexicon-icon-caret-double inline-item inline-item-after"
-              role="presentation"
-            >
-              <use
-                href="#caret-double"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
           class="channels-menu-root"
         >
           <div
@@ -94,7 +61,7 @@ exports[`Sidebar should render 1`] = `
           class="panel"
         >
           <button
-            aria-controls="clay-id-5"
+            aria-controls="clay-id-3"
             aria-expanded="true"
             class="panel-header panel-header-link show btn btn-unstyled"
             type="button"
@@ -116,9 +83,9 @@ exports[`Sidebar should render 1`] = `
             </div>
           </button>
           <div
-            aria-labelledby="clay-id-5"
+            aria-labelledby="clay-id-3"
             class="panel-collapse"
-            id="clay-id-5"
+            id="clay-id-3"
             role="region"
           >
             <div
@@ -285,7 +252,7 @@ exports[`Sidebar should render 1`] = `
           class="panel"
         >
           <button
-            aria-controls="clay-id-6"
+            aria-controls="clay-id-4"
             aria-expanded="true"
             class="panel-header panel-header-link show btn btn-unstyled"
             type="button"
@@ -307,9 +274,9 @@ exports[`Sidebar should render 1`] = `
             </div>
           </button>
           <div
-            aria-labelledby="clay-id-6"
+            aria-labelledby="clay-id-4"
             class="panel-collapse"
-            id="clay-id-6"
+            id="clay-id-4"
             role="region"
           >
             <div
@@ -416,7 +383,7 @@ exports[`Sidebar should render 1`] = `
           class="panel"
         >
           <button
-            aria-controls="clay-id-7"
+            aria-controls="clay-id-5"
             aria-expanded="true"
             class="panel-header panel-header-link show btn btn-unstyled"
             type="button"
@@ -438,9 +405,9 @@ exports[`Sidebar should render 1`] = `
             </div>
           </button>
           <div
-            aria-labelledby="clay-id-7"
+            aria-labelledby="clay-id-5"
             class="panel-collapse"
-            id="clay-id-7"
+            id="clay-id-5"
             role="region"
           >
             <div
