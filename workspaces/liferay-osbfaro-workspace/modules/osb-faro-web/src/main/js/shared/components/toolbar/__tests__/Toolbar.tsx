@@ -3,6 +3,7 @@ import mockStore, {mockStoreDataLDP} from 'test/mock-store';
 import React from 'react';
 import Toolbar from '../index';
 import {fireEvent, render, screen, waitFor} from '@testing-library/react';
+import {modalTypes} from 'shared/actions/modals';
 import {MemoryRouter} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {Routes, toRoute} from 'shared/util/router';
@@ -57,6 +58,33 @@ describe('Toolbar', () => {
 		expect(
 			container.querySelector('.lexicon-icon-product-menu-closed')
 		).toBeTruthy();
+	});
+
+	it('labels the switch workspace button with the current workspace', () => {
+		renderToolbar();
+
+		expect(screen.getByTitle(/switch workspaces/i)).toHaveTextContent(
+			'project23'
+		);
+	});
+
+	it('opens the switch workspace modal from its button', () => {
+		const store = mockStore(mockStoreDataLDP);
+
+		render(
+			<Provider store={store}>
+				<MemoryRouter>
+					<Toolbar groupId="23" />
+				</MemoryRouter>
+			</Provider>
+		);
+
+		fireEvent.click(screen.getByTitle(/switch workspaces/i));
+
+		const modal = store.getState().get('modals').last();
+
+		expect(modal.get('type')).toBe(modalTypes.SWITCH_WORKSPACE_MODAL);
+		expect(modal.getIn(['props', 'groupId'])).toBe('23');
 	});
 
 	it('links the settings button to the workspace settings', () => {
@@ -164,5 +192,6 @@ describe('Toolbar', () => {
 
 		expect(await screen.findByText('test@liferay.com')).toBeTruthy();
 		expect(screen.getByText(/sign.out/i)).toBeTruthy();
+		expect(screen.queryByText(/switch workspaces/i)).toBeNull();
 	});
 });

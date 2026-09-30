@@ -6,6 +6,7 @@ import ClaySticker from '@clayui/sticker';
 import ClayToolbar from '@clayui/toolbar';
 import getCN from 'classnames';
 import React, {useRef, useState} from 'react';
+import {close, modalTypes, open} from 'shared/actions/modals';
 import {collapseSidebar} from 'shared/actions/sidebar';
 import {getLanguageLabel} from 'shared/util/locale';
 import {getInitials} from 'shared/util/util';
@@ -34,6 +35,10 @@ const Toolbar: React.FC<IToolbarProps> = ({className, groupId}) => {
 	const triggerElementRef = useRef(null);
 
 	const LDPEnabled = useLDPEnabled({groupId});
+
+	const workspaceName = useSelector<any, string>((state) =>
+		state.getIn(['projects', groupId, 'data', 'name'], '')
+	);
 
 	const {emailAddress, languageId} = currentUser;
 
@@ -91,6 +96,35 @@ const Toolbar: React.FC<IToolbarProps> = ({className, groupId}) => {
 				</ClayToolbar.Item>
 
 				<ClayToolbar.Item expand />
+
+				<ClayToolbar.Item>
+					<ClayButton
+						aria-haspopup="dialog"
+						borderless
+						className="text-nowrap"
+						data-tooltip-align="bottom"
+						displayType="secondary"
+						onClick={() =>
+							dispatch(
+								open(modalTypes.SWITCH_WORKSPACE_MODAL, {
+									groupId,
+									onClose: () => dispatch(close()),
+								})
+							)
+						}
+						size="sm"
+						title={Liferay.Language.get('switch-workspaces')}
+					>
+						<ClayIcon
+							className="inline-item mr-sm-1"
+							symbol="change"
+						/>
+
+						<span className="d-none d-sm-inline font-weight-semi-bold">
+							{workspaceName}
+						</span>
+					</ClayButton>
+				</ClayToolbar.Item>
 
 				<ClayToolbar.Item>
 					<Link
@@ -193,10 +227,6 @@ const Toolbar: React.FC<IToolbarProps> = ({className, groupId}) => {
 					>
 						<ClayDropDown.ItemList>
 							<ClayDropDown.Group header={emailAddress}>
-								<ClayDropDown.Item href={Routes.BASE}>
-									{Liferay.Language.get('switch-workspaces')}
-								</ClayDropDown.Item>
-
 								<ClayDropDown.Item href={Routes.LOGOUT}>
 									{Liferay.Language.get('sign-out')}
 								</ClayDropDown.Item>
