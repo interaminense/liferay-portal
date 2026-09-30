@@ -6,7 +6,7 @@ import React from 'react';
 import SidebarItem from './SidebarItem';
 import UserDropdown, {Menus} from 'shared/components/user-dropdown';
 import {ACCOUNTS, Routes, SEGMENTS, toRoute} from 'shared/util/router';
-import {DEVELOPER_MODE, LANGUAGES} from 'shared/util/constants';
+import {LANGUAGES} from 'shared/util/constants';
 import {Link, matchPath} from 'react-router-dom';
 import {useLDPEnabled} from 'shared/hooks/useLDPEnabled';
 import {User} from 'shared/util/records';
@@ -252,26 +252,6 @@ const Sidebar: React.FC<ISidebarProps> = ({
 						icon="cog"
 						label={Liferay.Language.get('settings')}
 					/>
-
-					{DEVELOPER_MODE && (
-						<SidebarItem
-							active={
-								!!matchPath(
-									{
-										end: false,
-										path: Routes.UI_KIT,
-									},
-									activePathname
-								)
-							}
-							href={toRoute(Routes.UI_KIT, {
-								channelId,
-								groupId,
-							})}
-							icon="code"
-							label="UI Kit"
-						/>
-					)}
 
 					<SidebarItem
 						icon={
