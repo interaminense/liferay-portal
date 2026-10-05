@@ -6,6 +6,7 @@ import ClayLabel from '@clayui/label';
 import ClayLayout from '@clayui/layout';
 import ClayPopover from '@clayui/popover';
 import CriteriaBuilder from './criteria-builder';
+import CriteriaDragPreview from './criteria-sidebar/CriteriaDragPreview';
 import CriteriaSidebar from './criteria-sidebar';
 import DndProvider from 'shared/components/DndProvider';
 import EmbeddedAlertList from 'shared/components/EmbeddedAlertList';
@@ -32,6 +33,7 @@ import {
 	validateSegmentInputs,
 } from './utils/utils';
 import {HTML5Backend} from 'react-dnd-html5-backend';
+import {KeyboardMovementProvider} from './context/keyboardMovement';
 import {List} from 'immutable';
 import {NESTED_OR_LIMIT_ALERT, SEQUENTIAL_LIMIT_ALERT} from './utils/constants';
 import {PropertyGroup, Segment} from 'shared/util/records';
@@ -407,6 +409,8 @@ class SegmentEditor extends React.Component<ISegmentEditorProps> {
 
 		return (
 			<DndProvider backend={HTML5Backend}>
+				<CriteriaDragPreview />
+
 				<div className="segment-edit-page-root">
 					<Form
 						initialValues={{
@@ -442,6 +446,7 @@ class SegmentEditor extends React.Component<ISegmentEditorProps> {
 							handleSubmit,
 							isSubmitting,
 							isValid,
+							setFieldValue,
 							values: {
 								criteria,
 								externalReferenceCode,
@@ -489,79 +494,95 @@ class SegmentEditor extends React.Component<ISegmentEditorProps> {
 										valid={isValid && hasChanges}
 									/>
 
-									<div className="form-body">
-										<div className="criteria-builder-section-sidebar">
-											<CriteriaSidebar
-												channelId={channelId}
-												criteriaString={
-													criteriaString ?? undefined
-												}
-												groupId={groupId}
-												propertyGroupsIList={
-													propertyGroupsIList
-												}
-												type={type}
-											/>
-										</div>
+									<KeyboardMovementProvider
+										criteria={criteria}
+										onChange={(newCriteria) =>
+											setFieldValue(
+												'criteria',
+												newCriteria
+											)
+										}
+										sequential={!!sequential}
+									>
+										<div className="form-body">
+											<div className="criteria-builder-section-sidebar">
+												<CriteriaSidebar
+													channelId={channelId}
+													criteriaString={
+														criteriaString ??
+														undefined
+													}
+													groupId={groupId}
+													propertyGroupsIList={
+														propertyGroupsIList
+													}
+													type={type}
+												/>
+											</div>
 
-										<div className="criteria-builder-section-main">
-											<div className="contributor-container">
-												<div className="container-fluid container-fluid-max-xl">
-													<div className="content-wrapper">
-														<SegmentTitle />
+											<div className="criteria-builder-section-main">
+												<div className="contributor-container">
+													<div className="container-fluid container-fluid-max-xl">
+														<div className="content-wrapper">
+															<SegmentTitle />
 
-														<SegmentDetails
-															segmentCategory={
-																segmentCategory
-															}
-															type={type}
-														/>
-
-														{type ===
-															SegmentTypes.RealTime && (
-															<SegmentEnabledSequentialCard />
-														)}
-
-														{segmentState ===
-															SegmentStates.Disabled && (
-															<EmbeddedAlertList
-																alerts={[
-																	{
-																		iconSymbol:
-																			'exclamation-full',
-																		message:
-																			Liferay.Language.get(
-																				'some-criteria-are-empty-please-update-to-continue-using-this-segment'
-																			),
-																		title: Liferay.Language.get(
-																			'error'
-																		),
-																		type: AlertTypes.Danger,
-																	},
-																]}
+															<SegmentDetails
+																segmentCategory={
+																	segmentCategory
+																}
+																type={type}
 															/>
-														)}
 
-														<CriteriaBuilderForm
-															channelId={
-																channelId
-															}
-															groupId={groupId}
-															id={id}
-															name="criteria"
-															segmentCategory={
-																segmentCategory
-															}
-															segmentType={type}
-															sequential={
-																sequential
-															}
-														/>
+															{type ===
+																SegmentTypes.RealTime && (
+																<SegmentEnabledSequentialCard />
+															)}
+
+															{segmentState ===
+																SegmentStates.Disabled && (
+																<EmbeddedAlertList
+																	alerts={[
+																		{
+																			iconSymbol:
+																				'exclamation-full',
+																			message:
+																				Liferay.Language.get(
+																					'some-criteria-are-empty-please-update-to-continue-using-this-segment'
+																				),
+																			title: Liferay.Language.get(
+																				'error'
+																			),
+																			type: AlertTypes.Danger,
+																		},
+																	]}
+																/>
+															)}
+
+															<CriteriaBuilderForm
+																channelId={
+																	channelId
+																}
+																groupId={
+																	groupId
+																}
+																id={id}
+																name="criteria"
+																segmentCategory={
+																	segmentCategory
+																}
+																segmentType={
+																	type
+																}
+																sequential={
+																	sequential
+																}
+															/>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-									</div>
+									</KeyboardMovementProvider>
 								</Form.Form>
 							);
 						}}

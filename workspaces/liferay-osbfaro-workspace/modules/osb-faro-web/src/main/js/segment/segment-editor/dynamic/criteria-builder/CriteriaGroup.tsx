@@ -7,7 +7,6 @@ import EmptyDropZone from './EmptyDropZone';
 import getCN from 'classnames';
 import React, {Fragment} from 'react';
 import {
-	Conjunctions,
 	NESTED_OR_LIMIT_ALERT,
 	SEQUENTIAL_LIMIT_ALERT,
 	SUPPORTED_CONJUNCTION_OPTIONS,
@@ -20,21 +19,15 @@ import {
 import {Criterion, CriterionGroup, OnMove} from '../utils/types';
 import {DragTypes} from '../utils/drag-types';
 import {
-	generateGroupId,
-	generateRowId,
+	addCriterionAtIndex,
 	getChildGroupIds,
 	getNestedOrLimitState,
 	getSequentialLimitState,
-	getSupportedOperatorsFromType,
 	isCriterionGroup,
-	isValid,
 } from '../utils/utils';
-import {
-	insertAtIndex,
-	replaceAtIndex,
-	replaceWithMultipleAtIndex,
-} from 'shared/util/array';
+import {replaceAtIndex, replaceWithMultipleAtIndex} from 'shared/util/array';
 import {isArray} from 'lodash';
+import {KeyboardMovementContext} from '../context/keyboardMovement';
 import {SegmentCategories, SegmentTypes} from 'shared/util/constants';
 
 /**
@@ -99,6 +92,8 @@ interface ICriteriaGroupProps {
 }
 
 class CriteriaGroup extends React.Component<ICriteriaGroupProps> {
+	static contextType = KeyboardMovementContext;
+
 	static defaultProps = {
 		root: false,
 	};
@@ -114,6 +109,8 @@ class CriteriaGroup extends React.Component<ICriteriaGroupProps> {
 		this.handleCriterionAdd = this.handleCriterionAdd.bind(this);
 		this.handleCriterionDelete = this.handleCriterionDelete.bind(this);
 	}
+
+	declare context: React.ContextType<typeof KeyboardMovementContext>;
 
 	private NestedCriteriaGroupWithDrag: React.ComponentType<any>;
 
@@ -147,47 +144,9 @@ class CriteriaGroup extends React.Component<ICriteriaGroupProps> {
 	 * @memberof CriteriaGroup
 	 */
 	handleCriterionAdd(index: number, criterion: Criterion) {
-		const {criteria, onChange, root} = this.props;
+		const {criteria, onChange} = this.props;
 
-		const {
-			defaultValue,
-			operatorName,
-			propertyName,
-			touched,
-			type,
-			valid,
-			value,
-		} = criterion;
-
-		const operators = getSupportedOperatorsFromType(type ?? '');
-
-		const newCriterion = {
-			operatorName: operatorName || operators[0].name,
-			propertyName,
-			rowId: generateRowId(),
-			touched,
-			type,
-			valid,
-			value: isValid(value) ? value : defaultValue,
-		};
-
-		if (root && !criteria) {
-			onChange({
-				conjunctionName: Conjunctions.And,
-				criteriaGroupId: generateGroupId(),
-				items: [newCriterion],
-			} as unknown as CriterionGroup);
-		}
-		else {
-			onChange({
-				...criteria,
-				items: insertAtIndex(
-					criteria.items,
-					index,
-					newCriterion as unknown as Criterion
-				),
-			});
-		}
+		onChange(addCriterionAtIndex(criteria, index, criterion));
 	}
 
 	handleCriterionChange(index: number) {
@@ -320,6 +279,11 @@ class CriteriaGroup extends React.Component<ICriteriaGroupProps> {
 						groupId={groupId}
 						id={id}
 						index={index}
+						keyboardTarget={
+							this.context.target?.position === 'middle' &&
+							this.context.target.groupId === criteriaGroupId &&
+							this.context.target.index === index
+						}
 						onAdd={this.handleCriterionAdd}
 						onChange={this.handleCriterionChange(index)}
 						onDelete={this.handleCriterionDelete}
@@ -336,6 +300,7 @@ class CriteriaGroup extends React.Component<ICriteriaGroupProps> {
 					disabled={disabled}
 					dropIndex={index + 1}
 					id={id}
+					keyboardAnchor
 					onCriterionAdd={this.handleCriterionAdd}
 					onMove={onMove}
 				/>
@@ -398,6 +363,7 @@ class CriteriaGroup extends React.Component<ICriteriaGroupProps> {
 						disabled={atLimit}
 						dropIndex={0}
 						id={id}
+						keyboardAnchor
 						onCriterionAdd={this.handleCriterionAdd}
 						onMove={onMove}
 					/>

@@ -1,12 +1,21 @@
 import ClayIcon from '@clayui/icon';
+import ClaySticker from '@clayui/sticker';
 import getCN from 'classnames';
 import React from 'react';
-import {ConnectDragSource, DragSource as dragSource} from 'react-dnd';
+import {
+	ConnectDragPreview,
+	ConnectDragSource,
+	DragSource as dragSource,
+} from 'react-dnd';
 import {Criterion} from '../utils/types';
 import {DragTypes} from '../utils/drag-types';
 import {generateRowId} from '../utils/utils';
+import {getEmptyImage} from 'react-dnd-html5-backend';
+import {getStickerStyle} from './stickerColors';
+import {KeyboardMovementContext} from '../context/keyboardMovement';
 import {Property} from 'shared/util/records';
 import {PropertyTypes} from '../utils/constants';
+import {sub} from 'shared/util/lang';
 
 const TYPE_ICON_MAP = {
 	[PropertyTypes.Behavior]: 'click',
@@ -37,6 +46,9 @@ const TYPE_ICON_MAP = {
 	[PropertyTypes.Tag]: 'text',
 	[PropertyTypes.Text]: 'text',
 };
+
+export const getTypeIcon = (type: string): string =>
+	TYPE_ICON_MAP[type as keyof typeof TYPE_ICON_MAP] || 'text';
 
 /**
  * Passes the required values to the drop target.
@@ -128,6 +140,7 @@ export const beginDrag = ({
 
 interface ICriteriaSidebarItemProps {
 	className: string;
+	connectDragPreview?: ConnectDragPreview;
 	connectDragSource: ConnectDragSource;
 	defaultValue: any;
 	dragging: boolean;
@@ -139,36 +152,90 @@ interface ICriteriaSidebarItemProps {
 }
 
 export class CriteriaSidebarItem extends React.Component<ICriteriaSidebarItemProps> {
+	static contextType = KeyboardMovementContext;
+
+	constructor(props: ICriteriaSidebarItemProps) {
+		super(props);
+
+		this.handleKeyDown = this.handleKeyDown.bind(this);
+	}
+
+	componentDidMount() {
+		const {connectDragPreview} = this.props;
+
+		if (connectDragPreview) {
+			connectDragPreview(getEmptyImage(), {captureDraggingState: true});
+		}
+	}
+
+	declare context: React.ContextType<typeof KeyboardMovementContext>;
+
+	handleKeyDown(event: React.KeyboardEvent<HTMLLIElement>) {
+		const {startMovement} = this.context;
+
+		if (
+			!startMovement ||
+			event.target !== event.currentTarget ||
+			(event.key !== 'Enter' && event.key !== ' ')
+		) {
+			return;
+		}
+
+		event.preventDefault();
+
+		const {defaultValue, name, property, type} = this.props;
+
+		startMovement(
+			beginDrag({
+				defaultValue,
+				name,
+				property,
+				type: type as PropertyTypes,
+			})
+		);
+	}
+
 	render() {
-		const {className, connectDragSource, dragging, label, type} =
-			this.props;
+		const {
+			className,
+			connectDragSource,
+			dragging,
+			label,
+			name,
+			propertyKey,
+			type,
+		} = this.props;
+
+		const {source} = this.context;
+
+		const movementSource =
+			!!source && source.criterion.propertyName === name;
 
 		const classes = getCN(
-			'criteria-sidebar-item-root',
-			{dragging},
+			'align-items-center c-gap-3 criteria-sidebar-item-root d-flex mx-4 px-2 py-1 rounded-lg text-3',
+			{dragging: dragging || movementSource},
 			className
 		);
 
 		return connectDragSource(
-			<li className={classes} data-testid={`criteria-item-${label}`}>
-				<span className="inline-item">
-					<ClayIcon className="icon-root" symbol="drag" />
-				</span>
+			<li
+				aria-label={
+					sub(Liferay.Language.get('add-x'), [label]) as string
+				}
+				className={classes}
+				data-testid={`criteria-item-${label}`}
+				onKeyDown={this.handleKeyDown}
+				role="menuitem"
+				tabIndex={-1}
+			>
+				<ClaySticker
+					className="flex-shrink-0 rounded-lg"
+					style={getStickerStyle(propertyKey)}
+				>
+					<ClayIcon symbol={getTypeIcon(type)} />
+				</ClaySticker>
 
-				<span className="criteria-sidebar-item-type sticker">
-					<span className="inline-item">
-						<ClayIcon
-							className="icon-root"
-							symbol={
-								TYPE_ICON_MAP[
-									type as keyof typeof TYPE_ICON_MAP
-								] || 'text'
-							}
-						/>
-					</span>
-				</span>
-
-				<span className="criteria-sidebar-item-label">{label}</span>
+				<span className="autofit-col-expand">{label}</span>
 			</li>
 		);
 	}
@@ -180,6 +247,7 @@ export default dragSource(
 		beginDrag,
 	},
 	(connect, monitor) => ({
+		connectDragPreview: connect.dragPreview(),
 		connectDragSource: connect.dragSource(),
 		dragging: monitor.isDragging(),
 	})
