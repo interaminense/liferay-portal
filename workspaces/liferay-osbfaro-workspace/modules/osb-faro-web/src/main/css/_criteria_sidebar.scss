@@ -25,41 +25,24 @@
 		will-change: max-height, min-height;
 
 		.criteria-sidebar-item-root {
-			align-items: center;
-			border-left: 3px solid $chartBlue;
-			cursor: grabbing;
-			display: flex;
-			font-size: 14px;
-			margin: 4px 0;
-			padding: 8px 16px 8px 8px;
+			border: 2px solid transparent;
+			cursor: grab;
+			min-height: 55px;
+			transition: $cadmin-transition-base;
 
-			@include generatePropertyGroupLoop(
-				$propertyGroupsColors,
-				'border-left-color',
-				'color--'
-			);
-
-			.criteria-sidebar-item-type {
-				flex-shrink: 0;
-				margin: 0 8px;
+			&:focus-visible,
+			&:hover {
+				background-color: $cadmin-primary-l3;
+				border-color: $cadmin-primary;
+				outline: none;
 			}
 
-			.lexicon-icon-drag {
-				color: $mainLighten52;
-			}
-
-			.criteria-sidebar-item-label {
-				flex: 1;
-				min-width: 0;
-				overflow-wrap: anywhere;
+			&:active {
+				cursor: grabbing;
 			}
 
 			&.dragging {
-				opacity: 0.4;
-			}
-
-			&:hover {
-				cursor: grab;
+				opacity: 0.5;
 			}
 		}
 
@@ -166,6 +149,17 @@
 
 	.sidebar-search {
 		padding: 16px 24px;
+	}
+}
+
+.criteria-drag-preview {
+	left: 0;
+	pointer-events: none;
+	top: 0;
+	z-index: 1051;
+
+	.criteria-drag-preview-content {
+		max-width: 240px;
 	}
 }
 
