@@ -3,8 +3,11 @@
 exports[`CriteriaSidebarItem should render 1`] = `
 <div>
   <li
+    aria-label="Add Page Views"
     class="align-items-center c-gap-3 criteria-sidebar-item-root d-flex mx-4 px-2 py-1 rounded-lg text-3"
     data-testid="criteria-item-Page Views"
+    role="menuitem"
+    tabindex="-1"
   >
     <span
       class="sticker flex-shrink-0 rounded-lg"
