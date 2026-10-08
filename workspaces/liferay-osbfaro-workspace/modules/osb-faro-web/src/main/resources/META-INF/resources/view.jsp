@@ -7,4 +7,31 @@
 
 <%@ include file="/init.jsp" %>
 
-<div id="faroApp"></div>
+<c:choose>
+	<c:when test="<%= themeDisplay.isSignedIn() %>">
+		<aui:link href='<%= PortalUtil.getStaticResourceURL(request, "/o/osb-faro-web/css/fonts.css") %>' rel="stylesheet" type="text/css" />
+		<aui:link href='<%= PortalUtil.getStaticResourceURL(request, "/o/osb-faro-web/dist/main.css") %>' rel="stylesheet" type="text/css" />
+
+		<div id="faroApp"></div>
+
+		<aui:script src='<%= PortalUtil.getStaticResourceURL(request, "/o/osb-faro-web/dist/main.js") %>' type="module"></aui:script>
+
+		<aui:script>
+			document.addEventListener('DOMContentLoaded', () => {
+				for (const id of ['liferayAUICSS', 'liferayThemeCSS']) {
+					const link = document.getElementById(id);
+
+					if (link) {
+						link.disabled = true;
+					}
+				}
+			});
+		</aui:script>
+	</c:when>
+	<c:otherwise>
+		<aui:script>
+			window.location.href =
+				'<%= HtmlUtil.escapeJS(themeDisplay.getURLSignIn() + "?redirect=" + URLCodec.encodeURL(PortalUtil.getCurrentURL(request))) %>';
+		</aui:script>
+	</c:otherwise>
+</c:choose>

@@ -5,6 +5,8 @@
  */
 --%>
 
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
@@ -30,7 +32,9 @@ page import="com.liferay.osb.faro.web.internal.constants.UserConstants" %><%@
 page import="com.liferay.osb.faro.web.internal.util.JSONUtil" %><%@
 page import="com.liferay.portal.kernel.model.User" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
-page import="com.liferay.portal.kernel.util.PortalUtil" %>
+page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
+page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
+page import="com.liferay.portal.kernel.util.URLCodec" %>
 
 <liferay-frontend:defineObjects />
 
@@ -64,7 +68,6 @@ page import="com.liferay.portal.kernel.util.PortalUtil" %>
 		.put("fieldTypes", FieldMappingConstants.getFieldTypes())
 		.put("locale", locale.toString())
 		.put("pagination", FaroPaginationConstants.getConstants())
-		.put("pathThemeRoot", themeDisplay.getPathThemeRoot())
 		.put("portletNamespace", PortalUtil.getPortletNamespace(FaroPortletKeys.FARO))
 		.put("preferencesScopes", FaroPreferencesConstants.getScopes())
 		.put("projectLocations", LCPProjectConstants.getLocations())
