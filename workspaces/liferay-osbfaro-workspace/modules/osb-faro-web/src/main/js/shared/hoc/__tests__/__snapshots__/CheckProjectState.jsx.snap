@@ -16,12 +16,9 @@ exports[`SuccessDisplayIf should render a scheduled maintenance error page if th
       >
         <svg
           class="lexicon-icon lexicon-icon-liferay_logo icon-root liferay-logo"
+          data-file="liferay_logo.svg"
           role="presentation"
-        >
-          <use
-            href="#liferay_logo"
-          />
-        </svg>
+        />
         <span
           class="sr-only"
         >
@@ -72,12 +69,9 @@ exports[`SuccessDisplayIf should render a scheduled maintenance error page if th
           >
             <svg
               class="lexicon-icon lexicon-icon-ac_logo icon-root logo-icon"
+              data-file="ac_logo.svg"
               role="presentation"
-            >
-              <use
-                href="#ac_logo"
-              />
-            </svg>
+            />
             <span
               class="logo-text"
             >
@@ -117,12 +111,9 @@ exports[`SuccessDisplayIf should render activating display if project state is "
       >
         <svg
           class="lexicon-icon lexicon-icon-liferay_logo icon-root liferay-logo"
+          data-file="liferay_logo.svg"
           role="presentation"
-        >
-          <use
-            href="#liferay_logo"
-          />
-        </svg>
+        />
         <span
           class="sr-only"
         >
@@ -173,12 +164,9 @@ exports[`SuccessDisplayIf should render activating display if project state is "
           >
             <svg
               class="lexicon-icon lexicon-icon-ac_logo icon-root logo-icon"
+              data-file="ac_logo.svg"
               role="presentation"
-            >
-              <use
-                href="#ac_logo"
-              />
-            </svg>
+            />
             <span
               class="logo-text"
             >
@@ -260,12 +248,9 @@ exports[`SuccessDisplayIf should render activating display if project state is "
       >
         <svg
           class="lexicon-icon lexicon-icon-liferay_logo icon-root liferay-logo"
+          data-file="liferay_logo.svg"
           role="presentation"
-        >
-          <use
-            href="#liferay_logo"
-          />
-        </svg>
+        />
         <span
           class="sr-only"
         >
@@ -316,12 +301,9 @@ exports[`SuccessDisplayIf should render activating display if project state is "
           >
             <svg
               class="lexicon-icon lexicon-icon-ac_logo icon-root logo-icon"
+              data-file="ac_logo.svg"
               role="presentation"
-            >
-              <use
-                href="#ac_logo"
-              />
-            </svg>
+            />
             <span
               class="logo-text"
             >
@@ -385,12 +367,9 @@ exports[`SuccessDisplayIf should render an unavailable error page if the project
       >
         <svg
           class="lexicon-icon lexicon-icon-liferay_logo icon-root liferay-logo"
+          data-file="liferay_logo.svg"
           role="presentation"
-        >
-          <use
-            href="#liferay_logo"
-          />
-        </svg>
+        />
         <span
           class="sr-only"
         >
@@ -441,12 +420,9 @@ exports[`SuccessDisplayIf should render an unavailable error page if the project
           >
             <svg
               class="lexicon-icon lexicon-icon-ac_logo icon-root logo-icon"
+              data-file="ac_logo.svg"
               role="presentation"
-            >
-              <use
-                href="#ac_logo"
-              />
-            </svg>
+            />
             <span
               class="logo-text"
             >
