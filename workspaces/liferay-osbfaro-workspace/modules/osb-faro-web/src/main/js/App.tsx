@@ -30,7 +30,9 @@ const App = () => {
 		<ApolloProvider client={client}>
 			<ApolloProviderHooks client={client}>
 				<Provider store={store}>
-					<ClayIconSpriteContext.Provider value={CLAY_ICONS_SPRITEMAP}>
+					<ClayIconSpriteContext.Provider
+						value={CLAY_ICONS_SPRITEMAP}
+					>
 						<ClayLinkContext.Provider
 							value={({
 								children,
