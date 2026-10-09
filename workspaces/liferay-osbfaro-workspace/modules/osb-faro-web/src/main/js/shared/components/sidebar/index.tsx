@@ -1,6 +1,6 @@
 import * as API from 'shared/api';
 import ChannelsMenu, {Channel} from '../channels-menu';
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import getCN from 'classnames';
 import React from 'react';
 import SidebarItem from './SidebarItem';

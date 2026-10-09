@@ -1,6 +1,6 @@
 import * as API from 'shared/api';
 import ClayButton from '@clayui/button';
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import ClayLink from '@clayui/link';
 import {debounce} from 'lodash';
 import Form, {validateRequired} from 'shared/components/form';

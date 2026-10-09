@@ -1,5 +1,5 @@
 import ClayButton from '@clayui/button';
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import ClayToolbar from '@clayui/toolbar';
 import React from 'react';
 import {Link} from 'react-router-dom';

@@ -1,4 +1,4 @@
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import ClayLayout from '@clayui/layout';
 import ClayLink from '@clayui/link';
 import React, {useEffect, useState} from 'react';

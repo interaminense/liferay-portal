@@ -1,4 +1,4 @@
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import getCN from 'classnames';
 import React from 'react';
 import {ConnectDragSource, DragSource as dragSource} from 'react-dnd';

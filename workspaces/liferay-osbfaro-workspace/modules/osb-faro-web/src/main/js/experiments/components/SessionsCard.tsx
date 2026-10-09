@@ -4,7 +4,7 @@ import ChartTooltip, {
 	Weights,
 } from 'shared/components/chart-tooltip';
 import ClayButton from '@clayui/button';
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import getCN from 'classnames';
 import moment from 'moment';
 import React, {useState} from 'react';
