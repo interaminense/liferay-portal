@@ -341,12 +341,9 @@ exports[`SegmentEditor should render 1`] = `
                         <div>
                           <svg
                             class="lexicon-icon lexicon-icon-ac_rule icon-root icon-size-md mr-3"
+                            data-file="ac_rule.svg"
                             role="presentation"
-                          >
-                            <use
-                              href="#ac_rule"
-                            />
-                          </svg>
+                          />
                           <span
                             class="text-4"
                           >
@@ -356,12 +353,9 @@ exports[`SegmentEditor should render 1`] = `
                         <div>
                           <svg
                             class="lexicon-icon lexicon-icon-ac_group icon-root icon-size-md mr-3"
+                            data-file="ac_group.svg"
                             role="presentation"
-                          >
-                            <use
-                              href="#ac_group"
-                            />
-                          </svg>
+                          />
                           <span
                             class="text-4"
                           >
