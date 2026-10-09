@@ -15,12 +15,9 @@ exports[`Sidebar should render 1`] = `
       >
         <svg
           class="lexicon-icon lexicon-icon-ldp_logo icon-root icon-size-md logo"
+          data-file="ldp_logo.svg"
           role="presentation"
-        >
-          <use
-            href="#ldp_logo"
-          />
-        </svg>
+        />
       </a>
       <button
         class="channels-menu button-root btn btn-unstyled"
@@ -145,12 +142,9 @@ exports[`Sidebar should render 1`] = `
                 >
                   <svg
                     class="lexicon-icon lexicon-icon-ac_page icon-root"
+                    data-file="ac_page.svg"
                     role="presentation"
-                  >
-                    <use
-                      href="#ac_page"
-                    />
-                  </svg>
+                  />
                 </span>
                 <span
                   class="item-label"
@@ -175,12 +169,9 @@ exports[`Sidebar should render 1`] = `
                 >
                   <svg
                     class="lexicon-icon lexicon-icon-ac_assets icon-root"
+                    data-file="ac_assets.svg"
                     role="presentation"
-                  >
-                    <use
-                      href="#ac_assets"
-                    />
-                  </svg>
+                  />
                 </span>
                 <span
                   class="item-label"
@@ -205,12 +196,9 @@ exports[`Sidebar should render 1`] = `
                 >
                   <svg
                     class="lexicon-icon lexicon-icon-ac_event_analysis icon-root"
+                    data-file="ac_event_analysis.svg"
                     role="presentation"
-                  >
-                    <use
-                      href="#ac_event_analysis"
-                    />
-                  </svg>
+                  />
                 </span>
                 <span
                   class="item-label"
@@ -248,12 +236,9 @@ exports[`Sidebar should render 1`] = `
                 >
                   <svg
                     class="lexicon-icon lexicon-icon-ac_segment icon-root"
+                    data-file="ac_segment.svg"
                     role="presentation"
-                  >
-                    <use
-                      href="#ac_segment"
-                    />
-                  </svg>
+                  />
                 </span>
                 <span
                   class="item-label"
@@ -278,12 +263,9 @@ exports[`Sidebar should render 1`] = `
                 >
                   <svg
                     class="lexicon-icon lexicon-icon-ac_account icon-root"
+                    data-file="ac_account.svg"
                     role="presentation"
-                  >
-                    <use
-                      href="#ac_account"
-                    />
-                  </svg>
+                  />
                 </span>
                 <span
                   class="item-label"
@@ -308,12 +290,9 @@ exports[`Sidebar should render 1`] = `
                 >
                   <svg
                     class="lexicon-icon lexicon-icon-ac_individual icon-root"
+                    data-file="ac_individual.svg"
                     role="presentation"
-                  >
-                    <use
-                      href="#ac_individual"
-                    />
-                  </svg>
+                  />
                 </span>
                 <span
                   class="item-label"
@@ -351,12 +330,9 @@ exports[`Sidebar should render 1`] = `
                 >
                   <svg
                     class="lexicon-icon lexicon-icon-ac_test icon-root"
+                    data-file="ac_test.svg"
                     role="presentation"
-                  >
-                    <use
-                      href="#ac_test"
-                    />
-                  </svg>
+                  />
                 </span>
                 <span
                   class="item-label"
