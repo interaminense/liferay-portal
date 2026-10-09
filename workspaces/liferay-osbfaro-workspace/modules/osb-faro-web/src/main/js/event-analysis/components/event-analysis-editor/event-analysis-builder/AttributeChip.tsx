@@ -1,6 +1,6 @@
 import Chip from 'shared/components/Chip';
 import ClayButton from '@clayui/button';
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import getCN from 'classnames';
 import React, {useEffect, useRef, useState} from 'react';
 import {DATA_TYPE_ICONS_MAP} from 'event-analysis/utils/utils';

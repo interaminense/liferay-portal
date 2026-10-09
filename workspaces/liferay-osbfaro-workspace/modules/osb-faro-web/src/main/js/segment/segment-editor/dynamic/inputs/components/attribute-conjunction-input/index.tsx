@@ -1,6 +1,6 @@
 import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import Form from 'shared/components/form';
 import getCN from 'classnames';
 import OperatorSelect from './OperatorSelect';

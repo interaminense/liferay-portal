@@ -4,7 +4,7 @@ import LifecycleSettingsToolbar from 'lifecycle/components/LifecycleSettingsTool
 import React from 'react';
 import StageConfigurationPanel from 'lifecycle/components/StageConfigurationPanel';
 import ClayForm, {ClayInput} from '@clayui/form';
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import {ICatalogField} from 'shared/api/catalog';
 import {
 	IStageConfig,

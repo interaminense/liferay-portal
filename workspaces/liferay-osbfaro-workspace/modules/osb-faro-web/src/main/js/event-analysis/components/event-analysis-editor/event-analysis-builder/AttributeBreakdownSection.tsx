@@ -1,7 +1,7 @@
 import AttributeBreakdownChip from './AttributeBreakdownChip';
 import AttributeBreakdownDropdown from './attribute-breakdown-dropdown';
 import ClayButton from '@clayui/button';
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import DndProvider from 'shared/components/DndProvider';
 import React from 'react';
 import {

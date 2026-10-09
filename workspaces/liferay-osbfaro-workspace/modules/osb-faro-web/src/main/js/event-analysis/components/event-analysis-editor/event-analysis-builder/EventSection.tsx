@@ -1,5 +1,5 @@
 import ClayButton from '@clayui/button';
-import ClayIcon from '@clayui/icon';
+import ClayIcon from 'shared/components/Icon';
 import EventChip from './EventChip';
 import EventDropdown from './EventDropdown';
 import React from 'react';
