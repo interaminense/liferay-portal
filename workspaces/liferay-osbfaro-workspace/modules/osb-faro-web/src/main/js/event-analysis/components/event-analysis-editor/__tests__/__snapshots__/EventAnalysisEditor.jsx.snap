@@ -53,7 +53,7 @@ exports[`Event Analysis Editor render 1`] = `
           class="align-items-center c-gap-3 d-flex event-analysis-editor-period flex-wrap"
         >
           <div
-            class="custom-control custom-checkbox compare-to-previous-checkbox flex-shrink-0 mb-0 custom-control-outside"
+            class="custom-control custom-checkbox compare-to-previous-checkbox flex-shrink-0 mb-0 mt-2 custom-control-outside"
           >
             <label>
               <input
