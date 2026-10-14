@@ -60,7 +60,7 @@ const EventAnalysisEditor: React.FC<IEventAnalysisEditorProps> = ({
 						checked={compareToPrevious}
 						containerProps={{
 							className:
-								'compare-to-previous-checkbox flex-shrink-0 mb-0',
+								'compare-to-previous-checkbox flex-shrink-0 mb-0 mt-2',
 						}}
 						label={Liferay.Language.get('compare-to-previous')}
 						onChange={(event) =>
