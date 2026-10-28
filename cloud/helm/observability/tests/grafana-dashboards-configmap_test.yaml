@@ -272,6 +272,25 @@ tests:
             cloudProvider: gcp
     -   asserts:
             -   matchRegex:
+                    path: data["load-balancers.json"]
+                    pattern: class=\\"dh-breadcrumb-link\\" href=\\"/d/central-hub/central-hub\\"\\u003eCentral Hub\\u003c/a\\u003e
+            -   matchRegex:
+                    path: data["load-balancers.json"]
+                    pattern: class=\\"dh-breadcrumb-current\\"\\u003eLoad Balancer Metrics\\u003c/span\\u003e
+            -   matchRegex:
+                    path: data["load-balancers.json"]
+                    pattern: nav\[aria-label=\\"Breadcrumbs\\"\] \{ display:\s*none
+            -   notMatchRegex:
+                    path: data["load-balancers.json"]
+                    pattern: dh-hub-tile
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-load-balancers
+        it: Replaces the Central Hub tile with a breadcrumb in the dashboard header
+        set:
+            cloudProvider: gcp
+    -   asserts:
+            -   matchRegex:
                     path: data["kubernetes-workloads.json"]
                     pattern: container_memory_working_set_bytes\{namespace=\\"\$environment-elasticsearch\\"
             -   matchRegex:
