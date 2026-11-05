@@ -11,7 +11,6 @@ import com.liferay.osb.faro.provisioning.client.constants.FaroSubscriptionConsta
 import com.liferay.osb.faro.util.FaroPropsValues;
 import com.liferay.osb.faro.web.internal.constants.FaroPaginationConstants;
 import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -55,14 +54,6 @@ public class FaroFragmentRendererUtil {
 		renderScriptTag(
 			httpServletRequest, httpServletResponse, "inline",
 			"window.faroConstants = " + _getFaroConstants() + ";", null, null);
-		renderScriptTag(
-			httpServletRequest, httpServletResponse, null,
-			StringBundler.concat(
-				"document.addEventListener('DOMContentLoaded', () => {",
-				"for (const id of ['liferayAUICSS', 'liferayThemeCSS']) {",
-				"const element = document.getElementById(id);",
-				"if (element) {element.disabled = true;}}});"),
-			null, null);
 	}
 
 	public static void renderScriptTag(
