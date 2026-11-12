@@ -69,6 +69,9 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
 
 			_renderLinkTag(
 				httpServletRequest, httpServletResponse,
+				"/o/osb-faro-web/css/fonts.css");
+			_renderLinkTag(
+				httpServletRequest, httpServletResponse,
 				"/o/osb-faro-web/dist/main.css");
 
 			PrintWriter printWriter = httpServletResponse.getWriter();
