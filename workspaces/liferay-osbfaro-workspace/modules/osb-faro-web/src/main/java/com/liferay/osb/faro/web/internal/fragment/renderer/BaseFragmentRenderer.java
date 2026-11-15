@@ -23,6 +23,8 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.Map;
+
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -46,34 +48,7 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
 			componentTag.setPageContext(
 				PageContextFactoryUtil.create(
 					httpServletRequest, httpServletResponse));
-			componentTag.setProps(
-				HashMapBuilder.<String, Object>put(
-					"channelId",
-					() -> {
-						ChannelSelectorDisplayContext
-							channelSelectorDisplayContext =
-								new ChannelSelectorDisplayContext(
-									httpServletRequest);
-
-						FaroChannel faroChannel =
-							channelSelectorDisplayContext.getFaroChannel();
-
-						if (faroChannel == null) {
-							return StringPool.BLANK;
-						}
-
-						return faroChannel.getChannelId();
-					}
-				).put(
-					"groupId",
-					() -> {
-						ThemeDisplay themeDisplay =
-							(ThemeDisplay)httpServletRequest.getAttribute(
-								WebKeys.THEME_DISPLAY);
-
-						return String.valueOf(themeDisplay.getScopeGroupId());
-					}
-				).build());
+			componentTag.setProps(getProps(httpServletRequest));
 			componentTag.setServletContext(servletContext);
 
 			componentTag.doStartTag();
@@ -88,6 +63,38 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
 	}
 
 	protected abstract String getModule();
+
+	protected Map<String, Object> getProps(
+		HttpServletRequest httpServletRequest) {
+
+		return HashMapBuilder.<String, Object>put(
+			"channelId",
+			() -> {
+				ChannelSelectorDisplayContext
+					channelSelectorDisplayContext =
+						new ChannelSelectorDisplayContext(
+							httpServletRequest);
+
+				FaroChannel faroChannel =
+					channelSelectorDisplayContext.getFaroChannel();
+
+				if (faroChannel == null) {
+					return StringPool.BLANK;
+				}
+
+				return faroChannel.getChannelId();
+			}
+		).put(
+			"groupId",
+			() -> {
+				ThemeDisplay themeDisplay =
+					(ThemeDisplay)httpServletRequest.getAttribute(
+						WebKeys.THEME_DISPLAY);
+
+				return String.valueOf(themeDisplay.getScopeGroupId());
+			}
+		).build();
+	}
 
 	@Reference(target = "(osgi.web.symbolicname=com.liferay.osb.faro.web)")
 	protected ServletContext servletContext;
