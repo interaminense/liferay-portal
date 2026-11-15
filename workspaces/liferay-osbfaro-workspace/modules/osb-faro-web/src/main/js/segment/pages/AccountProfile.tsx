@@ -9,7 +9,7 @@ import React from 'react';
 import {CSVType} from 'shared/components/download-report/utils';
 import {DownloadStaticCSVReport} from 'shared/components/download-report/DownloadStaticCSVReport';
 import {ReferencedObjectsProvider} from 'segment/segment-editor/dynamic/context/referencedObjects';
-import {Routes, SEGMENTS, setUriQueryValues, toRoute} from 'shared/util/router';
+import {setUriQueryValues} from 'shared/util/router';
 import {SectionHeader} from 'shared/components/SectionHeader';
 import {getSegmentAlerts} from 'segment/utils/alerts';
 import {Segment} from 'shared/util/records';
@@ -20,6 +20,7 @@ import {
 } from 'shared/util/constants';
 import {useChannelContext} from 'shared/context/channel';
 import {useDeleteSegments} from 'segment/hooks/useDeleteSegments';
+import {useSegmentURLs} from 'segment/hooks/useSegmentURLs';
 import {useLifecycleDetails} from 'lifecycle/hooks/useLifecycleDetails';
 import {useModal} from '@clayui/modal';
 import {useNavigate} from 'react-router-dom';
@@ -43,6 +44,7 @@ const AccountProfile: React.FC<IAccountProfileProps> = ({
 
 	const {deleteSegments, deleteSegmentsModal} = useDeleteSegments(groupId);
 	const notificationsModal = useModal();
+	const {getEditSegmentURL, segmentsURL} = useSegmentURLs();
 
 	const {lifecycles, loading: lifecyclesLoading} = useLifecycleDetails({
 		channelId,
@@ -82,15 +84,7 @@ const AccountProfile: React.FC<IAccountProfileProps> = ({
 						<BasePage.Header.PageActionsToolbar
 							actions={[
 								{
-									href: toRoute(
-										Routes.CONTACTS_SEGMENT_EDIT,
-										{
-											channelId,
-											groupId,
-											id: segment.id,
-											type: SEGMENTS,
-										}
-									),
+									href: getEditSegmentURL(segment.id),
 									icon: {symbol: 'pencil'},
 									label: Liferay.Language.get('edit-segment'),
 								},
@@ -127,16 +121,7 @@ const AccountProfile: React.FC<IAccountProfileProps> = ({
 											ids: [segment.id],
 											name,
 											onSuccess: () =>
-												navigate(
-													toRoute(
-														Routes.CONTACTS_LIST_ENTITY,
-														{
-															channelId,
-															groupId,
-															type: SEGMENTS,
-														}
-													)
-												),
+												navigate(segmentsURL),
 										}),
 								},
 							]}

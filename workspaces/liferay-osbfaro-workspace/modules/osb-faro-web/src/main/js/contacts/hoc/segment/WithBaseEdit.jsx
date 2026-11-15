@@ -10,9 +10,9 @@ import {addAlert} from 'shared/actions/alerts';
 import {Alert} from 'shared/types';
 import {connect} from 'react-redux';
 import {PropTypes} from 'prop-types';
-import {Routes, SEGMENTS, toRoute} from 'shared/util/router';
 import {Segment} from 'shared/util/records';
 import {SegmentCategories} from 'shared/util/constants';
+import {useSegmentURLs} from 'segment/hooks/useSegmentURLs';
 
 const MessageKeys = {
 	ExternalReferenceCodeIsAlreadyUsed:
@@ -48,7 +48,8 @@ export default WrappedComponent => {
 			groupId: PropTypes.string.isRequired,
 			history: PropTypes.object.isRequired,
 			id: PropTypes.string,
-			segment: PropTypes.instanceOf(Segment)
+			segment: PropTypes.instanceOf(Segment),
+			segmentURLs: PropTypes.object.isRequired
 		};
 
 		state = {
@@ -82,7 +83,7 @@ export default WrappedComponent => {
 
 		@autobind
 		handleSubmit(form, formRef, submitFn) {
-			const {addAlert, channelId, groupId, history, id} = this.props;
+			const {addAlert, history, segmentURLs} = this.props;
 
 			const {setSubmitting} = formRef.current;
 
@@ -95,12 +96,9 @@ export default WrappedComponent => {
 						(segment && !Array.isArray(segment))
 					) {
 						history.push(
-							toRoute(Routes.CONTACTS_ENTITY, {
-								channelId,
-								groupId,
-								id: segment.id || segment[0].id,
-								type: SEGMENTS
-							})
+							segmentURLs.getSegmentURL(
+								segment.id || segment[0].id
+							)
 						);
 
 						addAlert({
@@ -137,6 +135,7 @@ export default WrappedComponent => {
 				history,
 				id,
 				segment,
+				segmentURLs,
 				type,
 				...otherProps
 			} = this.props;
@@ -217,13 +216,7 @@ export default WrappedComponent => {
 											)
 										});
 
-										history.push(
-											toRoute(Routes.CONTACTS_LIST_ENTITY, {
-												channelId,
-												groupId,
-												type: SEGMENTS
-											})
-										);
+										history.push(segmentURLs.segmentsURL);
 									})
 									.catch(() => {
 										addAlert({
@@ -246,7 +239,15 @@ export default WrappedComponent => {
 		}
 	}
 
-	return connect(null, {
+	const ConnectedBaseEdit = connect(null, {
 		addAlert
 	})(BaseEdit);
+
+	const BaseEditWithSegmentURLs = props => {
+		const segmentURLs = useSegmentURLs();
+
+		return <ConnectedBaseEdit {...props} segmentURLs={segmentURLs} />;
+	};
+
+	return BaseEditWithSegmentURLs;
 };

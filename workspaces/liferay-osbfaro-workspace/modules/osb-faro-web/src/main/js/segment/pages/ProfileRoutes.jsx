@@ -19,7 +19,7 @@ import React, {
 import {ChannelContext} from 'shared/context/channel';
 import {CSVType} from 'shared/components/download-report/utils';
 import {DownloadStaticCSVReport} from 'shared/components/download-report/DownloadStaticCSVReport';
-import {getMatchedRoute, Routes, SEGMENTS, toRoute} from 'shared/util/router';
+import {getMatchedRoute, Routes} from 'shared/util/router';
 import {getSegmentAlerts} from 'segment/utils/alerts';
 import {
 	Route,
@@ -34,6 +34,7 @@ import {
 	SegmentTypes
 } from 'shared/util/constants';
 import {useDeleteSegments} from 'segment/hooks/useDeleteSegments';
+import {useSegmentURLs} from 'segment/hooks/useSegmentURLs';
 import {useModal} from '@clayui/modal';
 import {useRequest} from 'shared/hooks/useRequest';
 
@@ -98,6 +99,7 @@ export const SegmentProfileRoutes = () => {
 
 	const {deleteSegments, deleteSegmentsModal} = useDeleteSegments(groupId);
 	const notificationsModal = useModal();
+	const {getEditSegmentURL, segmentsURL} = useSegmentURLs();
 
 	const {data, error, loading} = useRequest({
 		dataSourceFn: API.individualSegment.fetch,
@@ -133,11 +135,7 @@ export const SegmentProfileRoutes = () => {
 	if (error) {
 		return (
 			<ErrorPage
-				href={toRoute(Routes.CONTACTS_LIST_ENTITY, {
-					channelId,
-					groupId,
-					type: SEGMENTS
-				})}
+				href={segmentsURL}
 				linkLabel={Liferay.Language.get('go-to-segments')}
 				message={Liferay.Language.get(
 					'the-segment-you-are-looking-for-does-not-exist'
@@ -167,14 +165,7 @@ export const SegmentProfileRoutes = () => {
 		deleteSegments({
 			ids: [id],
 			name: segmentDetails.name,
-			onSuccess: () =>
-				navigate(
-					toRoute(Routes.CONTACTS_LIST_ENTITY, {
-						channelId,
-						groupId,
-						type: SEGMENTS
-					})
-				)
+			onSuccess: () => navigate(segmentsURL)
 		});
 	};
 
@@ -215,10 +206,7 @@ export const SegmentProfileRoutes = () => {
 						<BasePage.Header.PageActionsToolbar
 							actions={[
 								{
-									href: toRoute(
-										Routes.CONTACTS_SEGMENT_EDIT,
-										{channelId, groupId, id, type: SEGMENTS}
-									),
+									href: getEditSegmentURL(id),
 									icon: {symbol: 'pencil'},
 									label: Liferay.Language.get(
 										'edit-segment'

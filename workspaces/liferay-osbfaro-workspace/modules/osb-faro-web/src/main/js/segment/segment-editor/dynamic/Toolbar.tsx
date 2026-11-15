@@ -1,30 +1,22 @@
 import BaseEditPage from 'shared/components/base-edit-page';
 import ClayButton from '@clayui/button';
 import React from 'react';
-import {Routes, SEGMENTS, toRoute} from 'shared/util/router';
+import {useSegmentURLs} from 'segment/hooks/useSegmentURLs';
 
 interface IToolbarProps {
-	channelId: string;
-	groupId: string;
 	id: string;
 	onDeleteSegment?: () => void;
 	valid: boolean;
 }
 
 export const Toolbar: React.FC<IToolbarProps> = ({
-	channelId,
-	groupId,
 	id,
 	onDeleteSegment,
 	valid,
 }) => {
-	const cancelURL = id
-		? toRoute(Routes.CONTACTS_SEGMENT, {channelId, groupId, id})
-		: toRoute(Routes.CONTACTS_LIST_SEGMENT, {
-				channelId,
-				groupId,
-				type: SEGMENTS,
-			});
+	const {getSegmentURL, segmentsURL} = useSegmentURLs();
+
+	const cancelURL = id ? getSegmentURL(id) : segmentsURL;
 
 	return (
 		<BaseEditPage.Toolbar
