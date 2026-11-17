@@ -11,10 +11,12 @@ import com.liferay.osb.faro.provisioning.client.constants.FaroSubscriptionConsta
 import com.liferay.osb.faro.util.FaroPropsValues;
 import com.liferay.osb.faro.web.internal.constants.FaroPaginationConstants;
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.servlet.taglib.util.OutputData;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.taglib.aui.LinkTag;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.aui.ScriptTag;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,15 +43,24 @@ public class FaroFragmentRendererUtil {
 			HttpServletResponse httpServletResponse)
 		throws Exception {
 
-		LinkTag linkTag = new LinkTag();
+		OutputData outputData = (OutputData)httpServletRequest.getAttribute(
+			WebKeys.OUTPUT_DATA);
 
-		linkTag.setHref(
-			getStaticResourceURL(
-				httpServletRequest, "/o/osb-faro-web/dist/main.css"));
-		linkTag.setRel("stylesheet");
-		linkTag.setType("text/css");
+		if (outputData == null) {
+			outputData = new OutputData();
 
-		linkTag.doTag(httpServletRequest, httpServletResponse);
+			httpServletRequest.setAttribute(WebKeys.OUTPUT_DATA, outputData);
+		}
+
+		outputData.setDataSB(
+			FaroFragmentRendererUtil.class.getName() + "#main.css",
+			WebKeys.PAGE_TOP,
+			new StringBundler(
+				StringBundler.concat(
+					"<link href=\"",
+					getStaticResourceURL(
+						httpServletRequest, "/o/osb-faro-web/dist/main.css"),
+					"\" rel=\"stylesheet\" type=\"text/css\">")));
 
 		renderScriptTag(
 			httpServletRequest, httpServletResponse, "inline",
