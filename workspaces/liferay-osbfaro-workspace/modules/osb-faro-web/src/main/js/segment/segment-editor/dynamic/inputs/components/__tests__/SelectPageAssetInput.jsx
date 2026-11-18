@@ -153,12 +153,12 @@ describe('SelectPageAssetInput', () => {
 
 			await waitFor(() =>
 				expect(
-					getByRole('combobox', {name: 'Asset Type'})
+					getByRole('combobox', {name: /^asset type$/i})
 				).toBeEnabled()
 			);
 
 			expect(getAllByRole('combobox')).toHaveLength(2);
-			expect(getByText('Select a Type')).toBeTruthy();
+			expect(getByText(/^select a type$/i)).toBeTruthy();
 			expect(getByRole('button', {name: /add assets/i})).toBeDisabled();
 		});
 
@@ -188,7 +188,7 @@ describe('SelectPageAssetInput', () => {
 			);
 
 			openPicker(getByRole, 'Page or Asset Type');
-			fireEvent.click(getByText('Page'));
+			fireEvent.click(getByText(/^page$/i));
 
 			expect(getByText(/add pages/i)).toBeTruthy();
 			expect(onSelectionsChange).toHaveBeenCalledWith({
@@ -204,7 +204,7 @@ describe('SelectPageAssetInput', () => {
 			);
 
 			openPicker(getByRole, 'Page or Asset Type');
-			fireEvent.click(getByText('Page'));
+			fireEvent.click(getByText(/^page$/i));
 			fireEvent.click(getByText(/add pages/i));
 
 			expect(isModalOpen()).toBe(true);
@@ -233,12 +233,12 @@ describe('SelectPageAssetInput', () => {
 
 			await waitFor(() =>
 				expect(
-					getByRole('combobox', {name: 'Asset Type'})
+					getByRole('combobox', {name: /^asset type$/i})
 				).toBeEnabled()
 			);
 
 			openPicker(getByRole, 'Asset Type');
-			fireEvent.click(getByText('Web Content'));
+			fireEvent.click(getByText(/^web content$/i));
 
 			expect(getByRole('button', {name: /add assets/i})).toBeEnabled();
 			expect(onSelectionsChange).toHaveBeenCalledWith({
@@ -257,12 +257,12 @@ describe('SelectPageAssetInput', () => {
 
 			await waitFor(() =>
 				expect(
-					getByRole('combobox', {name: 'Asset Type'})
+					getByRole('combobox', {name: /^asset type$/i})
 				).toBeEnabled()
 			);
 
 			openPicker(getByRole, 'Asset Type');
-			fireEvent.click(getByText('Web Content'));
+			fireEvent.click(getByText(/^web content$/i));
 
 			fireEvent.click(getByRole('button', {name: /add assets/i}));
 
@@ -288,8 +288,8 @@ describe('SelectPageAssetInput', () => {
 				/>
 			);
 
-			expect(getByText('Home')).toBeTruthy();
-			expect(getByText('About')).toBeTruthy();
+			expect(getByText(/^home$/i)).toBeTruthy();
+			expect(getByText(/^about$/i)).toBeTruthy();
 		});
 
 		it('should keep the add asset copy on the button once assets are selected', () => {
@@ -312,7 +312,7 @@ describe('SelectPageAssetInput', () => {
 			);
 
 			openPicker(getByRole, 'Page or Asset Type');
-			fireEvent.click(getByText('Page'));
+			fireEvent.click(getByText(/^page$/i));
 
 			expect(getByRole('button', {name: '+ Add Page'})).toBeTruthy();
 		});
@@ -328,7 +328,7 @@ describe('SelectPageAssetInput', () => {
 			);
 
 			openPicker(getByRole, 'Page or Asset Type');
-			fireEvent.click(getByText('Page'));
+			fireEvent.click(getByText(/^page$/i));
 			fireEvent.click(getByText(/add pages/i));
 
 			const {onSubmit} = getModalProps();
@@ -384,7 +384,7 @@ describe('SelectPageAssetInput', () => {
 				/>
 			);
 
-			fireEvent.click(getAllByLabelText('Close')[0]);
+			fireEvent.click(getAllByLabelText(/^close$/i)[0]);
 
 			// The removed chip drops out; the surviving selection keeps its
 			// already-built activityKey.
@@ -414,7 +414,7 @@ describe('SelectPageAssetInput', () => {
 			);
 
 			openPicker(getByRole, 'Page or Asset Type');
-			fireEvent.click(getByText('Page'));
+			fireEvent.click(getByText(/^page$/i));
 
 			expect(onSelectionsChange).toHaveBeenCalledWith(
 				expect.objectContaining({selections: []})
@@ -431,7 +431,7 @@ describe('SelectPageAssetInput', () => {
 			// Asset-only actions show the "Asset Type" label as static text and
 			// offer no page option; only the asset-type picker is a dropdown.
 
-			expect(getByText('Asset Type')).toBeTruthy();
+			expect(getByText(/^asset type$/i)).toBeTruthy();
 			expect(queryByText(/add pages/i)).toBeNull();
 			expect(getAllByRole('combobox')).toHaveLength(1);
 		});
@@ -446,11 +446,11 @@ describe('SelectPageAssetInput', () => {
 
 			await waitFor(() =>
 				expect(
-					getByRole('combobox', {name: 'Asset Type'})
+					getByRole('combobox', {name: /^asset type$/i})
 				).toBeEnabled()
 			);
 
-			expect(getByText('Select a Type')).toBeTruthy();
+			expect(getByText(/^select a type$/i)).toBeTruthy();
 			expect(getByRole('button', {name: /add assets/i})).toBeDisabled();
 		});
 
@@ -468,12 +468,12 @@ describe('SelectPageAssetInput', () => {
 
 			await waitFor(() =>
 				expect(
-					getByRole('combobox', {name: 'Asset Type'})
+					getByRole('combobox', {name: /^asset type$/i})
 				).toBeEnabled()
 			);
 
 			openPicker(getByRole, 'Asset Type');
-			fireEvent.click(getByText('Blogs'));
+			fireEvent.click(getByText(/^blogs$/i));
 
 			fireEvent.click(getByRole('button', {name: /add assets/i}));
 
@@ -510,12 +510,12 @@ describe('SelectPageAssetInput', () => {
 
 			await waitFor(() =>
 				expect(
-					getByRole('combobox', {name: 'Asset Type'})
+					getByRole('combobox', {name: /^asset type$/i})
 				).toBeEnabled()
 			);
 
 			expect(getAllByRole('combobox')).toHaveLength(2);
-			expect(getByText('Select a Type')).toBeTruthy();
+			expect(getByText(/^select a type$/i)).toBeTruthy();
 		});
 
 		it('should use the page selector for a Page applicationId', () => {
@@ -726,10 +726,10 @@ describe('SelectPageAssetInput', () => {
 			// While loading: the picker is present but disabled, showing the
 			// placeholder and a spinner inside (all-or-nothing, no partial list).
 
-			const trigger = getByRole('combobox', {name: 'Asset Type'});
+			const trigger = getByRole('combobox', {name: /^asset type$/i});
 
 			expect(trigger).toBeDisabled();
-			expect(trigger).toHaveTextContent('Select a Type');
+			expect(trigger).toHaveTextContent(/select a type/i);
 			expect(container.querySelector('.loading-root')).toBeTruthy();
 
 			// Flush the request (debounce timer + resolved-promise microtask).
@@ -740,7 +740,7 @@ describe('SelectPageAssetInput', () => {
 
 			// Once it resolves, the picker is enabled and the spinner clears.
 
-			expect(getByRole('combobox', {name: 'Asset Type'})).toBeEnabled();
+			expect(getByRole('combobox', {name: /^asset type$/i})).toBeEnabled();
 			expect(container.querySelector('.loading-root')).toBeNull();
 		});
 
@@ -755,7 +755,7 @@ describe('SelectPageAssetInput', () => {
 			// are available at once.
 
 			expect(container.querySelector('.loading-root')).toBeNull();
-			expect(getByRole('combobox', {name: 'Asset Type'})).toBeTruthy();
+			expect(getByRole('combobox', {name: /^asset type$/i})).toBeTruthy();
 		});
 	});
 
@@ -764,7 +764,7 @@ describe('SelectPageAssetInput', () => {
 			const {getByRole, getByText} = render(<DefaultComponent />);
 
 			openPicker(getByRole, 'Page or Asset Type');
-			fireEvent.click(getByText('Page'));
+			fireEvent.click(getByText(/^page$/i));
 			fireEvent.click(getByText(/add pages/i));
 
 			const config = getModalProps();
@@ -792,7 +792,7 @@ describe('SelectPageAssetInput', () => {
 			);
 
 			openPicker(getByRole, 'Page or Asset Type');
-			fireEvent.click(getByText('Page'));
+			fireEvent.click(getByText(/^page$/i));
 			fireEvent.click(getByText(/add pages/i));
 
 			const config = getModalProps();
@@ -821,7 +821,7 @@ describe('SelectPageAssetInput', () => {
 			const {getByRole, getByText} = render(<DefaultComponent />);
 
 			openPicker(getByRole, 'Page or Asset Type');
-			fireEvent.click(getByText('Page'));
+			fireEvent.click(getByText(/^page$/i));
 			fireEvent.click(getByText(/add pages/i));
 
 			const {dataSourceFn} = getModalProps();
